@@ -5,7 +5,7 @@ using EMBC.Utilities.Messaging;
 using EMBC.Utilities.Telemetry;
 using Microsoft.Extensions.Logging;
 
-namespace EMBC.Registrants.API.Services
+namespace EMBC.DFA.API.Services
 {
     public interface IProfileInviteService
     {

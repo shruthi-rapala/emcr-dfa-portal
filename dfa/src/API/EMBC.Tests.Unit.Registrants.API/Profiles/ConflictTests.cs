@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using EMBC.Registrants.API.Controllers;
-using EMBC.Registrants.API.Services;
+using EMBC.DFA.API.Controllers;
+using EMBC.DFA.API.Services;
 using Shouldly;
 using Xunit;
 
-namespace EMBC.Tests.Unit.Registrants.API.Profiles
+namespace EMBC.Tests.Unit.DFA.API.Profiles
 {
     public class ConflictTests
     {

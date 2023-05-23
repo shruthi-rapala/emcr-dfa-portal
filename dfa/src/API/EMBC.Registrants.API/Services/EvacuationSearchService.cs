@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using EMBC.ESS.Shared.Contracts.Events;
 using EMBC.Utilities.Messaging;
 
-namespace EMBC.Registrants.API.Services
+namespace EMBC.DFA.API.Services
 {
     public interface IEvacuationSearchService
     {

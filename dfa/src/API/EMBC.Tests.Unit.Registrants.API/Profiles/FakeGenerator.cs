@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using Bogus;
 using EMBC.ESS.Shared.Contracts.Events;
-using EMBC.Registrants.API.Controllers;
+using EMBC.DFA.API.Controllers;
 
-namespace EMBC.Tests.Unit.Registrants.API.Profiles
+namespace EMBC.Tests.Unit.DFA.API.Profiles
 {
     public class FakeGenerator
     {
@@ -106,9 +106,9 @@ namespace EMBC.Tests.Unit.Registrants.API.Profiles
                 .Generate();
         }
 
-        private static IEnumerable<EMBC.Registrants.API.Controllers.SecurityQuestion> FakeClientEnteredSecurityQuestions()
+        private static IEnumerable<EMBC.DFA.API.Controllers.SecurityQuestion> FakeClientEnteredSecurityQuestions()
         {
-            List<EMBC.Registrants.API.Controllers.SecurityQuestion> ret = new List<EMBC.Registrants.API.Controllers.SecurityQuestion>
+            List<EMBC.DFA.API.Controllers.SecurityQuestion> ret = new List<EMBC.DFA.API.Controllers.SecurityQuestion>
             {
                 FakeClientEnteredSecurityQuestion(1),
                 FakeClientEnteredSecurityQuestion(2),
@@ -117,9 +117,9 @@ namespace EMBC.Tests.Unit.Registrants.API.Profiles
             return ret;
         }
 
-        private static EMBC.Registrants.API.Controllers.SecurityQuestion FakeClientEnteredSecurityQuestion(int id)
+        private static EMBC.DFA.API.Controllers.SecurityQuestion FakeClientEnteredSecurityQuestion(int id)
         {
-            return new Faker<EMBC.Registrants.API.Controllers.SecurityQuestion>()
+            return new Faker<EMBC.DFA.API.Controllers.SecurityQuestion>()
                 .RuleFor(o => o.Id, id)
                 .RuleFor(o => o.Question, f => f.Random.Word())
                 .RuleFor(o => o.Answer, f => f.Random.Word())
@@ -127,9 +127,9 @@ namespace EMBC.Tests.Unit.Registrants.API.Profiles
                 .Generate();
         }
 
-        private static EMBC.Registrants.API.Controllers.Address FakeClientEnteredAddress()
+        private static EMBC.DFA.API.Controllers.Address FakeClientEnteredAddress()
         {
-            return new Faker<EMBC.Registrants.API.Controllers.Address>()
+            return new Faker<EMBC.DFA.API.Controllers.Address>()
                 .RuleFor(o => o.AddressLine1, f => f.Address.StreetAddress())
                 .RuleFor(o => o.Community, f => f.Address.City())
                 .RuleFor(o => o.Country, f => f.Address.CountryCode())
@@ -150,7 +150,7 @@ namespace EMBC.Tests.Unit.Registrants.API.Profiles
                       .RuleFor(u => u.FirstName, f => f.Name.FirstName())
                       .RuleFor(u => u.LastName, f => f.Name.LastName())
                       .RuleFor(u => u.DateOfBirth, f => f.Date.Past(20).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
-                ).RuleFor(u => u.PrimaryAddress, f => new Faker<EMBC.Registrants.API.Controllers.Address>()
+                ).RuleFor(u => u.PrimaryAddress, f => new Faker<EMBC.DFA.API.Controllers.Address>()
                       .RuleFor(u => u.AddressLine1, f => f.Address.StreetAddress())
                       .RuleFor(u => u.PostalCode, f => f.Address.ZipCode())
                       .RuleFor(u => u.StateProvince, f => stateProvince)

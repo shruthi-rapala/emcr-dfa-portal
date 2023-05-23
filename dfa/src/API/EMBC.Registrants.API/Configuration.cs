@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using EMBC.Registrants.API.Services;
+using EMBC.DFA.API.Services;
 using EMBC.Utilities.Configuration;
 using EMBC.Utilities.Telemetry;
 using IdentityModel.AspNetCore.OAuth2Introspection;
@@ -21,7 +21,7 @@ using NSwag;
 using NSwag.AspNetCore;
 using NSwag.Generation.Processors.Security;
 
-namespace EMBC.Registrants.API
+namespace EMBC.DFA.API
 {
     public class Configuration : IConfigureComponentServices, IConfigureComponentPipeline
     {
@@ -115,17 +115,17 @@ namespace EMBC.Registrants.API
             services.Configure<OpenApiDocumentMiddlewareSettings>(options =>
             {
                 options.Path = "/api/openapi/{documentName}/openapi.json";
-                options.DocumentName = "Registrants Portal API";
+                options.DocumentName = "DFA Portal API";
                 options.PostProcess = (document, req) =>
                 {
-                    document.Info.Title = "Registrants Portal API";
+                    document.Info.Title = "DFA Portal API";
                 };
             });
 
             services.Configure<SwaggerUi3Settings>(options =>
             {
                 options.Path = "/api/openapi";
-                options.DocumentTitle = "Registrants Portal API Documentation";
+                options.DocumentTitle = "DFA Portal API Documentation";
                 options.DocumentPath = "/api/openapi/{documentName}/openapi.json";
             });
 

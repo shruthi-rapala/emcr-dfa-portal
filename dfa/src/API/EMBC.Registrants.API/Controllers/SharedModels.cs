@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EMBC.Registrants.API.Controllers
+namespace EMBC.DFA.API.Controllers
 {
     /// <summary>
     /// Address data with optional lookup code

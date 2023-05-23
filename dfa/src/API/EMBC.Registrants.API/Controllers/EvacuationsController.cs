@@ -11,15 +11,15 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using EMBC.DFA.API.Services;
 using EMBC.ESS.Shared.Contracts;
 using EMBC.ESS.Shared.Contracts.Events;
-using EMBC.Registrants.API.Services;
 using EMBC.Utilities.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EMBC.Registrants.API.Controllers
+namespace EMBC.DFA.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

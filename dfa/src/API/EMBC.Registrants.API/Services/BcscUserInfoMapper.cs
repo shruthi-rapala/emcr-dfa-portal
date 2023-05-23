@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text.Json;
-using EMBC.Registrants.API.Controllers;
+using EMBC.DFA.API.Controllers;
 
-namespace EMBC.Registrants.API.Services
+namespace EMBC.DFA.API.Services
 {
     public static class BcscTokenKeys
     {

@@ -20,18 +20,18 @@ export class DashboardComponent implements OnInit {
   emptyRegistrationResult: string = null;
 
   tabs: TabModel[] = [
-    {
-      label: 'Current Events',
-      route: 'current',
-      activeImage: '/assets/images/curr-evac-active.svg',
-      inactiveImage: '/assets/images/curr-evac.svg'
-    },
-    {
-      label: 'Past Events',
-      route: 'past',
-      activeImage: '/assets/images/past-evac-active.svg',
-      inactiveImage: '/assets/images/past-evac.svg'
-    },
+    //{
+    //  label: 'Current Events',
+    //  route: 'current',
+    //  activeImage: '/assets/images/curr-evac-active.svg',
+    //  inactiveImage: '/assets/images/curr-evac.svg'
+    //},
+    //{
+    //  label: 'Past Events',
+    //  route: 'past',
+    //  activeImage: '/assets/images/past-evac-active.svg',
+    //  inactiveImage: '/assets/images/past-evac.svg'
+    //},
     {
       label: 'Profile',
       route: 'profile',

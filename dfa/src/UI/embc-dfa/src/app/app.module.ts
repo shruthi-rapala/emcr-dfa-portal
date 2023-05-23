@@ -22,7 +22,7 @@ import { OutageDialogComponent } from './sharedModules/outage-components/outage-
     BrowserAnimationsModule,
     ReactiveFormsModule,
     CoreModule,
-    //ApiModule.forRoot({ rootUrl: '.' }),
+    ApiModule.forRoot({ rootUrl: '.' }),
     NgIdleKeepaliveModule.forRoot(),
     OAuthModule.forRoot({
       resourceServer: {

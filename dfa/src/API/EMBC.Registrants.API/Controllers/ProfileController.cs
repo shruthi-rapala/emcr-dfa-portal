@@ -8,16 +8,16 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
+using EMBC.DFA.API.Services;
 using EMBC.ESS.Shared.Contracts;
 using EMBC.ESS.Shared.Contracts.Events;
-using EMBC.Registrants.API.Services;
 using EMBC.Utilities.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 
-namespace EMBC.Registrants.API.Controllers
+namespace EMBC.DFA.API.Controllers
 {
     [Route("api/profiles")]
     [ApiController]

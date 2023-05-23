@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using EMBC.ESS.Shared.Contracts.Events;
-using EMBC.Registrants.API.Controllers;
-using EMBC.Registrants.API.Mappers;
+using EMBC.DFA.API.Controllers;
+using EMBC.DFA.API.Mappers;
 using Shouldly;
 using Xunit;
 
-namespace EMBC.Tests.Unit.Registrants.API.Profiles
+namespace EMBC.Tests.Unit.DFA.API.Profiles
 {
     public class MappingTests
     {

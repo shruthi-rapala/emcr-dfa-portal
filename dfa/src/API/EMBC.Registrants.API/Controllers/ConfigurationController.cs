@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace EMBC.Responders.API.Controllers
+namespace EMBC.DFA.API.Controllers
 {
     /// <summary>
     /// Provides configuration data for clients
@@ -262,7 +262,7 @@ namespace EMBC.Responders.API.Controllers
         Community,
     }
 
-    public class ConfigurationMapping : Profile
+    public class ConfigurationMapping : AutoMapper.Profile
     {
         public ConfigurationMapping()
         {

@@ -1,7 +1,8 @@
 ﻿using System;
-using EMBC.Registrants.API.Controllers;
+using EMBC.DFA.API;
+using EMBC.DFA.API.Controllers;
 
-namespace EMBC.Registrants.API.Mappers
+namespace EMBC.DFA.API.Mappers
 {
     public class Mappings : AutoMapper.Profile
     {

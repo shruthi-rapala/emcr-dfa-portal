@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 
-namespace EMBC.Registrants.API.Services
+namespace EMBC.DFA.API.Services
 {
     public interface ICaptchaVerificationService
     {
