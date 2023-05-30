@@ -53,10 +53,10 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<Configuration>> GetConfiguration()
         {
-            var outageInfo = await cache.GetOrSet(
-                "outageinfo",
-                async () => (await client.Send(new OutageQuery { PortalType = PortalType.Registrants })).OutageInfo,
-                TimeSpan.FromSeconds(30));
+            //var outageInfo = await cache.GetOrSet(
+            //    "outageinfo",
+            //    async () => (await client.Send(new OutageQuery { PortalType = PortalType.Registrants })).OutageInfo,
+            //    TimeSpan.FromSeconds(30));
 
             var oidcConfig = configuration.GetSection("auth:oidc");
             var config = new Configuration
@@ -68,7 +68,8 @@ namespace EMBC.DFA.API.Controllers
                     Scope = oidcConfig.GetValue("scope", "openid offline_access registrants-portal-api"),
                     Idp = oidcConfig.GetValue("idp", "bcsc")
                 },
-                OutageInfo = mapper.Map<OutageInformation>(outageInfo),
+                //OutageInfo = mapper.Map<OutageInformation>(outageInfo),
+                OutageInfo = null,
                 TimeoutInfo = new TimeoutConfiguration
                 {
                     SessionTimeoutInMinutes = configuration.GetValue<int>("timeout:minutes", 20),

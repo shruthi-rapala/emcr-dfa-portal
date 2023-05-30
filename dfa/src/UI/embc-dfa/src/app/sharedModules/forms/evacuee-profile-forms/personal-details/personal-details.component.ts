@@ -60,7 +60,7 @@ export default class PersonalDetailsComponent implements OnInit, OnDestroy {
       window.location.pathname === this.editVerifiedPersonalDetails ||
       window.location.pathname === this.createVerifiedProfile
     ) {
-      this.disableFields = true;
+      //this.disableFields = true;
     }
   }
 

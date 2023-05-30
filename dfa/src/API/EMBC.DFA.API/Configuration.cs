@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using EMBC.Utilities.Configuration;
 using EMBC.Utilities.Telemetry;
@@ -20,6 +21,9 @@ using Microsoft.IdentityModel.Tokens;
 using NSwag;
 using NSwag.AspNetCore;
 using NSwag.Generation.Processors.Security;
+using Xrm.Tools.WebAPI;
+using Xrm.Tools.WebAPI.Requests;
+using ITokenProvider = EMBC.DFA.API.Services.ITokenProvider;
 
 namespace EMBC.DFA.API
 {
@@ -145,13 +149,26 @@ namespace EMBC.DFA.API
 
             services.AddTransient<IEvacuationSearchService, EvacuationSearchService>();
             services.AddTransient<IProfileInviteService, ProfileInviteService>();
-
+            services.AddTransient<IConfigurationHandler, Handler>();
+            services.AddTransient<IListsGateway, DynamicsGateway>();
+            services.Configure<ADFSTokenProviderOptions>(configuration.GetSection("Dynamics:ADFS"));
+            services.AddADFSTokenProvider();
             services.AddHttpClient("captcha");
             services.Configure<CaptchaVerificationServiceOptions>(options =>
             {
                 configuration.GetSection("captcha").Bind(options);
             });
             services.AddTransient<ICaptchaVerificationService, CaptchaVerificationService>();
+            services.AddScoped(sp =>
+            {
+                var dynamicsApiEndpoint = configuration.GetValue<string>("Dynamics:DynamicsApiEndpoint");
+                var tokenProvider = sp.GetRequiredService<ITokenProvider>();
+                return new CRMWebAPI(new CRMWebAPIConfig
+                {
+                    APIUrl = dynamicsApiEndpoint,
+                    GetAccessToken = async (s) => await tokenProvider.AcquireToken()
+                });
+            });
         }
 
         public void ConfigurePipeline(PipelineServices services)

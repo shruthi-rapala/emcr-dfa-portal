@@ -33,6 +33,7 @@ export class VerifiedRegistrationComponent implements OnInit {
   ngOnInit(): void {
     const queryParams = this.route.snapshot.queryParamMap;
     const inviteId: string = queryParams.get('inviteId') ?? undefined;
+    
 
     if (inviteId !== undefined) {
       this.emailService.validateInvite(inviteId).subscribe({
@@ -45,19 +46,20 @@ export class VerifiedRegistrationComponent implements OnInit {
         }
       });
     } else {
-      this.profileService.profileExists().subscribe({
-        next: (exists: boolean) => {
-          if (!exists) {
-            this.loadNewProfileWorkflow();
-          } else {
-            this.loadExistingProfileWorkflow();
-          }
-        },
-        error: (error) => {
-          this.alertService.clearAlert();
-          this.alertService.setAlert('danger', globalConst.profileExistError);
-        }
-      });
+      this.loadNewProfileWorkflow();
+      //this.profileService.profileExists().subscribe({
+      //  next: (exists: boolean) => {
+      //    if (!exists) {
+      //      this.loadNewProfileWorkflow();
+      //    } else {
+      //      this.loadExistingProfileWorkflow();
+      //    }
+      //  },
+      //  error: (error) => {
+      //    this.alertService.clearAlert();
+      //    this.alertService.setAlert('danger', globalConst.profileExistError);
+      //  }
+      //});
     }
 
     this.timeOutService.init(
@@ -67,7 +69,7 @@ export class VerifiedRegistrationComponent implements OnInit {
   }
 
   loadNewProfileWorkflow(): void {
-    this.profileService.getLoginProfile();
+    //this.profileService.getLoginProfile();
     this.router.navigate(['/verified-registration/collection-notice']);
   }
 

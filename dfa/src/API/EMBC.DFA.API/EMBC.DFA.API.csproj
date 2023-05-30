@@ -14,7 +14,7 @@
         <RepositoryType>GIT</RepositoryType>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <UserSecretsId>78326412-d09d-4d67-964c-b4b680228563</UserSecretsId>
+        <UserSecretsId>78326412-d09d-4d67-964c-b4b680228566</UserSecretsId>
         <AnalysisMode>Default</AnalysisMode>
         <EnableDotNetAnalyzers>True</EnableDotNetAnalyzers>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -32,6 +32,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Xrm.Tools.CRMWebAPI" Version="1.0.25" />
     </ItemGroup>
 
     <ItemGroup>
@@ -39,5 +40,9 @@
       <ProjectReference Include="..\EMBC.Utilities.Caching\EMBC.Utilities.Caching.csproj" />
       <ProjectReference Include="..\EMBC.Utilities.Hosting\EMBC.Utilities.Hosting.csproj" />
       <ProjectReference Include="..\EMBC.Utilities.Messaging\EMBC.Utilities.Messaging.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ConfigurationModule\ViewModels\" />
     </ItemGroup>
 </Project>

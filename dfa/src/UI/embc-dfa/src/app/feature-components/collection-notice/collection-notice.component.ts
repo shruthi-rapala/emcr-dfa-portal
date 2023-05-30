@@ -28,7 +28,7 @@ export class CollectionNoticeComponent implements OnInit {
    * navigates to the next page
    */
   submitNotice(): void {
-    const navigationPath = '/' + this.currentFlow + '/restriction';
+    const navigationPath = '/' + this.currentFlow + '/create-profile';
     this.router.navigate([navigationPath]);
   }
 }

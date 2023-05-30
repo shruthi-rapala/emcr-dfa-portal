@@ -43,9 +43,9 @@ export class AppComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
-
-    this.outageService.outagePolling();
-    this.outageService.startOutageInterval();
+    
+    //this.outageService.outagePolling();
+    //this.outageService.startOutageInterval();
   }
 
   public closeOutageBanner($event: boolean): void {

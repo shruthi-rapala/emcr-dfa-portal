@@ -23,8 +23,8 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EMBC.Registrants.API\EMBC.Registrants.API.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\EMBC.DFA.API\EMBC.DFA.API.csproj" />
+    </ItemGroup>
 
 </Project>

@@ -29,9 +29,9 @@ export class BootstrapService {
     try {
       //load server config
       const config = await this.configService.loadConfig();
-      this.timeoutService.timeOutInfo = config.timeoutInfo;
-      this.outageService.outageInfo = config.outageInfo;
-      this.outageService.setOutageInformation(config.outageInfo);
+      //this.timeoutService.timeOutInfo = config.timeoutInfo;
+      //this.outageService.outageInfo = config.outageInfo;
+      //this.outageService.setOutageInformation(config.outageInfo);
     } catch (error) {
       this.alertService.clearAlert();
       this.alertService.setAlert('danger', globalConst.systemError);
@@ -42,10 +42,10 @@ export class BootstrapService {
     } else {
       try {
         //load metadata lists
-        await this.locationService.loadStaticLocationLists();
-        await this.securityQuestionsService.loadSecurityQuesList();
-        await this.supportsService.getSupportStatusList();
-        this.locationService.loadSupportCodes();
+        //await this.locationService.loadStaticLocationLists();
+        //await this.securityQuestionsService.loadSecurityQuesList();
+        //await this.supportsService.getSupportStatusList();
+        //this.locationService.loadSupportCodes();
         //configure and load oauth module configuration
         this.oauthService.configure(this.configService.getOAuthConfig());
         await this.oauthService.loadDiscoveryDocument();
