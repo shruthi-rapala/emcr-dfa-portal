@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
 import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { FormCreationService } from '../../../../core/services/formCreation.service';
@@ -25,6 +26,7 @@ export default class PersonalDetailsComponent implements OnInit, OnDestroy {
   formBuilder: UntypedFormBuilder;
   personalDetailsForm$: Subscription;
   formCreationService: FormCreationService;
+  radioOption: string[] = ['Yes', 'No'];
   readonly dateMask = [
     /\d/,
     /\d/,
@@ -86,7 +88,8 @@ export default class PersonalDetailsComponent implements OnInit, OnDestroy {
     MatInputModule,
     ReactiveFormsModule,
     DirectivesModule,
-    TextMaskModule
+    TextMaskModule,
+    MatRadioModule
   ],
   declarations: [PersonalDetailsComponent]
 })

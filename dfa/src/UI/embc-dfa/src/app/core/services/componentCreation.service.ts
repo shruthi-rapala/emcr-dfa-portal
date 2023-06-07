@@ -31,22 +31,23 @@ export class ComponentCreationService {
     },
     {
       component: 'contact-info',
-      nextButtonLabel: 'Next - Security Question',
+      nextButtonLabel: 'Next - Review & Submit',
       backButtonLabel: 'Go Back & Edit',
       isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
       stepName: 'Contact'
-    },
-    {
-      component: 'security-questions',
-      nextButtonLabel: 'Next - Create Evacuation File',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: true,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Security Questions'
     }
+    //,
+    //{
+    //  component: 'security-questions',
+    //  nextButtonLabel: 'Next - Create Evacuation File',
+    //  backButtonLabel: 'Go Back & Edit',
+    //  isLast: true,
+    //  loadWrapperButton: false,
+    //  lastStep: 0,
+    //  stepName: 'Security Questions'
+    //}
   ];
 
   needsAssessmentComponents: Array<any> = [

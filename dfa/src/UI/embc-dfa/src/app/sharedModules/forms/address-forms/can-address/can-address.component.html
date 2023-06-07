@@ -87,15 +87,15 @@
   <div class="row">
     <div class="col-md-3">
       <mat-form-field appearance="outline">
-        <mat-label class="requiredField">Province</mat-label>
+        <mat-label>Province</mat-label>
         <input
           type="text"
           [formControlName]="'stateProvince'"
           matInput
           placeholder="Province"
-          [matAutocomplete]="auto"
+          required
         />
-        <mat-autocomplete
+        <!--<mat-autocomplete
           #auto="matAutocomplete"
           [displayWith]="provinceDisplayFn"
         >
@@ -105,7 +105,7 @@
           >
             {{ option.name }}
           </mat-option>
-        </mat-autocomplete>
+        </mat-autocomplete>-->
         <mat-error
           *ngIf="
             addressFormControl?.stateProvince.invalid &&
@@ -114,7 +114,7 @@
         >
           Province is required</mat-error
         >
-        <mat-error *ngIf="validateProvince()"> Province is invalid</mat-error>
+        <!--<mat-error *ngIf="validateProvince()"> Province is invalid</mat-error>-->
       </mat-form-field>
     </div>
   </div>

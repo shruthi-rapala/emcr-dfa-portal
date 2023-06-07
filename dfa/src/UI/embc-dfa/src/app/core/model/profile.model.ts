@@ -31,6 +31,7 @@ export class PersonDetails {
   dateOfBirth: string;
   sameLastNameCheck?: boolean;
   isPrimaryRegistrant?: boolean;
+  isIndigenous?: boolean;
 
   constructor(
     firstName?: string,
@@ -40,7 +41,8 @@ export class PersonDetails {
     gender?: string,
     dateOfBirth?: string,
     sameLastNameCheck?: boolean,
-    isPrimaryRegistrant?: boolean
+    isPrimaryRegistrant?: boolean,
+    isIndigenous?: boolean
   ) {}
 }
 
@@ -49,8 +51,7 @@ export class PersonDetailsForm {
   lastName = new UntypedFormControl();
   preferredName = new UntypedFormControl();
   initials = new UntypedFormControl();
-  gender = new UntypedFormControl();
-  dateOfBirth = new UntypedFormControl();
+  isIndigenous = new UntypedFormControl();
 
   constructor(
     personDetail: PersonDetails,
@@ -69,14 +70,8 @@ export class PersonDetailsForm {
 
     this.initials.setValue(personDetail.initials);
 
-    this.gender.setValue(personDetail.gender);
-    this.gender.setValidators([Validators.required]);
-
-    this.dateOfBirth.setValue(personDetail.dateOfBirth);
-    this.dateOfBirth.setValidators([
-      Validators.required,
-      customValidator.dateOfBirthValidator().bind(customValidator)
-    ]);
+    this.isIndigenous.setValue(personDetail.isIndigenous);
+    this.isIndigenous.setValidators([Validators.required]);
   }
 }
 
@@ -103,53 +98,53 @@ export class ContactDetailsForm {
     contactDetails: ContactDetails,
     customValidator: CustomValidationService
   ) {
-    this.showContacts.setValue(contactDetails.showContacts);
-    this.showContacts.setValidators([Validators.required]);
+    //this.showContacts.setValue(contactDetails.showContacts);
+    //this.showContacts.setValidators([Validators.required]);
 
-    this.email.setValue(contactDetails.email);
-    this.email.setValidators([
-      Validators.email,
-      customValidator
-        .conditionalValidation(
-          () =>
-            (this.phone.value === '' ||
-              this.phone.value === undefined ||
-              this.phone.value === null) &&
-            this.showContacts.value === true,
-          Validators.required
-        )
-        .bind(customValidator)
-    ]);
+    //this.email.setValue(contactDetails.email);
+    //this.email.setValidators([
+    //  Validators.email,
+    //  customValidator
+    //    .conditionalValidation(
+    //      () =>
+    //        (this.phone.value === '' ||
+    //          this.phone.value === undefined ||
+    //          this.phone.value === null) &&
+    //        this.showContacts.value === true,
+    //      Validators.required
+    //    )
+    //    .bind(customValidator)
+    //]);
 
-    this.confirmEmail.setValue(contactDetails.confirmEmail);
-    this.confirmEmail.setValidators([
-      Validators.email,
-      customValidator
-        .conditionalValidation(
-          () =>
-            this.email.value !== '' &&
-            this.email.value !== undefined &&
-            this.email.value !== null &&
-            this.showContacts.value === true,
-          Validators.required
-        )
-        .bind(customValidator)
-    ]);
+    //this.confirmEmail.setValue(contactDetails.confirmEmail);
+    //this.confirmEmail.setValidators([
+    //  Validators.email,
+    //  customValidator
+    //    .conditionalValidation(
+    //      () =>
+    //        this.email.value !== '' &&
+    //        this.email.value !== undefined &&
+    //        this.email.value !== null &&
+    //        this.showContacts.value === true,
+    //      Validators.required
+    //    )
+    //    .bind(customValidator)
+    //]);
 
-    this.phone.setValue(contactDetails.phone);
-    this.phone.setValidators([
-      customValidator.maskedNumberLengthValidator().bind(customValidator),
-      customValidator
-        .conditionalValidation(
-          () =>
-            (this.email.value === '' ||
-              this.email.value === undefined ||
-              this.email.value === null) &&
-            this.showContacts.value === true,
-          Validators.required
-        )
-        .bind(customValidator)
-    ]);
+    //this.phone.setValue(contactDetails.phone);
+    //this.phone.setValidators([
+    //  customValidator.maskedNumberLengthValidator().bind(customValidator),
+    //  customValidator
+    //    .conditionalValidation(
+    //      () =>
+    //        (this.email.value === '' ||
+    //          this.email.value === undefined ||
+    //          this.email.value === null) &&
+    //        this.showContacts.value === true,
+    //      Validators.required
+    //    )
+    //    .bind(customValidator)
+    //]);
   }
 }
 
@@ -240,82 +235,38 @@ export class AddressForm {
     customValidator: CustomValidationService
   ) {
     this.address = builder.group({
-      addressLine1: ['', [Validators.required]],
+      addressLine1: [''],
       addressLine2: [''],
-      community: ['', [Validators.required]],
-      stateProvince: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () =>
-                this.address.get('country').value !== null &&
-                (this.compareObjects(
-                  this.address.get('country').value,
-                  globalConst.defaultCountry
-                ) ||
-                  this.compareObjects(
-                    this.address.get('country').value,
-                    globalConst.usDefaultObject
-                  )),
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      country: ['', [Validators.required]],
-      postalCode: [
-        '',
-        [customValidator.postalValidation().bind(customValidator)]
-      ]
+      community: [''],
+      stateProvince: [''],
+      country: [''],
+      postalCode: ['']
     });
 
     this.mailingAddress = builder.group({
-      addressLine1: ['', [Validators.required]],
+      addressLine1: [''],
       addressLine2: [''],
-      community: ['', [Validators.required]],
-      stateProvince: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () =>
-                this.mailingAddress.get('country').value !== null &&
-                (this.compareObjects(
-                  this.mailingAddress.get('country').value,
-                  globalConst.defaultCountry
-                ) ||
-                  this.compareObjects(
-                    this.mailingAddress.get('country').value,
-                    globalConst.usDefaultObject
-                  )),
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      country: ['', [Validators.required]],
-      postalCode: [
-        '',
-        [customValidator.postalValidation().bind(customValidator)]
-      ]
+      community: [''],
+      stateProvince: [''],
+      country: [''],
+      postalCode: ['']
     });
 
-    this.isBcAddress.setValue(address.isBcAddress);
-    this.isBcAddress.setValidators([Validators.required]);
+    //this.isBcAddress.setValue(address.isBcAddress);
+    //this.isBcAddress.setValidators([Validators.required]);
 
-    this.isNewMailingAddress.setValue(address.isNewMailingAddress);
-    this.isNewMailingAddress.setValidators([Validators.required]);
+    //this.isNewMailingAddress.setValue(address.isNewMailingAddress);
+    //this.isNewMailingAddress.setValidators([Validators.required]);
 
-    this.isBcMailingAddress.setValue(address.isBcMailingAddress);
-    this.isBcMailingAddress.setValidators([
-      customValidator
-        .conditionalValidation(
-          () => this.isNewMailingAddress.value === 'No',
-          Validators.required
-        )
-        .bind(customValidator)
-    ]);
+    //this.isBcMailingAddress.setValue(address.isBcMailingAddress);
+    //this.isBcMailingAddress.setValidators([
+    //  customValidator
+    //    .conditionalValidation(
+    //      () => this.isNewMailingAddress.value === 'No',
+    //      Validators.required
+    //    )
+    //    .bind(customValidator)
+    //]);
   }
 
   compareObjects<T extends Country>(c1: T, c2: T): boolean {
