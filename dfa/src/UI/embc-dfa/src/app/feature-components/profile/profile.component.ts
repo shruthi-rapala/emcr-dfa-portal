@@ -121,7 +121,7 @@ export class ProfileComponent
     } else if (lastStep === -1) {
       this.showStep = !this.showStep;
     } else if (lastStep === -2) {
-      const navigationPath = '/' + this.currentFlow + '/restriction';
+      const navigationPath = '/' + this.currentFlow + '/collection-notice';
       this.router.navigate([navigationPath]);
     }
   }

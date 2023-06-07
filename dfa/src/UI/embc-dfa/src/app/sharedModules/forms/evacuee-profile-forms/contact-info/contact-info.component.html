@@ -1,48 +1,24 @@
 <mat-card class="card-align">
   <mat-card-content>
-    <p class="card-heading">
+    <!--<p class="card-heading">
       Contact Information <span style="color: red">*</span>
-    </p>
+    </p>-->
     <p>
-      Your telephone number and email address will <b>ONLY</b> be used to
-      contact you about your current registration. It is strongly encouraged to
-      provide your telephone number and/ or email address as a point of contact,
-      so your local Emergency Support Services (ESS) team can easily support
-      you.
+      Your telephone and email address will ONLY be used to contact you about your post-disaster circumstances to determine your eligibility for disaster financial assistance and to exchange information between the Ministry of Emergency Management and Climate Readiness (or its agent) and Provincial Government Ministries and Crown Corporations, to receive
+information and to verify that the information provided by you is accurate.
     </p>
     <br />
-    <p>
+    <!--<p>
       Do you authorize Emergency Management British Columbia and your Local
       Emergency Program to communicate with you by email or phone regarding your
       emergency situation? Note: if you do not authorize communications, you can
       still complete your registration and receive emergency supports; however,
       you will not receive your ESS file number confirmation.
-    </p>
+    </p>-->
 
     <form [formGroup]="contactInfoForm">
-      <mat-radio-group
-        formControlName="showContacts"
-        class="primary-radio-group"
-        (change)="hideContact($event)"
-        required
-      >
-        <mat-radio-button
-          class="primary-radio-button"
-          [value]="true"
-          id="yesOption"
-        >
-          <span class="highlight">Yes</span> - you may contact me regarding the
-          emergency situation.
-        </mat-radio-button>
-        <mat-radio-button
-          class="primary-radio-button"
-          [value]="false"
-          id="noOption"
-        >
-          <span class="highlight">No</span> - you may <b>NOT</b> contact me.
-        </mat-radio-button>
-      </mat-radio-group>
-      <ng-container *ngIf="contactFormControl?.showContacts.value === true">
+      
+      <ng-container>
         <div class="row">
           <div class="col-md-12">
             <p class="sub-heading">Contact Telephone Number</p>
@@ -53,12 +29,13 @@
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <!--[hideRequiredMarker]="contactFormControl?.hidePhoneRequired?.value" [errorStateMatcher]="requiredFieldsMatcher" -->
-              <mat-label>Telephone Number</mat-label>
+              <mat-label>Cellular Telephone Number</mat-label>
               <input
                 formControlName="phone"
                 matInput
-                placeholder="Telephone Number"
+                placeholder="Cellular Telephone Number"
                 [textMask]="{ mask: phoneMask, keepCharPositions: true }"
+                required
               />
               <mat-error
                 *ngIf="
@@ -66,7 +43,7 @@
                   contactFormControl.phone.hasError('required')
                 "
               >
-                Telephone Number is required</mat-error
+                Cellular Telephone Number is required</mat-error
               >
               <mat-error
                 *ngIf="
@@ -76,6 +53,44 @@
               >
                 Telephone number must have 10 digits</mat-error
               >
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <!--[hideRequiredMarker]="contactFormControl?.hidePhoneRequired?.value" [errorStateMatcher]="requiredFieldsMatcher" -->
+              <mat-label>Residence Telephone Number</mat-label>
+              <input
+                formControlName="phone1"
+                matInput
+                placeholder="Residence Telephone Number"
+                [textMask]="{ mask: phoneMask, keepCharPositions: true }"
+              />
+              
+              <!--<mat-error
+                *ngIf="
+                  contactFormControl.phone.invalid &&
+                  contactFormControl.phone.hasError('incorrectLength')
+                "
+              >
+                Telephone number must have 10 digits</mat-error
+              >-->
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <!--[hideRequiredMarker]="contactFormControl?.hidePhoneRequired?.value" [errorStateMatcher]="requiredFieldsMatcher" -->
+              <mat-label>Alternate Telephone Number</mat-label>
+              <input
+                formControlName="phone2"
+                matInput
+                placeholder="Alternate Telephone Number"
+                [textMask]="{ mask: phoneMask, keepCharPositions: true }"
+              />
+              
+              <!--<mat-error
+                *ngIf="
+                  contactFormControl.phone.invalid &&
+                  contactFormControl.phone.hasError('incorrectLength')
+                "
+              >
+                Telephone number must have 10 digits</mat-error
+              >-->
             </mat-form-field>
           </div>
         </div>
@@ -104,6 +119,7 @@
                 formControlName="email"
                 matInput
                 placeholder="Email Address"
+                required
               />
               <mat-error
                 *ngIf="
@@ -124,11 +140,11 @@
           </div>
         </div>
 
-        <div class="row">
+        <!--<div class="row">
           <div class="col-md-5">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline">-->
               <!--[hideRequiredMarker]="contactFormControl?.hideEmailRequired?.value"-->
-              <mat-label>Confirm Email Address</mat-label>
+              <!--<mat-label>Confirm Email Address</mat-label>
               <input
                 formControlName="confirmEmail"
                 matInput
@@ -162,7 +178,7 @@
               >
             </mat-form-field>
           </div>
-        </div>
+        </div>-->
 
         <!-- <div class="row">
           <div class="col-md-12">

@@ -43,7 +43,7 @@ export default class AddressComponent
 {
   primaryAddressForm: UntypedFormGroup;
   primaryAddressForm$: Subscription;
-  radioOption: string[] = ['Yes', 'No'];
+  radioOption: string[] = ['Yes', 'No', 'I don\'t have a permanent address right now'];
   formBuilder: UntypedFormBuilder;
   formCreationService: FormCreationService;
   filteredOptions: Observable<Country[]>;
@@ -61,7 +61,7 @@ export default class AddressComponent
   }
 
   ngOnInit(): void {
-    this.countries = this.locationService.getActiveCountriesList();
+    //this.countries = this.locationService.getActiveCountriesList();
 
     this.primaryAddressForm$ = this.formCreationService
       .getAddressForm()
@@ -69,56 +69,56 @@ export default class AddressComponent
         this.primaryAddressForm = primaryAddress;
       });
 
-    this.filteredOptions = this.primaryAddressForm
-      .get('address.country')
-      .valueChanges.pipe(
-        startWith(''),
-        map((value) => (value ? this.filter(value) : this.countries.slice()))
-      );
+    //this.filteredOptions = this.primaryAddressForm
+    //  .get('address.country')
+    //  .valueChanges.pipe(
+    //    startWith(''),
+    //    map((value) => (value ? this.filter(value) : this.countries.slice()))
+    //  );
 
-    this.mailingFilteredOptions = this.primaryAddressForm
-      .get('mailingAddress.country')
-      .valueChanges.pipe(
-        startWith(''),
-        map((value) => (value ? this.filter(value) : this.countries.slice()))
-      );
+    //this.mailingFilteredOptions = this.primaryAddressForm
+    //  .get('mailingAddress.country')
+    //  .valueChanges.pipe(
+    //    startWith(''),
+    //    map((value) => (value ? this.filter(value) : this.countries.slice()))
+    //  );
 
-    this.primaryAddressForm
-      .get('address.country')
-      .valueChanges.subscribe((value) => {
-        this.primaryAddressForm
-          .get('address.stateProvince')
-          .updateValueAndValidity();
-      });
+    //this.primaryAddressForm
+    //  .get('address.country')
+    //  .valueChanges.subscribe((value) => {
+    //    this.primaryAddressForm
+    //      .get('address.stateProvince')
+    //      .updateValueAndValidity();
+    //  });
 
-    this.primaryAddressForm
-      .get('mailingAddress.country')
-      .valueChanges.subscribe((value) => {
-        this.primaryAddressForm
-          .get('mailingAddress.stateProvince')
-          .updateValueAndValidity();
-      });
+    //this.primaryAddressForm
+    //  .get('mailingAddress.country')
+    //  .valueChanges.subscribe((value) => {
+    //    this.primaryAddressForm
+    //      .get('mailingAddress.stateProvince')
+    //      .updateValueAndValidity();
+    //  });
 
-    this.primaryAddressForm
-      .get('isBcAddress')
-      .valueChanges.subscribe((value) => {
-        this.updateOnVisibility();
-      });
+    //this.primaryAddressForm
+    //  .get('isBcAddress')
+    //  .valueChanges.subscribe((value) => {
+    //    this.updateOnVisibility();
+    //  });
 
-    this.primaryAddressForm
-      .get('isNewMailingAddress')
-      .valueChanges.subscribe((value) => {
-        this.primaryAddressForm
-          .get('isBcMailingAddress')
-          .updateValueAndValidity();
-      });
+    //this.primaryAddressForm
+    //  .get('isNewMailingAddress')
+    //  .valueChanges.subscribe((value) => {
+    //    this.primaryAddressForm
+    //      .get('isBcMailingAddress')
+    //      .updateValueAndValidity();
+    //  });
 
-    this.primaryAddressForm.get('address').valueChanges.subscribe((value) => {
-      if (this.primaryAddressForm.get('isNewMailingAddress').value === 'Yes') {
-        const primaryAddress = this.primaryAddressForm.getRawValue().address;
-        this.primaryAddressForm.get('mailingAddress').setValue(primaryAddress);
-      }
-    });
+    //this.primaryAddressForm.get('address').valueChanges.subscribe((value) => {
+    //  if (this.primaryAddressForm.get('isNewMailingAddress').value === 'Yes') {
+    //    const primaryAddress = this.primaryAddressForm.getRawValue().address;
+    //    this.primaryAddressForm.get('mailingAddress').setValue(primaryAddress);
+    //  }
+    //});
   }
 
   ngAfterViewChecked(): void {

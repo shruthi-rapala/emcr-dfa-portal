@@ -21,9 +21,9 @@ export class CanAddressComponent implements OnInit {
   constructor(private locationService: LocationService) {}
 
   ngOnInit(): void {
-    this.provinces = this.locationService
-      .getActiveStateProvinceList()
-      .filter((sp) => sp.countryCode === this.country.countryCode);
+    //this.provinces = this.locationService
+    //  .getActiveStateProvinceList()
+    //  .filter((sp) => sp.countryCode === this.country.countryCode);
 
     this.filteredOptions = this.addressForm
       .get('stateProvince')
