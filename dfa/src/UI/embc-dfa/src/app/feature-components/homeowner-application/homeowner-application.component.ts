@@ -14,32 +14,30 @@ import { MatStepper } from '@angular/material/stepper';
 import { Subscription } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { DFAApplicationDataService } from './dfa-application-data.service';
-import { DFAApplicationService } from './dfa-application.service';
-import { InsuranceOption } from 'src/app/core/model/dfa-application.model';
+import { HomeOwnerApplicationDataService } from './homeowner-application-data.service';
+import { HomeOwnerApplicationService } from './homeowner-application.service';
 
 @Component({
-  selector: 'app-dfa-application',
-  templateUrl: './dfa-application.component.html',
-  styleUrls: ['./dfa-application.component.scss']
+  selector: 'app-homeowner-application',
+  templateUrl: './homeowner-application.component.html',
+  styleUrls: ['./homeowner-application.component.scss']
 })
-export class DFAApplicationComponent
+export class HomeOwnerApplicationComponent
   implements OnInit, AfterViewInit, AfterViewChecked
 {
-  @ViewChild('dfaApplicationStepper') dfaApplicationStepper: MatStepper;
+  @ViewChild('homeOwnerApplicationStepper') homeOwnerApplicationStepper: MatStepper;
   isEditable = true;
-  fullInsurance: boolean = false;
   steps: Array<ComponentMetaDataModel> = new Array<ComponentMetaDataModel>();
   showStep = false;
-  dfaApplicationFolderPath = 'dfa-application-forms';
+  homeOwnerApplicationFolderPath = 'homeowner-application-forms';
   path: string;
   form$: Subscription;
   form: UntypedFormGroup;
   stepToDisplay: number;
   currentFlow: string;
-  type = 'dfa-application';
-  dfaApplicationHeading: string;
-  parentPageName = 'create-application';
+  type = 'homeowner-application';
+  homeOwnerApplicationHeading: string;
+  parentPageName = 'homeowner-application';
   showLoader = false;
   isSubmitted = false;
 
@@ -50,8 +48,8 @@ export class DFAApplicationComponent
     private formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
-    private dfaApplicationDataService: DFAApplicationDataService,
-    private dfaApplicationService: DFAApplicationService
+    private homeOwnerApplicationDataService: HomeOwnerApplicationDataService,
+    private homeOwnerApplicationService: HomeOwnerApplicationService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -60,16 +58,12 @@ export class DFAApplicationComponent
         this.stepToDisplay = state.stepIndex;
       }
     }
-    this.formCreationService.insuranceOptionChanged.subscribe((value) => {
-      let enumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
-      if (value === enumKey) this.fullInsurance = true; else this.fullInsurance = false;
-    });
   }
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
-    this.dfaApplicationHeading = 'Create Your Application';
-    this.steps = this.componentService.createDFAApplicationSteps();
+    this.homeOwnerApplicationHeading = 'Home Owner Application';
+    this.steps = this.componentService.createHomeOwnerApplicationSteps();
   }
 
   ngAfterViewChecked(): void {
@@ -111,7 +105,7 @@ export class DFAApplicationComponent
     } else if (lastStep === -1) {
       this.showStep = !this.showStep;
     } else if (lastStep === -2) {
-      const navigationPath = '/' + this.currentFlow + '/collection-notice';
+      const navigationPath = '/' + this.currentFlow + '/damaged-property-address';
       this.router.navigate([navigationPath]);
     }
   }
@@ -149,17 +143,26 @@ export class DFAApplicationComponent
    */
   setFormData(component: string): void {
     switch (component) {
-      case 'consent':
-        this.dfaApplicationDataService.consent = this.form.value;
+      case 'damaged-property-address':
+        this.homeOwnerApplicationDataService.addressLine1 = this.form.value;
+        this.homeOwnerApplicationDataService.addressLine2 = this.form.value;
+        this.homeOwnerApplicationDataService.community = this.form.value;
+        this.homeOwnerApplicationDataService.country = this.form.value;
+        this.homeOwnerApplicationDataService.eligibleForHomeOwnerGrant = this.form.value;
+        this.homeOwnerApplicationDataService.firstNationsReserve = this.form.value;
+        this.homeOwnerApplicationDataService.manufacturedHome = this.form.value;
+        this.homeOwnerApplicationDataService.occupyAsPrimaryResidence = this.form.value;
+        this.homeOwnerApplicationDataService.onAFirstNationsReserve = this.form.value;
+        this.homeOwnerApplicationDataService.postalCode = this.form.value;
+        this.homeOwnerApplicationDataService.stateProvince = this.form.value;
         break;
-      case 'profile-verification':
-        this.dfaApplicationDataService.profileVerification = this.form.value;
+      case 'property-damage':
         break;
-      case 'app-type-insurance':
-        this.dfaApplicationDataService.applicantOption = this.form.value;
-        this.dfaApplicationDataService.insuranceOption = this.form.value;
-        this.dfaApplicationDataService.smallBusinessOption = this.form.value;
-        this.dfaApplicationDataService.farmOption = this.form.value;
+      case 'occupants':
+        break;
+      case 'clean-up-log':
+        break;
+      case 'damaged-items-by-room':
         break;
       default:
     }
@@ -174,26 +177,40 @@ export class DFAApplicationComponent
     switch (index) {
       case 0:
         this.form$ = this.formCreationService
-          .getConsentForm()
-          .subscribe((consent) => {
-            this.form = consent;
+          .getDamagedPropertyAddressForm()
+          .subscribe((damagedPropertyAddress) => {
+            this.form = damagedPropertyAddress;
           });
         break;
       case 1:
         this.form$ = this.formCreationService
-          .getProfileVerificationForm()
-          .subscribe((profileVerification) => {
-            this.form = profileVerification;
+          .getPropertyDamageForm()
+          .subscribe((propertyDamage) => {
+            this.form = propertyDamage;
           });
         break;
       case 2:
         this.form$ = this.formCreationService
-          .getAppTypeInsuranceForm()
-          .subscribe((appTypeInsurance) => {
-            this.form = appTypeInsurance;
+          .getOccupantsForm()
+          .subscribe((occupants) => {
+            this.form = occupants;
           });
         break;
-    }
+      case 3:
+        this.form$ = this.formCreationService
+          .getCleanUpLogForm()
+          .subscribe((cleanUpLog) => {
+            this.form = cleanUpLog;
+          });
+        break;
+      case 4:
+        this.form$ = this.formCreationService
+          .getDamagedItemsByRoomForm()
+          .subscribe((damagedItemsByRoom) => {
+            this.form = damagedItemsByRoom;
+          });
+        break;
+      }
   }
 
   submitFile(): void {
