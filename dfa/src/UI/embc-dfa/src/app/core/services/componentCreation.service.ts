@@ -8,7 +8,7 @@ export class ComponentCreationService {
     { type: 'personal-details' },
     { type: 'address' },
     { type: 'contact-info' },
-    { type: 'secret' }
+    { type: 'review' }
   ];
   profileComponents: Array<any> = [
     {

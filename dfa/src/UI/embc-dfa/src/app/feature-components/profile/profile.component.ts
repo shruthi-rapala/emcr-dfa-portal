@@ -76,8 +76,14 @@ export class ProfileComponent
     if (this.stepToDisplay === 3) {
       this.profileStepper.linear = false;
       setTimeout(() => {
-        this.profileStepper.selectedIndex = this.stepToDisplay;
-        this.profileStepper.linear = true;
+        this.profileStepper.selected.completed = true;
+        this.profileStepper.next();
+        this.profileStepper.selected.completed = true;
+        this.profileStepper.next();
+        this.profileStepper.selected.completed = true;
+        this.profileStepper.next();
+        //this.profileStepper.selectedIndex = this.stepToDisplay;
+        this.profileStepper.linear = false;
       }, 0);
     }
     if (this.stepToDisplay === 4) {
@@ -135,7 +141,9 @@ export class ProfileComponent
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
     if (isLast && component === 'review') {
-      this.submitFile();
+      //this.submitFile();
+      const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
+      this.router.navigate([navigationPath]);
     } else if (this.form.status === 'VALID') {
       if (isLast) {
         if (this.currentFlow === 'non-verified-registration') {
@@ -180,6 +188,18 @@ export class ProfileComponent
     }
   }
 
+  getParentMethod(): any {
+    return {
+      callParentMoveStep: (index: any) => {
+        this.move(index)
+      }
+    }
+  }
+
+  move(index: any): void {
+    this.profileStepper.selectedIndex = index;
+  }
+
   /**
    * Loads appropriate forms based on the current step
    *
@@ -209,11 +229,11 @@ export class ProfileComponent
           });
         break;
       case 3:
-        this.form$ = this.formCreationService
-          .getSecurityQuestionsForm()
-          .subscribe((securityQues) => {
-            this.form = securityQues;
-          });
+        //this.form$ = this.formCreationService
+        //  .getSecurityQuestionsForm()
+        //  .subscribe((securityQues) => {
+        //    this.form = securityQues;
+        //  });
         break;
     }
   }

@@ -23,7 +23,7 @@ export class EditComponent implements OnInit, OnDestroy {
   needsAssessmentNavigationExtras: NavigationExtras = {
     state: { stepIndex: 5 }
   };
-  profileNavigationExtras: NavigationExtras = { state: { stepIndex: 4 } };
+  profileNavigationExtras: NavigationExtras = { state: { stepIndex: 3 } };
   form$: Subscription;
   form: UntypedFormGroup;
   editHeading: string;
@@ -215,11 +215,7 @@ export class EditComponent implements OnInit, OnDestroy {
         this.profileFolderPath = 'evacuee-profile-forms';
         break;
       case 'security-questions':
-        this.form$ = this.formCreationService
-          .getSecurityQuestionsForm()
-          .subscribe((questions) => {
-            this.form = questions;
-          });
+        
         this.editHeading = 'Edit Profile';
         this.profileFolderPath = 'evacuee-profile-forms';
         break;

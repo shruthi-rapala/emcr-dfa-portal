@@ -26,6 +26,14 @@ const routes: Routes = [
         data: { flow: 'verified-registration' }
       },
       {
+        path: 'nextstep-profile',
+        loadChildren: () =>
+          import('../nextstepsprofile/nextstepsprofile.module').then(
+            (m) => m.NextstepsprofileModule
+          ),
+        data: { flow: 'verified-registration' }
+      },
+      {
         path: 'restriction',
         loadChildren: () =>
           import('../restriction/restriction.module').then(
