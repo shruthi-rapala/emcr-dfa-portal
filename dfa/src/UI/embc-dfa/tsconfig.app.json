@@ -12,6 +12,7 @@
   "include": [
     "src/**/*.d.ts",
     "src/app/sharedModules/forms/evacuee-profile-forms/**/*.component.ts",
-    "src/app/sharedModules/forms/needs-assessment-forms/**/*.component.ts"
+    "src/app/sharedModules/forms/needs-assessment-forms/**/*.component.ts",
+    "src/app/sharedModules/forms/dfa-application-forms/**/*.component.ts"
   ]
 }

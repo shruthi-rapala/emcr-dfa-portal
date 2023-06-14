@@ -8,6 +8,8 @@ import { EvacuationFileDataService } from '../../sharedModules/components/evacua
 import { EvacuationFileService } from '../../sharedModules/components/evacuation-file/evacuation-file.service';
 import { ProfileDataService } from '../profile/profile-data.service';
 import { ProfileService } from '../profile/profile.service';
+import { DFAApplicationDataService } from '../dfa-application/dfa-application-data.service';
+import { DFAApplicationService } from '../dfa-application/dfa-application.service';
 import { EditService } from './edit.service';
 import * as globalConst from '../../core/services/globalConstants';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
@@ -20,6 +22,7 @@ import { AppSessionService } from 'src/app/core/services/appSession.service';
 export class EditComponent implements OnInit, OnDestroy {
   componentToLoad: string;
   profileFolderPath: string;
+  dfaApplicationFolderPath: string;
   needsAssessmentNavigationExtras: NavigationExtras = {
     state: { stepIndex: 5 }
   };
@@ -40,6 +43,8 @@ export class EditComponent implements OnInit, OnDestroy {
     private formCreationService: FormCreationService,
     private profileService: ProfileService,
     private profileDataService: ProfileDataService,
+    private dfaApplicationService: DFAApplicationService,
+    private dfaApplicationDataService: DFAApplicationDataService,
     private evacuationFileDataService: EvacuationFileDataService,
     private alertService: AlertService,
     private editService: EditService,
@@ -129,6 +134,10 @@ export class EditComponent implements OnInit, OnDestroy {
             }
           });
         }
+      } else if (this.appSessionService.editParentPage === 'dfa-application') {
+        this.router.navigate(
+          [this.verifiedRoute]
+        );
       }
     }
   }
@@ -264,7 +273,34 @@ export class EditComponent implements OnInit, OnDestroy {
         this.editHeading = 'Edit Evacuation File';
         this.profileFolderPath = 'needs-assessment-forms';
         break;
-      default:
+      case 'apptype-insurance':
+        this.form$ = this.formCreationService
+          .getAppTypeInsuranceForm()
+          .subscribe((appTypeInsurance) => {
+            this.form = appTypeInsurance;
+          });
+        this.editHeading = 'Application Type & Insurance';
+        this.dfaApplicationFolderPath = 'dfa-application-forms';
+        break;
+      case 'profile-verification':
+        this.form$ = this.formCreationService
+          .getProfileVerificationForm()
+          .subscribe((profileVerification) => {
+            this.form = profileVerification;
+          });
+        this.editHeading = 'Profile Verification';
+        this.dfaApplicationFolderPath = 'dfa-application-forms';
+        break;
+      case 'consent':
+        this.form$ = this.formCreationService
+          .getConsentForm()
+          .subscribe((consent) => {
+            this.form = consent;
+          });
+        this.editHeading = 'Consent';
+        this.dfaApplicationFolderPath = 'dfa-application-forms';
+        break;
+     default:
     }
   }
 

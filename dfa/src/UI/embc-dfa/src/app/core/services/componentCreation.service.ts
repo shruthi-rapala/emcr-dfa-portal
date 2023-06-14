@@ -50,6 +50,36 @@ export class ComponentCreationService {
     //}
   ];
 
+  dfaApplicationComponents: Array<any> = [
+    {
+      component: 'consent',
+      nextButtonLabel: 'Next - Profile Verification',
+      backButtonLabel: 'Cancel',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: -2,
+      stepName: 'Consent'
+    },
+    {
+      component: 'profile-verification',
+      nextButtonLabel: 'Next - Application Type',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Profile Verification'
+    },
+    {
+      component: 'apptype-insurance',
+      nextButtonLabel: 'Next - Damaged Property',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Application Type & Insurance'
+    }
+  ];
+
   needsAssessmentComponents: Array<any> = [
     {
       component: 'evac-address',
@@ -110,6 +140,15 @@ export class ComponentCreationService {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
     for (const comp of this.profileComponents) {
+      componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
+    }
+    return componentArr;
+  }
+
+  createDFAApplicationSteps(): Array<ComponentMetaDataModel> {
+    const componentArr: Array<ComponentMetaDataModel> =
+    new Array<ComponentMetaDataModel>();
+    for (const comp of this.dfaApplicationComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;

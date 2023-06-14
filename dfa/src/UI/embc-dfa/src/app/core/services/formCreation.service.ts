@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import {
@@ -11,6 +11,7 @@ import {
   RestrictionForm,
   Restriction,
 } from '../model/profile.model';
+import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application.model';
 import { CustomValidationService } from './customValidation.service';
 import {
   Evacuated,
@@ -27,6 +28,8 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
+  public insuranceOptionChanged: EventEmitter<InsuranceOption>;
+
   restrictionForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(new RestrictionForm(new Restriction()))
@@ -64,7 +67,44 @@ export class FormCreationService {
 
   addressForm$: Observable<UntypedFormGroup> = this.addressForm.asObservable();
 
-  evacuatedForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  
+  appTypeInsuranceForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+        new AppTypeInsuranceForm(
+          new AppTypeInsurance()
+        )
+      )
+    );
+
+  appTypeInsuranceForm$: Observable<UntypedFormGroup> =
+    this.appTypeInsuranceForm.asObservable();
+
+  consentForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+        new ConsentForm(
+          new Consent()
+        )
+      )
+    );
+
+  consentForm$: Observable<UntypedFormGroup | undefined> =
+   this.consentForm.asObservable();
+
+  profileVerificationForm: BehaviorSubject<UntypedFormGroup | undefined> =
+   new BehaviorSubject(
+     this.formBuilder.group(
+       new ProfileVerificationForm(
+         new ProfileVerification()
+       )
+     )
+   );
+
+ profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
+  this.profileVerificationForm.asObservable();
+
+ evacuatedForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
         new EvacuatedForm(
@@ -116,7 +156,9 @@ export class FormCreationService {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private customValidator: CustomValidationService
-  ) {}
+  ) {
+    this.insuranceOptionChanged = new EventEmitter<InsuranceOption>();
+  }
 
   getRestrictionForm(): Observable<UntypedFormGroup> {
     return this.restrictionForm$;
@@ -240,5 +282,59 @@ export class FormCreationService {
       this.formBuilder.group(new IdentifyNeedsForm(new IdentifyNeeds()))
     );
     this.secretForm.next(this.formBuilder.group(new SecretForm(new Secret())));
+  }
+
+  getAppTypeInsuranceForm(): Observable<UntypedFormGroup> {
+    return this.appTypeInsuranceForm$;
+  }
+
+  setAppTypeInsuranceForm(appTypeInsuranceForm: UntypedFormGroup): void {
+    this.appTypeInsuranceForm.next(appTypeInsuranceForm);
+  }
+
+  clearAppTypeInsuranceData(): void {
+    this.appTypeInsuranceForm.next(
+      this.formBuilder.group(
+        new AppTypeInsuranceForm(
+          new AppTypeInsurance()
+        )
+      )
+    );
+  }
+
+  getConsentForm(): Observable<UntypedFormGroup> {
+    return this.consentForm$;
+  }
+
+  setConsentForm(consentForm: UntypedFormGroup): void {
+    this.consentForm.next(consentForm);
+  }
+
+  clearConsentData(): void {
+    this.consentForm.next(
+      this.formBuilder.group(
+        new ConsentForm(
+          new Consent()
+        )
+      )
+    );
+  }
+
+  getProfileVerificationForm(): Observable<UntypedFormGroup> {
+    return this.profileVerificationForm$;
+  }
+
+  setProfileVerificationForm(profileVerificationForm: UntypedFormGroup): void {
+    this.profileVerificationForm.next(profileVerificationForm);
+  }
+
+  clearProfileVerificationData(): void {
+    this.profileVerificationForm.next(
+      this.formBuilder.group(
+        new ProfileVerificationForm(
+          new ProfileVerification()
+        )
+      )
+    );
   }
 }
