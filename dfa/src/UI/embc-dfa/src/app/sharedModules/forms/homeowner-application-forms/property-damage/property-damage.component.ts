@@ -15,14 +15,14 @@ import { CustomValidationService } from 'src/app/core/services/customValidation.
 import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-profile-verification',
-  templateUrl: './profile-verification.component.html',
-  styleUrls: ['./profile-verification.component.scss']
+  selector: 'app-property-damage',
+  templateUrl: './property-damage.component.html',
+  styleUrls: ['./property-damage.component.scss']
 })
-export default class ProfileVerificationComponent implements OnInit, OnDestroy {
-  profileVerificationForm: UntypedFormGroup;
+export default class PropertyDamageComponent implements OnInit, OnDestroy {
+  propertyDamageForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
-  profileVerificationForm$: Subscription;
+  propertyDamageForm$: Subscription;
   formCreationService: FormCreationService;
 
   constructor(
@@ -35,39 +35,39 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.profileVerificationForm$ = this.formCreationService
-      .getProfileVerificationForm()
-      .subscribe((profileVerification) => {
-        this.profileVerificationForm = profileVerification;
-        this.profileVerificationForm.updateValueAndValidity();
+    this.propertyDamageForm$ = this.formCreationService
+      .getPropertyDamageForm()
+      .subscribe((propertyDamage) => {
+        this.propertyDamageForm = propertyDamage;
+        this.propertyDamageForm.updateValueAndValidity();
       });
 
-    this.profileVerificationForm
-      .get('profileVerification')
+    this.propertyDamageForm
+      .get('field')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (value === '') {
-          this.profileVerificationForm.get('profileVerification').reset();
+          this.propertyDamageForm.get('field').reset();
         }
       });
 
     // TODO: Implement the correct setting of this value, will it be a radio button or checkbox??
-    this.profileVerificationForm.get('profileVerification').setValue(true);
+    this.propertyDamageForm.get('field').setValue(true);
   }
 
   /**
    * Returns the control of the form
    */
-  get profileVerificationFormControl(): { [key: string]: AbstractControl } {
-    return this.profileVerificationForm.controls;
+  get propertyDamageFormControl(): { [key: string]: AbstractControl } {
+    return this.propertyDamageForm.controls;
   }
 
   updateOnVisibility(): void {
-    this.profileVerificationForm.get('profileVerification').updateValueAndValidity();
+    this.propertyDamageForm.get('field').updateValueAndValidity();
   }
 
   ngOnDestroy(): void {
-    this.profileVerificationForm$.unsubscribe();
+    this.propertyDamageForm$.unsubscribe();
   }
 }
 
@@ -79,6 +79,6 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
     ReactiveFormsModule,
     DirectivesModule,
   ],
-  declarations: [ProfileVerificationComponent]
+  declarations: [PropertyDamageComponent]
 })
-class ProfileVerificationModule {}
+class PropertyDamageModule {}

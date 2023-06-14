@@ -15,14 +15,14 @@ import { CustomValidationService } from 'src/app/core/services/customValidation.
 import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-consent',
-  templateUrl: './consent.component.html',
-  styleUrls: ['./consent.component.scss']
+  selector: 'app-damaged-items-by-room',
+  templateUrl: './damaged-items-by-room.component.html',
+  styleUrls: ['./damaged-items-by-room.component.scss']
 })
-export default class ConsentComponent implements OnInit, OnDestroy {
-  consentForm: UntypedFormGroup;
+export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
+  damagedItemsByRoomForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
-  consentForm$: Subscription;
+  damagedItemsByRoomForm$: Subscription;
   formCreationService: FormCreationService;
 
   constructor(
@@ -35,39 +35,36 @@ export default class ConsentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.consentForm$ = this.formCreationService
-      .getConsentForm()
-      .subscribe((consent) => {
-        this.consentForm = consent;
-        this.consentForm.updateValueAndValidity();
+    this.damagedItemsByRoomForm$ = this.formCreationService
+      .getDamagedItemsByRoomForm()
+      .subscribe((damagedItemsByRoom) => {
+        this.damagedItemsByRoomForm = damagedItemsByRoom;
+        this.damagedItemsByRoomForm.updateValueAndValidity();
       });
 
-    this.consentForm
-      .get('consent')
+    this.damagedItemsByRoomForm
+      .get('field')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (value === '') {
-          this.consentForm.get('consent').reset();
+          this.damagedItemsByRoomForm.get('field').reset();
         }
       });
-
-    // TODO: Implement the correct setting of this value, will it be a radio button or checkbox??
-    this.consentForm.get('consent').setValue(true);
   }
 
   /**
    * Returns the control of the form
    */
-  get consentFormControl(): { [key: string]: AbstractControl } {
-    return this.consentForm.controls;
+  get damagedItemsByRoomFormControl(): { [key: string]: AbstractControl } {
+    return this.damagedItemsByRoomForm.controls;
   }
 
   updateOnVisibility(): void {
-    this.consentForm.get('consent').updateValueAndValidity();
+    this.damagedItemsByRoomForm.get('field').updateValueAndValidity();
   }
 
   ngOnDestroy(): void {
-    this.consentForm$.unsubscribe();
+    this.damagedItemsByRoomForm$.unsubscribe();
   }
 }
 
@@ -79,6 +76,6 @@ export default class ConsentComponent implements OnInit, OnDestroy {
     ReactiveFormsModule,
     DirectivesModule,
   ],
-  declarations: [ConsentComponent]
+  declarations: [DamagedItemsByRoomComponent]
 })
-class ConsentModule {}
+class DamagedItemsByRoomModule {}

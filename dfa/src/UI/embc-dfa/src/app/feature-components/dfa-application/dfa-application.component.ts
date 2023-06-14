@@ -67,7 +67,7 @@ export class DFAApplicationComponent
   }
 
   ngOnInit(): void {
-    this.currentFlow = this.route.snapshot.data.flow;
+    this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     this.dfaApplicationHeading = 'Create Your Application';
     this.steps = this.componentService.createDFAApplicationSteps();
   }

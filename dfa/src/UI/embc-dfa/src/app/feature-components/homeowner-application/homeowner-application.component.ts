@@ -61,7 +61,7 @@ export class HomeOwnerApplicationComponent
   }
 
   ngOnInit(): void {
-    this.currentFlow = this.route.snapshot.data.flow;
+    this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     this.homeOwnerApplicationHeading = 'Home Owner Application';
     this.steps = this.componentService.createHomeOwnerApplicationSteps();
   }
@@ -105,7 +105,7 @@ export class HomeOwnerApplicationComponent
     } else if (lastStep === -1) {
       this.showStep = !this.showStep;
     } else if (lastStep === -2) {
-      const navigationPath = '/' + this.currentFlow + '/damaged-property-address';
+      const navigationPath = '/' + this.currentFlow + '/dfa-application';
       this.router.navigate([navigationPath]);
     }
   }

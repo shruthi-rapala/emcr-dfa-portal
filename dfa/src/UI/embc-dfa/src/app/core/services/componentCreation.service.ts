@@ -82,7 +82,7 @@ export class ComponentCreationService {
 
   homeOwnerApplicationComponents: Array<any> = [
     {
-      component: 'property-damage-address',
+      component: 'damaged-property-address',
       nextButtonLabel: 'Next - Cause of Damage',
       backButtonLabel: 'Go Back & Edit',
       isLast: false,
@@ -125,15 +125,6 @@ export class ComponentCreationService {
       loadWrapperButton: false,
       lastStep: 0,
       stepName: 'Damaged Items By Room'
-    },
-    {
-      component: 'review',
-      nextButtonLabel: 'Save and Close',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: true,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Review & Submit'
     }
   ];
 
