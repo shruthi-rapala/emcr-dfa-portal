@@ -6,6 +6,7 @@ import { HomeOwnerApplicationMappingService } from './homeowner-application-mapp
 @Injectable({ providedIn: 'root' })
 export class HomeOwnerApplicationService {
   constructor(
-  ) {}
+    private homeOwnerApplicationMapping: HomeOwnerApplicationMappingService,
 
+  ) {}
  }

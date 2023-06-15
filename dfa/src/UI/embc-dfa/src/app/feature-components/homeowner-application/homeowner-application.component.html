@@ -6,12 +6,12 @@
     <div class="col-4">
       <button
         class="button-p save-button col-4"
-        style="height:40px !important; vertical-align: middle; width:120px;"
+        style="height:40px !important; vertical-align: middle; width:220px;"
         [disabled]="isSubmitted"
         mat-stroked-button
         type="button"
         >
-         Save & Close
+         Save & Back to Dashboard
          <app-loader
           [strokeWidth]="3"
           [diameter]="25"
@@ -79,7 +79,7 @@
       </p>
       <ng-template matStepLabel>Review & Submit</ng-template>
       <app-review
-        [type]="home-owner-application"
+        [type]="type"
         [showHeading]="true"
         [parentPageName]="parentPageName"
         [currentFlow]="currentFlow"

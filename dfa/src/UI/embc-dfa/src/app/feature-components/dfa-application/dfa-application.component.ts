@@ -39,7 +39,7 @@ export class DFAApplicationComponent
   currentFlow: string;
   type = 'dfa-application';
   dfaApplicationHeading: string;
-  parentPageName = 'create-application';
+  parentPageName = 'dfa-application';
   showLoader = false;
   isSubmitted = false;
 

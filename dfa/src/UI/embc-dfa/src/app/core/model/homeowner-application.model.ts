@@ -7,7 +7,7 @@ import { RegAddress, Community, Country, StateProvince } from '../model/address'
 export interface DamagedPropertyAddress extends RegAddress {
   occupyAsPrimaryResidence: boolean;
   onAFirstNationsReserve: boolean;
-  firstNationsReserve?: FirstNationsReserve;
+  firstNationsReserve?: FirstNationsReserve | string;
   manufacturedHome?: boolean;
   eligibleForHomeOwnerGrant: boolean;
 }
@@ -69,7 +69,7 @@ export class DamagedPropertyAddressForm {
     if (damagedPropertyAddress.postalCode) {
       this.postalCode.setValue(damagedPropertyAddress.postalCode);
     }
-    this.postalCode.setValidators([Validators.required, Validators.pattern('^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$')]);
+    this.postalCode.setValidators([Validators.required, Validators.pattern(/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/)]);
 
     if (damagedPropertyAddress.stateProvince) {
       this.stateProvince.setValue(damagedPropertyAddress.stateProvince);
@@ -198,6 +198,7 @@ export class DamagedItemsByRoomForm {
  * Homeowner Application
  */
 export interface HomeOwnerApplication {
+  id?: string;
   damagedPropertyAddress?: DamagedPropertyAddress;
   propertyDamage?: PropertyDamage;
   occupants?: Occupants;

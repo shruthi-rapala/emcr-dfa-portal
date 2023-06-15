@@ -144,17 +144,7 @@ export class HomeOwnerApplicationComponent
   setFormData(component: string): void {
     switch (component) {
       case 'damaged-property-address':
-        this.homeOwnerApplicationDataService.addressLine1 = this.form.value;
-        this.homeOwnerApplicationDataService.addressLine2 = this.form.value;
-        this.homeOwnerApplicationDataService.community = this.form.value;
-        this.homeOwnerApplicationDataService.country = this.form.value;
-        this.homeOwnerApplicationDataService.eligibleForHomeOwnerGrant = this.form.value;
-        this.homeOwnerApplicationDataService.firstNationsReserve = this.form.value;
-        this.homeOwnerApplicationDataService.manufacturedHome = this.form.value;
-        this.homeOwnerApplicationDataService.occupyAsPrimaryResidence = this.form.value;
-        this.homeOwnerApplicationDataService.onAFirstNationsReserve = this.form.value;
-        this.homeOwnerApplicationDataService.postalCode = this.form.value;
-        this.homeOwnerApplicationDataService.stateProvince = this.form.value;
+        this.homeOwnerApplicationDataService.damagedPropertyAddress = this.form.value;
         break;
       case 'property-damage':
         break;

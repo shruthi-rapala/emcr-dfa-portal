@@ -25,7 +25,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="type === 'home-owner-application'">
+  <div *ngIf="type === 'homeowner-application'">
     <ng-container *ngTemplateOutlet="homeOwnerApplication"></ng-container>
   </div>
 
@@ -1118,13 +1118,13 @@
               <span
                 >{{
                   (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.damagedPropertyAddress?.addressLine1
-                }},</span
+                    ?.addressLine1
+                }}</span
               >
-              <span
-                >&nbsp;{{
+              <span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine2"
+                >,&nbsp;{{
                   (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.damagedPropertyAddress?.addressLine2
+                    ?.addressLine2
                 }}</span
               >
             </p>
@@ -1132,20 +1132,16 @@
               <span
                 >{{
                   (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.damagedPropertyAddressAddress?.community?.name
-                }},
+                    ?.community
+                }},&nbsp;
               </span>
               <span>{{
                 (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                  ?.damagedPropertyAddress?.stateProvince?.name
-              }}</span>
+                  ?.stateProvince
+              }}&nbsp;</span>
               <span>{{
-                (formCreationService.damagedPropertyForm$ | async).value
-                  ?.damagedPropertyAddress?.postalCode
-              }}</span>
-              <span>{{
-                (formCreationService.damagedPropertyForm$ | async).value
-                  ?.damagedPropertyAddress?.postalCode
+                (formCreationService.damagedPropertyAddressForm$ | async).value
+                  ?.postalCode
               }}</span>
             </p>
           </div>
@@ -1153,7 +1149,7 @@
           <div class="col-md-3">
             {{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .occupyAsPrimaryResidence === true
+                .occupyAsPrimaryResidence === 'true'
                 ? 'Yes'
                 : 'No'
             }}
@@ -1162,23 +1158,25 @@
           <div class="col-md-3">
             {{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .onAFirstNationsReserve === true
+                .onAFirstNationsReserve === 'true'
                 ? 'Yes'
                 : 'No'
             }}
           </div>
-          <div class="col-md-3" *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === true">First Nations Reserve:</div>
-          <div class="col-md-3" *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === true">
-            {{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .firstNationsReserve.name
-            }}
+          <div class="col-md-3"><span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">First Nations Reserve:</span></div>
+          <div class="col-md-3">
+            <span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">
+              {{
+                (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                  .firstNationsReserve
+              }}
+            </span>
           </div>
           <div class="col-md-3">Manufactured Home:</div>
           <div class="col-md-3">
             {{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .manufacturedHome === true
+                .manufacturedHome === 'true'
                 ? 'Yes'
                 : 'No'
             }}
@@ -1186,7 +1184,7 @@
           <div class="col-md-3">
             {{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .eligibleForHomeOwnerGrant === true
+                .eligibleForHomeOwnerGrant === 'true'
                 ? 'Yes'
                 : 'No'
             }}

@@ -20,6 +20,16 @@ export class HomeOwnerApplicationMappingService {
     this.conflictService.setHasVisitedConflictPage(true);
   }
 
+  mapHomeOwnerApplication(homeOwnerApplication: HomeOwnerApplication): void {
+    this.homeOwnerApplicationDataService.setHomeOwnerApplicationId(homeOwnerApplication.id);
+    this.homeOwnerApplicationDataService.setHomeOwnerApplication(homeOwnerApplication);
+    this.setExistingHomeOwnerApplication(homeOwnerApplication);
+  }
+
+  setExistingHomeOwnerApplication(homeOwnerApplication: HomeOwnerApplication): void {
+    this.setDamagedPropertyAddressDetails(homeOwnerApplication);
+  }
+
   private setDamagedPropertyAddressDetails(homeOwnerApplication: HomeOwnerApplication): void {
     let formGroup: UntypedFormGroup;
 
@@ -32,16 +42,6 @@ export class HomeOwnerApplicationMappingService {
         });
         formGroup = damagedPropertyAddress;
       });
-    this.homeOwnerApplicationDataService.addressLine1 = homeOwnerApplication.damagedPropertyAddress.addressLine1;
-    this.homeOwnerApplicationDataService.addressLine2 = homeOwnerApplication.damagedPropertyAddress.addressLine2;
-    this.homeOwnerApplicationDataService.community = homeOwnerApplication.damagedPropertyAddress.community;
-    this.homeOwnerApplicationDataService.country = homeOwnerApplication.damagedPropertyAddress.country;
-    this.homeOwnerApplicationDataService.eligibleForHomeOwnerGrant = homeOwnerApplication.damagedPropertyAddress.eligibleForHomeOwnerGrant;
-    this.homeOwnerApplicationDataService.firstNationsReserve = homeOwnerApplication.damagedPropertyAddress.firstNationsReserve;
-    this.homeOwnerApplicationDataService.manufacturedHome = homeOwnerApplication.damagedPropertyAddress.manufacturedHome;
-    this.homeOwnerApplicationDataService.occupyAsPrimaryResidence = homeOwnerApplication.damagedPropertyAddress.occupyAsPrimaryResidence;
-    this.homeOwnerApplicationDataService.onAFirstNationsReserve = homeOwnerApplication.damagedPropertyAddress.onAFirstNationsReserve;
-    this.homeOwnerApplicationDataService.postalCode = homeOwnerApplication.damagedPropertyAddress.postalCode;
-    this.homeOwnerApplicationDataService.stateProvince = homeOwnerApplication.damagedPropertyAddress.stateProvince;
+    this.homeOwnerApplicationDataService.damagedPropertyAddress = homeOwnerApplication.damagedPropertyAddress;
   }
 }
