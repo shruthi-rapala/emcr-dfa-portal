@@ -22,9 +22,6 @@ export class ConsentForm {
     }
 
     this.consent.setValidators([Validators.required]);
-
-    this.consent.setValue(consent.consent);
-    this.consent.setValidators([Validators.required]);
   }
 }
 

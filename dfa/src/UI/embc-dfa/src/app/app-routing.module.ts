@@ -37,6 +37,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'homeowner-application',
+    loadChildren: () =>
+      import(
+        './feature-components/homeowner-application/homeowner-application.module'
+      ).then((m) => m.HomeOwnerApplicationModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'error',
     loadChildren: () =>
       import('./feature-components/error-screen/error-screen.module').then(

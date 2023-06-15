@@ -31,7 +31,8 @@ export class ReviewComponent implements OnInit {
   constructor(
     private router: Router,
     public formCreationService: FormCreationService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.navigationExtras = { state: { parentPageName: this.parentPageName } };
