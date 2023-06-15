@@ -5,6 +5,10 @@
     color: #169bd5;
 }
 
+.review-profile-head{
+    margin: 0px !important;
+}
+
 .edit-image img:last-child {
     display: none;
 }
@@ -27,4 +31,9 @@
 
 .no-bottom-margin {
     margin-bottom: 0;
+}
+
+.contentStyle {
+  border: 1px solid lightgrey;
+  padding: 10px
 }

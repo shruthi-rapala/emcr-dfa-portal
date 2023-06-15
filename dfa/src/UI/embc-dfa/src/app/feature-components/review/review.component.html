@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card style="border: none !important; box-shadow: none !important;">
   <div *ngIf="type === 'profile'">
     <ng-container *ngTemplateOutlet="profile"></ng-container>
   </div>
@@ -28,7 +28,11 @@
 
   <ng-template #profile>
     <div id="personalDetail">
-      <p *ngIf="showHeading" class="review-heading">Review & Submit</p>
+      <p *ngIf="showHeading" class="review-heading review-profile-head">Review & Submit</p>
+       <p>
+        Please read through and confirm that your details are all correct before
+        submitting.
+      </p>
 
       <mat-card-content style="display:none">
         <div class="row justify-content-between">
@@ -88,7 +92,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Personal Details</div>
           <div class="col-md-2">
@@ -127,9 +131,30 @@
             }}
           </div>
         </div>
+        <div class="row info-detail">
+          <div class="col-md-3">
+            Are you an Indigenous person?<br />
+          (First Nation, Inuit, or Metis)
+          </div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.personalDetailsForm$ | async)?.value
+                ?.isIndigenous
+            }}
+          </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3">Initials:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.personalDetailsForm$ | async)?.value
+                ?.initials
+            }}
+          </div>
+        </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Primary Address</div>
           <div class="col-md-2">
@@ -211,9 +236,9 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle">
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Mailing Address</div>
+          <div class="col-md-6 card-heading">Current Contact Address</div>
           <div class="col-md-2">
             <button
               class="edit-image"
@@ -316,9 +341,9 @@
         </div>-->
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle">
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Current Contact Address</div>
+          <div class="col-md-6 card-heading">Contact Telephone Number</div>
           <div class="col-md-2">
             <button
               class="edit-image"
@@ -362,6 +387,29 @@
             }}
           </div>
         </div>
+        
+      </mat-card-content>
+
+      <mat-card-content class="contentStyle">
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Email Address</div>
+          <div class="col-md-2">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="editDetails('contact-info')"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+        </div>
+        <hr />
         <div class="row info-detail">
           <div class="col-md-3">Email Address:</div>
           <div class="col-md-3">

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nextstepsprofile',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NextstepsprofileComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  navigateToDFAapplication(): void {
+    this.router.navigate(['/dfa-application']);
   }
 
 }

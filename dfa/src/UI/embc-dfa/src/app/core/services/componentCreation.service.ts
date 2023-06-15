@@ -13,7 +13,7 @@ export class ComponentCreationService {
   profileComponents: Array<any> = [
     {
       component: 'personal-details',
-      nextButtonLabel: 'Next - Primary & Mailing Address',
+      nextButtonLabel: 'Next - Address',
       backButtonLabel: 'Go Back & Edit',
       isLast: false,
       loadWrapperButton: false,
