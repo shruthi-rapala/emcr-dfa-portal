@@ -15,6 +15,7 @@ import { ConfigService } from 'src/app/core/services/config.service';
 })
 export class ReviewComponent implements OnInit {
   @Output() captchaPassed = new EventEmitter<CaptchaResponse>();
+  @Input() parentApi !: any;
   @Input() type: string;
   @Input() showHeading: boolean;
   @Input() currentFlow: string;
@@ -40,6 +41,10 @@ export class ReviewComponent implements OnInit {
         type: CaptchaResponseType.success
       });
     }
+  }
+
+  callParentMoveStep(index: number) {
+    this.parentApi.callParentMoveStep(index)
   }
 
   editDetails(componentToEdit: string): void {

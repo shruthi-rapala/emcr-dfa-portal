@@ -79,11 +79,8 @@
       </div>
     </mat-step>
     <mat-step *ngIf="currentFlow === 'verified-registration'">
-      <p>
-        Please read through and confirm that your details are all correct before
-        submitting.
-      </p>
-      <ng-template matStepLabel>Review & Submit</ng-template>
+      <ng-template matStepLabel>Review and Submit</ng-template>
+     
       <app-review
         [type]="type"
         [showHeading]="true"

@@ -10,8 +10,6 @@ import {
   Address,
   RestrictionForm,
   Restriction,
-  SecurityQuestions,
-  SecurityQuestionsForm
 } from '../model/profile.model';
 import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application.model';
 import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
@@ -72,21 +70,7 @@ export class FormCreationService {
 
   addressForm$: Observable<UntypedFormGroup> = this.addressForm.asObservable();
 
-  securityQuestionsForm: BehaviorSubject<UntypedFormGroup | undefined> =
-    new BehaviorSubject(
-      this.formBuilder.group(
-        new SecurityQuestionsForm(
-          new SecurityQuestions(),
-          this.formBuilder,
-          this.customValidator
-        )
-      )
-    );
 
-  securityQuestionsForm$: Observable<UntypedFormGroup> =
-    this.securityQuestionsForm.asObservable();
-
-  // DFA Application
   appTypeInsuranceForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
@@ -264,14 +248,6 @@ export class FormCreationService {
     this.contactDetailsForm.next(contactForm);
   }
 
-  getSecurityQuestionsForm(): Observable<UntypedFormGroup> {
-    return this.securityQuestionsForm$;
-  }
-
-  setSecurityQuestionsForm(securityQuestionsForm: UntypedFormGroup): void {
-    return this.securityQuestionsForm.next(securityQuestionsForm);
-  }
-
   getAddressForm(): Observable<UntypedFormGroup> {
     return this.addressForm$;
   }
@@ -339,15 +315,7 @@ export class FormCreationService {
         new ContactDetailsForm(new ContactDetails(), this.customValidator)
       )
     );
-    this.securityQuestionsForm.next(
-      this.formBuilder.group(
-        new SecurityQuestionsForm(
-          new SecurityQuestions(),
-          this.formBuilder,
-          this.customValidator
-        )
-      )
-    );
+
   }
 
   clearNeedsAssessmentData(): void {
