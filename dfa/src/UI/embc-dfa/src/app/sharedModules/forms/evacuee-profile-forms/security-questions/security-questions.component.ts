@@ -47,11 +47,11 @@ export default class SecurityQuestionsComponent implements OnInit {
    * Set up main FormGroup with security Q&A inputs and validation
    */
   createQuestionForm(): void {
-    this.securityQuestionsForm$ = this.formCreationService
-      .getSecurityQuestionsForm()
-      .subscribe((securityQuestionsForm) => {
-        this.securityQuestionsForm = securityQuestionsForm;
-      });
+    //this.securityQuestionsForm$ = this.formCreationService
+    //  .getSecurityQuestionsForm()
+    //  .subscribe((securityQuestionsForm) => {
+    //    this.securityQuestionsForm = securityQuestionsForm;
+    //  });
   }
 
   get securityQuestionsFormControl(): { [key: string]: AbstractControl } {

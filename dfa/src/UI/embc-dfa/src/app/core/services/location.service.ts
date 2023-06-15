@@ -123,6 +123,9 @@ export class LocationService {
     const community = this.configService.configurationGetCommunities();
     const province = this.configService.configurationGetStateProvinces();
     const country = this.configService.configurationGetCountries();
+    //const community = null;
+    //const province = null;
+    //const country = null;
 
     return await lastValueFrom(
       forkJoin([community, province, country]).pipe(
@@ -185,12 +188,14 @@ export class LocationService {
     const addressStateProvince =
       stateProvinces.find((sp) => sp.code === addressObject.stateProvince) ??
       stateProvinces.find((sp) => sp.code === 'BC');
-
+    
     return {
       addressLine1: addressObject.addressLine1,
       addressLine2: addressObject.addressLine2,
-      community: addressCommunity || addressObject.city || '',
-      stateProvince: addressStateProvince,
+      //community: addressCommunity || addressObject.city || '',
+      //stateProvince: addressStateProvince,
+      community: '',
+      stateProvince: '',
       country: addressCountry,
       postalCode: addressObject.postalCode
     };
@@ -221,7 +226,7 @@ export class LocationService {
         addressObject.stateProvince === null ||
         addressObject.stateProvince === undefined
           ? null
-          : addressObject.stateProvince?.code
+          : null//addressObject.stateProvince?.code
     };
 
     return address;

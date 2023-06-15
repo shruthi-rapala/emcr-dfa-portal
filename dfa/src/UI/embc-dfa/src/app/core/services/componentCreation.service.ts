@@ -8,12 +8,12 @@ export class ComponentCreationService {
     { type: 'personal-details' },
     { type: 'address' },
     { type: 'contact-info' },
-    { type: 'secret' }
+    { type: 'review' }
   ];
   profileComponents: Array<any> = [
     {
       component: 'personal-details',
-      nextButtonLabel: 'Next - Primary & Mailing Address',
+      nextButtonLabel: 'Next - Address',
       backButtonLabel: 'Go Back & Edit',
       isLast: false,
       loadWrapperButton: false,

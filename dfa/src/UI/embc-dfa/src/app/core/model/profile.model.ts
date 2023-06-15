@@ -82,7 +82,8 @@ export class ContactDetails {
   showContacts: boolean;
   hideEmailRequired: boolean;
   hidePhoneRequired: boolean;
-
+  residencePhone: string;
+  alternatePhone: string;
   constructor() {}
 }
 
@@ -93,6 +94,8 @@ export class ContactDetailsForm {
   showContacts = new UntypedFormControl();
   hideEmailRequired = new UntypedFormControl(false);
   hidePhoneRequired = new UntypedFormControl(false);
+  residencePhone = new UntypedFormControl();
+  alternatePhone = new UntypedFormControl();
 
   constructor(
     contactDetails: ContactDetails,
@@ -148,70 +151,6 @@ export class ContactDetailsForm {
   }
 }
 
-export class SecurityQuestions {
-  question1: string;
-  answer1: string;
-
-  question2: string;
-  answer2: string;
-
-  question3: string;
-  answer3: string;
-
-  constructor() {}
-}
-
-export class SecurityQuestionsForm {
-  questions: UntypedFormGroup;
-
-  constructor(
-    securityQuestions: SecurityQuestions,
-    builder: UntypedFormBuilder,
-    customValidator: CustomValidationService
-  ) {
-    this.questions = builder.group(
-      {
-        question1: [securityQuestions.question1 ?? '', [Validators.required]],
-        answer1: [
-          securityQuestions.answer1 ?? '',
-          [
-            Validators.minLength(3),
-            Validators.maxLength(50),
-            customValidator.whitespaceValidator()
-          ]
-        ],
-        question2: [securityQuestions.question2 ?? '', [Validators.required]],
-        answer2: [
-          securityQuestions.answer2 ?? '',
-          [
-            Validators.minLength(3),
-            Validators.maxLength(50),
-            customValidator.whitespaceValidator()
-          ]
-        ],
-        question3: [securityQuestions.question3 ?? '', [Validators.required]],
-        answer3: [
-          securityQuestions.answer3 ?? '',
-          [
-            Validators.minLength(3),
-            Validators.maxLength(50),
-            customValidator.whitespaceValidator()
-          ]
-        ]
-      },
-      {
-        validators: [
-          customValidator.uniqueValueValidator([
-            'question1',
-            'question2',
-            'question3'
-          ])
-        ]
-      }
-    );
-  }
-}
-
 export class Address {
   isBcAddress: string;
   address: RegAddress;
@@ -238,9 +177,12 @@ export class AddressForm {
       addressLine1: [''],
       addressLine2: [''],
       community: [''],
-      stateProvince: [''],
+      stateProvince: ['British Columbia'],
       country: [''],
-      postalCode: ['']
+      postalCode: [
+        '',
+        [customValidator.postalValidation().bind(customValidator)]
+      ]
     });
 
     this.mailingAddress = builder.group({
@@ -249,7 +191,10 @@ export class AddressForm {
       community: [''],
       stateProvince: [''],
       country: [''],
-      postalCode: ['']
+      postalCode: [
+        '',
+        [customValidator.postalValidation().bind(customValidator)]
+      ]
     });
 
     //this.isBcAddress.setValue(address.isBcAddress);
@@ -258,11 +203,19 @@ export class AddressForm {
     //this.isNewMailingAddress.setValue(address.isNewMailingAddress);
     //this.isNewMailingAddress.setValidators([Validators.required]);
 
-    //this.isBcMailingAddress.setValue(address.isBcMailingAddress);
-    //this.isBcMailingAddress.setValidators([
+    //this.isNewMailingAddress.setValue(address.isNewMailingAddress);
+    //this.isNewMailingAddress.setValidators([
     //  customValidator
     //    .conditionalValidation(
     //      () => this.isNewMailingAddress.value === 'No',
+    //      Validators.required
+    //    )
+    //    .bind(customValidator)
+    //]);
+    //this.isNewMailingAddress.removeValidators([
+    //  customValidator
+    //    .conditionalValidation(
+    //      () => this.isNewMailingAddress.value !== 'No',
     //      Validators.required
     //    )
     //    .bind(customValidator)

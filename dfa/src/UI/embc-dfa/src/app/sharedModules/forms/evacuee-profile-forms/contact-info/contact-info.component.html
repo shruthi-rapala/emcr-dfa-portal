@@ -58,7 +58,7 @@ information and to verify that the information provided by you is accurate.
               <!--[hideRequiredMarker]="contactFormControl?.hidePhoneRequired?.value" [errorStateMatcher]="requiredFieldsMatcher" -->
               <mat-label>Residence Telephone Number</mat-label>
               <input
-                formControlName="phone1"
+                formControlName="residencePhone"
                 matInput
                 placeholder="Residence Telephone Number"
                 [textMask]="{ mask: phoneMask, keepCharPositions: true }"
@@ -77,7 +77,7 @@ information and to verify that the information provided by you is accurate.
               <!--[hideRequiredMarker]="contactFormControl?.hidePhoneRequired?.value" [errorStateMatcher]="requiredFieldsMatcher" -->
               <mat-label>Alternate Telephone Number</mat-label>
               <input
-                formControlName="phone2"
+                formControlName="alternatePhone"
                 matInput
                 placeholder="Alternate Telephone Number"
                 [textMask]="{ mask: phoneMask, keepCharPositions: true }"

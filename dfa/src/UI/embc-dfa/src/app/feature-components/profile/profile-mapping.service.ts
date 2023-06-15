@@ -40,7 +40,6 @@ export class ProfileMappingService {
     this.setPersonalDetails(profile);
     this.setAddressDetails(profile);
     this.setContactDetails(profile);
-    this.setSecurityQuestions(profile);
   }
 
   setLoginProfile(profile: Profile): void {
@@ -178,27 +177,27 @@ export class ProfileMappingService {
     }
   }
 
-  private setSecurityQuestions(profile: Profile): void {
-    let formGroup: UntypedFormGroup;
+  //private setSecurityQuestions(profile: Profile): void {
+  //  let formGroup: UntypedFormGroup;
 
-    this.formCreationService
-      .getSecurityQuestionsForm()
-      .pipe(first())
-      .subscribe((securityQuestions) => {
-        securityQuestions.setValue({
-          questions: {
-            question1: profile.securityQuestions[0].question,
-            answer1: profile.securityQuestions[0].answer,
-            question2: profile.securityQuestions[1].question,
-            answer2: profile.securityQuestions[1].answer,
-            question3: profile.securityQuestions[2].question,
-            answer3: profile.securityQuestions[2].answer
-          }
-        });
-        formGroup = securityQuestions;
-      });
-    this.profileDataService.securityQuestions = profile.securityQuestions;
-  }
+  //  this.formCreationService
+  //    .getSecurityQuestionsForm()
+  //    .pipe(first())
+  //    .subscribe((securityQuestions) => {
+  //      securityQuestions.setValue({
+  //        questions: {
+  //          question1: profile.securityQuestions[0].question,
+  //          answer1: profile.securityQuestions[0].answer,
+  //          question2: profile.securityQuestions[1].question,
+  //          answer2: profile.securityQuestions[1].answer,
+  //          question3: profile.securityQuestions[2].question,
+  //          answer3: profile.securityQuestions[2].answer
+  //        }
+  //      });
+  //      formGroup = securityQuestions;
+  //    });
+  //  this.profileDataService.securityQuestions = profile.securityQuestions;
+  //}
 
   private isSameMailingAddress(
     isMailingAddressSameAsPrimaryAddress: boolean

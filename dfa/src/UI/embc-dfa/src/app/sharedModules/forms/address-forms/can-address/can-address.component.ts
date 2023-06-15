@@ -25,12 +25,12 @@ export class CanAddressComponent implements OnInit {
     //  .getActiveStateProvinceList()
     //  .filter((sp) => sp.countryCode === this.country.countryCode);
 
-    this.filteredOptions = this.addressForm
-      .get('stateProvince')
-      .valueChanges.pipe(
-        startWith(''),
-        map((value) => (value ? this.filter(value) : this.provinces.slice()))
-      );
+    //this.filteredOptions = this.addressForm
+    //  .get('stateProvince')
+    //  .valueChanges.pipe(
+    //    startWith(''),
+    //    map((value) => (value ? this.filter(value) : this.provinces.slice()))
+    //  );
   }
 
   /**

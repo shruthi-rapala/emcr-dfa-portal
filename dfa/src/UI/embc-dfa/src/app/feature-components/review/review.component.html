@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card style="border: none !important; box-shadow: none !important;">
   <div *ngIf="type === 'profile'">
     <ng-container *ngTemplateOutlet="profile"></ng-container>
   </div>
@@ -28,7 +28,11 @@
 
   <ng-template #profile>
     <div id="personalDetail">
-      <p *ngIf="showHeading" class="review-heading">Review & Submit</p>
+      <p *ngIf="showHeading" class="review-heading review-profile-head">Review & Submit</p>
+       <p>
+        Please read through and confirm that your details are all correct before
+        submitting.
+      </p>
 
       <mat-card-content style="display:none">
         <div class="row justify-content-between">
@@ -88,7 +92,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Personal Details</div>
           <div class="col-md-2">
@@ -128,11 +132,14 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3">Preferred Name:</div>
+          <div class="col-md-3">
+            Are you an Indigenous person?<br />
+          (First Nation, Inuit, or Metis)
+          </div>
           <div class="col-md-3">
             {{
               (formCreationService.personalDetailsForm$ | async)?.value
-                ?.preferredName
+                ?.isIndigenous
             }}
           </div>
         </div>
@@ -145,26 +152,9 @@
             }}
           </div>
         </div>
-        <div class="row info-detail">
-          <div class="col-md-3">Date of Birth:</div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.personalDetailsForm$ | async)?.value
-                ?.dateOfBirth | customDate
-            }}
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3">Gender:</div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.personalDetailsForm$ | async)?.value?.gender
-            }}
-          </div>
-        </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Primary Address</div>
           <div class="col-md-2">
@@ -205,81 +195,26 @@
         <div class="row info-detail">
           <div
             class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code === 'CAN' ||
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code === 'USA'
-            "
+            
           >
             City:
           </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code !== 'CAN' &&
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code !== 'USA'
-            "
-          >
-            City/ Jurisdiction:
-          </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.isBcAddress ===
-              'Yes'
-            "
-          >
-            {{
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.community?.name
-            }}
-          </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.isBcAddress ===
-              'No'
-            "
-          >
+          
+          <div class="col-md-3">
             {{
               (formCreationService.addressForm$ | async)?.value?.address
                 ?.community
             }}
           </div>
+          
         </div>
         <div class="row info-detail">
           <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code === 'CAN'
-            "
-          >
+            class="col-md-3">
             Postal Code:
           </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code === 'USA'
-            "
-          >
-            Zip Code:
-          </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code !== 'CAN' &&
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code !== 'USA'
-            "
-          >
-            Postal/ Zip Code:
-          </div>
+          
+          
           <div class="col-md-3">
             {{
               (formCreationService.addressForm$ | async)?.value?.address
@@ -289,45 +224,21 @@
         </div>
         <div class="row info-detail">
           <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code === 'CAN'
-            "
-          >
+            class="col-md-3">
             Province:
           </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.code === 'USA'
-            "
-          >
-            State:
-          </div>
-
           <div class="col-md-3">
             {{
               (formCreationService.addressForm$ | async)?.value?.address
-                ?.stateProvince?.name
-            }}
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3">Country:</div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.addressForm$ | async)?.value?.address
-                ?.country?.name
+                ?.stateProvince
             }}
           </div>
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle">
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Mailing Address</div>
+          <div class="col-md-6 card-heading">Current Contact Address</div>
           <div class="col-md-2">
             <button
               class="edit-image"
@@ -365,27 +276,10 @@
         </div>
         <div class="row info-detail">
           <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code === 'CAN' ||
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code === 'USA'
-            "
-          >
+            class="col-md-3">
             City:
           </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code !== 'CAN' &&
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code !== 'USA'
-            "
-          >
-            City/ Jurisdiction:
-          </div>
+          
           <div
             class="col-md-3"
             *ngIf="
@@ -413,34 +307,10 @@
         </div>
         <div class="row info-detail">
           <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code === 'CAN'
-            "
-          >
+            class="col-md-3">
             Postal Code:
           </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code === 'USA'
-            "
-          >
-            Zip Code:
-          </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code !== 'CAN' &&
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code !== 'USA'
-            "
-          >
-            Postal/ Zip Code:
-          </div>
+         
           <div class="col-md-3">
             {{
               (formCreationService.addressForm$ | async)?.value?.mailingAddress
@@ -450,31 +320,17 @@
         </div>
         <div class="row info-detail">
           <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code === 'CAN'
-            "
-          >
+            class="col-md-3">
             Province:
-          </div>
-          <div
-            class="col-md-3"
-            *ngIf="
-              (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.country?.code === 'USA'
-            "
-          >
-            State:
           </div>
           <div class="col-md-3">
             {{
               (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                ?.stateProvince?.name
+                ?.stateProvince
             }}
           </div>
         </div>
-        <div class="row info-detail">
+        <!--<div class="row info-detail">
           <div class="col-md-3">Country:</div>
           <div class="col-md-3">
             {{
@@ -482,12 +338,12 @@
                 ?.country?.name
             }}
           </div>
-        </div>
+        </div>-->
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle">
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Contact Details</div>
+          <div class="col-md-6 card-heading">Contact Telephone Number</div>
           <div class="col-md-2">
             <button
               class="edit-image"
@@ -506,48 +362,54 @@
         </div>
         <hr />
         <div class="row info-detail">
-          <div class="col-md-1">
-            <span
-              *ngIf="
-                (formCreationService.contactDetailsForm$ | async)?.value
-                  .showContacts
-              "
-            >
-              <img
-                src="/assets/images/restriction-on.svg"
-                height="20"
-                width="20"
-              />
-            </span>
-            <span
-              *ngIf="
-                !(formCreationService.contactDetailsForm$ | async)?.value
-                  .showContacts
-              "
-            >
-              <img
-                src="/assets/images/restriction-off.svg"
-                height="20"
-                width="20"
-              />
-            </span>
-          </div>
-          <div class="col-md-9">
+          
+          <!--<div class="col-md-9">
             <p>
               You have given your consent for Emergency Management British
               Columbia and your Local Emergency Program to communicate with you
               by email or phone regarding your emergency situation.
             </p>
-          </div>
+          </div>-->
         </div>
         <div class="row info-detail">
-          <div class="col-md-3">Telephone/Mobile:</div>
+          <div class="col-md-3">Cellular Telephone Number:</div>
           <div class="col-md-3">
             {{
               (formCreationService.contactDetailsForm$ | async)?.value?.phone
             }}
           </div>
         </div>
+        <div class="row info-detail">
+          <div class="col-md-3">Residence Telephone Number:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.contactDetailsForm$ | async)?.value?.residencePhone
+            }}
+          </div>
+        </div>
+        
+      </mat-card-content>
+
+      <mat-card-content class="contentStyle">
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Email Address</div>
+          <div class="col-md-2">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="editDetails('contact-info')"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+        </div>
+        <hr />
         <div class="row info-detail">
           <div class="col-md-3">Email Address:</div>
           <div class="col-md-3">
