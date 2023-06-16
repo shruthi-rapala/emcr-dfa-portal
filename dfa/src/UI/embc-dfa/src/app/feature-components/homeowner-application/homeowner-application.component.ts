@@ -120,7 +120,7 @@ export class HomeOwnerApplicationComponent
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
     if (isLast && component === 'review') {
       this.submitFile();
-    } else if (this.form.status === 'VALID') {
+    } else {
       if (isLast) {
         if (this.currentFlow === 'non-verified-registration') {
           // const navigationPath = '/' + this.currentFlow + '/needs-assessment';
@@ -131,7 +131,6 @@ export class HomeOwnerApplicationComponent
       this.form$.unsubscribe();
       stepper.selected.completed = true;
       stepper.next();
-    } else {
       this.form.markAllAsTouched();
     }
   }
@@ -147,6 +146,7 @@ export class HomeOwnerApplicationComponent
         this.homeOwnerApplicationDataService.damagedPropertyAddress = this.form.value;
         break;
       case 'property-damage':
+        this.homeOwnerApplicationDataService.propertyDamage = this.form.value;
         break;
       case 'occupants':
         break;

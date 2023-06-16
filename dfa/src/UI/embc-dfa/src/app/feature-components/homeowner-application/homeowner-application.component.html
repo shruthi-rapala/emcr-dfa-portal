@@ -27,7 +27,7 @@
     (animationDone)="currentStep(homeOwnerApplicationStepper?.selectedIndex)"
     (selectionChange)="stepChanged($event, homeOwnerApplicationStepper)"
     #homeOwnerApplicationStepper
-    linear
+    [linear]="false"
   >
     <mat-step *ngFor="let step of steps" [stepControl]="form">
       <ng-template matStepLabel>{{ step.stepName }}</ng-template>

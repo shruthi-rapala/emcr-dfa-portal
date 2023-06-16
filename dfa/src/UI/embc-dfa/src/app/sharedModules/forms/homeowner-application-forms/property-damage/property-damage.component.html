@@ -5,8 +5,48 @@
 
       <ng-container>
         <div class="row">
-          <div class="col-md-12">
-            <p class="sub-heading">Under Construction</p>
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Select the cause(s) of damage.<span style="color:red" >*</span>
+            </p>
+            <mat-checkbox
+              formControlName="floodDamage"
+              >
+              Flood Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
+              formControlName="landslideDamage"
+              >
+              Landslide Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
+              formControlName="stormDamage"
+              >
+              Storm Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
+              formControlName="otherDamage"
+              >
+              Other Damage
+            </mat-checkbox><br/><br/>
+            <mat-form-field appearance="outline" *ngIf="propertyDamageForm.get('otherDamage').value === true">
+              <mat-label>Cause of Damage</mat-label>
+              <input matInput
+                required
+                type="text"
+                style="margin-left: 20px"
+                formControlName="otherDamageText"
+                placeholder="Cause of damage*"
+              />
+              <mat-error
+                *ngIf="
+                propertyDamageForm.get('otherDamageText').invalid &&
+                propertyDamageForm.get('otherDamageText').hasError('required')
+              "
+              >
+                Text is required</mat-error
+              ><br/><br/>
+            </mat-form-field>
           </div>
         </div>
 

@@ -13,11 +13,16 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
+import { Router } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
+import * as globalConst from '../../../../core/services/globalConstants';
 import { RegAddress } from 'src/app/core/model/address';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
+import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-damaged-property-address',
@@ -35,7 +40,10 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    private router: Router,
+    public dialog: MatDialog
+
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -117,6 +125,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('occupyAsPrimaryResidence').reset();
+        } else if (value === 'false') {
+          this.dontOccupyDamagedProperty();
         }
       });
 
@@ -166,6 +176,44 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       postalCode: "V1V 1V1"
     }
     this.onUseProfileAddressChoice("1");
+  }
+
+  dontOccupyDamagedProperty(): void {
+    this.dialog
+      .open(DFAEligibilityDialogComponent, {
+        data: {
+          content: globalConst.dontOccupyDamagedPropertyBody
+        },
+        height: '260px',
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'cancel') {
+          this.submitFile();
+          }
+        else if (result === 'confirm') {
+          this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValue("true");
+        }
+        else this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValue(null);
+      });
+  }
+
+  submitFile(): void {
+    // this.dfaApplicationService
+      // .upsertProfile(this.profileDataService.createProfileDTO())
+      // .subscribe({
+        // next: (profileId) => {
+          // this.profileDataService.setProfileId(profileId);
+          this.router.navigate(['/verified-registration/dashboard']);
+        // },
+        // error: (error) => {
+          // this.showLoader = !this.showLoader;
+          // this.isSubmitted = !this.isSubmitted;
+          // this.alertService.setAlert('danger', globalConst.saveProfileError);
+        // }
+      // });
   }
 
   onUseProfileAddressChoice(choice: any) {

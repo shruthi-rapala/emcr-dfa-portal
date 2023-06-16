@@ -45,7 +45,14 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
+            <div *ngIf="damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value != 'false'">
+              <br/><br/>
+            </div>
+            <div class="row radio-extra-label" *ngIf="damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value == 'false'">
+              You must occupy the property as your principal residence to be eligible for DFA. <br/><br/>
+              You may call us to discuss further at 1-888-257-4777.<br/><br/>
+            </div>
           </div>
         </div>
 
