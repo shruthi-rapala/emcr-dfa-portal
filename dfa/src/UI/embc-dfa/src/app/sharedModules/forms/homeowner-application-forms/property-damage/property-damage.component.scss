@@ -16,3 +16,11 @@ mat-form-field {
     font-weight: 700;
     color: #169bd5;
 }
+
+.horizontal-radio-group {
+  display: flex; flex-direction: row;
+  /* display: inline-grid; */
+  /* display: grid; */
+  margin: 15px 0;
+}
+

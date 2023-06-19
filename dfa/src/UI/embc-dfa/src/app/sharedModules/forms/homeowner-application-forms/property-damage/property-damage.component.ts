@@ -3,11 +3,14 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
   AbstractControl,
-  FormsModule
+  FormsModule,
+  Validators
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import {MatNativeDateModule} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { Subscription } from 'rxjs';
@@ -29,6 +32,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   formBuilder: UntypedFormBuilder;
   propertyDamageForm$: Subscription;
   formCreationService: FormCreationService;
+  remainingLength: number = 2000;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -80,7 +84,13 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '') {
           this.propertyDamageForm.get('otherDamage').reset();
+          this.propertyDamageForm.get('otherDamageText').setValidators(null);
+        } else if (value == 'true') {
+          this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required]);
+        } else {
+          this.propertyDamageForm.get('otherDamageText').setValidators(null);
         }
+        this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
       });
 
     this.propertyDamageForm
@@ -156,6 +166,10 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       });
   }
 
+  calcRemainingChars() {
+    this.remainingLength = 2000 - this.propertyDamageForm.get('briefDescription').value?.length;
+  }
+
   /**
    * Returns the control of the form
    */
@@ -172,6 +186,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   imports: [
     CommonModule,
     MatCardModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     MatFormFieldModule,
     MatCheckboxModule,
     MatRadioModule,

@@ -1083,44 +1083,44 @@
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .floodDamage === 'true'
+                .floodDamage === true
                 ? 'Yes'
                 : ((formCreationService.propertyDamageForm$ | async)?.value
-                .floodDamage === 'false' ? 'No' : 'No selection')
+                .floodDamage === false ? 'No' : 'No selection')
             }}
           </div>
           <div class="col-md-3">Landslide Damage?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .landslideDamage === 'true'
+                .landslideDamage === true
                 ? 'Yes'
                 : ((formCreationService.propertyDamageForm$ | async)?.value
-                .landslideDamage === 'false' ? 'No' : 'No selection')
+                .landslideDamage === false ? 'No' : 'No selection')
             }}
           </div>
           <div class="col-md-3">Storm Damage?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .stormDamage === 'true'
+                .stormDamage === true
                 ? 'Yes'
                 : ((formCreationService.propertyDamageForm$ | async)?.value
-                .stormDamage === 'false' ? 'No' : 'No selection')
+                .stormDamage === false ? 'No' : 'No selection')
             }}
           </div>
           <div class="col-md-3">Other Damage?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .otherDamage === 'true'
+                .otherDamage === true
                 ? 'Yes'
                 : ((formCreationService.propertyDamageForm$ | async)?.value
-                .otherDamage === 'false' ? 'No' : 'No selection')
+                .otherDamage === false ? 'No' : 'No selection')
             }}
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .otherDamage === 'true'
+                .otherDamage === true
                 ? (formCreationService.propertyDamageForm$ | async)?.value.otherDamageText : ''
             }}
           </div>
@@ -1128,11 +1128,11 @@
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .damageFromDate ? ('Starts ' + (formCreationService.propertyDamageForm$ | async).value.damageFromDate) : ''
+                .damageFromDate ? ('Starts ' + ((formCreationService.propertyDamageForm$ | async).value.damageFromDate | date: "MM/dd/yyyy")) : ''
             }}
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .damageToDate ? 'Ends ' + (formCreationService.propertyDamageForm$ | async).value.damageToDate : ''
+                .damageToDate ? ('Ends ' + ((formCreationService.propertyDamageForm$ | async).value.damageToDate | date: "MM/dd/yyyy")) : ''
             }}
           </div>
           <div class="col-md-3">Brief Description:</div>
@@ -1146,10 +1146,10 @@
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .lossesMoreThan1000 === 'true'
+                .lossesExceed1000 === 'true'
                 ? 'Yes'
                 : ((formCreationService.propertyDamageForm$ | async)?.value
-                .lossesMoreThan1000 === 'false' ? 'No' : 'No selection')
+                .lossesExceed1000 === 'false' ? 'No' : 'No selection')
             }}
           </div>
           <div class="col-md-3">Were You Evacuated?:</div>
