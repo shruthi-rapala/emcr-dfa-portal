@@ -57,7 +57,11 @@
           <div class="col-md-4">
             <mat-form-field appearance="outline" >
               <mat-label>From date</mat-label>
-              <input matInput [matDatepicker]="fromPicker" formControlName="damageFromDate" [max]="propertyDamageForm.get('damageToDate').value ? propertyDamageForm.get('damageToDate').value : '2040-01-01'">
+              <input matInput
+                [matDatepicker]="fromPicker"
+                formControlName="damageFromDate"
+                [max]="propertyDamageForm.get('damageToDate').value ? propertyDamageForm.get('damageToDate').value : '2040-01-01'"
+                required >
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
               <mat-datepicker #fromPicker></mat-datepicker>
@@ -66,7 +70,11 @@
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <mat-label>To date</mat-label>
-              <input matInput [matDatepicker]="toPicker" formControlName="damageToDate" [min]="propertyDamageForm.get('damageFromDate').value ? propertyDamageForm.get('damageFromDate').value : '2000-01-01'">
+              <input matInput
+                [matDatepicker]="toPicker"
+                formControlName="damageToDate"
+                [min]="propertyDamageForm.get('damageFromDate').value ? propertyDamageForm.get('damageFromDate').value : '2000-01-01'"
+                required>
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
               <mat-datepicker #toPicker></mat-datepicker>
@@ -83,7 +91,12 @@
           </p>
           <mat-form-field appearance="outline">
             <mat-label>Brief description of damage/loss</mat-label>
-            <textarea matInput formControlName="briefDescription" [rows]="5" style="resize:none" (keyup)="calcRemainingChars()"></textarea>
+            <textarea matInput
+              formControlName="briefDescription"
+              [rows]="5"
+              style="resize:none"
+              required
+              (keyup)="calcRemainingChars()"></textarea>
             <mat-hint>{{ remainingLength }} characters remaining.</mat-hint>
           </mat-form-field>
         </div><br/>
@@ -120,7 +133,7 @@
 
         <div class="row" *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true'">
           <p class="sub-heading" style="font-size: 15px">
-            If yes, when did you return to the residence?<span style="color:red" >*</span>
+            If yes, when did you return to the residence?
           </p>
           <div class="col-md-4">
             <mat-form-field appearance="outline" >
