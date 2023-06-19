@@ -22,6 +22,7 @@ import { TimeOutDialogComponent } from './components/dialog-components/time-out-
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component';
+import { DFAEligibilityDialogComponent } from './components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component
     DialogComponent,
     EssFileDialogComponent,
     InformationDialogComponent,
+    DFAEligibilityDialogComponent,
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
     TimeOutDialogComponent
@@ -57,6 +59,7 @@ import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component
     FooterComponent,
     DialogComponent,
     EnvironmentBannerComponent,
+    DFAEligibilityDialogComponent,
     TimeOutDialogComponent,
     MatToolbarModule,
     MatButtonModule

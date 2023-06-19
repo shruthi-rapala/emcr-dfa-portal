@@ -3,16 +3,24 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
   AbstractControl,
+  FormsModule,
+  Validators
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import {MatNativeDateModule} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-property-damage',
@@ -24,6 +32,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   formBuilder: UntypedFormBuilder;
   propertyDamageForm$: Subscription;
   formCreationService: FormCreationService;
+  remainingLength: number = 2000;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -43,16 +52,122 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       });
 
     this.propertyDamageForm
-      .get('field')
+      .get('floodDamage')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (value === '') {
-          this.propertyDamageForm.get('field').reset();
+          this.propertyDamageForm.get('floodDamage').reset();
         }
       });
 
-    // TODO: Implement the correct setting of this value, will it be a radio button or checkbox??
-    this.propertyDamageForm.get('field').setValue(true);
+    this.propertyDamageForm
+      .get('landslideDamage')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('landslideDamage').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('stormDamage')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('stormDamage').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('otherDamage')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('otherDamage').reset();
+          this.propertyDamageForm.get('otherDamageText').setValidators(null);
+        } else if (value == 'true') {
+          this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required]);
+        } else {
+          this.propertyDamageForm.get('otherDamageText').setValidators(null);
+        }
+        this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
+      });
+
+    this.propertyDamageForm
+      .get('otherDamageText')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('otherDamageText').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('damageFromDate')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('damageFromDate').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('damageToDate')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('damageToDate').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('briefDescription')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('briefDescription').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('lossesExceed1000')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('lossesExceed1000').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('wereYouEvacuated')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('wereYouEvacuated').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('dateReturned')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('dateReturned').reset();
+        }
+      });
+
+    this.propertyDamageForm
+      .get('residingInResidence')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('residingInResidence').reset();
+        }
+      });
+  }
+
+  calcRemainingChars() {
+    this.remainingLength = 2000 - this.propertyDamageForm.get('briefDescription').value?.length;
   }
 
   /**
@@ -60,10 +175,6 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
    */
   get propertyDamageFormControl(): { [key: string]: AbstractControl } {
     return this.propertyDamageForm.controls;
-  }
-
-  updateOnVisibility(): void {
-    this.propertyDamageForm.get('field').updateValueAndValidity();
   }
 
   ngOnDestroy(): void {
@@ -75,8 +186,14 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   imports: [
     CommonModule,
     MatCardModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatRadioModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatInputModule,
     DirectivesModule,
   ],
   declarations: [PropertyDamageComponent]

@@ -109,23 +109,112 @@ export class DamagedPropertyAddressForm {
 }
 
 export class PropertyDamage {
-  field: boolean;
+  floodDamage?: boolean;
+  landslideDamage?: boolean;
+  stormDamage?: boolean;
+  otherDamage?: boolean;
+  otherDamageText?: string;
+  damageFromDate?: Date;
+  damageToDate?: Date;
+  briefDescription?: string;
+  lossesExceed1000?: boolean;
+  wereYouEvacuated?: boolean;
+  dateReturned?: Date;
+  residingInResidence?: boolean;
 
   constructor(
-    field?: boolean
+    floodDamage?: null | boolean,
+    landslideDamage?: null | boolean,
+    stormDamage?: null | boolean,
+    otherDamage?: null | boolean,
+    otherDamageText?: null | string,
+    damageFromDate?: null | Date,
+    damageToDate?: null | Date,
+    briefDescription?: null | string,
+    lossesExceed1000?: null | boolean,
+    wereYouEvacuated?: null | boolean,
+    dateReturned?: null | Date,
+    residingInResidence?: null | boolean,
   ) {}
 }
 
 export class PropertyDamageForm {
-  field = new UntypedFormControl();
+  floodDamage = new UntypedFormControl();
+  landslideDamage = new UntypedFormControl();
+  stormDamage = new UntypedFormControl();
+  otherDamage = new UntypedFormControl();
+  otherDamageText = new UntypedFormControl();
+  damageFromDate = new UntypedFormControl();
+  damageToDate = new UntypedFormControl();
+  briefDescription = new UntypedFormControl();
+  lossesExceed1000 = new UntypedFormControl();
+  wereYouEvacuated = new UntypedFormControl();
+  dateReturned = new UntypedFormControl();
+  residingInResidence = new UntypedFormControl();
 
   constructor(
     propertyDamage: PropertyDamage
   ) {
-    if (propertyDamage.field) {
-      this.field.setValue(propertyDamage.field);
+    if (propertyDamage.floodDamage) {
+      this.floodDamage.setValue(propertyDamage.floodDamage);
     }
-    this.field.setValidators(null);
+    this.floodDamage.setValidators(null);
+
+    if (propertyDamage.landslideDamage) {
+      this.landslideDamage.setValue(propertyDamage.landslideDamage);
+    }
+    this.landslideDamage.setValidators(null);
+
+    if (propertyDamage.stormDamage) {
+      this.stormDamage.setValue(propertyDamage.stormDamage);
+    }
+    this.stormDamage.setValidators(null);
+
+    if (propertyDamage.otherDamage) {
+      this.otherDamage.setValue(propertyDamage.otherDamage);
+    }
+    this.otherDamage.setValidators(null);
+
+    if (propertyDamage.otherDamageText) {
+      this.otherDamageText.setValue(propertyDamage.otherDamageText);
+    }
+    this.otherDamageText.setValidators(null);
+
+    if (propertyDamage.damageFromDate) {
+      this.damageFromDate.setValue(propertyDamage.damageFromDate);
+    }
+    this.damageFromDate.setValidators(null);
+
+    if (propertyDamage.damageToDate) {
+      this.damageToDate.setValue(propertyDamage.damageToDate);
+    }
+    this.damageToDate.setValidators(null);
+
+    if (propertyDamage.briefDescription) {
+      this.briefDescription.setValue(propertyDamage.briefDescription);
+    }
+    this.briefDescription.setValidators(null);
+
+    if (propertyDamage.lossesExceed1000) {
+      this.lossesExceed1000.setValue(propertyDamage.lossesExceed1000);
+    }
+    this.lossesExceed1000.setValidators(null);
+
+    if (propertyDamage.wereYouEvacuated) {
+      this.wereYouEvacuated.setValue(propertyDamage.wereYouEvacuated);
+    }
+    this.wereYouEvacuated.setValidators(null);
+
+    if (propertyDamage.dateReturned) {
+      this.dateReturned.setValue(propertyDamage.dateReturned);
+    }
+    this.dateReturned.setValidators(null);
+
+    if (propertyDamage.residingInResidence) {
+      this.residingInResidence.setValue(propertyDamage.residingInResidence);
+    }
+    this.residingInResidence.setValidators(null);
+
   }
 }
 
@@ -141,10 +230,10 @@ export class OccupantsForm {
   field = new UntypedFormControl();
 
   constructor(
-    propertyDamage: PropertyDamage
+    occupants: Occupants
   ) {
-    if (propertyDamage.field) {
-      this.field.setValue(propertyDamage.field);
+    if (occupants.field) {
+      this.field.setValue(occupants.field);
     }
     this.field.setValidators(null);
   }
@@ -162,10 +251,10 @@ export class CleanUpLogForm {
   field = new UntypedFormControl();
 
   constructor(
-    propertyDamage: PropertyDamage
+    cleanUpLog: CleanUpLog
   ) {
-    if (propertyDamage.field) {
-      this.field.setValue(propertyDamage.field);
+    if (cleanUpLog.field) {
+      this.field.setValue(cleanUpLog.field);
     }
     this.field.setValidators(null);
   }
@@ -184,10 +273,10 @@ export class DamagedItemsByRoomForm {
   field = new UntypedFormControl();
 
   constructor(
-    propertyDamage: PropertyDamage
+    damagedItemsByRoom: DamagedItemsByRoom
   ) {
-    if (propertyDamage.field) {
-      this.field.setValue(propertyDamage.field);
+    if (damagedItemsByRoom.field) {
+      this.field.setValue(damagedItemsByRoom.field);
     }
     this.field.setValidators(null);
   }

@@ -39,6 +39,12 @@ export const gender = [
   { name: 'X', value: 'X' }
 ];
 
+export const dontOccupyDamagedPropertyBody: DialogContent = {
+  text: '<p>You must occupy the property as your principal residence to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Do you occupy the damaged property as your personal residence?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
 export const deleteMemberInfoBody: DialogContent = {
   text: '<p>Are you sure you want to remove this household member from your Emergency Support Services (ESS) file?</p>',
   cancelButton: 'No, Cancel',
