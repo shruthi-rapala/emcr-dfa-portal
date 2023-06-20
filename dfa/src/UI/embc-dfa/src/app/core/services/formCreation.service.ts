@@ -136,7 +136,9 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
        new OccupantsForm(
-         new Occupants()
+         new Occupants(),
+         this.customValidator,
+         this.formBuilder
        )
      )
    );
@@ -449,7 +451,9 @@ export class FormCreationService {
     this.occupantsForm.next(
       this.formBuilder.group(
         new OccupantsForm(
-          new Occupants()
+          new Occupants(),
+          this.customValidator,
+          this.formBuilder
         )
       )
     );

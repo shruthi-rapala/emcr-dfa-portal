@@ -149,10 +149,13 @@ export class HomeOwnerApplicationComponent
         this.homeOwnerApplicationDataService.propertyDamage = this.form.value;
         break;
       case 'occupants':
+        this.homeOwnerApplicationDataService.occupants = this.form.value;
         break;
       case 'clean-up-log':
+        this.homeOwnerApplicationDataService.cleanUpLog = this.form.value;
         break;
       case 'damaged-items-by-room':
+        this.homeOwnerApplicationDataService.damagedItemsByRoom = this.form.value;
         break;
       default:
     }

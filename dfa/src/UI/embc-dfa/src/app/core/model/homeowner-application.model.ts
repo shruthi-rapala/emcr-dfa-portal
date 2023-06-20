@@ -1,8 +1,14 @@
 import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  UntypedFormBuilder,
   UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { RegAddress, Community, Country, StateProvince } from '../model/address';
+import { CustomValidationService } from '../services/customValidation.service';
 
 export interface DamagedPropertyAddress extends RegAddress {
   occupyAsPrimaryResidence: boolean;
@@ -218,24 +224,128 @@ export class PropertyDamageForm {
   }
 }
 
+export interface FullTimeOccupant {
+  firstName: string;
+  lastName: string;
+  relationship: string;
+}
+
+export interface OccupantContact {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+}
+
 export class Occupants {
-  field: boolean;
+  fullTimeOccupants: Array<FullTimeOccupant>;
+  otherContacts: Array<OccupantContact>;
+  secondaryApplicants: Array<OccupantContact>;
 
   constructor(
-    field?: boolean
   ) {}
 }
 
 export class OccupantsForm {
-  field = new UntypedFormControl();
+  firstName = new UntypedFormControl();
+  lastName = new UntypedFormControl();
+  relationship = new UntypedFormControl();
+  phoneNumber = new UntypedFormControl();
+  email = new UntypedFormControl();
+  fullTimeOccupant: UntypedFormGroup;
+  fullTimeOccupants = new UntypedFormControl([]);
+  addNewIndicator = new UntypedFormControl(false);
+  contact: UntypedFormGroup;
+  otherContacts = new UntypedFormControl([]);
+  secondaryApplicants = new UntypedFormControl([]);
 
   constructor(
-    occupants: Occupants
+    occupants: Occupants,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
   ) {
-    if (occupants.field) {
-      this.field.setValue(occupants.field);
-    }
-    this.field.setValidators(null);
+    this.fullTimeOccupant = builder.group({
+      firstName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      lastName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      relationship: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.contact = builder.group({
+      firstName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      lastName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      phoneNumber: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      email: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+
+    });
   }
 }
 
