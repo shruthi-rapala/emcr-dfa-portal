@@ -30,7 +30,7 @@
                       <br/><br/>
                       As a homeowner, you must provide the following with your application:<br/>
                       <ul>
-                        <li>completed <a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf" target="_blank">insurance template</a> by your insurance broker.</li>
+                        <li><a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf" target="_blank">insurance template</a> completed by your insurance broker.</li>
                       </ul><br/>
                     </div>
                     <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.ResidentialTenant">
@@ -39,18 +39,18 @@
                       <br/><br/>
                       As a Residential Tenant, you must to provide the following with your application:
                       <ul>
-                        <li>a copy of your rental agreement, lease, or <a (click)="onToggleOtherDocuments()"><u>other documentation</u></a> to show that you are legally occupying the address. </li>
-                        <li>a copy of government issued identification such as Driver's License, Service Card, or BC ID.</li>
-                        <li>completed <a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf" target="_blank">insurance template</a> by your insurance broker</li>
+                        <li><a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf" target="_blank">insurance template</a> completed by your insurance broker</li>
+                        <li>a copy of your rental agreement, lease, or <a (click)="onToggleOtherDocuments()"><u>other documentation</u></a> to show that you are/were legally occupying the damaged property at the time of the event</li>
+                        <li>a copy of government issued identification such as Driver's License, Service Card, or BC ID</li>
                       </ul>
                     </div>
                     <div class="sub-heading radio-extra-label col-md-4" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.ResidentialTenant && showOtherDocuments === true" style="border: 3px solid #70abd9">
                       <br/>
-                      <b>Other documentation to show tenancy.</b>
+                      <b>Other documentation to show tenancy:</b>
                       If you don't have a rental or lease agreement, you may include:
                       <ul>
                         <li>written correspondence from your landlord showing the dates and terms of your tenancy, or</li>
-                        <li>a piece of mail showing you lived in the residence at the time of the event, such as BC Hydro bill, utility bill, bank statement, or vehicle insurance. </li>
+                        <li>a piece of mail showing you lived in the residence at the time of the event, such as BC Hydro bill, utility bill, bank statement, or vehicle insurance.</li>
                       </ul>
                     </div>
                     <div class="radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.SmallBusinessOwner">
