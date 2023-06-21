@@ -12,11 +12,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { ApplicantOption, InsuranceOption, FarmOption, SmallBusinessOption } from 'src/app/core/model/dfa-application.model';
+import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
+import * as globalConst from '../../../../core/services/globalConstants';
+import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
@@ -38,7 +42,10 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    public dialog: MatDialog,
+    private router: Router,
+
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -80,8 +87,11 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
       .get('insuranceOption')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
+        let enumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
         if (value === '') {
           this.appTypeInsuranceForm.get('insuranceOption').reset();
+        } else if (value === enumKey) {
+          this.yesFullyInsured();
         }
         this.formCreationService.insuranceOptionChanged.emit(value);
         this.appTypeInsuranceForm.updateValueAndValidity();
@@ -105,6 +115,33 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         }
       });
 
+  }
+
+  yesFullyInsured(): void {
+    this.dialog
+      .open(DFAEligibilityDialogComponent, {
+        data: {
+          content: globalConst.yesFullyInsuredBody
+        },
+        height: '400px',
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'cancel') {
+          this.submitFile();
+          }
+        else if (result === 'confirm') {
+          this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.radioInsuranceOptions.Yes);
+        }
+        else this.appTypeInsuranceForm.controls.insuranceOption.setValue(null);
+      });
+  }
+
+  submitFile(): void {
+    // TODO: Add application cancellation
+    this.router.navigate(['/verified-registration/dashboard']);
   }
 
   public onToggleOtherDocuments() {

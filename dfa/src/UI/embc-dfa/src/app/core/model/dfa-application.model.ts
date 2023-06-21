@@ -126,13 +126,3 @@ export interface DFAApplication {
   profileVerification?: ProfileVerification;
   appTypeInsurance?: AppTypeInsurance;
 }
-
-// TODO This should be coming in from the API in api/models
-/* tslint:disable */
-/* eslint-disable */
-/**
- * Base class for dfa application data conflicts
- */
-export interface DFAApplicationDataConflict {
-  dataElementName: string;
-}
