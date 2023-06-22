@@ -1,0 +1,287 @@
+.dashboard-container {
+  color: #003366;
+}
+
+.restricted-text {
+  text-align: center;
+  background-color: rgba(201, 0, 0, 1);
+  width: 100%;
+  color: white;
+}
+
+.dashboard-subheading {
+  font-size: 35px;
+  color: #003366;
+}
+
+.no-margin {
+  margin-top: -20px;
+}
+
+.banner {
+  //line-height: 70px;
+  padding: 20px;
+  background-color: rgba(252, 186, 25, 1);
+}
+
+.center-content {
+  text-align: center;
+}
+
+.banner-heading {
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 21px;
+}
+
+.margins {
+  margin: 0 !important;
+}
+
+.ess-file-button {
+  height: 35px !important;
+  //width: 50%;
+}
+
+.status {
+  font-size: 21px;
+  margin-left: 10px;
+  margin-right: 7px;
+  vertical-align: middle;
+}
+
+.verify-button {
+  height: 35px !important;
+  width: 15%;
+  margin: 0 15px;
+}
+
+.status-row-margin {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.verified-column {
+  margin-left: 15px;
+}
+
+.info-test {
+  @extend .info-image;
+  margin-left: 10px;
+}
+
+.info-test :hover {
+  cursor: pointer;
+}
+
+.info-image img:last-child {
+  display: none;
+}
+
+.info-image:hover img:last-child {
+  display: inline;
+}
+
+.info-image:hover img:first-child {
+  display: none;
+}
+
+.content-row {
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.overview-card {
+  box-shadow: none !important;
+  border: 1px solid rgb(221, 221, 221);
+  padding-top: 0px !important;
+}
+
+.card-heading-outer {
+  background-color: rgb(35, 64, 117);
+}
+
+.card-heading {
+  color: white;
+  font-size: 23px;
+  line-height: 60px;
+}
+
+.services-card {
+  background-color: rgb(242, 242, 242);
+  padding: 20px;
+}
+
+.services-heading {
+  font-size: 21px;
+}
+
+.button-div {
+  padding-top: 40px;
+}
+
+.invite-button {
+  height: 45px !important;
+  width: 40%;
+  margin-right: 10px;
+}
+
+.dotted-hr {
+  border: 0.7px solid rgb(242, 242, 242);
+  opacity: unset;
+}
+
+.section-padding {
+  padding: 30px 0px;
+}
+
+.subtitle-name {
+  p {
+    margin: -5px;
+    font-size: 21px;
+    text-align: center;
+  }
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    width: 50%;
+  }
+}
+
+.table-parent {
+  display: table;
+}
+
+.table-details {
+  display: table-cell;
+  vertical-align: middle;
+
+  th {
+    padding-right: 50px;
+    font-weight: 400;
+  }
+}
+
+.address-content {
+  display: table-cell;
+  vertical-align: middle;
+  font-weight: 700;
+}
+
+.evacuee-info-row {
+  padding: 30px;
+}
+
+.divider {
+  max-width: 0 !important;
+}
+
+.edit-profile-button {
+  width: 40%;
+}
+
+.email-success {
+  color: #3c9d0f;
+}
+
+.info-box {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.data-card {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.disabled {
+  cursor: default !important;
+  pointer-events: none;
+}
+
+.services-card-container {
+  position: relative;
+}
+
+.services-card-img-container {
+  left: 50px;
+  border-width: 0px;
+  position: absolute;
+  width: 127px;
+  height: 127px;
+  display: flex;
+  top: 45px;
+}
+
+.bc-services-card-img {
+  border-width: 0px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 127px;
+  height: 127px;
+}
+
+.services-card-border {
+  border-width: 0px;
+  position: absolute;
+  left: 45px;
+  top: 44px;
+  width: 137px;
+  height: 132px;
+  box-sizing: border-box;
+  border-width: 7px;
+  border-style: solid;
+  border-color: rgba(20, 89, 151, 1);
+  border-radius: 10px;
+}
+
+.service-card-container-mobile {
+  display: none;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+@media(max-width: 1200px)
+{
+  .invite-button {
+    width: 100%;
+  }
+}
+
+@media(max-width: 992px)
+{
+
+  .services-card-img-container {
+    position: static;
+  }
+  .services-card-border {
+    display: none;
+  }
+
+  .bc-services-card-img {
+    position: inherit;
+    border-radius: 10%;
+  }  
+}
+
+
+@media (max-width: 864px) {
+  .divider {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .services-card-img-container {
+    display: none;
+  }
+
+  .service-card-container-mobile {
+    display: block;
+  }
+}

@@ -1,0 +1,81 @@
+.content-container {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.paper-box {
+  border: 1px solid rgba(187, 187, 187, 1);
+  border-radius: 0px;
+  background-color: rgba(242, 242, 242, 1);
+  padding: 15px;
+  width: 100%;
+}
+
+.tips-info {
+  color: white;
+  padding: 8px;
+  margin-top: 20px;
+}
+
+.tips-heading {
+  color: white;
+  font-size: 21px;
+  margin-left: 5px;
+}
+
+.tips-card {
+  background-color: rgba(35, 64, 117, 1);
+}
+
+.next {
+  float: right;
+  width: 20%;
+}
+
+.tab-subtitle {
+  font-size: 21px;
+  color: #234075;
+  margin-bottom: 1em;
+}
+
+.responder-instruction {
+  background-color: #f2f2f2;
+  text-align: center;
+  padding: 1.5em;
+}
+
+.prim-address {
+  font-weight: 700;
+  padding-left: 30px;
+}
+
+.evac-address {
+  font-weight: 700;
+  margin-bottom: 50px;
+}
+
+.options-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.checkbox-option {
+  margin-bottom: 5px;
+  margin-left: 10px;
+}
+
+.custom-mat-error {
+  font-size: 85%;
+}
+
+.break-margin {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1024px) {
+  .col-md-4 {
+    width: 100%;
+  }
+}

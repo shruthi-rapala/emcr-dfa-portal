@@ -1,0 +1,51 @@
+table {
+    width: 100%;
+  }
+
+  th {
+    font-size: 16px;
+    background-color: rgba(113, 113, 113, 1);
+    color: white
+  }
+
+  tr:nth-child(even){
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #E1E1E1;
+    cursor: pointer;
+  }
+
+  ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: rgba(37, 168, 0, 1) !important;
+}
+
+::ng-deep .mat-slide-toggle-bar {
+  background-color: rgba(210, 0, 0, 1) !important;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: white !important;
+}
+
+::ng-deep .arrow-color .mat-sort-header-arrow {
+  color: #fff;
+}
+
+.active-style {
+  color: rgba(37, 168, 0, 1) !important;
+}
+
+.inactive-style {
+  color: rgba(210, 0, 0, 1) !important;
+}
+
+.lastName-inactive {
+  color: rgba(210, 0, 0, 1) !important;
+  font-weight: bold;
+}
+
+.lastName-active {
+  font-weight: bold;
+}

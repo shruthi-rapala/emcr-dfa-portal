@@ -1,0 +1,108 @@
+.overview-card {
+  box-shadow: none !important;
+  border: 1px solid rgb(221, 221, 221);
+  padding-top: 0px !important;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.card-heading-outer {
+  background-color: rgb(35, 64, 117);
+}
+
+.card-heading {
+  color: white;
+  font-size: 23px;
+  line-height: 60px;
+}
+
+.margins {
+  margin: 0 !important;
+}
+
+.section-padding {
+  padding: 25px;
+}
+
+.row-padding {
+  padding-bottom: 25px;
+}
+
+.supplier-align {
+  text-align: right;
+}
+
+.support-draft {
+  color: #f48605;
+}
+
+.support-active {
+  color: #3c9d0f;
+}
+
+.support-expired {
+  color: red;
+}
+
+.support-void {
+  color: #696969;
+}
+
+.support-pending-approval {
+  color: #1eaeaa;
+}
+
+.support-under-review {
+  color: #1eaeaa;
+}
+
+.support-approved {
+  color: #1f00b5;
+}
+
+.support-paid {
+  color: #169bd5;
+}
+
+.support-cancelled {
+  color: #db1087;
+}
+
+.support-card {
+  box-shadow: none !important;
+  border: 1px solid rgb(221, 221, 221);
+  padding-top: 0px !important;
+}
+
+.support-header {
+  background-color: rgba(242, 242, 242, 1);
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.subsection {
+  padding-top: 15px;
+}
+
+.info-box {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.data-card {
+  padding: 0;
+}
+
+.evacuee-name {
+  font-weight: bold;
+}
+
+.col-match-header {
+  width: 37.5%;
+}
+
+@media(max-width: 1200px) {
+  .col-md-4, .col-match-header, .col {
+    width: 100%;
+  }
+}

@@ -1,0 +1,126 @@
+<mat-card>
+  <div class="content-align">
+    <div class="row">
+      <div class="col-md-12">
+        <p class="review-heading" *ngIf="reviewAction === 'edit'">
+          Review Supplier Details
+        </p>
+        <p class="review-heading" *ngIf="reviewAction === 'add'">Step 3 of 3</p>
+        <p class="review-heading" *ngIf="reviewAction === 'add-existing'">
+          Select Supplier
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <p class="details-subtitle" *ngIf="reviewAction !== 'add-existing'">
+          Please review all of the information below before submitting.
+        </p>
+        <p class="bold" *ngIf="reviewAction === 'add-existing'">
+          Please review all of the information below prior to saving the
+          supplier.
+        </p>
+      </div>
+    </div>
+    <br />
+
+    <div class="row row-align">
+      <div class="col-md-4 detail-label">Supplier Legal Name</div>
+      <div class="col-md-8">
+        <b>{{ selectedSupplier?.legalName }}</b>
+      </div>
+    </div>
+
+    <div class="row row-align">
+      <div class="col-md-4 detail-label">Supplier Name</div>
+      <div class="col-md-8">
+        <b>{{ selectedSupplier?.name }}</b>
+      </div>
+    </div>
+
+    <div class="row row-align">
+      <div class="col-md-4 detail-label">GST Number</div>
+      <div class="col-md-8">
+        {{ selectedSupplier?.supplierGstNumber?.part1 }}-RT-{{
+          selectedSupplier?.supplierGstNumber?.part2
+        }}
+      </div>
+    </div>
+
+    <div class="row row-align">
+      <div class="col-md-4 detail-label">Supplier Address</div>
+      <div class="col-md-8">
+        <p [innerHTML]="selectedSupplier?.address | maskFullAddress"></p>
+      </div>
+    </div>
+
+    <div class="row row-align">
+      <div class="col-md-4 detail-label">Contact Person</div>
+      <div class="col-md-8 contact-info">
+        <p>
+          {{ selectedSupplier?.contact?.firstName }}
+          {{ selectedSupplier?.contact?.lastName | uppercase }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row row-align">
+      <div class="col-md-4 detail-label">Contact Person Telephone Number</div>
+      <div class="col-md-8 contact-info">
+        <p>{{ selectedSupplier?.contact?.phone }}</p>
+      </div>
+    </div>
+
+    <div class="row row-align">
+      <div class="col-md-4 detail-label">Email Address</div>
+      <div class="col-md-8 contact-info">
+        <p class="email-decoration">
+          {{ selectedSupplier?.contact?.email }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row buttons-section">
+      <div class="col-md-6">
+        <button
+          class="button-s button-width button-margin"
+          mat-button
+          (click)="back()"
+        >
+          Back
+        </button>
+
+        <button
+          class="button-p button-width"
+          mat-button
+          [disabled]="isSubmitted"
+          (click)="save()"
+          *ngIf="reviewAction !== 'add-existing'"
+        >
+          Save Supplier
+          <app-loader
+            [strokeWidth]="3"
+            [diameter]="25"
+            [showLoader]="showLoader"
+          ></app-loader>
+        </button>
+
+        <button
+          class="button-p button-width"
+          mat-button
+          [disabled]="isSubmitted"
+          (click)="addExisting()"
+          *ngIf="reviewAction === 'add-existing'"
+        >
+          Save & Add Supplier
+          <app-loader
+            [strokeWidth]="3"
+            [diameter]="25"
+            [showLoader]="showLoader"
+          ></app-loader>
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-card>

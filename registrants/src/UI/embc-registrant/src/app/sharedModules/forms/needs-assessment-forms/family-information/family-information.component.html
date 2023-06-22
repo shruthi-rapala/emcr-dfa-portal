@@ -1,0 +1,270 @@
+<form [formGroup]="householdMemberForm">
+  <mat-card class="card-align">
+    <mat-card-content>
+      <div class="row">
+        <div class="col-md-12">
+          <label class="card-heading requiredField">
+            If you have any <strong>household members</strong> (including
+            dependents) who live in the same household with you, please add them
+            below.
+          </label>
+          <p>
+            <em>Please note:</em> Roommates & tenants need to register
+            separately.
+          </p>
+          <mat-table
+            *ngIf="dataSource.getValue().length > 0"
+            [dataSource]="dataSource"
+          >
+            <!--&& showTable-->
+
+            <ng-container matColumnDef="firstName">
+              <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span class="mobile-label">First Name:</span>
+                {{ element.firstName }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="lastName">
+              <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Last Name:</span>
+                {{ element.lastName }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="initials">
+              <mat-header-cell *matHeaderCellDef> Initials </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Initials:</span>
+                {{ element.initials }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="gender">
+              <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Gender:</span>
+                {{ element.gender }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="dateOfBirth">
+              <mat-header-cell *matHeaderCellDef>
+                Date of Birth
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Date of Birth:</span>
+                {{ element.dateOfBirth }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="buttons">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let element; let index = index">
+                <!-- <span class="mobile-label">11</span> -->
+                <button
+                  *ngIf="!editFlag"
+                  class="edit-image"
+                  mat-icon-button
+                  aria-label="Edit"
+                  (click)="editRow(element, index)"
+                >
+                  <img src="/assets/images/edit.svg" height="35" width="35" />
+                  <img
+                    src="/assets/images/edit_onhover.svg"
+                    height="35"
+                    width="35"
+                  />
+                </button>
+
+                <button
+                  *ngIf="!editFlag"
+                  class="delete-image"
+                  mat-icon-button
+                  aria-label="Remove"
+                  (click)="deleteRow(index)"
+                >
+                  <img src="/assets/images/delete.svg" height="35" width="35" />
+                  <img
+                    src="/assets/images/delete_onhover.svg"
+                    height="35"
+                    width="35"
+                  />
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row
+              *matHeaderRowDef="displayedColumns"
+            ></mat-header-row>
+            <mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              [hidden]="row.isPrimaryRegistrant === true"
+            >
+            </mat-row>
+          </mat-table>
+
+          <br />
+
+          <button
+            *ngIf="!showFamilyForm"
+            class="family-button"
+            mat-button
+            type="button"
+            (click)="addMembers()"
+          >
+            + Add Household Member
+          </button>
+          <div *ngIf="showFamilyForm">
+            <p class="card-heading">Household Members</p>
+            <app-person-detail-form
+              [personalDetailsForm]="householdFormControl?.householdMember"
+            >
+            </app-person-detail-form>
+            <div class="row">
+              <div class="col-md-3">
+                <button
+                  class="button-s details-button"
+                  mat-button
+                  type="button"
+                  (click)="cancel()"
+                >
+                  Cancel
+                </button>
+              </div>
+              <div class="col-md-3">
+                <button
+                  class="family-button details-button save-button"
+                  mat-button
+                  type="button"
+                  (click)="save()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <br />
+  <br />
+
+  <mat-card class="card-align">
+    <mat-card-content>
+      <div class="row">
+        <div class="col-md-12">
+          <label
+            id="haveSpecialDiet-radio-group-label"
+            class="card-heading requiredField"
+          >
+            Do you or any of your household members have any dietary
+            requirements?
+          </label>
+          <br />
+          <mat-radio-group
+            aria-labelledby="haveSpecialDiet-radio-group-label"
+            formControlName="haveSpecialDiet"
+            class="primary-radio-group"
+            required
+            (change)="hasSpecialDietChange($event)"
+          >
+            <mat-radio-button
+              class="primary-radio-button"
+              *ngFor="let option of radioOption"
+              [value]="option.value"
+            >
+              {{ option.name }}
+            </mat-radio-button>
+            <mat-error
+              class="custom-mat-error"
+              *ngIf="
+                householdFormControl?.haveSpecialDiet.touched &&
+                householdFormControl?.haveSpecialDiet.invalid &&
+                householdFormControl?.haveSpecialDiet.hasError('required')
+              "
+            >
+              Dietary Requirement is required</mat-error
+            >
+          </mat-radio-group>
+        </div>
+      </div>
+      <div *ngIf="householdFormControl?.haveSpecialDiet.value === true">
+        <label class="card-heading"> Please specify </label>
+        <br />
+        <mat-form-field appearance="outline" style="width: 70%">
+          <input
+            matInput
+            formControlName="specialDietDetails"
+            placeholder="Specify dietary requirements"
+            maxlength="200"
+          />
+          <!-- <mat-error
+            *ngIf="
+              householdFormControl?.specialDietDetails.touched &&
+              householdFormControl?.specialDietDetails.invalid &&
+              householdFormControl?.specialDietDetails.hasError('required')
+            "
+          >
+            Dietary requirements specifications are required</mat-error
+          > -->
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <br />
+  <br />
+  <mat-card class="card-align">
+    <mat-card-content>
+      <div class="row">
+        <div class="col-md-8">
+          <label
+            id="haveMedication-radio-group-label"
+            class="card-heading requiredField"
+          >
+            Do you or any of your household members take any medication?
+          </label>
+          <br />
+          <mat-radio-group
+            aria-labelledby="haveMedication-radio-group-label"
+            formControlName="haveMedication"
+            class="primary-radio-group"
+            required
+          >
+            <mat-radio-button
+              class="primary-radio-button"
+              *ngFor="let option of radioOption"
+              [value]="option.value"
+            >
+              {{ option.name }}
+            </mat-radio-button>
+            <mat-error
+              class="custom-mat-error"
+              *ngIf="
+                householdFormControl?.haveMedication.touched &&
+                householdFormControl?.haveMedication.invalid &&
+                householdFormControl?.haveMedication.hasError('required')
+              "
+            >
+              Medication is required</mat-error
+            >
+          </mat-radio-group>
+        </div>
+        <div
+          *ngIf="householdFormControl?.haveMedication?.value"
+          class="col-md-4"
+        >
+          <div class="services-info">
+            <p>
+              Please ensure you have an adequate supply of medication for the
+              duration of the evacuation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

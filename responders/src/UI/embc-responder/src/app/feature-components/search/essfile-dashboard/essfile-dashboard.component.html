@@ -1,0 +1,415 @@
+<div *ngIf="essFile?.isRestricted" class="row restricted-div">
+  <span class="restricted-text">---RESTRICTED FILE---</span>
+</div>
+
+<div class="row dashboard-container container-frame page-heading">
+  <div class="col-md-12">
+    <span
+      [ngClass]="{
+        'file-active': essFile?.status === 'Active',
+        'file-pending': essFile?.status === 'Pending',
+        'file-complete': essFile?.status === 'Completed',
+        'file-expired': essFile?.status === 'Expired'
+      }"
+      >ESS File #
+      <span class="bold">{{ essFile?.manualFileId || essFile?.id }}</span></span
+    >
+    <span class="file-heading"
+      ><img
+        *ngIf="essFile?.status === 'Pending'"
+        src="/assets/images/pending-flag.svg"
+        height="40"
+        width="33" />
+      <img
+        *ngIf="essFile?.status === 'Active'"
+        src="/assets/images/active-flag.svg"
+        height="40"
+        width="33" />
+      <img
+        *ngIf="essFile?.status === 'Completed'"
+        src="/assets/images/complete-flag.svg"
+        height="40"
+        width="33" />
+      <img
+        *ngIf="essFile?.status === 'Expired'"
+        src="/assets/images/expired-flag.svg"
+        height="40"
+        width="33"
+    /></span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-2 vline">
+    <div class="row dashboard-subheading">
+      <div class="col-md-12">
+        <span> Status: </span>
+        <span
+          class="bold"
+          [ngClass]="{
+            'file-active': essFile?.status === 'Active',
+            'file-pending': essFile?.status === 'Pending',
+            'file-complete': essFile?.status === 'Completed',
+            'file-expired': essFile?.status === 'Expired'
+          }"
+          >{{ essFile?.status }}</span
+        >
+        <span>
+          <a class="status-info" (click)="openStatusDefinition()">
+            <img src="/assets/images/info.svg" height="28" width="28" />
+            <img src="/assets/images/info-on-hover.svg" height="28" width="28"
+          /></a>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <span class="field-label">Restriction Status: </span>
+        <span
+          [ngClass]="{
+            'not-restricted-field': !essFile?.isRestricted,
+            'restricted-field': essFile?.isRestricted
+          }"
+          >{{ essFile?.isRestricted ? 'Restricted' : 'Unrestricted' }}</span
+        >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <span class="field-label">Main Applicant:</span>
+        <span
+          class="bold"
+          *ngIf="
+            essFile?.primaryRegistrantLastName ||
+            essFile?.primaryRegistrantFirstName
+          "
+        >
+          {{ essFile?.primaryRegistrantLastName | uppercase }},
+          {{ essFile?.primaryRegistrantFirstName | titlecase }}</span
+        >
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 vline">
+    <div class="row dashboard-subheading">
+      <div class="col-md-1">
+        <img src="/assets/images/task-board.svg" height="34" width="25" />
+      </div>
+      <div class="col-md-11">
+        <div *ngIf="essFile?.task?.taskNumber; else noTask">
+          <span>Task #</span>
+          <span class="bold">{{ essFile?.task?.taskNumber }} - </span>
+          <span>{{ essFile?.assignedTaskCommunity?.name }}</span>
+        </div>
+        <ng-template #noTask>
+          <span>Task #</span>
+          <span class="bold"> n/a</span>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div *ngIf="essFile?.task?.taskNumber; else noTask">
+          <span class="field-label">Task Start Date: </span>
+          <span *ngIf="essFile?.task" class="bold">{{
+            essFile?.task?.from | date: 'dd-MMM-yyyy'
+          }}</span>
+        </div>
+        <ng-template #noTask>
+          <span class="field-label">Task Start Date: </span>
+          <span class="bold"> n/a</span>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div *ngIf="essFile?.task?.taskNumber; else noTask">
+          <span class="field-label">Task End Date: </span>
+          <span
+            [ngClass]="{
+              'complete-task-date': essFile?.status === 'Completed',
+              bold: essFile?.status !== 'Completed'
+            }"
+            >{{ essFile?.task?.to | date: 'dd-MMM-yyyy' }}</span
+          >
+        </div>
+        <ng-template #noTask>
+          <span class="field-label">Task End Date: </span>
+          <span class="bold"> n/a</span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 vline">
+    <div class="row dashboard-subheading">
+      <div class="col-md-1">
+        <img src="/assets/images/location-pointer.svg" height="34" width="21" />
+      </div>
+      <div class="col-md-11">
+        <span>Evacuated From</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 address-col">
+        <span class="bold" *ngIf="essFile?.evacuatedFromAddress?.addressLine1">
+          {{ essFile?.evacuatedFromAddress?.addressLine1 }}</span
+        >
+        <span
+          *ngIf="essFile?.evacuatedFromAddress?.addressLine2 !== null"
+          class="bold"
+          >, {{ essFile?.evacuatedFromAddress?.addressLine2 }}</span
+        >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <span class="bold">
+          {{ communityName(essFile?.evacuatedFromAddress) }}
+        </span>
+        <span
+          *ngIf="essFile?.evacuatedFromAddress?.postalCode !== null"
+          class="bold"
+          >, {{ essFile?.evacuatedFromAddress?.postalCode }}</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="row dashboard-subheading">
+      <div class="col-wide-icon">
+        <img src="/assets/images/etransfer.svg" height="20" width="30" />
+      </div>
+      <div class="col">
+        e-Transfer
+        <span
+          class="bold"
+          [ngClass]="{
+            'file-complete':
+              appBaseService?.etransferProperties
+                ?.isRegistrantEtransferEligible,
+            ineligible:
+              !appBaseService?.etransferProperties
+                ?.isRegistrantEtransferEligible
+          }"
+          >{{
+            appBaseService?.etransferProperties?.isRegistrantEtransferEligible
+              ? 'Eligible'
+              : 'Ineligible'
+          }}</span
+        >
+      </div>
+    </div>
+
+    <div
+      *ngIf="
+        !appBaseService?.etransferProperties?.isRegistrantEtransferEligible
+      "
+    >
+      <ng-container *ngIf="isMinor; else bcscCheck">
+        <div class="row">
+          <div class="col-md-12 bold">
+            {{ eligibilityLastName | uppercase }},
+            {{ eligibilityFirstName | titlecase }}
+            is a minor and is not eligible for e-Transfer
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #bcscCheck>
+        <ng-container *ngIf="!isLinkedToBcsc; else postalCheck">
+          <div class="row">
+            <div class="col-md-12 bold">
+              {{ eligibilityLastName | uppercase }},
+              {{ eligibilityFirstName | titlecase }}
+              must log in to their profile using the BC Services Card app to be
+              eligible.
+            </div>
+          </div>
+        </ng-container>
+      </ng-template>
+      <ng-template #postalCheck>
+        <ng-container *ngIf="!hasPostal; else unavailable">
+          <div class="row">
+            <div class="col-md-12 bold">
+              {{ eligibilityLastName | uppercase }},
+              {{ eligibilityFirstName | titlecase }}
+              does not have a B.C. postal code and is not eligible for
+              e-Transfer
+            </div>
+          </div>
+        </ng-container>
+      </ng-template>
+
+      <ng-template #unavailable>
+        <div class="row">
+          <div class="col-md-12 bold">
+            Interac e-Transfer is not currently available.
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+    <div
+      *ngIf="appBaseService?.etransferProperties?.isRegistrantEtransferEligible"
+      class="row"
+    >
+      <div class="col-md-12 bold">
+        {{ eligibilityLastName | uppercase }},
+        {{ eligibilityFirstName | titlecase }}
+        is eligible for e-Transfer
+      </div>
+    </div>
+  </div>
+
+  <div class="row banner">
+    <div class="col-md-9 center-content">
+      <img src="/assets/images/exclaimation.svg" height="32" width="32" />
+      <span class="banner-heading">{{ displayBanner?.heading }}</span>
+      <span id="file-banner">{{ displayBanner?.content }}</span>
+    </div>
+    <div *ngIf="displayBanner?.buttonText !== undefined" class="col-md-3">
+      <button
+        class="button-p ess-file-button"
+        (click)="openWizard()"
+        mat-button
+      >
+        {{ displayBanner?.buttonText }}
+      </button>
+    </div>
+  </div>
+
+  <div class="row content-row">
+    <div class="col-md-12 file-side-menu">
+      <mat-sidenav-container class="file-container">
+        <mat-sidenav
+          [autoFocus]="true"
+          #sidenav
+          mode="side"
+          opened
+          class="file-sideNav"
+          [fixedInViewport]="false"
+          [disableClose]="true"
+        >
+          <a
+            mat-button
+            class="a-mat-button"
+            routerLinkActive="active-side-item"
+            [routerLink]="'/responder-access/search/essfile-dashboard/overview'"
+            [state]="{ file: essFile }"
+          >
+            <div class="row">
+              <div class="col-md-3 img-align-col">
+                <img
+                  class="img-align"
+                  src="/assets/images/file-dashboard-menu/overview-inactive.svg"
+                  width="32"
+                  height="32"
+                />
+                <img
+                  class="img-align"
+                  src="/assets/images/file-dashboard-menu/overview-active.svg"
+                  width="32"
+                  height="32"
+                />
+              </div>
+              <div class="col-md-9 menu-title">Overview</div>
+            </div>
+          </a>
+          <a
+            mat-button
+            class="a-mat-button"
+            routerLinkActive="active-side-item"
+            [routerLink]="'/responder-access/search/essfile-dashboard/details'"
+            [state]="{ file: essFile }"
+          >
+            <div class="row">
+              <div class="col-md-3 img-align-col">
+                <img
+                  class="img-align"
+                  src="/assets/images/wizard/locked-ess-file.svg"
+                  width="32"
+                  height="32"
+                />
+                <img
+                  class="img-align"
+                  src="/assets/images/wizard/ess-file.svg"
+                  width="32"
+                  height="32"
+                />
+              </div>
+              <div class="col-md-9 menu-title">ESS File Details</div>
+            </div>
+          </a>
+          <a
+            mat-button
+            class="a-mat-button"
+            routerLinkActive="active-side-item"
+            [routerLink]="'/responder-access/search/essfile-dashboard/supports'"
+            [state]="{ file: essFile }"
+          >
+            <div class="row">
+              <div class="col-md-3 img-align-col">
+                <img
+                  class="img-align"
+                  src="/assets/images/wizard/locked-supports.svg"
+                  width="32"
+                  height="32"
+                />
+                <img
+                  class="img-align"
+                  src="/assets/images/wizard/supports.svg"
+                  width="32"
+                  height="32"
+                />
+              </div>
+              <div class="col-md-9 menu-title">Supports</div>
+            </div>
+          </a>
+          <a
+            mat-button
+            class="a-mat-button"
+            routerLinkActive="active-side-item"
+            [routerLink]="'/responder-access/search/essfile-dashboard/notes'"
+            [state]="{ notes: notesList }"
+          >
+            <div class="row">
+              <div class="col-md-3 img-align-col">
+                <img
+                  class="img-align"
+                  src="/assets/images/wizard/locked-notes.svg"
+                  width="42"
+                  height="42"
+                />
+                <img
+                  class="img-align"
+                  src="/assets/images/wizard/notes.svg"
+                  width="42"
+                  height="42"
+                />
+              </div>
+              <div class="col-md-9 menu-title">
+                Case Notes ({{ notesList?.length }})
+              </div>
+            </div>
+          </a>
+        </mat-sidenav>
+
+        <mat-sidenav-content class="file-content">
+          <router-outlet></router-outlet>
+        </mat-sidenav-content>
+
+        <mat-sidenav opened mode="side" position="end" class="file-endNav"
+          ><app-household-member [essFile]="essFile"></app-household-member
+        ></mat-sidenav>
+      </mat-sidenav-container>
+    </div>
+  </div>
+  <app-overlay-loader [showLoader]="isLoading"></app-overlay-loader>
+</div>
