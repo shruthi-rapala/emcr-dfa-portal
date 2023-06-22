@@ -8,7 +8,6 @@ import {
   ProfileDataConflict
 } from 'src/app/core/api/models';
 import { ProfileDataService } from '../../../feature-components/profile/profile-data.service';
-import { HomeOwnerApplicationDataService } from '../../../feature-components/homeowner-application/homeowner-application-data.service';
 import { ProfileService } from '../../../feature-components/profile/profile.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
@@ -16,7 +15,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ConflictManagementService } from './conflict-management.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import * as globalConst from '../../../core/services/globalConstants';
-import { HomeOwnerApplication, HomeOwnerApplicationDataConflict } from 'src/app/core/model/homeowner-application.model';
+import { HomeOwnerApplication } from 'src/app/core/model/homeowner-application.model';
 
 @Component({
   selector: 'app-conflict-management',
@@ -30,11 +29,9 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
   homeOwnerApplicationFolderPath = 'homeowner-application-forms'
   componentName = 'address';
   conflicts: Array<ProfileDataConflict> = [];
-  homeOwnerApplicationConflicts: Array<HomeOwnerApplicationDataConflict> = [];
   showLoader = false;
   isSubmitted = false;
   form: UntypedFormGroup;
-  damagedPropertyAddressConflict: HomeOwnerApplicationDataConflict;
   nameConflict: ProfileDataConflict;
   dobConflict: ProfileDataConflict;
   addressConflict: ProfileDataConflict;
@@ -44,7 +41,6 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
   constructor(
     private router: Router,
     private profileDataService: ProfileDataService,
-    private homeOwnerApplicationDataService: HomeOwnerApplicationDataService,
     private profileService: ProfileService,
     private alertService: AlertService,
     private formCreationService: FormCreationService,
@@ -55,9 +51,6 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
   ngDoCheck(): void {
     if (!this.profile) {
       this.profile = this.profileDataService.getProfile();
-    }
-    if (!this.homeOwnerApplication) {
-      this.homeOwnerApplication = this.homeOwnerApplicationDataService.getHomeOwnerApplication();
     }
   }
 

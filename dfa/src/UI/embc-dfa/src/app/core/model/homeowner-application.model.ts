@@ -294,13 +294,3 @@ export interface HomeOwnerApplication {
   cleanUpLog?: CleanUpLog;
   damagedItemsByRoom?: DamagedItemsByRoom;
 }
-
-// TODO This should be coming in from the API in api/models
-/* tslint:disable */
-/* eslint-disable */
-/**
- * Base class for dfa application data conflicts
- */
-export interface HomeOwnerApplicationDataConflict {
-  dataElementName: string;
-}
