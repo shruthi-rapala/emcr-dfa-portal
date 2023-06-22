@@ -282,8 +282,15 @@
             <p>If you are having difficulty contacting your insurance provider, please contact the Insurance Bureau of Canada at <span style="white-space: nowrap">1-844-227-5422.</span></p>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6 bottomspace">
+            <app-signature *ngIf="notInsured == true" [isRequired]="true" whoseSignature="Applicant" (signature)="updateApplicantSignature($event)"></app-signature>
+          </div>
+          <div class="col-md-6 bottomspace">
+            <app-signature *ngIf="notInsured == true" [isRequired]="false" whoseSignature="Secondary Applicant" (signature)="updateSecondaryApplicantSignature($event)"></app-signature>
+          </div>
+        </div>
       </ng-container>
     </form>
-
   </mat-card-content>
 </mat-card>
