@@ -22,6 +22,8 @@ import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-co
 import * as globalConst from '../../../../core/services/globalConstants';
 import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { CoreModule } from 'src/app/core/core.module';
+import { SignatureBlock } from 'src/app/core/components/signature/signature.component';
 
 @Component({
   selector: 'apptype-insurance',
@@ -30,6 +32,7 @@ import { MatRadioModule } from '@angular/material/radio';
 })
 export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
   appTypeInsuranceForm: UntypedFormGroup;
+  notInsured: boolean = false;
   formBuilder: UntypedFormBuilder;
   appTypeInsuranceForm$: Subscription;
   formCreationService: FormCreationService;
@@ -83,16 +86,22 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         }
       });
 
+    let fullyInsuredEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
+    let notInsuredEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
+
     this.appTypeInsuranceForm
       .get('insuranceOption')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
-        let enumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
         if (value === '') {
           this.appTypeInsuranceForm.get('insuranceOption').reset();
-        } else if (value === enumKey) {
+          this.notInsured = false;
+        } else if (value === fullyInsuredEnumKey) {
           this.yesFullyInsured();
-        }
+          this.notInsured = false;
+        } else if (value === notInsuredEnumKey) {
+          this.notInsured = true;
+        } else this.notInsured = false;
         this.formCreationService.insuranceOptionChanged.emit(value);
         this.appTypeInsuranceForm.updateValueAndValidity();
       });
@@ -115,6 +124,18 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         }
       });
 
+  }
+
+  updateApplicantSignature(event: SignatureBlock) {
+    this.appTypeInsuranceForm.get('applicantSignature').get('signedName').setValue(event.signedName);
+    this.appTypeInsuranceForm.get('applicantSignature').get('dateSigned').setValue(event.dateSigned);
+    this.appTypeInsuranceForm.get('applicantSignature').get('signature').setValue(event.signature);
+  }
+
+  updateSecondaryApplicantSignature(event: SignatureBlock) {
+    this.appTypeInsuranceForm.get('secondaryApplicantSignature').get('signedName').setValue(event.signedName);
+    this.appTypeInsuranceForm.get('secondaryApplicantSignature').get('dateSigned').setValue(event.dateSigned);
+    this.appTypeInsuranceForm.get('secondaryApplicantSignature').get('signature').setValue(event.signature);
   }
 
   yesFullyInsured(): void {
@@ -191,6 +212,7 @@ export class ValidateInsuranceOption {
 @NgModule({
   imports: [
     CommonModule,
+    CoreModule,
     MatCardModule,
     MatFormFieldModule,
     MatRadioModule,
