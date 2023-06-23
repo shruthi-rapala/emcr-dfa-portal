@@ -28,6 +28,7 @@ export class DFAApplicationComponent
 {
   @ViewChild('dfaApplicationStepper') dfaApplicationStepper: MatStepper;
   isEditable = true;
+  consent: boolean = true;
   fullInsurance: boolean = false;
   steps: Array<ComponentMetaDataModel> = new Array<ComponentMetaDataModel>();
   showStep = false;
@@ -151,15 +152,18 @@ export class DFAApplicationComponent
     switch (component) {
       case 'consent':
         this.dfaApplicationDataService.consent = this.form.value;
+        this.consent = true;
         break;
       case 'profile-verification':
         this.dfaApplicationDataService.profileVerification = this.form.value;
+        this.consent = false;
         break;
       case 'app-type-insurance':
         this.dfaApplicationDataService.applicantOption = this.form.value;
         this.dfaApplicationDataService.insuranceOption = this.form.value;
         this.dfaApplicationDataService.smallBusinessOption = this.form.value;
         this.dfaApplicationDataService.farmOption = this.form.value;
+        this.consent = false;
         break;
       default:
     }

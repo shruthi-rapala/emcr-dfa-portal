@@ -40,7 +40,7 @@ export const gender = [
 ];
 
 export const yesFullyInsuredBody: DialogContent = {
-  text: 'Insurable damages in the private sector aren’t <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/124_95#Schedule1" target="_blank">eligible</a>.' +
+  text: 'Insurable damages in the private sector aren’t eligible.' +
   '<br/><br/> To determine if your damages are insurable or uninsurable, contact your insurance provider as a first step. They will provide you with information about your insurance coverage.<br/><br/>' +
   'Program staff are available to discuss how your insurance relates to your eligibility and application. Please call <span style="white-space: nowrap; font-weight: bold;">1-888-257-4777.</span><br/><br/>' +
   '<p><b>Do you have insurance that will cover all your losses?</b></p>',
