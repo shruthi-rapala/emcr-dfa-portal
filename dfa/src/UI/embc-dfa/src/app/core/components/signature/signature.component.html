@@ -1,0 +1,41 @@
+<!-- Signature block -->
+<div style="width:90%">
+  <div class="row pl-3 pr-0">
+    <div class="col-md-10 pr-0">
+      <mat-label><span *ngIf="whoseSignature">{{ whoseSignature }}&nbsp;</span>Signature<span style="color:red" *ngIf="isRequired == true" >*</span><span *ngIf="isRequired != true">&nbsp;(optional)</span>&nbsp;<mat-icon style="vertical-align:text-bottom;" (click)="clearCanvas()">refresh</mat-icon></mat-label>
+      <canvas id="canvas" ref="canvas" #canvas (touchstart)="preventDefault($event)" (touchmove)="preventDefault($event)" (touchend)="preventDefault($event); updateCanvas()" (touchcancel)="preventDefault($event); updateCanvas()" (mouseup)="updateCanvas()" (mouseleave)="updateCanvas()"></canvas>
+    </div>
+  </div>
+
+  <div class="row p1-3 pr-0">
+    <div class="col-md-10 pr-0">
+      <mat-form-field appearance="outline">
+        <mat-label>Print Name</mat-label>
+        <input matInput
+          [required] = "isRequired == true"
+          type="text"
+          (change)="updateSignatureBlock()"
+          [(ngModel)]="signatureBlock.signedName"
+          placeholder="Print Name*"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row p1-3 pr-0">
+    <div class="col-md-10 pr-0">
+      <mat-form-field appearance="outline" >
+        <mat-label>Date</mat-label>
+        <input matInput
+          [matDatepicker]="datePicker"
+          [(ngModel)]="signatureBlock.dateSigned"
+          (dateChange)="updateSignatureBlock()"
+          style="width:100%"
+          [required] = "isRequired == true">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+</div>

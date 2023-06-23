@@ -1,26 +1,18 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { DFAApplication, DFAApplicationDataConflict } from 'src/app/core/model/dfa-application.model';
+import { DFAApplication } from 'src/app/core/model/dfa-application.model';
 import { DFAApplicationDataService } from './dfa-application-data.service';
 import { FormCreationService } from '../../core/services/formCreation.service';
-import { ConflictManagementService } from '../../sharedModules/components/conflict-management/conflict-management.service';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMappingService {
   constructor(
     private formCreationService: FormCreationService,
     private dfaApplicationDataService: DFAApplicationDataService,
-    private conflictService: ConflictManagementService,
   ) {}
 
-  mapConflicts(conflicts: DFAApplicationDataConflict[]): void {
-    this.conflictService.setConflicts(conflicts);
-    this.conflictService.setCount(conflicts.length);
-    this.conflictService.setHasVisitedConflictPage(true);
-  }
-
-  private setAppTypeInsuranceDetails(dfaApplication: DFAApplication): void {
+   private setAppTypeInsuranceDetails(dfaApplication: DFAApplication): void {
     let formGroup: UntypedFormGroup;
 
     this.formCreationService

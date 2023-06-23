@@ -75,7 +75,7 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
         new AppTypeInsuranceForm(
-          new AppTypeInsurance()
+          new AppTypeInsurance(), this.formBuilder
         )
       )
     );
@@ -362,7 +362,7 @@ export class FormCreationService {
     this.appTypeInsuranceForm.next(
       this.formBuilder.group(
         new AppTypeInsuranceForm(
-          new AppTypeInsurance()
+          new AppTypeInsurance(), this.formBuilder
         )
       )
     );

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { HomeOwnerApplication, HomeOwnerApplicationDataConflict } from 'src/app/core/model/homeowner-application.model';
+import { HomeOwnerApplication } from 'src/app/core/model/homeowner-application.model';
 import { HomeOwnerApplicationDataService } from './homeowner-application-data.service';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { ConflictManagementService } from '../../sharedModules/components/conflict-management/conflict-management.service';
@@ -13,12 +13,6 @@ export class HomeOwnerApplicationMappingService {
     private homeOwnerApplicationDataService: HomeOwnerApplicationDataService,
     private conflictService: ConflictManagementService,
   ) {}
-
-  mapConflicts(conflicts: HomeOwnerApplicationDataConflict[]): void {
-    this.conflictService.setConflicts(conflicts);
-    this.conflictService.setCount(conflicts.length);
-    this.conflictService.setHasVisitedConflictPage(true);
-  }
 
   mapHomeOwnerApplication(homeOwnerApplication: HomeOwnerApplication): void {
     this.homeOwnerApplicationDataService.setHomeOwnerApplicationId(homeOwnerApplication.id);

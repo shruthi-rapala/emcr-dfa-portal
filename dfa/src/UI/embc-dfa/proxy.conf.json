@@ -1,37 +1,37 @@
 {
   "/api/*": {
-    "target": "http://localhost:5020",
+    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/login": {
-    "target": "http://localhost:5020",
+    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/token": {
-    "target": "http://localhost:5020",
+    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/signin-oidc": {
-    "target": "http://localhost:5020",
+    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/join": {
-    "target": "http://localhost:5020",
+    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/env/info.json": {
-    "target": "https://era-evacuees-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/version": {
-    "target": "http://localhost:5020",
+    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
