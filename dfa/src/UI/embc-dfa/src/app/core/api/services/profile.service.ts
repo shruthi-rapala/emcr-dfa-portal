@@ -77,9 +77,9 @@ export class ProfileService extends BaseService {
   }
 
   /**
-   * Path part for operation profileUpsert
+   * Path part for operation profileAddContact
    */
-  static readonly ProfileUpsertPath = '/api/profiles/current';
+  static readonly ProfileAddContactPath = '/api/profiles/current';
 
   /**
    * Create or update the current user's profile.
@@ -87,11 +87,11 @@ export class ProfileService extends BaseService {
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `profileUpsert()` instead.
+   * To access only the response body, use `profileAddContact()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  profileUpsert$Response(params: {
+  profileAddContact$Response(params: {
 
     /**
      * The profile information
@@ -99,7 +99,7 @@ export class ProfileService extends BaseService {
     body: Profile
   }): Observable<StrictHttpResponse<string>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ProfileService.ProfileUpsertPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, ProfileService.ProfileAddContactPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
@@ -121,11 +121,11 @@ export class ProfileService extends BaseService {
    *
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `profileUpsert$Response()` instead.
+   * To access the full response (for headers, for example), `profileAddContact$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  profileUpsert(params: {
+  profileAddContact(params: {
 
     /**
      * The profile information
@@ -133,7 +133,7 @@ export class ProfileService extends BaseService {
     body: Profile
   }): Observable<string> {
 
-    return this.profileUpsert$Response(params).pipe(
+    return this.profileAddContact$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }

@@ -98,7 +98,6 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
     if (stepName === 'name') {
       this.resolveNameConflict();
     } else if (stepName === 'dob') {
-      this.resolveDOBConflict();
     }
     if (
       this.conflictStepper.selectedIndex ===
@@ -131,14 +130,6 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
       this.profile.personalDetails.lastName = (
         this.nameConflict as NameDataConflict
       ).conflictingValue.lastName;
-    }
-  }
-
-  resolveDOBConflict(): void {
-    if (this.dobConflict) {
-      this.profile.personalDetails.dateOfBirth = (
-        this.dobConflict as DateOfBirthDataConflict
-      ).conflictingValue;
     }
   }
 

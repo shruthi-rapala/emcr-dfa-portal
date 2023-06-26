@@ -81,22 +81,15 @@ namespace EMBC.Tests.Unit.DFA.API.Profiles
         {
             return new Faker<Profile>()
                 .RuleFor(o => o.Id, f => f.Random.String(10))
-                .RuleFor(o => o.SecurityQuestions, f => FakeClientEnteredSecurityQuestions())
-                .RuleFor(o => o.RestrictedAccess, f => f.Random.Bool())
 
                 .RuleFor(o => o.PersonalDetails, f => new Faker<PersonDetails>()
                         .RuleFor(o => o.FirstName, f => f.Name.FirstName())
                         .RuleFor(o => o.LastName, f => f.Name.LastName())
                         .RuleFor(o => o.Initials, f => f.Name.Prefix())
-                        .RuleFor(o => o.PreferredName, f => f.Name.Suffix())
-                        .RuleFor(o => o.DateOfBirth, f => f.Date.Past(20).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture))
-                        .RuleFor(o => o.Gender, f => f.PickRandom("Male", "Female", "X"))
                         .Generate())
                 .RuleFor(o => o.ContactDetails, f => new Faker<ContactDetails>()
                     .RuleFor(o => o.Email, f => f.Internet.Email())
-                    .RuleFor(o => o.HideEmailRequired, f => f.Random.Bool())
-                    .RuleFor(o => o.Phone, f => f.Phone.PhoneNumber())
-                    .RuleFor(o => o.HidePhoneRequired, f => f.Random.Bool())
+                    .RuleFor(o => o.CellPhoneNumber, f => f.Phone.PhoneNumber())
                     .Generate())
 
                 .RuleFor(o => o.PrimaryAddress, f => FakeClientEnteredAddress())
@@ -131,8 +124,6 @@ namespace EMBC.Tests.Unit.DFA.API.Profiles
         {
             return new Faker<EMBC.DFA.API.Controllers.Address>()
                 .RuleFor(o => o.AddressLine1, f => f.Address.StreetAddress())
-                .RuleFor(o => o.Community, f => f.Address.City())
-                .RuleFor(o => o.Country, f => f.Address.CountryCode())
                 .RuleFor(o => o.StateProvince, f => f.Address.State())
                 .RuleFor(o => o.PostalCode, f => f.Address.ZipCode())
                 .Generate();
@@ -146,15 +137,12 @@ namespace EMBC.Tests.Unit.DFA.API.Profiles
                 .RuleFor(u => u.ContactDetails, f => new Faker<ContactDetails>()
                      .RuleFor(o => o.Email, f => f.Internet.Email())
                 ).RuleFor(u => u.PersonalDetails, f => new Faker<PersonDetails>()
-                      .RuleFor(u => u.Gender, f => f.PickRandom(new[] { "Male", "Female", "X" }))
                       .RuleFor(u => u.FirstName, f => f.Name.FirstName())
                       .RuleFor(u => u.LastName, f => f.Name.LastName())
-                      .RuleFor(u => u.DateOfBirth, f => f.Date.Past(20).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
                 ).RuleFor(u => u.PrimaryAddress, f => new Faker<EMBC.DFA.API.Controllers.Address>()
                       .RuleFor(u => u.AddressLine1, f => f.Address.StreetAddress())
                       .RuleFor(u => u.PostalCode, f => f.Address.ZipCode())
                       .RuleFor(u => u.StateProvince, f => stateProvince)
-                      .RuleFor(u => u.Country, f => country)
                 )
                 .Generate();
         }

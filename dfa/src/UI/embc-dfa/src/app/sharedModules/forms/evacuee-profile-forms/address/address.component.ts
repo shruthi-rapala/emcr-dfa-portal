@@ -202,13 +202,12 @@ export default class AddressComponent
     this.primaryAddressForm
       .get('mailingAddress.stateProvince')
       .updateValueAndValidity();
-    this.primaryAddressForm.get('mailingAddress.country').updateValueAndValidity();
+    //this.primaryAddressForm.get('mailingAddress.country').updateValueAndValidity();
     this.primaryAddressForm.get('mailingAddress.postalCode').updateValueAndValidity();
   }
 
   sameAsPrimary(event: MatRadioChange): void {
     //this.updateOnVisibilityMailingAddress();
-
     if (event.value === 'Yes') {
       const primaryAddress = this.primaryAddressForm.getRawValue().address;
       this.primaryAddressForm.get('mailingAddress').setValue(primaryAddress);

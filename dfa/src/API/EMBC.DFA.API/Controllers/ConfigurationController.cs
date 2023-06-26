@@ -7,6 +7,9 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
+using EMBC.DFA.API.ConfigurationModule.Models;
+using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
+using EMBC.DFA.API.Mappers;
 using EMBC.ESS.Shared.Contracts.Metadata;
 using EMBC.Utilities.Caching;
 using EMBC.Utilities.Extensions;
@@ -34,14 +37,22 @@ namespace EMBC.DFA.API.Controllers
         private readonly ICache cache;
         private readonly IHostEnvironment environment;
         private const int cacheDuration = 60 * 1; //1 minute
+        private readonly IConfigurationHandler handler;
+        private readonly AutoMapper.MapperConfiguration mapperConfig;
 
-        public ConfigurationController(IConfiguration configuration, IMessagingClient client, IMapper mapper, ICache cache, IHostEnvironment environment)
+        public ConfigurationController(IConfiguration configuration, IMessagingClient client, IMapper mapper, ICache cache, IHostEnvironment environment, IConfigurationHandler handler)
         {
             this.configuration = configuration;
             this.client = client;
             this.mapper = mapper;
             this.cache = cache;
             this.environment = environment;
+            this.handler = handler;
+
+            mapperConfig = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.AddMaps(typeof(Mappings));
+            });
         }
 
         /// <summary>
@@ -143,12 +154,14 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Code>>> GetCountries()
         {
-            var items = await cache.GetOrSet(
-                "countries",
-                async () => (await client.Send(new CountriesQuery())).Items,
-                TimeSpan.FromMinutes(15));
+            //var items = await cache.GetOrSet(
+            //    "countries",
+            //    async () => (await client.Send(new CountriesQuery())).Items,
+            //    TimeSpan.FromMinutes(15));
+            var cntr = await handler.Handle();
+            mapper.Map<IEnumerable<Contact>>(cntr);
 
-            return Ok(mapper.Map<IEnumerable<Code>>(items));
+            return Ok(null);
         }
 
         [HttpGet("security-questions")]
@@ -267,28 +280,28 @@ namespace EMBC.DFA.API.Controllers
     {
         public ConfigurationMapping()
         {
-            CreateMap<Country, Code>()
-                .ForMember(d => d.Type, opts => opts.MapFrom(s => nameof(Country)))
-                .ForMember(d => d.Value, opts => opts.MapFrom(s => s.Code))
-                .ForMember(d => d.Description, opts => opts.MapFrom(s => s.Name))
-                .ForMember(d => d.ParentCode, opts => opts.Ignore())
-                ;
+            //CreateMap<Country, Code>()
+            //    .ForMember(d => d.Type, opts => opts.MapFrom(s => nameof(Country)))
+            //    .ForMember(d => d.Value, opts => opts.MapFrom(s => s.Code))
+            //    .ForMember(d => d.Description, opts => opts.MapFrom(s => s.Name))
+            //    .ForMember(d => d.ParentCode, opts => opts.Ignore())
+            //    ;
 
-            CreateMap<StateProvince, Code>()
-                .ForMember(d => d.Type, opts => opts.MapFrom(s => nameof(StateProvince)))
-                .ForMember(d => d.Value, opts => opts.MapFrom(s => s.Code))
-                .ForMember(d => d.Description, opts => opts.MapFrom(s => s.Name))
-                .ForMember(d => d.ParentCode, opts => opts.MapFrom(s => new Code { Value = s.CountryCode, Type = nameof(Country) }))
-                ;
+            //CreateMap<StateProvince, Code>()
+            //    .ForMember(d => d.Type, opts => opts.MapFrom(s => nameof(StateProvince)))
+            //    .ForMember(d => d.Value, opts => opts.MapFrom(s => s.Code))
+            //    .ForMember(d => d.Description, opts => opts.MapFrom(s => s.Name))
+            //    .ForMember(d => d.ParentCode, opts => opts.MapFrom(s => new Code { Value = s.CountryCode, Type = nameof(Country) }))
+            //    ;
 
-            CreateMap<Community, CommunityCode>()
-                .ForMember(d => d.Type, opts => opts.MapFrom(s => nameof(Community)))
-                .ForMember(d => d.Value, opts => opts.MapFrom(s => s.Code))
-                .ForMember(d => d.Description, opts => opts.MapFrom(s => s.Name))
-                .ForMember(d => d.DistrictName, opts => opts.MapFrom(s => s.DistrictName))
-                .ForMember(d => d.CommunityType, opts => opts.MapFrom(s => s.Type))
-                .ForMember(d => d.ParentCode, opts => opts.MapFrom(s => new Code { Value = s.StateProvinceCode, Type = nameof(StateProvince), ParentCode = new Code { Value = s.CountryCode, Type = nameof(Country) } }))
-                ;
+            //CreateMap<Community, CommunityCode>()
+            //    .ForMember(d => d.Type, opts => opts.MapFrom(s => nameof(Community)))
+            //    .ForMember(d => d.Value, opts => opts.MapFrom(s => s.Code))
+            //    .ForMember(d => d.Description, opts => opts.MapFrom(s => s.Name))
+            //    .ForMember(d => d.DistrictName, opts => opts.MapFrom(s => s.DistrictName))
+            //    .ForMember(d => d.CommunityType, opts => opts.MapFrom(s => s.Type))
+            //    .ForMember(d => d.ParentCode, opts => opts.MapFrom(s => new Code { Value = s.StateProvinceCode, Type = nameof(StateProvince), ParentCode = new Code { Value = s.CountryCode, Type = nameof(Country) } }))
+            //    ;
 
             CreateMap<ESS.Shared.Contracts.Metadata.OutageInformation, OutageInformation>()
                 ;

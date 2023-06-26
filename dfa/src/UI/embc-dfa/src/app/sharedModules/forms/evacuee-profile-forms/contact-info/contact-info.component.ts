@@ -92,11 +92,11 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
       });
 
     this.contactInfoForm
-      .get('phone')
+      .get('cellPhoneNumber')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (value === '') {
-          this.contactInfoForm.get('phone').reset();
+          this.contactInfoForm.get('cellPhoneNumber').reset();
         }
         this.contactInfoForm.get('email').updateValueAndValidity();
         this.contactInfoForm.get('confirmEmail').updateValueAndValidity();
@@ -113,7 +113,7 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
         } else {
           this.contactInfoForm.get('confirmEmail').enable();
         }
-        this.contactInfoForm.get('phone').updateValueAndValidity();
+        this.contactInfoForm.get('cellPhoneNumber').updateValueAndValidity();
         this.contactInfoForm.get('confirmEmail').updateValueAndValidity();
       });
 
@@ -125,7 +125,7 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
           this.contactInfoForm.get('confirmEmail').reset();
         }
         this.contactInfoForm.get('email').updateValueAndValidity();
-        this.contactInfoForm.get('phone').updateValueAndValidity();
+        this.contactInfoForm.get('cellPhoneNumber').updateValueAndValidity();
       });
   }
 
@@ -138,7 +138,7 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
 
   hideContact(event: MatRadioChange): void {
     if (!event.value) {
-      this.contactInfoForm.get('phone').reset();
+      this.contactInfoForm.get('cellPhoneNumber').reset();
       this.contactInfoForm.get('email').reset();
       this.contactInfoForm.get('confirmEmail').reset();
       this.updateOnVisibility();
@@ -146,7 +146,7 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
   }
 
   updateOnVisibility(): void {
-    this.contactInfoForm.get('phone').updateValueAndValidity();
+    this.contactInfoForm.get('cellPhoneNumber').updateValueAndValidity();
     this.contactInfoForm.get('email').updateValueAndValidity();
     this.contactInfoForm.get('confirmEmail').updateValueAndValidity();
   }

@@ -5,10 +5,8 @@
  * Profile personal details
  */
 export interface PersonDetails {
-  dateOfBirth: string;
   firstName: string;
-  gender: string;
+  indigenousStatus?: string;
   initials?: null | string;
   lastName: string;
-  preferredName?: null | string;
 }
