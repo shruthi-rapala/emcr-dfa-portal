@@ -48,12 +48,13 @@ export class ProfileService {
   }
 
   public upsertProfile(updatedProfile: Profile): Observable<string> {
-    return this.profileService.profileUpsert({ body: updatedProfile }).pipe(
-      mergeMap((id) => this.profileService.profileGetProfile()),
-      map((profile) => {
-        this.profileMapping.mapProfile(profile);
-        return profile.id;
-      })
-    );
+    return this.profileService.profileAddContact({ body: updatedProfile });
+    //  .pipe(
+    //  mergeMap((id) => this.profileService.profileGetProfile()),
+    //  map((profile) => {
+    //    //this.profileMapping.mapProfile(profile);
+    //    return profile.id;
+    //  })
+    //);
   }
 }

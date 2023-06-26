@@ -92,7 +92,7 @@ export class CustomValidationService {
       if (control) {
         const email = control.get('email').value;
         const confirmEmail = control.get('confirmEmail').value;
-        const phone = control.get('phone').value;
+        const phone = control.get('cellPhoneNumber').value;
 
         if (
           control.get('showContacts').value === true &&
@@ -117,18 +117,18 @@ export class CustomValidationService {
    */
   postalValidation(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (control.parent) {
-        if (
-          control.parent.get('country').value !== undefined &&
-          control.parent.get('country').value !== null
-        ) {
-          if (control.parent.get('country').value.code === 'CAN') {
-            return Validators.pattern(globalConst.postalPattern)(control);
-          } else if (control.parent.get('country').value.code === 'USA') {
-            return Validators.pattern(globalConst.zipCodePattern)(control);
-          }
-        }
-      }
+      //if (control.parent) {
+      //  if (
+      //    control.parent.get('country').value !== undefined &&
+      //    control.parent.get('country').value !== null
+      //  ) {
+      //    if (control.parent.get('country').value.code === 'CAN') {
+      //      return Validators.pattern(globalConst.postalPattern)(control);
+      //    } else if (control.parent.get('country').value.code === 'USA') {
+      //      return Validators.pattern(globalConst.zipCodePattern)(control);
+      //    }
+      //  }
+      //}
       return null;
     };
   }

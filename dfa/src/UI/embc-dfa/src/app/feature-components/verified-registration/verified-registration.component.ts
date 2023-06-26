@@ -69,7 +69,7 @@ export class VerifiedRegistrationComponent implements OnInit {
   }
 
   loadNewProfileWorkflow(): void {
-    //this.profileService.getLoginProfile();
+    this.profileService.getLoginProfile();
     this.router.navigate(['/verified-registration/collection-notice']);
   }
 

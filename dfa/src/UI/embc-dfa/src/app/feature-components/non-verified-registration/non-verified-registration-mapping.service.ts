@@ -37,8 +37,6 @@ export class NonVerifiedRegistrationMappingService {
       mailingAddress: null,
       personalDetails: null,
       primaryAddress: null,
-      restrictedAccess: null,
-      securityQuestions: null
     };
   }
 }

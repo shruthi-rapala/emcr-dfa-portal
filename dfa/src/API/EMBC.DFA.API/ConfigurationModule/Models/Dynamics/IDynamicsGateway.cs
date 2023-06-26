@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 {
-    public interface IListsGateway
+    public interface IDynamicsGateway
     {
         Task<IEnumerable<Country>> GetCountriesAsync();
+        Task<IEnumerable<dfa_appcontact>> GetContactsAsync();
+        Task<string> AddContact(dfa_appcontact contact);
 
         //Task<IEnumerable> GetDistrictsAsync();
 

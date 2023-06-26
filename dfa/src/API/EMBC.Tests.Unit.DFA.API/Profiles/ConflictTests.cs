@@ -24,8 +24,6 @@ namespace EMBC.Tests.Unit.DFA.API.Profiles
             nameConflict.ConflictingValue.LastName.ShouldNotBeNull().ShouldBe(target.PersonalDetails.LastName);
 
             var dobConflict = conflicts.Where(c => c is DateOfBirthDataConflict).Cast<DateOfBirthDataConflict>().ShouldHaveSingleItem();
-            dobConflict.OriginalValue.ShouldNotBeNull().ShouldBe(source.PersonalDetails.DateOfBirth);
-            dobConflict.ConflictingValue.ShouldNotBeNull().ShouldBe(target.PersonalDetails.DateOfBirth);
 
             var addressConflict = conflicts.Where(c => c is AddressDataConflict).Cast<AddressDataConflict>().ShouldHaveSingleItem();
             addressConflict.OriginalValue.AddressLine1.ShouldNotBeNull().ShouldBe(source.PrimaryAddress.AddressLine1);

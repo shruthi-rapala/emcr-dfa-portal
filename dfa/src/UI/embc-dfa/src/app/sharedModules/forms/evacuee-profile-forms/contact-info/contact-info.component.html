@@ -31,7 +31,7 @@ information and to verify that the information provided by you is accurate.
               <!--[hideRequiredMarker]="contactFormControl?.hidePhoneRequired?.value" [errorStateMatcher]="requiredFieldsMatcher" -->
               <mat-label>Cellular Telephone Number</mat-label>
               <input
-                formControlName="phone"
+                formControlName="cellPhoneNumber"
                 matInput
                 placeholder="Cellular Telephone Number"
                 [textMask]="{ mask: phoneMask, keepCharPositions: true }"
@@ -39,16 +39,16 @@ information and to verify that the information provided by you is accurate.
               />
               <mat-error
                 *ngIf="
-                  contactFormControl.phone.invalid &&
-                  contactFormControl.phone.hasError('required')
+                  contactFormControl.cellPhoneNumber.invalid &&
+                  contactFormControl.cellPhoneNumber.hasError('required')
                 "
               >
                 Cellular Telephone Number is required</mat-error
               >
               <mat-error
                 *ngIf="
-                  contactFormControl.phone.invalid &&
-                  contactFormControl.phone.hasError('incorrectLength')
+                  contactFormControl.cellPhoneNumber.invalid &&
+                  contactFormControl.cellPhoneNumber.hasError('incorrectLength')
                 "
               >
                 Telephone number must have 10 digits</mat-error
