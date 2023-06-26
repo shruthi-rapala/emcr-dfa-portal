@@ -254,8 +254,11 @@ export class OccupantsForm {
   email = new UntypedFormControl();
   fullTimeOccupant: UntypedFormGroup;
   fullTimeOccupants = new UntypedFormControl([]);
-  addNewIndicator = new UntypedFormControl(false);
-  contact: UntypedFormGroup;
+  addNewFullTimeOccupantIndicator = new UntypedFormControl(false);
+  addNewOtherContactIndicator = new UntypedFormControl(false);
+  addNewSecondaryApplicantIndicator = new UntypedFormControl(false);
+  otherContact: UntypedFormGroup;
+  secondaryApplicant: UntypedFormGroup;
   otherContacts = new UntypedFormControl([]);
   secondaryApplicants = new UntypedFormControl([]);
 
@@ -270,7 +273,7 @@ export class OccupantsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewIndicator.value,
+              () => this.addNewFullTimeOccupantIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -281,7 +284,7 @@ export class OccupantsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewIndicator.value,
+              () => this.addNewFullTimeOccupantIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -292,20 +295,20 @@ export class OccupantsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewIndicator.value,
+              () => this.addNewFullTimeOccupantIndicator.value,
               Validators.required
             )
             .bind(customValidator)
         ]
       ]
     });
-    this.contact = builder.group({
+    this.otherContact = builder.group({
       firstName: [
         '',
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewIndicator.value,
+              () => this.addNewOtherContactIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -316,7 +319,7 @@ export class OccupantsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewIndicator.value,
+              () => this.addNewOtherContactIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -328,7 +331,7 @@ export class OccupantsForm {
           customValidator.maskedNumberLengthValidator().bind(customValidator),
           customValidator
             .conditionalValidation(
-              () => this.addNewIndicator.value,
+              () => this.addNewOtherContactIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -340,7 +343,56 @@ export class OccupantsForm {
           Validators.email,
           customValidator
             .conditionalValidation(
-              () => this.addNewIndicator.value,
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required,
+            )
+            .bind(customValidator)
+        ]
+      ]
+
+    });
+    this.secondaryApplicant = builder.group({
+      firstName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      lastName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      phoneNumber: [
+        '',
+        [
+          customValidator.maskedNumberLengthValidator().bind(customValidator),
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      email: [
+        '',
+        [
+          Validators.email,
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
               Validators.required,
             )
             .bind(customValidator)
