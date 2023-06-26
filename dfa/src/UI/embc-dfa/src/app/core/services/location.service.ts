@@ -192,7 +192,8 @@ export class LocationService {
       //stateProvince: addressStateProvince,
       community: '',
       stateProvince: addressObject.stateProvince,
-      postalCode: addressObject.postalCode
+      postalCode: addressObject.postalCode,
+      country: { code: 'CAN', name: 'Canada' }
     };
   }
 

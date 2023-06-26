@@ -4,6 +4,7 @@ export interface RegAddress {
   community?: string;
   postalCode: null | string;
   stateProvince: string;
+  country: Country;
 }
 
 export interface Community {
