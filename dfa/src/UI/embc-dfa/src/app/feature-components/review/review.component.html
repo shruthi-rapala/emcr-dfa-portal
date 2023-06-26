@@ -25,6 +25,9 @@
       </div>
     </div>
   </div>
+  <div *ngIf="type === 'homeowner-application'">
+    <ng-container *ngTemplateOutlet="homeOwnerApplication"></ng-container>
+  </div>
 
   <ng-template #profile>
     <div id="personalDetail">
@@ -195,26 +198,26 @@
         <div class="row info-detail">
           <div
             class="col-md-3"
-            
+
           >
             City:
           </div>
-          
+
           <div class="col-md-3">
             {{
               (formCreationService.addressForm$ | async)?.value?.address
                 ?.community
             }}
           </div>
-          
+
         </div>
         <div class="row info-detail">
           <div
             class="col-md-3">
             Postal Code:
           </div>
-          
-          
+
+
           <div class="col-md-3">
             {{
               (formCreationService.addressForm$ | async)?.value?.address
@@ -279,7 +282,7 @@
             class="col-md-3">
             City:
           </div>
-          
+
           <div
             class="col-md-3"
             *ngIf="
@@ -310,7 +313,7 @@
             class="col-md-3">
             Postal Code:
           </div>
-         
+
           <div class="col-md-3">
             {{
               (formCreationService.addressForm$ | async)?.value?.mailingAddress
@@ -362,7 +365,7 @@
         </div>
         <hr />
         <div class="row info-detail">
-          
+
           <!--<div class="col-md-9">
             <p>
               You have given your consent for Emergency Management British
@@ -387,7 +390,7 @@
             }}
           </div>
         </div>
-        
+
       </mat-card-content>
 
       <mat-card-content class="contentStyle">
@@ -420,6 +423,7 @@
         </div>
       </mat-card-content>
     </div>
+
   </ng-template>
   <ng-template #need>
     <div id="needsAssessment">
@@ -873,6 +877,240 @@
           <div class="col-md-3">Security Phrase</div>
           <div class="col-md-3">
             {{ (formCreationService.secretForm$ | async)?.value?.secretPhrase }}
+          </div>
+        </div>
+      </mat-card-content>
+    </div>
+
+  </ng-template>
+  <ng-template #homeOwnerApplication>
+    <div id="homeOwnerApplication">
+      <p *ngIf="showHeading" class="review-heading">Review & Submit</p>
+
+      <mat-card-content>
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Damaged Property Address</div>
+          <div class="col-md-2" *ngIf="allowEdit">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="editDetails('damaged-property-address')"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="row info-detail">
+          <div class="col-md-3">Damaged Property Address:</div>
+          <div class="col-md-3">
+            <p class="no-bottom-margin">
+              <span
+                >{{
+                  (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                    ?.addressLine1
+                }}</span
+              >
+              <span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine2"
+                >,&nbsp;{{
+                  (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                    ?.addressLine2
+                }}</span
+              >
+            </p>
+            <p>
+              <span
+                >{{
+                  (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                    ?.community
+                }},&nbsp;
+              </span>
+              <span>{{
+                (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                  ?.stateProvince
+              }}&nbsp;</span>
+              <span>{{
+                (formCreationService.damagedPropertyAddressForm$ | async).value
+                  ?.postalCode
+              }}</span>
+            </p>
+          </div>
+          <div class="col-md-3">Occupy as Primary Residence:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .occupyAsPrimaryResidence === 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .occupyAsPrimaryResidence === 'false' ? 'No' : 'Make a selection')
+            }}
+          </div>
+          <div class="col-md-3">On a First Nations Reserve:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .onAFirstNationsReserve === 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .onAFirstNationsReserve === 'false' ? 'No' : 'Make a selection')
+            }}
+          </div>
+          <div class="col-md-3"><span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">First Nations Reserve:</span></div>
+          <div class="col-md-3">
+            <span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">
+              {{
+                (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                  .firstNationsReserve
+              }}
+            </span>
+          </div>
+          <div class="col-md-3">Manufactured Home:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .manufacturedHome === 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .manufacturedHome === 'false' ? 'No' : 'No selection')
+            }}
+          </div><div class="col-md-3">Eligible for a BC Home Owner Grant for this Property:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .eligibleForHomeOwnerGrant === 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .eligibleForHomeOwnerGrant === 'false' ? 'No' : 'Make a selection')
+            }}
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Property Damage</div>
+          <div class="col-md-2" *ngIf="allowEdit">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="editDetails('property-damage')"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="row info-detail">
+          <div class="col-md-3">Flood Damage?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .floodDamage === true
+                ? 'Yes'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .floodDamage === false ? 'No' : 'No selection')
+            }}
+          </div>
+          <div class="col-md-3">Landslide Damage?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .landslideDamage === true
+                ? 'Yes'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .landslideDamage === false ? 'No' : 'No selection')
+            }}
+          </div>
+          <div class="col-md-3">Storm Damage?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .stormDamage === true
+                ? 'Yes'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .stormDamage === false ? 'No' : 'No selection')
+            }}
+          </div>
+          <div class="col-md-3">Other Damage?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .otherDamage === true
+                ? 'Yes'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .otherDamage === false ? 'No' : 'No selection')
+            }}
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .otherDamage === true
+                ? (formCreationService.propertyDamageForm$ | async)?.value.otherDamageText : ''
+            }}
+          </div>
+          <div class="col-md-3">Dates of Damage:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .damageFromDate ? ('Starts ' + ((formCreationService.propertyDamageForm$ | async).value.damageFromDate | date: "MM/dd/yyyy")) : ''
+            }}
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .damageToDate ? ('Ends ' + ((formCreationService.propertyDamageForm$ | async).value.damageToDate | date: "MM/dd/yyyy")) : ''
+            }}
+          </div>
+          <div class="col-md-3">Brief Description:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .briefDescription
+            }}
+          </div>
+          <div class="col-md-3">Losses Total More Than $1000?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .lossesExceed1000 === 'true'
+                ? 'Yes'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .lossesExceed1000 === 'false' ? 'No' : 'No selection')
+            }}
+          </div>
+          <div class="col-md-3">Were You Evacuated?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .wereYouEvacuated === 'true'
+                ? 'Yes'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .wereYouEvacuated === 'false' ? 'No' : 'No selection')
+            }}
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .wereYouEvacuated === 'true'
+                ? ('Returned ' + (formCreationService.propertyDamageForm$ | async)?.value
+                .dateReturned) : ''
+            }}
+          </div>
+          <div class="col-md-3">Residing In Residence?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .residingInResidence === 'true'
+                ? 'Yes'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .residingInResidence === 'false' ? 'No' : 'No selection')
+            }}
           </div>
         </div>
       </mat-card-content>

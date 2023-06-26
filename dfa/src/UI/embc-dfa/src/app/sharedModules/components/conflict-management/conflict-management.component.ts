@@ -15,6 +15,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ConflictManagementService } from './conflict-management.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import * as globalConst from '../../../core/services/globalConstants';
+import { HomeOwnerApplication } from 'src/app/core/model/homeowner-application.model';
 
 @Component({
   selector: 'app-conflict-management',
@@ -25,6 +26,7 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
   @ViewChild('conflictStepper') conflictStepper: MatStepper;
   updateAddressIndicator = false;
   folderPath = 'evacuee-profile-forms';
+  homeOwnerApplicationFolderPath = 'homeowner-application-forms'
   componentName = 'address';
   conflicts: Array<ProfileDataConflict> = [];
   showLoader = false;
@@ -34,6 +36,7 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
   dobConflict: ProfileDataConflict;
   addressConflict: ProfileDataConflict;
   profile: Profile;
+  homeOwnerApplication: HomeOwnerApplication;
 
   constructor(
     private router: Router,

@@ -22,12 +22,18 @@ import { TimeOutDialogComponent } from './components/dialog-components/time-out-
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component';
+import { SignatureComponent } from './components/signature/signature.component';
+import { DFAEligibilityDialogComponent } from './components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     MatProgressSpinnerModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     MatDialogModule,
     MatIconModule,
     MatMenuModule,
@@ -44,8 +50,10 @@ import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component
     HeaderComponent,
     FooterComponent,
     DialogComponent,
+    SignatureComponent,
     EssFileDialogComponent,
     InformationDialogComponent,
+    DFAEligibilityDialogComponent,
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
     TimeOutDialogComponent
@@ -56,7 +64,9 @@ import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component
     HeaderComponent,
     FooterComponent,
     DialogComponent,
+    SignatureComponent,
     EnvironmentBannerComponent,
+    DFAEligibilityDialogComponent,
     TimeOutDialogComponent,
     MatToolbarModule,
     MatButtonModule

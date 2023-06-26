@@ -12,6 +12,8 @@ import {
   Restriction,
 } from '../model/profile.model';
 import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application.model';
+import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
+  CleanUpLog, CleanUpLogForm } from '../model/homeowner-application.model';
 import { CustomValidationService } from './customValidation.service';
 import {
   Evacuated,
@@ -38,6 +40,7 @@ export class FormCreationService {
   restrictionForm$: Observable<UntypedFormGroup> =
     this.restrictionForm.asObservable();
 
+  // profile
   personalDetailsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
@@ -67,12 +70,12 @@ export class FormCreationService {
 
   addressForm$: Observable<UntypedFormGroup> = this.addressForm.asObservable();
 
-  
+
   appTypeInsuranceForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
         new AppTypeInsuranceForm(
-          new AppTypeInsurance()
+          new AppTypeInsurance(), this.formBuilder
         )
       )
     );
@@ -101,10 +104,71 @@ export class FormCreationService {
      )
    );
 
- profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
-  this.profileVerificationForm.asObservable();
+  profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
+    this.profileVerificationForm.asObservable();
 
- evacuatedForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  // HomeOwner Applciation Forms
+  damagedPropertyAddressForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new DamagedPropertyAddressForm(
+         new DamagedPropertyAddress()
+       )
+     )
+   );
+
+  damagedPropertyAddressForm$: Observable<UntypedFormGroup | undefined> =
+    this.damagedPropertyAddressForm.asObservable();
+
+  propertyDamageForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new PropertyDamageForm(
+         new PropertyDamage()
+       )
+     )
+   );
+
+  propertyDamageForm$: Observable<UntypedFormGroup | undefined> =
+    this.propertyDamageForm.asObservable();
+
+  occupantsForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new OccupantsForm(
+         new Occupants()
+       )
+     )
+   );
+
+  occupantsForm$: Observable<UntypedFormGroup | undefined> =
+    this.occupantsForm.asObservable();
+
+  cleanUpLogForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new CleanUpLogForm(
+         new CleanUpLog()
+       )
+     )
+   );
+
+  cleanUpLogForm$: Observable<UntypedFormGroup | undefined> =
+    this.cleanUpLogForm.asObservable();
+
+  damagedItemsByRoomForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new DamagedItemsByRoomForm(
+         new DamagedItemsByRoom()
+       )
+     )
+   );
+
+  damagedItemsByRoomForm$: Observable<UntypedFormGroup | undefined> =
+    this.damagedItemsByRoomForm.asObservable();
+
+  evacuatedForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
         new EvacuatedForm(
@@ -251,7 +315,7 @@ export class FormCreationService {
         new ContactDetailsForm(new ContactDetails(), this.customValidator)
       )
     );
-    
+
   }
 
   clearNeedsAssessmentData(): void {
@@ -296,7 +360,7 @@ export class FormCreationService {
     this.appTypeInsuranceForm.next(
       this.formBuilder.group(
         new AppTypeInsuranceForm(
-          new AppTypeInsurance()
+          new AppTypeInsurance(), this.formBuilder
         )
       )
     );
@@ -333,6 +397,93 @@ export class FormCreationService {
       this.formBuilder.group(
         new ProfileVerificationForm(
           new ProfileVerification()
+        )
+      )
+    );
+  }
+
+  getDamagedPropertyAddressForm(): Observable<UntypedFormGroup> {
+    return this.damagedPropertyAddressForm$;
+  }
+
+  setDamagedPropertyAddressForm(damagedPropertyAddressForm: UntypedFormGroup): void {
+    this.appTypeInsuranceForm.next(damagedPropertyAddressForm);
+  }
+
+  clearDamagedPropertyAddressData(): void {
+    this.damagedPropertyAddressForm.next(
+      this.formBuilder.group(
+        new DamagedPropertyAddressForm(
+          new DamagedPropertyAddress()
+        )
+      )
+    );
+  }
+
+  getPropertyDamageForm(): Observable<UntypedFormGroup> {
+    return this.propertyDamageForm$;
+  }
+
+  setPropertyDamageForm(propertyDamageForm: UntypedFormGroup): void {
+    this.propertyDamageForm.next(propertyDamageForm);
+  }
+
+  clearPropertyDamageData(): void {
+    this.propertyDamageForm.next(
+      this.formBuilder.group(
+        new PropertyDamageForm(
+          new PropertyDamage()
+        )
+      )
+    );
+  }
+  getOccupantsForm(): Observable<UntypedFormGroup> {
+    return this.occupantsForm$;
+  }
+
+  setOccupantsForm(occupantsForm: UntypedFormGroup): void {
+    this.occupantsForm.next(occupantsForm);
+  }
+
+  clearOccupantsData(): void {
+    this.occupantsForm.next(
+      this.formBuilder.group(
+        new OccupantsForm(
+          new Occupants()
+        )
+      )
+    );
+  }
+  getCleanUpLogForm(): Observable<UntypedFormGroup> {
+    return this.cleanUpLogForm$;
+  }
+
+  setCleanUpLogForm(cleanUpLogForm: UntypedFormGroup): void {
+    this.cleanUpLogForm.next(cleanUpLogForm);
+  }
+
+  clearCleanUpLogData(): void {
+    this.cleanUpLogForm.next(
+      this.formBuilder.group(
+        new CleanUpLogForm(
+          new CleanUpLog()
+        )
+      )
+    );
+  }
+  getDamagedItemsByRoomForm(): Observable<UntypedFormGroup> {
+    return this.damagedItemsByRoomForm$;
+  }
+
+  setDamagedItemsByRoomForm(damagedItemsByRoomForm: UntypedFormGroup): void {
+    this.appTypeInsuranceForm.next(damagedItemsByRoomForm);
+  }
+
+  clearDamagedItemsByRoomData(): void {
+    this.damagedItemsByRoomForm.next(
+      this.formBuilder.group(
+        new DamagedItemsByRoomForm(
+          new DamagedItemsByRoom()
         )
       )
     );

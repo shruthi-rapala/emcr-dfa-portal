@@ -1,7 +1,10 @@
 import {
+  UntypedFormBuilder,
   UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { SignatureBlock } from '../components/signature/signature.component';
 
 export class Consent {
   consent: boolean;
@@ -21,9 +24,6 @@ export class ConsentForm {
       this.consent.setValue(consent.consent);
     }
 
-    this.consent.setValidators([Validators.required]);
-
-    this.consent.setValue(consent.consent);
     this.consent.setValidators([Validators.required]);
   }
 }
@@ -58,12 +58,16 @@ export class AppTypeInsurance {
   insuranceOption: InsuranceOption;
   smallBusinessOption: SmallBusinessOption;
   farmOption: FarmOption;
+  applicantSignature: SignatureBlock;
+  secondaryApplicantSignature: SignatureBlock;
 
   constructor(
     applicantOption?: ApplicantOption,
     insuranceOption?: InsuranceOption,
     smallBusinessOption?: SmallBusinessOption,
-    farmOption?: FarmOption
+    farmOption?: FarmOption,
+    applicantSignature?: SignatureBlock,
+    secondaryApplicantSignature?: SignatureBlock
   ) {   }
 }
 
@@ -72,9 +76,12 @@ export class AppTypeInsuranceForm {
   insuranceOption = new UntypedFormControl();
   smallBusinessOption = new UntypedFormControl();
   farmOption = new UntypedFormControl();
+  applicantSignature: UntypedFormGroup;
+  secondaryApplicantSignature: UntypedFormGroup;
 
   constructor(
-    appTypeInsurance: AppTypeInsurance
+    appTypeInsurance: AppTypeInsurance,
+    fb: UntypedFormBuilder
   ) {
     if (appTypeInsurance.applicantOption) {
       this.applicantOption.setValue(appTypeInsurance.applicantOption);
@@ -86,6 +93,18 @@ export class AppTypeInsuranceForm {
     this.insuranceOption.setValidators([Validators.required]);
     this.smallBusinessOption.setValue(appTypeInsurance.smallBusinessOption);
     this.farmOption.setValue(appTypeInsurance.farmOption);
+
+    this.applicantSignature = fb.group({
+      signature: null,
+      dateSigned: null,
+      signedName: null
+    });
+
+    this.secondaryApplicantSignature = fb.group({
+      signature: null,
+      dateSigned: null,
+      signedName: null
+    });
   }
 }
 
@@ -128,14 +147,4 @@ export interface DFAApplication {
   consent?: Consent;
   profileVerification?: ProfileVerification;
   appTypeInsurance?: AppTypeInsurance;
-}
-
-// TODO This should be coming in from the API in api/models
-/* tslint:disable */
-/* eslint-disable */
-/**
- * Base class for dfa application data conflicts
- */
-export interface DFAApplicationDataConflict {
-  dataElementName: string;
 }

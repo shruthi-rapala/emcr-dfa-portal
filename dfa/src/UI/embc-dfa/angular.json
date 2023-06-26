@@ -77,7 +77,7 @@
           "configurations": {
             "local": {
               "browserTarget": "embc-dfa:build:local",
-              "proxyConfig": "proxy.conf.json"
+              "proxyConfig": "proxy.local.conf.json"
             },
             "dev": {
               "browserTarget": "embc-dfa:build:local",

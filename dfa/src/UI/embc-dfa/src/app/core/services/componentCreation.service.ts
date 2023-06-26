@@ -80,6 +80,54 @@ export class ComponentCreationService {
     }
   ];
 
+  homeOwnerApplicationComponents: Array<any> = [
+    {
+      component: 'damaged-property-address',
+      nextButtonLabel: 'Next - Cause of Damage',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: -2,
+      stepName: 'Damaged Property'
+    },
+    {
+      component: 'property-damage',
+      nextButtonLabel: 'Next - Occupants',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Damage'
+    },
+    {
+      component: 'occupants',
+      nextButtonLabel: 'Next - Clean Up Log',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Occupants'
+    },
+    {
+      component: 'clean-up-log',
+      nextButtonLabel: 'Next - Damaged Items By Room',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Clean Up Log'
+    },
+    {
+      component: 'damaged-items-by-room',
+      nextButtonLabel: 'Next - Review',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Damaged Items By Room'
+    }
+  ];
+
   needsAssessmentComponents: Array<any> = [
     {
       component: 'evac-address',
@@ -147,8 +195,17 @@ export class ComponentCreationService {
 
   createDFAApplicationSteps(): Array<ComponentMetaDataModel> {
     const componentArr: Array<ComponentMetaDataModel> =
-    new Array<ComponentMetaDataModel>();
+      new Array<ComponentMetaDataModel>();
     for (const comp of this.dfaApplicationComponents) {
+      componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
+    }
+    return componentArr;
+  }
+
+  createHomeOwnerApplicationSteps(): Array<ComponentMetaDataModel> {
+    const componentArr: Array<ComponentMetaDataModel> =
+      new Array<ComponentMetaDataModel>();
+    for (const comp of this.homeOwnerApplicationComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;
