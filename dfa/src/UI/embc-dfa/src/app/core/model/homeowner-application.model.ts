@@ -325,6 +325,7 @@ export class OccupantsForm {
       phoneNumber: [
         '',
         [
+          customValidator.maskedNumberLengthValidator().bind(customValidator),
           customValidator
             .conditionalValidation(
               () => this.addNewIndicator.value,
@@ -336,10 +337,11 @@ export class OccupantsForm {
       email: [
         '',
         [
+          Validators.email,
           customValidator
             .conditionalValidation(
               () => this.addNewIndicator.value,
-              Validators.required
+              Validators.required,
             )
             .bind(customValidator)
         ]

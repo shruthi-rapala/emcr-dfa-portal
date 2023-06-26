@@ -149,7 +149,9 @@ export class HomeOwnerApplicationComponent
         this.homeOwnerApplicationDataService.propertyDamage = this.form.value;
         break;
       case 'occupants':
-        this.homeOwnerApplicationDataService.occupants = this.form.value;
+        this.homeOwnerApplicationService.setFullTimeOccupants(this.form.get('fullTimeOccupants').value);
+        this.homeOwnerApplicationService.setOtherContacts(this.form.get('otherContacts').value);
+        this.homeOwnerApplicationService.setSecondaryApplicants(this.form.get('secondaryApplicants').value);
         break;
       case 'clean-up-log':
         this.homeOwnerApplicationDataService.cleanUpLog = this.form.value;
