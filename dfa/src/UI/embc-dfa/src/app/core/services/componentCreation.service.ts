@@ -50,7 +50,7 @@ export class ComponentCreationService {
     //}
   ];
 
-  dfaApplicationComponents: Array<any> = [
+  dfaApplicationStartComponents: Array<any> = [
     {
       component: 'consent',
       nextButtonLabel: 'Next - Profile Verification',
@@ -193,10 +193,10 @@ export class ComponentCreationService {
     return componentArr;
   }
 
-  createDFAApplicationSteps(): Array<ComponentMetaDataModel> {
+  createDFAApplicationStartSteps(): Array<ComponentMetaDataModel> {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
-    for (const comp of this.dfaApplicationComponents) {
+    for (const comp of this.dfaApplicationStartComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;

@@ -105,7 +105,7 @@ export class HomeOwnerApplicationComponent
     } else if (lastStep === -1) {
       this.showStep = !this.showStep;
     } else if (lastStep === -2) {
-      const navigationPath = '/' + this.currentFlow + '/dfa-application';
+      const navigationPath = '/' + this.currentFlow + '/dfa-application-start';
       this.router.navigate([navigationPath]);
     }
   }
@@ -212,7 +212,7 @@ export class HomeOwnerApplicationComponent
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    // this.dfaApplicationService
+    // this.dfaStartApplicationService
       // .upsertProfile(this.profileDataService.createProfileDTO())
       // .subscribe({
         // next: (profileId) => {
