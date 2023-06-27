@@ -66,7 +66,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
-    console.log(this.selectApplicantTypeOptions);
   }
 
   ngOnInit(): void {
