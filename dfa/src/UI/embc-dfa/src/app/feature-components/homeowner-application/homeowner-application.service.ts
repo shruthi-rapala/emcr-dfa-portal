@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FullTimeOccupant, HomeOwnerApplication, OccupantContact } from 'src/app/core/model/homeowner-application.model';
+import { FullTimeOccupant, HomeOwnerApplication, OtherContact, SecondaryApplicant } from 'src/app/core/model/homeowner-application.model';
 // import { DFAApplicationService as Service } from '../../core/api/services/dfa-application.service';
 import { HomeOwnerApplicationMappingService } from './homeowner-application-mapping.service';
 import { HomeOwnerApplicationDataService } from './homeowner-application-data.service';
@@ -7,8 +7,8 @@ import { HomeOwnerApplicationDataService } from './homeowner-application-data.se
 @Injectable({ providedIn: 'root' })
 export class HomeOwnerApplicationService {
   private _fullTimeOccupants: Array<FullTimeOccupant> = [];
-  private _otherContacts: Array<OccupantContact> = [];
-  private _secondaryApplicants: Array<OccupantContact> = [];
+  private _otherContacts: Array<OtherContact> = [];
+  private _secondaryApplicants: Array<SecondaryApplicant> = [];
 
   constructor(
     private homeOwnerApplicationMapping: HomeOwnerApplicationMappingService,
@@ -42,18 +42,18 @@ export class HomeOwnerApplicationService {
     }
   }
 
-  public get otherContacts(): Array<OccupantContact> {
+  public get otherContacts(): Array<OtherContact> {
     return this._otherContacts;
   }
 
-  public set otherContacts(value: Array<OccupantContact>) {
+  public set otherContacts(value: Array<OtherContact>) {
     this._otherContacts = value;
   }
 
-  public setOtherContacts(contacts: OccupantContact[]): void {
-    const otherContactsArray: Array<OccupantContact> = [];
+  public setOtherContacts(contacts: OtherContact[]): void {
+    const otherContactsArray: Array<OtherContact> = [];
     for (const contact of contacts) {
-      const otherContact: OccupantContact = {
+      const otherContact: OtherContact = {
         firstName: contact.firstName,
         lastName: contact.lastName,
         phoneNumber: contact.phoneNumber,
@@ -71,18 +71,19 @@ export class HomeOwnerApplicationService {
 
   }
 
-  public get secondaryApplicants(): Array<OccupantContact> {
+  public get secondaryApplicants(): Array<SecondaryApplicant> {
     return this._secondaryApplicants;
   }
 
-  public set secondaryApplicants(value: Array<OccupantContact>) {
+  public set secondaryApplicants(value: Array<SecondaryApplicant>) {
     this._secondaryApplicants = value;
   }
 
-  public setSecondaryApplicants(contacts: OccupantContact[]): void {
-    const secondaryApplicantsArray: Array<OccupantContact> = [];
+  public setSecondaryApplicants(contacts: SecondaryApplicant[]): void {
+    const secondaryApplicantsArray: Array<SecondaryApplicant> = [];
     for (const contact of contacts) {
-      const secondaryApplicant: OccupantContact = {
+      const secondaryApplicant: SecondaryApplicant = {
+        applicantType: contact.applicantType,
         firstName: contact.firstName,
         lastName: contact.lastName,
         phoneNumber: contact.phoneNumber,

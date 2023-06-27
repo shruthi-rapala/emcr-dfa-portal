@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HomeOwnerApplication, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, Occupants} from 'src/app/core/model/homeowner-application.model';
+import { HomeOwnerApplication, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, OtherContact, SecondaryApplicant, Occupants} from 'src/app/core/model/homeowner-application.model';
 import { CacheService } from 'src/app/core/services/cache.service';
 
 @Injectable({ providedIn: 'root' })

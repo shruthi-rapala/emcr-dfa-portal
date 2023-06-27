@@ -66,6 +66,11 @@ table {
   max-height: 500px;
 }
 
+.mat-column-deleteIcon {
+  text-align: right;
+  justify-content: flex-end;
+}
+
 
 .delete-image img:last-child {
   display: none;

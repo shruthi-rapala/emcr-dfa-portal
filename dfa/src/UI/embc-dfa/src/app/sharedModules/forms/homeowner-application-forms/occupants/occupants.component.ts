@@ -18,6 +18,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
+import { SecondaryApplicantTypeOption } from 'src/app/core/model/homeowner-application.model';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-occupants',
@@ -26,6 +28,7 @@ import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 })
 export default class OccupantsComponent implements OnInit, OnDestroy {
   occupantsForm: UntypedFormGroup;
+  selectApplicantTypeOptions = SecondaryApplicantTypeOption;
   formBuilder: UntypedFormBuilder;
   occupantsForm$: Subscription;
   formCreationService: FormCreationService;
@@ -34,11 +37,11 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   fullTimeOccupantsDataSource = new BehaviorSubject([]);
   fullTimeOccupantsData = [];
   showOtherContactForm: boolean = false;
-  otherContactColumnsToDisplay = ['name', 'phoneNumber', 'email', 'deleteIcon'];
+  otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email', 'deleteIcon'];
   otherContactsDataSource = new BehaviorSubject([]);
   otherContactsData = [];
   showSecondaryApplicantForm: boolean = false;
-  secondaryApplicantsColumnsToDisplay = ['name', 'phoneNumber', 'email', 'deleteIcon'];
+  secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email', 'deleteIcon'];
   secondaryApplicantsDataSource = new BehaviorSubject([]);
   secondaryApplicantsData = [];
   readonly phoneMask = [
@@ -63,6 +66,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+    console.log(this.selectApplicantTypeOptions);
   }
 
   ngOnInit(): void {
@@ -96,10 +100,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     );
     this.secondaryApplicantsData = this.occupantsForm.get('secondaryApplicants').value;
   }
-
-    // showFullTimeOccupantsForm(): void {
-  //   console.log(this.occupantsForm.get('fullTimeOccupant'));
-  // }
 
   addFullTimeOccupant(): void {
     this.occupantsForm.get('fullTimeOccupant').reset();
@@ -135,7 +135,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   }
 
-
   addOtherContact(): void {
     this.occupantsForm.get('otherContact').reset();
     this.showOtherContactForm = !this.showOtherContactForm;
@@ -151,7 +150,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     } else {
       this.occupantsForm.get('otherContact').markAllAsTouched();
     }
-    console.log(this.occupantsForm.get('otherContacts'), this.otherContactsDataSource, this.otherContactsData);
   }
 
   cancelOtherContact(): void {
@@ -234,6 +232,9 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   updateSecondaryApplicantOnVisibility(): void {
     this.occupantsForm
+      .get('secondaryApplicant.secondaryApplicantType')
+      .updateValueAndValidity();
+    this.occupantsForm
       .get('secondaryApplicant.firstName')
       .updateValueAndValidity();
     this.occupantsForm
@@ -268,6 +269,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     MatFormFieldModule,
     TextMaskModule,
     CustomPipeModule,
+    MatSelectModule,
     MatInputModule,
     MatIconModule,
     ReactiveFormsModule,

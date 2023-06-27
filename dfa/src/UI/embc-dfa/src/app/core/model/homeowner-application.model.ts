@@ -224,13 +224,30 @@ export class PropertyDamageForm {
   }
 }
 
+// TODO This should be coming in from the API in api/models
+/* tslint:disable */
+/* eslint-disable */
+export enum SecondaryApplicantTypeOption {
+  Contact = 'Contact',
+  Organization = 'Organization',
+}
+
+
 export interface FullTimeOccupant {
   firstName: string;
   lastName: string;
   relationship: string;
 }
 
-export interface OccupantContact {
+export interface OtherContact {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+}
+
+export interface SecondaryApplicant {
+  applicantType: SecondaryApplicantTypeOption;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -239,8 +256,8 @@ export interface OccupantContact {
 
 export class Occupants {
   fullTimeOccupants: Array<FullTimeOccupant>;
-  otherContacts: Array<OccupantContact>;
-  secondaryApplicants: Array<OccupantContact>;
+  otherContacts: Array<OtherContact>;
+  secondaryApplicants: Array<SecondaryApplicant>;
 
   constructor(
   ) {}
@@ -252,6 +269,7 @@ export class OccupantsForm {
   relationship = new UntypedFormControl();
   phoneNumber = new UntypedFormControl();
   email = new UntypedFormControl();
+  secondaryApplicantType = new UntypedFormControl();
   fullTimeOccupant: UntypedFormGroup;
   fullTimeOccupants = new UntypedFormControl([]);
   addNewFullTimeOccupantIndicator = new UntypedFormControl(false);
@@ -352,6 +370,17 @@ export class OccupantsForm {
 
     });
     this.secondaryApplicant = builder.group({
+      secondaryApplicantType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
       firstName: [
         '',
         [
