@@ -142,7 +142,7 @@
           <div class="col-md-3">
             {{
               (formCreationService.personalDetailsForm$ | async)?.value
-                ?.isIndigenous
+                ?.indigenousStatus
             }}
           </div>
         </div>
@@ -161,7 +161,7 @@
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Primary Address</div>
           <div class="col-md-2">
-            <button
+            <!--<button
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
@@ -173,7 +173,7 @@
                 height="35"
                 width="35"
               />
-            </button>
+            </button>-->
           </div>
         </div>
         <hr />
@@ -378,7 +378,7 @@
           <div class="col-md-3">Cellular Telephone Number:</div>
           <div class="col-md-3">
             {{
-              (formCreationService.contactDetailsForm$ | async)?.value?.phone
+              (formCreationService.contactDetailsForm$ | async)?.value?.cellPhoneNumber
             }}
           </div>
         </div>
@@ -418,72 +418,6 @@
           <div class="col-md-3">
             {{
               (formCreationService.contactDetailsForm$ | async)?.value?.email
-            }}
-          </div>
-        </div>
-      </mat-card-content>
-
-      <mat-card-content style="display:none">
-        <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Security Questions</div>
-          <div class="col-md-2">
-            <button
-              class="edit-image"
-              mat-icon-button
-              aria-label="Edit"
-              (click)="editDetails('security-questions')"
-            >
-              <img src="/assets/images/edit.svg" height="35" width="35" />
-              <img
-                src="/assets/images/edit_onhover.svg"
-                height="35"
-                width="35"
-              />
-            </button>
-          </div>
-        </div>
-        <hr />
-        <div class="row info-detail">
-          <div class="col-md-3">
-            {{
-              (formCreationService.securityQuestionsForm$ | async)?.value
-                .questions.question1
-            }}
-          </div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.securityQuestionsForm$ | async)?.value
-                .questions.answer1
-            }}
-          </div>
-        </div>
-
-        <div class="row info-detail">
-          <div class="col-md-3">
-            {{
-              (formCreationService.securityQuestionsForm$ | async)?.value
-                .questions.question2
-            }}
-          </div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.securityQuestionsForm$ | async)?.value
-                .questions.answer2
-            }}
-          </div>
-        </div>
-
-        <div class="row info-detail">
-          <div class="col-md-3">
-            {{
-              (formCreationService.securityQuestionsForm$ | async)?.value
-                .questions.question3
-            }}
-          </div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.securityQuestionsForm$ | async)?.value
-                .questions.answer3
             }}
           </div>
         </div>
