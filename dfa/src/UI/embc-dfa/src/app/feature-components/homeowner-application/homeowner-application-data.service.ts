@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HomeOwnerApplication, DamagedPropertyAddress, PropertyDamage} from 'src/app/core/model/homeowner-application.model';
+import { HomeOwnerApplication, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, OtherContact, SecondaryApplicant, Occupants} from 'src/app/core/model/homeowner-application.model';
 import { CacheService } from 'src/app/core/services/cache.service';
 
 @Injectable({ providedIn: 'root' })
 export class HomeOwnerApplicationDataService {
   private _damagedPropertyAddress: DamagedPropertyAddress;
   private _propertyDamage: PropertyDamage;
+  private _occupants: Occupants;
+  private _cleanUpLog: CleanUpLog;
+  private _damagedItemsByRoom: DamagedItemsByRoom;
   private _homeOwnerApplication: HomeOwnerApplication;
   private _homeOwnerApplicationId: string;
 
@@ -45,13 +48,34 @@ export class HomeOwnerApplicationDataService {
     this._propertyDamage = value;
   }
 
+  public get occupants(): Occupants {
+    return this._occupants;
+  }
+
+  public set occupants(value: Occupants) {
+    this._occupants = value;
+  }
+  public get cleanUpLog(): CleanUpLog {
+    return this._cleanUpLog;
+  }
+
+  public set cleanUpLog(value: CleanUpLog) {
+    this._cleanUpLog = value;
+  }
+  public get damagedItemsByRoom(): DamagedItemsByRoom {
+    return this._damagedItemsByRoom;
+  }
+
+  public set damagedItemsByRoom(value: DamagedItemsByRoom) {
+    this._damagedItemsByRoom = value;
+  }
    public createHomeOwnerApplicationDTO(): HomeOwnerApplication {
     return {
       damagedPropertyAddress: this._damagedPropertyAddress,
       propertyDamage: this._propertyDamage,
-      occupants: null,
-      cleanUpLog: null,
-      damagedItemsByRoom: null
+      occupants: this._occupants,
+      cleanUpLog: this._cleanUpLog,
+      damagedItemsByRoom: this._damagedItemsByRoom
     };
   }
 }

@@ -1,8 +1,14 @@
 import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  UntypedFormBuilder,
   UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { RegAddress, Community, Country, StateProvince } from '../model/address';
+import { CustomValidationService } from '../services/customValidation.service';
 
 export interface DamagedPropertyAddress extends RegAddress {
   occupyAsPrimaryResidence: boolean;
@@ -218,24 +224,211 @@ export class PropertyDamageForm {
   }
 }
 
+// TODO This should be coming in from the API in api/models
+/* tslint:disable */
+/* eslint-disable */
+export enum SecondaryApplicantTypeOption {
+  Contact = 'Contact',
+  Organization = 'Organization',
+}
+
+
+export interface FullTimeOccupant {
+  firstName: string;
+  lastName: string;
+  relationship: string;
+}
+
+export interface OtherContact {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+}
+
+export interface SecondaryApplicant {
+  applicantType: SecondaryApplicantTypeOption;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+}
+
 export class Occupants {
-  field: boolean;
+  fullTimeOccupants: Array<FullTimeOccupant>;
+  otherContacts: Array<OtherContact>;
+  secondaryApplicants: Array<SecondaryApplicant>;
 
   constructor(
-    field?: boolean
   ) {}
 }
 
 export class OccupantsForm {
-  field = new UntypedFormControl();
+  firstName = new UntypedFormControl();
+  lastName = new UntypedFormControl();
+  relationship = new UntypedFormControl();
+  phoneNumber = new UntypedFormControl();
+  email = new UntypedFormControl();
+  secondaryApplicantType = new UntypedFormControl();
+  fullTimeOccupant: UntypedFormGroup;
+  fullTimeOccupants = new UntypedFormControl([]);
+  addNewFullTimeOccupantIndicator = new UntypedFormControl(false);
+  addNewOtherContactIndicator = new UntypedFormControl(false);
+  addNewSecondaryApplicantIndicator = new UntypedFormControl(false);
+  otherContact: UntypedFormGroup;
+  secondaryApplicant: UntypedFormGroup;
+  otherContacts = new UntypedFormControl([]);
+  secondaryApplicants = new UntypedFormControl([]);
 
   constructor(
-    occupants: Occupants
+    occupants: Occupants,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
   ) {
-    if (occupants.field) {
-      this.field.setValue(occupants.field);
-    }
-    this.field.setValidators(null);
+    this.fullTimeOccupant = builder.group({
+      firstName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFullTimeOccupantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      lastName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFullTimeOccupantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      relationship: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFullTimeOccupantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.otherContact = builder.group({
+      firstName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      lastName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      phoneNumber: [
+        '',
+        [
+          customValidator.maskedNumberLengthValidator().bind(customValidator),
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      email: [
+        '',
+        [
+          Validators.email,
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required,
+            )
+            .bind(customValidator)
+        ]
+      ]
+
+    });
+    this.secondaryApplicant = builder.group({
+      secondaryApplicantType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      firstName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      lastName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      phoneNumber: [
+        '',
+        [
+          customValidator.maskedNumberLengthValidator().bind(customValidator),
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      email: [
+        '',
+        [
+          Validators.email,
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required,
+            )
+            .bind(customValidator)
+        ]
+      ]
+
+    });
   }
 }
 

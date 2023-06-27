@@ -22,6 +22,8 @@ export class HomeOwnerApplicationMappingService {
 
   setExistingHomeOwnerApplication(homeOwnerApplication: HomeOwnerApplication): void {
     this.setDamagedPropertyAddressDetails(homeOwnerApplication);
+    this.setPropertyDamageDetails(homeOwnerApplication);
+    this.setOccupantsDetails(homeOwnerApplication);
   }
 
   private setDamagedPropertyAddressDetails(homeOwnerApplication: HomeOwnerApplication): void {
@@ -35,6 +37,36 @@ export class HomeOwnerApplicationMappingService {
           ...homeOwnerApplication
         });
         formGroup = damagedPropertyAddress;
+      });
+    this.homeOwnerApplicationDataService.damagedPropertyAddress = homeOwnerApplication.damagedPropertyAddress;
+  }
+
+  private setPropertyDamageDetails(homeOwnerApplication: HomeOwnerApplication): void {
+    let formGroup: UntypedFormGroup;
+
+    this.formCreationService
+      .getPropertyDamageForm()
+      .pipe(first())
+      .subscribe((propertyDamage) => {
+        propertyDamage.setValue({
+          ...homeOwnerApplication
+        });
+        formGroup = propertyDamage;
+      });
+    this.homeOwnerApplicationDataService.propertyDamage = homeOwnerApplication.propertyDamage;
+  }
+
+  private setOccupantsDetails(homeOwnerApplication: HomeOwnerApplication): void {
+    let formGroup: UntypedFormGroup;
+
+    this.formCreationService
+      .getOccupantsForm()
+      .pipe(first())
+      .subscribe((occupants) => {
+        occupants.setValue({
+          ...homeOwnerApplication
+        });
+        formGroup = occupants;
       });
     this.homeOwnerApplicationDataService.damagedPropertyAddress = homeOwnerApplication.damagedPropertyAddress;
   }
