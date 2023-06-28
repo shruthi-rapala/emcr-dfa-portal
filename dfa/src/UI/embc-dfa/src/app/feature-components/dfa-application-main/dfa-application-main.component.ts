@@ -14,32 +14,34 @@ import { MatStepper } from '@angular/material/stepper';
 import { Subscription } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { HomeOwnerApplicationDataService } from './homeowner-application-data.service';
-import { HomeOwnerApplicationService } from './homeowner-application.service';
+import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
+import { DFAApplicationMainService } from './dfa-application-main.service';
+import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
 
 @Component({
-  selector: 'app-homeowner-application',
-  templateUrl: './homeowner-application.component.html',
-  styleUrls: ['./homeowner-application.component.scss']
+  selector: 'app-dfa-application-main',
+  templateUrl: './dfa-application-main.component.html',
+  styleUrls: ['./dfa-application-main.component.scss']
 })
-export class HomeOwnerApplicationComponent
+export class DFAApplicationMainComponent
   implements OnInit, AfterViewInit, AfterViewChecked
 {
-  @ViewChild('homeOwnerApplicationStepper') homeOwnerApplicationStepper: MatStepper;
+  @ViewChild('dfaApplicationMainStepper') dfaApplicationMainStepper: MatStepper;
   isEditable = true;
   steps: Array<ComponentMetaDataModel> = new Array<ComponentMetaDataModel>();
   showStep = false;
-  homeOwnerApplicationFolderPath = 'homeowner-application-forms';
+  dfaApplicationMainFolderPath = 'dfa-application-main-forms';
   path: string;
   form$: Subscription;
   form: UntypedFormGroup;
   stepToDisplay: number;
   currentFlow: string;
-  type = 'homeowner-application';
-  homeOwnerApplicationHeading: string;
-  parentPageName = 'homeowner-application';
+  type = 'dfa-application-main';
+  dfaApplicationMainHeading: string;
+  parentPageName = 'dfa-application-main';
   showLoader = false;
   isSubmitted = false;
+  ApplicantOptions = ApplicantOption;
 
   constructor(
     private router: Router,
@@ -48,8 +50,8 @@ export class HomeOwnerApplicationComponent
     private formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
-    private homeOwnerApplicationDataService: HomeOwnerApplicationDataService,
-    private homeOwnerApplicationService: HomeOwnerApplicationService
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private dfaApplicationMainService: DFAApplicationMainService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -62,8 +64,8 @@ export class HomeOwnerApplicationComponent
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    this.homeOwnerApplicationHeading = 'Home Owner Application';
-    this.steps = this.componentService.createHomeOwnerApplicationSteps();
+    this.dfaApplicationMainHeading = this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption + ' Application';
+    this.steps = this.componentService.createDFAApplicationMainSteps();
   }
 
   ngAfterViewChecked(): void {
@@ -143,21 +145,21 @@ export class HomeOwnerApplicationComponent
   setFormData(component: string): void {
     switch (component) {
       case 'damaged-property-address':
-        this.homeOwnerApplicationDataService.damagedPropertyAddress = this.form.value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress = this.form.value;
         break;
       case 'property-damage':
-        this.homeOwnerApplicationDataService.propertyDamage = this.form.value;
+        this.dfaApplicationMainDataService.propertyDamage = this.form.value;
         break;
       case 'occupants':
-        this.homeOwnerApplicationService.setFullTimeOccupants(this.form.get('fullTimeOccupants').value);
-        this.homeOwnerApplicationService.setOtherContacts(this.form.get('otherContacts').value);
-        this.homeOwnerApplicationService.setSecondaryApplicants(this.form.get('secondaryApplicants').value);
+        this.dfaApplicationMainService.setFullTimeOccupants(this.form.get('fullTimeOccupants').value);
+        this.dfaApplicationMainService.setOtherContacts(this.form.get('otherContacts').value);
+        this.dfaApplicationMainService.setSecondaryApplicants(this.form.get('secondaryApplicants').value);
         break;
       case 'clean-up-log':
-        this.homeOwnerApplicationDataService.cleanUpLog = this.form.value;
+        this.dfaApplicationMainDataService.cleanUpLog = this.form.value;
         break;
       case 'damaged-items-by-room':
-        this.homeOwnerApplicationDataService.damagedItemsByRoom = this.form.value;
+        this.dfaApplicationMainDataService.damagedItemsByRoom = this.form.value;
         break;
       default:
     }

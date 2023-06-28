@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { FullTimeOccupant, HomeOwnerApplication, OtherContact, SecondaryApplicant } from 'src/app/core/model/homeowner-application.model';
+import { FullTimeOccupant, DFAApplicationMain, OtherContact, SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
 // import { DFAApplicationStartService as Service } from '../../core/api/services/dfa-application-start.service';
-import { HomeOwnerApplicationMappingService } from './homeowner-application-mapping.service';
-import { HomeOwnerApplicationDataService } from './homeowner-application-data.service';
+import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
+import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 
 @Injectable({ providedIn: 'root' })
-export class HomeOwnerApplicationService {
+export class DFAApplicationMainService {
   private _fullTimeOccupants: Array<FullTimeOccupant> = [];
   private _otherContacts: Array<OtherContact> = [];
   private _secondaryApplicants: Array<SecondaryApplicant> = [];
 
   constructor(
-    private homeOwnerApplicationMapping: HomeOwnerApplicationMappingService,
-    private homeOwnerApplicationDataService: HomeOwnerApplicationDataService
+    private dfaApplicationMainMapping: DFAApplicationMainMappingService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {}
 
   public get fullTimeOccupants(): Array<FullTimeOccupant> {
@@ -35,7 +35,7 @@ export class HomeOwnerApplicationService {
       fullTimeOccupantsArray.push(fullTimeOccupant);
     }
     this.fullTimeOccupants = fullTimeOccupantsArray;
-    this.homeOwnerApplicationDataService.occupants = {
+    this.dfaApplicationMainDataService.occupants = {
       fullTimeOccupants: this.fullTimeOccupants,
       otherContacts: this.otherContacts,
       secondaryApplicants: this.secondaryApplicants
@@ -63,7 +63,7 @@ export class HomeOwnerApplicationService {
       otherContactsArray.push(otherContact);
     }
     this.otherContacts = otherContactsArray;
-    this.homeOwnerApplicationDataService.occupants = {
+    this.dfaApplicationMainDataService.occupants = {
       fullTimeOccupants: this.fullTimeOccupants,
       otherContacts: this.otherContacts,
       secondaryApplicants: this.secondaryApplicants
@@ -93,7 +93,7 @@ export class HomeOwnerApplicationService {
       secondaryApplicantsArray.push(secondaryApplicant);
     }
     this.secondaryApplicants = secondaryApplicantsArray;
-    this.homeOwnerApplicationDataService.occupants = {
+    this.dfaApplicationMainDataService.occupants = {
       fullTimeOccupants: this.fullTimeOccupants,
       otherContacts: this.otherContacts,
       secondaryApplicants: this.secondaryApplicants

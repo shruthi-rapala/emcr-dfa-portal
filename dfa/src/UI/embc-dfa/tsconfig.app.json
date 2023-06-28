@@ -14,6 +14,6 @@
     "src/app/sharedModules/forms/evacuee-profile-forms/**/*.component.ts",
     "src/app/sharedModules/forms/needs-assessment-forms/**/*.component.ts",
     "src/app/sharedModules/forms/dfa-application-start-forms/**/*.component.ts",
-    "src/app/sharedModules/forms/homeowner-application-forms/**/*.component.ts"
+    "src/app/sharedModules/forms/dfa-application-main-forms/**/*.component.ts"
   ]
 }

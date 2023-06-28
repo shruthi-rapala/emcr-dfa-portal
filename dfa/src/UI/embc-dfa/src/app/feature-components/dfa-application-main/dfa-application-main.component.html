@@ -1,7 +1,7 @@
 <div class="container container-frame">
   <div class="row heading-container">
     <div class="col-8">
-      <span class="page-heading">{{ homeOwnerApplicationHeading }}</span>
+      <span class="page-heading">{{ dfaApplicationMainHeading }}</span>
     </div>
     <div class="col-4">
       <button
@@ -24,16 +24,16 @@
   <mat-horizontal-stepper
     class="stepper-style"
     labelPosition="bottom"
-    (animationDone)="currentStep(homeOwnerApplicationStepper?.selectedIndex)"
-    (selectionChange)="stepChanged($event, homeOwnerApplicationStepper)"
-    #homeOwnerApplicationStepper
+    (animationDone)="currentStep(dfaApplicationMainStepper?.selectedIndex)"
+    (selectionChange)="stepChanged($event, dfaApplicationMainStepper)"
+    #dfaApplicationMainStepper
     [linear]="false"
   >
     <mat-step *ngFor="let step of steps" [stepControl]="form">
       <ng-template matStepLabel>{{ step.stepName }}</ng-template>
       <app-component-wrapper
         [componentName]="step.component"
-        [folderPath]="homeOwnerApplicationFolderPath"
+        [folderPath]="dfaApplicationMainFolderPath"
       ></app-component-wrapper>
       <br />
       <div class="row justify-content-between resp-style">
@@ -42,7 +42,7 @@
             class="button-s"
             mat-button
             type="button"
-            (click)="goBack(homeOwnerApplicationStepper, step.lastStep)"
+            (click)="goBack(dfaApplicationMainStepper, step.lastStep)"
           >
             {{ step.backButtonLabel }}
           </button>
@@ -56,7 +56,7 @@
             class="button-p"
             mat-stroked-button
             type="button"
-            (click)="goForward(homeOwnerApplicationStepper, step.isLast, step.component)"
+            (click)="goForward(dfaApplicationMainStepper, step.isLast, step.component)"
           >
             Review Submission
           </button>
@@ -65,7 +65,7 @@
             class="button-p"
             mat-stroked-button
             type="button"
-            (click)="goForward(homeOwnerApplicationStepper, step.isLast, step.component)"
+            (click)="goForward(dfaApplicationMainStepper, step.isLast, step.component)"
           >
             {{ step.nextButtonLabel }}
           </button>
@@ -92,7 +92,7 @@
         [disabled]="isSubmitted"
         mat-stroked-button
         type="button"
-        (click)="goForward(homeOwnerApplicationStepper, true, 'review')"
+        (click)="goForward(dfaApplicationMainStepper, true, 'review')"
       >
         Save & Submit
         <app-loader

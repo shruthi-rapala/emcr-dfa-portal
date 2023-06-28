@@ -29,6 +29,7 @@
               <div class="row radio-extra-label" *ngIf="useProfileAddress === '1'">
                 <app-bc-address
                   [addressForm]="damagedPropertyAddressForm"
+                  [primaryAddressWarning]="false"
                 ></app-bc-address>
               </div>
             </mat-radio-group><br/><br/>
@@ -103,7 +104,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOptions.Homeowner">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               As the Home Owner, are you eligible for a BC Home Owner Grant for this property?<span style="color:red" >*</span>
@@ -115,6 +116,85 @@
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
             </mat-radio-group>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOptions.ResidentialTenant">
+          <p class="sub-heading" style="font-size: 15px">
+           Provide the registered building owner(s) and/or landlord(s) name(s) and/or phone number(s).<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>First name</mat-label>
+              <input formControlName="landlordGivenNames" matInput placeholder="First name" required/>
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordGivenNames').invalid &&
+                  damagedPropertyAddressForm.get('landlordGivenNames').hasError('required') &&
+                  damagedPropertyAddressForm.get('landlordGivenNames').touched
+                "
+              >
+                First Name is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Last name</mat-label>
+              <input formControlName="landlordSurname" matInput placeholder="Last name" required/>
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordSurname').invalid &&
+                  damagedPropertyAddressForm.get('landlordSurname').hasError('required') &&
+                  damagedPropertyAddressForm.get('landlordSurname').touched
+                "
+              >
+                Last Name is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Contact Telephone</mat-label>
+              <input formControlName="landlordPhone1"
+                matInput required
+                placeholder="Contact Telephone"
+                [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordPhone1').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone1').hasError('incorrectLength')
+                "
+              >
+                Telephone number must have 10 digits</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordPhone1').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone1').hasError('required') &&
+                  damagedPropertyAddressForm.get('landlordPhone1').touched
+                "
+              >
+                Telephone number is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Contact Telephone</mat-label>
+              <input formControlName="landlordPhone2"
+                matInput
+                placeholder="Contact Telephone"
+                [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordPhone2').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone2').hasError('incorrectLength')
+                "
+              >
+                Telephone number must have 10 digits</mat-error
+              >
+            </mat-form-field>
           </div>
         </div>
 

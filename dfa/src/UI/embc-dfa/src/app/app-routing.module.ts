@@ -37,11 +37,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'homeowner-application',
+    path: 'dfa-application-main',
     loadChildren: () =>
       import(
-        './feature-components/homeowner-application/homeowner-application.module'
-      ).then((m) => m.HomeOwnerApplicationModule),
+        './feature-components/dfa-application-main/dfa-application-main.module'
+      ).then((m) => m.DFAApplicationMainModule),
     canActivate: [AuthGuard]
   },
   {

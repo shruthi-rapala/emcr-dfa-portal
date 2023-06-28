@@ -7,7 +7,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { RegAddress, Community, Country, StateProvince } from '../model/address';
+import { RegAddress, Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
 
 export interface DamagedPropertyAddress extends RegAddress {
@@ -15,7 +15,11 @@ export interface DamagedPropertyAddress extends RegAddress {
   onAFirstNationsReserve: boolean;
   firstNationsReserve?: FirstNationsReserve | string;
   manufacturedHome?: boolean;
-  eligibleForHomeOwnerGrant: boolean;
+  eligibleForHomeOwnerGrant?: boolean;
+  landlordGivenNames?: string;
+  landlordSurname?: string;
+  landlordPhone1?: string;
+  landlordPhone2?: string;
 }
 
 export interface FirstNationsReserve
@@ -37,7 +41,11 @@ export class DamagedPropertyAddress implements DamagedPropertyAddress {
     onAFirstNationsReserve?: null | boolean,
     firstNationsReserve?: FirstNationsReserve | string,
     manufacturedHome?: null | boolean,
-    eligibleForHomeOwnerGrant?: null | boolean
+    eligibleForHomeOwnerGrant?: null | boolean,
+    landlordGivenNames?: null | string,
+    landlordSurname?: null | string,
+    landlordPhone1?: null | string,
+    landlordPhone2?: null | string
   ) {}
 }
 
@@ -53,9 +61,14 @@ export class DamagedPropertyAddressForm {
   firstNationsReserve = new UntypedFormControl();
   manufacturedHome = new UntypedFormControl();
   eligibleForHomeOwnerGrant = new UntypedFormControl();
+  landlordGivenNames = new UntypedFormControl();
+  landlordSurname = new UntypedFormControl();
+  landlordPhone1 = new UntypedFormControl();
+  landlordPhone2 = new UntypedFormControl();
 
   constructor(
-    damagedPropertyAddress: DamagedPropertyAddress
+    damagedPropertyAddress: DamagedPropertyAddress,
+    customValidator: CustomValidationService
   ) {
     if (damagedPropertyAddress.addressLine1) {
       this.addressLine1.setValue(damagedPropertyAddress.addressLine1);
@@ -110,7 +123,27 @@ export class DamagedPropertyAddressForm {
     if (damagedPropertyAddress.eligibleForHomeOwnerGrant) {
       this.eligibleForHomeOwnerGrant.setValue(damagedPropertyAddress.eligibleForHomeOwnerGrant);
     }
-    this.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
+    this.eligibleForHomeOwnerGrant.setValidators(null);
+
+    if (damagedPropertyAddress.landlordGivenNames) {
+      this.landlordGivenNames.setValue(damagedPropertyAddress.landlordGivenNames);
+    }
+    this.landlordGivenNames.setValidators(null);
+
+    if (damagedPropertyAddress.landlordSurname) {
+      this.landlordSurname.setValue(damagedPropertyAddress.landlordSurname);
+    }
+    this.landlordSurname.setValidators(null);
+
+    if (damagedPropertyAddress.landlordPhone1) {
+      this.landlordPhone1.setValue(damagedPropertyAddress.landlordPhone1);
+    }
+    this.landlordPhone1.setValidators([customValidator.maskedNumberLengthValidator().bind(customValidator)]);
+
+    if (damagedPropertyAddress.landlordPhone2) {
+      this.landlordPhone2.setValue(damagedPropertyAddress.landlordPhone2);
+    }
+    this.landlordPhone2.setValidators([customValidator.maskedNumberLengthValidator().bind(customValidator)]);
   }
 }
 
@@ -477,9 +510,9 @@ export class DamagedItemsByRoomForm {
 
 // TODO This should be coming in from the API in api/models
 /**
- * Homeowner Application
+ * DFA Application Main
  */
-export interface HomeOwnerApplication {
+export interface DFAApplicationMain {
   id?: string;
   damagedPropertyAddress?: DamagedPropertyAddress;
   propertyDamage?: PropertyDamage;

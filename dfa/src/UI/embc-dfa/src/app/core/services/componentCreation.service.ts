@@ -73,14 +73,14 @@ export class ComponentCreationService {
       component: 'apptype-insurance',
       nextButtonLabel: 'Next - Damaged Property',
       backButtonLabel: 'Go Back & Edit',
-      isLast: false,
+      isLast: true,
       loadWrapperButton: false,
       lastStep: 0,
       stepName: 'Application Type & Insurance'
     }
   ];
 
-  homeOwnerApplicationComponents: Array<any> = [
+  dfaApplicationMainComponents: Array<any> = [
     {
       component: 'damaged-property-address',
       nextButtonLabel: 'Next - Cause of Damage',
@@ -202,10 +202,10 @@ export class ComponentCreationService {
     return componentArr;
   }
 
-  createHomeOwnerApplicationSteps(): Array<ComponentMetaDataModel> {
+  createDFAApplicationMainSteps(): Array<ComponentMetaDataModel> {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
-    for (const comp of this.homeOwnerApplicationComponents) {
+    for (const comp of this.dfaApplicationMainComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;

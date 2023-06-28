@@ -333,6 +333,15 @@
                       >
                         Telephone number must have 10 digits</mat-error
                       >
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.hasError('required') &&
+                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.touched
+                        "
+                      >
+                        Telephone number is required</mat-error
+                    >
                     </mat-form-field>
                   </div>
                   <div class="col-md-3">
@@ -340,16 +349,25 @@
                       <mat-label>Applicant contact email</mat-label>
                       <input formControlName="email" matInput placeholder="Applicant contact email" required/>
                       <mat-error
-                      *ngIf="
-                        occupantsForm.get('secondaryApplicant').controls.email.invalid
-                      "
-                    >
-                      Invalid email address</mat-error
-                    >
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.email.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.email.hasError('email')
+                        "
+                        >
+                        Invalid email address</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.email.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.email.hasError('required') &&
+                          occupantsForm.get('secondaryApplicant').controls.email.touched
+                        "
+                        >
+                        Email address is required</mat-error
+                      >
                     </mat-form-field>
                   </div>
                 </div>
-                <!-- <button type="button" (click)="showSecondaryApplicantsForm()">Show Form</button> -->
 
                 <div class="row">
                   <div class="col-md-3">

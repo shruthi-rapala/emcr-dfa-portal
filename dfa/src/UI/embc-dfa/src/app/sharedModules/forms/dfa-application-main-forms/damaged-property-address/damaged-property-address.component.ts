@@ -4,11 +4,13 @@ import {
   UntypedFormGroup,
   AbstractControl,
   FormsModule,
+  Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileDataService } from '../../../../feature-components/profile/profile-data.service';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
@@ -22,7 +24,11 @@ import { RegAddress } from 'src/app/core/model/address';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-
+import { Profile } from 'src/app/core/api/models';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
+import { TextMaskModule } from 'angular2-text-mask';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-damaged-property-address',
@@ -36,12 +42,29 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   formCreationService: FormCreationService;
   useProfileAddress: string = "1";
   private _profileAddress: RegAddress;
+  public ApplicantOptions = ApplicantOption;
+  readonly phoneMask = [
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/
+  ];
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     private router: Router,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService,
+    public profileDataService: ProfileDataService,
     public dialog: MatDialog
 
   ) {
@@ -61,9 +84,19 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .getDamagedPropertyAddressForm()
       .subscribe((damagedPropertyAddress) => {
         this.damagedPropertyAddressForm = damagedPropertyAddress;
-        this.damagedPropertyAddressForm.updateValueAndValidity();
+        // this.damagedPropertyAddressForm.updateValueAndValidity();
+        if (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOption.Homeowner) {
+          this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
+          this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators(null);
+          this.damagedPropertyAddressForm.controls.landlordSurname.setValidators(null);
+          this.damagedPropertyAddressForm.controls.landlordPhone1.removeValidators([Validators.required]);
+        } else if (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOption.ResidentialTenant) {
+          this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
+          this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required]);
+          this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required]);
+          this.damagedPropertyAddressForm.controls.landlordPhone1.addValidators([Validators.required]);
+        }
       });
-
 
     this.damagedPropertyAddressForm
       .get('addressLine1')
@@ -166,6 +199,42 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         }
       });
 
+      this.damagedPropertyAddressForm
+      .get('landlordGivenNames')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.damagedPropertyAddressForm.get('landlordGivenNames').reset();
+        }
+      });
+
+      this.damagedPropertyAddressForm
+      .get('landlordSurname')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.damagedPropertyAddressForm.get('landlordSurname').reset();
+        }
+      });
+
+      this.damagedPropertyAddressForm
+      .get('landlordPhone1')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.damagedPropertyAddressForm.get('landlordPhone1').reset();
+        }
+      });
+
+      this.damagedPropertyAddressForm
+      .get('landlordPhone2')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.damagedPropertyAddressForm.get('landlordPhone2').reset();
+        }
+      });
+
     // TODO: retrieve actual profile address
     this.profileAddress = {
       addressLine1: "564 Vedder Rd.",
@@ -258,7 +327,9 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     FormsModule,
     MatCardModule,
     MatFormFieldModule,
+    TextMaskModule,
     MatRadioModule,
+    MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
     DirectivesModule,

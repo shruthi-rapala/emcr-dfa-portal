@@ -13,7 +13,7 @@ import {
 } from '../model/profile.model';
 import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application-start.model';
 import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
-  CleanUpLog, CleanUpLogForm } from '../model/homeowner-application.model';
+  CleanUpLog, CleanUpLogForm } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import {
   Evacuated,
@@ -107,12 +107,13 @@ export class FormCreationService {
   profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
     this.profileVerificationForm.asObservable();
 
-  // HomeOwner Applciation Forms
+  // DFA Applciation Main Forms
   damagedPropertyAddressForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
        new DamagedPropertyAddressForm(
-         new DamagedPropertyAddress()
+         new DamagedPropertyAddress(),
+         this.customValidator
        )
      )
    );
@@ -416,7 +417,8 @@ export class FormCreationService {
     this.damagedPropertyAddressForm.next(
       this.formBuilder.group(
         new DamagedPropertyAddressForm(
-          new DamagedPropertyAddress()
+          new DamagedPropertyAddress(),
+          this.customValidator
         )
       )
     );

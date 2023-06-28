@@ -124,7 +124,7 @@ export class DFAApplicationStartComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
-    if (isLast && component === 'review') {
+    if (isLast) {
       this.submitFile();
     } else if (this.form.status === 'VALID') {
       if (isLast) {
@@ -205,7 +205,7 @@ export class DFAApplicationStartComponent
       // .subscribe({
         // next: (profileId) => {
           // this.profileDataService.setProfileId(profileId);
-          this.router.navigate(['/verified-registration/dashboard']);
+          this.router.navigate(['/dfa-application-main']);
         // },
         // error: (error) => {
           // this.showLoader = !this.showLoader;
