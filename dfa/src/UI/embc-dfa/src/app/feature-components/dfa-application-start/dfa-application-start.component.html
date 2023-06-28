@@ -3,14 +3,15 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationStartHeading }}</span>
     </div>
-    <div class="col-4" *ngIf="consent !== true">
+    <div class="col-4" *ngIf="showSaveButton === true">
       <button
         class="button-p save-button col-4"
         [disabled]="isSubmitted"
+        (click)="saveAndBackToDashboard()"
         mat-stroked-button
         type="button"
         >
-         Save & Close
+         Save & Back to Dashboard
          <app-loader
           [strokeWidth]="3"
           [diameter]="25"
