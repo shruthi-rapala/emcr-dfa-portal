@@ -3,14 +3,174 @@
 
     <form [formGroup]="damagedItemsByRoomForm">
 
-      <ng-container>
-        <div class="row">
-          <div class="col-md-12">
-            <p class="sub-heading">Under Construction</p>
-          </div>
-        </div>
+      <p class="sub-heading" style="font-size: 20px">Damaged Items by Room</p>
+      <br />
 
-      </ng-container>
+      <div formGroupName="damagedRoom">
+        <ng-container>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="sub-heading" style="font-size: 15px">
+                For each room, list items submitted for damage assessment. For example:
+              </p>
+
+              <table mat-table [dataSource]="damagedRoomsDataSource" *ngIf="damagedRoomsDataSource.getValue().length > 0" style="width:100%">
+                <!-- Room Type Column -->
+                <ng-container matColumnDef="roomType" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Room</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.roomType === RoomTypes.Other ? element.otherRoomType : element.roomType }}
+                  </td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Damaged Items</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.description}}
+                  </td>
+                </ng-container>
+
+                <!-- Delete Icon Column -->
+                <ng-container matColumnDef="deleteIcon" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    &nbsp;
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    <button
+                    class="delete-image"
+                    mat-icon-button
+                    aria-label="Remove"
+                    (click)="deleteDamagedRoomRow(index)"
+                  >
+                    <img src="/assets/images/delete.svg" height="35" width="35" />
+                    <img
+                      src="/assets/images/delete_onhover.svg"
+                      height="35"
+                      width="35"
+                    />
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="damagedRoomColumnsToDisplay"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let element; columns: damagedRoomColumnsToDisplay"
+                  class="example-element-row"
+                  [style.height]="'auto'"
+                ></tr>
+
+              </table>
+
+              <div  *ngIf="damagedRoomsDataSource.getValue().length > 0">
+                <br /><br/>
+              </div>
+
+              <button
+                *ngIf="!showDamagedRoomForm"
+                class="family-button"
+                mat-button
+                type="button"
+                (click)="addDamagedRoom()"
+              >
+                + Add Room & Items
+              </button>
+
+              <mat-card *ngIf="showDamagedRoomForm">
+                <p class="sub-heading" style="font-size: 15px">
+                  New room and items
+                </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Select a room type</mat-label>
+                      <mat-select formControlName="roomType" matInput placeholder="Full-time occupant first name" required (selectionChange)="onSelectRoomType($event.value)">
+                        <mat-option *ngFor="let option of RoomTypes | keyvalue: originalOrder" [value]="option.key">{{ option.value }}</mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="
+                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.invalid &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.hasError('required') &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.touched
+                        "
+                      >
+                        Room type is required</mat-error
+                      >
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" *ngIf="showOtherRoomType === true">
+                      <mat-label>Please specify Other room</mat-label>
+                      <input formControlName="otherRoomType" matInput placeholder="Please specify Other room" required/>
+                      <mat-error
+                        *ngIf="
+                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.invalid &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.hasError('required') &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.touched
+                        "
+                      >
+                        Other room type is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-8">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Damaged Items</mat-label>
+                      <textarea matInput
+                        formControlName="description"
+                        placeholder="Damaged Items"
+                        [rows]="5"
+                        style="resize:none"
+                        required
+                        (keyup)="calcRemainingChars()"></textarea>
+                      <mat-error
+                        *ngIf="
+                          damagedItemsByRoomForm.get('damagedRoom').controls.description.invalid &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.description.hasError('required') &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.description.touched
+                        "
+                      >
+                        Description is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelDamagedRooms()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    <button
+                      class="family-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveDamagedRooms()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+            </div>
+
+          </div>
+
+        </ng-container>
+
+      </div><br/><br/>
+
     </form>
 
   </mat-card-content>

@@ -486,25 +486,80 @@ export class CleanUpLogForm {
   }
 }
 
+export enum RoomType {
+  Bathroom = 'Bathroom',
+  Bedroom = 'Bedroom',
+  Dining = 'Dining room',
+  Family = 'Family room',
+  Garage = 'Garage (attached; detached garages can`t be included)',
+  Kitchen = 'Kitchen',
+  Laundry = 'Laundry room',
+  Living = 'Living room',
+  Other = 'Other',
+}
+
+export interface DamagedRoom {
+  roomType: RoomType;
+  otherRoomType: string;
+  description: string;
+}
+
 
 export class DamagedItemsByRoom {
-  field: boolean;
+  damagedRooms: Array<DamagedRoom>;
 
   constructor(
-    field?: boolean
   ) {}
 }
 
 export class DamagedItemsByRoomForm {
-  field = new UntypedFormControl();
+  roomType = new UntypedFormControl();
+  otherRoomType = new UntypedFormControl();
+  description = new UntypedFormControl();
+  damagedRoom: UntypedFormGroup;
+  damagedRooms = new UntypedFormControl([]);
+  addNewDamagedRoomIndicator = new UntypedFormControl(false);
 
   constructor(
-    damagedItemsByRoom: DamagedItemsByRoom
+    damagedItemsByRoom: DamagedItemsByRoom,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
   ) {
-    if (damagedItemsByRoom.field) {
-      this.field.setValue(damagedItemsByRoom.field);
-    }
-    this.field.setValidators(null);
+    this.damagedRoom = builder.group({
+      roomType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewDamagedRoomIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      otherRoomType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewDamagedRoomIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      description: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewDamagedRoomIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+    });
   }
 }
 

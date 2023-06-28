@@ -76,12 +76,20 @@
         <!-- TODO: drop down list from ERA -->
         <div class="row" *ngIf="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'">
           <div class="col-md-6 bottomspace">
-            <input
-              formControlName="firstNationsReserve"
-              style="width:50%"
-              matInput
-              placeholder="Name of First Nations Reserve"
-            /><br/><br/><br/>
+            <mat-form-field appearance="outline">
+              <mat-label>Name of First Nations Reserve</mat-label>
+              <input formControlName="firstNationsReserve" matInput placeholder="Name of First Nations Reserve" required/>
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('firstNationsReserve').invalid &&
+                  damagedPropertyAddressForm.get('firstNationsReserve').hasError('required') &&
+                  damagedPropertyAddressForm.get('firstNationsReserve').touched
+                "
+              >
+                First Nations Reserve Name is required</mat-error
+              >
+            </mat-form-field>
+            <br/><br/><br/>
           </div>
         </div>
 
