@@ -28,7 +28,7 @@ export class DFAApplicationStartComponent
 {
   @ViewChild('dfaApplicationStartStepper') dfaApplicationStartStepper: MatStepper;
   isEditable = true;
-  consent: boolean = true;
+  showSaveButton: boolean = false;
   fullInsurance: boolean = false;
   steps: Array<ComponentMetaDataModel> = new Array<ComponentMetaDataModel>();
   showStep = false;
@@ -173,6 +173,7 @@ export class DFAApplicationStartComponent
           .subscribe((consent) => {
             this.form = consent;
           });
+        this.showSaveButton = false;
         break;
       case 1:
         this.form$ = this.formCreationService
@@ -180,6 +181,7 @@ export class DFAApplicationStartComponent
           .subscribe((profileVerification) => {
             this.form = profileVerification;
           });
+        this.showSaveButton = false;
         break;
       case 2:
         this.form$ = this.formCreationService
@@ -187,8 +189,28 @@ export class DFAApplicationStartComponent
           .subscribe((appTypeInsurance) => {
             this.form = appTypeInsurance;
           });
+        this.showSaveButton = true;
         break;
     }
+  }
+
+  saveAndBackToDashboard(): void {
+    this.showLoader = !this.showLoader;
+    this.isSubmitted = !this.isSubmitted;
+    this.alertService.clearAlert();
+    // this.dfaApplicationStartService
+      // .upsertProfile(this.profileDataService.createProfileDTO())
+      // .subscribe({
+        // next: (profileId) => {
+          // this.profileDataService.setProfileId(profileId);
+          this.router.navigate(['/verified-registration/dashboard']);
+        // },
+        // error: (error) => {
+          // this.showLoader = !this.showLoader;
+          // this.isSubmitted = !this.isSubmitted;
+          // this.alertService.setAlert('danger', globalConst.saveProfileError);
+        // }
+      // });
   }
 
   submitFile(): void {
