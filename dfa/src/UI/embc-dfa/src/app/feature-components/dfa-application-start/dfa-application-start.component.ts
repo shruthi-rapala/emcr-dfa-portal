@@ -14,32 +14,32 @@ import { MatStepper } from '@angular/material/stepper';
 import { Subscription } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { DFAApplicationDataService } from './dfa-application-data.service';
-import { DFAApplicationService } from './dfa-application.service';
-import { InsuranceOption } from 'src/app/core/model/dfa-application.model';
+import { DFAApplicationStartDataService } from './dfa-application-start-data.service';
+import { DFAApplicationStartService } from './dfa-application-start.service';
+import { InsuranceOption } from 'src/app/core/model/dfa-application-start.model';
 
 @Component({
-  selector: 'app-dfa-application',
-  templateUrl: './dfa-application.component.html',
-  styleUrls: ['./dfa-application.component.scss']
+  selector: 'app-dfa-application-start',
+  templateUrl: './dfa-application-start.component.html',
+  styleUrls: ['./dfa-application-start.component.scss']
 })
-export class DFAApplicationComponent
+export class DFAApplicationStartComponent
   implements OnInit, AfterViewInit, AfterViewChecked
 {
-  @ViewChild('dfaApplicationStepper') dfaApplicationStepper: MatStepper;
+  @ViewChild('dfaApplicationStartStepper') dfaApplicationStartStepper: MatStepper;
   isEditable = true;
   fullInsurance: boolean = false;
   steps: Array<ComponentMetaDataModel> = new Array<ComponentMetaDataModel>();
   showStep = false;
-  dfaApplicationFolderPath = 'dfa-application-forms';
+  dfaApplicationStartFolderPath = 'dfa-application-start-forms';
   path: string;
   form$: Subscription;
   form: UntypedFormGroup;
   stepToDisplay: number;
   currentFlow: string;
-  type = 'dfa-application';
-  dfaApplicationHeading: string;
-  parentPageName = 'dfa-application';
+  type = 'dfa-application-start';
+  dfaApplicationStartHeading: string;
+  parentPageName = 'dfa-application-start';
   showLoader = false;
   isSubmitted = false;
 
@@ -50,8 +50,8 @@ export class DFAApplicationComponent
     private formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
-    private dfaApplicationDataService: DFAApplicationDataService,
-    private dfaApplicationService: DFAApplicationService
+    private dfaApplicationStartDataService: DFAApplicationStartDataService,
+    private dfaApplicationStartService: DFAApplicationStartService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -68,8 +68,8 @@ export class DFAApplicationComponent
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    this.dfaApplicationHeading = 'Create Your Application';
-    this.steps = this.componentService.createDFAApplicationSteps();
+    this.dfaApplicationStartHeading = 'Create Your Application';
+    this.steps = this.componentService.createDFAApplicationStartSteps();
   }
 
   ngAfterViewChecked(): void {
@@ -124,7 +124,7 @@ export class DFAApplicationComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
-    if (isLast && component === 'review') {
+    if (isLast) {
       this.submitFile();
     } else if (this.form.status === 'VALID') {
       if (isLast) {
@@ -150,16 +150,16 @@ export class DFAApplicationComponent
   setFormData(component: string): void {
     switch (component) {
       case 'consent':
-        this.dfaApplicationDataService.consent = this.form.value;
+        this.dfaApplicationStartDataService.consent = this.form.value;
         break;
       case 'profile-verification':
-        this.dfaApplicationDataService.profileVerification = this.form.value;
+        this.dfaApplicationStartDataService.profileVerification = this.form.value;
         break;
       case 'app-type-insurance':
-        this.dfaApplicationDataService.applicantOption = this.form.value;
-        this.dfaApplicationDataService.insuranceOption = this.form.value;
-        this.dfaApplicationDataService.smallBusinessOption = this.form.value;
-        this.dfaApplicationDataService.farmOption = this.form.value;
+        this.dfaApplicationStartDataService.applicantOption = this.form.value;
+        this.dfaApplicationStartDataService.insuranceOption = this.form.value;
+        this.dfaApplicationStartDataService.smallBusinessOption = this.form.value;
+        this.dfaApplicationStartDataService.farmOption = this.form.value;
         break;
       default:
     }
@@ -200,12 +200,12 @@ export class DFAApplicationComponent
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    // this.dfaApplicationService
+    // this.dfaApplicationStartService
       // .upsertProfile(this.profileDataService.createProfileDTO())
       // .subscribe({
         // next: (profileId) => {
           // this.profileDataService.setProfileId(profileId);
-          this.router.navigate(['/verified-registration/dashboard']);
+          this.router.navigate(['/dfa-application-main']);
         // },
         // error: (error) => {
           // this.showLoader = !this.showLoader;

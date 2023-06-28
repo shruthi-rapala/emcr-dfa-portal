@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DFAApplication, ApplicantOption, InsuranceOption, SmallBusinessOption, FarmOption} from 'src/app/core/model/dfa-application.model';
+import { DFAApplicationStart, ApplicantOption, InsuranceOption, SmallBusinessOption, FarmOption} from 'src/app/core/model/dfa-application-start.model';
 @Injectable({ providedIn: 'root' })
-export class DFAApplicationDataService {
+export class DFAApplicationStartDataService {
   private _consent: boolean;
   private _profileVerification: boolean;
   private _applicantOption: ApplicantOption;

@@ -143,7 +143,7 @@ export enum FarmOption {
 /**
  * DFA Application
  */
-export interface DFAApplication {
+export interface DFAApplicationStart {
   consent?: Consent;
   profileVerification?: ProfileVerification;
   appTypeInsurance?: AppTypeInsurance;

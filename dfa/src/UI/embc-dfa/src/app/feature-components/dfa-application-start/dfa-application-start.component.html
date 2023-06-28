@@ -1,17 +1,17 @@
 <div class="container container-frame">
   <div class="row heading-container">
     <div class="col-8">
-      <span class="page-heading">{{ homeOwnerApplicationHeading }}</span>
+      <span class="page-heading">{{ dfaApplicationStartHeading }}</span>
     </div>
     <div class="col-4">
       <button
         class="button-p save-button col-4"
-        style="height:40px !important; vertical-align: middle; width:220px;"
+        style="height:40px !important; vertical-align: middle; width:120px;"
         [disabled]="isSubmitted"
         mat-stroked-button
         type="button"
         >
-         Save & Back to Dashboard
+         Save & Close
          <app-loader
           [strokeWidth]="3"
           [diameter]="25"
@@ -24,16 +24,16 @@
   <mat-horizontal-stepper
     class="stepper-style"
     labelPosition="bottom"
-    (animationDone)="currentStep(homeOwnerApplicationStepper?.selectedIndex)"
-    (selectionChange)="stepChanged($event, homeOwnerApplicationStepper)"
-    #homeOwnerApplicationStepper
-    [linear]="false"
+    (animationDone)="currentStep(dfaApplicationStartStepper?.selectedIndex)"
+    (selectionChange)="stepChanged($event, dfaApplicationStartStepper)"
+    #dfaApplicationStartStepper
+    linear
   >
     <mat-step *ngFor="let step of steps" [stepControl]="form">
       <ng-template matStepLabel>{{ step.stepName }}</ng-template>
       <app-component-wrapper
         [componentName]="step.component"
-        [folderPath]="homeOwnerApplicationFolderPath"
+        [folderPath]="dfaApplicationStartFolderPath"
       ></app-component-wrapper>
       <br />
       <div class="row justify-content-between resp-style">
@@ -42,7 +42,7 @@
             class="button-s"
             mat-button
             type="button"
-            (click)="goBack(homeOwnerApplicationStepper, step.lastStep)"
+            (click)="goBack(dfaApplicationStartStepper, step.lastStep)"
           >
             {{ step.backButtonLabel }}
           </button>
@@ -51,56 +51,26 @@
           <button
             *ngIf="
               currentFlow === 'verified-registration' &&
-                step.component === 'damaged-items-by-room';
+                step.component === '????';
             "
             class="button-p"
             mat-stroked-button
             type="button"
-            (click)="goForward(homeOwnerApplicationStepper, step.isLast, step.component)"
+            (click)="goForward(dfaApplicationStartStepper, step.isLast, step.component)"
           >
             Review Submission
           </button>
           <button
-            *ngIf="!(currentFlow === 'verified-registration' && step.component === 'review')"
+            *ngIf="!(currentFlow === 'verified-registration' && step.component === '???') && !(dfaApplicationStartStepper.selectedIndex == 2 && fullInsurance === true)"
             class="button-p"
             mat-stroked-button
             type="button"
-            (click)="goForward(homeOwnerApplicationStepper, step.isLast, step.component)"
+            (click)="goForward(dfaApplicationStartStepper, step.isLast, step.component)"
           >
             {{ step.nextButtonLabel }}
           </button>
         </div>
       </div>
-    </mat-step>
-    <mat-step *ngIf="currentFlow === 'verified-registration'">
-      <p>
-        Please read through and confirm that your details are all correct before
-        submitting.
-      </p>
-      <ng-template matStepLabel>Review & Submit</ng-template>
-      <app-review
-        [type]="type"
-        [showHeading]="true"
-        [parentPageName]="parentPageName"
-        [currentFlow]="currentFlow"
-      >
-      </app-review>
-      <br />
-
-      <button
-        class="button-p save-button"
-        [disabled]="isSubmitted"
-        mat-stroked-button
-        type="button"
-        (click)="goForward(homeOwnerApplicationStepper, true, 'review')"
-      >
-        Save & Submit
-        <app-loader
-          [strokeWidth]="3"
-          [diameter]="25"
-          [showLoader]="showLoader"
-        ></app-loader>
-      </button>
     </mat-step>
     <ng-template matStepperIcon="edit" let-index="index">
       {{ index + 1 }}

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DFAApplicationRoutingModule } from './dfa-application-routing.module';
-import { DFAApplicationComponent } from './dfa-application.component';
+import { DFAApplicationStartRoutingModule } from './dfa-application-start-routing.module';
+import { DFAApplicationStartComponent } from './dfa-application-start.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -11,10 +11,10 @@ import { ReviewModule } from '../review/review.module';
 import { CoreModule } from '../../core/core.module';
 
 @NgModule({
-  declarations: [DFAApplicationComponent],
+  declarations: [DFAApplicationStartComponent],
   imports: [
     CommonModule,
-    DFAApplicationRoutingModule,
+    DFAApplicationStartRoutingModule,
     ReactiveFormsModule,
     MatStepperModule,
     MatSelectModule,
@@ -24,4 +24,4 @@ import { CoreModule } from '../../core/core.module';
     CoreModule
   ]
 })
-export class DFAApplicationModule {}
+export class DFAApplicationStartModule {}
