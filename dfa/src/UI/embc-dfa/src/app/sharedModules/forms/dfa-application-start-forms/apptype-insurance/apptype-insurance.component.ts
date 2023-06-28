@@ -151,7 +151,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe((result) => {
         if (result === 'cancel') {
-          this.submitFile();
+          this.cancelApplication();
           }
         else if (result === 'confirm') {
           this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.radioInsuranceOptions.Yes);
@@ -160,7 +160,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
       });
   }
 
-  submitFile(): void {
+  cancelApplication(): void {
     // TODO: Add application cancellation
     this.router.navigate(['/verified-registration/dashboard']);
   }

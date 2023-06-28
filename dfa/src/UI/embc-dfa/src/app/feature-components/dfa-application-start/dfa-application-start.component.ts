@@ -106,14 +106,8 @@ export class DFAApplicationStartComponent
    * @param lastStep stepIndex
    */
   goBack(stepper: MatStepper, lastStep): void {
-    if (lastStep === 0) {
-      stepper.previous();
-    } else if (lastStep === -1) {
-      this.showStep = !this.showStep;
-    } else if (lastStep === -2) {
-      const navigationPath = '/' + this.currentFlow + '/collection-notice';
-      this.router.navigate([navigationPath]);
-    }
+    const navigationPath = '/' + this.currentFlow + '/dashboard';
+    this.router.navigate([navigationPath]);
   }
 
   /**
