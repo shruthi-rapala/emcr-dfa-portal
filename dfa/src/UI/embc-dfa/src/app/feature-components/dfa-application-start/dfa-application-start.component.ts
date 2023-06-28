@@ -28,6 +28,7 @@ export class DFAApplicationStartComponent
 {
   @ViewChild('dfaApplicationStartStepper') dfaApplicationStartStepper: MatStepper;
   isEditable = true;
+  consent: boolean = true;
   fullInsurance: boolean = false;
   steps: Array<ComponentMetaDataModel> = new Array<ComponentMetaDataModel>();
   showStep = false;
