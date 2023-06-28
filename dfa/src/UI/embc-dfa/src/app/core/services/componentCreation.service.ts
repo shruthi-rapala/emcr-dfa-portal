@@ -63,7 +63,7 @@ export class ComponentCreationService {
     {
       component: 'profile-verification',
       nextButtonLabel: 'Next - Application Type',
-      backButtonLabel: 'Go Back & Edit',
+      backButtonLabel: 'Cancel',
       isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
@@ -72,7 +72,7 @@ export class ComponentCreationService {
     {
       component: 'apptype-insurance',
       nextButtonLabel: 'Next - Damaged Property',
-      backButtonLabel: 'Go Back & Edit',
+      backButtonLabel: 'Cancel',
       isLast: true,
       loadWrapperButton: false,
       lastStep: 0,
