@@ -96,6 +96,18 @@ display: block;
 display: none;
 }
 
+.edit-image img:last-child {
+  display: none;
+}
+
+.edit-image:hover img:last-child {
+  display: block;
+}
+
+.edit-image:hover img:first-child {
+  display: none;
+}
+
 @media (max-width: 600px) {
 .mobile-label {
   width: 80px;

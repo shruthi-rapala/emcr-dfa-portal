@@ -34,10 +34,14 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   RoomTypes = RoomType;
   showOtherRoomType: boolean = false;
   showDamagedRoomForm: boolean = false;
-  damagedRoomColumnsToDisplay = ['roomType', 'description', 'deleteIcon'];
+  damagedRoomColumnsToDisplay = ['roomType', 'description', 'icons'];
   damagedRoomsDataSource = new BehaviorSubject([]);
   damagedRoomsData = [];
   remainingLength: number = 2000;
+  editIndex: number;
+  rowEdit = false;
+  editFlag = false;
+
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -95,10 +99,18 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   saveDamagedRooms(): void {
     if (this.damagedItemsByRoomForm.get('damagedRoom').status === 'VALID') {
-      this.damagedRoomsData.push(this.damagedItemsByRoomForm.get('damagedRoom').value);
+      if (this.editIndex !== undefined && this.rowEdit) {
+        this.damagedRoomsData[this.editIndex] =
+          this.damagedItemsByRoomForm.get('damagedRoom').value;
+        this.rowEdit = !this.rowEdit;
+        this.editIndex = undefined;
+      } else {
+        this.damagedRoomsData.push(this.damagedItemsByRoomForm.get('damagedRoom').value);
+      }
       this.damagedRoomsDataSource.next(this.damagedRoomsData);
       this.damagedItemsByRoomForm.get('damagedRooms').setValue(this.damagedRoomsData);
       this.showDamagedRoomForm = !this.showDamagedRoomForm;
+      this.editFlag = !this.editFlag;
     } else {
       this.damagedItemsByRoomForm.get('damagedRoom').markAllAsTouched();
     }
@@ -118,7 +130,16 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
         .get('addNewDamagedRoomIndicator')
         .setValue(false);
     }
+    this.cancelDamagedRooms();
+  }
 
+  editDamagedRoomRow(element, index): void {
+    this.editIndex = index;
+    this.rowEdit = !this.rowEdit;
+    this.damagedItemsByRoomForm.get('damagedRoom').setValue(element);
+    this.showDamagedRoomForm = !this.showDamagedRoomForm;
+    this.editFlag = !this.editFlag;
+    this.damagedItemsByRoomForm.get('addNewDamagedRoomIndicator').setValue(true);
   }
 
   // Preserve original property order
