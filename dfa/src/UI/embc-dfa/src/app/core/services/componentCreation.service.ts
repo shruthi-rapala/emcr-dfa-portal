@@ -50,7 +50,7 @@ export class ComponentCreationService {
     //}
   ];
 
-  dfaApplicationComponents: Array<any> = [
+  dfaApplicationStartComponents: Array<any> = [
     {
       component: 'consent',
       nextButtonLabel: 'Next - Profile Verification',
@@ -63,7 +63,7 @@ export class ComponentCreationService {
     {
       component: 'profile-verification',
       nextButtonLabel: 'Next - Application Type',
-      backButtonLabel: 'Go Back & Edit',
+      backButtonLabel: 'Cancel',
       isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
@@ -72,15 +72,15 @@ export class ComponentCreationService {
     {
       component: 'apptype-insurance',
       nextButtonLabel: 'Next - Damaged Property',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
+      backButtonLabel: 'Cancel',
+      isLast: true,
       loadWrapperButton: false,
       lastStep: 0,
       stepName: 'Application Type & Insurance'
     }
   ];
 
-  homeOwnerApplicationComponents: Array<any> = [
+  dfaApplicationMainComponents: Array<any> = [
     {
       component: 'damaged-property-address',
       nextButtonLabel: 'Next - Cause of Damage',
@@ -193,19 +193,19 @@ export class ComponentCreationService {
     return componentArr;
   }
 
-  createDFAApplicationSteps(): Array<ComponentMetaDataModel> {
+  createDFAApplicationStartSteps(): Array<ComponentMetaDataModel> {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
-    for (const comp of this.dfaApplicationComponents) {
+    for (const comp of this.dfaApplicationStartComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;
   }
 
-  createHomeOwnerApplicationSteps(): Array<ComponentMetaDataModel> {
+  createDFAApplicationMainSteps(): Array<ComponentMetaDataModel> {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
-    for (const comp of this.homeOwnerApplicationComponents) {
+    for (const comp of this.dfaApplicationMainComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;

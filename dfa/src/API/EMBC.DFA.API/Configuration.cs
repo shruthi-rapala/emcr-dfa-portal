@@ -150,7 +150,7 @@ namespace EMBC.DFA.API
             services.AddTransient<IEvacuationSearchService, EvacuationSearchService>();
             services.AddTransient<IProfileInviteService, ProfileInviteService>();
             services.AddTransient<IConfigurationHandler, Handler>();
-            services.AddTransient<IListsGateway, DynamicsGateway>();
+            services.AddTransient<IDynamicsGateway, DynamicsGateway>();
             services.Configure<ADFSTokenProviderOptions>(configuration.GetSection("Dynamics:ADFS"));
             services.AddADFSTokenProvider();
             services.AddHttpClient("captcha");

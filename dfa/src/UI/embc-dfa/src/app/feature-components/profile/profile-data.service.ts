@@ -4,7 +4,6 @@ import {
   Profile,
   PersonDetails,
   ContactDetails,
-  SecurityQuestion
 } from 'src/app/core/api/models';
 import { RegAddress } from 'src/app/core/model/address';
 import { CacheService } from 'src/app/core/services/cache.service';
@@ -20,8 +19,6 @@ export class ProfileDataService {
   private primaryAddressDetail: RegAddress;
   private mailingAddressDetail: RegAddress;
   private contactDetail: ContactDetails;
-  private securityQuestionsVal: Array<SecurityQuestion> =
-    new Array<SecurityQuestion>();
 
   public get personalDetails(): PersonDetails {
     return this.personalDetail;
@@ -51,13 +48,6 @@ export class ProfileDataService {
     this.contactDetail = value;
   }
 
-  public get securityQuestions(): Array<SecurityQuestion> {
-    return this.securityQuestionsVal;
-  }
-  public set securityQuestions(value: Array<SecurityQuestion>) {
-    this.securityQuestionsVal = value;
-  }
-
   constructor(
     private cacheService: CacheService,
     private restrictionService: RestrictionService,
@@ -84,7 +74,7 @@ export class ProfileDataService {
   }
   public setLoginProfile(loginProfile: Profile): void {
     this.loginProfile = loginProfile;
-    this.cacheService.set('loginProfile', loginProfile);
+    //this.cacheService.set('loginProfile', loginProfile);
   }
 
   public setProfileId(profileId: string): void {
@@ -104,9 +94,7 @@ export class ProfileDataService {
       personalDetails: this.personalDetails,
       primaryAddress: this.locationService.setAddressObjectForDTO(
         this.primaryAddressDetails
-      ),
-      restrictedAccess: this.restrictionService.restrictedAccess,
-      securityQuestions: this.securityQuestions
+      )
     };
   }
 }

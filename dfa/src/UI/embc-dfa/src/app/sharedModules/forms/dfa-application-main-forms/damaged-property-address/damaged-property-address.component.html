@@ -1,0 +1,205 @@
+<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+  <mat-card-content>
+
+    <form [formGroup]="damagedPropertyAddressForm">
+
+      <p class="sub-heading" style="font-size: 20px">Damaged Property</p>
+      <br/>
+
+      <ng-container>
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Is the damaged property address the same as the primary address that you listed on your profile?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              [(ngModel)]="useProfileAddress"
+              [ngModelOptions]="{standalone: true}"
+              class="primary-radio-group"
+              (change)="onUseProfileAddressChoice($event)"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value="0">Yes</mat-radio-button>
+              <div class="row radio-extra-label">
+                {{ profileAddress.addressLine1}}<br/>
+                <div *ngIf="profileAddress.addressLine2">{{ profileAddress.addressLine2}}<br/></div>
+                {{ profileAddress.community }}&nbsp;{{ profileAddress.postalCode }}<br /><br/>
+              </div>
+              <mat-radio-button value="1">No</mat-radio-button>
+              <div class="row radio-extra-label" *ngIf="useProfileAddress === '1'">
+                <app-bc-address
+                  [addressForm]="damagedPropertyAddressForm"
+                  [primaryAddressWarning]="false"
+                ></app-bc-address>
+              </div>
+            </mat-radio-group><br/><br/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Do you occupy the damaged property as your principal residence?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="occupyAsPrimaryResidence"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value != 'false'">
+              <br/><br/>
+            </div>
+            <div class="row radio-extra-label" *ngIf="damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value == 'false'">
+              You must occupy the property as your principal residence to be eligible for DFA. <br/><br/>
+              You may call us to discuss further at 1-888-257-4777.<br/><br/>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Is this address on a First Nations reserve?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="onAFirstNationsReserve"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <!-- TODO: drop down list from ERA -->
+        <div class="row" *ngIf="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'">
+          <div class="col-md-6 bottomspace">
+            <input
+              formControlName="firstNationsReserve"
+              style="width:50%"
+              matInput
+              placeholder="Name of First Nations Reserve"
+            /><br/><br/><br/>
+          </div>
+        </div>
+
+        <div *ngIf="damagedPropertyAddressForm.get('onAFirstNationsReserve').value != 'true'">
+          <br/><br/>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Is your home a manufactured home?
+            </p>
+            A manufactured home is a modular or mobile homes that is typically built in a factory off-site and then delivered and assembled on-site.
+            <mat-radio-group
+              formControlName="manufacturedHome"
+              class="primary-radio-group horizontal-radio-group"
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group><br/><br/>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOptions.Homeowner">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              As the Home Owner, are you eligible for a BC Home Owner Grant for this property?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="eligibleForHomeOwnerGrant"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOptions.ResidentialTenant">
+          <p class="sub-heading" style="font-size: 15px">
+           Provide the registered building owner(s) and/or landlord(s) name(s) and/or phone number(s).<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>First name</mat-label>
+              <input formControlName="landlordGivenNames" matInput placeholder="First name" required/>
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordGivenNames').invalid &&
+                  damagedPropertyAddressForm.get('landlordGivenNames').hasError('required') &&
+                  damagedPropertyAddressForm.get('landlordGivenNames').touched
+                "
+              >
+                First Name is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Last name</mat-label>
+              <input formControlName="landlordSurname" matInput placeholder="Last name" required/>
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordSurname').invalid &&
+                  damagedPropertyAddressForm.get('landlordSurname').hasError('required') &&
+                  damagedPropertyAddressForm.get('landlordSurname').touched
+                "
+              >
+                Last Name is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Contact Telephone</mat-label>
+              <input formControlName="landlordPhone1"
+                matInput required
+                placeholder="Contact Telephone"
+                [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordPhone1').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone1').hasError('incorrectLength')
+                "
+              >
+                Telephone number must have 10 digits</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordPhone1').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone1').hasError('required') &&
+                  damagedPropertyAddressForm.get('landlordPhone1').touched
+                "
+              >
+                Telephone number is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Contact Telephone</mat-label>
+              <input formControlName="landlordPhone2"
+                matInput
+                placeholder="Contact Telephone"
+                [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordPhone2').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone2').hasError('incorrectLength')
+                "
+              >
+                Telephone number must have 10 digits</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+
+      </ng-container>
+    </form>
+
+   </mat-card-content>
+</mat-card>

@@ -7,12 +7,14 @@ import { ArrayContains } from './arrayContains.pipe';
 import { ArrayValueOf } from './arrayValueOf.pipe';
 import { MaskEvacuatedAddressPipe } from './maskEvacuatedAddress.pipe';
 import { MaskSupplierAddressPipe } from './maskSupplierAddress.pipe';
+import { PhoneFormatPipe } from './phone.pipe';
 
 @NgModule({
   declarations: [
     EnumToArrayPipe,
     MaskTextPipe,
     CustomDate,
+    PhoneFormatPipe,
     ArrayContains,
     ArrayValueOf,
     MaskEvacuatedAddressPipe,
@@ -23,6 +25,7 @@ import { MaskSupplierAddressPipe } from './maskSupplierAddress.pipe';
     EnumToArrayPipe,
     MaskTextPipe,
     CustomDate,
+    PhoneFormatPipe,
     ArrayContains,
     ArrayValueOf,
     MaskEvacuatedAddressPipe,

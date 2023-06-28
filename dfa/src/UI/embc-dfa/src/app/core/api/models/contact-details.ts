@@ -5,8 +5,8 @@
  * Profile contact information
  */
 export interface ContactDetails {
-  email?: null | string;
-  hideEmailRequired?: boolean;
-  hidePhoneRequired?: boolean;
-  phone?: null | string;
+  alternatePhone?: null | string;
+  cellPhoneNumber?: null | string;
+  email?: string;
+  residencePhone?: null | string;
 }

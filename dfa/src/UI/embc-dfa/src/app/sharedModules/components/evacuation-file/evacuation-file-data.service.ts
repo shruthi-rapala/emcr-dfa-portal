@@ -170,7 +170,7 @@ export class EvacuationFileDataService {
   }
 
   public updateRestriction(): Observable<string> {
-    return this.profileService.profileUpsert({
+    return this.profileService.profileAddContact({
       body: this.profileDataService.createProfileDTO()
     });
     // return this.profileService.upsertProfile(

@@ -1,5 +1,7 @@
 ﻿using System;
 using EMBC.DFA.API;
+using EMBC.DFA.API.ConfigurationModule.Models;
+using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
 
 namespace EMBC.DFA.API.Mappers
@@ -8,21 +10,23 @@ namespace EMBC.DFA.API.Mappers
     {
         public Mappings()
         {
+            CreateMap<Contact, dfa_appcontact>()
+                .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.FirstName))
+                .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.LastName))
+                .ForMember(d => d.dfa_initial, opts => opts.MapFrom(s => s.Initial))
+                ;
+
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
                 .ForMember(d => d.Id, opts => opts.Ignore())
                 .ForMember(d => d.AuthenticatedUser, opts => opts.Ignore())
                 .ForMember(d => d.VerifiedUser, opts => opts.Ignore())
                 .ForMember(d => d.IsMinor, opts => opts.Ignore())
                 .ForMember(d => d.UserId, opts => opts.MapFrom(s => s.Id))
-                .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => s.PersonalDetails.DateOfBirth))
                 .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.PersonalDetails.FirstName))
                 .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.PersonalDetails.LastName))
-                .ForMember(d => d.Gender, opts => opts.MapFrom(s => s.PersonalDetails.Gender))
                 .ForMember(d => d.Initials, opts => opts.MapFrom(s => s.PersonalDetails.Initials))
-                .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.PersonalDetails.PreferredName))
                 .ForMember(d => d.Email, opts => opts.MapFrom(s => s.ContactDetails.Email))
-                .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.ContactDetails.Phone))
-                .ForMember(d => d.SecurityQuestions, opts => opts.MapFrom(s => s.SecurityQuestions))
+                .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.ContactDetails.CellPhoneNumber))
                 .ForMember(d => d.CreatedOn, opts => opts.Ignore())
                 .ForMember(d => d.LastModified, opts => opts.Ignore())
                 .ForMember(d => d.CreatedByDisplayName, opts => opts.Ignore())
@@ -76,10 +80,8 @@ namespace EMBC.DFA.API.Mappers
              ;
 
             CreateMap<HouseholdMember, ESS.Shared.Contracts.Events.HouseholdMember>()
-                .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => s.Details.DateOfBirth))
                 .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.Details.FirstName))
                 .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.Details.LastName))
-                .ForMember(d => d.Gender, opts => opts.MapFrom(s => s.Details.Gender))
                 .ForMember(d => d.Initials, opts => opts.MapFrom(s => s.Details.Initials))
                 .ForMember(d => d.IsPrimaryRegistrant, opts => opts.MapFrom(s => s.IsPrimaryRegistrant))
                 .ForMember(d => d.LinkedRegistrantId, opts => opts.Ignore())
@@ -92,9 +94,7 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<ESS.Shared.Contracts.Events.HouseholdMember, HouseholdMember>()
                 .ForPath(d => d.Details.FirstName, opts => opts.MapFrom(s => s.FirstName))
                 .ForPath(d => d.Details.LastName, opts => opts.MapFrom(s => s.LastName))
-                .ForPath(d => d.Details.Gender, opts => opts.MapFrom(s => s.Gender))
                 .ForPath(d => d.Details.Initials, opts => opts.MapFrom(s => s.Initials))
-                .ForPath(d => d.Details.DateOfBirth, opts => opts.MapFrom(s => s.DateOfBirth))
                 ;
 
             CreateMap<Pet, ESS.Shared.Contracts.Events.Pet>()

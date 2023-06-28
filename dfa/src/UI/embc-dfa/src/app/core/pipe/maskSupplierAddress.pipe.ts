@@ -28,9 +28,7 @@ export class MaskSupplierAddressPipe implements PipeTransform {
       if (address.addressLine2?.length > 0)
         line1 += ', ' + address.addressLine2;
 
-      const communityName = communities.find(
-        (comm) => comm.code === address.community
-      ).name;
+      const communityName = '';
 
       // Only set line 2 if city exists
       if (communityName.length > 0) {
