@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using NJsonSchema.Annotations;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -98,7 +99,9 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> AddContact(Profile profile)
         {
             profile.Id = currentUserId;
-            //var mappedProfile = mapper.Map<dfa_appcontact>(profile);
+            var mappedProfile = mapper.Map<dfa_appcontact>(profile);
+            if (profile == null) return BadRequest("Profile details cannot be empty!");
+
             var mappedContact = new dfa_appcontact
             {
                 dfa_firstname = profile.PersonalDetails.FirstName,
@@ -107,12 +110,24 @@ namespace EMBC.DFA.API.Controllers
                 dfa_emailaddress = profile.ContactDetails.Email,
                 dfa_cellphonenumber = profile.ContactDetails.CellPhoneNumber,
                 dfa_residencetelephonenumber = profile.ContactDetails.ResidencePhone,
-                dfa_alternatephonenumber = profile.ContactDetails.AlternatePhone
+                dfa_alternatephonenumber = profile.ContactDetails.AlternatePhone,
+
+                dfa_primaryaddressline1 = profile.PrimaryAddress.AddressLine1,
+                dfa_primaryaddressline2 = profile.PrimaryAddress.AddressLine2,
+                dfa_primarycity = profile.PrimaryAddress.City,
+                dfa_primarypostalcode = profile.PrimaryAddress.PostalCode,
+                dfa_primarystateprovince = profile.PrimaryAddress.StateProvince,
+
+                dfa_currentaddressline1 = profile.MailingAddress.AddressLine1,
+                dfa_currentaddressline2 = profile.MailingAddress.AddressLine2,
+                dfa_currentcity = profile.MailingAddress.City,
+                dfa_currentpostalcode = profile.MailingAddress.PostalCode,
+                dfa_currentstateprovince = profile.MailingAddress.StateProvince
             };
             //BCSC profiles are authenticated and verified
             //mappedProfile.AuthenticatedUser = true;
             //mappedProfile.VerifiedUser = true;
-            var contactId = await handler.HandleContact(mappedContact);
+            var contactId = await handler.HandleContact(mappedProfile);
             return Ok(currentUserId);
         }
 

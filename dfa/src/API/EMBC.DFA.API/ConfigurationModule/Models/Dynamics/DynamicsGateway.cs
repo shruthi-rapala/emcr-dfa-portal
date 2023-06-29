@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xrm.Tools.WebAPI;
 using Xrm.Tools.WebAPI.Requests;
@@ -36,7 +37,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<string> AddContact(dfa_appcontact contact)
         {
-            dynamic result = await api.ExecuteAction("dfa_appcontacts", contact);
+            try
+            {
+                dynamic result = await api.ExecuteAction("dfa_appcontacts", contact);
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
 
             return string.Empty;
         }

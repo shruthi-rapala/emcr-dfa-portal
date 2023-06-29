@@ -3,14 +3,435 @@
 
     <form [formGroup]="cleanUpLogForm">
 
-      <ng-container>
-        <div class="row">
-          <div class="col-md-12">
-            <p class="sub-heading">Under Construction</p>
-          </div>
-        </div>
+      <div formGroupName="cleanuplog">
+        <ng-container>
+         
 
-      </ng-container>
+          <div class="row">
+            <div class="col-md-12">
+               <div class="row">
+                <div class="col-md-12">
+                  <p class="sub-heading">Clean Up Log</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <p>You don't need to complete and submit the clean up log with the initial application.<br />
+                  Please track, on a daily basis, the number of hours you, your family and friends spent on cleanup.</p>
+                  <p>
+                    Please do not wait for the evaluator to arrive before beginning your clean up.<br />
+                    1. Where possible, applicant should take pictures of damaged contents.<br />
+                    2. For structural damage, if the repairs must be done before the evaluator arrives,<br />
+                    please take pictures of the damage before it is repaired.<br />
+                    3. If you have rented or hired
+                    equipment or other suppliers to assist you with cleanup, keep receipts or invoices.<br />
+                    You may provide these receipts to the evaluator during the site visit.<br />
+                    4. For further information about cleanup and disinfection, please refer to<br />
+                    <a target="_blank" style="" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/know-your-hazards/floods/after-flood">Recovering After a Flood</a>
+                    which is available on the
+                    <a target="_blank" style="" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">DFA website</a>
+                    or by contacting our office toll-free at 1-888-257-4777
+                  </p>
+                </div>
+              </div>
+              <p class="sub-heading">
+                <b>Provide the date, names, hours worked and description of work</b>
+              </p>
+              <!--<p class="sub-heading" style="font-size: 15px" *ngIf="cleanUpWorkDataSource.getValue().length == 0">
+                Add a new clean up log
+              </p>-->
+
+              <table mat-table [dataSource]="cleanUpWorkDataSource" *ngIf="cleanUpWorkDataSource.getValue().length > 0">
+                 <!-- Date Column -->
+                <ng-container matColumnDef="date" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Date</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.date | date : "yyyy/MM/dd" }}
+                  </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Name</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.name }}
+                  </td>
+                </ng-container>
+
+                <!-- Hours Column -->
+                <ng-container matColumnDef="hours" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Hours</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.hours}}
+                  </td>
+                </ng-container>
+
+                 <!-- Description Column -->
+                <ng-container matColumnDef="description" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Description</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.description}}
+                  </td>
+                </ng-container>
+
+                <!-- Delete Icon Column -->
+                <ng-container matColumnDef="deleteIcon" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    &nbsp;
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    <button
+                    class="delete-image"
+                    mat-icon-button
+                    aria-label="Remove"
+                    (click)="deleteCleanupLogRow(index)"
+                  >
+                    <img src="/assets/images/delete.svg" height="35" width="35" />
+                    <img
+                      src="/assets/images/delete_onhover.svg"
+                      height="35"
+                      width="35"
+                    />
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="cleanUpWorkColumnsToDisplay"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let element; columns: cleanUpWorkColumnsToDisplay"
+                  class="example-element-row"
+                ></tr>
+
+              </table>
+
+              <div  *ngIf="cleanUpWorkDataSource.getValue().length > 0">
+                <br /><br/>
+              </div>
+
+              <button
+                *ngIf="!showCleanUpWorkForm"
+                class="addcleanup-button"
+                mat-button
+                type="button"
+                (click)="addCleanupLog()"
+              >
+                + Add to clean up log
+              </button>
+
+              <mat-card *ngIf="showCleanUpWorkForm">
+                <p class="sub-heading" style="font-size: 15px">
+                  New Clean Up Log
+                </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Date</mat-label>
+                      <input matInput
+                [matDatepicker]="fromPicker"
+                formControlName="date"
+                required >
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromPicker></mat-datepicker>
+                      <!--<mat-error
+                        *ngIf="
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                        "
+                      >
+                        Date is required</mat-error
+                      >-->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Name of family member/volunteer</mat-label>
+                      <input formControlName="name" matInput placeholder="Name of family member/volunteer" required/>
+                      <!--<mat-error
+                        *ngIf="
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                        "
+                      >
+                        First Name is required</mat-error
+                      >-->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Hours</mat-label>
+                      <input formControlName="hours" matInput placeholder="Hours" required/>
+                      <!--<mat-error
+                        *ngIf="
+                          occupantsForm.get('fullTimeOccupant').controls.lastName.invalid &&
+                          occupantsForm.get('fullTimeOccupant').controls.lastName.hasError('required') &&
+                          occupantsForm.get('fullTimeOccupant').controls.lastName.touched
+                        "
+                      >
+                        Last Name is required</mat-error
+                      >-->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Description</mat-label>
+                      <input formControlName="description" matInput placeholder="Description" />
+                      <!--<mat-error
+                        *ngIf="
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.touched
+                        "
+                      >
+                      Relationship is required</mat-error
+                      >-->
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <button type="button" (click)="showFullTimeOccupantsForm()">Show Form</button> -->
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelNewCleanupLog()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    <button
+                      class="addcleanup-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveNewCleanupLog()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+
+              <br /><br />
+
+              
+            </div>
+
+          </div>
+
+        </ng-container>
+
+      </div>
+
+      <div formGroupName="cleanuplogFile">
+        <ng-container>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="sub-heading">
+                <b>
+                  If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs.
+                  <br />You may also attach them to this application
+                </b>
+              </p>
+
+              <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.getValue().length > 0">
+                 
+
+                <!-- File Name Column -->
+                <ng-container matColumnDef="fileName" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>File Name</b>
+                  </th>
+                  <td *matCellDef="let elementFile" mat-cell>
+                    {{ elementFile.fileName }}
+                  </td>
+                </ng-container>
+
+                <!-- File Description Column -->
+                <ng-container matColumnDef="fileDescription" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>File Description</b>
+                  </th>
+                  <td *matCellDef="let elementFile" mat-cell>
+                    {{ elementFile.fileDescription}}
+                  </td>
+                </ng-container>
+
+                 <!-- Date Column -->
+                <ng-container matColumnDef="fileDate" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Date</b>
+                  </th>
+                  <td *matCellDef="let elementFile" mat-cell>
+                    {{ elementFile.fileDate | date : "yyyy/MM/dd" }}
+                  </td>
+                </ng-container>
+
+                <!-- Delete Icon Column -->
+                <ng-container matColumnDef="deleteIcon" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    &nbsp;
+                  </th>
+                  <td *matCellDef="let elementFile" mat-cell>
+                    <button
+                    class="delete-image"
+                    mat-icon-button
+                    aria-label="Remove"
+                    (click)="deleteCleanupLogFileRow(index)"
+                  >
+                    <img src="/assets/images/delete.svg" height="35" width="35" />
+                    <img
+                      src="/assets/images/delete_onhover.svg"
+                      height="35"
+                      width="35"
+                    />
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="cleanUpWorkFileColumnsToDisplay"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let elementFile; columns: cleanUpWorkFileColumnsToDisplay"
+                  class="example-element-row"
+                ></tr>
+
+              </table>
+
+              <div  *ngIf="cleanUpWorkFileDataSource.getValue().length > 0">
+                <br /><br/>
+              </div>
+
+              <button
+                *ngIf="!showCleanUpWorkFileForm"
+                class="addcleanup-button"
+                mat-button
+                type="button"
+                (click)="addCleanupLogFile()"
+              >
+                + Add receipt or invoice
+              </button>
+
+              <mat-card *ngIf="showCleanUpWorkFileForm">
+                <p class="sub-heading" style="font-size: 15px">
+                  Attach a photo/scanned copy of receipts or invoices
+                </p>
+                <div class="row">
+                  
+                  <div class="col-md-4">
+                    <div>
+                      <div
+                        class="dropzone"
+                        fileDragDrop
+                        (filesChangeEmiter)="onFileChange($event)"
+                      >
+                        <div class="text-wrapper">
+                          <div class="centered">
+                            <input
+                              type="file"
+                              name="file"
+                              id="file"
+                              (change)="onFileChange($event.target.files)"
+                              accept=".pdf,.jpg,.jpeg,.png"
+                            />
+                            <label for="file"
+                              >Drag and drop or <span class="textLink">browse</span> your files
+                            <br />
+                            <span style="font-size:14px;">
+                              Allowed file types - pdf, jpg, jpeg, png<br />
+                              Restricted characters in file name:<br />
+                              <b>~"#%&*:.<>?/{{ '{' }}|{{ '}' }}.</b> Leading and trailing<br />
+                              spaces in file name aren't allowed
+                            </span>
+                              </label
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>File Name</mat-label>
+                      <input formControlName="fileName" readonly value="{{fileName}}" matInput placeholder="File Name" required/>
+                      <!--<mat-error
+                        *ngIf="
+                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.invalid &&
+                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.hasError('required') &&
+                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.touched
+                        "
+                      >
+                        Incorrect file type</mat-error
+                      >-->
+                    </mat-form-field>
+                      <p class="sub-heading" style="font-size: 15px">
+                        You may update the file description to something more descriptive:
+                      </p>
+                    <mat-form-field appearance="outline">
+                      
+                      <mat-label>File Description</mat-label>
+                      <input formControlName="fileDescription" matInput placeholder="File Description" />
+                      <!--<mat-error
+                        *ngIf="
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.touched
+                        "
+                      >
+                      Relationship is required</mat-error
+                      >-->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    
+                  </div>
+                </div>
+                <!-- <button type="button" (click)="showFullTimeOccupantsForm()">Show Form</button> -->
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelNewCleanupLogFile()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    <button
+                      class="addcleanup-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveNewCleanupLogFile()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
     </form>
 
   </mat-card-content>
