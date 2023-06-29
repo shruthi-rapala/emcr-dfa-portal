@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, NgModule, Inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -14,12 +14,13 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { RoomType } from 'src/app/core/model/dfa-application-main.model';
+import { FileCategory, RoomType } from 'src/app/core/model/dfa-application-main.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { CoreModule } from 'src/app/core/core.module';
 
 @Component({
   selector: 'app-damaged-items-by-room',
@@ -33,15 +34,23 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   formCreationService: FormCreationService;
   RoomTypes = RoomType;
   showOtherRoomType: boolean = false;
+  showGarageHint: boolean = false;
   showDamagedRoomForm: boolean = false;
   damagedRoomColumnsToDisplay = ['roomType', 'description', 'icons'];
   damagedRoomsDataSource = new BehaviorSubject([]);
   damagedRoomsData = [];
   remainingLength: number = 2000;
-  editIndex: number;
-  rowEdit = false;
-  editFlag = false;
-
+  damagedRoomEditIndex: number;
+  damagedRoomRowEdit = false;
+  damagedRoomEditFlag = false;
+  showFileAttachmentForm: boolean = false;
+  fileAttachmentColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
+  fileAttachmentsDataSource = new BehaviorSubject([]);
+  fileAttachmentsData = [];
+  fileAttachmentEditIndex: number;
+  fileAttachmentRowEdit = false;
+  fileAttachmentEditFlag = false;
+  FileCategories = FileCategory;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -69,7 +78,12 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       }
       if (value === RoomType.Other) {
         this.showOtherRoomType = true;
+        this.showGarageHint = false;
+      } else if (value === RoomType.Garage) {
+        this.showGarageHint = true;
+        this.showOtherRoomType = false;
       } else {
+        this.showGarageHint = false;
         this.showOtherRoomType = false;
       }
     });
@@ -83,6 +97,14 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       );
     this.damagedRoomsData = this.damagedItemsByRoomForm.get('damagedRooms').value;
 
+    this.damagedItemsByRoomForm
+      .get('addNewFileAttachmentIndicator')
+      .valueChanges.subscribe((value) => this.updateFileAttachmentOnVisibility());
+    this.fileAttachmentsDataSource.next(
+        this.damagedItemsByRoomForm.get('fileAttachments').value
+      );
+    this.fileAttachmentsData = this.damagedItemsByRoomForm.get('fileAttachments').value;
+
   }
 
   calcRemainingChars() {
@@ -91,26 +113,27 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   addDamagedRoom(): void {
     this.damagedItemsByRoomForm.get('damagedRoom').reset();
-    this.showOtherRoomType = false;
     this.damagedItemsByRoomForm.get('damagedRoom.otherRoomType').setValidators(null);
-    this.showDamagedRoomForm = !this.showDamagedRoomForm;
     this.damagedItemsByRoomForm.get('addNewDamagedRoomIndicator').setValue(true);
+    this.showOtherRoomType = false;
+    this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
+    this.showDamagedRoomForm = !this.showDamagedRoomForm;
   }
 
   saveDamagedRooms(): void {
     if (this.damagedItemsByRoomForm.get('damagedRoom').status === 'VALID') {
-      if (this.editIndex !== undefined && this.rowEdit) {
-        this.damagedRoomsData[this.editIndex] =
+      if (this.damagedRoomEditIndex !== undefined && this.damagedRoomRowEdit) {
+        this.damagedRoomsData[this.damagedRoomEditIndex] =
           this.damagedItemsByRoomForm.get('damagedRoom').value;
-        this.rowEdit = !this.rowEdit;
-        this.editIndex = undefined;
+        this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
+        this.damagedRoomEditIndex = undefined;
       } else {
         this.damagedRoomsData.push(this.damagedItemsByRoomForm.get('damagedRoom').value);
       }
       this.damagedRoomsDataSource.next(this.damagedRoomsData);
       this.damagedItemsByRoomForm.get('damagedRooms').setValue(this.damagedRoomsData);
       this.showDamagedRoomForm = !this.showDamagedRoomForm;
-      this.editFlag = !this.editFlag;
+      this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
     } else {
       this.damagedItemsByRoomForm.get('damagedRoom').markAllAsTouched();
     }
@@ -118,6 +141,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   cancelDamagedRooms(): void {
     this.showDamagedRoomForm = !this.showDamagedRoomForm;
+    this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
     this.damagedItemsByRoomForm.get('addNewDamagedRoomIndicator').setValue(false);
   }
 
@@ -130,15 +154,14 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
         .get('addNewDamagedRoomIndicator')
         .setValue(false);
     }
-    this.cancelDamagedRooms();
   }
 
-  editDamagedRoomRow(element, index): void {
-    this.editIndex = index;
-    this.rowEdit = !this.rowEdit;
+   editDamagedRoomRow(element, index): void {
+    this.damagedRoomEditIndex = index;
+    this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
     this.damagedItemsByRoomForm.get('damagedRoom').setValue(element);
     this.showDamagedRoomForm = !this.showDamagedRoomForm;
-    this.editFlag = !this.editFlag;
+    this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
     this.damagedItemsByRoomForm.get('addNewDamagedRoomIndicator').setValue(true);
   }
 
@@ -155,6 +178,59 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     }
   }
 
+  addFileAttachment(): void {
+    this.damagedItemsByRoomForm.get('fileAttachment').reset();
+    this.damagedItemsByRoomForm.get('fileAttachment.modifiedBy').setValue("Applicant");
+    this.damagedItemsByRoomForm.get('fileAttachment.fileType').setValue(this.FileCategories.DamagePhoto);
+    this.showFileAttachmentForm = !this.showFileAttachmentForm;
+    this.fileAttachmentEditFlag = !this.fileAttachmentEditFlag;
+    this.damagedItemsByRoomForm.get('addNewFileAttachmentIndicator').setValue(true);
+  }
+
+  saveFileAttachments(): void {
+    if (this.damagedItemsByRoomForm.get('fileAttachment').status === 'VALID') {
+      if (this.fileAttachmentEditIndex !== undefined && this.fileAttachmentRowEdit) {
+        this.fileAttachmentsData[this.fileAttachmentEditIndex] =
+          this.damagedItemsByRoomForm.get('fileAttachment').getRawValue();
+        this.fileAttachmentRowEdit = !this.fileAttachmentRowEdit;
+        this.fileAttachmentEditIndex = undefined;
+      } else {
+        this.fileAttachmentsData.push(this.damagedItemsByRoomForm.get('fileAttachment').value);
+      }
+      this.fileAttachmentsDataSource.next(this.fileAttachmentsData);
+      this.damagedItemsByRoomForm.get('fileAttachments').setValue(this.fileAttachmentsData);
+      this.showFileAttachmentForm = !this.showFileAttachmentForm;
+      this.fileAttachmentEditFlag = !this.fileAttachmentEditFlag;
+    } else {
+      this.damagedItemsByRoomForm.get('fileAttachment').markAllAsTouched();
+    }
+  }
+
+  cancelFileAttachments(): void {
+    this.showFileAttachmentForm = !this.showFileAttachmentForm;
+    this.fileAttachmentEditFlag = !this.fileAttachmentEditFlag;
+    this.damagedItemsByRoomForm.get('addNewFileAttachmentIndicator').setValue(false);
+  }
+
+  deleteFileAttachmentRow(index: number): void {
+    this.fileAttachmentsData.splice(index, 1);
+    this.fileAttachmentsDataSource.next(this.fileAttachmentsData);
+    this.damagedItemsByRoomForm.get('fileAttachments').setValue(this.fileAttachmentsData);
+    if (this.fileAttachmentsData.length === 0) {
+      this.damagedItemsByRoomForm
+        .get('addNewFileAttachmentIndicator')
+        .setValue(false);
+    }
+  }
+
+   editFileAttachmentRow(element, index): void {
+    this.fileAttachmentEditIndex = index;
+    this.fileAttachmentRowEdit = !this.fileAttachmentRowEdit;
+    this.damagedItemsByRoomForm.get('fileAttachment').setValue(element);
+    this.showFileAttachmentForm = !this.showFileAttachmentForm;
+    this.fileAttachmentEditFlag = !this.fileAttachmentEditFlag;
+    this.damagedItemsByRoomForm.get('addNewFileAttachmentIndicator').setValue(true);
+  }
 
   updateDamagedRoomOnVisibility(): void {
     this.damagedItemsByRoomForm
@@ -165,6 +241,27 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       .updateValueAndValidity();
     this.damagedItemsByRoomForm
       .get('damagedRoom.description')
+      .updateValueAndValidity();
+  }
+
+  updateFileAttachmentOnVisibility(): void {
+    this.damagedItemsByRoomForm
+      .get('fileAttachment.fileName')
+      .updateValueAndValidity();
+    this.damagedItemsByRoomForm
+      .get('fileAttachment.fileDescription')
+      .updateValueAndValidity();
+    this.damagedItemsByRoomForm
+      .get('fileAttachment.fileType')
+      .updateValueAndValidity();
+    this.damagedItemsByRoomForm
+      .get('fileAttachment.uploadedDate')
+      .updateValueAndValidity();
+    this.damagedItemsByRoomForm
+      .get('fileAttachment.modifiedBy')
+      .updateValueAndValidity();
+    this.damagedItemsByRoomForm
+      .get('fileAttachment.fileData')
       .updateValueAndValidity();
   }
 
@@ -182,16 +279,30 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.damagedItemsByRoomForm$.unsubscribe();
   }
+
+/**
+ * Reads the attachment content and encodes it as base64
+ *
+ * @param event : Attachment drop/browse event
+ */
+  setFileFormControl(event: any) {
+    const reader = new FileReader();
+    reader.readAsDataURL(event);
+    reader.onload = () => {
+      this.damagedItemsByRoomForm.get('fileAttachment.fileName').setValue(event.name);
+      this.damagedItemsByRoomForm.get('fileAttachment.fileDescription').setValue(event.name);
+      this.damagedItemsByRoomForm.get('fileAttachment.fileData').setValue(reader.result);
+      this.damagedItemsByRoomForm.get('fileAttachment.contentType').setValue(event.type);
+      this.damagedItemsByRoomForm.get('fileAttachment.fileSize').setValue(event.size);
+      this.damagedItemsByRoomForm.get('fileAttachment.uploadedDate').setValue(new Date());
+    };
+  }
 }
 
 @NgModule({
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    DirectivesModule,
-    CommonModule,
+    CoreModule,
     MatTableModule,
     MatCardModule,
     MatButtonModule,

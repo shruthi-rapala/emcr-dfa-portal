@@ -23,7 +23,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component';
 import { SignatureComponent } from './components/signature/signature.component';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { DFAEligibilityDialogComponent } from './components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
+import { FileUploadWarningDialogComponent } from './components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
@@ -51,9 +53,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     FooterComponent,
     DialogComponent,
     SignatureComponent,
+    FileUploadComponent,
     EssFileDialogComponent,
     InformationDialogComponent,
     DFAEligibilityDialogComponent,
+    FileUploadWarningDialogComponent,
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
     TimeOutDialogComponent
@@ -65,8 +69,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     FooterComponent,
     DialogComponent,
     SignatureComponent,
+    FileUploadComponent,
     EnvironmentBannerComponent,
     DFAEligibilityDialogComponent,
+    FileUploadWarningDialogComponent,
     TimeOutDialogComponent,
     MatToolbarModule,
     MatButtonModule
