@@ -105,3 +105,18 @@ export const supportCategoryListError =
   'Unable to retrieve support categories at this time. Please try again later';
 export const supportStatusListError =
   'Unable to retrieve support status at this time. Please try again later';
+
+export const zeroFileMessage = 'Attachment file size must be greater than 0Kb';
+export const fileTooLargeMessage = 'Attachment file size must not be more than 50Mb';
+export const fileTypeMessage = 'Only files type pdf, jpg, jpeg, png allowed.';
+export const fileNameFormat = /^[\w,\s-_()]+\.[A-Za-z]{3,4}$/;
+export const invalidFileNameMessage =
+  'File name must not contain the following characters: ~ " . # % & * : < > ? /  { | }. Leading and trailing spaces are not allowed.';
+  export const allowedFileTypes = [
+    'application/pdf',
+    'image/jpg',
+    'image/jpeg',
+    'image/png'
+  ];
+
+

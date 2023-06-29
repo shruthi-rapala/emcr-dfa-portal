@@ -563,25 +563,204 @@ export class CleanUpLogForm {
   }
 }
 
+export enum FileCategory {
+  Insurance = "Insurance",
+  Financial = "Financial",
+  ThirdPartyConsent = "Third party consent",
+  TenancyProof = "Tenancy proof",
+  DamagePhoto = "Damage photo",
+  Cleanup = "Cleanup",
+  Appeal = "Appeal"
+}
+
+export interface FileUpload {
+  fileName: string,
+  fileDescription: string,
+  fileType: FileCategory,
+  uploadedDate: Date,
+  modifiedBy: string
+  fileData: string,
+  contentType: string // for preview
+  fileSize: number
+}
+
+
+export enum RoomType {
+  Bathroom = 'Bathroom',
+  Bedroom = 'Bedroom',
+  Dining = 'Dining room',
+  Family = 'Family room',
+  Garage = 'Garage',
+  Kitchen = 'Kitchen',
+  Laundry = 'Laundry room',
+  Living = 'Living room',
+  Other = 'Other',
+}
+
+export interface DamagedRoom {
+  roomType: RoomType;
+  otherRoomType: string;
+  description: string;
+}
+
 
 export class DamagedItemsByRoom {
-  field: boolean;
+  damagedRooms: Array<DamagedRoom>;
+  fileAttachments: Array<FileUpload>;
 
   constructor(
-    field?: boolean
   ) {}
 }
 
 export class DamagedItemsByRoomForm {
-  field = new UntypedFormControl();
+  roomType = new UntypedFormControl();
+  otherRoomType = new UntypedFormControl();
+  description = new UntypedFormControl();
+  damagedRoom: UntypedFormGroup;
+  damagedRooms = new UntypedFormControl([]);
+  fileName = new UntypedFormControl();
+  fileDescription = new UntypedFormControl();
+  fileType = new UntypedFormControl();
+  uploadedDate = new UntypedFormControl();
+  modifiedBy = new UntypedFormControl();
+  fileData = new UntypedFormControl();
+  fileAttachment: UntypedFormGroup;
+  fileAttachments = new UntypedFormControl([]);
+  contentType = new UntypedFormControl();
+  fileSize = new UntypedFormControl();
+  addNewDamagedRoomIndicator = new UntypedFormControl(false);
+  addNewFileAttachmentIndicator = new UntypedFormControl(false);
 
   constructor(
-    damagedItemsByRoom: DamagedItemsByRoom
+    damagedItemsByRoom: DamagedItemsByRoom,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
   ) {
-    if (damagedItemsByRoom.field) {
-      this.field.setValue(damagedItemsByRoom.field);
-    }
-    this.field.setValidators(null);
+    this.damagedRoom = builder.group({
+      roomType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewDamagedRoomIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      otherRoomType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewDamagedRoomIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      description: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewDamagedRoomIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+    });
+    this.fileAttachment = builder.group({
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileAttachmentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileAttachmentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileAttachmentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileAttachmentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileAttachmentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileAttachmentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileAttachmentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileAttachmentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
   }
 }
 

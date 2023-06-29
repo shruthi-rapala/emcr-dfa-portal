@@ -61,7 +61,7 @@
             Review Submission
           </button>
           <button
-            *ngIf="!(currentFlow === 'verified-registration' && step.component === 'review')"
+            *ngIf="!(currentFlow === 'verified-registration' && (step.component === 'review' || step.component === 'damaged-items-by-room'))"
             class="button-p"
             mat-stroked-button
             type="button"
