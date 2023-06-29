@@ -432,6 +432,16 @@ export class OccupantsForm {
   }
 }
 
+export interface CleanupLog {
+  date: Date;
+  name: string;
+  hours: string;
+  description: string;
+  fileName: string;
+  fileDescription: string;
+  fileDate: Date;
+}
+
 export class CleanUpLog {
   field: boolean;
 
@@ -441,15 +451,82 @@ export class CleanUpLog {
 }
 
 export class CleanUpLogForm {
-  field = new UntypedFormControl();
+  name = new UntypedFormControl();
+  date = new UntypedFormControl();
+  hours = new UntypedFormControl();
+  description = new UntypedFormControl();
+  fileName = new UntypedFormControl();
+  fileDescription = new UntypedFormControl();
+  fileDate = new UntypedFormControl();
+  cleanuplog: UntypedFormGroup;
+  cleanuplogs = new UntypedFormControl([]);
+  addNewCleanUpLogIndicator = new UntypedFormControl(false);
+  cleanuplogFile: UntypedFormGroup;
+  cleanuplogFiles = new UntypedFormControl([]);
+  addNewCleanUpLogFileIndicator = new UntypedFormControl(false);
 
   constructor(
-    cleanUpLog: CleanUpLog
+    cleanUpLog: CleanUpLog,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
   ) {
-    if (cleanUpLog.field) {
-      this.field.setValue(cleanUpLog.field);
-    }
-    this.field.setValidators(null);
+    this.cleanuplog = builder.group({
+      date: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewCleanUpLogIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      name: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewCleanUpLogIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      hours: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewCleanUpLogIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      description: [
+        ''
+      ]
+    });
+    this.cleanuplogFile = builder.group({
+      fileDate: [
+        ''
+      ],
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewCleanUpLogIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        ''
+      ]
+    });
   }
 }
 

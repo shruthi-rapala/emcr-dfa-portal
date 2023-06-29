@@ -150,7 +150,9 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
        new CleanUpLogForm(
-         new CleanUpLog()
+         new CleanUpLog(),
+         this.customValidator,
+         this.formBuilder
        )
      )
    );
@@ -470,7 +472,9 @@ export class FormCreationService {
     this.cleanUpLogForm.next(
       this.formBuilder.group(
         new CleanUpLogForm(
-          new CleanUpLog()
+          new CleanUpLog(),
+          this.customValidator,
+          this.formBuilder
         )
       )
     );
