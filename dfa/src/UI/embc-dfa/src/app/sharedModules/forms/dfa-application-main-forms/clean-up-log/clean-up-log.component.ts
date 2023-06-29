@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
-import { SecondaryApplicantTypeOption } from 'src/app/core/model/homeowner-application.model';
+import { SecondaryApplicantTypeOption } from 'src/app/core/model/dfa-application-main.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
