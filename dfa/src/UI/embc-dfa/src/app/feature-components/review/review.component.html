@@ -25,8 +25,8 @@
       </div>
     </div>
   </div>
-  <div *ngIf="type === 'homeowner-application'">
-    <ng-container *ngTemplateOutlet="homeOwnerApplication"></ng-container>
+  <div *ngIf="type === 'dfa-application-main'">
+    <ng-container *ngTemplateOutlet="dfaApplicationMain"></ng-container>
   </div>
 
   <ng-template #profile>
@@ -883,8 +883,8 @@
     </div>
 
   </ng-template>
-  <ng-template #homeOwnerApplication>
-    <div id="homeOwnerApplication">
+  <ng-template #dfaApplicationMain>
+    <div id="dfaApplicationMain">
       <p *ngIf="showHeading" class="review-heading">Review & Submit</p>
 
       <mat-card-content>

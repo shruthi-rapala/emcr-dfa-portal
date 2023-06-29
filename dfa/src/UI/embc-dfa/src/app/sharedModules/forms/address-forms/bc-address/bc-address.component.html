@@ -23,12 +23,12 @@
     </div>
     <div class="col-md-1">
     </div>
-    <div class="col-md-5 addressMessage">
+    <div class="col-md-5 addressMessage" *ngIf="primaryAddressWarning == true">
       This is your primary address from your BC Services Card and can't be changed.
       If you need to update your primary address, visit
       <br />
-      <a target="_blank" style="" href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information">BC Service Card, Change your personal information</a>
-          
+      <a target="_blank" href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information">BC Service Card, Change your personal information</a>
+
     </div>
   </div>
 

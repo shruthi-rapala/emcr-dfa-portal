@@ -14,33 +14,34 @@ import { MatStepper } from '@angular/material/stepper';
 import { Subscription } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { ProfileDataService } from './profile-data.service';
-import { ProfileService } from './profile.service';
-import * as globalConst from '../../core/services/globalConstants';
+import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
+import { DFAApplicationMainService } from './dfa-application-main.service';
+import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  selector: 'app-dfa-application-main',
+  templateUrl: './dfa-application-main.component.html',
+  styleUrls: ['./dfa-application-main.component.scss']
 })
-export class ProfileComponent
+export class DFAApplicationMainComponent
   implements OnInit, AfterViewInit, AfterViewChecked
 {
-  @ViewChild('profileStepper') profileStepper: MatStepper;
+  @ViewChild('dfaApplicationMainStepper') dfaApplicationMainStepper: MatStepper;
   isEditable = true;
   steps: Array<ComponentMetaDataModel> = new Array<ComponentMetaDataModel>();
   showStep = false;
-  profileFolderPath = 'evacuee-profile-forms';
+  dfaApplicationMainFolderPath = 'dfa-application-main-forms';
   path: string;
   form$: Subscription;
   form: UntypedFormGroup;
   stepToDisplay: number;
   currentFlow: string;
-  type = 'profile';
-  profileHeading: string;
-  parentPageName = 'create-profile';
+  type = 'dfa-application-main';
+  dfaApplicationMainHeading: string;
+  parentPageName = 'dfa-application-main';
   showLoader = false;
   isSubmitted = false;
+  ApplicantOptions = ApplicantOption;
 
   constructor(
     private router: Router,
@@ -49,8 +50,8 @@ export class ProfileComponent
     private formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
-    private profileDataService: ProfileDataService,
-    private profileService: ProfileService
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private dfaApplicationMainService: DFAApplicationMainService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -62,9 +63,9 @@ export class ProfileComponent
   }
 
   ngOnInit(): void {
-    this.currentFlow = this.route.snapshot.data.flow;
-    this.profileHeading = 'Create Your Profile';
-    this.steps = this.componentService.createProfileSteps();
+    this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
+    this.dfaApplicationMainHeading = this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption + ' Application';
+    this.steps = this.componentService.createDFAApplicationMainSteps();
   }
 
   ngAfterViewChecked(): void {
@@ -72,26 +73,6 @@ export class ProfileComponent
   }
 
   ngAfterViewInit(): void {
-    if (this.stepToDisplay === 3) {
-      this.profileStepper.linear = false;
-      setTimeout(() => {
-        this.profileStepper.selected.completed = true;
-        this.profileStepper.next();
-        this.profileStepper.selected.completed = true;
-        this.profileStepper.next();
-        this.profileStepper.selected.completed = true;
-        this.profileStepper.next();
-        //this.profileStepper.selectedIndex = this.stepToDisplay;
-        this.profileStepper.linear = false;
-      }, 0);
-    }
-    if (this.stepToDisplay === 4) {
-      this.profileStepper.linear = false;
-      setTimeout(() => {
-        this.profileStepper.selectedIndex = this.stepToDisplay;
-        this.profileStepper.linear = true;
-      }, 0);
-    }
   }
 
   /**
@@ -126,7 +107,7 @@ export class ProfileComponent
     } else if (lastStep === -1) {
       this.showStep = !this.showStep;
     } else if (lastStep === -2) {
-      const navigationPath = '/' + this.currentFlow + '/collection-notice';
+      const navigationPath = '/' + this.currentFlow + '/dfa-application-start';
       this.router.navigate([navigationPath]);
     }
   }
@@ -141,20 +122,17 @@ export class ProfileComponent
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
     if (isLast && component === 'review') {
       this.submitFile();
-      //const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
-      //this.router.navigate([navigationPath]);
-    } else if (this.form.status === 'VALID') {
+    } else {
       if (isLast) {
         if (this.currentFlow === 'non-verified-registration') {
-          const navigationPath = '/' + this.currentFlow + '/needs-assessment';
-          this.router.navigate([navigationPath]);
+          // const navigationPath = '/' + this.currentFlow + '/needs-assessment';
+          // this.router.navigate([navigationPath]);
         }
       }
       this.setFormData(component);
       this.form$.unsubscribe();
       stepper.selected.completed = true;
       stepper.next();
-    } else {
       this.form.markAllAsTouched();
     }
   }
@@ -166,37 +144,25 @@ export class ProfileComponent
    */
   setFormData(component: string): void {
     switch (component) {
-      case 'personal-details':
-        this.profileDataService.personalDetails = this.form.value;
+      case 'damaged-property-address':
+        this.dfaApplicationMainDataService.damagedPropertyAddress = this.form.value;
         break;
-      case 'address':
-        this.profileDataService.primaryAddressDetails =
-          this.form.get('address').value;
-        this.profileDataService.mailingAddressDetails =
-          this.form.get('mailingAddress').value;
+      case 'property-damage':
+        this.dfaApplicationMainDataService.propertyDamage = this.form.value;
         break;
-      case 'contact-info':
-        this.profileDataService.contactDetails = this.form.value;
+      case 'occupants':
+        this.dfaApplicationMainService.setFullTimeOccupants(this.form.get('fullTimeOccupants').value);
+        this.dfaApplicationMainService.setOtherContacts(this.form.get('otherContacts').value);
+        this.dfaApplicationMainService.setSecondaryApplicants(this.form.get('secondaryApplicants').value);
         break;
-      case 'security-questions':
-        this.saveSecurityQuestions(
-          this.form.get('questions') as UntypedFormGroup
-        );
+      case 'clean-up-log':
+        this.dfaApplicationMainDataService.cleanUpLog = this.form.value;
+        break;
+      case 'damaged-items-by-room':
+        this.dfaApplicationMainDataService.damagedItemsByRoom = this.form.value;
         break;
       default:
     }
-  }
-
-  getParentMethod(): any {
-    return {
-      callParentMoveStep: (index: any) => {
-        this.move(index)
-      }
-    }
-  }
-
-  move(index: any): void {
-    this.profileStepper.selectedIndex = index;
   }
 
   /**
@@ -208,48 +174,52 @@ export class ProfileComponent
     switch (index) {
       case 0:
         this.form$ = this.formCreationService
-          .getPersonalDetailsForm()
-          .subscribe((personalDetails) => {
-            this.form = personalDetails;
+          .getDamagedPropertyAddressForm()
+          .subscribe((damagedPropertyAddress) => {
+            this.form = damagedPropertyAddress;
           });
         break;
       case 1:
         this.form$ = this.formCreationService
-          .getAddressForm()
-          .subscribe((address) => {
-            this.form = address;
+          .getPropertyDamageForm()
+          .subscribe((propertyDamage) => {
+            this.form = propertyDamage;
           });
         break;
       case 2:
         this.form$ = this.formCreationService
-          .getContactDetailsForm()
-          .subscribe((contactDetails) => {
-            this.form = contactDetails;
+          .getOccupantsForm()
+          .subscribe((occupants) => {
+            this.form = occupants;
           });
         break;
       case 3:
-        //this.form$ = this.formCreationService
-        //  .getSecurityQuestionsForm()
-        //  .subscribe((securityQues) => {
-        //    this.form = securityQues;
-        //  });
+        this.form$ = this.formCreationService
+          .getCleanUpLogForm()
+          .subscribe((cleanUpLog) => {
+            this.form = cleanUpLog;
+          });
         break;
-    }
+      case 4:
+        this.form$ = this.formCreationService
+          .getDamagedItemsByRoomForm()
+          .subscribe((damagedItemsByRoom) => {
+            this.form = damagedItemsByRoom;
+          });
+        break;
+      }
   }
 
   submitFile(): void {
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    // this.profileService
+    // this.dfaStartApplicationService
       // .upsertProfile(this.profileDataService.createProfileDTO())
       // .subscribe({
         // next: (profileId) => {
-          const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
-          this.router.navigate([navigationPath]);
-          //debugger;
-          //this.profileDataService.setProfileId(profileId);
-          //this.router.navigate(['/verified-registration/dashboard']);
+          // this.profileDataService.setProfileId(profileId);
+          this.router.navigate(['/verified-registration/dashboard']);
         // },
         // error: (error) => {
           // this.showLoader = !this.showLoader;
@@ -257,27 +227,5 @@ export class ProfileComponent
           // this.alertService.setAlert('danger', globalConst.saveProfileError);
         // }
       // });
-  }
-
-  private saveSecurityQuestions(questionForm: UntypedFormGroup) {
-    //let anyValueSet = false;
-    //const securityQuestions: Array<SecurityQuestion> = [];
-
-    //// Create SecurityQuestion objects and save to array, and check if any value set
-    //for (let i = 1; i <= 3; i++) {
-    //  const question = questionForm.get(`question${i}`).value?.trim() ?? '';
-    //  const answer = questionForm.get(`answer${i}`).value?.trim() ?? '';
-
-    //  // if (question.length > 0 || answer.length > 0) {
-    //  //   anyValueSet = true;
-    //  // }
-
-    //  securityQuestions.push({
-    //    id: i,
-    //    answerChanged: true,
-    //    question,
-    //    answer
-    //  });
-    //}
   }
 }
