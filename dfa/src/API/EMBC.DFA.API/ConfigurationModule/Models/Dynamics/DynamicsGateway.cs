@@ -39,7 +39,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                dynamic result = await api.ExecuteAction("dfa_appcontacts", contact);
+                dynamic result = await api.ExecuteAction("dfa_CreateProfile", contact);
             }
             catch (System.Exception ex)
             {

@@ -47,11 +47,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             {
                 FirstName = c.dfa_firstname,
                 LastName = c.dfa_lastname,
-                Initial = c.dfa_initial,
-                Email = c.dfa_emailaddress,
-                Mobile = c.dfa_cellphonenumber,
-                ResidencePhone = c.dfa_residencetelephonenumber,
-                AlternatePhone = c.dfa_alternatephonenumber
+                //Initial = c.dfa_initial,
+                //Email = c.dfa_emailaddress,
+                //Mobile = c.dfa_cellphonenumber,
+                //ResidencePhone = c.dfa_residencetelephonenumber,
+                //AlternatePhone = c.dfa_alternatephonenumber
             }).OrderBy(c => c.FirstName);
         }
 
