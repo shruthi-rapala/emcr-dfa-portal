@@ -3,14 +3,352 @@
 
     <form [formGroup]="damagedItemsByRoomForm">
 
-      <ng-container>
-        <div class="row">
-          <div class="col-md-12">
-            <p class="sub-heading">Under Construction</p>
-          </div>
-        </div>
+      <p class="sub-heading" style="font-size: 20px">Damaged Items by Room</p>
+      <br />
 
-      </ng-container>
+      <div formGroupName="damagedRoom">
+        <ng-container>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="sub-heading" style="font-size: 15px">
+                For each room, list items submitted for damage assessment. For example:
+              </p>
+              <img
+                src="/assets/images/example-damage.png"
+                class="example-damage-image"
+                alt="Example description"
+              />
+              <table mat-table [dataSource]="damagedRoomsDataSource" *ngIf="damagedRoomsDataSource.getValue().length > 0" style="width:100%">
+                <!-- Room Type Column -->
+                <ng-container matColumnDef="roomType" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Room</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.roomType === RoomTypes.Other ? element.otherRoomType : element.roomType }}
+                  </td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Damaged Items</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.description}}
+                  </td>
+                </ng-container>
+
+                <!-- Delete & Edit Icons Column -->
+                <ng-container matColumnDef="icons" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    &nbsp;
+                  </th>
+                  <td *matCellDef="let element; let index = index" mat-cell>
+                    <button
+                      class="edit-image"
+                      mat-icon-button
+                      aria-label="Edit"
+                      (click)="editDamagedRoomRow(element, index)"
+                    >
+                      <img src="/assets/images/edit.svg" height="35" width="35" />
+                      <img
+                        src="/assets/images/edit_onhover.svg"
+                        height="35"
+                        width="35"
+                      />
+                    </button>&nbsp;
+                    <button
+                      class="delete-image"
+                      mat-icon-button
+                      aria-label="Remove"
+                      (click)="deleteDamagedRoomRow(index)"
+                    >
+                      <img src="/assets/images/delete.svg" height="35" width="35" />
+                      <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="damagedRoomColumnsToDisplay"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let element; columns: damagedRoomColumnsToDisplay"
+                  class="example-element-row"
+                  [style.height]="'auto'"
+                ></tr>
+
+              </table>
+
+              <div  *ngIf="damagedRoomsDataSource.getValue().length > 0">
+                <br /><br/>
+              </div>
+
+              <button
+                *ngIf="!showDamagedRoomForm"
+                class="family-button"
+                mat-button
+                type="button"
+                (click)="addDamagedRoom()"
+              >
+                + Add Room & Items
+              </button>
+
+              <mat-card *ngIf="showDamagedRoomForm">
+                <p class="sub-heading" style="font-size: 15px">
+                  New room and items
+                </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Select a room type</mat-label>
+                      <mat-select formControlName="roomType" matInput placeholder="Full-time occupant first name" required (selectionChange)="onSelectRoomType($event.value)">
+                        <mat-option *ngFor="let option of RoomTypes | keyvalue: originalOrder" [value]="option.key">{{ option.value }}</mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="
+                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.invalid &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.hasError('required') &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.touched
+                        "
+                      >
+                        Room type is required</mat-error
+                      >
+                      <mat-hint *ngIf="showGarageHint"> Attached garages only; detached garages can`t be included</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" *ngIf="showOtherRoomType === true">
+                      <mat-label>Please specify Other room</mat-label>
+                      <input formControlName="otherRoomType" matInput placeholder="Please specify Other room" required/>
+                      <mat-error
+                        *ngIf="
+                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.invalid &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.hasError('required') &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.touched
+                        "
+                      >
+                        Other room type is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-8">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Damaged Items</mat-label>
+                      <textarea matInput
+                        formControlName="description"
+                        placeholder="Damaged Items"
+                        [rows]="5"
+                        style="resize:none"
+                        required
+                        (keyup)="calcRemainingChars()"></textarea>
+                      <mat-error
+                        *ngIf="
+                          damagedItemsByRoomForm.get('damagedRoom').controls.description.invalid &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.description.hasError('required') &&
+                          damagedItemsByRoomForm.get('damagedRoom').controls.description.touched
+                        "
+                      >
+                        Description is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelDamagedRooms()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="family-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveDamagedRooms()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+            </div>
+
+          </div>
+        </ng-container>
+      </div>
+      <br/><br/>
+
+      <div formGroupName="fileAttachment">
+        <ng-container>
+          <div clas="row">
+            <div class="col-md-12">
+              <p class="sub-heading" style="font-size: 15px">
+                If you have photos of damaged items, please have them available during the site meeting to help the evaluator identify eligible costs. You may also attach them to this application.
+              </p>
+              <table mat-table [dataSource]="fileAttachmentsDataSource" *ngIf="fileAttachmentsDataSource.getValue().length > 0" style="width:100%">
+                <!-- File Name Column -->
+                <ng-container matColumnDef="fileName" style="width:25%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>File Name</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.fileName }}
+                  </td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="fileDescription" style="width:25%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>File Description</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.fileDescription}}
+                  </td>
+                </ng-container>
+
+                <!-- UploadedDate Column -->
+                <ng-container matColumnDef="uploadedDate" style="width:25%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Date Uploaded</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
+                  </td>
+                </ng-container>
+
+                <!-- Delete & Edit Icons Column -->
+                <ng-container matColumnDef="icons" style="width:25%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    &nbsp;
+                  </th>
+                  <td *matCellDef="let element; let index = index" mat-cell>
+                    <button
+                      class="delete-image"
+                      mat-icon-button
+                      aria-label="Edit"
+                      (click)="editFileAttachmentRow(element, index)"
+                    >
+                      <img src="/assets/images/edit.svg" height="35" width="35" />
+                      <img
+                        src="/assets/images/edit_onhover.svg"
+                        height="35"
+                        width="35"
+                      />
+                    </button>&nbsp;
+                    <button
+                      class="delete-image"
+                      mat-icon-button
+                      aria-label="Remove"
+                      (click)="deleteFileAttachmentRow(index)"
+                    >
+                      <img src="/assets/images/delete.svg" height="35" width="35" />
+                      <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="fileAttachmentColumnsToDisplay"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let element; columns: fileAttachmentColumnsToDisplay"
+                  class="example-element-row"
+                  [style.height]="'auto'"
+                ></tr>
+
+              </table>
+
+              <div  *ngIf="fileAttachmentsDataSource.getValue().length > 0">
+                <br /><br/>
+              </div>
+
+              <button
+                *ngIf="!showFileAttachmentForm"
+                class="family-button"
+                mat-button
+                type="button"
+                (click)="addFileAttachment()"
+              >
+                + Add Photos
+              </button>
+
+              <mat-card *ngIf="showFileAttachmentForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="sub-heading" style="font-size: 15px"
+                    >Attach a photo/scanned copy of damaged items</label
+                  >
+                    <app-file-upload
+                      [noOfAttachments]="1"
+                      (attachedFile)="setFileFormControl($event)"
+                    >
+                    </app-file-upload>
+                  </div>
+                  <div class="col-md-6">
+                    <br/><br/>
+                    <div [hidden]="!damagedItemsByRoomForm.get('fileAttachment.fileData').value">
+                      <mat-label>File name<span style="color:red" >*</span></mat-label>
+                      <br/>
+                      {{ damagedItemsByRoomForm.get('fileAttachment.fileName').value }}
+                      <br/><br/>
+                    </div>
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!damagedItemsByRoomForm.get('fileAttachment.fileData').value"
+                      >You may update the file description to something more descriptive:</label
+                    >
+                    <mat-form-field appearance="outline" [hidden]="!damagedItemsByRoomForm.get('fileAttachment.fileData').value">
+                      <mat-label>File description</mat-label>
+                      <input formControlName="fileDescription" matInput placeholder="File description" required/>
+                      <mat-error
+                        *ngIf="
+                          damagedItemsByRoomForm.get('fileAttachment').controls.fileDescription.invalid &&
+                          damagedItemsByRoomForm.get('fileAttachment').controls.fileDescription.hasError('required') &&
+                          damagedItemsByRoomForm.get('fileAttachment').controls.fileDescription.touched
+                        "
+                      >
+                        File description is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <br/><br/>
+                <div class="row">
+                  <div class="col-md-6">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelFileAttachments()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="family-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveFileAttachments()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+
+            </div>
+          </div>
+
+        </ng-container>
+
+      </div><br/><br/>
+
     </form>
 
   </mat-card-content>

@@ -165,7 +165,9 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
        new DamagedItemsByRoomForm(
-         new DamagedItemsByRoom()
+         new DamagedItemsByRoom(),
+         this.customValidator,
+         this.formBuilder
        )
      )
    );
@@ -493,7 +495,9 @@ export class FormCreationService {
     this.damagedItemsByRoomForm.next(
       this.formBuilder.group(
         new DamagedItemsByRoomForm(
-          new DamagedItemsByRoom()
+          new DamagedItemsByRoom(),
+          this.customValidator,
+          this.formBuilder
         )
       )
     );
