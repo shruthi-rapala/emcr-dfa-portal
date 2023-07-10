@@ -241,22 +241,22 @@ export class ProfileComponent
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    // this.profileService
-      // .upsertProfile(this.profileDataService.createProfileDTO())
-      // .subscribe({
-        // next: (profileId) => {
+    this.profileService
+      .upsertProfile(this.profileDataService.createProfileDTO())
+      .subscribe({
+        next: (profileId) => {
           const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
+          this.profileDataService.setProfileId(profileId);
           this.router.navigate([navigationPath]);
           //debugger;
-          //this.profileDataService.setProfileId(profileId);
-          //this.router.navigate(['/verified-registration/dashboard']);
-        // },
-        // error: (error) => {
-          // this.showLoader = !this.showLoader;
-          // this.isSubmitted = !this.isSubmitted;
-          // this.alertService.setAlert('danger', globalConst.saveProfileError);
-        // }
-      // });
+          // this.router.navigate(['/verified-registration/dashboard']);
+        },
+        error: (error) => {
+          this.showLoader = !this.showLoader;
+          this.isSubmitted = !this.isSubmitted;
+          this.alertService.setAlert('danger', globalConst.saveProfileError);
+        }
+      });
   }
 
   private saveSecurityQuestions(questionForm: UntypedFormGroup) {
