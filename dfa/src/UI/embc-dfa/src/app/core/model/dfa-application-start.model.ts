@@ -78,9 +78,6 @@ export class AppTypeInsuranceForm {
   farmOption = new UntypedFormControl();
   applicantSignature: UntypedFormGroup;
   secondaryApplicantSignature: UntypedFormGroup;
-  signature = new UntypedFormControl();
-  dateSigned = new UntypedFormControl();
-  signedName = new UntypedFormControl();
 
   constructor(
     appTypeInsurance: AppTypeInsurance,
