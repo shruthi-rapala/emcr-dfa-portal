@@ -79,7 +79,6 @@ export class DFAApplicationMainComponent
     });
     this.formCreationService.signaturesChanged.subscribe(signAndSubmit => {
       signAndSubmit.get('applicantSignature').get('dateSigned').updateValueAndValidity();
-      console.log(signAndSubmit);
       this.isApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.applicantSignature.valid;
       this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
       this.checkSignaturesValid();
