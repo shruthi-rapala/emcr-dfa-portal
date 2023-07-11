@@ -17,6 +17,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 import { DFAApplicationMainService } from './dfa-application-main.service';
 import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
+import { SignAndSubmit } from 'src/app/core/model/dfa-application-main.model';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -42,6 +43,10 @@ export class DFAApplicationMainComponent
   showLoader = false;
   isSubmitted = false;
   ApplicantOptions = ApplicantOption;
+  isApplicantSigned: boolean = false;
+  isSecondaryApplicantSigned: boolean = false;
+  isSecondaryApplicant: boolean = false;
+  isSignaturesValid: boolean = false;
 
   constructor(
     private router: Router,
@@ -66,6 +71,24 @@ export class DFAApplicationMainComponent
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     this.dfaApplicationMainHeading = this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption + ' Application';
     this.steps = this.componentService.createDFAApplicationMainSteps();
+
+    this.formCreationService.secondaryApplicantsChanged.subscribe(secondaryApplicants => {
+      if (secondaryApplicants?.length > 0) this.isSecondaryApplicant = true;
+      else this.isSecondaryApplicant = false;
+      this.checkSignaturesValid();
+    });
+    this.formCreationService.signaturesChanged.subscribe(signAndSubmit => {
+      signAndSubmit.get('applicantSignature').get('dateSigned').updateValueAndValidity();
+      this.isApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.applicantSignature.valid;
+      this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
+      this.checkSignaturesValid();
+    });
+  }
+
+  checkSignaturesValid() {
+    if (!this.isSecondaryApplicant && this.isApplicantSigned) this.isSignaturesValid = true; // no secondary applicant and primary applicant signature valid
+    else if (this.isSecondaryApplicant && this.isApplicantSigned && this.isSecondaryApplicantSigned) this.isSignaturesValid = true; // secondary and primary signatures valid
+    else this.isSignaturesValid = false;
   }
 
   ngAfterViewChecked(): void {
@@ -161,6 +184,9 @@ export class DFAApplicationMainComponent
       case 'damaged-items-by-room':
         this.dfaApplicationMainDataService.damagedItemsByRoom = this.form.value;
         break;
+      case 'sign-and-submit':
+        this.dfaApplicationMainDataService.signAndSubmit = this.form.value;
+        break;
       default:
     }
   }
@@ -207,10 +233,18 @@ export class DFAApplicationMainComponent
             this.form = damagedItemsByRoom;
           });
         break;
+      case 6:
+        this.form$ = this.formCreationService
+          .getSignAndSubmitForm()
+          .subscribe((signAndSubmit)=> {
+          this.form = signAndSubmit;
+        });
+        break;
       }
   }
 
   submitFile(): void {
+    alert("saved");
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
@@ -219,7 +253,7 @@ export class DFAApplicationMainComponent
       // .subscribe({
         // next: (profileId) => {
           // this.profileDataService.setProfileId(profileId);
-          this.router.navigate(['/verified-registration/dashboard']);
+          // this.router.navigate(['/verified-registration/dashboard']);
         // },
         // error: (error) => {
           // this.showLoader = !this.showLoader;

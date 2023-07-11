@@ -13,7 +13,7 @@ import {
 } from '../model/profile.model';
 import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application-start.model';
 import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
-  CleanUpLog, CleanUpLogForm } from '../model/dfa-application-main.model';
+  CleanUpLog, CleanUpLogForm, SignAndSubmitForm, SignAndSubmit, SecondaryApplicant } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import {
   Evacuated,
@@ -31,6 +31,8 @@ import {
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
   public insuranceOptionChanged: EventEmitter<InsuranceOption>;
+  public secondaryApplicantsChanged: EventEmitter<Array<SecondaryApplicant>>;
+  public signaturesChanged: EventEmitter<UntypedFormGroup>;
 
   restrictionForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
@@ -175,6 +177,19 @@ export class FormCreationService {
   damagedItemsByRoomForm$: Observable<UntypedFormGroup | undefined> =
     this.damagedItemsByRoomForm.asObservable();
 
+  signAndSubmitForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new SignAndSubmitForm(
+         new SignAndSubmit(),
+         this.formBuilder
+       )
+     )
+   );
+
+  signAndSubmitForm$: Observable<UntypedFormGroup | undefined> =
+    this.signAndSubmitForm.asObservable();
+
   evacuatedForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
@@ -229,6 +244,8 @@ export class FormCreationService {
     private customValidator: CustomValidationService
   ) {
     this.insuranceOptionChanged = new EventEmitter<InsuranceOption>();
+    this.secondaryApplicantsChanged = new EventEmitter<Array<SecondaryApplicant>>();
+    this.signaturesChanged = new EventEmitter<UntypedFormGroup>;
   }
 
   getRestrictionForm(): Observable<UntypedFormGroup> {
@@ -483,12 +500,13 @@ export class FormCreationService {
       )
     );
   }
+
   getDamagedItemsByRoomForm(): Observable<UntypedFormGroup> {
     return this.damagedItemsByRoomForm$;
   }
 
   setDamagedItemsByRoomForm(damagedItemsByRoomForm: UntypedFormGroup): void {
-    this.appTypeInsuranceForm.next(damagedItemsByRoomForm);
+    this.damagedItemsByRoomForm.next(damagedItemsByRoomForm);
   }
 
   clearDamagedItemsByRoomData(): void {
@@ -497,6 +515,25 @@ export class FormCreationService {
         new DamagedItemsByRoomForm(
           new DamagedItemsByRoom(),
           this.customValidator,
+          this.formBuilder
+        )
+      )
+    );
+  }
+
+  getSignAndSubmitForm(): Observable<UntypedFormGroup> {
+    return this.signAndSubmitForm$;
+  }
+
+  setSignAndSubmitForm(signAndSubmitForm: UntypedFormGroup): void {
+    this.signAndSubmitForm.next(signAndSubmitForm);
+  }
+
+  clearSignAndSubmitData(): void {
+    this.signAndSubmitForm.next(
+      this.formBuilder.group(
+        new SignAndSubmitForm(
+          new SignAndSubmit(),
           this.formBuilder
         )
       )
