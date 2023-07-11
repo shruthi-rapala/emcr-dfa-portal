@@ -28,7 +28,6 @@ namespace EMBC.DFA.API.Services
             // Construct the body of the request
             var pairs = new List<KeyValuePair<string, string>>
                 {
-                    // TODO : uncomment these three lines and remove hard-coded lines
                     new KeyValuePair<string, string>("resource", options.ResourceName),
                     new KeyValuePair<string, string>("client_id", options.ClientId),
                     new KeyValuePair<string, string>("client_secret", options.ClientSecret),
