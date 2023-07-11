@@ -78,6 +78,9 @@ export class AppTypeInsuranceForm {
   farmOption = new UntypedFormControl();
   applicantSignature: UntypedFormGroup;
   secondaryApplicantSignature: UntypedFormGroup;
+  signature = new UntypedFormControl();
+  dateSigned = new UntypedFormControl();
+  signedName = new UntypedFormControl();
 
   constructor(
     appTypeInsurance: AppTypeInsurance,
@@ -99,12 +102,18 @@ export class AppTypeInsuranceForm {
       dateSigned: null,
       signedName: null
     });
+    this.applicantSignature?.controls.signature.setValue(appTypeInsurance?.applicantSignature?.signature);
+    this.applicantSignature?.controls.dateSigned.setValue(appTypeInsurance?.applicantSignature?.dateSigned);
+    this.applicantSignature?.controls.signedName.setValue(appTypeInsurance?.applicantSignature?.signedName);
 
     this.secondaryApplicantSignature = fb.group({
       signature: null,
       dateSigned: null,
       signedName: null
     });
+    this.secondaryApplicantSignature?.controls.signature.setValue(appTypeInsurance?.secondaryApplicantSignature?.signature);
+    this.secondaryApplicantSignature?.controls.dateSigned.setValue(appTypeInsurance?.secondaryApplicantSignature?.dateSigned);
+    this.secondaryApplicantSignature?.controls.signedName.setValue(appTypeInsurance?.secondaryApplicantSignature?.signedName);
   }
 }
 

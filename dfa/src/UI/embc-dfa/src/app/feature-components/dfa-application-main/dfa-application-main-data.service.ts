@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DFAApplicationMain, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, OtherContact, SecondaryApplicant, Occupants} from 'src/app/core/model/dfa-application-main.model';
+import { DFAApplicationMain, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, OtherContact, SecondaryApplicant, Occupants, SignAndSubmit} from 'src/app/core/model/dfa-application-main.model';
 import { DFAApplicationStart } from 'src/app/core/model/dfa-application-start.model';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
@@ -16,6 +16,7 @@ export class DFAApplicationMainDataService {
   private _dfaApplicationStart: DFAApplicationStart;
   private _dfaApplicationMainId: string;
   private ApplicantOptions = ApplicantOption;
+  private _signAndSubmit: SignAndSubmit;
 
   constructor(
     private cacheService: CacheService
@@ -62,6 +63,14 @@ export class DFAApplicationMainDataService {
     this._damagedPropertyAddress = value;
   }
 
+  public get signAndSubmit(): SignAndSubmit {
+    return this._signAndSubmit;
+  }
+
+  public set signAndSubmit(value: SignAndSubmit) {
+    this._signAndSubmit = value;
+  }
+
   public get propertyDamage(): PropertyDamage {
     return this._propertyDamage;
   }
@@ -97,7 +106,8 @@ export class DFAApplicationMainDataService {
       propertyDamage: this._propertyDamage,
       occupants: this._occupants,
       cleanUpLog: this._cleanUpLog,
-      damagedItemsByRoom: this._damagedItemsByRoom
+      damagedItemsByRoom: this._damagedItemsByRoom,
+      signAndSubmit: this._signAndSubmit
     };
   }
 }

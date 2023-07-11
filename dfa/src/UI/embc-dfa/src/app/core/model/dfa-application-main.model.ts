@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { RegAddress, Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
+import { SignatureBlock } from '../components/signature/signature.component';
 
 export interface DamagedPropertyAddress extends RegAddress {
   occupyAsPrimaryResidence: boolean;
@@ -764,6 +765,46 @@ export class DamagedItemsByRoomForm {
   }
 }
 
+
+export class SignAndSubmit {
+  applicantSignature?: SignatureBlock;
+  secondaryApplicantSignature?: SignatureBlock;
+
+  constructor(
+    aplicantSignature?: null | SignatureBlock,
+    secondaryApplicantSignature?: null | SignatureBlock,
+  ) {}
+}
+
+export class SignAndSubmitForm {
+  applicantSignature: UntypedFormGroup;
+  secondaryApplicantSignature: UntypedFormGroup;
+
+
+  constructor(
+    signAndSubmit: SignAndSubmit,
+    fb: UntypedFormBuilder
+  ) {
+    this.applicantSignature = fb.group({
+      signature: [null, Validators.required],
+      dateSigned: [null, Validators.required],
+      signedName: [null, Validators.required]
+    });
+    this.applicantSignature?.controls.signature.setValue(signAndSubmit?.applicantSignature?.signature);
+    this.applicantSignature?.controls.dateSigned.setValue(signAndSubmit?.applicantSignature?.dateSigned);
+    this.applicantSignature?.controls.signedName.setValue(signAndSubmit?.applicantSignature?.signedName);
+
+    this.secondaryApplicantSignature = fb.group({
+      signature: null,
+      dateSigned: null,
+      signedName: null
+    });
+    this.secondaryApplicantSignature?.controls.signature.setValue(signAndSubmit?.secondaryApplicantSignature?.signature);
+    this.secondaryApplicantSignature?.controls.dateSigned.setValue(signAndSubmit?.secondaryApplicantSignature?.dateSigned);
+    this.secondaryApplicantSignature?.controls.signedName.setValue(signAndSubmit?.secondaryApplicantSignature?.signedName);
+  }
+}
+
 // TODO This should be coming in from the API in api/models
 /**
  * DFA Application Main
@@ -775,4 +816,5 @@ export interface DFAApplicationMain {
   occupants?: Occupants;
   cleanUpLog?: CleanUpLog;
   damagedItemsByRoom?: DamagedItemsByRoom;
+  signAndSubmit?: SignAndSubmit;
 }

@@ -125,7 +125,16 @@ export class ComponentCreationService {
       loadWrapperButton: false,
       lastStep: 0,
       stepName: 'Damaged Items By Room'
-    }
+    },
+    // {
+    //   component: 'sign-and-submit',
+    //   nextButtonLabel: 'Submit',
+    //   backButtonLabel: 'Go Back & Edit',
+    //   isLast: false,
+    //   loadWrapperButton: false,
+    //   lastStep: 0,
+    //   stepName: 'Sign and Submit'
+    // }
   ];
 
   needsAssessmentComponents: Array<any> = [
