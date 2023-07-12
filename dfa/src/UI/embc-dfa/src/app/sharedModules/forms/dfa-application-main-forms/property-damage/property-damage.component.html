@@ -22,6 +22,11 @@
               Landslide Damage
             </mat-checkbox><br/>
             <mat-checkbox
+              formControlName="wildfireDamage"
+              >
+              Wildfire Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
               formControlName="stormDamage"
               >
               Storm Damage
@@ -35,7 +40,7 @@
             <mat-form-field appearance="outline" [hidden]="propertyDamageForm.get('otherDamage').value !== true" class="col-md-4">
               <mat-label>Cause of Damage</mat-label>
               <input matInput
-                required
+                [required]="propertyDamageForm.get('otherDamage').value === true"
                 type="text"
                 formControlName="otherDamageText"
                 placeholder="Cause of damage*"
@@ -49,6 +54,9 @@
                 Text is required</mat-error
               >
             </mat-form-field>
+            <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage')">
+              <br/>At least one cause of damage is required.
+            </mat-error>
           </div>
         </div><br/><br/>
 
@@ -67,6 +75,14 @@
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
               <mat-datepicker #fromPicker></mat-datepicker>
+              <mat-error
+                *ngIf="
+                propertyDamageForm.get('damageFromDate').invalid &&
+                propertyDamageForm.get('damageFromDate').hasError('required')
+              "
+              >
+                From date is required</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="col-md-4">
@@ -80,6 +96,14 @@
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
               <mat-datepicker #toPicker></mat-datepicker>
+              <mat-error
+                *ngIf="
+                propertyDamageForm.get('damageToDate').invalid &&
+                propertyDamageForm.get('damageToDate').hasError('required')
+              "
+              >
+                To date is required</mat-error
+              >
             </mat-form-field>
           </div>
         </div><br/><br/>

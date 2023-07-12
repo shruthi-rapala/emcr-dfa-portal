@@ -89,12 +89,12 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators(null);
-          this.damagedPropertyAddressForm.controls.landlordPhone1.removeValidators([Validators.required]);
+          this.damagedPropertyAddressForm.controls.landlordPhone.removeValidators([Validators.required]);
         } else if (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOption.ResidentialTenant) {
           this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required]);
-          this.damagedPropertyAddressForm.controls.landlordPhone1.addValidators([Validators.required]);
+          this.damagedPropertyAddressForm.controls.landlordPhone.addValidators([Validators.required]);
         }
       });
 
@@ -218,20 +218,20 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       });
 
       this.damagedPropertyAddressForm
-      .get('landlordPhone1')
+      .get('landlordPhone')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (value === '') {
-          this.damagedPropertyAddressForm.get('landlordPhone1').reset();
+          this.damagedPropertyAddressForm.get('landlordPhone').reset();
         }
       });
 
       this.damagedPropertyAddressForm
-      .get('landlordPhone2')
+      .get('landlordEmail')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (value === '') {
-          this.damagedPropertyAddressForm.get('landlordPhone2').reset();
+          this.damagedPropertyAddressForm.get('landlordEmail').reset();
         }
       });
 

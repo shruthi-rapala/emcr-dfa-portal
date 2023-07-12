@@ -74,16 +74,14 @@
       </div>
     </mat-step>
     <mat-step *ngIf="currentFlow === 'verified-registration'">
-      <p>
-        Please read through and confirm that your details are all correct before
-        submitting.
-      </p>
       <ng-template matStepLabel>Review</ng-template>
       <app-review
         [type]="type"
         [showHeading]="true"
         [parentPageName]="parentPageName"
         [currentFlow]="currentFlow"
+        [allowEdit]="true"
+        (stepToNavigate)="navigateToStep($event)"
       >
       </app-review>
       <br />
@@ -134,16 +132,21 @@
             Go Back & Edit
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.occupantsForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.damagedItemsByRoomForm$ | async)?.valid">
           <button
             class="button-p save-button"
-            [disabled]="isSubmitted || !isSignaturesValid"
             mat-stroked-button
             type="button"
             (click)="submitFile()"
           >
             Submit
           </button>
+        </div>
+        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.occupantsForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.damagedItemsByRoomForm$ | async)?.valid)">
+          <span style="color:red">Enter all required information and sign before submitting.</span>
+        </div>
+        <div class="col-md-6" *ngIf="isSubmitted">
+          <span>Submitting...</span>
         </div>
       </div>
     </mat-step>

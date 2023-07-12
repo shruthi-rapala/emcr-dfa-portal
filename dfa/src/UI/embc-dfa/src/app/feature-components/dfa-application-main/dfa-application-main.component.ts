@@ -47,6 +47,8 @@ export class DFAApplicationMainComponent
   isSecondaryApplicantSigned: boolean = false;
   isSecondaryApplicant: boolean = false;
   isSignaturesValid: boolean = false;
+  appTypeInsuranceForm: UntypedFormGroup;
+  appTypeInsuranceForm$: Subscription;
 
   constructor(
     private router: Router,
@@ -83,6 +85,17 @@ export class DFAApplicationMainComponent
       this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
       this.checkSignaturesValid();
     });
+
+    // initialize app type insurance form in form creation service to show details in review
+    this.appTypeInsuranceForm$ = this.formCreationService
+      .getAppTypeInsuranceForm()
+      .subscribe((appTypeInsurance) => {
+        this.appTypeInsuranceForm = appTypeInsurance;
+      });
+
+    this.appTypeInsuranceForm.controls.applicantOption.setValue(this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption);
+    this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.insuranceOption);
+    this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
   }
 
   checkSignaturesValid() {
@@ -96,6 +109,10 @@ export class DFAApplicationMainComponent
   }
 
   ngAfterViewInit(): void {
+  }
+
+  navigateToStep(stepIndex: number) {
+    this.dfaApplicationMainStepper.selectedIndex = stepIndex;
   }
 
   /**
