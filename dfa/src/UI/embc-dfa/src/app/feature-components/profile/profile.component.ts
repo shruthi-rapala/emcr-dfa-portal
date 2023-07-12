@@ -187,17 +187,17 @@ export class ProfileComponent
     }
   }
 
-  getParentMethod(): any {
-    return {
-      callParentMoveStep: (index: any) => {
-        this.move(index)
-      }
-    }
-  }
+  // getParentMethod(): any {
+  //   return {
+  //     callParentMoveStep: (index: any) => {
+  //       this.move(index)
+  //     }
+  //   }
+  // }
 
-  move(index: any): void {
-    this.profileStepper.selectedIndex = index;
-  }
+  // move(index: any): void {
+  //   this.profileStepper.selectedIndex = index;
+  // }
 
   /**
    * Loads appropriate forms based on the current step

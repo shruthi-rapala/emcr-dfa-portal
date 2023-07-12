@@ -8,6 +8,7 @@
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"
         [disabled]="isSubmitted"
+        (click)="submitFile()"
         mat-stroked-button
         type="button"
         >
@@ -58,7 +59,7 @@
             type="button"
             (click)="goForward(dfaApplicationMainStepper, step.isLast, step.component)"
           >
-            Review Submission
+            Next - Review Submission
           </button>
           <button
             *ngIf="!(currentFlow === 'verified-registration' && (step.component === 'review' || step.component === 'damaged-items-by-room'))"
@@ -73,34 +74,81 @@
       </div>
     </mat-step>
     <mat-step *ngIf="currentFlow === 'verified-registration'">
-      <p>
-        Please read through and confirm that your details are all correct before
-        submitting.
-      </p>
-      <ng-template matStepLabel>Review & Submit</ng-template>
+      <ng-template matStepLabel>Review</ng-template>
       <app-review
         [type]="type"
         [showHeading]="true"
         [parentPageName]="parentPageName"
         [currentFlow]="currentFlow"
+        [allowEdit]="true"
+        (stepToNavigate)="navigateToStep($event)"
       >
       </app-review>
       <br />
 
-      <button
-        class="button-p save-button"
-        [disabled]="isSubmitted"
-        mat-stroked-button
-        type="button"
-        (click)="goForward(dfaApplicationMainStepper, true, 'review')"
-      >
-        Save & Submit
-        <app-loader
-          [strokeWidth]="3"
-          [diameter]="25"
-          [showLoader]="showLoader"
-        ></app-loader>
-      </button>
+      <div class="row justify-content-between resp-style">
+        <div class="col-md-6">
+          <button
+            class="button-s"
+            mat-button
+            type="button"
+            (click)="dfaApplicationMainStepper.previous()"
+          >
+            Go Back & Edit
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button
+            class="button-p"
+            mat-stroked-button
+            type="button"
+            (click)="dfaApplicationMainStepper.next()"
+          >
+            Next - Sign & Submit
+            <app-loader
+              [strokeWidth]="3"
+              [diameter]="25"
+              [showLoader]="showLoader"
+            ></app-loader>
+          </button>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step *ngIf="currentFlow === 'verified-registration'">
+      <ng-template matStepLabel>Sign & Submit</ng-template>
+      <app-component-wrapper
+        componentName="sign-and-submit"
+        [folderPath]="dfaApplicationMainFolderPath"
+      ></app-component-wrapper>
+      <br />
+      <div class="row justify-content-between resp-style">
+        <div class="col-md-6">
+          <button
+            class="button-s"
+            mat-button
+            type="button"
+            (click)="dfaApplicationMainStepper.previous()"
+          >
+            Go Back & Edit
+          </button>
+        </div>
+        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.occupantsForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.damagedItemsByRoomForm$ | async)?.valid">
+          <button
+            class="button-p save-button"
+            mat-stroked-button
+            type="button"
+            (click)="submitFile()"
+          >
+            Submit
+          </button>
+        </div>
+        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.occupantsForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.damagedItemsByRoomForm$ | async)?.valid)">
+          <span style="color:red">Enter all required information and sign before submitting.</span>
+        </div>
+        <div class="col-md-6" *ngIf="isSubmitted">
+          <span>Submitting...</span>
+        </div>
+      </div>
     </mat-step>
     <ng-template matStepperIcon="edit" let-index="index">
       {{ index + 1 }}
