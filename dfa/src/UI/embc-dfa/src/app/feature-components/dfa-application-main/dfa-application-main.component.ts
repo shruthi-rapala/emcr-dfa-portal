@@ -47,7 +47,6 @@ export class DFAApplicationMainComponent
   isSecondaryApplicantSigned: boolean = false;
   isSecondaryApplicant: boolean = false;
   isSignaturesValid: boolean = false;
-  isDamagedPropertyAddressValid: boolean = false;
   appTypeInsuranceForm: UntypedFormGroup;
   appTypeInsuranceForm$: Subscription;
 
