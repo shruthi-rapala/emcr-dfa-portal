@@ -10,7 +10,7 @@ import { ConfigService } from 'src/app/core/services/config.service';
 import { MatTableModule } from '@angular/material/table';
 import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { FullTimeOccupant } from 'src/app/core/model/dfa-application-main.model';
+import { FullTimeOccupant, RoomType } from 'src/app/core/model/dfa-application-main.model';
 
 @Component({
   selector: 'app-review',
@@ -38,6 +38,16 @@ export class ReviewComponent implements OnInit {
   secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email'];
   otherContactsDataSource = new MatTableDataSource();
   otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email'];
+  cleanUpWorkDataSource = new MatTableDataSource();
+  cleanUpWorkColumnsToDisplay = ['date', 'name','hours','description'];
+  cleanUpWorkFileDataSource = new MatTableDataSource();
+  cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'fileDate'];
+  damagedRoomDataSource = new MatTableDataSource();
+  damagedRoomColumnsToDisplay = ['roomType', 'description'];
+  fileAttachmentDataSource = new MatTableDataSource();
+  fileAttachmentColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
+  RoomTypes = RoomType;
+
 
   constructor(
     private router: Router,
@@ -73,6 +83,34 @@ export class ReviewComponent implements OnInit {
       .pipe(
         mapTo(_otherContactsFormArray.getRawValue())
         ).subscribe(data => this.otherContactsDataSource.data = data);
+
+    // subscribe to changes in clean up logs
+    const _cleanUpWorkFormArray = this.formCreationService.cleanUpLogForm.value.get('cleanuplogs');
+    _cleanUpWorkFormArray.valueChanges
+      .pipe(
+        mapTo(_cleanUpWorkFormArray.getRawValue())
+        ).subscribe(data => this.cleanUpWorkDataSource.data = data);
+
+    // subscribe to changes in receipts and invocies
+    const _cleanUpWorkFileFormArray = this.formCreationService.cleanUpLogForm.value.get('cleanuplogFiles');
+    _cleanUpWorkFileFormArray.valueChanges
+      .pipe(
+        mapTo(_cleanUpWorkFileFormArray.getRawValue())
+        ).subscribe(data => this.cleanUpWorkFileDataSource.data = data);
+
+    // subscribe to changes in damaged rooms
+    const _damagedRoomFormArray = this.formCreationService.damagedItemsByRoomForm.value.get('damagedRooms');
+    _damagedRoomFormArray.valueChanges
+      .pipe(
+        mapTo(_damagedRoomFormArray.getRawValue())
+        ).subscribe(data => this.damagedRoomDataSource.data = data);
+
+    // subscribe to changes in damage photos
+    const _fileAttachmentFormArray = this.formCreationService.damagedItemsByRoomForm.value.get('fileAttachments');
+    _fileAttachmentFormArray.valueChanges
+      .pipe(
+        mapTo(_fileAttachmentFormArray.getRawValue())
+        ).subscribe(data => this.fileAttachmentDataSource.data = data);
   }
 
   // callParentMoveStep(index: number) {

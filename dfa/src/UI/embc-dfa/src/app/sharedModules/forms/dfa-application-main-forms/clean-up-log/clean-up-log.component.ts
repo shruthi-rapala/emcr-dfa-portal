@@ -75,15 +75,6 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       this.cleanUpLogForm.get('cleanuplogFiles').value
     );
     this.cleanUpWorkFileData = this.cleanUpLogForm.get('cleanuplogFiles').value;
-
-    //this.cleanUpLogForm
-    //  .get('field')
-    //  .valueChanges.pipe(distinctUntilChanged())
-    //  .subscribe((value) => {
-    //    if (value === '') {
-    //      this.cleanUpLogForm.get('field').reset();
-    //    }
-    //  });
   }
 
   /**
@@ -95,7 +86,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   onFileChange(event) {
     const file: File = event[0];
-    
+
     if (file) {
       var extension = file.name.substr(file.name.lastIndexOf('.'));
       if ((extension.toLowerCase() != ".pdf") &&

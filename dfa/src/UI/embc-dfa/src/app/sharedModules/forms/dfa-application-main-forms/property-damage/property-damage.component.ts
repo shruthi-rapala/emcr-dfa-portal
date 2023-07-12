@@ -44,10 +44,6 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     this.formCreationService = formCreationService;
   }
 
-  showForm() {
-    console.log(this.propertyDamageForm);
-  }
-
   ngOnInit(): void {
     this.propertyDamageForm$ = this.formCreationService
       .getPropertyDamageForm()

@@ -37,7 +37,7 @@
         submitting.
       </p>
 
-      <mat-card-content style="display:none">
+      <mat-card-content style="display:none" class="mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Restriction</div>
           <div class="col-md-2">
@@ -95,7 +95,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content class="contentStyle">
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Personal Details</div>
           <div class="col-md-2">
@@ -157,7 +157,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content class="contentStyle">
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Primary Address</div>
           <div class="col-md-2">
@@ -239,7 +239,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content class="contentStyle">
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Current Contact Address</div>
           <div class="col-md-2">
@@ -344,7 +344,7 @@
         </div>-->
       </mat-card-content>
 
-      <mat-card-content class="contentStyle">
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Contact Telephone Number</div>
           <div class="col-md-2">
@@ -393,7 +393,7 @@
 
       </mat-card-content>
 
-      <mat-card-content class="contentStyle">
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Email Address</div>
           <div class="col-md-2">
@@ -890,7 +890,7 @@
         Please check that your application information is correct before submitting. Missing required fields marked in red.
       </p>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Application & Insurance</div>
         </div>
@@ -921,7 +921,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Damaged Property</div>
           <div class="col-md-2" *ngIf="allowEdit">
@@ -1105,7 +1105,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Damage</div>
           <div class="col-md-2" *ngIf="allowEdit">
@@ -1243,7 +1243,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Occupants</div>
           <div class="col-md-2" *ngIf="allowEdit">
@@ -1397,9 +1397,9 @@
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Clean Up Log</div>
+          <div class="col-md-6 card-heading">&nbsp;Clean Up Log</div>
           <div class="col-md-2" *ngIf="allowEdit">
             <button
               class="edit-image"
@@ -1417,31 +1417,105 @@
           </div>
         </div>
         <hr />
-        <div class="row info-detail">
-          <div class="col-md-3">Application Type:</div>
-          <div class="col-md-3">
-            <p class="no-bottom-margin">
-              <span
-                >{{
-                  (formCreationService.appTypeInsuranceForm$ | async)?.value
-                    ?.applicantOption
-                }}</span
-              >
-          </div>
-          <div class="col-md-3">Do You Have Insurance?:</div>
-          <div class="col-md-3">
-            <p class="no-bottom-margin">
-              <span
-                >{{
-                  (formCreationService.appTypeInsuranceForm$ | async)?.value
-                    ?.insuranceOption
-                }}</span
-              >
-          </div>
+        <div class="row info-detail" *ngIf="(formCreationService.cleanUpLogForm$ | async)?.value?.cleanuplogs?.length > 0">
+          <b>Clean Up Log</b>
+          <table mat-table [dataSource]="cleanUpWorkDataSource">
+            <!-- Date Column -->
+            <ng-container matColumnDef="date" style="width:40%">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>Date</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.date | date : "yyyy/MM/dd" }}
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name" style="width:40%">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>Name</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.name }}
+              </td>
+            </ng-container>
+
+            <!-- Hours Column -->
+            <ng-container matColumnDef="hours" style="width:40%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Hours</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.hours}}
+              </td>
+            </ng-container>
+
+             <!-- Description Column -->
+            <ng-container matColumnDef="description" style="width:40%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Description</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.description}}
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="cleanUpWorkColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: cleanUpWorkColumnsToDisplay"
+              class="example-element-row"
+            ></tr>
+          </table>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.cleanUpLogForm$ | async)?.value?.cleanuplogs?.length == 0">
+          <span>No clean up logs.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.cleanUpLogForm$ | async)?.value?.cleanuplogFiles?.length > 0">
+          <b>Receipts and Invoices</b>
+          <table mat-table [dataSource]="cleanUpWorkFileDataSource">
+           <!-- File Name Column -->
+           <ng-container matColumnDef="fileName" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef >
+              <b>File Name</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.fileName }}
+            </td>
+          </ng-container>
+
+          <!-- File Description Column -->
+          <ng-container matColumnDef="fileDescription" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef>
+              <b>File Description</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.fileDescription}}
+            </td>
+          </ng-container>
+
+           <!-- Date Column -->
+          <ng-container matColumnDef="fileDate" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef >
+              <b>Date</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.fileDate | date : "yyyy/MM/dd" }}
+            </td>
+          </ng-container>
+            <tr mat-header-row *matHeaderRowDef="cleanUpWorkFileColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: cleanUpWorkFileColumnsToDisplay"
+              class="example-element-row"
+            ></tr>
+          </table>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.cleanUpLogForm$ | async)?.value?.cleanuplogFiles?.length == 0">
+          <span>No receipts or invoices supplied.</span>
         </div>
       </mat-card-content>
 
-      <mat-card-content>
+      <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Damaged Items By Room</div>
           <div class="col-md-2" *ngIf="allowEdit">
@@ -1461,27 +1535,83 @@
           </div>
         </div>
         <hr />
-        <div class="row info-detail">
-          <div class="col-md-3">Application Type:</div>
-          <div class="col-md-3">
-            <p class="no-bottom-margin">
-              <span
-                >{{
-                  (formCreationService.appTypeInsuranceForm$ | async)?.value
-                    ?.applicantOption
-                }}</span
-              >
-          </div>
-          <div class="col-md-3">Do You Have Insurance?:</div>
-          <div class="col-md-3">
-            <p class="no-bottom-margin">
-              <span
-                >{{
-                  (formCreationService.appTypeInsuranceForm$ | async)?.value
-                    ?.insuranceOption
-                }}</span
-              >
-          </div>
+        <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.damagedRooms?.length > 0">
+          <b>Damaged Rooms</b>
+          <table mat-table [dataSource]="damagedRoomDataSource">
+            <!-- Room Type Column -->
+            <ng-container matColumnDef="roomType" style="width:20%">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>Room</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.roomType === RoomTypes.Other ? element.otherRoomType : element.roomType }}
+              </td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Damaged Items</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.description}}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="damagedRoomColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: damagedRoomColumnsToDisplay"
+              class="example-element-row"
+            ></tr>
+          </table>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.damagedRooms?.length == 0">
+          <span>No damaged rooms listed.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.fileAttachments?.length > 0">
+          <b>Damage Photos</b>
+          <table mat-table [dataSource]="fileAttachmentDataSource">
+             <!-- File Name Column -->
+             <ng-container matColumnDef="fileName" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>File Name</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.fileName }}
+              </td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="fileDescription" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>File Description</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.fileDescription}}
+              </td>
+            </ng-container>
+
+            <!-- UploadedDate Column -->
+            <ng-container matColumnDef="uploadedDate" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Date Uploaded</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="fileAttachmentColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: fileAttachmentColumnsToDisplay"
+              class="example-element-row"
+            ></tr>
+          </table>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.fileAttachments?.length == 0">
+          <span>No damage photos supplied.</span>
         </div>
       </mat-card-content>
     </div>
