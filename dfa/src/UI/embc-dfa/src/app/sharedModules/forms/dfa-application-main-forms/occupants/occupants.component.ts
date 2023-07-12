@@ -3,6 +3,7 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
   AbstractControl,
+  FormGroup,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -249,6 +250,17 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.occupantsForm
       .get('secondaryApplicant.email')
       .updateValueAndValidity();
+  }
+
+  validateFormAtLeastOneFullTimeOccupant(form: FormGroup) {
+    if (form.controls.wildfireDamage.value !== true &&
+      form.controls.stormDamage.value !== true &&
+      form.controls.landslideDamage.value !== true &&
+      form.controls.otherDamage.value !== true &&
+      form.controls.floodDamage.value !== true) {
+      return { noCauseOfDamage: true };
+    }
+    return null;
   }
 
   /**

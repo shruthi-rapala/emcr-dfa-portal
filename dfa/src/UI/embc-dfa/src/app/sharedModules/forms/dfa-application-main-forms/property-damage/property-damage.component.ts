@@ -4,7 +4,8 @@ import {
   UntypedFormGroup,
   AbstractControl,
   FormsModule,
-  Validators
+  Validators,
+  FormGroup
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -43,11 +44,18 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     this.formCreationService = formCreationService;
   }
 
+  showForm() {
+    console.log(this.propertyDamageForm);
+  }
+
   ngOnInit(): void {
     this.propertyDamageForm$ = this.formCreationService
       .getPropertyDamageForm()
       .subscribe((propertyDamage) => {
         this.propertyDamageForm = propertyDamage;
+        this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
+        this.propertyDamageForm.get('otherDamageText').setValidators(null);
+        this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
         this.propertyDamageForm.updateValueAndValidity();
       });
 
@@ -70,6 +78,15 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       });
 
     this.propertyDamageForm
+      .get('wildfireDamage')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.propertyDamageForm.get('wildfireDamage').reset();
+        }
+      })
+
+    this.propertyDamageForm
       .get('stormDamage')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
@@ -84,13 +101,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '') {
           this.propertyDamageForm.get('otherDamage').reset();
-          this.propertyDamageForm.get('otherDamageText').setValidators(null);
-        } else if (value == 'true') {
-          this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required]);
-        } else {
-          this.propertyDamageForm.get('otherDamageText').setValidators(null);
         }
-        this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
       });
 
     this.propertyDamageForm
@@ -166,6 +177,18 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       });
   }
 
+  validateFormCauseOfDamage(form: FormGroup) {
+    if (form.controls.wildfireDamage.value !== true &&
+      form.controls.stormDamage.value !== true &&
+      form.controls.landslideDamage.value !== true &&
+      form.controls.otherDamage.value !== true &&
+      form.controls.floodDamage.value !== true) {
+      return { noCauseOfDamage: true };
+    }
+    return null;
+  }
+
+
   calcRemainingChars() {
     this.remainingLength = 2000 - this.propertyDamageForm.get('briefDescription').value?.length;
   }
@@ -199,3 +222,4 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   declarations: [PropertyDamageComponent]
 })
 class PropertyDamageModule {}
+

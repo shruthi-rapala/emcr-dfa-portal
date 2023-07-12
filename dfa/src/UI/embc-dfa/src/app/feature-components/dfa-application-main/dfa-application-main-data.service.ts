@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DFAApplicationMain, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, OtherContact, SecondaryApplicant, Occupants, SignAndSubmit} from 'src/app/core/model/dfa-application-main.model';
-import { DFAApplicationStart } from 'src/app/core/model/dfa-application-start.model';
+import { DFAApplicationStart, InsuranceOption } from 'src/app/core/model/dfa-application-start.model';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
 import { DFAApplicationStartModule } from '../dfa-application-start/dfa-application-start.module';
@@ -16,6 +16,7 @@ export class DFAApplicationMainDataService {
   private _dfaApplicationStart: DFAApplicationStart;
   private _dfaApplicationMainId: string;
   private ApplicantOptions = ApplicantOption;
+  private InsuranceOptions = InsuranceOption;
   private _signAndSubmit: SignAndSubmit;
 
   constructor(
@@ -27,7 +28,7 @@ export class DFAApplicationMainDataService {
         profileVerification: {profileVerification: true},
         appTypeInsurance: {
           applicantOption: this.ApplicantOptions.ResidentialTenant,
-          insuranceOption: null,
+          insuranceOption: this.InsuranceOptions.Unsure,
           smallBusinessOption: null,
           farmOption: null,
           applicantSignature: null,

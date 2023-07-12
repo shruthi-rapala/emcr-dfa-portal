@@ -74,16 +74,14 @@
       </div>
     </mat-step>
     <mat-step *ngIf="currentFlow === 'verified-registration'">
-      <p>
-        Please read through and confirm that your details are all correct before
-        submitting.
-      </p>
       <ng-template matStepLabel>Review</ng-template>
       <app-review
         [type]="type"
         [showHeading]="true"
         [parentPageName]="parentPageName"
         [currentFlow]="currentFlow"
+        [allowEdit]="true"
+        (stepToNavigate)="navigateToStep($event)"
       >
       </app-review>
       <br />

@@ -885,17 +885,51 @@
   </ng-template>
   <ng-template #dfaApplicationMain>
     <div id="dfaApplicationMain">
-      <p *ngIf="showHeading" class="review-heading">Review & Submit</p>
+      <p *ngIf="showHeading" class="sub-heading" style="font-size: 20px">Review</p>
+       <p>
+        Please check that your application information is correct before submitting. Missing required fields marked in red.
+      </p>
 
       <mat-card-content>
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Damaged Property Address</div>
+          <div class="col-md-6 card-heading">Application & Insurance</div>
+        </div>
+        <hr />
+        <div class="row info-detail">
+          <div class="col-md-3">Application Type:</div>
+          <div class="col-md-3">
+            <p class="no-bottom-margin">
+              <span
+                >{{
+                  (formCreationService.appTypeInsuranceForm$ | async)?.value
+                    ?.applicantOption
+                }}</span
+              ></p>
+          </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3">Do You Have Insurance?:</div>
+          <div class="col-md-3">
+            <p class="no-bottom-margin">
+              <span
+                >{{
+                  (formCreationService.appTypeInsuranceForm$ | async)?.value
+                    ?.insuranceOption
+                }}</span
+              ></p>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Damaged Property</div>
           <div class="col-md-2" *ngIf="allowEdit">
             <button
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="editDetails('damaged-property-address')"
+              (click)="navigateToStep(0)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -908,68 +942,105 @@
         </div>
         <hr />
         <div class="row info-detail">
-          <div class="col-md-3">Damaged Property Address:</div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1}">Address Line One:</span></div>
+          <div class="col-md-3">
+            <p class="no-bottom-margin">
+              <span  [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1}"
+                >{{
+                  (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                    ?.addressLine1 ?  (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                    ?.addressLine1 : "Enter required information"
+                }}</span
+              >
+            </p>
+          </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3">Address Line Two:</div>
           <div class="col-md-3">
             <p class="no-bottom-margin">
               <span
                 >{{
                   (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.addressLine1
-                }}</span
-              >
-              <span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine2"
-                >,&nbsp;{{
-                  (formCreationService.damagedPropertyAddressForm$ | async)?.value
                     ?.addressLine2
                 }}</span
               >
             </p>
+          </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.community}">City:</span></div>
+          <div class="col-md-3">
             <p>
-              <span
-                >{{
+              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.community}">{{
                   (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.community
-                }},&nbsp;
+                    ?.community ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                    ?.community : "Enter required information"
+                }}
               </span>
-              <span>{{
+            </p>
+          </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.stateProvince}">Province:</span></div>
+          <div class="col-md-3">
+            <p>
+              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.stateProvince}">{{
                 (formCreationService.damagedPropertyAddressForm$ | async)?.value
                   ?.stateProvince
-              }}&nbsp;</span>
-              <span>{{
-                (formCreationService.damagedPropertyAddressForm$ | async).value
-                  ?.postalCode
               }}</span>
             </p>
           </div>
-          <div class="col-md-3">Occupy as Primary Residence:</div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.postalCode}">Postal Code:</span></div>
           <div class="col-md-3">
-            {{
+            <p>
+              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.postalCode}">{{
+                (formCreationService.damagedPropertyAddressForm$ | async).value
+                  ?.postalCode ? formatPostalCode((formCreationService.damagedPropertyAddressForm$ | async).value
+                  ?.postalCode) : "Enter required information"
+              }}</span>
+            </p>
+          </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">Occupy as Primary Residence:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .occupyAsPrimaryResidence === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .occupyAsPrimaryResidence === 'false' ? 'No' : 'Make a selection')
-            }}
+            }}</span>
           </div>
-          <div class="col-md-3">On a First Nations Reserve:</div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.onAFirstNationsReserve}">On a First Nations Reserve:</span></div>
           <div class="col-md-3">
-            {{
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.onAFirstNationsReserve}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .onAFirstNationsReserve === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .onAFirstNationsReserve === 'false' ? 'No' : 'Make a selection')
-            }}
+            }}</span>
           </div>
-          <div class="col-md-3"><span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">First Nations Reserve:</span></div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.firstNationsReserve}">First Nations Reserve:</span></div>
           <div class="col-md-3">
-            <span *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.firstNationsReserve}">
               {{
                 (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                  .firstNationsReserve
+                  .firstNationsReserve ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                  .firstNationsReserve : "Enter required information"
               }}
             </span>
           </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3">Manufactured Home:</div>
           <div class="col-md-3">
             {{
@@ -977,16 +1048,58 @@
                 .manufacturedHome === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .manufacturedHome === 'false' ? 'No' : 'No selection')
+                .manufacturedHome === 'false' ? 'No' : '')
             }}
-          </div><div class="col-md-3">Eligible for a BC Home Owner Grant for this Property:</div>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.HomeOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}"></span>Eligible for a BC Home Owner Grant for this Property:</div>
           <div class="col-md-3">
-            {{
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .eligibleForHomeOwnerGrant === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .eligibleForHomeOwnerGrant === 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames}">Landlord First Name:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .landlordGivenNames ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .landlordGivenNames : "Enter required information"
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname}">Landlord Last Name:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .landlordSurname ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .landlordSurname : "Enter required information"
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone}">Landlord Phone:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .landlordPhone ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .landlordPhone : "Enter required information"
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
+          <div class="col-md-3">Landlord Email:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .landlordEmail
             }}
           </div>
         </div>
@@ -994,13 +1107,13 @@
 
       <mat-card-content>
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Property Damage</div>
+          <div class="col-md-6 card-heading">Damage</div>
           <div class="col-md-2" *ngIf="allowEdit">
             <button
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="editDetails('property-damage')"
+              (click)="navigateToStep(1)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -1019,98 +1132,355 @@
               (formCreationService.propertyDamageForm$ | async)?.value
                 .floodDamage === true
                 ? 'Yes'
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .floodDamage === false ? 'No' : 'No selection')
+                : 'No'
             }}
           </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3">Landslide Damage?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .landslideDamage === true
                 ? 'Yes'
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .landslideDamage === false ? 'No' : 'No selection')
+                : 'No'
             }}
           </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3">Wildfire Damage?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .wildfireDamage === true
+                ? 'Yes'
+                : 'No'
+            }}
+          </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3">Storm Damage?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .stormDamage === true
                 ? 'Yes'
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .stormDamage === false ? 'No' : 'No selection')
+                : 'No'
             }}
           </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3">Other Damage?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .otherDamage === true
-                ? 'Yes'
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .otherDamage === false ? 'No' : 'No selection')
-            }}
-            {{
-              (formCreationService.propertyDamageForm$ | async)?.value
-                .otherDamage === true
-                ? (formCreationService.propertyDamageForm$ | async)?.value.otherDamageText : ''
+                ? ((formCreationService.propertyDamageForm$ | async)?.value.otherDamageText ? (formCreationService.propertyDamageForm$ | async)?.value.otherDamageText : 'Enter required information')
+                : 'No'
             }}
           </div>
-          <div class="col-md-3">Dates of Damage:</div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.propertyDamageForm$ | async).hasError('noCauseOfDamage')">
+          <br/><span style="color:red">At least one cause of damage is required.</span>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.damageFromDate || !(formCreationService.propertyDamageForm$ | async)?.value?.damageToDate} ">Dates of Damage:</span></div>
           <div class="col-md-3">
-            {{
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.damageFromDate || !(formCreationService.propertyDamageForm$ | async)?.value?.damageToDate} ">{{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .damageFromDate ? ('Starts ' + ((formCreationService.propertyDamageForm$ | async).value.damageFromDate | date: "MM/dd/yyyy")) : ''
+                .damageFromDate ? ('Starts ' + ((formCreationService.propertyDamageForm$ | async).value.damageFromDate | date: "MM/dd/yyyy")) + '. ': 'Enter required start date. '
             }}
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .damageToDate ? ('Ends ' + ((formCreationService.propertyDamageForm$ | async).value.damageToDate | date: "MM/dd/yyyy")) : ''
-            }}
+                .damageToDate ? ('Ends ' + ((formCreationService.propertyDamageForm$ | async).value.damageToDate | date: "MM/dd/yyyy")) + '. ' : 'Enter required end date.'
+            }}</span>
           </div>
-          <div class="col-md-3">Brief Description:</div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.briefDescription}">Brief Description:</span></div>
           <div class="col-md-3">
-            {{
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.briefDescription}">{{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .briefDescription
-            }}
+                .briefDescription ? (formCreationService.propertyDamageForm$ | async)?.value
+                .briefDescription : 'Enter required information'
+            }}</span>
           </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3">Losses Total More Than $1000?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .lossesExceed1000 === 'true'
                 ? 'Yes'
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .lossesExceed1000 === 'false' ? 'No' : 'No selection')
+                : 'No'
             }}
           </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3">Were You Evacuated?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
-                .wereYouEvacuated === 'true'
-                ? 'Yes'
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .wereYouEvacuated === 'false' ? 'No' : 'No selection')
-            }}
-            {{
-              (formCreationService.propertyDamageForm$ | async)?.value
-                .wereYouEvacuated === 'true'
-                ? ('Returned ' + (formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned) : ''
+                .wereYouEvacuated === 'true' ?
+                ((formCreationService.propertyDamageForm$ | async)?.value
+                .dateReturned ? ('Yes, returned ' + (formCreationService.propertyDamageForm$ | async)?.value
+                .dateReturned) : 'Yes')
+                : 'No'
             }}
           </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3">Residing In Residence?:</div>
           <div class="col-md-3">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .residingInResidence === 'true'
                 ? 'Yes'
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .residingInResidence === 'false' ? 'No' : 'No selection')
+                : 'No'
             }}
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Occupants</div>
+          <div class="col-md-2" *ngIf="allowEdit">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="navigateToStep(2)"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="row info-detail" *ngIf="(formCreationService.occupantsForm$ | async)?.value?.fullTimeOccupants?.length > 0">
+          <b>Full Time Occupants</b>
+          <table mat-table [dataSource]="fullTimeOccupantsDataSource">
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Name</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.firstName }}&nbsp; {{element.lastName }}
+              </td>
+            </ng-container>
+
+            <!-- Relationship Column -->
+            <ng-container matColumnDef="relationship">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>Relationship</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.relationship}}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="fullTimeOccupantsColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: fullTimeOccupantsColumnsToDisplay"
+              class="example-element-row"
+            ></tr>
+          </table>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.occupantsForm$ | async)?.value?.fullTimeOccupants?.length == 0">
+          <span style="color:red">At least one full time occupant is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.occupantsForm$ | async)?.value?.secondaryApplicants?.length > 0">
+          <b>Secondary Applicants</b>
+          <table mat-table [dataSource]="secondaryApplicantsDataSource">
+            <!-- Applicant Type Column -->
+            <ng-container matColumnDef="applicantType">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>Type</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.secondaryApplicantType }}
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>Name</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.firstName }}&nbsp; {{element.lastName }}
+              </td>
+            </ng-container>
+
+            <!-- Phone Column -->
+            <ng-container matColumnDef="phoneNumber">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Phone</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.phoneNumber | phoneFormat }}
+              </td>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Email</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.email}}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="secondaryApplicantsColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: secondaryApplicantsColumnsToDisplay"
+              class="example-element-row"
+            ></tr>
+          </table>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.occupantsForm$ | async)?.value?.secondaryApplicants?.length == 0">
+          <span>No secondary applicants.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.occupantsForm$ | async)?.value?.otherContacts?.length > 0">
+          <b>Other Contacts</b>
+          <table mat-table [dataSource]="otherContactsDataSource">
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>Name</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.firstName }}&nbsp; {{element.lastName }}
+              </td>
+            </ng-container>
+
+            <!-- Phone Column -->
+            <ng-container matColumnDef="phoneNumber">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Phone</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.phoneNumber | phoneFormat }}
+              </td>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Email</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.email}}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="otherContactsColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: otherContactsColumnsToDisplay"
+              class="example-element-row"
+            ></tr>
+          </table>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.occupantsForm$ | async)?.value?.otherContacts?.length == 0">
+          <span style="color:red">At least one other contact is required.</span>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Clean Up Log</div>
+          <div class="col-md-2" *ngIf="allowEdit">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="navigateToStep(3)"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="row info-detail">
+          <div class="col-md-3">Application Type:</div>
+          <div class="col-md-3">
+            <p class="no-bottom-margin">
+              <span
+                >{{
+                  (formCreationService.appTypeInsuranceForm$ | async)?.value
+                    ?.applicantOption
+                }}</span
+              >
+          </div>
+          <div class="col-md-3">Do You Have Insurance?:</div>
+          <div class="col-md-3">
+            <p class="no-bottom-margin">
+              <span
+                >{{
+                  (formCreationService.appTypeInsuranceForm$ | async)?.value
+                    ?.insuranceOption
+                }}</span
+              >
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Damaged Items By Room</div>
+          <div class="col-md-2" *ngIf="allowEdit">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="navigateToStep(4)"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="row info-detail">
+          <div class="col-md-3">Application Type:</div>
+          <div class="col-md-3">
+            <p class="no-bottom-margin">
+              <span
+                >{{
+                  (formCreationService.appTypeInsuranceForm$ | async)?.value
+                    ?.applicantOption
+                }}</span
+              >
+          </div>
+          <div class="col-md-3">Do You Have Insurance?:</div>
+          <div class="col-md-3">
+            <p class="no-bottom-margin">
+              <span
+                >{{
+                  (formCreationService.appTypeInsuranceForm$ | async)?.value
+                    ?.insuranceOption
+                }}</span
+              >
           </div>
         </div>
       </mat-card-content>

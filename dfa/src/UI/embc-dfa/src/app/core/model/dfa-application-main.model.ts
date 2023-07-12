@@ -19,8 +19,8 @@ export interface DamagedPropertyAddress extends RegAddress {
   eligibleForHomeOwnerGrant?: boolean;
   landlordGivenNames?: string;
   landlordSurname?: string;
-  landlordPhone1?: string;
-  landlordPhone2?: string;
+  landlordPhone?: string;
+  landlordEmail?: string;
 }
 
 export interface FirstNationsReserve
@@ -45,8 +45,8 @@ export class DamagedPropertyAddress implements DamagedPropertyAddress {
     eligibleForHomeOwnerGrant?: null | boolean,
     landlordGivenNames?: null | string,
     landlordSurname?: null | string,
-    landlordPhone1?: null | string,
-    landlordPhone2?: null | string
+    landlordPhone?: null | string,
+    landlordEmail?: null | string
   ) {}
 }
 
@@ -64,8 +64,8 @@ export class DamagedPropertyAddressForm {
   eligibleForHomeOwnerGrant = new UntypedFormControl();
   landlordGivenNames = new UntypedFormControl();
   landlordSurname = new UntypedFormControl();
-  landlordPhone1 = new UntypedFormControl();
-  landlordPhone2 = new UntypedFormControl();
+  landlordPhone = new UntypedFormControl();
+  landlordEmail = new UntypedFormControl();
 
   constructor(
     damagedPropertyAddress: DamagedPropertyAddress,
@@ -136,21 +136,22 @@ export class DamagedPropertyAddressForm {
     }
     this.landlordSurname.setValidators(null);
 
-    if (damagedPropertyAddress.landlordPhone1) {
-      this.landlordPhone1.setValue(damagedPropertyAddress.landlordPhone1);
+    if (damagedPropertyAddress.landlordPhone) {
+      this.landlordPhone.setValue(damagedPropertyAddress.landlordPhone);
     }
-    this.landlordPhone1.setValidators([customValidator.maskedNumberLengthValidator().bind(customValidator)]);
+    this.landlordPhone.setValidators([customValidator.maskedNumberLengthValidator().bind(customValidator)]);
 
-    if (damagedPropertyAddress.landlordPhone2) {
-      this.landlordPhone2.setValue(damagedPropertyAddress.landlordPhone2);
+    if (damagedPropertyAddress.landlordEmail) {
+      this.landlordEmail.setValue(damagedPropertyAddress.landlordEmail);
     }
-    this.landlordPhone2.setValidators([customValidator.maskedNumberLengthValidator().bind(customValidator)]);
+    this.landlordEmail.setValidators([Validators.email]);
   }
 }
 
 export class PropertyDamage {
   floodDamage?: boolean;
   landslideDamage?: boolean;
+  wildfireDamage?: boolean;
   stormDamage?: boolean;
   otherDamage?: boolean;
   otherDamageText?: string;
@@ -165,6 +166,7 @@ export class PropertyDamage {
   constructor(
     floodDamage?: null | boolean,
     landslideDamage?: null | boolean,
+    wildfireDamage? : null | boolean,
     stormDamage?: null | boolean,
     otherDamage?: null | boolean,
     otherDamageText?: null | string,
@@ -181,6 +183,7 @@ export class PropertyDamage {
 export class PropertyDamageForm {
   floodDamage = new UntypedFormControl();
   landslideDamage = new UntypedFormControl();
+  wildfireDamage = new UntypedFormControl();
   stormDamage = new UntypedFormControl();
   otherDamage = new UntypedFormControl();
   otherDamageText = new UntypedFormControl();
@@ -204,6 +207,11 @@ export class PropertyDamageForm {
       this.landslideDamage.setValue(propertyDamage.landslideDamage);
     }
     this.landslideDamage.setValidators(null);
+
+    if (propertyDamage.wildfireDamage) {
+      this.wildfireDamage.setValue(propertyDamage.wildfireDamage)
+    }
+    this.wildfireDamage.setValidators(null);
 
     if (propertyDamage.stormDamage) {
       this.stormDamage.setValue(propertyDamage.stormDamage);
@@ -305,13 +313,13 @@ export class OccupantsForm {
   email = new UntypedFormControl();
   secondaryApplicantType = new UntypedFormControl();
   fullTimeOccupant: UntypedFormGroup;
-  fullTimeOccupants = new UntypedFormControl([]);
+  fullTimeOccupants = new UntypedFormControl([], Validators.required);
   addNewFullTimeOccupantIndicator = new UntypedFormControl(false);
   addNewOtherContactIndicator = new UntypedFormControl(false);
   addNewSecondaryApplicantIndicator = new UntypedFormControl(false);
   otherContact: UntypedFormGroup;
   secondaryApplicant: UntypedFormGroup;
-  otherContacts = new UntypedFormControl([]);
+  otherContacts = new UntypedFormControl([], Validators.required);
   secondaryApplicants = new UntypedFormControl([]);
 
   constructor(
