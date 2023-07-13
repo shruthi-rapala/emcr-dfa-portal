@@ -207,17 +207,17 @@ export class LocationService {
     const address: Address = {
       addressLine1: addressObject.addressLine1,
       addressLine2: addressObject.addressLine2,
-      city:
-        (addressObject.community as Community).code === undefined &&
-        typeof addressObject.community === 'string'
-          ? addressObject.community
-          : null,
+      city: addressObject.community,
+        //(addressObject.community == '' || (addressObject.community as Community).code === undefined) &&
+        //typeof addressObject.community === 'string'
+        //  ? addressObject.community
+        //  : null,
       postalCode: addressObject.postalCode,
-      stateProvince:
-        addressObject.stateProvince === null ||
-        addressObject.stateProvince === undefined
-          ? null
-          : addressObject.stateProvince
+      stateProvince: addressObject.stateProvince
+        //addressObject.stateProvince === null ||
+        //addressObject.stateProvince === undefined
+        //  ? null
+        //  : addressObject.stateProvince
     };
 
     return address;

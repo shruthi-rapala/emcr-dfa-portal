@@ -168,7 +168,7 @@ namespace EMBC.DFA.API.Controllers
 
         public Address MailingAddress { get; set; }
 
-        public bool IsMailingAddressSameAsPrimaryAddress { get; set; }
+        public string IsMailingAddressSameAsPrimaryAddress { get; set; }
     }
 
     /// <summary>

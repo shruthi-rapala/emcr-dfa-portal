@@ -7,8 +7,7 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class Address
     {
-        [Required]
-        public string AddressLine1 { get; set; }
+        public string? AddressLine1 { get; set; }
 
         public string? AddressLine2 { get; set; }
 

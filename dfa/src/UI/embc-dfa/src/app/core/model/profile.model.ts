@@ -195,7 +195,7 @@ export class AddressForm {
     //this.isBcAddress.setValue(address.isBcAddress);
     //this.isBcAddress.setValidators([Validators.required]);
 
-    //this.isNewMailingAddress.setValue(address.isNewMailingAddress);
+    this.isNewMailingAddress.setValue(address.isNewMailingAddress);
     //this.isNewMailingAddress.setValidators([Validators.required]);
 
     //this.isNewMailingAddress.setValue(address.isNewMailingAddress);

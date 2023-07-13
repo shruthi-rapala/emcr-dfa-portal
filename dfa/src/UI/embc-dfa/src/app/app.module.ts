@@ -14,9 +14,10 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { OutageBannerComponent } from './sharedModules/outage-components/outage-banner/outage-banner.component';
 import { OutageDialogComponent } from './sharedModules/outage-components/outage-dialog/outage-dialog.component';
+import { DfaApplicationComponent } from './sharedModules/dashboard-components/dfa-application/dfa-application.component';
 
 @NgModule({
-  declarations: [AppComponent, OutageBannerComponent, OutageDialogComponent],
+  declarations: [AppComponent, OutageBannerComponent, OutageDialogComponent, DfaApplicationComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
