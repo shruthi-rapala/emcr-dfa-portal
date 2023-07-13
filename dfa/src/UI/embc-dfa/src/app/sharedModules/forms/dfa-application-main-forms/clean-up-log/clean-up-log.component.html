@@ -3,17 +3,15 @@
 
     <form [formGroup]="cleanUpLogForm">
 
+      <p class="sub-heading" style="font-size: 20px">Clean Up Log</p>
+      <br />
+
       <div formGroupName="cleanuplog">
         <ng-container>
-         
+
 
           <div class="row">
             <div class="col-md-12">
-               <div class="row">
-                <div class="col-md-12">
-                  <p class="sub-heading">Clean Up Log</p>
-                </div>
-              </div>
               <div class="row">
                 <div class="col-md-12">
                   <p>You don't need to complete and submit the clean up log with the initial application.<br />
@@ -228,7 +226,7 @@
 
               <br /><br />
 
-              
+
             </div>
 
           </div>
@@ -249,7 +247,7 @@
               </p>
 
               <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.getValue().length > 0">
-                 
+
 
                 <!-- File Name Column -->
                 <ng-container matColumnDef="fileName" style="width:40%">
@@ -331,7 +329,7 @@
                   Attach a photo/scanned copy of receipts or invoices
                 </p>
                 <div class="row">
-                  
+
                   <div class="col-md-4">
                     <div>
                       <div
@@ -383,7 +381,7 @@
                         You may update the file description to something more descriptive:
                       </p>
                     <mat-form-field appearance="outline">
-                      
+
                       <mat-label>File Description</mat-label>
                       <input formControlName="fileDescription" matInput placeholder="File Description" />
                       <!--<mat-error
@@ -398,7 +396,7 @@
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
-                    
+
                   </div>
                 </div>
                 <!-- <button type="button" (click)="showFullTimeOccupantsForm()">Show Form</button> -->

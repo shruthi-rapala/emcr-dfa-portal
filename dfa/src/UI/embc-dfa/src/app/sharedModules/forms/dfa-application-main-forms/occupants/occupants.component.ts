@@ -98,6 +98,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       this.occupantsForm.get('secondaryApplicants').value
     );
     this.secondaryApplicantsData = this.occupantsForm.get('secondaryApplicants').value;
+    this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   addFullTimeOccupant(): void {
@@ -172,6 +173,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.occupantsForm.get('secondaryApplicant').reset();
     this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
     this.occupantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
+    this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   saveSecondaryApplicants(): void {
@@ -180,6 +182,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
       this.occupantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);
       this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
+      this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
     } else {
       this.occupantsForm.get('secondaryApplicant').markAllAsTouched();
     }
@@ -188,6 +191,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   cancelSecondaryApplicants(): void {
     this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
     this.occupantsForm.get('addNewSecondaryApplicantIndicator').setValue(false);
+    this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   deleteSecondaryApplicantRow(index: number): void {
@@ -199,7 +203,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         .get('addNewSecondaryApplicantIndicator')
         .setValue(false);
     }
-
+    this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   updateFullTimeOccupantOnVisibility(): void {
