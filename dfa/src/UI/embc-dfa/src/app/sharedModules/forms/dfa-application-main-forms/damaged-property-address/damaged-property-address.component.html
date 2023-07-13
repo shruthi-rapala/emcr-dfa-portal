@@ -164,23 +164,23 @@
           <div class="col-md-2">
             <mat-form-field appearance="outline">
               <mat-label>Contact Telephone</mat-label>
-              <input formControlName="landlordPhone1"
+              <input formControlName="landlordPhone"
                 matInput required
                 placeholder="Contact Telephone"
                 [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
               <mat-error
                 *ngIf="
-                  damagedPropertyAddressForm.get('landlordPhone1').invalid &&
-                  damagedPropertyAddressForm.get('landlordPhone1').hasError('incorrectLength')
+                  damagedPropertyAddressForm.get('landlordPhone').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone').hasError('incorrectLength')
                 "
               >
                 Telephone number must have 10 digits</mat-error
               >
               <mat-error
                 *ngIf="
-                  damagedPropertyAddressForm.get('landlordPhone1').invalid &&
-                  damagedPropertyAddressForm.get('landlordPhone1').hasError('required') &&
-                  damagedPropertyAddressForm.get('landlordPhone1').touched
+                  damagedPropertyAddressForm.get('landlordPhone').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone').hasError('required') &&
+                  damagedPropertyAddressForm.get('landlordPhone').touched
                 "
               >
                 Telephone number is required</mat-error
@@ -189,18 +189,18 @@
           </div>
           <div class="col-md-2">
             <mat-form-field appearance="outline">
-              <mat-label>Contact Telephone</mat-label>
-              <input formControlName="landlordPhone2"
+              <mat-label>Contact Email</mat-label>
+              <input formControlName="landlordEmail"
                 matInput
-                placeholder="Contact Telephone"
-                [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                placeholder="Contact Email"
+                />
               <mat-error
                 *ngIf="
-                  damagedPropertyAddressForm.get('landlordPhone2').invalid &&
-                  damagedPropertyAddressForm.get('landlordPhone2').hasError('incorrectLength')
+                  damagedPropertyAddressForm.get('landlordEmail').invalid &&
+                  damagedPropertyAddressForm.get('landlordEmail').hasError('email')
                 "
               >
-                Telephone number must have 10 digits</mat-error
+                Invalid email address</mat-error
               >
             </mat-form-field>
           </div>

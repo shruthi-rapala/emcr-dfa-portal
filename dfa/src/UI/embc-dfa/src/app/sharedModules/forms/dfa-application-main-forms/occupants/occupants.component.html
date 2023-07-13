@@ -73,6 +73,10 @@
                 <br /><br/>
               </div>
 
+              <div *ngIf="occupantsForm.get('fullTimeOccupants').invalid && occupantsForm.get('fullTimeOccupants').hasError('required')">
+                <span style="color:red">At least one full time occupant is required.</span>
+              </div>
+
               <button
                 *ngIf="!showFullTimeOccupantForm"
                 class="family-button"
@@ -474,6 +478,10 @@
 
               <div  *ngIf="otherContactsDataSource.getValue().length > 0">
                 <br /><br/>
+              </div>
+
+              <div *ngIf="occupantsForm.get('otherContacts').invalid && occupantsForm.get('otherContacts').hasError('required')">
+                <span style="color:red">At least one other contact is required.</span>
               </div>
 
               <button
