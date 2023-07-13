@@ -45,6 +45,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'dfa-dashboard',
+    loadChildren: () =>
+      import(
+        './feature-components/dashboard/dashboard.module'
+      ).then((m) => m.DashboardModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'error',
     loadChildren: () =>
       import('./feature-components/error-screen/error-screen.module').then(

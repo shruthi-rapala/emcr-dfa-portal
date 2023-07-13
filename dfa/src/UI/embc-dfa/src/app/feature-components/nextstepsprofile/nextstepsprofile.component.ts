@@ -19,4 +19,8 @@ export class NextstepsprofileComponent implements OnInit {
     this.router.navigate(['/dfa-application-start']);
   }
 
+  navigateToDashboard(): void {
+    this.router.navigate(['/dfa-dashboard']);
+  }
+
 }

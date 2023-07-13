@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xrm.Tools.WebAPI;
 using Xrm.Tools.WebAPI.Requests;
@@ -39,7 +40,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                dynamic result = await api.ExecuteAction("dfa_appcontacts", contact);
+                var result = await api.ExecuteAction("dfa_DFAPortalCreateProfile", contact);
+
+                if (result != null)
+                {
+                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
+                }
             }
             catch (System.Exception ex)
             {
