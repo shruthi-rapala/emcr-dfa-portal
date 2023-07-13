@@ -10,7 +10,7 @@ import { PersonDetails } from './person-details';
 export interface Profile {
   contactDetails?: ContactDetails;
   id?: null | string;
-  isMailingAddressSameAsPrimaryAddress?: boolean;
+  isMailingAddressSameAsPrimaryAddress?: string;
   mailingAddress?: Address;
   personalDetails?: PersonDetails;
   primaryAddress?: Address;

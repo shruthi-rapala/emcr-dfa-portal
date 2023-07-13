@@ -1,0 +1,55 @@
+<div class="container container-frame">
+  <div class="heading-container">
+    <div class="row">
+      <div class="col-md-12">
+        <span class="page-heading" style="">Smith John</span> <br />
+      </div>
+    </div>
+  </div>
+  <div class="col-12 content-container">
+    <div class="row">
+        <div class="col-md-6">
+          <span class="page-subheadbold">This page is for homeowners and residential tenants.</span><br />
+          If you are a small businesses, farms, and charitable organizations your process is different: <a target="_blank" href="https://submit.digital.gov.bc.ca/app/form/submit?f=b0fe2afe-49c0-4a4b-a89f-4c9e2f2466db">DFA for small business, farms, and charitable organizations</a>
+If you're an Indigenous community or local government your process is different: <a target="_blank" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/local-emergency-programs/financial/communities-dfa">DFA for community recovery</a>
+        </div>
+      <div class="col-md-6"></div>
+      <div class="col-md-6">
+         <button
+              class="button-p notice-button left-align"
+              mat-button
+            >
+              Create New Application
+          </button>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+    <div class="container" style="padding-bottom: 50px">
+      <!--<app-alert></app-alert>-->
+      <nav mat-tab-nav-bar dynamicHeight>
+        <a
+          mat-tab-link
+          *ngFor="let tabItem of tabs"
+          [routerLink]="tabItem.route"
+          routerLinkActive="inactive-tab"
+        >
+          <img
+            class="inactive-curr"
+            [src]="tabItem.inactiveImage"
+            height="15"
+            width="15"
+          />
+          <img
+            class="active-curr"
+            [src]="tabItem.activeImage"
+            height="15"
+            width="15"
+          />
+          &nbsp;&nbsp; {{ tabItem.label != "Profile" ? tabItem.label + "(0)" : tabItem.label }}
+        </a>
+      </nav>
+      <router-outlet></router-outlet>
+</div>
+  </div>
+
+</div>

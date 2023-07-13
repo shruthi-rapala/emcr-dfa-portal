@@ -174,6 +174,8 @@ export class ProfileComponent
           this.form.get('address').value;
         this.profileDataService.mailingAddressDetails =
           this.form.get('mailingAddress').value;
+        this.profileDataService.IsMailingAddressSameAsPrimaryAddressDetails =
+          this.form.get('isNewMailingAddress').value;
         break;
       case 'contact-info':
         this.profileDataService.contactDetails = this.form.value;
@@ -241,22 +243,23 @@ export class ProfileComponent
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    this.profileService
-      .upsertProfile(this.profileDataService.createProfileDTO())
-      .subscribe({
-        next: (profileId) => {
+     this.profileService
+       .upsertProfile(this.profileDataService.createProfileDTO())
+       .subscribe({
+         next: (profileId) => {
           const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
           this.profileDataService.setProfileId(profileId);
           this.router.navigate([navigationPath]);
           //debugger;
-          // this.router.navigate(['/verified-registration/dashboard']);
-        },
-        error: (error) => {
-          this.showLoader = !this.showLoader;
-          this.isSubmitted = !this.isSubmitted;
-          this.alertService.setAlert('danger', globalConst.saveProfileError);
-        }
-      });
+          //this.profileDataService.setProfileId(profileId);
+          //this.router.navigate(['/verified-registration/dashboard']);
+         },
+         error: (error) => {
+           this.showLoader = !this.showLoader;
+           this.isSubmitted = !this.isSubmitted;
+           this.alertService.setAlert('danger', globalConst.saveProfileError);
+         }
+       });
   }
 
   private saveSecurityQuestions(questionForm: UntypedFormGroup) {

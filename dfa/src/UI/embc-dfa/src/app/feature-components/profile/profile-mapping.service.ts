@@ -131,9 +131,7 @@ export class ProfileMappingService {
         address.setValue({
           address: primaryAddress,
           isBcAddress: this.isBCAddress(profile.primaryAddress.stateProvince),
-          isNewMailingAddress: this.isSameMailingAddress(
-            profile.isMailingAddressSameAsPrimaryAddress
-          ),
+          isNewMailingAddress: profile.isMailingAddressSameAsPrimaryAddress,
           isBcMailingAddress: this.isBCAddress(
             profile.mailingAddress.stateProvince
           ),
@@ -198,9 +196,9 @@ export class ProfileMappingService {
   //}
 
   private isSameMailingAddress(
-    isMailingAddressSameAsPrimaryAddress: boolean
+    isMailingAddressSameAsPrimaryAddress: string
   ): string {
-    return isMailingAddressSameAsPrimaryAddress === true ? 'Yes' : 'No';
+    return isMailingAddressSameAsPrimaryAddress;
   }
 
   private isBCAddress(province: null | string): string {

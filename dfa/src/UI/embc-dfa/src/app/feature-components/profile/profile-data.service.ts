@@ -19,6 +19,7 @@ export class ProfileDataService {
   private primaryAddressDetail: RegAddress;
   private mailingAddressDetail: RegAddress;
   private contactDetail: ContactDetails;
+  private isMailingAddressSameAsPrimaryAddress: string;
 
   public get personalDetails(): PersonDetails {
     return this.personalDetail;
@@ -46,6 +47,14 @@ export class ProfileDataService {
   }
   public set contactDetails(value: ContactDetails) {
     this.contactDetail = value;
+  }
+
+  public get IsMailingAddressSameAsPrimaryAddressDetails(): string {
+    return this.isMailingAddressSameAsPrimaryAddress;
+  }
+
+  public set IsMailingAddressSameAsPrimaryAddressDetails(value: string) {
+    this.isMailingAddressSameAsPrimaryAddress = value;
   }
 
   constructor(
@@ -85,6 +94,7 @@ export class ProfileDataService {
     return this.profileId;
   }
 
+
   public createProfileDTO(): Profile {
     return {
       contactDetails: this.contactDetails,
@@ -94,7 +104,8 @@ export class ProfileDataService {
       personalDetails: this.personalDetails,
       primaryAddress: this.locationService.setAddressObjectForDTO(
         this.primaryAddressDetails
-      )
+      ),
+      isMailingAddressSameAsPrimaryAddress: this.isMailingAddressSameAsPrimaryAddress
     };
   }
 }
