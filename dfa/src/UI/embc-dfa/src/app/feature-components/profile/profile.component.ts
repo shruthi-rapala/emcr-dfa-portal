@@ -250,9 +250,6 @@ export class ProfileComponent
           const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
           this.profileDataService.setProfileId(profileId);
           this.router.navigate([navigationPath]);
-          //debugger;
-          //this.profileDataService.setProfileId(profileId);
-          //this.router.navigate(['/verified-registration/dashboard']);
          },
          error: (error) => {
            this.showLoader = !this.showLoader;

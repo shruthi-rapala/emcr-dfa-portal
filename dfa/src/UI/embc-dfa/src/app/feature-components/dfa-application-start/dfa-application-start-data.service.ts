@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DFAApplicationStart } from 'src/app/core/model/dfa-application-start.model';
+import { DfaApplicationStart } from 'src/app/core/api/models';
 import { SmallBusinessOption, ApplicantOption, SignatureBlock, InsuranceOption, FarmOption } from 'src/app/core/api/models';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationStartDataService {
   private _consent: boolean;
-  private _profileVerification: boolean;
+  private _profileVerified: boolean;
   private _applicantOption: ApplicantOption;
   private _insuranceOption: InsuranceOption;
   private _smallBusinessOption: SmallBusinessOption;
@@ -13,6 +13,7 @@ export class DFAApplicationStartDataService {
   private _applicantSignature: SignatureBlock;
   private _secondaryApplicantSignature: SignatureBlock;
   private _applicationId: string;
+  private _profileId: string;
 
   constructor(
   ) {}
@@ -24,11 +25,11 @@ export class DFAApplicationStartDataService {
     this._consent = value;
   }
 
-  public get profileVerification(): boolean {
-    return this._profileVerification;
+  public get profileVerified(): boolean {
+    return this._profileVerified;
   }
-  public set profileVerification(value: boolean) {
-    this._profileVerification = value;
+  public set profileVerified(value: boolean) {
+    this._profileVerified = value;
   }
 
   public get applicantOption(): ApplicantOption {
@@ -50,6 +51,13 @@ export class DFAApplicationStartDataService {
   }
   public set smallBusinessOption(value: SmallBusinessOption) {
     this._smallBusinessOption = value;
+  }
+
+  public get profileId(): string {
+    return this._profileId;
+  }
+  public set profileId(value: string) {
+    this._profileId = value;
   }
 
   public get farmOption(): FarmOption {
@@ -80,10 +88,10 @@ export class DFAApplicationStartDataService {
     return this._applicationId;
   }
 
-  public createDFAApplicationStartDTO(): DFAApplicationStart {
+  public createDFAApplicationStartDTO(): DfaApplicationStart {
     return {
       consent: { consent: this.consent },
-      profileVerification: { profileVerification: this.profileVerification },
+      profileVerification: { profileVerified: this.profileVerified, profileId: this.profileId },
       appTypeInsurance: {
         applicantOption: this.applicantOption,
         insuranceOption: this.insuranceOption,

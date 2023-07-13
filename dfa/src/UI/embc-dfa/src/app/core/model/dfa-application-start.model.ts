@@ -5,7 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { SignatureBlock } from 'src/app/core/api/models';
-import { ApplicantOption, SmallBusinessOption, FarmOption, InsuranceOption } from '../api/models';
+import { ApplicantOption, SmallBusinessOption, FarmOption, InsuranceOption, DfaApplicationStart } from '../api/models';
 
 export class Consent {
   consent: boolean;
@@ -30,27 +30,27 @@ export class ConsentForm {
 }
 
 export class ProfileVerification {
-  profileVerification: boolean;
+  profileVerified: boolean;
+  profileId: string;
 
   constructor(
-    profileVerification?: boolean
+    profileVerified?: boolean,
+    profileId?: string
   ) {}
 }
 
 export class ProfileVerificationForm {
-  profileVerification = new UntypedFormControl();
+  profileVerified = new UntypedFormControl();
+  profileId = new UntypedFormControl();
 
   constructor(
     profileVerification: ProfileVerification
   ) {
-    if (profileVerification.profileVerification) {
-      this.profileVerification.setValue(profileVerification.profileVerification);
-    }
+    this.profileVerified.setValidators([Validators.required]);
+    this.profileVerified.setValue(profileVerification.profileVerified);
 
-    this.profileVerification.setValidators([Validators.required]);
-
-    this.profileVerification.setValue(profileVerification.profileVerification);
-    this.profileVerification.setValidators([Validators.required]);
+    this.profileId.setValue(profileVerification.profileId);
+    this.profileId.setValidators([Validators.required]);
   }
 }
 
@@ -113,15 +113,4 @@ export class AppTypeInsuranceForm {
     this.secondaryApplicantSignature?.controls.dateSigned.setValue(appTypeInsurance?.secondaryApplicantSignature?.dateSigned);
     this.secondaryApplicantSignature?.controls.signedName.setValue(appTypeInsurance?.secondaryApplicantSignature?.signedName);
   }
-}
-
-// TODO This should be coming in from the API in api/models
-/**
- * DFA Application
- */
-export interface DFAApplicationStart {
-  id?: string;
-  consent?: Consent;
-  profileVerification?: ProfileVerification;
-  appTypeInsurance?: AppTypeInsurance;
 }

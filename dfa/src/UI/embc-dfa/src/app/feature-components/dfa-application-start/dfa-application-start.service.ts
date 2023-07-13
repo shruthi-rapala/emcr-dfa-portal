@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DFAApplicationStart } from 'src/app/core/model/dfa-application-start.model';
-// import { DFAApplicationStartService as Service } from '../../core/api/services/dfa-application.service';
-import { DFAApplicationStartMappingService } from './dfa-application-start-mapping.service';
+import { DfaApplicationStart } from 'src/app/core/api/models';
 import { Observable } from 'rxjs';
 import { ApplicationService } from '../../core/api/services/application.service';
 
@@ -11,8 +9,7 @@ export class DFAApplicationStartService {
     private applicationService: ApplicationService,
   ) {}
 
- public upsertApplication(updatedApplication: DFAApplicationStart): Observable<string> {
-    // return this.applicationService.applicationAddApplication({ body: updatedApplication });
-    return this.applicationService.applicationAddApplication( { application: "Hello"});
+ public upsertApplication(updatedApplication: DfaApplicationStart): Observable<string> {
+    return this.applicationService.applicationAddApplication({ body: updatedApplication });
   }
 }

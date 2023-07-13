@@ -35,19 +35,19 @@ export class ApplicationService extends BaseService {
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `applicationAddApplication()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  applicationAddApplication$Response(params?: {
+  applicationAddApplication$Response(params: {
 
     /**
      * The application information
      */
-    application?: string;
+    body: DfaApplicationStart
   }): Observable<StrictHttpResponse<string>> {
 
     const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationAddApplicationPath, 'post');
     if (params) {
-      rb.query('application', params.application, {});
+      rb.body(params.body, 'application/json');
     }
 
     return this.http.request(rb.build({
@@ -69,14 +69,14 @@ export class ApplicationService extends BaseService {
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `applicationAddApplication$Response()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  applicationAddApplication(params?: {
+  applicationAddApplication(params: {
 
     /**
      * The application information
      */
-    application?: string;
+    body: DfaApplicationStart
   }): Observable<string> {
 
     return this.applicationAddApplication$Response(params).pipe(

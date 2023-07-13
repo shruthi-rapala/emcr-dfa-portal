@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,8 +24,6 @@ namespace EMBC.DFA.API.Controllers
         private readonly IMapper mapper;
         private readonly IConfigurationHandler handler;
 
-        private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-
         public ApplicationController(
             IHostEnvironment env,
             IMessagingClient messagingClient,
@@ -46,35 +45,31 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<string>> AddApplication(string application)
+        public async Task<ActionResult<string>> AddApplication(DFAApplicationStart application)
         {
             if (application == null) return BadRequest("Application details cannot be empty!");
             var mappedApplication = mapper.Map<dfa_appapplicationstart>(application);
-            mappedApplication.dfa_appcontactid = "d74280f0-5ca2-ed11-b83e-00505683fbf4";
-            mappedApplication.dfa_applicanttype = (int)Enum.Parse<ApplicantTypeOptionSet>("HomeOwner");
 
             var applicationId = await handler.HandleApplication(mappedApplication);
             return Ok(applicationId);
         }
 
         /// <summary>
-        /// Get an application
+        /// Get an application by Id
         /// </summary>
         /// <returns> DFAApplicationStart</returns>
-        [HttpGet("current")]
+        /// <param name="applicationId">The application Id.</param>
+        [HttpGet("appstart/byId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<DFAApplicationStart> GetApplication()
+        public async Task<ActionResult<DFAApplicationStart>> GetApplicationStart(
+            [FromQuery]
+            [Required]
+            string applicationId)
         {
-            //var profile = mapper.Map<Profile>(await evacuationSearchService.GetRegistrantByUserId(userId));
-            //var profile = null;
-            //if (profile == null)
-            //{
-            //    //try get BCSC profile
-            //    profile = GetUserFromPrincipal();
-            //}
-            var application = new DFAApplicationStart();
-            return Ok(application);
+            var dfa_appapplication = await handler.GetApplicationStartAsync(applicationId);
+            var dfaApplicationStart = mapper.Map<DFAApplicationStart>(dfa_appapplication);
+            return Ok(dfaApplicationStart);
         }
     }
 

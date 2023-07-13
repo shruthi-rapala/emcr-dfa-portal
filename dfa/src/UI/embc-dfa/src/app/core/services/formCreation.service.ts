@@ -34,6 +34,7 @@ export class FormCreationService {
   public insuranceOptionChanged: EventEmitter<InsuranceOption>;
   public secondaryApplicantsChanged: EventEmitter<Array<SecondaryApplicant>>;
   public signaturesChanged: EventEmitter<UntypedFormGroup>;
+  public AppTypeInsuranceData: AppTypeInsurance;
 
   restrictionForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(

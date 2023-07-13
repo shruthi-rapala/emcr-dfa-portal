@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { DFAApplicationStart } from 'src/app/core/model/dfa-application-start.model';
+import { DfaApplicationStart } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from './dfa-application-start-data.service';
 import { FormCreationService } from '../../core/services/formCreation.service';
 
@@ -12,7 +12,7 @@ export class DFAApplicationStartMappingService {
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
   ) {}
 
-   private setAppTypeInsuranceDetails(dfaApplicationStart: DFAApplicationStart): void {
+   private setAppTypeInsuranceDetails(dfaApplicationStart: DfaApplicationStart): void {
     let formGroup: UntypedFormGroup;
 
     this.formCreationService

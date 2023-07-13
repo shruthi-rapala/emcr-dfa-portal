@@ -68,5 +68,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
             return string.Empty;
         }
+
+        public async Task<dfa_appapplicationstart> GetApplicationStartById(string applicationId)
+        {
+            var list = await api.GetList<dfa_appapplicationstart>("dfa_appapplications(" + applicationId + ")", new CRMGetListOptions
+            {
+                Select = new[]
+                {
+                    "dfa_applicanttype", "dfa_insurancetype", "dfa_applicant.dfa_appcontactid", "dfa_primaryapplicantisignednoins",
+                    "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "entityimagenoins", "dfa_secondaryapplicantsignednoins",
+                    "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins", "secondaryentityimagenoins"
+                }
+            });
+
+            return list.List.FirstOrDefault();
+        }
     }
 }
