@@ -31,6 +31,14 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_currentstateprovince, opts => opts.MapFrom(s => s.MailingAddress.StateProvince))
                 ;
 
+            CreateMap<string, dfa_appapplication>()
+                .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s))
+                .ForMember(d => d.dfa_accountlegalname, opts => opts.MapFrom(s => s))
+                .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => ApplicantTypeOptionSet.HomeOwner));
+
+            // CreateMap<dfa_appapplication, DFAApplicationStart>()
+            //    .ForMember(d => d.ProfileVerification.profileVerification, opts => opts.MapFrom(s => s.dfa_name == "Yes" ? true : false));
+
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
                 .ForMember(d => d.Id, opts => opts.Ignore())
                 .ForMember(d => d.AuthenticatedUser, opts => opts.Ignore())

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DFAApplicationMain, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, OtherContact, SecondaryApplicant, Occupants, SignAndSubmit} from 'src/app/core/model/dfa-application-main.model';
-import { DFAApplicationStart, InsuranceOption } from 'src/app/core/model/dfa-application-start.model';
+import { DFAApplicationStart } from 'src/app/core/model/dfa-application-start.model';
 import { CacheService } from 'src/app/core/services/cache.service';
-import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
+import { ApplicantOption, InsuranceOption } from 'src/app/core/api/models';
 import { DFAApplicationStartModule } from '../dfa-application-start/dfa-application-start.module';
 
 @Injectable({ providedIn: 'root' })

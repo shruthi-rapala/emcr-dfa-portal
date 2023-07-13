@@ -4,6 +4,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { ApplicationService } from './services/application.service';
 import { ConfigurationService } from './services/configuration.service';
 import { EvacuationsService } from './services/evacuations.service';
 import { ProfileService } from './services/profile.service';
@@ -16,6 +17,7 @@ import { ProfileService } from './services/profile.service';
   exports: [],
   declarations: [],
   providers: [
+    ApplicationService,
     ConfigurationService,
     EvacuationsService,
     ProfileService,

@@ -48,5 +48,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
             return string.Empty;
         }
+
+        public async Task<string> AddApplication(dfa_appapplicationstart application)
+        {
+            try
+            {
+                dynamic result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+
+            return string.Empty;
+        }
     }
 }

@@ -4,7 +4,8 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { SignatureBlock } from '../components/signature/signature.component';
+import { SignatureBlock } from 'src/app/core/api/models';
+import { ApplicantOption, SmallBusinessOption, FarmOption, InsuranceOption } from '../api/models';
 
 export class Consent {
   consent: boolean;
@@ -115,41 +116,11 @@ export class AppTypeInsuranceForm {
 }
 
 // TODO This should be coming in from the API in api/models
-/* tslint:disable */
-/* eslint-disable */
-export enum ApplicantOption {
-  Homeowner = 'Homeowner',
-  ResidentialTenant = 'Residential Tenant',
-  SmallBusinessOwner = 'Small Business Owner (including landlords)',
-  FarmOwner = 'Farm Owner',
-  CharitableOrganization = 'Charitable Organization (including non-profilts)',
-}
-
-// TODO this should be coming in from the API in api/models
-export enum InsuranceOption {
- Yes = 'Yes, my insurance will cover all my losses.',
- Unsure = 'Yes but I don\'t know if my insurance will cover all damages or for this event.',
- No = 'No.'
-}
-
-// TODO this should be coming in from the API in api/models
-export enum SmallBusinessOption {
-  General = 'General or Sole Proprietorship or DBA name',
-  Corporate = 'Corporate (Ltd./Inc.) Company',
-  Landlord = 'Landlord'
- }
-
- // TODO this should be coming in from the API in api/models
-export enum FarmOption {
-  General = 'General or Sole Proprietorship or DBA name',
-  Corporate = 'Corporate (Ltd./Inc.) Company',
- }
-
-// TODO This should be coming in from the API in api/models
 /**
  * DFA Application
  */
 export interface DFAApplicationStart {
+  id?: string;
   consent?: Consent;
   profileVerification?: ProfileVerification;
   appTypeInsurance?: AppTypeInsurance;

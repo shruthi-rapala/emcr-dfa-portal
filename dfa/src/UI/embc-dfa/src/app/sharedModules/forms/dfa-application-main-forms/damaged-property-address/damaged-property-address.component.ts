@@ -24,9 +24,8 @@ import { RegAddress } from 'src/app/core/model/address';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Profile } from 'src/app/core/api/models';
+import { Profile, ApplicantOption } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatInputModule } from '@angular/material/input';
 

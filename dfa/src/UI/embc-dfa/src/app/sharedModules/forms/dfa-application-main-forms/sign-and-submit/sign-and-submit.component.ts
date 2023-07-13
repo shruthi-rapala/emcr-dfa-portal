@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { SignatureBlock } from 'src/app/core/components/signature/signature.component';
+import { SignatureBlock } from 'src/app/core/api/models';
 import { CoreModule } from 'src/app/core/core.module';
 
 @Component({

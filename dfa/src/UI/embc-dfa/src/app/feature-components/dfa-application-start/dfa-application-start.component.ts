@@ -7,6 +7,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
+import * as globalConst from '../../core/services/globalConstants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCreationService } from '../../core/services/componentCreation.service';
 import { ComponentMetaDataModel } from '../../core/model/componentMetaData.model';
@@ -16,7 +17,7 @@ import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationStartDataService } from './dfa-application-start-data.service';
 import { DFAApplicationStartService } from './dfa-application-start.service';
-import { InsuranceOption } from 'src/app/core/model/dfa-application-start.model';
+import { InsuranceOption } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-dfa-application-start',
@@ -217,18 +218,19 @@ export class DFAApplicationStartComponent
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    // this.dfaApplicationStartService
-      // .upsertProfile(this.profileDataService.createProfileDTO())
-      // .subscribe({
-        // next: (profileId) => {
-          // this.profileDataService.setProfileId(profileId);
-          this.router.navigate(['/dfa-application-main']);
-        // },
-        // error: (error) => {
-          // this.showLoader = !this.showLoader;
-          // this.isSubmitted = !this.isSubmitted;
-          // this.alertService.setAlert('danger', globalConst.saveProfileError);
-        // }
-      // });
+    this.dfaApplicationStartService
+     .upsertApplication(this.dfaApplicationStartDataService.createDFAApplicationStartDTO())
+     .subscribe({
+       next: (applicationId) => {
+        this.dfaApplicationStartDataService.setApplicationId(applicationId);
+        console.log(applicationId);
+        // this.router.navigate(['/dfa-application-main']);
+       },
+       error: (error) => {
+         this.showLoader = !this.showLoader;
+         this.isSubmitted = !this.isSubmitted;
+         this.alertService.setAlert('danger', globalConst.saveApplicationError);
+       }
+     });
   }
 }

@@ -11,7 +11,8 @@ import {
   RestrictionForm,
   Restriction,
 } from '../model/profile.model';
-import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application-start.model';
+import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm } from '../model/dfa-application-start.model';
+import { InsuranceOption } from 'src/app/core/api/models';
 import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
   CleanUpLog, CleanUpLogForm, SignAndSubmitForm, SignAndSubmit, SecondaryApplicant } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
