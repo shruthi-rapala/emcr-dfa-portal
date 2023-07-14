@@ -85,25 +85,31 @@ export class ApplicationService extends BaseService {
   }
 
   /**
-   * Path part for operation applicationGetApplication
+   * Path part for operation applicationGetApplicationStart
    */
-  static readonly ApplicationGetApplicationPath = '/api/applications/current';
+  static readonly ApplicationGetApplicationStartPath = '/api/applications/appstart/byId';
 
   /**
-   * Get an application.
+   * Get an application by Id.
    *
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `applicationGetApplication()` instead.
+   * To access only the response body, use `applicationGetApplicationStart()` instead.
    *
    * This method doesn't expect any request body.
    */
-  applicationGetApplication$Response(params?: {
+  applicationGetApplicationStart$Response(params?: {
+
+    /**
+     * The application Id.
+     */
+    applicationId?: string;
   }): Observable<StrictHttpResponse<DfaApplicationStart>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetApplicationPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetApplicationStartPath, 'get');
     if (params) {
+      rb.query('applicationId', params.applicationId, {});
     }
 
     return this.http.request(rb.build({
@@ -118,19 +124,24 @@ export class ApplicationService extends BaseService {
   }
 
   /**
-   * Get an application.
+   * Get an application by Id.
    *
    *
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `applicationGetApplication$Response()` instead.
+   * To access the full response (for headers, for example), `applicationGetApplicationStart$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  applicationGetApplication(params?: {
+  applicationGetApplicationStart(params?: {
+
+    /**
+     * The application Id.
+     */
+    applicationId?: string;
   }): Observable<DfaApplicationStart> {
 
-    return this.applicationGetApplication$Response(params).pipe(
+    return this.applicationGetApplicationStart$Response(params).pipe(
       map((r: StrictHttpResponse<DfaApplicationStart>) => r.body as DfaApplicationStart)
     );
   }

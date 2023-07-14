@@ -57,8 +57,13 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_secondaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.dateSigned))
                 .ForMember(d => d.secondaryentityimagenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature != null ? Convert.FromBase64String(s.AppTypeInsurance.secondaryApplicantSignature.signature.Substring(s.AppTypeInsurance.secondaryApplicantSignature.signature.IndexOf(',') + 1)) : null));
 
-            // CreateMap<dfa_appapplication, DFAApplicationStart>()
-            //    .ForMember(d => d.ProfileVerification.profileVerification, opts => opts.MapFrom(s => s.dfa_name == "Yes" ? true : false));
+            CreateMap<dfa_appapplicationstart, DFAApplicationStart>()
+                .ForMember(d => d.ProfileVerification.profileVerified, opts => opts.Ignore())
+                .ForMember(d => d.ProfileVerification.profileId, opts => opts.MapFrom(s => s.dfa_appcontactid))
+                .ForMember(d => d.Consent.consent, opts => opts.Ignore())
+                .ForMember(d => d.AppTypeInsurance.farmOption, opts => opts.Ignore())
+                .ForMember(d => d.AppTypeInsurance.smallBusinessOption, opts => opts.Ignore())
+                .ForMember(d => d.AppTypeInsurance.applicantOption, opts => opts.MapFrom(s => s.dfa_applicanttype)); // wrong!!
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
                 .ForMember(d => d.Id, opts => opts.Ignore())
