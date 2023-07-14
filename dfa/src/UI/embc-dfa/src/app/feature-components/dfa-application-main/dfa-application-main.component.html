@@ -7,7 +7,7 @@
       <button
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"
-        [disabled]="isSubmitted"
+        *ngIf="!dfaApplicationMainDataService.isSubmitted"
         (click)="submitFile()"
         mat-stroked-button
         type="button"
@@ -123,13 +123,21 @@
       <br />
       <div class="row justify-content-between resp-style">
         <div class="col-md-6">
-          <button
+          <button *ngIf="isSubmitted === false"
             class="button-s"
             mat-button
             type="button"
             (click)="dfaApplicationMainStepper.previous()"
           >
             Go Back & Edit
+          </button>
+          <button *ngIf="isSubmitted === true"
+            class="button-s"
+            mat-button
+            type="button"
+            (click)="returnToDashboard()"
+          >
+            Return to Dashboard
           </button>
         </div>
         <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.occupantsForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.damagedItemsByRoomForm$ | async)?.valid">
@@ -144,9 +152,6 @@
         </div>
         <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.occupantsForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.damagedItemsByRoomForm$ | async)?.valid)">
           <span style="color:red">Enter all required information and sign before submitting.</span>
-        </div>
-        <div class="col-md-6" *ngIf="isSubmitted">
-          <span>Submitting...</span>
         </div>
       </div>
     </mat-step>
