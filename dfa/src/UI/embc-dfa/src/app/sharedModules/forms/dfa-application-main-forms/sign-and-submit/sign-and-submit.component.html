@@ -1,7 +1,7 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="signAndSubmitForm">
+    <form [formGroup]="signAndSubmitForm" *ngIf="dfaApplicationMainDataService.isSubmitted != true">
 
       <p class="sub-heading" style="font-size: 20px">Declaration</p>
       <br />
@@ -25,6 +25,18 @@
 
       </ng-container>
     </form>
+    <div *ngIf="dfaApplicationMainDataService.isSubmitted == true">
+      Your application has been submitted.<br/><br/>
+
+      You may view the status of your application on your dashboard and a copy has been emailed to you at the email address provided.
+      While you must submit an application for each DFA property claim, do not submit more than one application for the same property.<br/><br/>
+
+      <b>Clean Up Log</b><br/>
+      You may continue to update the Clean Up Log. <br/><br/>
+
+      <b>Damaged Items</b><br/>
+      If further items are identified after submitting your application, please add them to the Damaged Items by Room list. <br/><br/>
+    </div>
 
   </mat-card-content>
 </mat-card>

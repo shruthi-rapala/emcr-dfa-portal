@@ -169,6 +169,12 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('onAFirstNationsReserve').reset();
+        } else if (value == true) {
+          this.damagedPropertyAddressForm.get('firstNationsReserve').setValidators([Validators.required]);
+          this.damagedPropertyAddressForm.get('firstNationsReserve').updateValueAndValidity();
+        } else if (value == false) {
+          this.damagedPropertyAddressForm.get('firstNationsReserve').setValidators(null);
+          this.damagedPropertyAddressForm.get('firstNationsReserve').updateValueAndValidity();
         }
       });
 
