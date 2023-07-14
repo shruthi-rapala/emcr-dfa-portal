@@ -1,7 +1,16 @@
 version: 2
 updates:
-  # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  # NuGet dependencies
+  - package-ecosystem: "nuget"
+    directory: "/dfa/src/API"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+      time: "05:00"
+  # npm dependencies - frontend
+  - package-ecosystem: "npm"
+    directory: "/dfa/src/UI"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "05:00"
