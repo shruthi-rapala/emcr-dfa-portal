@@ -45,7 +45,7 @@ export class DFAApplicationMainDataService {
   }
 
   public get isSubmitted(): boolean {
-    return this.isSubmitted;
+    return this._isSubmitted;
   }
   public set isSubmitted(value: boolean) {
     this._isSubmitted = value;

@@ -57,7 +57,7 @@ export class DFAApplicationMainComponent
     private formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dfaApplicationMainService: DFAApplicationMainService
   ) {
     const navigation = this.router.getCurrentNavigation();
@@ -258,6 +258,10 @@ export class DFAApplicationMainComponent
         });
         break;
       }
+  }
+
+  returnToDashboard() {
+    this.router.navigate(['/verified-registration/dashboard']);
   }
 
   submitFile(): void {
