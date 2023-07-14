@@ -265,6 +265,7 @@ export class DFAApplicationMainComponent
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
+    this.dfaApplicationMainDataService.isSubmitted = true;
     // this.dfaStartApplicationService
       // .upsertProfile(this.profileDataService.createProfileDTO())
       // .subscribe({

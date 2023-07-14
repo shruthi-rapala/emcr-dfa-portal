@@ -1,7 +1,7 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="signAndSubmitForm">
+    <form [formGroup]="signAndSubmitForm" *ngIf="dfaApplicationMainDataService.isSubmitted != true">
 
       <p class="sub-heading" style="font-size: 20px">Declaration</p>
       <br />
@@ -25,6 +25,9 @@
 
       </ng-container>
     </form>
+    <div *ngIf="dfaApplicationMainDataService.isSubmitted == true">
+      Submitted
+    </div>
 
   </mat-card-content>
 </mat-card>
