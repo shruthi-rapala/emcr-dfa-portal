@@ -1,0 +1,16 @@
+name: ZAP Scan
+on:
+  schedule:
+    # Scheduled Scanning of Dev
+    - cron:  '5 6 * * *'
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan ZAP website
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.6.1
+        with:
+          target: 'https://era-dfa-dev.apps.silver.devops.gov.bc.ca/'
+          token: ${{ secrets.GITHUB_TOKEN }}
