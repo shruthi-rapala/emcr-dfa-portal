@@ -47,7 +47,7 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> AddApplication(DFAApplicationStart application)
         {
-            if (application == null) return BadRequest("Application details cannot be empty!");
+            if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationstart>(application);
 
             var applicationId = await handler.HandleApplication(mappedApplication);
@@ -68,7 +68,11 @@ namespace EMBC.DFA.API.Controllers
             string applicationId)
         {
             var dfa_appapplication = await handler.GetApplicationStartAsync(applicationId);
-            var dfaApplicationStart = mapper.Map<DFAApplicationStart>(dfa_appapplication);
+            DFAApplicationStart dfaApplicationStart = new DFAApplicationStart();
+            dfaApplicationStart.Id = applicationId;
+            dfaApplicationStart.ProfileVerification = mapper.Map<ProfileVerification>(dfa_appapplication);
+            dfaApplicationStart.Consent = mapper.Map<Consent>(dfa_appapplication);
+            dfaApplicationStart.AppTypeInsurance = mapper.Map<AppTypeInsurance>(dfa_appapplication);
             return Ok(dfaApplicationStart);
         }
     }

@@ -234,15 +234,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         }
       });
 
-    // TODO: retrieve actual profile address
-    this.profileAddress = {
-      addressLine1: "564 Vedder Rd.",
-      addressLine2: null,
-      community: "Abbotsford",
-      country: { name: "Canada", code: "CAN" },
-      stateProvince: "BC",
-      postalCode: "V1V 1V1"
-    }
+    this.profileAddress = this.profileDataService.primaryAddressDetails;
     this.onUseProfileAddressChoice("1");
   }
 
@@ -294,7 +286,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       this.damagedPropertyAddressForm.controls.addressLine1.setValue(this.profileAddress.addressLine1);
       this.damagedPropertyAddressForm.controls.addressLine2.setValue(this.profileAddress.addressLine2);
       this.damagedPropertyAddressForm.controls.community.setValue(this.profileAddress.community);
-      this.damagedPropertyAddressForm.controls.country.setValue(this.profileAddress.country.name);
+      this.damagedPropertyAddressForm.controls.country.setValue(this.profileAddress.country?.name);
       this.damagedPropertyAddressForm.controls.stateProvince.setValue(this.profileAddress.stateProvince);
       this.damagedPropertyAddressForm.controls.postalCode.setValue(this.profileAddress.postalCode);
 

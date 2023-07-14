@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DFAApplicationMain, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, OtherContact, SecondaryApplicant, Occupants, SignAndSubmit} from 'src/app/core/model/dfa-application-main.model';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { ApplicantOption, InsuranceOption, DfaApplicationStart } from 'src/app/core/api/models';
-import { DFAApplicationStartModule } from '../dfa-application-start/dfa-application-start.module';
+import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainDataService {
@@ -19,20 +19,10 @@ export class DFAApplicationMainDataService {
   private _signAndSubmit: SignAndSubmit;
 
   constructor(
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private dfaApplicationStartDataService: DFAApplicationStartDataService
   ) {
-      // TODO: Retrieve actual app start data instead of hard coded
-      this._dfaApplicationStart = {
-        consent: {consent: true},
-        profileVerification: {profileVerified: true, profileId: ""},
-        appTypeInsurance: {
-          applicantOption: this.ApplicantOptions.ResidentialTenant,
-          insuranceOption: this.InsuranceOptions.Unsure,
-          smallBusinessOption: null,
-          farmOption: null,
-          applicantSignature: null,
-          secondaryApplicantSignature: null
-        }};
+      this._dfaApplicationStart = this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
   }
 
   public getDFAApplicationMain(): DFAApplicationMain {

@@ -33,7 +33,7 @@ export class VerifiedRegistrationComponent implements OnInit {
   ngOnInit(): void {
     const queryParams = this.route.snapshot.queryParamMap;
     const inviteId: string = queryParams.get('inviteId') ?? undefined;
-    
+
 
     if (inviteId !== undefined) {
       this.emailService.validateInvite(inviteId).subscribe({
@@ -63,8 +63,8 @@ export class VerifiedRegistrationComponent implements OnInit {
     }
 
     this.timeOutService.init(
-      this.timeOutService.timeOutInfo.sessionTimeoutInMinutes,
-      this.timeOutService.timeOutInfo.warningMessageDuration
+      this.timeOutService.timeOutInfo?.sessionTimeoutInMinutes ? this.timeOutService.timeOutInfo?.sessionTimeoutInMinutes : 5,
+      this.timeOutService.timeOutInfo?.warningMessageDuration ? this.timeOutService.timeOutInfo?.warningMessageDuration : 3
     );
   }
 

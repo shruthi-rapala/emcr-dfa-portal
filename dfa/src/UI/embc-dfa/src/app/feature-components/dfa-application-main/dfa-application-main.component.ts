@@ -70,7 +70,7 @@ export class DFAApplicationMainComponent
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    this.dfaApplicationMainHeading = this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption + ' Application';
+    this.dfaApplicationMainHeading = ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] + ' Application';
     this.steps = this.componentService.createDFAApplicationMainSteps();
 
     this.formCreationService.secondaryApplicantsChanged.subscribe(secondaryApplicants => {

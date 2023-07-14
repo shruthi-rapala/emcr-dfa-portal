@@ -235,17 +235,17 @@ export class DFAApplicationStartComponent
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
     this.dfaApplicationStartService
-     .upsertApplication(this.dfaApplicationStartDataService.createDFAApplicationStartDTO())
+    .upsertApplication(this.dfaApplicationStartDataService.createDFAApplicationStartDTO())
      .subscribe({
-       next: (applicationId) => {
-        this.dfaApplicationStartDataService.setApplicationId(applicationId);
+      next: (applicationId) => {
+       this.dfaApplicationStartDataService.setApplicationId(applicationId);
         this.router.navigate(['/dfa-application-main']);
-       },
-       error: (error) => {
-         this.showLoader = !this.showLoader;
-         this.isSubmitted = !this.isSubmitted;
-         this.alertService.setAlert('danger', globalConst.saveApplicationError);
-       }
+      },
+      error: (error) => {
+        this.showLoader = !this.showLoader;
+        this.isSubmitted = !this.isSubmitted;
+        this.alertService.setAlert('danger', globalConst.saveApplicationError);
+      }
      });
   }
 }

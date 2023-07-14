@@ -37,8 +37,6 @@ namespace EMBC.DFA.API.Mappers
                 ;
 
             CreateMap<DFAApplicationStart, dfa_appapplicationstart>()
-                //.ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s))
-                //.ForMember(d => d.dfa_accountlegalname, opts => opts.MapFrom(s => s))
                 .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantOption == ApplicantOption.Homeowner ? ApplicantTypeOptionSet.HomeOwner :
                     (s.AppTypeInsurance.applicantOption == ApplicantOption.ResidentialTenant ? ApplicantTypeOptionSet.ResidentialTenant :
                     (s.AppTypeInsurance.applicantOption == ApplicantOption.FarmOwner ? ApplicantTypeOptionSet.FarmOwner :
@@ -57,13 +55,30 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_secondaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.dateSigned))
                 .ForMember(d => d.secondaryentityimagenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature != null ? Convert.FromBase64String(s.AppTypeInsurance.secondaryApplicantSignature.signature.Substring(s.AppTypeInsurance.secondaryApplicantSignature.signature.IndexOf(',') + 1)) : null));
 
-            CreateMap<dfa_appapplicationstart, DFAApplicationStart>()
-                .ForMember(d => d.ProfileVerification.profileVerified, opts => opts.Ignore())
-                .ForMember(d => d.ProfileVerification.profileId, opts => opts.MapFrom(s => s.dfa_appcontactid))
-                .ForMember(d => d.Consent.consent, opts => opts.Ignore())
-                .ForMember(d => d.AppTypeInsurance.farmOption, opts => opts.Ignore())
-                .ForMember(d => d.AppTypeInsurance.smallBusinessOption, opts => opts.Ignore())
-                .ForMember(d => d.AppTypeInsurance.applicantOption, opts => opts.MapFrom(s => s.dfa_applicanttype)); // wrong!!
+            CreateMap<dfa_appapplicationstart, ProfileVerification>()
+               .ForMember(d => d.profileVerified, opts => opts.Ignore())
+               .ForMember(d => d.profileId, opts => opts.MapFrom(s => s.dfa_appcontactid));
+
+            CreateMap<dfa_appapplicationstart, Consent>()
+                .ForMember(d => d.consent, opts => opts.Ignore());
+
+            CreateMap<dfa_appapplicationstart, AppTypeInsurance>()
+                .ForMember(d => d.farmOption, opts => opts.Ignore())
+                .ForMember(d => d.smallBusinessOption, opts => opts.Ignore())
+                .ForPath(d => d.applicantSignature.signature, opts => opts.MapFrom(s => Convert.ToBase64String(s.entityimagenoins)))
+                .ForPath(d => d.applicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_primaryapplicantsigneddatenoins))
+                .ForPath(d => d.applicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_primaryapplicantprintnamenoins))
+                .ForPath(d => d.secondaryApplicantSignature.signature, opts => opts.MapFrom(s => Convert.ToBase64String(s.secondaryentityimagenoins)))
+                .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddatenoins))
+                .ForPath(d => d.secondaryApplicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_secondaryapplicantprintnamenoins))
+                .ForMember(d => d.applicantOption, opts => opts.MapFrom(s => s.dfa_applicanttype == (int)ApplicantTypeOptionSet.HomeOwner ? ApplicantOption.Homeowner :
+                    (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.ResidentialTenant ? ApplicantOption.ResidentialTenant :
+                    (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.SmallBusinessOwner ? ApplicantOption.SmallBusinessOwner :
+                    (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.FarmOwner ? ApplicantOption.FarmOwner :
+                    (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.CharitableOrganization ? ApplicantOption.CharitableOrganization : ApplicantOption.Homeowner))))))
+                .ForMember(d => d.insuranceOption, opts => opts.MapFrom(s => s.dfa_insurancetype == (int)InsuranceTypeOptionSet.Yes ? InsuranceOption.Yes :
+                    (s.dfa_insurancetype == (int)InsuranceTypeOptionSet.No ? InsuranceOption.No :
+                    (s.dfa_insurancetype == (int)InsuranceTypeOptionSet.YesBut ? InsuranceOption.Unsure : InsuranceOption.Yes))));
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
                 .ForMember(d => d.Id, opts => opts.Ignore())
