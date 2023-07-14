@@ -1,5 +1,5 @@
-#CD pipeline for dfa api
-name: cd-dfa-portal-project-api
+#CD pipeline for DFA UI
+name: cd-dfa-portal-project-ui
 
 on:
   push:
@@ -8,12 +8,12 @@ on:
       - feature/dfa_cleanup
 
     paths:
-      - "dfa/src/API/**"
-      - ".github/workflows/cd-dfa-portal-project-api.yml"
+      - "dfa/src/UI/**"
+      - ".github/workflows/cd-dfa-portal-project-ui.yml"
 
 env:
-  IMAGE_NAME: dfa-portal-api
-  WORKING_DIRECTORY: ./dfa/src/API
+  IMAGE_NAME: dfa-portal-ui
+  WORKING_DIRECTORY: ./dfa/src/UI
 
 jobs:
   build:
