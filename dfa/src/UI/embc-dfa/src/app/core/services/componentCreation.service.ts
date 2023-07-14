@@ -119,13 +119,23 @@ export class ComponentCreationService {
     },
     {
       component: 'damaged-items-by-room',
-      nextButtonLabel: 'Next - Review',
+      nextButtonLabel: 'Next - Supporting Documents',
       backButtonLabel: 'Go Back & Edit',
       isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
       stepName: 'Damaged Items By Room'
+    },
+    {
+      component: 'supporting-documents',
+      nextButtonLabel: 'Next - Review',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Supporting Documents'
     }
+
   ];
 
   needsAssessmentComponents: Array<any> = [

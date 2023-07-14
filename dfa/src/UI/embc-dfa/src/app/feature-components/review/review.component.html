@@ -1569,9 +1569,9 @@
         <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.damagedRooms?.length == 0">
           <span>No damaged rooms listed.</span>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.fileAttachments?.length > 0">
+        <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.damagePhotos?.length > 0">
           <b>Damage Photos</b>
-          <table mat-table [dataSource]="fileAttachmentDataSource">
+          <table mat-table [dataSource]="damagePhotoDataSource">
              <!-- File Name Column -->
              <ng-container matColumnDef="fileName" style="width:25%">
               <th mat-header-cell *matHeaderCellDef >
@@ -1602,16 +1602,82 @@
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="fileAttachmentColumnsToDisplay"></tr>
+            <tr mat-header-row *matHeaderRowDef="damagePhotoColumnsToDisplay"></tr>
             <tr
               mat-row
-              *matRowDef="let element; columns: fileAttachmentColumnsToDisplay"
+              *matRowDef="let element; columns: damagePhotoColumnsToDisplay"
               class="example-element-row"
             ></tr>
           </table>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.fileAttachments?.length == 0">
+        <div class="row info-detail" *ngIf="(formCreationService.damagedItemsByRoomForm$ | async)?.value?.damagePhotos?.length == 0">
           <span>No damage photos supplied.</span>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content class="contentStyle mat-elevation-z8">
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Supporting Documents</div>
+          <div class="col-md-2" *ngIf="allowEdit">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="navigateToStep(5)"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="row info-detail" *ngIf="(formCreationService.supportingDocumentsForm$ | async)?.value?.supportingDocuments?.length > 0">
+          <b>Supporting Documents</b>
+          <table mat-table [dataSource]="supportingDocumentDataSource">
+             <!-- File Name Column -->
+             <ng-container matColumnDef="fileName" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>File Name</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.fileName }}
+              </td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="fileDescription" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>File Description</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.fileDescription}}
+              </td>
+            </ng-container>
+
+            <!-- UploadedDate Column -->
+            <ng-container matColumnDef="uploadedDate" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Date Uploaded</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="supportingDocumentColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: supportingDocumentColumnsToDisplay"
+              class="example-element-row"
+            ></tr>
+          </table>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.supportingDocumentsForm$ | async)?.value?.supportingDocuments?.length == 0">
+          <span>No supporting documents.</span>
         </div>
       </mat-card-content>
     </div>
