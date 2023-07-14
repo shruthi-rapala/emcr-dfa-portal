@@ -173,21 +173,17 @@ export class LocationService {
    * @returns AddressModel object usable by the UI
    */
   public getAddressRegFromAddress(addressObject: Address): RegAddress {
-    const communities = this.getCommunityList();
-    const countries = this.getCountriesList();
-    const stateProvinces = this.getStateProvinceList();
+    //const communities = this.getCommunityList();
+    //const countries = this.getCountriesList();
+    //const stateProvinces = this.getStateProvinceList();
 
-    const addressCommunity =
-      communities.find((comm) => comm.code === addressObject.community) ??
-      communities.find((comm) => comm.name === addressObject.community);
+    const addressCommunity = '';
 
-    const addressCountry =
-      countries.find((coun) => coun.code === addressObject.country) ??
-      countries.find((coun) => coun.code === 'CAN');
+    const addressCountry = '';
 
-    const addressStateProvince =
-      stateProvinces.find((sp) => sp.code === addressObject.stateProvince) ??
-      stateProvinces.find((sp) => sp.code === 'BC');
+    const addressStateProvince = '';
+      //stateProvinces.find((sp) => sp.code === addressObject.stateProvince) ??
+      //stateProvinces.find((sp) => sp.code === 'BC');
     
     return {
       addressLine1: addressObject.addressLine1,
@@ -195,9 +191,9 @@ export class LocationService {
       //community: addressCommunity || addressObject.city || '',
       //stateProvince: addressStateProvince,
       community: '',
-      stateProvince: '',
-      country: addressCountry,
-      postalCode: addressObject.postalCode
+      stateProvince: addressObject.stateProvince,
+      postalCode: addressObject.postalCode,
+      country: { code: 'CAN', name: 'Canada' }
     };
   }
 
@@ -211,22 +207,17 @@ export class LocationService {
     const address: Address = {
       addressLine1: addressObject.addressLine1,
       addressLine2: addressObject.addressLine2,
-      country: addressObject.country.code,
-      community:
-        (addressObject.community as Community).code === undefined
-          ? null
-          : (addressObject.community as Community).code,
-      city:
-        (addressObject.community as Community).code === undefined &&
-        typeof addressObject.community === 'string'
-          ? addressObject.community
-          : null,
+      city: addressObject.community,
+        //(addressObject.community == '' || (addressObject.community as Community).code === undefined) &&
+        //typeof addressObject.community === 'string'
+        //  ? addressObject.community
+        //  : null,
       postalCode: addressObject.postalCode,
-      stateProvince:
-        addressObject.stateProvince === null ||
-        addressObject.stateProvince === undefined
-          ? null
-          : null//addressObject.stateProvince?.code
+      stateProvince: addressObject.stateProvince
+        //addressObject.stateProvince === null ||
+        //addressObject.stateProvince === undefined
+        //  ? null
+        //  : addressObject.stateProvince
     };
 
     return address;

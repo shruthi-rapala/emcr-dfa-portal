@@ -9,13 +9,13 @@ namespace EMBC.DFA.API.Services
         public static IEnumerable<ProfileDataConflict> DetectConflicts(Profile source, Profile target)
         {
             if (source == null || target == null) yield break;
-            if (source.PersonalDetails != null && !source.PersonalDetails.DateofBirthEquals(target.PersonalDetails))
+            if (source.PersonalDetails != null)
             {
-                yield return new DateOfBirthDataConflict
-                {
-                    OriginalValue = source.PersonalDetails?.DateOfBirth,
-                    ConflictingValue = target.PersonalDetails?.DateOfBirth
-                };
+                //yield return new DateOfBirthDataConflict
+                //{
+                //    OriginalValue = source.PersonalDetails?.DateOfBirth,
+                //    ConflictingValue = target.PersonalDetails?.DateOfBirth
+                //};
             }
             if (source.PersonalDetails != null && !source.PersonalDetails.NameEquals(target.PersonalDetails))
             {
@@ -46,9 +46,6 @@ namespace EMBC.DFA.API.Services
             personDetails != null &&
             personDetails.FirstName.StringSafeEquals(other?.FirstName) &&
             personDetails.LastName.StringSafeEquals(other?.LastName);
-
-        private static bool DateofBirthEquals(this PersonDetails personDetails, PersonDetails other) =>
-            personDetails?.DateOfBirth == other?.DateOfBirth;
 
         private static bool StringSafeEquals(this string s, string other) =>
             string.Equals((s ?? string.Empty).Trim(), (other ?? string.Empty).Trim(), StringComparison.InvariantCultureIgnoreCase);

@@ -17,7 +17,6 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { ProfileDataService } from './profile-data.service';
 import { ProfileService } from './profile.service';
 import * as globalConst from '../../core/services/globalConstants';
-import { SecurityQuestion } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-profile',
@@ -141,9 +140,9 @@ export class ProfileComponent
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
     if (isLast && component === 'review') {
-      //this.submitFile();
-      const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
-      this.router.navigate([navigationPath]);
+      this.submitFile();
+      //const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
+      //this.router.navigate([navigationPath]);
     } else if (this.form.status === 'VALID') {
       if (isLast) {
         if (this.currentFlow === 'non-verified-registration') {
@@ -175,6 +174,8 @@ export class ProfileComponent
           this.form.get('address').value;
         this.profileDataService.mailingAddressDetails =
           this.form.get('mailingAddress').value;
+        this.profileDataService.IsMailingAddressSameAsPrimaryAddressDetails =
+          this.form.get('isNewMailingAddress').value;
         break;
       case 'contact-info':
         this.profileDataService.contactDetails = this.form.value;
@@ -188,17 +189,17 @@ export class ProfileComponent
     }
   }
 
-  getParentMethod(): any {
-    return {
-      callParentMoveStep: (index: any) => {
-        this.move(index)
-      }
-    }
-  }
+  // getParentMethod(): any {
+  //   return {
+  //     callParentMoveStep: (index: any) => {
+  //       this.move(index)
+  //     }
+  //   }
+  // }
 
-  move(index: any): void {
-    this.profileStepper.selectedIndex = index;
-  }
+  // move(index: any): void {
+  //   this.profileStepper.selectedIndex = index;
+  // }
 
   /**
    * Loads appropriate forms based on the current step
@@ -242,41 +243,43 @@ export class ProfileComponent
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    this.profileService
-      .upsertProfile(this.profileDataService.createProfileDTO())
-      .subscribe({
-        next: (profileId) => {
-          this.profileDataService.setProfileId(profileId);
-          this.router.navigate(['/verified-registration/dashboard']);
-        },
-        error: (error) => {
-          this.showLoader = !this.showLoader;
-          this.isSubmitted = !this.isSubmitted;
-          this.alertService.setAlert('danger', globalConst.saveProfileError);
-        }
-      });
+     this.profileService
+       .upsertProfile(this.profileDataService.createProfileDTO())
+       .subscribe({
+         next: (profileId) => {
+          const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
+          this.router.navigate([navigationPath]);
+          //debugger;
+          //this.profileDataService.setProfileId(profileId);
+          //this.router.navigate(['/verified-registration/dashboard']);
+         },
+         error: (error) => {
+           this.showLoader = !this.showLoader;
+           this.isSubmitted = !this.isSubmitted;
+           this.alertService.setAlert('danger', globalConst.saveProfileError);
+         }
+       });
   }
 
   private saveSecurityQuestions(questionForm: UntypedFormGroup) {
     //let anyValueSet = false;
-    const securityQuestions: Array<SecurityQuestion> = [];
+    //const securityQuestions: Array<SecurityQuestion> = [];
 
-    // Create SecurityQuestion objects and save to array, and check if any value set
-    for (let i = 1; i <= 3; i++) {
-      const question = questionForm.get(`question${i}`).value?.trim() ?? '';
-      const answer = questionForm.get(`answer${i}`).value?.trim() ?? '';
+    //// Create SecurityQuestion objects and save to array, and check if any value set
+    //for (let i = 1; i <= 3; i++) {
+    //  const question = questionForm.get(`question${i}`).value?.trim() ?? '';
+    //  const answer = questionForm.get(`answer${i}`).value?.trim() ?? '';
 
-      // if (question.length > 0 || answer.length > 0) {
-      //   anyValueSet = true;
-      // }
+    //  // if (question.length > 0 || answer.length > 0) {
+    //  //   anyValueSet = true;
+    //  // }
 
-      securityQuestions.push({
-        id: i,
-        answerChanged: true,
-        question,
-        answer
-      });
-    }
-    this.profileDataService.securityQuestions = securityQuestions;
+    //  securityQuestions.push({
+    //    id: i,
+    //    answerChanged: true,
+    //    question,
+    //    answer
+    //  });
+    //}
   }
 }

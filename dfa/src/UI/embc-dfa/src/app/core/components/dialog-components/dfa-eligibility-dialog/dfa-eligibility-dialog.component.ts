@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Inject } from '@angular/core';
 import { DialogContent } from 'src/app/core/model/dialog-content.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './dfa-eligibility-dialog.component.html',
   styleUrls: ['./dfa-eligibility-dialog.component.scss']
 })
-export class DFAEligibilityDialogComponent implements OnInit {
+export class DFAEligibilityDialogComponent {
   public content: DialogContent;
   @Input() initDialog: boolean;
   @Output() outputEvent = new EventEmitter<string>();
@@ -18,8 +18,6 @@ export class DFAEligibilityDialogComponent implements OnInit {
     ) {
       this.content = this.data.content;
     }
-
-  ngOnInit(): void {}
 
   cancel() {
     this.dialogRef.close('cancel');

@@ -27,22 +27,18 @@ export class PersonDetails {
   lastName: string;
   preferredName?: string;
   initials?: string;
-  gender: string;
-  dateOfBirth: string;
   sameLastNameCheck?: boolean;
   isPrimaryRegistrant?: boolean;
-  isIndigenous?: boolean;
+  indigenousStatus?: boolean;
 
   constructor(
     firstName?: string,
     lastName?: string,
     preferredName?: string,
     initials?: string,
-    gender?: string,
-    dateOfBirth?: string,
     sameLastNameCheck?: boolean,
     isPrimaryRegistrant?: boolean,
-    isIndigenous?: boolean
+    indigenousStatus?: boolean
   ) {}
 }
 
@@ -51,12 +47,13 @@ export class PersonDetailsForm {
   lastName = new UntypedFormControl();
   preferredName = new UntypedFormControl();
   initials = new UntypedFormControl();
-  isIndigenous = new UntypedFormControl();
+  indigenousStatus = new UntypedFormControl();
 
   constructor(
     personDetail: PersonDetails,
     customValidator: CustomValidationService
   ) {
+    
     if (personDetail.firstName) {
       this.firstName.setValue(personDetail.firstName);
     }
@@ -66,18 +63,18 @@ export class PersonDetailsForm {
     this.lastName.setValue(personDetail.lastName);
     this.lastName.setValidators([Validators.required]);
 
-    this.preferredName.setValue(personDetail.preferredName);
+    //this.preferredName.setValue(personDetail.preferredName);
 
     this.initials.setValue(personDetail.initials);
 
-    this.isIndigenous.setValue(personDetail.isIndigenous);
-    this.isIndigenous.setValidators([Validators.required]);
+    this.indigenousStatus.setValue('');
+    //this.indigenousStatus.setValidators([Validators.required]);
   }
 }
 
 export class ContactDetails {
   email: string;
-  phone: string;
+  cellPhoneNumber: string;
   confirmEmail: string;
   showContacts: boolean;
   hideEmailRequired: boolean;
@@ -89,7 +86,7 @@ export class ContactDetails {
 
 export class ContactDetailsForm {
   email = new UntypedFormControl();
-  phone = new UntypedFormControl();
+  cellPhoneNumber = new UntypedFormControl();
   confirmEmail = new UntypedFormControl();
   showContacts = new UntypedFormControl();
   hideEmailRequired = new UntypedFormControl(false);
@@ -178,7 +175,6 @@ export class AddressForm {
       addressLine2: [''],
       community: [''],
       stateProvince: ['British Columbia'],
-      country: [''],
       postalCode: [
         '',
         [customValidator.postalValidation().bind(customValidator)]
@@ -190,7 +186,6 @@ export class AddressForm {
       addressLine2: [''],
       community: [''],
       stateProvince: [''],
-      country: [''],
       postalCode: [
         '',
         [customValidator.postalValidation().bind(customValidator)]
@@ -200,7 +195,7 @@ export class AddressForm {
     //this.isBcAddress.setValue(address.isBcAddress);
     //this.isBcAddress.setValidators([Validators.required]);
 
-    //this.isNewMailingAddress.setValue(address.isNewMailingAddress);
+    this.isNewMailingAddress.setValue(address.isNewMailingAddress);
     //this.isNewMailingAddress.setValidators([Validators.required]);
 
     //this.isNewMailingAddress.setValue(address.isNewMailingAddress);

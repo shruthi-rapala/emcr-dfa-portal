@@ -9,6 +9,7 @@
           placeholder="Address Line 1"
           maxlength="100"
           required
+          [readonly]="primaryAddressWarning == true"
         />
         <mat-error
           *ngIf="
@@ -19,6 +20,15 @@
           Address Line 1 is required</mat-error
         >
       </mat-form-field>
+    </div>
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-5 addressMessage" *ngIf="primaryAddressWarning == true">
+      This is your primary address from your BC Services Card and can't be changed.
+      If you need to update your primary address, visit
+      <br />
+      <a target="_blank" href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information">BC Service Card, Change your personal information</a>
+
     </div>
   </div>
 
@@ -31,6 +41,7 @@
           matInput
           placeholder="Address Line 2"
           maxlength="100"
+          [readonly]="primaryAddressWarning == true"
         />
       </mat-form-field>
     </div>
@@ -46,7 +57,7 @@
           formControlName="community"
           matInput
           placeholder="City"
-          required
+          [readonly]="primaryAddressWarning == true"
         />
         <!--<mat-autocomplete
           #auto="matAutocomplete"
@@ -60,13 +71,13 @@
             {{ option.name }}
           </mat-option>
         </mat-autocomplete>-->
-        <mat-error
+        <!--<mat-error
           *ngIf="
             addressFormControl?.community.hasError('required')
           "
         >
           City is required</mat-error
-        >
+        >-->
         <!--<mat-error *ngIf="validateCity()"> City is invalid</mat-error>-->
       </mat-form-field>
     </div>
@@ -80,7 +91,7 @@
           formControlName="stateProvince"
           matInput
           placeholder="Province"
-          readonly
+          [readonly]="primaryAddressWarning == true"
           value="British Columbia"
         />
       </mat-form-field>
@@ -94,6 +105,7 @@
         <input
           formControlName="postalCode"
           matInput
+          [readonly]="primaryAddressWarning == true"
           placeholder="Postal Code"
         />
         <mat-error

@@ -187,8 +187,6 @@ export class NeedsAssessmentMappingService {
         firstName: member.details.firstName,
         lastName: member.details.lastName,
         initials: member.details.initials,
-        gender: member.details.gender,
-        dateOfBirth: member.details.dateOfBirth,
         isPrimaryRegistrant: member.isPrimaryRegistrant,
         sameLastNameCheck: this.isSameLastName(member.details.lastName)
       };
@@ -209,8 +207,6 @@ export class NeedsAssessmentMappingService {
         firstName: member.details.firstName,
         lastName: member.details.lastName,
         initials: member.details.initials,
-        gender: member.details.gender,
-        dateOfBirth: member.details.dateOfBirth,
         sameLastNameCheck: this.isSameLastName(member.details.lastName)
       };
 

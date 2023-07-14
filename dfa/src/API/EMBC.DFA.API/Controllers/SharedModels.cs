@@ -7,18 +7,13 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class Address
     {
-        [Required]
-        public string AddressLine1 { get; set; }
+        public string? AddressLine1 { get; set; }
 
         public string? AddressLine2 { get; set; }
 
-        public string? Community { get; set; }
         public string? City { get; set; }
 
         public string? StateProvince { get; set; }
-
-        [Required]
-        public string Country { get; set; }
 
         public string? PostalCode { get; set; }
     }
@@ -35,13 +30,7 @@ namespace EMBC.DFA.API.Controllers
         public string LastName { get; set; }
 
         public string? Initials { get; set; }
-        public string? PreferredName { get; set; }
-
-        [Required]
-        public string Gender { get; set; }
-
-        [Required]
-        public string DateOfBirth { get; set; }
+        public string IndigenousStatus { get; set; }
     }
 
     /// <summary>
@@ -49,15 +38,15 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class ContactDetails
     {
-        [EmailAddress]
-        public string? Email { get; set; }
+        //[EmailAddress]
+        public string Email { get; set; }
 
-        [Phone]
-        public string? Phone { get; set; }
+        //[Phone]
+        public string? ResidencePhone { get; set; }
 
-        public bool HidePhoneRequired { get; set; }
+        public string? CellPhoneNumber { get; set; }
 
-        public bool HideEmailRequired { get; set; }
+        public string? AlternatePhone { get; set; }
     }
 
     /// <summary>

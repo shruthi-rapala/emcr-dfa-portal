@@ -29,19 +29,27 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'dfa-application',
+    path: 'dfa-application-start',
     loadChildren: () =>
       import(
-        './feature-components/dfa-application/dfa-application.module'
-      ).then((m) => m.DFAApplicationModule),
+        './feature-components/dfa-application-start/dfa-application-start.module'
+      ).then((m) => m.DFAApplicationStartModule),
     canActivate: [AuthGuard]
   },
   {
-    path: 'homeowner-application',
+    path: 'dfa-application-main',
     loadChildren: () =>
       import(
-        './feature-components/homeowner-application/homeowner-application.module'
-      ).then((m) => m.HomeOwnerApplicationModule),
+        './feature-components/dfa-application-main/dfa-application-main.module'
+      ).then((m) => m.DFAApplicationMainModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'dfa-dashboard',
+    loadChildren: () =>
+      import(
+        './feature-components/dashboard/dashboard.module'
+      ).then((m) => m.DashboardModule),
     canActivate: [AuthGuard]
   },
   {

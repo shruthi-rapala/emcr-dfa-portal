@@ -14,7 +14,7 @@
       <p>You must apply for DFA within 90 days of the disaster event.</p>
       <br /><br /><br />
       <p style="text-align : center;font-size: 18px;">Do you want to apply for DFA now?</p>
-      
+
       <br />
       <br />
       <div class="row">
@@ -23,6 +23,7 @@
           <button
             class="button-p notice-button"
             mat-button
+            (click)="navigateToDashboard()"
           >
             No, I am not ready to apply
           </button>
@@ -31,7 +32,7 @@
           <button
             class="button-p notice-button"
             mat-button
-            (click)="navigateToDFAapplication()"
+            (click)="navigateToDFAApplicationStart()"
           >
             Yes, I want to apply now
           </button>

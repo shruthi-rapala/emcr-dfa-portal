@@ -13,7 +13,6 @@ export { Profile } from './models/profile';
 export { PersonDetails } from './models/person-details';
 export { ContactDetails } from './models/contact-details';
 export { Address } from './models/address';
-export { SecurityQuestion } from './models/security-question';
 export { EvacuationFile } from './models/evacuation-file';
 export { EvacuationFileStatus } from './models/evacuation-file-status';
 export { NeedsAssessment } from './models/needs-assessment';

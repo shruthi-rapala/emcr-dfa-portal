@@ -11,9 +11,9 @@ import {
   RestrictionForm,
   Restriction,
 } from '../model/profile.model';
-import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application.model';
+import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application-start.model';
 import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
-  CleanUpLog, CleanUpLogForm } from '../model/homeowner-application.model';
+  CleanUpLog, CleanUpLogForm, SignAndSubmitForm, SignAndSubmit, SecondaryApplicant } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import {
   Evacuated,
@@ -31,6 +31,8 @@ import {
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
   public insuranceOptionChanged: EventEmitter<InsuranceOption>;
+  public secondaryApplicantsChanged: EventEmitter<Array<SecondaryApplicant>>;
+  public signaturesChanged: EventEmitter<UntypedFormGroup>;
 
   restrictionForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
@@ -75,7 +77,7 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
         new AppTypeInsuranceForm(
-          new AppTypeInsurance()
+          new AppTypeInsurance(), this.formBuilder
         )
       )
     );
@@ -107,12 +109,13 @@ export class FormCreationService {
   profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
     this.profileVerificationForm.asObservable();
 
-  // HomeOwner Applciation Forms
+  // DFA Applciation Main Forms
   damagedPropertyAddressForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
        new DamagedPropertyAddressForm(
-         new DamagedPropertyAddress()
+         new DamagedPropertyAddress(),
+         this.customValidator
        )
      )
    );
@@ -136,7 +139,9 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
        new OccupantsForm(
-         new Occupants()
+         new Occupants(),
+         this.customValidator,
+         this.formBuilder
        )
      )
    );
@@ -148,7 +153,9 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
        new CleanUpLogForm(
-         new CleanUpLog()
+         new CleanUpLog(),
+         this.customValidator,
+         this.formBuilder
        )
      )
    );
@@ -160,13 +167,28 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
        new DamagedItemsByRoomForm(
-         new DamagedItemsByRoom()
+         new DamagedItemsByRoom(),
+         this.customValidator,
+         this.formBuilder
        )
      )
    );
 
   damagedItemsByRoomForm$: Observable<UntypedFormGroup | undefined> =
     this.damagedItemsByRoomForm.asObservable();
+
+  signAndSubmitForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new SignAndSubmitForm(
+         new SignAndSubmit(),
+         this.formBuilder
+       )
+     )
+   );
+
+  signAndSubmitForm$: Observable<UntypedFormGroup | undefined> =
+    this.signAndSubmitForm.asObservable();
 
   evacuatedForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
@@ -222,6 +244,8 @@ export class FormCreationService {
     private customValidator: CustomValidationService
   ) {
     this.insuranceOptionChanged = new EventEmitter<InsuranceOption>();
+    this.secondaryApplicantsChanged = new EventEmitter<Array<SecondaryApplicant>>();
+    this.signaturesChanged = new EventEmitter<UntypedFormGroup>;
   }
 
   getRestrictionForm(): Observable<UntypedFormGroup> {
@@ -360,7 +384,7 @@ export class FormCreationService {
     this.appTypeInsuranceForm.next(
       this.formBuilder.group(
         new AppTypeInsuranceForm(
-          new AppTypeInsurance()
+          new AppTypeInsurance(), this.formBuilder
         )
       )
     );
@@ -414,7 +438,8 @@ export class FormCreationService {
     this.damagedPropertyAddressForm.next(
       this.formBuilder.group(
         new DamagedPropertyAddressForm(
-          new DamagedPropertyAddress()
+          new DamagedPropertyAddress(),
+          this.customValidator
         )
       )
     );
@@ -449,7 +474,9 @@ export class FormCreationService {
     this.occupantsForm.next(
       this.formBuilder.group(
         new OccupantsForm(
-          new Occupants()
+          new Occupants(),
+          this.customValidator,
+          this.formBuilder
         )
       )
     );
@@ -466,24 +493,48 @@ export class FormCreationService {
     this.cleanUpLogForm.next(
       this.formBuilder.group(
         new CleanUpLogForm(
-          new CleanUpLog()
+          new CleanUpLog(),
+          this.customValidator,
+          this.formBuilder
         )
       )
     );
   }
+
   getDamagedItemsByRoomForm(): Observable<UntypedFormGroup> {
     return this.damagedItemsByRoomForm$;
   }
 
   setDamagedItemsByRoomForm(damagedItemsByRoomForm: UntypedFormGroup): void {
-    this.appTypeInsuranceForm.next(damagedItemsByRoomForm);
+    this.damagedItemsByRoomForm.next(damagedItemsByRoomForm);
   }
 
   clearDamagedItemsByRoomData(): void {
     this.damagedItemsByRoomForm.next(
       this.formBuilder.group(
         new DamagedItemsByRoomForm(
-          new DamagedItemsByRoom()
+          new DamagedItemsByRoom(),
+          this.customValidator,
+          this.formBuilder
+        )
+      )
+    );
+  }
+
+  getSignAndSubmitForm(): Observable<UntypedFormGroup> {
+    return this.signAndSubmitForm$;
+  }
+
+  setSignAndSubmitForm(signAndSubmitForm: UntypedFormGroup): void {
+    this.signAndSubmitForm.next(signAndSubmitForm);
+  }
+
+  clearSignAndSubmitData(): void {
+    this.signAndSubmitForm.next(
+      this.formBuilder.group(
+        new SignAndSubmitForm(
+          new SignAndSubmit(),
+          this.formBuilder
         )
       )
     );

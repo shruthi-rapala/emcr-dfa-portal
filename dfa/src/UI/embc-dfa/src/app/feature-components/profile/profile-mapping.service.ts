@@ -54,10 +54,9 @@ export class ProfileMappingService {
         details.setValue({
           firstName: profile.personalDetails.firstName,
           lastName: profile.personalDetails.lastName,
-          dateOfBirth: profile.personalDetails.dateOfBirth,
+          indigenousStatus: '',
           preferredName: null,
           initials: null,
-          gender: null
         });
       });
 
@@ -73,13 +72,12 @@ export class ProfileMappingService {
               this.profileDataService.primaryAddressDetails?.addressLine1,
             addressLine2:
               this.profileDataService.primaryAddressDetails.addressLine2,
-            community: null,
+            community: this.profileDataService.primaryAddressDetails.community,
             stateProvince:
               this.profileDataService.primaryAddressDetails.stateProvince,
-            country: this.profileDataService.primaryAddressDetails.country,
-            postalCode: null
+            postalCode: this.profileDataService.primaryAddressDetails.postalCode
           },
-          isBcAddress: this.isBCAddress(profile?.primaryAddress?.stateProvince),
+          isBcAddress: null,
           isNewMailingAddress: null,
           isBcMailingAddress: null,
           mailingAddress: {
@@ -87,7 +85,7 @@ export class ProfileMappingService {
             addressLine2: null,
             community: null,
             stateProvince: null,
-            country: null,
+            //country: null,
             postalCode: null
           }
         });
@@ -95,13 +93,13 @@ export class ProfileMappingService {
   }
 
   private setRestrictionDetails(profile: Profile): void {
-    this.formCreationService
-      .getRestrictionForm()
-      .pipe(first())
-      .subscribe((details) => {
-        details.setValue({ restrictedAccess: profile.restrictedAccess });
-      });
-    this.restrictionService.restrictedAccess = profile.restrictedAccess;
+    //this.formCreationService
+    //  .getRestrictionForm()
+    //  .pipe(first())
+    //  .subscribe((details) => {
+    //    details.setValue({ restrictedAccess: profile.restrictedAccess });
+    //  });
+    //this.restrictionService.restrictedAccess = profile.restrictedAccess;
   }
 
   private setPersonalDetails(profile: Profile): void {
@@ -133,9 +131,7 @@ export class ProfileMappingService {
         address.setValue({
           address: primaryAddress,
           isBcAddress: this.isBCAddress(profile.primaryAddress.stateProvince),
-          isNewMailingAddress: this.isSameMailingAddress(
-            profile.isMailingAddressSameAsPrimaryAddress
-          ),
+          isNewMailingAddress: profile.isMailingAddressSameAsPrimaryAddress,
           isBcMailingAddress: this.isBCAddress(
             profile.mailingAddress.stateProvince
           ),
@@ -160,7 +156,7 @@ export class ProfileMappingService {
           ...profile.contactDetails,
           confirmEmail: profile.contactDetails.email,
           showContacts: this.setShowContactsInfo(
-            profile.contactDetails.phone,
+            profile.contactDetails.cellPhoneNumber,
             profile.contactDetails.email
           )
         });
@@ -200,9 +196,9 @@ export class ProfileMappingService {
   //}
 
   private isSameMailingAddress(
-    isMailingAddressSameAsPrimaryAddress: boolean
+    isMailingAddressSameAsPrimaryAddress: string
   ): string {
-    return isMailingAddressSameAsPrimaryAddress === true ? 'Yes' : 'No';
+    return isMailingAddressSameAsPrimaryAddress;
   }
 
   private isBCAddress(province: null | string): string {

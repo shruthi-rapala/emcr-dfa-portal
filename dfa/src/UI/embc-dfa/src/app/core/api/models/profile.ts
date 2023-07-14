@@ -3,18 +3,15 @@
 import { Address } from './address';
 import { ContactDetails } from './contact-details';
 import { PersonDetails } from './person-details';
-import { SecurityQuestion } from './security-question';
 
 /**
  * User's profile
  */
 export interface Profile {
-  contactDetails: ContactDetails;
+  contactDetails?: ContactDetails;
   id?: null | string;
-  isMailingAddressSameAsPrimaryAddress?: boolean;
+  isMailingAddressSameAsPrimaryAddress?: string;
   mailingAddress?: Address;
-  personalDetails: PersonDetails;
-  primaryAddress: Address;
-  restrictedAccess?: boolean;
-  securityQuestions?: Array<SecurityQuestion>;
+  personalDetails?: PersonDetails;
+  primaryAddress?: Address;
 }

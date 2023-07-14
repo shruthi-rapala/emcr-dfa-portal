@@ -1,0 +1,196 @@
+<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+  <mat-card-content>
+
+    <form [formGroup]="propertyDamageForm">
+      <p class="sub-heading" style="font-size: 20px">Cause of Damage</p>
+      <br/>
+
+      <ng-container>
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Select the cause(s) of damage.<span style="color:red" >*</span>
+            </p>
+            <mat-checkbox
+              formControlName="floodDamage"
+              >
+              Flood Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
+              formControlName="landslideDamage"
+              >
+              Landslide Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
+              formControlName="wildfireDamage"
+              >
+              Wildfire Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
+              formControlName="stormDamage"
+              >
+              Storm Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
+              formControlName="otherDamage"
+              class="col-md-4"
+            >
+              Other Damage
+            </mat-checkbox>
+            <mat-form-field appearance="outline" [hidden]="propertyDamageForm.get('otherDamage').value !== true" class="col-md-4">
+              <mat-label>Cause of Damage</mat-label>
+              <input matInput
+                [required]="propertyDamageForm.get('otherDamage').value === true"
+                type="text"
+                formControlName="otherDamageText"
+                placeholder="Cause of damage*"
+              />
+              <mat-error
+                *ngIf="
+                propertyDamageForm.get('otherDamageText').invalid &&
+                propertyDamageForm.get('otherDamageText').hasError('required')
+              "
+              >
+                Text is required</mat-error
+              >
+            </mat-form-field>
+            <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage')">
+              <br/>At least one cause of damage is required.
+            </mat-error>
+          </div>
+        </div><br/><br/>
+
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Date(s) of damage?<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" >
+              <mat-label>From date</mat-label>
+              <input matInput
+                [matDatepicker]="fromPicker"
+                formControlName="damageFromDate"
+                [max]="propertyDamageForm.get('damageToDate').value ? propertyDamageForm.get('damageToDate').value : '2040-01-01'"
+                required >
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromPicker></mat-datepicker>
+              <mat-error
+                *ngIf="
+                propertyDamageForm.get('damageFromDate').invalid &&
+                propertyDamageForm.get('damageFromDate').hasError('required')
+              "
+              >
+                From date is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>To date</mat-label>
+              <input matInput
+                [matDatepicker]="toPicker"
+                formControlName="damageToDate"
+                [min]="propertyDamageForm.get('damageFromDate').value ? propertyDamageForm.get('damageFromDate').value : '2000-01-01'"
+                required>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+              <mat-datepicker #toPicker></mat-datepicker>
+              <mat-error
+                *ngIf="
+                propertyDamageForm.get('damageToDate').invalid &&
+                propertyDamageForm.get('damageToDate').hasError('required')
+              "
+              >
+                To date is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div><br/><br/>
+
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Brief description of damage/loss.<span style="color:red" >*</span>
+          </p>
+          <p>
+            Provide a brief description of the damages and losses. You will be provided the opportunity to itemize damaged items and clean up hours later in the application.
+          </p>
+          <mat-form-field appearance="outline">
+            <mat-label>Brief description of damage/loss</mat-label>
+            <textarea matInput
+              formControlName="briefDescription"
+              [rows]="5"
+              style="resize:none"
+              required
+              (keyup)="calcRemainingChars()"></textarea>
+            <mat-hint>{{ remainingLength }} characters remaining.</mat-hint>
+          </mat-form-field>
+        </div><br/>
+
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="lossesExceed1000"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div><br/><br/>
+
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Were you evacuated during the event?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="wereYouEvacuated"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div><br/><br/>
+
+        <div class="row" *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true'">
+          <p class="sub-heading" style="font-size: 15px">
+            If yes, when did you return to the residence?
+          </p>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" >
+              <mat-label>Date returned</mat-label>
+              <input matInput [matDatepicker]="rtnPicker" formControlName="dateReturned">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="rtnPicker"></mat-datepicker-toggle>
+              <mat-datepicker #rtnPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true'">
+          <br/><br/>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Are you now residing in the residence?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="residingInResidence"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div><br/><br/>
+      </ng-container>
+    </form>
+
+  </mat-card-content>
+</mat-card>

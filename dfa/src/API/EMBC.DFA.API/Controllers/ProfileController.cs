@@ -8,6 +8,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
+using EMBC.DFA.API.ConfigurationModule.Models;
+using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using EMBC.ESS.Shared.Contracts;
 using EMBC.ESS.Shared.Contracts.Events;
@@ -16,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using NJsonSchema.Annotations;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -29,6 +32,7 @@ namespace EMBC.DFA.API.Controllers
         private readonly IMapper mapper;
         private readonly IEvacuationSearchService evacuationSearchService;
         private readonly IProfileInviteService profileInviteService;
+        private readonly IConfigurationHandler handler;
 
         private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
 
@@ -37,13 +41,15 @@ namespace EMBC.DFA.API.Controllers
             IMessagingClient messagingClient,
             IMapper mapper,
             IEvacuationSearchService evacuationSearchService,
-            IProfileInviteService profileInviteService)
+            IProfileInviteService profileInviteService,
+            IConfigurationHandler handler)
         {
             this.env = env;
             this.messagingClient = messagingClient;
             this.mapper = mapper;
             this.evacuationSearchService = evacuationSearchService;
             this.profileInviteService = profileInviteService;
+            this.handler = handler;
         }
 
         /// <summary>
@@ -53,15 +59,17 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("current")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Profile>> GetProfile()
+        public ActionResult<Profile> GetProfile()
         {
             var userId = currentUserId;
-            var profile = mapper.Map<Profile>(await evacuationSearchService.GetRegistrantByUserId(userId));
-            if (profile == null)
-            {
-                //try get BCSC profile
-                profile = GetUserFromPrincipal();
-            }
+            //var profile = mapper.Map<Profile>(await evacuationSearchService.GetRegistrantByUserId(userId));
+            //var profile = null;
+            //if (profile == null)
+            //{
+            //    //try get BCSC profile
+            //    profile = GetUserFromPrincipal();
+            //}
+            var profile = GetUserFromPrincipal();
             if (profile == null) return NotFound(userId);
             return Ok(profile);
         }
@@ -88,15 +96,14 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<string>> Upsert(Profile profile)
+        public async Task<ActionResult<string>> AddContact(Profile profile)
         {
             profile.Id = currentUserId;
-            var mappedProfile = mapper.Map<RegistrantProfile>(profile);
-            //BCSC profiles are authenticated and verified
-            mappedProfile.AuthenticatedUser = true;
-            mappedProfile.VerifiedUser = true;
-            var profileId = await messagingClient.Send(new SaveRegistrantCommand { Profile = mappedProfile });
-            return Ok(profileId);
+            var mappedProfile = mapper.Map<dfa_appcontact>(profile);
+            if (profile == null) return BadRequest("Profile details cannot be empty!");
+
+            var contactId = await handler.HandleContact(mappedProfile);
+            return Ok(contactId);
         }
 
         /// <summary>
@@ -153,19 +160,15 @@ namespace EMBC.DFA.API.Controllers
     {
         public string? Id { get; set; }
 
-        [Required]
         public PersonDetails PersonalDetails { get; set; }
 
-        [Required]
         public ContactDetails ContactDetails { get; set; }
 
-        [Required]
         public Address PrimaryAddress { get; set; }
 
         public Address MailingAddress { get; set; }
-        public bool IsMailingAddressSameAsPrimaryAddress { get; set; }
-        public bool RestrictedAccess { get; set; }
-        public IEnumerable<SecurityQuestion> SecurityQuestions { get; set; }
+
+        public string IsMailingAddressSameAsPrimaryAddress { get; set; }
     }
 
     /// <summary>

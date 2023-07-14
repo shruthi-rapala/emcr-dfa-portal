@@ -40,11 +40,11 @@ export const gender = [
 ];
 
 export const yesFullyInsuredBody: DialogContent = {
-  text: 'Insurable damages in the private sector aren’t <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/124_95#Schedule1" target="_blank">eligible</a>.' +
+  text: 'Insurable damages in the private sector aren’t eligible.' +
   '<br/><br/> To determine if your damages are insurable or uninsurable, contact your insurance provider as a first step. They will provide you with information about your insurance coverage.<br/><br/>' +
   'Program staff are available to discuss how your insurance relates to your eligibility and application. Please call <span style="white-space: nowrap; font-weight: bold;">1-888-257-4777.</span><br/><br/>' +
   '<p><b>Do you have insurance that will cover all your losses?</b></p>',
-  cancelButton: 'Yes, Save & Close my Application',
+  cancelButton: 'Yes, Cancel my Application',
   confirmButton: 'No, Go Back & Edit'
 }
 
@@ -105,3 +105,18 @@ export const supportCategoryListError =
   'Unable to retrieve support categories at this time. Please try again later';
 export const supportStatusListError =
   'Unable to retrieve support status at this time. Please try again later';
+
+export const zeroFileMessage = 'Attachment file size must be greater than 0Kb';
+export const fileTooLargeMessage = 'Attachment file size must not be more than 50Mb';
+export const fileTypeMessage = 'Only files type pdf, jpg, jpeg, png allowed.';
+export const fileNameFormat = /^[\w,\s-_()]+\.[A-Za-z]{3,4}$/;
+export const invalidFileNameMessage =
+  'File name must not contain the following characters: ~ " . # % & * : < > ? /  { | }. Leading and trailing spaces are not allowed.';
+  export const allowedFileTypes = [
+    'application/pdf',
+    'image/jpg',
+    'image/jpeg',
+    'image/png'
+  ];
+
+

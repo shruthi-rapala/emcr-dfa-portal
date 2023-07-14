@@ -1,0 +1,617 @@
+<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+  <mat-card-content>
+
+    <form [formGroup]="occupantsForm">
+
+      <p class="sub-heading" style="font-size: 20px">Occupants, Applicants and Contacts</p>
+      <br />
+
+      <div formGroupName="fullTimeOccupant">
+        <ng-container>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="sub-heading">
+                <b>Full-time Occupants<span style="color:red" >*</span></b>
+              </p>
+              <p class="sub-heading" style="font-size: 15px">
+                Add the name of all full-time occupants who lived in your home at the time of the event. Don't include tenants. If you were the only occupant living at the residence, please fill in your own name.<span style="color:red" >*</span>
+              </p>
+
+              <table mat-table [dataSource]="fullTimeOccupantsDataSource" *ngIf="fullTimeOccupantsDataSource.getValue().length > 0">
+                <!-- Name Column -->
+                <ng-container matColumnDef="name" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Name</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.firstName }}&nbsp; {{element.lastName }}
+                  </td>
+                </ng-container>
+
+                <!-- Relationship Column -->
+                <ng-container matColumnDef="relationship" style="width:40%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Relationship</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.relationship}}
+                  </td>
+                </ng-container>
+
+                <!-- Delete Icon Column -->
+                <ng-container matColumnDef="deleteIcon" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    &nbsp;
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    <button
+                    class="delete-image"
+                    mat-icon-button
+                    aria-label="Remove"
+                    (click)="deleteFullTimeOccupantRow(index)"
+                  >
+                    <img src="/assets/images/delete.svg" height="35" width="35" />
+                    <img
+                      src="/assets/images/delete_onhover.svg"
+                      height="35"
+                      width="35"
+                    />
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="fullTimeOccupantsColumnsToDisplay"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let element; columns: fullTimeOccupantsColumnsToDisplay"
+                  class="example-element-row"
+                ></tr>
+
+              </table>
+
+              <div  *ngIf="fullTimeOccupantsDataSource.getValue().length > 0">
+                <br /><br/>
+              </div>
+
+              <div *ngIf="occupantsForm.get('fullTimeOccupants').invalid && occupantsForm.get('fullTimeOccupants').hasError('required')">
+                <span style="color:red">At least one full time occupant is required.</span>
+              </div>
+
+              <button
+                *ngIf="!showFullTimeOccupantForm"
+                class="family-button"
+                mat-button
+                type="button"
+                (click)="addFullTimeOccupant()"
+              >
+                + Add full-time occupant
+              </button>
+
+              <mat-card *ngIf="showFullTimeOccupantForm">
+                <p class="sub-heading" style="font-size: 15px">
+                  New full time occupant
+                </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Full-time occupant first name</mat-label>
+                      <input formControlName="firstName" matInput placeholder="Full-time occupant first name" required/>
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
+                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                        "
+                      >
+                        First Name is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Full-time occupant last name</mat-label>
+                      <input formControlName="lastName" matInput placeholder="Full-time occupant last name" required/>
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('fullTimeOccupant').controls.lastName.invalid &&
+                          occupantsForm.get('fullTimeOccupant').controls.lastName.hasError('required') &&
+                          occupantsForm.get('fullTimeOccupant').controls.lastName.touched
+                        "
+                      >
+                        Last Name is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Relationship to Applicant</mat-label>
+                      <input formControlName="relationship" matInput placeholder="Relationship to Applicant" required />
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
+                          occupantsForm.get('fullTimeOccupant').controls.relationship.touched
+                        "
+                      >
+                      Relationship is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <button type="button" (click)="showFullTimeOccupantsForm()">Show Form</button> -->
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelFullTimeOccupants()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    <button
+                      class="family-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveFullTimeOccupants()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+            </div>
+
+          </div>
+
+        </ng-container>
+
+      </div><br/><br/>
+
+      <div formGroupName="secondaryApplicant">
+        <ng-container>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="sub-heading">
+                <b>Secondary Applicant</b>
+              </p>
+              <p class="sub-heading" style="font-size: 15px">
+                Do you want to provide the name and contact information for a secondary applicant that may speak with EMCR about the application? If yes, please add them.
+              </p>
+
+              <table mat-table [dataSource]="secondaryApplicantsDataSource" *ngIf="secondaryApplicantsDataSource.getValue().length > 0">
+                <!-- Applicant Type Column -->
+                <ng-container matColumnDef="applicantType" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Type</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.secondaryApplicantType }}
+                  </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Name</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.firstName }}&nbsp; {{element.lastName }}
+                  </td>
+                </ng-container>
+
+                <!-- Phone Column -->
+                <ng-container matColumnDef="phoneNumber" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Phone</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.phoneNumber | phoneFormat }}
+                  </td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Email</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.email}}
+                  </td>
+                </ng-container>
+
+                <!-- Delete Icon Column -->
+                <ng-container matColumnDef="deleteIcon" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    &nbsp;
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    <button
+                    class="delete-image"
+                    mat-icon-button
+                    aria-label="Remove"
+                    (click)="deleteSecondaryApplicantRow(index)"
+                  >
+                    <img src="/assets/images/delete.svg" height="35" width="35" />
+                    <img
+                      src="/assets/images/delete_onhover.svg"
+                      height="35"
+                      width="35"
+                    />
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="secondaryApplicantsColumnsToDisplay"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let element; columns: secondaryApplicantsColumnsToDisplay"
+                  class="example-element-row"
+                ></tr>
+
+              </table>
+
+              <div  *ngIf="secondaryApplicantsDataSource.getValue().length > 0">
+                <br /><br/>
+              </div>
+
+              <button
+                *ngIf="!showSecondaryApplicantForm"
+                class="family-button"
+                mat-button
+                type="button"
+                (click)="addSecondaryApplicant()"
+              >
+                + Add secondary applicant
+              </button>
+
+              <mat-card *ngIf="showSecondaryApplicantForm">
+                <p class="sub-heading" style="font-size: 15px">
+                  New secondary applicant
+                </p>
+                <div class="row">
+                  <div class="col-md-2">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Applicant type</mat-label>
+                      <mat-select formControlName="secondaryApplicantType" required>
+                        <mat-option [value]="selectApplicantTypeOptions.Contact">{{ selectApplicantTypeOptions.Contact }}</mat-option>
+                        <mat-option [value]="selectApplicantTypeOptions.Organization">{{ selectApplicantTypeOptions.Organization }}</mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.secondaryApplicantType.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.secondaryApplicantType.hasError('required') &&
+                          occupantsForm.get('secondaryApplicant').controls.secondaryApplicantType.touched
+                        "
+                      >
+                        Applicant type is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-form-field appearance="outline">
+                      <mat-label>First name</mat-label>
+                      <input formControlName="firstName" matInput placeholder="First name" required/>
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.firstName.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.firstName.hasError('required') &&
+                          occupantsForm.get('secondaryApplicant').controls.firstName.touched
+                        "
+                      >
+                        First Name is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Last name</mat-label>
+                      <input formControlName="lastName" matInput placeholder="Last name" required/>
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.lastName.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.lastName.hasError('required') &&
+                          occupantsForm.get('secondaryApplicant').controls.lastName.touched
+                        "
+                      >
+                        Last Name is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Applicant phone</mat-label>
+                      <input formControlName="phoneNumber"
+                        matInput required
+                        placeholder="Applicant phone"
+                        [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.hasError('incorrectLength')
+                        "
+                      >
+                        Telephone number must have 10 digits</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.hasError('required') &&
+                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.touched
+                        "
+                      >
+                        Telephone number is required</mat-error
+                    >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Applicant contact email</mat-label>
+                      <input formControlName="email" matInput placeholder="Applicant contact email" required/>
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.email.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.email.hasError('email')
+                        "
+                        >
+                        Invalid email address</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('secondaryApplicant').controls.email.invalid &&
+                          occupantsForm.get('secondaryApplicant').controls.email.hasError('required') &&
+                          occupantsForm.get('secondaryApplicant').controls.email.touched
+                        "
+                        >
+                        Email address is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelSecondaryApplicants()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    <button
+                      class="family-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveSecondaryApplicants()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+            </div>
+          </div>
+        </ng-container>
+      </div><br/><br/>
+
+      <div formGroupName="otherContact">
+        <ng-container>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="sub-heading">
+                <b>Other Contact<span style="color:red" >*</span></b>
+              </p>
+              <p class="sub-heading" style="font-size: 15px">
+                You must provide the name of one other contact person in case the DFA can't reach you. The Ministry of Emergency Management (EMCR) can't and won't speak with the contact
+                about your application. If you don't have an alternate contact, add your own name and contact details.
+              </p>
+
+              <table mat-table [dataSource]="otherContactsDataSource" *ngIf="otherContactsDataSource.getValue().length > 0">
+                <!-- Name Column -->
+                <ng-container matColumnDef="name" style="width:26%">
+                  <th mat-header-cell *matHeaderCellDef >
+                    <b>Name</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.firstName }}&nbsp; {{element.lastName }}
+                  </td>
+                </ng-container>
+
+                <!-- Phone Column -->
+                <ng-container matColumnDef="phoneNumber" style="width:27%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Phone</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.phoneNumber | phoneFormat }}
+                  </td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email" style="width:27%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Email</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.email}}
+                  </td>
+                </ng-container>
+
+                <!-- Delete Icon Column -->
+                <ng-container matColumnDef="deleteIcon" style="width:20%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    &nbsp;
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    <button
+                    class="delete-image"
+                    mat-icon-button
+                    aria-label="Remove"
+                    (click)="deleteOtherContactRow(index)"
+                  >
+                    <img src="/assets/images/delete.svg" height="35" width="35" />
+                    <img
+                      src="/assets/images/delete_onhover.svg"
+                      height="35"
+                      width="35"
+                    />
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="otherContactsColumnsToDisplay"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let element; columns: otherContactsColumnsToDisplay"
+                  class="example-element-row"
+                ></tr>
+
+              </table>
+
+              <div  *ngIf="otherContactsDataSource.getValue().length > 0">
+                <br /><br/>
+              </div>
+
+              <div *ngIf="occupantsForm.get('otherContacts').invalid && occupantsForm.get('otherContacts').hasError('required')">
+                <span style="color:red">At least one other contact is required.</span>
+              </div>
+
+              <button
+                *ngIf="!showOtherContactForm"
+                class="family-button"
+                mat-button
+                type="button"
+                (click)="addOtherContact()"
+              >
+                + Add other contact
+              </button>
+
+              <mat-card *ngIf="showOtherContactForm">
+                <p class="sub-heading" style="font-size: 15px">
+                  New other contact
+                </p>
+                <div class="row">
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Contact first name</mat-label>
+                      <input formControlName="firstName" matInput placeholder="Contact first name" required/>
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('otherContact').controls.firstName.invalid &&
+                          occupantsForm.get('otherContact').controls.firstName.hasError('required') &&
+                          occupantsForm.get('otherContact').controls.firstName.touched
+                        "
+                      >
+                        First Name is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Contact last name</mat-label>
+                      <input formControlName="lastName" matInput placeholder="Contact last name" required/>
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('otherContact').controls.lastName.invalid &&
+                          occupantsForm.get('otherContact').controls.lastName.hasError('required') &&
+                          occupantsForm.get('otherContact').controls.lastName.touched
+                        "
+                      >
+                        Last Name is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Contact phone</mat-label>
+                      <input formControlName="phoneNumber"
+                        matInput
+                        required
+                        placeholder="Contact phone"
+                        [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                        <mat-error
+                        *ngIf="
+                          occupantsForm.get('otherContact').controls.phoneNumber.invalid &&
+                          occupantsForm.get('otherContact').controls.phoneNumber.hasError('required') &&
+                          occupantsForm.get('otherContact').controls.phoneNumber.touched
+                        "
+                      >
+                       Telephone number is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('otherContact').controls.phoneNumber.invalid &&
+                          occupantsForm.get('otherContact').controls.phoneNumber.hasError('incorrectLength')
+                        "
+                      >
+                        Telephone number must have 10 digits</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Contact email</mat-label>
+                      <input formControlName="email" required matInput placeholder="Contact email" />
+                      <mat-error
+                        *ngIf="
+                          occupantsForm.get('otherContact').controls.email.invalid &&
+                          occupantsForm.get('otherContact').controls.email.hasError('required') &&
+                          occupantsForm.get('otherContact').controls.email.touched
+                        "
+                      >
+                        Email is required</mat-error
+                      >
+                      <mat-error
+                      *ngIf="
+                        occupantsForm.get('otherContact').controls.email.invalid
+                      "
+                    >
+                      Invalid email address</mat-error
+                    >
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <button type="button" (click)="showOtherContactsForm()">Show Form</button> -->
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelOtherContact()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    <button
+                      class="family-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveOtherContact()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+    </form>
+
+  </mat-card-content>
+</mat-card>

@@ -15,8 +15,12 @@ export class NextstepsprofileComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  navigateToDFAapplication(): void {
-    this.router.navigate(['/dfa-application']);
+  navigateToDFAApplicationStart(): void {
+    this.router.navigate(['/dfa-application-start']);
+  }
+
+  navigateToDashboard(): void {
+    this.router.navigate(['/dfa-dashboard']);
   }
 
 }

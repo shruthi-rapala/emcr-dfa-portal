@@ -145,36 +145,6 @@ export class EditService {
         }
         break;
       case 'security-questions':
-        if (this.profileDataService.securityQuestions !== undefined) {
-          form
-            .get('questions.question1')
-            .patchValue(
-              this.profileDataService?.securityQuestions[0]?.question
-            );
-          form
-            .get('questions.answer1')
-            .patchValue(this.profileDataService?.securityQuestions[0]?.answer);
-
-          form
-            .get('questions.question2')
-            .patchValue(
-              this.profileDataService?.securityQuestions[1]?.question
-            );
-          form
-            .get('questions.answer2')
-            .patchValue(this.profileDataService?.securityQuestions[1]?.answer);
-
-          form
-            .get('questions.question3')
-            .patchValue(
-              this.profileDataService?.securityQuestions[2]?.question
-            );
-          form
-            .get('questions.answer3')
-            .patchValue(this.profileDataService?.securityQuestions[2]?.answer);
-        } else {
-          form.reset();
-        }
         break;
       case 'evac-address':
         if (
@@ -320,6 +290,5 @@ export class EditService {
       });
     }
 
-    this.profileDataService.securityQuestions = questionSet;
   }
 }
