@@ -36,9 +36,9 @@
         public int dfa_applicanttype { get; set; } // required (already existing)
         public int dfa_insurancetype { get; set; } // represents new field with new option set Dynamics Type New OptionSet (Yes, No, Yes But)
         public string dfa_appcontactid { get; set; } // string passed in to PROC, PROC looks up appcontact to fill in application fields
-        public int? dfa_primaryapplicationsignednoins { get; set; } // new field Dynamics Type OptionSet with existing Yes or No option set
+        public int? dfa_primaryapplicantsignednoins { get; set; } // new field Dynamics Type OptionSet with existing Yes or No option set
         public string? dfa_primaryapplicantprintnamenoins { get; set; } // new field string Dynamics type string
-        public string? dfa_primaryapplicationsigneddatenoins { get; set; } // new field string Dynamics Type Date and Time (Date Only)
+        public string? dfa_primaryapplicantsigneddatenoins { get; set; } // new field string Dynamics Type Date and Time (Date Only)
         // public byte[]? entityimagenoins { get; set; } // new field Dynamics Type Image
         public int? dfa_secondaryapplicantsignednoins { get; set; } // new field existing Dynamics Type OptionSet existing Yes or No option set
         public string? dfa_secondaryapplicantprintnamenoins { get; set; } // new field Dynamics Type string
