@@ -46,7 +46,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   showDamagePhotoForm: boolean = false;
   damagePhotoColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
   damagePhotosDataSource = new BehaviorSubject([]);
-  damagePhotota = [];
+  damagePhotosData = [];
   damagePhotoEditIndex: number;
   damagePhotoRowEdit = false;
   damagePhotoEditFlag = false;

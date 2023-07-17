@@ -32,24 +32,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   formBuilder: UntypedFormBuilder;
   supportingDocumentsForm$: Subscription;
   formCreationService: FormCreationService;
-  RoomTypes = RoomType;
-  showOtherRoomType: boolean = false;
-  showGarageHint: boolean = false;
-  showDamagedRoomForm: boolean = false;
-  damagedRoomColumnsToDisplay = ['roomType', 'description', 'icons'];
-  damagedRoomsDataSource = new BehaviorSubject([]);
-  damagedRoomsData = [];
-  remainingLength: number = 2000;
-  damagedRoomEditIndex: number;
-  damagedRoomRowEdit = false;
-  damagedRoomEditFlag = false;
-  showFileAttachmentForm: boolean = false;
-  fileAttachmentColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
-  fileAttachmentsDataSource = new BehaviorSubject([]);
-  fileAttachmentsData = [];
-  fileAttachmentEditIndex: number;
-  fileAttachmentRowEdit = false;
-  fileAttachmentEditFlag = false;
+  showSupportingDocumentForm: boolean = false;
+  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
+  supportingDocumentsDataSource = new BehaviorSubject([]);
+  supportingDocumentsData = [];
+  supportingDocumentEditIndex: number;
+  supportingDocumentRowEdit = false;
+  supportingDocumentEditFlag = false;
   FileCategories = FileCategory;
 
   constructor(
@@ -68,101 +57,14 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         this.supportingDocumentsForm = supportingDocuments;
       });
 
-
     this.supportingDocumentsForm
-    .get('damagedRoom.roomType')
-    .valueChanges.pipe(distinctUntilChanged())
-    .subscribe((value) => {
-      if (value === '') {
-        this.supportingDocumentsForm.get('damagedRoom.roomType').reset();
-      }
-      if (value === RoomType.Other) {
-        this.showOtherRoomType = true;
-        this.showGarageHint = false;
-      } else if (value === RoomType.Garage) {
-        this.showGarageHint = true;
-        this.showOtherRoomType = false;
-      } else {
-        this.showGarageHint = false;
-        this.showOtherRoomType = false;
-      }
-    });
-
-    this.supportingDocumentsForm
-      .get('addNewDamagedRoomIndicator')
-      .valueChanges.subscribe((value) => this.updateDamagedRoomOnVisibility());
-    this.supportingDocumentsForm.get('damagedRoom.otherRoomType').setValidators(null);
-    this.damagedRoomsDataSource.next(
-        this.supportingDocumentsForm.get('damagedRooms').value
+      .get('addNewSupportingDocumentIndicator')
+      .valueChanges.subscribe((value) => this.updateSupportingDocumentOnVisibility());
+    this.supportingDocumentsDataSource.next(
+        this.supportingDocumentsForm.get('supportingDocuments').value
       );
-    this.damagedRoomsData = this.supportingDocumentsForm.get('damagedRooms').value;
+    this.supportingDocumentsData = this.supportingDocumentsForm.get('supportingDocuments').value;
 
-    this.supportingDocumentsForm
-      .get('addNewFileAttachmentIndicator')
-      .valueChanges.subscribe((value) => this.updateFileAttachmentOnVisibility());
-    this.fileAttachmentsDataSource.next(
-        this.supportingDocumentsForm.get('fileAttachments').value
-      );
-    this.fileAttachmentsData = this.supportingDocumentsForm.get('fileAttachments').value;
-
-  }
-
-  calcRemainingChars() {
-    this.remainingLength = 2000 - this.supportingDocumentsForm.get('description').value?.length;
-  }
-
-  addDamagedRoom(): void {
-    this.supportingDocumentsForm.get('damagedRoom').reset();
-    this.supportingDocumentsForm.get('damagedRoom.otherRoomType').setValidators(null);
-    this.supportingDocumentsForm.get('addNewDamagedRoomIndicator').setValue(true);
-    this.showOtherRoomType = false;
-    this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
-    this.showDamagedRoomForm = !this.showDamagedRoomForm;
-  }
-
-  saveDamagedRooms(): void {
-    if (this.supportingDocumentsForm.get('damagedRoom').status === 'VALID') {
-      if (this.damagedRoomEditIndex !== undefined && this.damagedRoomRowEdit) {
-        this.damagedRoomsData[this.damagedRoomEditIndex] =
-          this.supportingDocumentsForm.get('damagedRoom').value;
-        this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
-        this.damagedRoomEditIndex = undefined;
-      } else {
-        this.damagedRoomsData.push(this.supportingDocumentsForm.get('damagedRoom').value);
-      }
-      this.damagedRoomsDataSource.next(this.damagedRoomsData);
-      this.supportingDocumentsForm.get('damagedRooms').setValue(this.damagedRoomsData);
-      this.showDamagedRoomForm = !this.showDamagedRoomForm;
-      this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
-    } else {
-      this.supportingDocumentsForm.get('damagedRoom').markAllAsTouched();
-    }
-  }
-
-  cancelDamagedRooms(): void {
-    this.showDamagedRoomForm = !this.showDamagedRoomForm;
-    this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
-    this.supportingDocumentsForm.get('addNewDamagedRoomIndicator').setValue(false);
-  }
-
-  deleteDamagedRoomRow(index: number): void {
-    this.damagedRoomsData.splice(index, 1);
-    this.damagedRoomsDataSource.next(this.damagedRoomsData);
-    this.supportingDocumentsForm.get('damagedRooms').setValue(this.damagedRoomsData);
-    if (this.damagedRoomsData.length === 0) {
-      this.supportingDocumentsForm
-        .get('addNewDamagedRoomIndicator')
-        .setValue(false);
-    }
-  }
-
-   editDamagedRoomRow(element, index): void {
-    this.damagedRoomEditIndex = index;
-    this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
-    this.supportingDocumentsForm.get('damagedRoom').setValue(element);
-    this.showDamagedRoomForm = !this.showDamagedRoomForm;
-    this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
-    this.supportingDocumentsForm.get('addNewDamagedRoomIndicator').setValue(true);
   }
 
   // Preserve original property order
@@ -170,98 +72,78 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     return 0;
   }
 
-  onSelectRoomType(roomType: RoomType) {
-    if (roomType === this.RoomTypes.Other) {
-      this.supportingDocumentsForm.get('damagedRoom.otherRoomType').setValidators([Validators.required]);
-    } else {
-      this.supportingDocumentsForm.get('damagedRoom.otherRoomType').setValidators(null);
-    }
+  addSupportingDocument(): void {
+    this.supportingDocumentsForm.get('supportingDocument').reset();
+    this.supportingDocumentsForm.get('supportingDocument.modifiedBy').setValue("Applicant");
+    this.supportingDocumentsForm.get('supportingDocument.fileType').setValue(this.FileCategories.DamagePhoto); /// TODO prompt for type
+    this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
+    this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
+    this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(true);
   }
 
-  addFileAttachment(): void {
-    this.supportingDocumentsForm.get('fileAttachment').reset();
-    this.supportingDocumentsForm.get('fileAttachment.modifiedBy').setValue("Applicant");
-    this.supportingDocumentsForm.get('fileAttachment.fileType').setValue(this.FileCategories.DamagePhoto);
-    this.showFileAttachmentForm = !this.showFileAttachmentForm;
-    this.fileAttachmentEditFlag = !this.fileAttachmentEditFlag;
-    this.supportingDocumentsForm.get('addNewFileAttachmentIndicator').setValue(true);
-  }
-
-  saveFileAttachments(): void {
-    if (this.supportingDocumentsForm.get('fileAttachment').status === 'VALID') {
-      if (this.fileAttachmentEditIndex !== undefined && this.fileAttachmentRowEdit) {
-        this.fileAttachmentsData[this.fileAttachmentEditIndex] =
-          this.supportingDocumentsForm.get('fileAttachment').getRawValue();
-        this.fileAttachmentRowEdit = !this.fileAttachmentRowEdit;
-        this.fileAttachmentEditIndex = undefined;
+  saveSupportingDocuments(): void {
+    if (this.supportingDocumentsForm.get('supportingDocument').status === 'VALID') {
+      if (this.supportingDocumentEditIndex !== undefined && this.supportingDocumentRowEdit) {
+        this.supportingDocumentsData[this.supportingDocumentEditIndex] =
+          this.supportingDocumentsForm.get('supportingDocument').getRawValue();
+        this.supportingDocumentRowEdit = !this.supportingDocumentRowEdit;
+        this.supportingDocumentEditIndex = undefined;
       } else {
-        this.fileAttachmentsData.push(this.supportingDocumentsForm.get('fileAttachment').value);
+        this.supportingDocumentsData.push(this.supportingDocumentsForm.get('supportingDocument').value);
       }
-      this.fileAttachmentsDataSource.next(this.fileAttachmentsData);
-      this.supportingDocumentsForm.get('fileAttachments').setValue(this.fileAttachmentsData);
-      this.showFileAttachmentForm = !this.showFileAttachmentForm;
-      this.fileAttachmentEditFlag = !this.fileAttachmentEditFlag;
+      this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
+      this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
+      this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
+      this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
     } else {
-      this.supportingDocumentsForm.get('fileAttachment').markAllAsTouched();
+      this.supportingDocumentsForm.get('supportingDocument').markAllAsTouched();
     }
   }
 
-  cancelFileAttachments(): void {
-    this.showFileAttachmentForm = !this.showFileAttachmentForm;
-    this.fileAttachmentEditFlag = !this.fileAttachmentEditFlag;
-    this.supportingDocumentsForm.get('addNewFileAttachmentIndicator').setValue(false);
+  cancelSupportingDocuments(): void {
+    this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
+    this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
+    this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(false);
   }
 
-  deleteFileAttachmentRow(index: number): void {
-    this.fileAttachmentsData.splice(index, 1);
-    this.fileAttachmentsDataSource.next(this.fileAttachmentsData);
-    this.supportingDocumentsForm.get('fileAttachments').setValue(this.fileAttachmentsData);
-    if (this.fileAttachmentsData.length === 0) {
+  deleteSupportingDocumentRow(index: number): void {
+    this.supportingDocumentsData.splice(index, 1);
+    this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
+    this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
+    if (this.supportingDocumentsData.length === 0) {
       this.supportingDocumentsForm
-        .get('addNewFileAttachmentIndicator')
+        .get('addNewSupportingDocumentIndicator')
         .setValue(false);
     }
   }
 
-   editFileAttachmentRow(element, index): void {
-    this.fileAttachmentEditIndex = index;
-    this.fileAttachmentRowEdit = !this.fileAttachmentRowEdit;
-    this.supportingDocumentsForm.get('fileAttachment').setValue(element);
-    this.showFileAttachmentForm = !this.showFileAttachmentForm;
-    this.fileAttachmentEditFlag = !this.fileAttachmentEditFlag;
-    this.supportingDocumentsForm.get('addNewFileAttachmentIndicator').setValue(true);
+   editSupportingDocumentRow(element, index): void {
+    this.supportingDocumentEditIndex = index;
+    this.supportingDocumentRowEdit = !this.supportingDocumentRowEdit;
+    this.supportingDocumentsForm.get('supportingDocument').setValue(element);
+    this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
+    this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
+    this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(true);
   }
 
-  updateDamagedRoomOnVisibility(): void {
+  updateSupportingDocumentOnVisibility(): void {
     this.supportingDocumentsForm
-      .get('damagedRoom.roomType')
+      .get('supportingDocument.fileName')
       .updateValueAndValidity();
     this.supportingDocumentsForm
-      .get('damagedRoom.otherRoomType')
+      .get('supportingDocument.fileDescription')
       .updateValueAndValidity();
     this.supportingDocumentsForm
-      .get('damagedRoom.description')
-      .updateValueAndValidity();
-  }
-
-  updateFileAttachmentOnVisibility(): void {
-    this.supportingDocumentsForm
-      .get('fileAttachment.fileName')
+      .get('supportingDocument.fileType')
       .updateValueAndValidity();
     this.supportingDocumentsForm
-      .get('fileAttachment.fileDescription')
+      .get('supportingDocument.uploadedDate')
       .updateValueAndValidity();
     this.supportingDocumentsForm
-      .get('fileAttachment.fileType')
+      .get('supportingDocument.modifiedBy')
       .updateValueAndValidity();
     this.supportingDocumentsForm
-      .get('fileAttachment.uploadedDate')
-      .updateValueAndValidity();
-    this.supportingDocumentsForm
-      .get('fileAttachment.modifiedBy')
-      .updateValueAndValidity();
-    this.supportingDocumentsForm
-      .get('fileAttachment.fileData')
+      .get('supportingDocument.fileData')
       .updateValueAndValidity();
   }
 
@@ -289,12 +171,12 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     const reader = new FileReader();
     reader.readAsDataURL(event);
     reader.onload = () => {
-      this.supportingDocumentsForm.get('fileAttachment.fileName').setValue(event.name);
-      this.supportingDocumentsForm.get('fileAttachment.fileDescription').setValue(event.name);
-      this.supportingDocumentsForm.get('fileAttachment.fileData').setValue(reader.result);
-      this.supportingDocumentsForm.get('fileAttachment.contentType').setValue(event.type);
-      this.supportingDocumentsForm.get('fileAttachment.fileSize').setValue(event.size);
-      this.supportingDocumentsForm.get('fileAttachment.uploadedDate').setValue(new Date());
+      this.supportingDocumentsForm.get('supportingDocument.fileName').setValue(event.name);
+      this.supportingDocumentsForm.get('supportingDocument.fileDescription').setValue(event.name);
+      this.supportingDocumentsForm.get('supportingDocument.fileData').setValue(reader.result);
+      this.supportingDocumentsForm.get('supportingDocument.contentType').setValue(event.type);
+      this.supportingDocumentsForm.get('supportingDocument.fileSize').setValue(event.size);
+      this.supportingDocumentsForm.get('supportingDocument.uploadedDate').setValue(new Date());
     };
   }
 }
