@@ -1,14 +1,20 @@
 name: ZAP Scan
 on:
-  schedule:
-    # Scheduled Scanning of Dev
-    - cron:  '5 6 * * *'
+  push:
+    branches:
+      #- master
+      - feature/dfa_cleanup
+
+    paths:
+      - ".github/workflows/zap-scan-config.yml"
+  #schedule:
+  #  # Scheduled Scanning of Dev
+  #  - cron:  '5 6 * * *'
 
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
     name: Scan ZAP website
-    if: github.ref == 'refs/heads/feature/dfa_cleanup'
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.6.1
