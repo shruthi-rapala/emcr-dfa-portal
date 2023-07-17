@@ -16,12 +16,63 @@
               <ul>
                 <li>Insurance template completed by your insurance broker</li>
               </ul>
-              <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
-              <b>Insurance Template<span style="color:red;">*</span></b><br/>
-              Attach the insurance template completed by your insurance broker.<br/>
-              <a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf">Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a><br/><br/>
             </div>
           </div>
+          <mat-card>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
+                <b>Insurance Template<span style="color:red;">*</span></b><br/>
+                Attach the insurance template completed by your insurance broker.<br/>
+                <a target="_blank" href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf">Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a><br/><br/>                <app-file-upload
+                  [noOfAttachments]="1"
+                  (attachedFile)="setInsuranceTemplateFileFormControl($event)"
+                >
+                </app-file-upload>
+              </div>
+              <div class="col-md-6">
+                <br/><br/>
+                <div [hidden]="!supportingDocumentsForm.get('insuranceTemplate.fileData').value">
+                  <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
+                  <br/>
+                  {{ supportingDocumentsForm.get('insuranceTemplate.fileName').value }}
+                  <br/><br/>
+                </div>
+                <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingDocumentsForm.get('insuranceTemplate.fileData').value"
+                  >You may update the file description to something more descriptive:</label
+                >
+                <mat-form-field appearance="outline" [hidden]="!supportingDocumentsForm.get('insuranceTemplate.fileData').value">
+                  <mat-label>File description</mat-label>
+                  <input formControlName="fileDescription" matInput placeholder="File description" required/>
+                  <mat-error
+                    *ngIf="
+                      supportingDocumentsForm.get('insuranceTemplate.fileDescription').invalid &&
+                      supportingDocumentsForm.get('insuranceTemplate.fileDescription').hasError('required') &&
+                      supportingDocumentsForm.get('insuranceTemplate.fileDescription').touched
+                    "
+                  >
+                    File description is required</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+
+            <br/><br/>
+            <div class="row">
+              <div class="col-md-6">
+                <button
+                  class="family-button details-button save-button"
+                  mat-button
+                  type="button"
+                  (click)="saveInsuranceTemplate()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+
+          </mat-card>
+
         </ng-container>
       </div>
 
@@ -31,6 +82,102 @@
             <div class="col-md-12">
               <p class="sub-heading" style="font-size: 15px">Other Supporting Documents (Optional)</p>
               If applicable, you may include additional documents related to your application.<br/>
+              <button
+                *ngIf="!showSupportingDocumentForm"
+                class="family-button"
+                mat-button
+                type="button"
+                (click)="addSupportingDocument()"
+              >
+                + Add Supporting Documents
+              </button>
+
+              <mat-card *ngIf="showSupportingDocumentForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="sub-heading" style="font-size: 15px"
+                    >Attach a supporting document</label
+                  >
+                    <app-file-upload
+                      [noOfAttachments]="1"
+                      (attachedFile)="setFileFormControl($event)"
+                    >
+                    </app-file-upload>
+                  </div>
+                  <div class="col-md-6">
+                    <br/><br/>
+                    <div [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
+                      <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
+                      <br/>
+                      {{ supportingDocumentsForm.get('supportingDocument.fileName').value }}
+                      <br/><br/>
+                    </div>
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value"
+                      >You may update the file description to something more descriptive:</label
+                    >
+                    <mat-form-field appearance="outline" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
+                      <mat-label>File description</mat-label>
+                      <input formControlName="fileDescription" matInput placeholder="File description" required/>
+                      <mat-error
+                        *ngIf="
+                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.invalid &&
+                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.hasError('required') &&
+                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.touched
+                        "
+                      >
+                        File description is required</mat-error
+                      >
+                    </mat-form-field>
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">Category: please select a category that describes the file you are attaching to your application.</label>
+                    <mat-form-field appearance="outline" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
+                      <mat-label>File category</mat-label>
+                      <mat-select formControlName="fileType" matInput placeholder="File category" required>
+                        <mat-option *ngFor="let option of FileCategories | keyvalue: originalOrder" [value]="option.key">{{ option.value }}</mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="
+                          supportingDocumentsForm.get('supportingDocument').controls.fileType.invalid &&
+                          supportingDocumentsForm.get('supportingDocument').controls.fileType.hasError('required') &&
+                          supportingDocumentsForm.get('supportingDocument').controls.fileType.touched
+                        "
+                      >
+                        Category is required</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <br/><br/>
+                <div class="row">
+                  <div class="col-md-6">
+                    <button
+                      class="button-s details-button"
+                      mat-button
+                      type="button"
+                      (click)="cancelSupportingDocuments()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="family-button details-button save-button"
+                      mat-button
+                      type="button"
+                      (click)="saveSupportingDocuments()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+
+              </mat-card>
+
+              <div  *ngIf="supportingDocumentsDataSource.getValue().length > 0">
+                <br /><br/>
+                <p class="sub-heading" style="font-size: 15px">Document Summary</p>
+              </div>
+
               <table mat-table [dataSource]="supportingDocumentsDataSource" *ngIf="supportingDocumentsDataSource.getValue().length > 0" style="width:100%">
                 <!-- File Name Column -->
                 <ng-container matColumnDef="fileName" style="width:25%">
@@ -52,8 +199,18 @@
                   </td>
                 </ng-container>
 
-                <!-- UploadedDate Column -->
-                <ng-container matColumnDef="uploadedDate" style="width:25%">
+                <!-- Category Column -->
+                <ng-container matColumnDef="fileType" style="width:25%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Category</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.fileType }}
+                  </td>
+                </ng-container>
+
+                  <!-- UploadedDate Column -->
+                  <ng-container matColumnDef="uploadedDate" style="width:25%">
                   <th mat-header-cell *matHeaderCellDef>
                     <b>Date Uploaded</b>
                   </th>
@@ -102,85 +259,6 @@
                 ></tr>
 
               </table>
-
-              <div  *ngIf="supportingDocumentsDataSource.getValue().length > 0">
-                <br /><br/>
-              </div>
-
-              <button
-                *ngIf="!showSupportingDocumentForm"
-                class="family-button"
-                mat-button
-                type="button"
-                (click)="addSupportingDocument()"
-              >
-                + Add Photos
-              </button>
-
-              <mat-card *ngIf="showSupportingDocumentForm">
-                <div class="row">
-                  <div class="col-md-6">
-                    <label class="sub-heading" style="font-size: 15px"
-                    >Attach a photo/scanned copy of damaged items</label
-                  >
-                    <app-file-upload
-                      [noOfAttachments]="1"
-                      (attachedFile)="setFileFormControl($event)"
-                    >
-                    </app-file-upload>
-                  </div>
-                  <div class="col-md-6">
-                    <br/><br/>
-                    <div [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
-                      <mat-label>File name<span style="color:red" >*</span></mat-label>
-                      <br/>
-                      {{ supportingDocumentsForm.get('supportingDocument.fileName').value }}
-                      <br/><br/>
-                    </div>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value"
-                      >You may update the file description to something more descriptive:</label
-                    >
-                    <mat-form-field appearance="outline" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
-                      <mat-label>File description</mat-label>
-                      <input formControlName="fileDescription" matInput placeholder="File description" required/>
-                      <mat-error
-                        *ngIf="
-                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.invalid &&
-                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.hasError('required') &&
-                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.touched
-                        "
-                      >
-                        File description is required</mat-error
-                      >
-                    </mat-form-field>
-                  </div>
-                </div>
-
-                <br/><br/>
-                <div class="row">
-                  <div class="col-md-6">
-                    <button
-                      class="button-s details-button"
-                      mat-button
-                      type="button"
-                      (click)="cancelSupportingDocuments()"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <div class="col-md-6">
-                    <button
-                      class="family-button details-button save-button"
-                      mat-button
-                      type="button"
-                      (click)="saveSupportingDocuments()"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-
-              </mat-card>
 
             </div>
           </div>

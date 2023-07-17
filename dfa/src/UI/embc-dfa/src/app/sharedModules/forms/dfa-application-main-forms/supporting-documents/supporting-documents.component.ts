@@ -4,6 +4,7 @@ import {
   UntypedFormGroup,
   AbstractControl,
   Validators,
+  FormsModule,
 } from '@angular/forms';
 import { CommonModule, KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -13,8 +14,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { FileCategory, RoomType } from 'src/app/core/model/dfa-application-main.model';
+import { FileCategory } from 'src/app/core/model/dfa-application-main.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -33,7 +33,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   supportingDocumentsForm$: Subscription;
   formCreationService: FormCreationService;
   showSupportingDocumentForm: boolean = false;
-  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
+  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate', 'icons'];
   supportingDocumentsDataSource = new BehaviorSubject([]);
   supportingDocumentsData = [];
   supportingDocumentEditIndex: number;
@@ -65,6 +65,12 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       );
     this.supportingDocumentsData = this.supportingDocumentsForm.get('supportingDocuments').value;
 
+    // Initialize the inusrance template
+    this.supportingDocumentsForm.get('insuranceTemplate').reset();
+    this.supportingDocumentsForm.get('insuranceTemplate.modifiedBy').setValue("Applicant");
+    this.supportingDocumentsForm.get('insuranceTemplate.fileType').setValue(FileCategory.Insurance);
+    this.supportingDocumentsForm.get('addNewInsurnaceTemplateIndicator').setValue(true);
+
   }
 
   // Preserve original property order
@@ -75,7 +81,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   addSupportingDocument(): void {
     this.supportingDocumentsForm.get('supportingDocument').reset();
     this.supportingDocumentsForm.get('supportingDocument.modifiedBy').setValue("Applicant");
-    this.supportingDocumentsForm.get('supportingDocument.fileType').setValue(this.FileCategories.DamagePhoto); /// TODO prompt for type
     this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
     this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
     this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(true);
@@ -179,11 +184,30 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.supportingDocumentsForm.get('supportingDocument.uploadedDate').setValue(new Date());
     };
   }
+
+  /**
+   * Reads the attachment content and encodes it as base64
+  *
+  * @param event : Attachment drop/browse event
+  */
+  setInsuranceTemplateFileFormControl(event: any) {
+    const reader = new FileReader();
+    reader.readAsDataURL(event);
+    reader.onload = () => {
+      this.supportingDocumentsForm.get('insuranceTemplate.fileName').setValue(event.name);
+      this.supportingDocumentsForm.get('insuranceTemplate.fileDescription').setValue(event.name);
+      this.supportingDocumentsForm.get('insuranceTemplate.fileData').setValue(reader.result);
+      this.supportingDocumentsForm.get('insuranceTemplate.contentType').setValue(event.type);
+      this.supportingDocumentsForm.get('insuranceTemplate.fileSize').setValue(event.size);
+      this.supportingDocumentsForm.get('insuranceTemplate.uploadedDate').setValue(new Date());
+    };
+  }
 }
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     CoreModule,
     MatTableModule,
     MatCardModule,
@@ -191,6 +215,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
+    MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
     DirectivesModule,
