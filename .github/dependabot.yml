@@ -3,14 +3,12 @@ updates:
   # NuGet dependencies
   - package-ecosystem: "nuget"
     directory: "/dfa/src/API"
+    target-branch: "feature/dfa_cleanup"
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "05:00"
+      interval: "daily"
   # npm dependencies - frontend
   - package-ecosystem: "npm"
     directory: "/dfa/src/UI"
+    target-branch: "feature/dfa_cleanup"
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "05:00"
+      interval: "daily"

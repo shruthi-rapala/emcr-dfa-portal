@@ -16,6 +16,7 @@ import { CustomValidationService } from 'src/app/core/services/customValidation.
 import { distinctUntilChanged } from 'rxjs/operators';
 import { SignatureBlock } from 'src/app/core/api/models';
 import { CoreModule } from 'src/app/core/core.module';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 
 @Component({
   selector: 'app-sign-and-submit',
@@ -33,6 +34,7 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -43,6 +45,7 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
       .getSignAndSubmitForm()
       .subscribe((signAndSubmit) => {
         this.signAndSubmitForm = signAndSubmit;
+        if (this.signAndSubmitForm.get('applicantSignature').get('signature').value) this.dfaApplicationMainDataService.isSubmitted = true;
       });
 
     this.signAndSubmitForm

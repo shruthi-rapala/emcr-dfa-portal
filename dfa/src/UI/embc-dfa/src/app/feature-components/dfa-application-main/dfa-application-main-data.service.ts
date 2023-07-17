@@ -17,6 +17,7 @@ export class DFAApplicationMainDataService {
   private ApplicantOptions = ApplicantOption;
   private InsuranceOptions = InsuranceOption;
   private _signAndSubmit: SignAndSubmit;
+  private _isSubmitted: boolean = false;
 
   constructor(
     private cacheService: CacheService,
@@ -30,6 +31,13 @@ export class DFAApplicationMainDataService {
       this._dfaApplicationMain = JSON.parse(this.cacheService.get('dfa-application-main'));
     }
     return this._dfaApplicationMain;
+  }
+
+  public get isSubmitted(): boolean {
+    return this._isSubmitted;
+  }
+  public set isSubmitted(value: boolean) {
+    this._isSubmitted = value;
   }
 
   public get dfaApplicationStart(): DfaApplicationStart {

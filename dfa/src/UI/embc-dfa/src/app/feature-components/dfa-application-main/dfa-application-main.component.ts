@@ -56,7 +56,7 @@ export class DFAApplicationMainComponent
     private formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dfaApplicationMainService: DFAApplicationMainService
   ) {
     const navigation = this.router.getCurrentNavigation();
@@ -259,11 +259,16 @@ export class DFAApplicationMainComponent
       }
   }
 
+  returnToDashboard() {
+    this.router.navigate(['/verified-registration/dashboard']);
+  }
+
   submitFile(): void {
     alert("saved");
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
+    this.dfaApplicationMainDataService.isSubmitted = true;
     // this.dfaStartApplicationService
       // .upsertProfile(this.profileDataService.createProfileDTO())
       // .subscribe({

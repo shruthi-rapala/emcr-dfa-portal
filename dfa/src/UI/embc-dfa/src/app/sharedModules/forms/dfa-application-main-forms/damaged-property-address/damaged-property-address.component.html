@@ -78,7 +78,7 @@
           <div class="col-md-6 bottomspace">
             <mat-form-field appearance="outline">
               <mat-label>Name of First Nations Reserve</mat-label>
-              <input formControlName="firstNationsReserve" matInput placeholder="Name of First Nations Reserve" required/>
+              <input formControlName="firstNationsReserve" matInput placeholder="Name of First Nations Reserve" [required]="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'"/>
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('firstNationsReserve').invalid &&

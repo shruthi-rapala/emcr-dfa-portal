@@ -49,7 +49,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
             catch (System.Exception ex)
             {
-                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+                throw new Exception($"Failed to add contact {ex.Message}", ex);
             }
 
             return string.Empty;
@@ -59,11 +59,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                dynamic result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+                var result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+
+                if (result != null)
+                {
+                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
+                }
             }
             catch (System.Exception ex)
             {
-                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+                throw new Exception($"Failed to add application {ex.Message}", ex);
             }
 
             return string.Empty;
