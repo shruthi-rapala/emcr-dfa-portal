@@ -19,14 +19,17 @@
             </div>
           </div>
           <mat-card>
-            <div class="row">
+            <div class="row" *ngIf="supportingDocumentsForm.hasError('noInsuranceTemplate')">
               <div class="col-md-6">
                 <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
                 <b>Insurance Template<span style="color:red;">*</span></b><br/>
                 Attach the insurance template completed by your insurance broker.<br/>
-                <a target="_blank" href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf">Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a><br/><br/>                <app-file-upload
+                <a target="_blank" href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf">Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a><br/><br/>
+                <app-file-upload
                   [noOfAttachments]="1"
                   (attachedFile)="setInsuranceTemplateFileFormControl($event)"
+                  [allowedFileTypes]="allowedFileTypes"
+                  allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
                 >
                 </app-file-upload>
               </div>
@@ -56,9 +59,12 @@
                 </mat-form-field>
               </div>
             </div>
+            <div class="row" *ngIf="!supportingDocumentsForm.hasError('noInsuranceTemplate')">
+              <p class="sub-heading" style="font-size: 15px">Insurance template has been uploaded and can be found in the list of supporting documents.</p>
+            </div>
 
             <br/><br/>
-            <div class="row">
+            <div class="row" *ngIf="supportingDocumentsForm.hasError('noInsuranceTemplate')">
               <div class="col-md-6">
                 <button
                   class="family-button details-button save-button"
@@ -134,7 +140,7 @@
                       <mat-label>File category</mat-label>
                       <mat-select formControlName="fileType" matInput placeholder="File category" required>
                         <div *ngFor="let option of FileCategories | keyvalue: originalOrder">
-                          <mat-option *ngIf="option.value != FileCategories.Insurance" [value]="option.key">{{ option.value }}</mat-option>
+                          <mat-option *ngIf="option.value !== FileCategories.Insurance && option.value !== FileCategories.Cleanup && option.value !== FileCategories.DamagePhoto" [value]="option.key">{{ option.value }}</mat-option>
                         </div>
                       </mat-select>
                       <mat-error
@@ -231,22 +237,8 @@
                     <button
                       class="delete-image"
                       mat-icon-button
-                      *ngIf="element.fileType !== this.FileCategories.Insurance"
-                      aria-label="Edit"
-                      (click)="editSupportingDocumentRow(element, index)"
-                    >
-                      <img src="/assets/images/edit.svg" height="35" width="35" />
-                      <img
-                        src="/assets/images/edit_onhover.svg"
-                        height="35"
-                        width="35"
-                      />
-                    </button>&nbsp;
-                    <button
-                      class="delete-image"
-                      mat-icon-button
                       aria-label="Remove"
-                      (click)="deleteSupportingDocumentRow(index)"
+                      (click)="deleteDocumentSummaryRow(index)"
                     >
                       <img src="/assets/images/delete.svg" height="35" width="35" />
                       <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>

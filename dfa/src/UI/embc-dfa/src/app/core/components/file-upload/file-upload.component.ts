@@ -11,6 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 export class FileUploadComponent {
   @Output() attachedFile = new EventEmitter<any>();
   @Input() noOfAttachments: number;
+  @Input() allowedFileTypes: string[];
+  @Input() allowedFileExtensionsList: string;
   fileAttachments: string[] = [];
   attachSizeError = false;
 
@@ -31,9 +33,9 @@ export class FileUploadComponent {
     for (const e of event) {
       if (!(e.size > 0)) {
         this.warningDialog(constant.zeroFileMessage);
-      } else if (!(e.size < 50*1048576)) {
+      } else if (!(e.size < 5242880)) {
         this.warningDialog(constant.fileTooLargeMessage);
-      } else if (!constant.allowedFileTypes.includes(e.type)) {
+      } else if (!this.allowedFileTypes.includes(e.type)) {
         this.warningDialog(constant.fileTypeMessage);
       } else if (!constant.fileNameFormat.test(e.name)) {
         this.warningDialog(constant.invalidFileNameMessage);

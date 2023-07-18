@@ -14,13 +14,15 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { FileCategory, RoomType } from 'src/app/core/model/dfa-application-main.model';
+import { FileCategory, FileUpload, RoomType } from 'src/app/core/model/dfa-application-main.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from 'src/app/core/core.module';
+import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
+import * as constant from 'src/app/core/services/globalConstants'; // referenced in html
 
 @Component({
   selector: 'app-damaged-items-by-room',
@@ -46,7 +48,14 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   showDamagePhotoForm: boolean = false;
   damagePhotoColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
   damagePhotosDataSource = new BehaviorSubject([]);
-  damagePhotosData = [];
+  damagePhotosData = [] as FileUpload[];
+  allowedFileTypes = [
+    'application/pdf',
+    'image/jpg',
+    'image/jpeg',
+    'image/png'
+  ];
+
   damagePhotoEditIndex: number;
   damagePhotoRowEdit = false;
   damagePhotoEditFlag = false;
@@ -55,7 +64,8 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    private dfaApplicationMainService: DFAApplicationMainService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -68,6 +78,10 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
         this.damagedItemsByRoomForm = damagedItemsByRoom;
       });
 
+    this.dfaApplicationMainService.deleteDamagePhoto.subscribe((damagePhotoToDelete)=> {
+      let index = this.damagePhotosData.indexOf(damagePhotoToDelete);
+      this.deleteDamagePhotoRow(index);
+    })
 
     this.damagedItemsByRoomForm
     .get('damagedRoom.roomType')

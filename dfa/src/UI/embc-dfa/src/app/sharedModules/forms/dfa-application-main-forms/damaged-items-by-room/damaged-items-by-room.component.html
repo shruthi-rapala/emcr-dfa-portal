@@ -286,6 +286,8 @@
                     <app-file-upload
                       [noOfAttachments]="1"
                       (attachedFile)="setFileFormControl($event)"
+                      [allowedFileTypes]="allowedFileTypes"
+                      allowedFileExtensionsList="pdf, jpg, jpeg, png"
                     >
                     </app-file-upload>
                   </div>
