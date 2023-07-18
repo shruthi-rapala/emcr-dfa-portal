@@ -69,7 +69,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             catch (System.Exception ex)
             {
                 throw new Exception($"Failed to add application {ex.Message}", ex);
-                //return "newappid";
             }
 
             return string.Empty;
