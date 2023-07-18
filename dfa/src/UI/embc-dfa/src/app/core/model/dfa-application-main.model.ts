@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { RegAddress, Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock } from '../components/signature/signature.component';
+import { SignatureBlock } from 'src/app/core/api/models';
 
 export interface DamagedPropertyAddress extends RegAddress {
   occupyAsPrimaryResidence: boolean;

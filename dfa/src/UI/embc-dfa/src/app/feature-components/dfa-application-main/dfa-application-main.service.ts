@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FullTimeOccupant, DFAApplicationMain, OtherContact, SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
-// import { DFAApplicationStartService as Service } from '../../core/api/services/dfa-application-start.service';
 import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 

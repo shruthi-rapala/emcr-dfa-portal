@@ -6,11 +6,9 @@ import {
   CaptchaResponse,
   CaptchaResponseType
 } from 'src/app/core/components/captcha-v2/captcha-v2.component';
-import { ConfigService } from 'src/app/core/services/config.service';
-import { MatTableModule } from '@angular/material/table';
-import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
+import { ApplicantOption } from 'src/app/core/api/models';
 import { MatTableDataSource } from '@angular/material/table';
-import { FullTimeOccupant, RoomType } from 'src/app/core/model/dfa-application-main.model';
+import { RoomType } from 'src/app/core/model/dfa-application-main.model';
 
 @Component({
   selector: 'app-review',

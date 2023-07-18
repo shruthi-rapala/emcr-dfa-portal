@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { switchMap, takeUntil, pairwise } from 'rxjs/operators'
+import { SignatureBlock } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-signature',
@@ -155,9 +156,3 @@ export class SignatureComponent implements AfterViewInit {
 }
 
 new SignatureComponent();
-
-export interface SignatureBlock {
-  dateSigned: Date,
-  signedName: string,
-  signature: string
-}

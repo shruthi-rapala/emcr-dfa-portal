@@ -105,6 +105,8 @@ export const supportCategoryListError =
   'Unable to retrieve support categories at this time. Please try again later';
 export const supportStatusListError =
   'Unable to retrieve support status at this time. Please try again later';
+  export const saveApplicationError =
+  'Unable to save application at this time. Please try again later';
 
 export const zeroFileMessage = 'Attachment file size must be greater than 0Kb';
 export const fileTooLargeMessage = 'Attachment file size must not be more than 50Mb';
