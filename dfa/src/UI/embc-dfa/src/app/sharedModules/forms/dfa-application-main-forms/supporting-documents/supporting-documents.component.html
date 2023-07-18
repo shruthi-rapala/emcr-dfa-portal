@@ -77,6 +77,7 @@
       </div>
 
       <div formGroupName="supportingDocument">
+        <br/><br/>
         <ng-container>
           <div clas="row">
             <div class="col-md-12">
@@ -132,7 +133,9 @@
                     <mat-form-field appearance="outline" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
                       <mat-label>File category</mat-label>
                       <mat-select formControlName="fileType" matInput placeholder="File category" required>
-                        <mat-option *ngFor="let option of FileCategories | keyvalue: originalOrder" [value]="option.key">{{ option.value }}</mat-option>
+                        <div *ngFor="let option of FileCategories | keyvalue: originalOrder">
+                          <mat-option *ngIf="option.value != FileCategories.Insurance" [value]="option.key">{{ option.value }}</mat-option>
+                        </div>
                       </mat-select>
                       <mat-error
                         *ngIf="
@@ -173,12 +176,12 @@
 
               </mat-card>
 
-              <div  *ngIf="supportingDocumentsDataSource.getValue().length > 0">
+              <div *ngIf="documentSummaryDataSource.getValue().length > 0">
                 <br /><br/>
                 <p class="sub-heading" style="font-size: 15px">Document Summary</p>
               </div>
 
-              <table mat-table [dataSource]="supportingDocumentsDataSource" *ngIf="supportingDocumentsDataSource.getValue().length > 0" style="width:100%">
+              <table mat-table [dataSource]="documentSummaryDataSource" *ngIf="documentSummaryDataSource.getValue().length > 0" style="width:100%">
                 <!-- File Name Column -->
                 <ng-container matColumnDef="fileName" style="width:25%">
                   <th mat-header-cell *matHeaderCellDef >
@@ -228,6 +231,7 @@
                     <button
                       class="delete-image"
                       mat-icon-button
+                      *ngIf="element.fileType !== this.FileCategories.Insurance"
                       aria-label="Edit"
                       (click)="editSupportingDocumentRow(element, index)"
                     >
@@ -250,15 +254,19 @@
                   </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="supportingDocumentColumnsToDisplay"></tr>
+                <tr mat-header-row *matHeaderRowDef="documentSummaryColumnsToDisplay"></tr>
                 <tr
                   mat-row
-                  *matRowDef="let element; columns: supportingDocumentColumnsToDisplay"
+                  *matRowDef="let element; columns: documentSummaryColumnsToDisplay"
                   class="example-element-row"
                   [style.height]="'auto'"
                 ></tr>
 
               </table>
+
+              <mat-error *ngIf="supportingDocumentsForm.hasError('noInsuranceTemplate')">
+                <br/>Insurance template is required.
+              </mat-error>
 
             </div>
           </div>

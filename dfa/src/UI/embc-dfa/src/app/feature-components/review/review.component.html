@@ -1636,7 +1636,7 @@
         </div>
         <hr />
         <div class="row info-detail" *ngIf="(formCreationService.supportingDocumentsForm$ | async)?.value?.supportingDocuments?.length > 0">
-          <b>Supporting Documents</b>
+          <b>Supporting Documents & Insurance Template</b>
           <table mat-table [dataSource]="supportingDocumentDataSource">
              <!-- File Name Column -->
              <ng-container matColumnDef="fileName" style="width:25%">
@@ -1655,6 +1655,16 @@
               </th>
               <td *matCellDef="let element" mat-cell>
                 {{ element.fileDescription}}
+              </td>
+            </ng-container>
+
+            <!-- Type Column -->
+            <ng-container matColumnDef="fileType" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>File Type</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.fileType}}
               </td>
             </ng-container>
 
@@ -1678,6 +1688,9 @@
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.supportingDocumentsForm$ | async)?.value?.supportingDocuments?.length == 0">
           <span>No supporting documents.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.supportingDocumentsForm$ | async)?.hasError('noInsuranceTemplate')">
+          <span style="color:red">Insurance template is required.</span>
         </div>
       </mat-card-content>
     </div>

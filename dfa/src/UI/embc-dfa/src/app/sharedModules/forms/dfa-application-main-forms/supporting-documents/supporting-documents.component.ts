@@ -5,17 +5,18 @@ import {
   AbstractControl,
   Validators,
   FormsModule,
+  FormGroup,
 } from '@angular/forms';
 import { CommonModule, KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, mapTo } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { FileCategory } from 'src/app/core/model/dfa-application-main.model';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -33,12 +34,17 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   supportingDocumentsForm$: Subscription;
   formCreationService: FormCreationService;
   showSupportingDocumentForm: boolean = false;
-  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate', 'icons'];
   supportingDocumentsDataSource = new BehaviorSubject([]);
   supportingDocumentsData = [];
   supportingDocumentEditIndex: number;
   supportingDocumentRowEdit = false;
   supportingDocumentEditFlag = false;
+  documentSummaryColumnsToDisplay = [ 'fileName', 'fileDescription', 'fileType', 'uploadedDate', 'icons']
+  documentSummaryDataSource = new BehaviorSubject([]);
+  documentSummaryData = [];
+  damagePhotoDataSource = new MatTableDataSource();
+  cleanUpWorkFileDataSource = new MatTableDataSource();
+
   FileCategories = FileCategory;
 
   constructor(
@@ -55,6 +61,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       .getSupportingDocumentsForm()
       .subscribe((supportingDocuments) => {
         this.supportingDocumentsForm = supportingDocuments;
+        this.supportingDocumentsForm.addValidators([this.validateFormInsuranceTemplate]);
       });
 
     this.supportingDocumentsForm
@@ -69,13 +76,44 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.supportingDocumentsForm.get('insuranceTemplate').reset();
     this.supportingDocumentsForm.get('insuranceTemplate.modifiedBy').setValue("Applicant");
     this.supportingDocumentsForm.get('insuranceTemplate.fileType').setValue(FileCategory.Insurance);
-    this.supportingDocumentsForm.get('addNewInsurnaceTemplateIndicator').setValue(true);
+    this.supportingDocumentsForm.get('addNewInsuranceTemplateIndicator').setValue(true);
 
+    // subscribe to changes in receipts and invocies
+    const _cleanUpWorkFileFormArray = this.formCreationService.cleanUpLogForm.value.get('cleanuplogFiles');
+    _cleanUpWorkFileFormArray.valueChanges
+      .pipe(
+        mapTo(_cleanUpWorkFileFormArray.getRawValue())
+        ).subscribe(data => {this.cleanUpWorkFileDataSource.data = data; this.updateDocumentSummary();});
+
+    // subscribe to changes in damage photos
+    const _damagePhotoFormArray = this.formCreationService.damagedItemsByRoomForm.value.get('damagePhotos');
+    _damagePhotoFormArray.valueChanges
+      .pipe(
+        mapTo(_damagePhotoFormArray.getRawValue())
+        ).subscribe(data => {this.damagePhotoDataSource.data = data; this.updateDocumentSummary();});
   }
 
   // Preserve original property order
   originalOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
     return 0;
+  }
+
+  validateFormInsuranceTemplate(form: FormGroup) {
+    let FileCategories = FileCategory;
+
+    let supportingDocuments = form.get('supportingDocuments').getRawValue();
+    if (supportingDocuments.filter(x => x.fileType === FileCategories.Insurance).length <= 0) {
+      return { noInsuranceTemplate: true };
+    }
+    return null;
+  }
+
+  updateDocumentSummary(): void {
+    while (this.documentSummaryData.length) this.documentSummaryData.pop();
+    this.supportingDocumentsData.forEach(x => this.documentSummaryData.push(x));
+    this.damagePhotoDataSource.data.forEach(x => this.documentSummaryData.push(x));
+    this.cleanUpWorkFileDataSource.data.forEach(x => this.documentSummaryData.push(x));
+    this.documentSummaryDataSource.next(this.documentSummaryData);
   }
 
   addSupportingDocument(): void {
@@ -100,8 +138,25 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
       this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
       this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
+      this.updateDocumentSummary();
     } else {
       this.supportingDocumentsForm.get('supportingDocument').markAllAsTouched();
+    }
+  }
+
+  saveInsuranceTemplate(): void {
+    if (this.supportingDocumentsForm.get('insuranceTemplate').status === 'VALID') {
+      if (this.supportingDocumentsData.filter(x => x.fileType === this.FileCategories.Insurance).length > 0) {
+        let insuranceFoundIndex = this.supportingDocumentsData.findIndex(x => x.fileType === this.FileCategories.Insurance);
+        this.supportingDocumentsData[insuranceFoundIndex] = this.supportingDocumentsForm.get('insuranceTemplate').getRawValue();
+      } else {
+        this.supportingDocumentsData.push(this.supportingDocumentsForm.get('insuranceTemplate').value);
+      }
+      this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
+      this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
+      this.updateDocumentSummary();
+    } else {
+      this.supportingDocumentsForm.get('insuranceTemplate').markAllAsTouched();
     }
   }
 
@@ -112,6 +167,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   }
 
   deleteSupportingDocumentRow(index: number): void {
+    if (this.supportingDocumentsData[index].fileType === this.FileCategories.Insurance) {
+      this.supportingDocumentsForm.get('insuranceTemplate').reset();
+      this.supportingDocumentsForm.get('addNewInsuranceTemplateIndicator').setValue(false);
+      this.supportingDocumentsForm.get('insuranceTemplate.modifiedBy').setValue("Applicant");
+      this.supportingDocumentsForm.get('insuranceTemplate.fileType').setValue(FileCategory.Insurance);
+      this.supportingDocumentsForm.get('addNewInsuranceTemplateIndicator').setValue(true);
+    }
     this.supportingDocumentsData.splice(index, 1);
     this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
     this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
@@ -120,6 +182,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         .get('addNewSupportingDocumentIndicator')
         .setValue(false);
     }
+    this.updateDocumentSummary();
   }
 
    editSupportingDocumentRow(element, index): void {

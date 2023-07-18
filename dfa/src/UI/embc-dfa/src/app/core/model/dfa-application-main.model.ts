@@ -543,7 +543,7 @@ export class CleanUpLogForm {
       ]
     });
     this.cleanuplogFile = builder.group({
-      fileDate: [
+      uploadedDate: [
         ''
       ],
       fileName: [
@@ -558,6 +558,9 @@ export class CleanUpLogForm {
         ]
       ],
       fileDescription: [
+        ''
+      ],
+      fileType: [
         ''
       ]
     });
@@ -786,7 +789,7 @@ export class SupportingDocumentsForm {
   supportingDocument: UntypedFormGroup;
   supportingDocuments = new UntypedFormControl([]);
   addNewSupportingDocumentIndicator = new UntypedFormControl(false);
-  addNewInsuranceTemplatetIndicator = new UntypedFormControl(false);
+  addNewInsuranceTemplateIndicator = new UntypedFormControl(false);
 
   constructor(
     supportingDocuments: SupportingDocuments,
@@ -799,7 +802,7 @@ export class SupportingDocumentsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewInsuranceTemplatetIndicator.value,
+              () => this.addNewInsuranceTemplateIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -810,7 +813,7 @@ export class SupportingDocumentsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewInsuranceTemplatetIndicator.value,
+              () => this.addNewInsuranceTemplateIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -821,7 +824,7 @@ export class SupportingDocumentsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewInsuranceTemplatetIndicator.value,
+              () => this.addNewInsuranceTemplateIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -832,7 +835,7 @@ export class SupportingDocumentsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewInsuranceTemplatetIndicator.value,
+              () => this.addNewInsuranceTemplateIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -843,7 +846,7 @@ export class SupportingDocumentsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewInsuranceTemplatetIndicator.value,
+              () => this.addNewInsuranceTemplateIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -854,7 +857,7 @@ export class SupportingDocumentsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewInsuranceTemplatetIndicator.value,
+              () => this.addNewInsuranceTemplateIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -865,7 +868,7 @@ export class SupportingDocumentsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewInsuranceTemplatetIndicator.value,
+              () => this.addNewInsuranceTemplateIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -876,7 +879,7 @@ export class SupportingDocumentsForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewInsuranceTemplatetIndicator.value,
+              () => this.addNewInsuranceTemplateIndicator.value,
               Validators.required
             )
             .bind(customValidator)

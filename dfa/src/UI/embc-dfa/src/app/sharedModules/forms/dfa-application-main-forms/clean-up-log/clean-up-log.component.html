@@ -270,12 +270,12 @@
                 </ng-container>
 
                  <!-- Date Column -->
-                <ng-container matColumnDef="fileDate" style="width:40%">
+                <ng-container matColumnDef="uploadedDate" style="width:40%">
                   <th mat-header-cell *matHeaderCellDef >
                     <b>Date</b>
                   </th>
                   <td *matCellDef="let elementFile" mat-cell>
-                    {{ elementFile.fileDate | date : "yyyy/MM/dd" }}
+                    {{ elementFile.uploadedDate | date : "yyyy/MM/dd" }}
                   </td>
                 </ng-container>
 

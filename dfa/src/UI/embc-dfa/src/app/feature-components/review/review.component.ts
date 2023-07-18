@@ -47,7 +47,7 @@ export class ReviewComponent implements OnInit {
   damagePhotoDataSource = new MatTableDataSource();
   damagePhotoColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
   supportingDocumentDataSource = new MatTableDataSource();
-  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
+  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
   RoomTypes = RoomType;
 
   constructor(
