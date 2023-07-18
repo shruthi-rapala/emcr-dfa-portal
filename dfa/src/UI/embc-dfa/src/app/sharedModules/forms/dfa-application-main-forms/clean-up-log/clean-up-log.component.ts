@@ -19,10 +19,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
-import { FileCategory, SecondaryApplicantTypeOption } from 'src/app/core/model/dfa-application-main.model';
+import { FileCategory, FileUpload, SecondaryApplicantTypeOption } from 'src/app/core/model/dfa-application-main.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
+import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 
 @Component({
   selector: 'app-clean-up-log',
@@ -41,13 +42,14 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   showCleanUpWorkFileForm: boolean = false;
   cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'deleteIcon'];
   cleanUpWorkFileDataSource = new BehaviorSubject([]);
-  cleanUpWorkFileData = [];
+  cleanUpWorkFileData = [] as FileUpload[];
   FileCategories = FileCategory;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    private dfaApplicationMainService: DFAApplicationMainService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -60,6 +62,12 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
         this.cleanUpLogForm = cleanUpLog;
         this.cleanUpLogForm.updateValueAndValidity();
       });
+
+
+    this.dfaApplicationMainService.deleteCleanupLog.subscribe((cleanupLogFileToDelete)=> {
+      let index = this.cleanUpWorkFileData.indexOf(cleanupLogFileToDelete);
+      this.deleteCleanupLogFileRow(index);
+    });
 
     this.cleanUpLogForm
       .get('addNewCleanUpLogIndicator')
