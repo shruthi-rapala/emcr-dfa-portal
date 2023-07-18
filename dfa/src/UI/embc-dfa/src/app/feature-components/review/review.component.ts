@@ -42,10 +42,11 @@ export class ReviewComponent implements OnInit {
   cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'fileDate'];
   damagedRoomDataSource = new MatTableDataSource();
   damagedRoomColumnsToDisplay = ['roomType', 'description'];
-  fileAttachmentDataSource = new MatTableDataSource();
-  fileAttachmentColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
+  damagePhotoDataSource = new MatTableDataSource();
+  damagePhotoColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
+  supportingDocumentDataSource = new MatTableDataSource();
+  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
   RoomTypes = RoomType;
-
 
   constructor(
     private router: Router,
@@ -104,11 +105,18 @@ export class ReviewComponent implements OnInit {
         ).subscribe(data => this.damagedRoomDataSource.data = data);
 
     // subscribe to changes in damage photos
-    const _fileAttachmentFormArray = this.formCreationService.damagedItemsByRoomForm.value.get('fileAttachments');
-    _fileAttachmentFormArray.valueChanges
+    const _damagePhotoFormArray = this.formCreationService.damagedItemsByRoomForm.value.get('damagePhotos');
+    _damagePhotoFormArray.valueChanges
       .pipe(
-        mapTo(_fileAttachmentFormArray.getRawValue())
-        ).subscribe(data => this.fileAttachmentDataSource.data = data);
+        mapTo(_damagePhotoFormArray.getRawValue())
+        ).subscribe(data => this.damagePhotoDataSource.data = data);
+
+    // subscribe to changes in supporting documents
+    const _supportingDocumentsFormArray = this.formCreationService.supportingDocumentsForm.value.get('supportingDocuments');
+    _supportingDocumentsFormArray.valueChanges
+      .pipe(
+        mapTo(_supportingDocumentsFormArray.getRawValue())
+        ).subscribe(data => this.supportingDocumentDataSource.data = data);
   }
 
   // callParentMoveStep(index: number) {

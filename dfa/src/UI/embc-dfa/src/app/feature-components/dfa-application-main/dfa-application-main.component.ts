@@ -200,6 +200,9 @@ export class DFAApplicationMainComponent
       case 'damaged-items-by-room':
         this.dfaApplicationMainDataService.damagedItemsByRoom = this.form.value;
         break;
+      case 'supporting-documents':
+        this.dfaApplicationMainDataService.supportingDocuments = this.form.value;
+        break;
       case 'sign-and-submit':
         this.dfaApplicationMainDataService.signAndSubmit = this.form.value;
         break;
@@ -249,7 +252,14 @@ export class DFAApplicationMainComponent
             this.form = damagedItemsByRoom;
           });
         break;
-      case 6:
+      case 5:
+        this.form$ = this.formCreationService
+          .getSupportingDocumentsForm()
+          .subscribe((supportingDocuments) => {
+            this.form = supportingDocuments;
+          });
+        break;
+      case 7:
         this.form$ = this.formCreationService
           .getSignAndSubmitForm()
           .subscribe((signAndSubmit)=> {

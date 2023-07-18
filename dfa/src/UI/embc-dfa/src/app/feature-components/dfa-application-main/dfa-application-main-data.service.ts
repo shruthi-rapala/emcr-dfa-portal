@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DFAApplicationMain, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanUpLog, OtherContact, SecondaryApplicant, Occupants, SignAndSubmit} from 'src/app/core/model/dfa-application-main.model';
+import { DFAApplicationMain, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanupLog, OtherContact, SecondaryApplicant, Occupants, SignAndSubmit, SupportingDocuments} from 'src/app/core/model/dfa-application-main.model';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { ApplicantOption, InsuranceOption, DfaApplicationStart } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
@@ -9,10 +9,11 @@ export class DFAApplicationMainDataService {
   private _damagedPropertyAddress: DamagedPropertyAddress;
   private _propertyDamage: PropertyDamage;
   private _occupants: Occupants;
-  private _cleanUpLog: CleanUpLog;
+  private _cleanUpLog: CleanupLog;
   private _damagedItemsByRoom: DamagedItemsByRoom;
   private _dfaApplicationMain: DFAApplicationMain;
   private _dfaApplicationStart: DfaApplicationStart;
+  private _supportingDocuments: SupportingDocuments;
   private _dfaApplicationMainId: string;
   private ApplicantOptions = ApplicantOption;
   private InsuranceOptions = InsuranceOption;
@@ -61,6 +62,14 @@ export class DFAApplicationMainDataService {
     this._damagedPropertyAddress = value;
   }
 
+  public get supportingDocuments(): SupportingDocuments {
+    return this._supportingDocuments;
+  }
+
+  public set supportingDocuments(value: SupportingDocuments) {
+    this._supportingDocuments = value;
+  }
+
   public get signAndSubmit(): SignAndSubmit {
     return this._signAndSubmit;
   }
@@ -84,11 +93,11 @@ export class DFAApplicationMainDataService {
   public set occupants(value: Occupants) {
     this._occupants = value;
   }
-  public get cleanUpLog(): CleanUpLog {
+  public get cleanUpLog(): CleanupLog {
     return this._cleanUpLog;
   }
 
-  public set cleanUpLog(value: CleanUpLog) {
+  public set cleanUpLog(value: CleanupLog) {
     this._cleanUpLog = value;
   }
   public get damagedItemsByRoom(): DamagedItemsByRoom {
@@ -105,6 +114,7 @@ export class DFAApplicationMainDataService {
       occupants: this._occupants,
       cleanUpLog: this._cleanUpLog,
       damagedItemsByRoom: this._damagedItemsByRoom,
+      supportingDocuments: this._supportingDocuments,
       signAndSubmit: this._signAndSubmit
     };
   }
