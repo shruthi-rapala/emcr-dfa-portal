@@ -37,41 +37,41 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.profileVerificationForm$ = this.formCreationService
-      .getProfileVerificationForm()
-      .subscribe((profileVerification) => {
-        this.profileVerificationForm = profileVerification;
-        this.profileVerificationForm.updateValueAndValidity();
-      });
+    // this.profileVerificationForm$ = this.formCreationService
+    //   .getProfileVerificationForm()
+    //   .subscribe((profileVerification) => {
+    //     this.profileVerificationForm = profileVerification;
+    //     this.profileVerificationForm.updateValueAndValidity();
+    //   });
 
-    this.profileVerificationForm.get('profileId').setValue(this.profileDataService.getProfileId());
+    // this.profileVerificationForm.get('profileId').setValue(this.profileDataService.getProfileId());
 
-    this.profileVerificationForm
-      .get('profileVerified')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.profileVerificationForm.get('profileVerified').reset();
-        }
-      });
+    // this.profileVerificationForm
+    //   .get('profileVerified')
+    //   .valueChanges.pipe(distinctUntilChanged())
+    //   .subscribe((value) => {
+    //     if (value === '') {
+    //       this.profileVerificationForm.get('profileVerified').reset();
+    //     }
+    //   });
 
-    // TODO: Implement the correct setting of this value, will it be a radio button or checkbox??
-    this.profileVerificationForm.get('profileVerified').setValue(true);
+    // // TODO: Implement the correct setting of this value, will it be a radio button or checkbox??
+    // this.profileVerificationForm.get('profileVerified').setValue(true);
   }
 
   /**
    * Returns the control of the form
    */
-  get profileVerificationFormControl(): { [key: string]: AbstractControl } {
-    return this.profileVerificationForm.controls;
-  }
+  // get profileVerificationFormControl(): { [key: string]: AbstractControl } {
+  //   return this.profileVerificationForm.controls;
+  // }
 
-  updateOnVisibility(): void {
-    this.profileVerificationForm.get('profileVerified').updateValueAndValidity();
-  }
+  // updateOnVisibility(): void {
+  //   this.profileVerificationForm.get('profileVerified').updateValueAndValidity();
+  // }
 
   ngOnDestroy(): void {
-    this.profileVerificationForm$.unsubscribe();
+    // this.profileVerificationForm$.unsubscribe();
   }
 }
 

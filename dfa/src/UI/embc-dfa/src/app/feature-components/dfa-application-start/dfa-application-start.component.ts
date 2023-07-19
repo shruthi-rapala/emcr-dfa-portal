@@ -74,6 +74,8 @@ export class DFAApplicationStartComponent
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     this.dfaApplicationStartHeading = 'Create Your Application';
     this.steps = this.componentService.createDFAApplicationStartSteps();
+    this.dfaApplicationStartDataService.profileVerified = true;
+    this.dfaApplicationStartDataService.profileId = this.profileDataService.getProfileId();
   }
 
   ngAfterViewChecked(): void {
@@ -151,10 +153,10 @@ export class DFAApplicationStartComponent
       case 'consent':
         this.dfaApplicationStartDataService.consent = this.form.get('consent').value;
         break;
-      case 'profile-verification':
-        this.dfaApplicationStartDataService.profileVerified = this.form.get('profileVerified').value;
-        this.dfaApplicationStartDataService.profileId = this.form.get('profileId').value;
-        break;
+      // case 'profile-verification':
+      //   this.dfaApplicationStartDataService.profileVerified = this.form.get('profileVerified').value;
+      //   this.dfaApplicationStartDataService.profileId = this.form.get('profileId').value;
+      //   break;
       case 'apptype-insurance':
         this.dfaApplicationStartDataService.applicantOption = this.form.controls.applicantOption.value;
         this.dfaApplicationStartDataService.insuranceOption = this.form.controls.insuranceOption.value;
@@ -192,15 +194,15 @@ export class DFAApplicationStartComponent
           });
         this.showSaveButton = false;
         break;
+      // case 1:
+        // this.form$ = this.formCreationService
+        //   .getProfileVerificationForm()
+        //   .subscribe((profileVerification) => {
+        //     this.form = profileVerification;
+        //   });
+        // this.showSaveButton = false;
+        // break;
       case 1:
-        this.form$ = this.formCreationService
-          .getProfileVerificationForm()
-          .subscribe((profileVerification) => {
-            this.form = profileVerification;
-          });
-        this.showSaveButton = false;
-        break;
-      case 2:
         this.form$ = this.formCreationService
           .getAppTypeInsuranceForm()
           .subscribe((appTypeInsurance) => {

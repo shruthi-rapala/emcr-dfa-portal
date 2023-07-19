@@ -49,7 +49,7 @@ export const yesFullyInsuredBody: DialogContent = {
 }
 
 export const dontOccupyDamagedPropertyBody: DialogContent = {
-  text: '<p>You must occupy the property as your principal residence to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Do you occupy the damaged property as your personal residence?</b></p>',
+  text: '<p>You must occupy the property as your principal residence to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Do you occupy the damaged property as your personal residence? If you are a landlord, you must apply and qualify as a small business owner.</b></p>',
   cancelButton: 'No, Save & Close my Application',
   confirmButton: 'Yes, Continue my Application'
 }

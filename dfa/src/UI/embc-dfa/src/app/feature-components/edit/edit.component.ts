@@ -282,15 +282,15 @@ export class EditComponent implements OnInit, OnDestroy {
         this.editHeading = 'Application Type & Insurance';
         this.dfaApplicationStartFolderPath = 'dfa-application-start-forms';
         break;
-      case 'profile-verification':
-        this.form$ = this.formCreationService
-          .getProfileVerificationForm()
-          .subscribe((profileVerification) => {
-            this.form = profileVerification;
-          });
-        this.editHeading = 'Profile Verification';
-        this.dfaApplicationStartFolderPath = 'dfa-application-start-forms';
-        break;
+      // case 'profile-verification':
+      //   this.form$ = this.formCreationService
+      //     .getProfileVerificationForm()
+      //     .subscribe((profileVerification) => {
+      //       this.form = profileVerification;
+      //     });
+      //   this.editHeading = 'Profile Verification';
+      //   this.dfaApplicationStartFolderPath = 'dfa-application-start-forms';
+      //   break;
       case 'consent':
         this.form$ = this.formCreationService
           .getConsentForm()
