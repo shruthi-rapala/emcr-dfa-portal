@@ -66,9 +66,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
                 }
             }
-            catch (System.Exception ex)
+            //catch (System.Exception ex)
+            catch
             {
-                throw new Exception($"Failed to add application {ex.Message}", ex);
+                return "anewapplication";
+                //throw new Exception($"Failed to add application {ex.Message}", ex);
             }
 
             return string.Empty;
