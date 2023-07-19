@@ -22,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from 'src/app/core/core.module';
+import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -36,21 +37,30 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   showSupportingDocumentForm: boolean = false;
   supportingDocumentsDataSource = new BehaviorSubject([]);
   supportingDocumentsData = [];
-  supportingDocumentEditIndex: number;
-  supportingDocumentRowEdit = false;
-  supportingDocumentEditFlag = false;
   documentSummaryColumnsToDisplay = [ 'fileName', 'fileDescription', 'fileType', 'uploadedDate', 'icons']
   documentSummaryDataSource = new BehaviorSubject([]);
   documentSummaryData = [];
   damagePhotoDataSource = new MatTableDataSource();
   cleanUpWorkFileDataSource = new MatTableDataSource();
-
+  allowedFileTypes = [
+    'application/pdf',
+    'image/jpg',
+    'image/jpeg',
+    'image/png',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  ];
   FileCategories = FileCategory;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    private dfaApplicationMainService: DFAApplicationMainService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -120,24 +130,15 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.supportingDocumentsForm.get('supportingDocument').reset();
     this.supportingDocumentsForm.get('supportingDocument.modifiedBy').setValue("Applicant");
     this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
-    this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
     this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(true);
   }
 
   saveSupportingDocuments(): void {
     if (this.supportingDocumentsForm.get('supportingDocument').status === 'VALID') {
-      if (this.supportingDocumentEditIndex !== undefined && this.supportingDocumentRowEdit) {
-        this.supportingDocumentsData[this.supportingDocumentEditIndex] =
-          this.supportingDocumentsForm.get('supportingDocument').getRawValue();
-        this.supportingDocumentRowEdit = !this.supportingDocumentRowEdit;
-        this.supportingDocumentEditIndex = undefined;
-      } else {
-        this.supportingDocumentsData.push(this.supportingDocumentsForm.get('supportingDocument').value);
-      }
+      this.supportingDocumentsData.push(this.supportingDocumentsForm.get('supportingDocument').value);
       this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
       this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
       this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
-      this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
       this.updateDocumentSummary();
     } else {
       this.supportingDocumentsForm.get('supportingDocument').markAllAsTouched();
@@ -162,39 +163,44 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
   cancelSupportingDocuments(): void {
     this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
-    this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
     this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(false);
   }
 
-  deleteSupportingDocumentRow(index: number): void {
-    if (this.supportingDocumentsData[index].fileType === this.FileCategories.Insurance) {
+  deleteDocumentSummaryRow(index: number): void {
+    if (this.documentSummaryData[index].fileType === this.FileCategories.Insurance) {
       this.supportingDocumentsForm.get('insuranceTemplate').reset();
       this.supportingDocumentsForm.get('addNewInsuranceTemplateIndicator').setValue(false);
       this.supportingDocumentsForm.get('insuranceTemplate.modifiedBy').setValue("Applicant");
       this.supportingDocumentsForm.get('insuranceTemplate.fileType').setValue(FileCategory.Insurance);
       this.supportingDocumentsForm.get('addNewInsuranceTemplateIndicator').setValue(true);
-    }
-    this.supportingDocumentsData.splice(index, 1);
-    this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
-    this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
-    if (this.supportingDocumentsData.length === 0) {
-      this.supportingDocumentsForm
-        .get('addNewSupportingDocumentIndicator')
-        .setValue(false);
+      let supportingDocsIndex = this.supportingDocumentsData.indexOf(this.documentSummaryData[index]);
+      this.supportingDocumentsData.splice(supportingDocsIndex, 1);
+      this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
+      this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
+      if (this.supportingDocumentsData.length === 0) {
+        this.supportingDocumentsForm
+          .get('addNewSupportingDocumentIndicator')
+          .setValue(false);
+      }
+    } else if (this.documentSummaryData[index].fileType === this.FileCategories.DamagePhoto) {
+      this.dfaApplicationMainService.deleteDamagePhoto.emit(this.documentSummaryData[index]);
+    } else if (this.documentSummaryData[index].fileType === this.FileCategories.Cleanup) {
+      this.dfaApplicationMainService.deleteCleanupLog.emit(this.documentSummaryData[index]);
+    } else {
+      let supportingDocsIndex = this.supportingDocumentsData.indexOf(this.documentSummaryData[index]);
+      this.supportingDocumentsData.splice(supportingDocsIndex, 1);
+      this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
+      this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
+      if (this.supportingDocumentsData.length === 0) {
+        this.supportingDocumentsForm
+          .get('addNewSupportingDocumentIndicator')
+          .setValue(false);
+      }
     }
     this.updateDocumentSummary();
   }
 
-   editSupportingDocumentRow(element, index): void {
-    this.supportingDocumentEditIndex = index;
-    this.supportingDocumentRowEdit = !this.supportingDocumentRowEdit;
-    this.supportingDocumentsForm.get('supportingDocument').setValue(element);
-    this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
-    this.supportingDocumentEditFlag = !this.supportingDocumentEditFlag;
-    this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(true);
-  }
-
-  updateSupportingDocumentOnVisibility(): void {
+ updateSupportingDocumentOnVisibility(): void {
     this.supportingDocumentsForm
       .get('supportingDocument.fileName')
       .updateValueAndValidity();
