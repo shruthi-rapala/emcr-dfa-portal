@@ -2,7 +2,15 @@
   <div class="heading-container">
     <div class="row">
       <div class="col-md-12">
-        <span class="page-heading" style="">Smith John</span> <br />
+        <span class="page-heading" style="">
+          <b>{{
+            (formCreationService.personalDetailsForm$ | async)?.value?.lastName
+          }}</b
+          >,
+          {{
+            (formCreationService.personalDetailsForm$ | async)?.value?.firstName
+          }}
+          </span> <br />
       </div>
     </div>
   </div>
@@ -18,20 +26,23 @@ If you're an Indigenous community or local government your process is different:
          <button
               class="button-p notice-button left-align"
               mat-button
+              (click)="navigateToDFAApplicationStart()"
             >
               Create New Application
           </button>
       </div>
       <div class="col-md-6"></div>
     </div>
-    <div class="container" style="padding-bottom: 50px">
+    <div class="container" style="padding-bottom: 100px; padding-top: 30px;">
       <!--<app-alert></app-alert>-->
+     
       <nav mat-tab-nav-bar dynamicHeight>
         <a
           mat-tab-link
           *ngFor="let tabItem of tabs"
           [routerLink]="tabItem.route"
-          routerLinkActive="inactive-tab"
+          routerLinkActive="active-tab"
+           class="tabHead"
         >
           <img
             class="inactive-curr"
@@ -45,7 +56,8 @@ If you're an Indigenous community or local government your process is different:
             height="15"
             width="15"
           />
-          &nbsp;&nbsp; {{ tabItem.label != "Profile" ? tabItem.label + "(0)" : tabItem.label }}
+          &nbsp;&nbsp; {{ tabItem.label }}
+          <!--&nbsp;&nbsp; {{ tabItem.label != "Profile" ? tabItem.label + "(" + tabItem.count + ")" : tabItem.label }}-->
         </a>
       </nav>
       <router-outlet></router-outlet>

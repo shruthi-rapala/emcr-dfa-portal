@@ -34,6 +34,13 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_isprimaryandsecondaryaddresssame, opts => opts.MapFrom(s => (!string.IsNullOrEmpty(s.IsMailingAddressSameAsPrimaryAddress) ?
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == "yes" ? 222710000 :
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == "no" ? 222710001 : 222710002)) : 222710002)))
+                .ReverseMap()
+                .ForMember(d => d.PersonalDetails, opts => opts.MapFrom(s => new PersonDetails()
+                {
+                    FirstName = s.dfa_firstname,
+                    LastName = s.dfa_lastname,
+                    Initials = s.dfa_initial
+                }))
                 ;
 
             CreateMap<DFAApplicationStart, dfa_appapplicationstart>()

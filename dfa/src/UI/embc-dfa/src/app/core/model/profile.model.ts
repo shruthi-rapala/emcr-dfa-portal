@@ -45,7 +45,7 @@ export class PersonDetails {
 export class PersonDetailsForm {
   firstName = new UntypedFormControl();
   lastName = new UntypedFormControl();
-  preferredName = new UntypedFormControl();
+  //preferredName = new UntypedFormControl();
   initials = new UntypedFormControl();
   indigenousStatus = new UntypedFormControl();
 
@@ -77,8 +77,8 @@ export class ContactDetails {
   cellPhoneNumber: string;
   confirmEmail: string;
   showContacts: boolean;
-  hideEmailRequired: boolean;
-  hidePhoneRequired: boolean;
+  //hideEmailRequired: boolean;
+  //hidePhoneRequired: boolean;
   residencePhone: string;
   alternatePhone: string;
   constructor() {}
@@ -89,8 +89,8 @@ export class ContactDetailsForm {
   cellPhoneNumber = new UntypedFormControl();
   confirmEmail = new UntypedFormControl();
   showContacts = new UntypedFormControl();
-  hideEmailRequired = new UntypedFormControl(false);
-  hidePhoneRequired = new UntypedFormControl(false);
+  //hideEmailRequired = new UntypedFormControl(false);
+  //hidePhoneRequired = new UntypedFormControl(false);
   residencePhone = new UntypedFormControl();
   alternatePhone = new UntypedFormControl();
 

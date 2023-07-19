@@ -69,4 +69,10 @@
         No = 222710002,
         YesBut = 222710001
     }
+
+    public class dfa_appapplication
+    {
+        public string dfa_appapplicationid { get; set; }
+        public string dfa_applicanttype { get; set; }
+    }
 }
