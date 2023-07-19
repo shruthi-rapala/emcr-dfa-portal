@@ -22,6 +22,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<Profile> HandleGetUser(string userID);
         Task<IEnumerable<Country>> HandleCountry();
         Task<string> HandleContact(dfa_appcontact objContact);
+        Task<string> HandleApplication(dfa_appapplicationstart objApplication);
+        Task<dfa_appapplicationstart> GetApplicationStartAsync(string applicationId);
         Task<IEnumerable<dfa_appapplication>> HandleApplicationList();
     }
     public class Handler : IConfigurationHandler
@@ -84,6 +86,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             var contactId = await listsGateway.AddContact(objContact);
             return contactId;
+        }
+
+        public async Task<string> HandleApplication(dfa_appapplicationstart objApplication)
+        {
+            var applicationId = await listsGateway.AddApplication(objApplication);
+            return applicationId;
+        }
+
+        public async Task<dfa_appapplicationstart> GetApplicationStartAsync(string applicationId)
+        {
+            var dfa_appapplication = await listsGateway.GetApplicationStartById(applicationId);
+            return dfa_appapplication;
         }
 
         public async Task<IEnumerable<dfa_appapplication>> HandleApplicationList()

@@ -10,6 +10,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcontact>> GetContactsAsync();
         Task<dfa_appcontact> GetUserProfileAsync(string userId);
         Task<string> AddContact(dfa_appcontact contact);
+        Task<string> AddApplication(dfa_appapplicationstart application);
+        Task<dfa_appapplicationstart> GetApplicationStartById(string applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync();
 
         //Task<IEnumerable> GetDistrictsAsync();

@@ -24,9 +24,8 @@ import { RegAddress } from 'src/app/core/model/address';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Profile } from 'src/app/core/api/models';
+import { Profile, ApplicantOption } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatInputModule } from '@angular/material/input';
 
@@ -169,6 +168,12 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('onAFirstNationsReserve').reset();
+        } else if (value == true) {
+          this.damagedPropertyAddressForm.get('firstNationsReserve').setValidators([Validators.required]);
+          this.damagedPropertyAddressForm.get('firstNationsReserve').updateValueAndValidity();
+        } else if (value == false) {
+          this.damagedPropertyAddressForm.get('firstNationsReserve').setValidators(null);
+          this.damagedPropertyAddressForm.get('firstNationsReserve').updateValueAndValidity();
         }
       });
 
@@ -235,15 +240,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         }
       });
 
-    // TODO: retrieve actual profile address
-    this.profileAddress = {
-      addressLine1: "564 Vedder Rd.",
-      addressLine2: null,
-      community: "Abbotsford",
-      country: { name: "Canada", code: "CAN" },
-      stateProvince: "BC",
-      postalCode: "V1V 1V1"
-    }
+    this.profileAddress = this.profileDataService.primaryAddressDetails;
     this.onUseProfileAddressChoice("1");
   }
 
@@ -295,7 +292,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       this.damagedPropertyAddressForm.controls.addressLine1.setValue(this.profileAddress.addressLine1);
       this.damagedPropertyAddressForm.controls.addressLine2.setValue(this.profileAddress.addressLine2);
       this.damagedPropertyAddressForm.controls.community.setValue(this.profileAddress.community);
-      this.damagedPropertyAddressForm.controls.country.setValue(this.profileAddress.country.name);
+      this.damagedPropertyAddressForm.controls.country.setValue(this.profileAddress.country?.name);
       this.damagedPropertyAddressForm.controls.stateProvince.setValue(this.profileAddress.stateProvince);
       this.damagedPropertyAddressForm.controls.postalCode.setValue(this.profileAddress.postalCode);
 

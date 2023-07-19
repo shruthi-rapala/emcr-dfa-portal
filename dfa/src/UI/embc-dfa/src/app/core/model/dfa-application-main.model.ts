@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { RegAddress, Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock } from '../components/signature/signature.component';
+import { SignatureBlock } from 'src/app/core/api/models';
 
 export interface DamagedPropertyAddress extends RegAddress {
   occupyAsPrimaryResidence: boolean;
@@ -474,7 +474,7 @@ export class OccupantsForm {
   }
 }
 
-export interface CleanupLog {
+export class CleanupLog {
   date: Date;
   name: string;
   hours: string;
@@ -482,14 +482,6 @@ export interface CleanupLog {
   fileName: string;
   fileDescription: string;
   fileDate: Date;
-}
-
-export class CleanUpLog {
-  field: boolean;
-
-  constructor(
-    field?: boolean
-  ) {}
 }
 
 export class CleanUpLogForm {
@@ -508,7 +500,7 @@ export class CleanUpLogForm {
   addNewCleanUpLogFileIndicator = new UntypedFormControl(false);
 
   constructor(
-    cleanUpLog: CleanUpLog,
+    cleanUpLog: CleanupLog,
     customValidator: CustomValidationService,
     builder: UntypedFormBuilder
   ) {
@@ -551,7 +543,7 @@ export class CleanUpLogForm {
       ]
     });
     this.cleanuplogFile = builder.group({
-      fileDate: [
+      uploadedDate: [
         ''
       ],
       fileName: [
@@ -566,6 +558,9 @@ export class CleanUpLogForm {
         ]
       ],
       fileDescription: [
+        ''
+      ],
+      fileType: [
         ''
       ]
     });
@@ -615,7 +610,7 @@ export interface DamagedRoom {
 
 export class DamagedItemsByRoom {
   damagedRooms: Array<DamagedRoom>;
-  fileAttachments: Array<FileUpload>;
+  damagePhotos: Array<FileUpload>;
 
   constructor(
   ) {}
@@ -633,12 +628,12 @@ export class DamagedItemsByRoomForm {
   uploadedDate = new UntypedFormControl();
   modifiedBy = new UntypedFormControl();
   fileData = new UntypedFormControl();
-  fileAttachment: UntypedFormGroup;
-  fileAttachments = new UntypedFormControl([]);
+  damagePhoto: UntypedFormGroup;
+  damagePhotos = new UntypedFormControl([]);
   contentType = new UntypedFormControl();
   fileSize = new UntypedFormControl();
   addNewDamagedRoomIndicator = new UntypedFormControl(false);
-  addNewFileAttachmentIndicator = new UntypedFormControl(false);
+  addNewDamagePhotoIndicator = new UntypedFormControl(false);
 
   constructor(
     damagedItemsByRoom: DamagedItemsByRoom,
@@ -680,13 +675,13 @@ export class DamagedItemsByRoomForm {
         ]
       ],
     });
-    this.fileAttachment = builder.group({
+    this.damagePhoto = builder.group({
       fileName: [
         '',
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewFileAttachmentIndicator.value,
+              () => this.addNewDamagePhotoIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -697,7 +692,7 @@ export class DamagedItemsByRoomForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewFileAttachmentIndicator.value,
+              () => this.addNewDamagePhotoIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -708,7 +703,7 @@ export class DamagedItemsByRoomForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewFileAttachmentIndicator.value,
+              () => this.addNewDamagePhotoIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -719,7 +714,7 @@ export class DamagedItemsByRoomForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewFileAttachmentIndicator.value,
+              () => this.addNewDamagePhotoIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -730,7 +725,7 @@ export class DamagedItemsByRoomForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewFileAttachmentIndicator.value,
+              () => this.addNewDamagePhotoIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -741,7 +736,7 @@ export class DamagedItemsByRoomForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewFileAttachmentIndicator.value,
+              () => this.addNewDamagePhotoIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -752,7 +747,7 @@ export class DamagedItemsByRoomForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewFileAttachmentIndicator.value,
+              () => this.addNewDamagePhotoIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -763,7 +758,218 @@ export class DamagedItemsByRoomForm {
         [
           customValidator
             .conditionalValidation(
-              () => this.addNewFileAttachmentIndicator.value,
+              () => this.addNewDamagePhotoIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+  }
+}
+
+export class SupportingDocuments {
+  insuranceTemplate: FileUpload;
+  supportingDocuments: Array<FileUpload>;
+
+  constructor(
+  ) {}
+}
+
+export class SupportingDocumentsForm {
+  fileName = new UntypedFormControl();
+  fileDescription = new UntypedFormControl();
+  fileType = new UntypedFormControl();
+  uploadedDate = new UntypedFormControl();
+  modifiedBy = new UntypedFormControl();
+  fileData = new UntypedFormControl();
+  contentType = new UntypedFormControl();
+  fileSize = new UntypedFormControl();
+  insuranceTemplate: UntypedFormGroup;
+  supportingDocument: UntypedFormGroup;
+  supportingDocuments = new UntypedFormControl([]);
+  addNewSupportingDocumentIndicator = new UntypedFormControl(false);
+  addNewInsuranceTemplateIndicator = new UntypedFormControl(false);
+
+  constructor(
+    supportingDocuments: SupportingDocuments,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
+  ) {
+    this.insuranceTemplate = builder.group({
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewInsuranceTemplateIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewInsuranceTemplateIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewInsuranceTemplateIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewInsuranceTemplateIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewInsuranceTemplateIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewInsuranceTemplateIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewInsuranceTemplateIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewInsuranceTemplateIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.supportingDocument = builder.group({
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSupportingDocumentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSupportingDocumentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSupportingDocumentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSupportingDocumentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSupportingDocumentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSupportingDocumentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSupportingDocumentIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSupportingDocumentIndicator.value,
               Validators.required
             )
             .bind(customValidator)
@@ -822,7 +1028,8 @@ export interface DFAApplicationMain {
   damagedPropertyAddress?: DamagedPropertyAddress;
   propertyDamage?: PropertyDamage;
   occupants?: Occupants;
-  cleanUpLog?: CleanUpLog;
+  cleanUpLog?: CleanupLog;
   damagedItemsByRoom?: DamagedItemsByRoom;
+  supportingDocuments?: SupportingDocuments;
   signAndSubmit?: SignAndSubmit;
 }

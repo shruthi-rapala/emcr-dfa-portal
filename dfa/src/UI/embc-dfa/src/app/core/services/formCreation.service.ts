@@ -11,9 +11,10 @@ import {
   RestrictionForm,
   Restriction,
 } from '../model/profile.model';
-import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm, InsuranceOption } from '../model/dfa-application-start.model';
+import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm } from '../model/dfa-application-start.model';
+import { InsuranceOption } from 'src/app/core/api/models';
 import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
-  CleanUpLog, CleanUpLogForm, SignAndSubmitForm, SignAndSubmit, SecondaryApplicant } from '../model/dfa-application-main.model';
+  CleanupLog, CleanUpLogForm, SignAndSubmitForm, SignAndSubmit, SecondaryApplicant, SupportingDocuments, SupportingDocumentsForm } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import {
   Evacuated,
@@ -33,6 +34,7 @@ export class FormCreationService {
   public insuranceOptionChanged: EventEmitter<InsuranceOption>;
   public secondaryApplicantsChanged: EventEmitter<Array<SecondaryApplicant>>;
   public signaturesChanged: EventEmitter<UntypedFormGroup>;
+  public AppTypeInsuranceData: AppTypeInsurance;
 
   restrictionForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
@@ -153,7 +155,7 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
        new CleanUpLogForm(
-         new CleanUpLog(),
+         new CleanupLog(),
          this.customValidator,
          this.formBuilder
        )
@@ -177,7 +179,21 @@ export class FormCreationService {
   damagedItemsByRoomForm$: Observable<UntypedFormGroup | undefined> =
     this.damagedItemsByRoomForm.asObservable();
 
-  signAndSubmitForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  supportingDocumentsForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new SupportingDocumentsForm(
+         new SupportingDocuments(),
+         this.customValidator,
+         this.formBuilder
+       )
+     )
+   );
+
+  supportingDocumentsForm$: Observable<UntypedFormGroup | undefined> =
+    this.supportingDocumentsForm.asObservable();
+
+    signAndSubmitForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
        new SignAndSubmitForm(
@@ -493,7 +509,7 @@ export class FormCreationService {
     this.cleanUpLogForm.next(
       this.formBuilder.group(
         new CleanUpLogForm(
-          new CleanUpLog(),
+          new CleanupLog(),
           this.customValidator,
           this.formBuilder
         )
@@ -514,6 +530,26 @@ export class FormCreationService {
       this.formBuilder.group(
         new DamagedItemsByRoomForm(
           new DamagedItemsByRoom(),
+          this.customValidator,
+          this.formBuilder
+        )
+      )
+    );
+  }
+
+  getSupportingDocumentsForm(): Observable<UntypedFormGroup> {
+    return this.supportingDocumentsForm$;
+  }
+
+  setSupportingDocumentsForm(supportingDocumentsForm: UntypedFormGroup): void {
+    this.supportingDocumentsForm.next(supportingDocumentsForm);
+  }
+
+  clearSupportingDocumentsData(): void {
+    this.supportingDocumentsForm.next(
+      this.formBuilder.group(
+        new SupportingDocumentsForm(
+          new SupportingDocuments(),
           this.customValidator,
           this.formBuilder
         )

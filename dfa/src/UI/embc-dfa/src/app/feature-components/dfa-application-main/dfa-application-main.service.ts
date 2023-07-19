@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { FullTimeOccupant, DFAApplicationMain, OtherContact, SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
-// import { DFAApplicationStartService as Service } from '../../core/api/services/dfa-application-start.service';
 import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
+import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainService {
   private _fullTimeOccupants: Array<FullTimeOccupant> = [];
   private _otherContacts: Array<OtherContact> = [];
   private _secondaryApplicants: Array<SecondaryApplicant> = [];
+  public deleteDamagePhoto = new EventEmitter<FileUpload>();
+  public deleteCleanupLog = new EventEmitter<FileUpload>();
 
   constructor(
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,

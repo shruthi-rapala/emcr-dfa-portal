@@ -17,13 +17,12 @@ import { Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { ApplicantOption, InsuranceOption, FarmOption, SmallBusinessOption } from 'src/app/core/model/dfa-application-start.model';
+import { SmallBusinessOption, ApplicantOption, SignatureBlock, InsuranceOption, FarmOption } from 'src/app/core/api/models';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import * as globalConst from '../../../../core/services/globalConstants';
 import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { CoreModule } from 'src/app/core/core.module';
-import { SignatureBlock } from 'src/app/core/components/signature/signature.component';
 
 @Component({
   selector: 'apptype-insurance',

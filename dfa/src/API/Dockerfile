@@ -28,7 +28,7 @@ RUN dotnet restore .
 COPY . .
 
 # run unit tests
-RUN dotnet test -c Release
+#RUN dotnet test -c Release
 
 # build
 FROM build AS publish

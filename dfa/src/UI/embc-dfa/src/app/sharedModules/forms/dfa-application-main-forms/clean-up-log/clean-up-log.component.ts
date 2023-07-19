@@ -19,10 +19,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
-import { SecondaryApplicantTypeOption } from 'src/app/core/model/dfa-application-main.model';
+import { FileCategory, FileUpload, SecondaryApplicantTypeOption } from 'src/app/core/model/dfa-application-main.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
+import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 
 @Component({
   selector: 'app-clean-up-log',
@@ -39,14 +40,16 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   cleanUpWorkDataSource = new BehaviorSubject([]);
   cleanUpWorkData = [];
   showCleanUpWorkFileForm: boolean = false;
-  cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'fileDate', 'deleteIcon'];
+  cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'deleteIcon'];
   cleanUpWorkFileDataSource = new BehaviorSubject([]);
-  cleanUpWorkFileData = [];
+  cleanUpWorkFileData = [] as FileUpload[];
+  FileCategories = FileCategory;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    private dfaApplicationMainService: DFAApplicationMainService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -59,6 +62,12 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
         this.cleanUpLogForm = cleanUpLog;
         this.cleanUpLogForm.updateValueAndValidity();
       });
+
+
+    this.dfaApplicationMainService.deleteCleanupLog.subscribe((cleanupLogFileToDelete)=> {
+      let index = this.cleanUpWorkFileData.indexOf(cleanupLogFileToDelete);
+      this.deleteCleanupLogFileRow(index);
+    });
 
     this.cleanUpLogForm
       .get('addNewCleanUpLogIndicator')
@@ -128,7 +137,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   updateCleanupLogFileOnVisibility(): void {
     this.cleanUpLogForm
-      .get('cleanuplogFile.fileDate')
+      .get('cleanuplogFile.uploadedDate')
       .updateValueAndValidity();
     this.cleanUpLogForm
       .get('cleanuplogFile.fileName')
@@ -144,6 +153,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   addCleanupLog(): void {
     this.cleanUpLogForm.get('cleanuplog').reset();
+    this.cleanUpLogForm.get('cleanuplogFile.fileType').setValue(this.FileCategories.Cleanup);
     this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
     this.cleanUpLogForm.get('addNewCleanUpLogIndicator').setValue(true);
   }
@@ -177,10 +187,13 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   saveNewCleanupLogFile(): void {
     this.cleanUpLogForm
-      .get('cleanuplogFile.fileDate').
+      .get('cleanuplogFile.uploadedDate').
       setValue(new Date());
+    this.cleanUpLogForm
+      .get('cleanuplogFile.fileType').
+      setValue(this.FileCategories.Cleanup);
     if (this.cleanUpLogForm.get('cleanuplogFile').status === 'VALID') {
-      this.cleanUpWorkFileData.push(this.cleanUpLogForm.get('cleanuplogFile').value);
+      this.cleanUpWorkFileData.push(this.cleanUpLogForm.get('cleanuplogFile').getRawValue());
       this.cleanUpWorkFileDataSource.next(this.cleanUpWorkFileData);
       this.cleanUpLogForm.get('cleanuplogFiles').setValue(this.cleanUpWorkFileData);
       this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;

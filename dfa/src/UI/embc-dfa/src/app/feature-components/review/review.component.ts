@@ -6,11 +6,9 @@ import {
   CaptchaResponse,
   CaptchaResponseType
 } from 'src/app/core/components/captcha-v2/captcha-v2.component';
-import { ConfigService } from 'src/app/core/services/config.service';
-import { MatTableModule } from '@angular/material/table';
-import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
+import { ApplicantOption } from 'src/app/core/api/models';
 import { MatTableDataSource } from '@angular/material/table';
-import { FullTimeOccupant, RoomType } from 'src/app/core/model/dfa-application-main.model';
+import { RoomType } from 'src/app/core/model/dfa-application-main.model';
 
 @Component({
   selector: 'app-review',
@@ -44,10 +42,11 @@ export class ReviewComponent implements OnInit {
   cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'fileDate'];
   damagedRoomDataSource = new MatTableDataSource();
   damagedRoomColumnsToDisplay = ['roomType', 'description'];
-  fileAttachmentDataSource = new MatTableDataSource();
-  fileAttachmentColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
+  damagePhotoDataSource = new MatTableDataSource();
+  damagePhotoColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
+  supportingDocumentDataSource = new MatTableDataSource();
+  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
   RoomTypes = RoomType;
-
 
   constructor(
     private router: Router,
@@ -106,11 +105,18 @@ export class ReviewComponent implements OnInit {
         ).subscribe(data => this.damagedRoomDataSource.data = data);
 
     // subscribe to changes in damage photos
-    const _fileAttachmentFormArray = this.formCreationService.damagedItemsByRoomForm.value.get('fileAttachments');
-    _fileAttachmentFormArray.valueChanges
+    const _damagePhotoFormArray = this.formCreationService.damagedItemsByRoomForm.value.get('damagePhotos');
+    _damagePhotoFormArray.valueChanges
       .pipe(
-        mapTo(_fileAttachmentFormArray.getRawValue())
-        ).subscribe(data => this.fileAttachmentDataSource.data = data);
+        mapTo(_damagePhotoFormArray.getRawValue())
+        ).subscribe(data => this.damagePhotoDataSource.data = data);
+
+    // subscribe to changes in supporting documents
+    const _supportingDocumentsFormArray = this.formCreationService.supportingDocumentsForm.value.get('supportingDocuments');
+    _supportingDocumentsFormArray.valueChanges
+      .pipe(
+        mapTo(_supportingDocumentsFormArray.getRawValue())
+        ).subscribe(data => this.supportingDocumentDataSource.data = data);
   }
 
   // callParentMoveStep(index: number) {

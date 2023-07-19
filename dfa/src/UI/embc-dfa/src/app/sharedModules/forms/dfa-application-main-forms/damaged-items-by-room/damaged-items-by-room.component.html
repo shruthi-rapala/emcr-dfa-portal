@@ -184,14 +184,14 @@
       </div>
       <br/><br/>
 
-      <div formGroupName="fileAttachment">
+      <div formGroupName="damagePhoto">
         <ng-container>
           <div clas="row">
             <div class="col-md-12">
               <p class="sub-heading" style="font-size: 15px">
                 If you have photos of damaged items, please have them available during the site meeting to help the evaluator identify eligible costs. You may also attach them to this application.
               </p>
-              <table mat-table [dataSource]="fileAttachmentsDataSource" *ngIf="fileAttachmentsDataSource.getValue().length > 0" style="width:100%">
+              <table mat-table [dataSource]="damagePhotosDataSource" *ngIf="damagePhotosDataSource.getValue().length > 0" style="width:100%">
                 <!-- File Name Column -->
                 <ng-container matColumnDef="fileName" style="width:25%">
                   <th mat-header-cell *matHeaderCellDef >
@@ -232,7 +232,7 @@
                       class="delete-image"
                       mat-icon-button
                       aria-label="Edit"
-                      (click)="editFileAttachmentRow(element, index)"
+                      (click)="editDamagePhotoRow(element, index)"
                     >
                       <img src="/assets/images/edit.svg" height="35" width="35" />
                       <img
@@ -245,7 +245,7 @@
                       class="delete-image"
                       mat-icon-button
                       aria-label="Remove"
-                      (click)="deleteFileAttachmentRow(index)"
+                      (click)="deleteDamagePhotoRow(index)"
                     >
                       <img src="/assets/images/delete.svg" height="35" width="35" />
                       <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
@@ -253,31 +253,31 @@
                   </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="fileAttachmentColumnsToDisplay"></tr>
+                <tr mat-header-row *matHeaderRowDef="damagePhotoColumnsToDisplay"></tr>
                 <tr
                   mat-row
-                  *matRowDef="let element; columns: fileAttachmentColumnsToDisplay"
+                  *matRowDef="let element; columns: damagePhotoColumnsToDisplay"
                   class="example-element-row"
                   [style.height]="'auto'"
                 ></tr>
 
               </table>
 
-              <div  *ngIf="fileAttachmentsDataSource.getValue().length > 0">
+              <div  *ngIf="damagePhotosDataSource.getValue().length > 0">
                 <br /><br/>
               </div>
 
               <button
-                *ngIf="!showFileAttachmentForm"
+                *ngIf="!showDamagePhotoForm"
                 class="family-button"
                 mat-button
                 type="button"
-                (click)="addFileAttachment()"
+                (click)="addDamagePhoto()"
               >
                 + Add Photos
               </button>
 
-              <mat-card *ngIf="showFileAttachmentForm">
+              <mat-card *ngIf="showDamagePhotoForm">
                 <div class="row">
                   <div class="col-md-6">
                     <label class="sub-heading" style="font-size: 15px"
@@ -286,28 +286,30 @@
                     <app-file-upload
                       [noOfAttachments]="1"
                       (attachedFile)="setFileFormControl($event)"
+                      [allowedFileTypes]="allowedFileTypes"
+                      allowedFileExtensionsList="pdf, jpg, jpeg, png"
                     >
                     </app-file-upload>
                   </div>
                   <div class="col-md-6">
                     <br/><br/>
-                    <div [hidden]="!damagedItemsByRoomForm.get('fileAttachment.fileData').value">
+                    <div [hidden]="!damagedItemsByRoomForm.get('damagePhoto.fileData').value">
                       <mat-label>File name<span style="color:red" >*</span></mat-label>
                       <br/>
-                      {{ damagedItemsByRoomForm.get('fileAttachment.fileName').value }}
+                      {{ damagedItemsByRoomForm.get('damagePhoto.fileName').value }}
                       <br/><br/>
                     </div>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!damagedItemsByRoomForm.get('fileAttachment.fileData').value"
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!damagedItemsByRoomForm.get('damagePhoto.fileData').value"
                       >You may update the file description to something more descriptive:</label
                     >
-                    <mat-form-field appearance="outline" [hidden]="!damagedItemsByRoomForm.get('fileAttachment.fileData').value">
+                    <mat-form-field appearance="outline" [hidden]="!damagedItemsByRoomForm.get('damagePhoto.fileData').value">
                       <mat-label>File description</mat-label>
                       <input formControlName="fileDescription" matInput placeholder="File description" required/>
                       <mat-error
                         *ngIf="
-                          damagedItemsByRoomForm.get('fileAttachment').controls.fileDescription.invalid &&
-                          damagedItemsByRoomForm.get('fileAttachment').controls.fileDescription.hasError('required') &&
-                          damagedItemsByRoomForm.get('fileAttachment').controls.fileDescription.touched
+                          damagedItemsByRoomForm.get('damagePhoto').controls.fileDescription.invalid &&
+                          damagedItemsByRoomForm.get('damagePhoto').controls.fileDescription.hasError('required') &&
+                          damagedItemsByRoomForm.get('damagePhoto').controls.fileDescription.touched
                         "
                       >
                         File description is required</mat-error
@@ -323,7 +325,7 @@
                       class="button-s details-button"
                       mat-button
                       type="button"
-                      (click)="cancelFileAttachments()"
+                      (click)="cancelDamagePhotos()"
                     >
                       Cancel
                     </button>
@@ -333,7 +335,7 @@
                       class="family-button details-button save-button"
                       mat-button
                       type="button"
-                      (click)="saveFileAttachments()"
+                      (click)="saveDamagePhotos()"
                     >
                       Save
                     </button>

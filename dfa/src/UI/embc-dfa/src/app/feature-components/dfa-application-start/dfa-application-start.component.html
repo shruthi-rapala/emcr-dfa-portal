@@ -49,19 +49,6 @@
         </div>
         <div class="col-md-6">
           <button
-            *ngIf="
-              currentFlow === 'verified-registration' &&
-                step.component === '????';
-            "
-            class="button-p"
-            mat-stroked-button
-            type="button"
-            (click)="goForward(dfaApplicationStartStepper, step.isLast, step.component)"
-          >
-            Review Submission
-          </button>
-          <button
-            *ngIf="!(currentFlow === 'verified-registration' && step.component === '???') && !(dfaApplicationStartStepper.selectedIndex == 2 && fullInsurance === true)"
             class="button-p"
             mat-stroked-button
             type="button"

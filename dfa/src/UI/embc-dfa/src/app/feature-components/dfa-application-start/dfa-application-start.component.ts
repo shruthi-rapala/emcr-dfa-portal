@@ -7,6 +7,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
+import * as globalConst from '../../core/services/globalConstants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCreationService } from '../../core/services/componentCreation.service';
 import { ComponentMetaDataModel } from '../../core/model/componentMetaData.model';
@@ -16,7 +17,8 @@ import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationStartDataService } from './dfa-application-start-data.service';
 import { DFAApplicationStartService } from './dfa-application-start.service';
-import { InsuranceOption } from 'src/app/core/model/dfa-application-start.model';
+import { InsuranceOption, SignatureBlock } from 'src/app/core/api/models';
+import { ProfileDataService } from '../profile/profile-data.service';
 
 @Component({
   selector: 'app-dfa-application-start',
@@ -52,7 +54,8 @@ export class DFAApplicationStartComponent
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private dfaApplicationStartService: DFAApplicationStartService
+    private dfaApplicationStartService: DFAApplicationStartService,
+    private profileDataService: ProfileDataService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -120,6 +123,7 @@ export class DFAApplicationStartComponent
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
     if (isLast) {
+      this.setFormData(component);
       this.submitFile();
     } else if (this.form.status === 'VALID') {
       if (isLast) {
@@ -145,16 +149,29 @@ export class DFAApplicationStartComponent
   setFormData(component: string): void {
     switch (component) {
       case 'consent':
-        this.dfaApplicationStartDataService.consent = this.form.value;
+        this.dfaApplicationStartDataService.consent = this.form.get('consent').value;
         break;
       case 'profile-verification':
-        this.dfaApplicationStartDataService.profileVerification = this.form.value;
+        this.dfaApplicationStartDataService.profileVerified = this.form.get('profileVerified').value;
+        this.dfaApplicationStartDataService.profileId = this.form.get('profileId').value;
         break;
-      case 'app-type-insurance':
-        this.dfaApplicationStartDataService.applicantOption = this.form.value;
-        this.dfaApplicationStartDataService.insuranceOption = this.form.value;
-        this.dfaApplicationStartDataService.smallBusinessOption = this.form.value;
-        this.dfaApplicationStartDataService.farmOption = this.form.value;
+      case 'apptype-insurance':
+        this.dfaApplicationStartDataService.applicantOption = this.form.controls.applicantOption.value;
+        this.dfaApplicationStartDataService.insuranceOption = this.form.controls.insuranceOption.value;
+        this.dfaApplicationStartDataService.smallBusinessOption = this.form.controls.smallBusinessOption.value;
+        this.dfaApplicationStartDataService.farmOption = this.form.controls.farmOption.value;
+        if (this.form.get('applicantSignature').get('signature').value) {
+          this.dfaApplicationStartDataService.applicantSignature =
+          { signature: this.form.get('applicantSignature').get('signature').value,
+          dateSigned: this.form.get('applicantSignature').get('dateSigned').value,
+          signedName: this.form.get('applicantSignature').get('signedName').value} as SignatureBlock;
+        } else this.dfaApplicationStartDataService.applicantSignature = null;
+        if (this.form.get('secondaryApplicantSignature').get('signature').value) {
+          this.dfaApplicationStartDataService.secondaryApplicantSignature =
+          { signature: this.form.get('secondaryApplicantSignature').get('signature').value,
+          dateSigned: this.form.get('secondaryApplicantSignature').get('dateSigned').value,
+          signedName: this.form.get('secondaryApplicantSignature').get('signedName').value} as SignatureBlock;
+        } else this.dfaApplicationStartDataService.secondaryApplicantSignature = null;
         break;
       default:
     }
@@ -198,37 +215,37 @@ export class DFAApplicationStartComponent
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    // this.dfaApplicationStartService
-      // .upsertProfile(this.profileDataService.createProfileDTO())
-      // .subscribe({
-        // next: (profileId) => {
-          // this.profileDataService.setProfileId(profileId);
+    this.dfaApplicationStartService
+      .upsertApplication(this.dfaApplicationStartDataService.createDFAApplicationStartDTO())
+      .subscribe({
+        next: (applicationId) => {
+          this.dfaApplicationStartDataService.setApplicationId(applicationId);
           this.router.navigate(['/verified-registration/dashboard']);
-        // },
-        // error: (error) => {
-          // this.showLoader = !this.showLoader;
-          // this.isSubmitted = !this.isSubmitted;
-          // this.alertService.setAlert('danger', globalConst.saveProfileError);
-        // }
-      // });
+        },
+        error: (error) => {
+          this.showLoader = !this.showLoader;
+          this.isSubmitted = !this.isSubmitted;
+          this.alertService.setAlert('danger', globalConst.saveApplicationError);
+        }
+      });
   }
 
   submitFile(): void {
     this.showLoader = !this.showLoader;
     this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    // this.dfaApplicationStartService
-      // .upsertProfile(this.profileDataService.createProfileDTO())
-      // .subscribe({
-        // next: (profileId) => {
-          // this.profileDataService.setProfileId(profileId);
-          this.router.navigate(['/dfa-application-main']);
-        // },
-        // error: (error) => {
-          // this.showLoader = !this.showLoader;
-          // this.isSubmitted = !this.isSubmitted;
-          // this.alertService.setAlert('danger', globalConst.saveProfileError);
-        // }
-      // });
+    this.dfaApplicationStartService
+    .upsertApplication(this.dfaApplicationStartDataService.createDFAApplicationStartDTO())
+     .subscribe({
+      next: (applicationId) => {
+       this.dfaApplicationStartDataService.setApplicationId(applicationId);
+        this.router.navigate(['/dfa-application-main']);
+      },
+      error: (error) => {
+        this.showLoader = !this.showLoader;
+        this.isSubmitted = !this.isSubmitted;
+        this.alertService.setAlert('danger', globalConst.saveApplicationError);
+      }
+     });
   }
 }
