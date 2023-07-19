@@ -7,8 +7,8 @@
   float: left;
   padding-left: 15px;
   padding-right: 15px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .view-banner {
@@ -43,6 +43,7 @@
 .active-tab {
   color: #169bd5 !important;
   background: white;
+  border-bottom: 2px solid;
 
   .inactive-curr {
     display: none !important;
@@ -61,4 +62,9 @@
   width: 100%;
   white-space: normal;
   line-height: inherit;
+}
+
+.tabHead {
+  font-size: 20px;
+  padding: 0 50px 0 50px;
 }

@@ -7,25 +7,9 @@ const routes: Routes = [{
   children: [
     {
       path: '',
-      redirectTo: 'eventlist',
+      redirectTo: 'current',
       pathMatch: 'full'
     },
-    //{
-    //  path: 'current',
-    //  loadChildren: () =>
-    //    import(
-    //      'src/app/sharedModules/components/evacuation-file/evacuation-file-list/evacuation-file-list.module'
-    //    ).then((m) => m.EvacuationFileListModule),
-    //  data: { flow: 'verified-registration' }
-    //},
-    //{
-    //  path: 'past',
-    //  loadChildren: () =>
-    //    import(
-    //      'src/app/sharedModules/components/evacuation-file/evacuation-file-list/evacuation-file-list.module'
-    //    ).then((m) => m.EvacuationFileListModule),
-    //  data: { flow: 'verified-registration' }
-    //},
     {
       path: 'eventlist',
       loadChildren: () =>
@@ -33,7 +17,39 @@ const routes: Routes = [{
           'src/app/sharedModules/dashboard-components/dfa-events/dfa-events.module'
         ).then((m) => m.DFAEventsModule),
       data: { flow: 'dfa-dashboard' }
+    },
+    {
+      path: 'current',
+      loadChildren: () =>
+        import(
+          'src/app/sharedModules/dashboard-components/dfa-application/dfa-application.module'
+        ).then((m) => m.DFADashApplicationModule),
+      data: { flow: 'dfa-dashboard' }
+    },
+    {
+      path: 'past',
+      loadChildren: () =>
+        import(
+          'src/app/sharedModules/dashboard-components/dfa-events/dfa-events.module'
+        ).then((m) => m.DFAEventsModule),
+      data: { flow: 'dfa-dashboard' }
+    },
+    {
+      path: 'profile',
+      loadChildren: () =>
+        import(
+          'src/app/sharedModules/dashboard-components/dfa-profile/dfa-profile.module'
+        ).then((m) => m.DFAProfileModule),
+      data: { flow: 'dfa-dashboard' }
     }
+    //{
+    //  path: 'profile',
+    //  loadChildren: () =>
+    //    import(
+    //      'src/app/feature-components/review/review.module'
+    //    ).then((m) => m.ReviewModule),
+    //  data: { flow: 'dfa-dashboard' }
+    //}
     //{
     //  path: 'current/:essFile',
     //  loadChildren: () =>
