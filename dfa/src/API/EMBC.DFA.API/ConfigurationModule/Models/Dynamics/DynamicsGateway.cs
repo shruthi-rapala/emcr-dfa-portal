@@ -99,7 +99,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             catch
             {
                 return "anewapplication";
-                //throw new Exception($"Failed to add application {ex.Message}", ex);
+              //  throw new Exception($"Failed to add application {ex.Message}", ex);
             }
 
             return string.Empty;

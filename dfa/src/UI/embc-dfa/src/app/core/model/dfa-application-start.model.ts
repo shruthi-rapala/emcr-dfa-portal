@@ -39,20 +39,20 @@ export class ProfileVerification {
   ) {}
 }
 
-export class ProfileVerificationForm {
-  profileVerified = new UntypedFormControl();
-  profileId = new UntypedFormControl();
+// export class ProfileVerificationForm {
+//   profileVerified = new UntypedFormControl();
+//   profileId = new UntypedFormControl();
 
-  constructor(
-    profileVerification: ProfileVerification
-  ) {
-    this.profileVerified.setValidators([Validators.required]);
-    this.profileVerified.setValue(profileVerification.profileVerified);
+//   constructor(
+//     profileVerification: ProfileVerification
+//   ) {
+//     this.profileVerified.setValidators([Validators.required]);
+//     this.profileVerified.setValue(profileVerification.profileVerified);
 
-    this.profileId.setValue(profileVerification.profileId);
-    this.profileId.setValidators([Validators.required]);
-  }
-}
+//     this.profileId.setValue(profileVerification.profileId);
+//     this.profileId.setValidators([Validators.required]);
+//   }
+// }
 
 export class AppTypeInsurance {
   applicantOption: ApplicantOption;
