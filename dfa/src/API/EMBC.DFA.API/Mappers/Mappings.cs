@@ -42,18 +42,18 @@ namespace EMBC.DFA.API.Mappers
                     (s.AppTypeInsurance.applicantOption == ApplicantOption.FarmOwner ? ApplicantTypeOptionSet.FarmOwner :
                     (s.AppTypeInsurance.applicantOption == ApplicantOption.CharitableOrganization ? ApplicantTypeOptionSet.CharitableOrganization :
                     (s.AppTypeInsurance.applicantOption == ApplicantOption.SmallBusinessOwner ? ApplicantTypeOptionSet.SmallBusinessOwner : ApplicantTypeOptionSet.HomeOwner))))))
-                .ForMember(d => d.dfa_insurancetype, opts => opts.MapFrom(s => s.AppTypeInsurance.insuranceOption == InsuranceOption.Yes ? InsuranceTypeOptionSet.Yes :
+                .ForMember(d => d.dfa_doyouhaveinsurancecoverage2, opts => opts.MapFrom(s => s.AppTypeInsurance.insuranceOption == InsuranceOption.Yes ? InsuranceTypeOptionSet.Yes :
                     (s.AppTypeInsurance.insuranceOption == InsuranceOption.No ? InsuranceTypeOptionSet.No :
                     (s.AppTypeInsurance.insuranceOption == InsuranceOption.Unsure ? InsuranceTypeOptionSet.YesBut : InsuranceTypeOptionSet.Yes))))
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_primaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_primaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.signedName))
                 .ForMember(d => d.dfa_primaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.dateSigned))
-                //.ForMember(d => d.entityimagenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? Convert.FromBase64String(s.AppTypeInsurance.applicantSignature.signature.Substring(s.AppTypeInsurance.applicantSignature.signature.IndexOf(',') + 1)) : null))
+                .ForMember(d => d.dfa_primaryapplicantsignaturenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? Convert.FromBase64String(s.AppTypeInsurance.applicantSignature.signature.Substring(s.AppTypeInsurance.applicantSignature.signature.IndexOf(',') + 1)) : null))
                 .ForMember(d => d.dfa_secondaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_secondaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.signedName))
-                .ForMember(d => d.dfa_secondaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.dateSigned));
-                //.ForMember(d => d.secondaryentityimagenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature != null ? Convert.FromBase64String(s.AppTypeInsurance.secondaryApplicantSignature.signature.Substring(s.AppTypeInsurance.secondaryApplicantSignature.signature.IndexOf(',') + 1)) : null));
+                .ForMember(d => d.dfa_secondaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.dateSigned))
+                .ForMember(d => d.dfa_secondaryapplicantsignaturenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature != null ? Convert.FromBase64String(s.AppTypeInsurance.secondaryApplicantSignature.signature.Substring(s.AppTypeInsurance.secondaryApplicantSignature.signature.IndexOf(',') + 1)) : null));
 
             CreateMap<dfa_appapplicationstart, ProfileVerification>()
                .ForMember(d => d.profileVerified, opts => opts.Ignore())
@@ -65,10 +65,10 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<dfa_appapplicationstart, AppTypeInsurance>()
                 .ForMember(d => d.farmOption, opts => opts.Ignore())
                 .ForMember(d => d.smallBusinessOption, opts => opts.Ignore())
-                //.ForPath(d => d.applicantSignature.signature, opts => opts.MapFrom(s => Convert.ToBase64String(s.entityimagenoins)))
+                .ForPath(d => d.applicantSignature.signature, opts => opts.MapFrom(s => Convert.ToBase64String(s.dfa_primaryapplicantsignaturenoins)))
                 .ForPath(d => d.applicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_primaryapplicantsigneddatenoins))
                 .ForPath(d => d.applicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_primaryapplicantprintnamenoins))
-                //.ForPath(d => d.secondaryApplicantSignature.signature, opts => opts.MapFrom(s => Convert.ToBase64String(s.secondaryentityimagenoins)))
+                .ForPath(d => d.secondaryApplicantSignature.signature, opts => opts.MapFrom(s => Convert.ToBase64String(s.dfa_secondaryapplicantsignaturenoins)))
                 .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddatenoins))
                 .ForPath(d => d.secondaryApplicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_secondaryapplicantprintnamenoins))
                 .ForMember(d => d.applicantOption, opts => opts.MapFrom(s => s.dfa_applicanttype == (int)ApplicantTypeOptionSet.HomeOwner ? ApplicantOption.Homeowner :
@@ -76,9 +76,9 @@ namespace EMBC.DFA.API.Mappers
                     (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.SmallBusinessOwner ? ApplicantOption.SmallBusinessOwner :
                     (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.FarmOwner ? ApplicantOption.FarmOwner :
                     (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.CharitableOrganization ? ApplicantOption.CharitableOrganization : ApplicantOption.Homeowner))))))
-                .ForMember(d => d.insuranceOption, opts => opts.MapFrom(s => s.dfa_insurancetype == (int)InsuranceTypeOptionSet.Yes ? InsuranceOption.Yes :
-                    (s.dfa_insurancetype == (int)InsuranceTypeOptionSet.No ? InsuranceOption.No :
-                    (s.dfa_insurancetype == (int)InsuranceTypeOptionSet.YesBut ? InsuranceOption.Unsure : InsuranceOption.Yes))));
+                .ForMember(d => d.insuranceOption, opts => opts.MapFrom(s => s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.Yes ? InsuranceOption.Yes :
+                    (s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.No ? InsuranceOption.No :
+                    (s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.YesBut ? InsuranceOption.Unsure : InsuranceOption.Yes))));
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
                 .ForMember(d => d.Id, opts => opts.Ignore())

@@ -80,7 +80,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             {
                 Select = new[]
                 {
-                    "dfa_applicanttype", "dfa_insurancetype", "dfa_applicant.dfa_appcontactid", "dfa_primaryapplicantisignednoins",
+                    "dfa_applicanttype", "dfa_doyouhaveinsurancecoverage2", "dfa_applicant.dfa_appcontactid", "dfa_primaryapplicantisignednoins",
                     "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "entityimagenoins", "dfa_secondaryapplicantsignednoins",
                     "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins", "secondaryentityimagenoins"
                 }
