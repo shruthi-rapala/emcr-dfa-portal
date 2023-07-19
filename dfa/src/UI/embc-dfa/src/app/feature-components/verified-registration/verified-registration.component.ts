@@ -46,20 +46,20 @@ export class VerifiedRegistrationComponent implements OnInit {
         }
       });
     } else {
-      this.loadNewProfileWorkflow();
-      //this.profileService.profileExists().subscribe({
-      //  next: (exists: boolean) => {
-      //    if (!exists) {
-      //      this.loadNewProfileWorkflow();
-      //    } else {
-      //      this.loadExistingProfileWorkflow();
-      //    }
-      //  },
-      //  error: (error) => {
-      //    this.alertService.clearAlert();
-      //    this.alertService.setAlert('danger', globalConst.profileExistError);
-      //  }
-      //});
+      //this.loadNewProfileWorkflow();
+      this.profileService.profileExists().subscribe({
+        next: (exists: boolean) => {
+          if (!exists) {
+            this.loadNewProfileWorkflow();
+          } else {
+            this.loadExistingProfileWorkflow();
+          }
+        },
+        error: (error) => {
+          this.alertService.clearAlert();
+          this.alertService.setAlert('danger', globalConst.profileExistError);
+        }
+      });
     }
 
     this.timeOutService.init(
@@ -74,17 +74,18 @@ export class VerifiedRegistrationComponent implements OnInit {
   }
 
   loadExistingProfileWorkflow() {
-    this.profileService.getProfile();
-    if (this.conflictService.getCount() === 0) {
-      this.router.navigate(['/verified-registration/dashboard']);
-    } else if (
-      !this.conflictService.getHasVisitedConflictPage() ||
-      this.router.url === '/verified-registration/conflicts' ||
-      this.router.url === '/verified-registration' ||
-      this.conflictService.getCount() === null
-    ) {
-      this.loadProfileConflicts();
-    }
+    this.router.navigate(['/dfa-dashboard']);
+    //this.profileService.getProfile();
+    //if (this.conflictService.getCount() === 0) {
+    //  this.router.navigate(['/verified-registration/dashboard']);
+    //} else if (
+    //  !this.conflictService.getHasVisitedConflictPage() ||
+    //  this.router.url === '/verified-registration/conflicts' ||
+    //  this.router.url === '/verified-registration' ||
+    //  this.conflictService.getCount() === null
+    //) {
+    //  this.loadProfileConflicts();
+    //}
   }
 
   loadProfileConflicts() {

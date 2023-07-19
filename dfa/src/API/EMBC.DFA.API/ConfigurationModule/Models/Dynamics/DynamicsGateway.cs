@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EMBC.ESS.Shared.Contracts.Metadata;
 using Xrm.Tools.WebAPI;
 using Xrm.Tools.WebAPI.Requests;
 
@@ -34,6 +35,34 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             });
 
             return list.List;
+        }
+
+        public async Task<dfa_appcontact> GetUserProfileAsync(string userId)
+        {
+            try
+            {
+                var userObj = await api.GetList<dfa_appcontact>("dfa_appcontacts", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_firstname", "dfa_lastname", "dfa_initial",
+                        "dfa_isindigenous", "dfa_emailaddress", "dfa_cellphonenumber",
+                        "dfa_residencetelephonenumber", "dfa_alternatephonenumber", "dfa_primaryaddressline1",
+                        "dfa_primaryaddressline2", "dfa_primarycity", "dfa_primarypostalcode",
+                        "dfa_primarystateprovince", "dfa_secondaryaddressline1", "dfa_secondaryaddressline2",
+                        "dfa_secondarycity", "dfa_secondarypostalcode", "dfa_secondarystateprovince",
+                        //"dfa_isprimaryandsecondaryaddresssame",
+                        "dfa_bcservicecardid"
+                    },
+                    Filter = $"dfa_bcservicecardid eq '{userId}'"
+                });
+
+                return userObj != null ? userObj.List.FirstOrDefault() : null;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
         }
 
         public async Task<string> AddContact(dfa_appcontact contact)
@@ -89,6 +118,23 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             });
 
             return list.List.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync()
+        {
+            try
+            {
+                var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
+                {
+                    Select = new[] { "dfa_appapplicationid", "dfa_applicanttype" }
+                });
+
+                return list.List;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
         }
     }
 }

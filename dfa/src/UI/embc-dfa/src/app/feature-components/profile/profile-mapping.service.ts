@@ -36,7 +36,7 @@ export class ProfileMappingService {
   }
 
   setExistingProfile(profile: Profile): void {
-    this.setRestrictionDetails(profile);
+    //this.setRestrictionDetails(profile);
     this.setPersonalDetails(profile);
     this.setAddressDetails(profile);
     this.setContactDetails(profile);
@@ -135,7 +135,8 @@ export class ProfileMappingService {
           isBcMailingAddress: this.isBCAddress(
             profile.mailingAddress.stateProvince
           ),
-          mailingAddress
+          mailingAddress: mailingAddress,
+          country: ''
         });
         formGroup = address;
       });

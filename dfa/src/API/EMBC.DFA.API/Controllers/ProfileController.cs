@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.Serialization;
 using System.Security.Claims;
 using System.Text.Json;
@@ -59,7 +60,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("current")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Profile> GetProfile()
+        public async Task<ActionResult<Profile>> GetProfile()
         {
             var userId = currentUserId;
             //var profile = mapper.Map<Profile>(await evacuationSearchService.GetRegistrantByUserId(userId));
@@ -69,7 +70,7 @@ namespace EMBC.DFA.API.Controllers
             //    //try get BCSC profile
             //    profile = GetUserFromPrincipal();
             //}
-            var profile = GetUserFromPrincipal();
+            var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             return Ok(profile);
         }
@@ -83,8 +84,21 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<bool>> GetDoesUserExists()
         {
             var userId = currentUserId;
-            var profile = await evacuationSearchService.GetRegistrantByUserId(userId);
+            var profile = await handler.HandleGetUser(userId);
             return Ok(profile != null);
+        }
+
+        /// <summary>
+        /// get dfa applications
+        /// </summary>
+        /// <returns>true if existing user, false if a new user</returns>
+        [HttpGet("dfaapplications")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<dfa_appapplication>> GetDFAApplications()
+        {
+            var userId = currentUserId;
+            var profile = await handler.HandleApplicationList();
+            return Ok(profile);
         }
 
         /// <summary>

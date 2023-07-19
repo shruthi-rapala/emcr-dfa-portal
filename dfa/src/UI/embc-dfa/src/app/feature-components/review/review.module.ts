@@ -11,6 +11,7 @@ import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 import { CaptchaV2Component } from 'src/app/core/components/captcha-v2/captcha-v2.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
+import { DashReviewRoutingModule } from './review-routing.module';
 
 @NgModule({
   declarations: [ReviewComponent, CaptchaV2Component],
@@ -24,7 +25,8 @@ import { MatTableModule } from '@angular/material/table';
     CoreModule,
     RecaptchaFormsModule,
     RecaptchaModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DashReviewRoutingModule
   ],
   exports: [ReviewComponent]
 })
