@@ -30,4 +30,10 @@
         public bool? dfa_isindigenous { get; set; }
         public int dfa_isprimaryandsecondaryaddresssame { get; set; }
     }
+
+    public class dfa_appapplication
+    {
+        public string dfa_appapplicationid { get; set; }
+        public string dfa_applicanttype { get; set; }
+    }
 }

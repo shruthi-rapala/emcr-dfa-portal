@@ -34,7 +34,44 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_isprimaryandsecondaryaddresssame, opts => opts.MapFrom(s => (!string.IsNullOrEmpty(s.IsMailingAddressSameAsPrimaryAddress) ?
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == "yes" ? 222710000 :
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == "no" ? 222710001 : 222710002)) : 222710002)))
+                .ReverseMap()
+                .ForMember(d => d.PersonalDetails, opts => opts.MapFrom(s => new PersonDetails()
+                {
+                    FirstName = s.dfa_firstname,
+                    LastName = s.dfa_lastname,
+                    Initials = s.dfa_initial
+                }))
                 ;
+
+            //CreateMap<dfa_appcontact, Profile>()
+            //    .ForMember(d => d.PersonalDetails, opts => opts.MapFrom(s => new PersonDetails()
+            //    {
+            //         FirstName = s.dfa_firstname,
+            //         LastName = s.dfa_lastname,
+            //         Initials = s.dfa_initial
+            //    }))
+                //.ForPath(d => d.PersonalDetails.LastName, opts => opts.MapFrom(s => s.dfa_lastname))
+                //.ForPath(d => d.PersonalDetails.Initials, opts => opts.MapFrom(s => s.dfa_initial))
+                //.ForMember(d => d.dfa_isindigenous, opts => opts.MapFrom(s => (!string.IsNullOrEmpty(s.PersonalDetails.IndigenousStatus) ? (s.PersonalDetails.IndigenousStatus.ToLower() == "yes" ? true : false) : (bool?)null)))
+                //.ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.ContactDetails.Email))
+                //.ForMember(d => d.dfa_cellphonenumber, opts => opts.MapFrom(s => s.ContactDetails.CellPhoneNumber))
+                //.ForMember(d => d.dfa_residencetelephonenumber, opts => opts.MapFrom(s => s.ContactDetails.ResidencePhone))
+                //.ForMember(d => d.dfa_alternatephonenumber, opts => opts.MapFrom(s => s.ContactDetails.AlternatePhone))
+                //.ForMember(d => d.dfa_primaryaddressline1, opts => opts.MapFrom(s => s.PrimaryAddress.AddressLine1))
+                //.ForMember(d => d.dfa_primaryaddressline2, opts => opts.MapFrom(s => s.PrimaryAddress.AddressLine2))
+                //.ForMember(d => d.dfa_primarycity, opts => opts.MapFrom(s => s.PrimaryAddress.City))
+                //.ForMember(d => d.dfa_primarypostalcode, opts => opts.MapFrom(s => s.PrimaryAddress.PostalCode))
+                //.ForMember(d => d.dfa_primarystateprovince, opts => opts.MapFrom(s => s.PrimaryAddress.StateProvince))
+                //.ForMember(d => d.dfa_secondaryaddressline1, opts => opts.MapFrom(s => s.MailingAddress.AddressLine1))
+                //.ForMember(d => d.dfa_secondaryaddressline2, opts => opts.MapFrom(s => s.MailingAddress.AddressLine2))
+                //.ForMember(d => d.dfa_secondarycity, opts => opts.MapFrom(s => s.MailingAddress.City))
+                //.ForMember(d => d.dfa_secondarypostalcode, opts => opts.MapFrom(s => s.MailingAddress.PostalCode))
+                //.ForMember(d => d.dfa_secondarystateprovince, opts => opts.MapFrom(s => s.MailingAddress.StateProvince))
+                //.ForMember(d => d.dfa_bcservicecardid, opts => opts.MapFrom(s => s.Id))
+                //.ForMember(d => d.dfa_isprimaryandsecondaryaddresssame, opts => opts.MapFrom(s => (!string.IsNullOrEmpty(s.IsMailingAddressSameAsPrimaryAddress) ?
+                //                                (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == "yes" ? 222710000 :
+                //                                (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == "no" ? 222710001 : 222710002)) : 222710002)))
+                //;
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
                 .ForMember(d => d.Id, opts => opts.Ignore())
