@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Org.BouncyCastle.Asn1.Mozilla;
@@ -168,5 +169,244 @@ namespace EMBC.DFA.API.Controllers
 
         [EnumMember(Value = "Landlord")]
         Landlord,
+    }
+
+    /// <summary>
+    /// Secondary Applicant Type Options
+    /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum SecondaryApplicantTypeOption
+    {
+        [EnumMember(Value = "Contact")]
+        Contact,
+
+        [EnumMember(Value = "Organization")]
+        Organization,
+    }
+
+    /// <summary>
+    /// File Category Options
+    /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum FileCategory
+    {
+        [EnumMember(Value = "Insurance")]
+        Insurance,
+
+        [EnumMember(Value = "Financial")]
+        Financial,
+
+        [EnumMember(Value = "Third party consent")]
+        ThirdPartyConsent,
+
+        [EnumMember(Value = "Tenancy proof")]
+        TenancyProof,
+
+        [EnumMember(Value = "Damage photo")]
+        DamagePhoto,
+
+        [EnumMember(Value = "Cleanup")]
+        Cleanup,
+
+        [EnumMember(Value = "Appeal")]
+        Appeal,
+
+        [EnumMember(Value = "Identification")]
+        Identification
+    }
+
+    /// <summary>
+    /// Room Types
+    /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum RoomType
+    {
+        [EnumMember(Value = "Bathroom")]
+        Bathroom,
+
+        [EnumMember(Value = "Bedroom")]
+        Bedroom,
+
+        [EnumMember(Value = "Dining room")]
+        Dining,
+
+        [EnumMember(Value = "Family room")]
+        Family,
+
+        [EnumMember(Value = "Garage")]
+        Garage,
+
+        [EnumMember(Value = "Kitchen")]
+        Kitchen,
+
+        [EnumMember(Value = "Laundry room")]
+        Laundry,
+
+        [EnumMember(Value = "Living room")]
+        Living,
+
+        [EnumMember(Value ="Other")]
+        Other
+    }
+
+    /// <summary>
+    /// Damaged Property Address
+    /// </summary>
+    public class DamagedPropertyAddress
+    {
+        public string? addressLine1 { get; set; }
+        public string? addressLine2 { get; set; }
+        public string? community { get; set; }
+        public string? postalCode { get; set; }
+        public string? stateProvince { get; set; }
+        public bool? occupyAsPrimaryResidence { get; set; }
+        public bool? onAFirstNationsReserve { get; set; }
+        public string? firstNationsReserve { get; set; }
+        public bool? manufacturedHome { get; set; }
+        public bool? eligibleForHomeOwnerGrant { get; set; }
+        public string? landlordGivenNames { get; set; }
+        public string? landlordSurname { get; set; }
+        public string? landlordPhone { get; set; }
+        public string? landlordEmail { get; set; }
+    }
+
+    /// <summary>
+    /// Property Damage
+    /// </summary>
+    public class PropertyDamage
+    {
+        public bool? floodDamage { get; set; }
+        public bool? landslideDamage { get; set; }
+        public bool? wildfireDamage { get; set; }
+        public bool? stormDamage { get; set; }
+        public bool? otherDamage { get; set; }
+        public string? otherDamageText { get; set; }
+        public string? damageFromDate { get; set; }
+        public string? damageToDate { get; set; }
+        public string? briefDescription { get; set; }
+        public bool? lossesExceed1000 { get; set; }
+        public bool? wereYouEvacuated { get; set; }
+        public string? dateReturned { get; set; }
+        public bool? residingInResidence { get; set; }
+    }
+
+    /// <summary>
+    /// Occupants
+    /// </summary>
+    public class Occupants
+    {
+       public IEnumerable<FullTimeOccupant>? fullTimeOccupants { get; set; }
+       public IEnumerable<OtherContact>? otherContacts { get; set; }
+       public IEnumerable<SecondaryApplicant>? secondaryApplicants { get; set; }
+    }
+
+    /// <summary>
+    /// Full Time Occupants
+    /// </summary>
+    public class FullTimeOccupant
+    {
+        public string? id { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string relationship { get; set; }
+    }
+
+    /// <summary>
+    /// Full Time Other Contact
+    /// </summary>
+    public class OtherContact
+    {
+        public string? id { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string phoneNumber { get; set; }
+        public string email { get; set; }
+    }
+
+    /// <summary>
+    /// Full Time Seoondary Applicant
+    /// </summary>
+    public class SecondaryApplicant
+    {
+        public string? id { get; set; }
+        public SecondaryApplicantTypeOption applicantType { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string phoneNumber { get; set; }
+        public string email { get; set; }
+    }
+
+    /// <summary>
+    /// Clean Up Log
+    /// </summary>
+    public class CleanUpLog
+    {
+        public IEnumerable<CleanUpLogItem>? cleanUpLogItems { get; set; }
+        public IEnumerable<FileUpload>? damagePhotos { get; set; }
+    }
+
+    /// <summary>
+    /// Clean Up Log Item
+    /// </summary>
+    public class CleanUpLogItem
+    {
+        public string? id { get; set; }
+        public string date { get; set; }
+        public string name { get; set; }
+        public string hours { get; set; }
+        public string description { get; set; }
+    }
+
+    /// <summary>
+    /// File Upload
+    /// </summary>
+    public class FileUpload
+    {
+        public string? id { get; set; }
+        public string fileName { get; set; }
+        public string fileDescription { get; set; }
+        public FileCategory fileType { get; set; }
+        public string uploadedDate { get; set; }
+        public string modifiedBy { get; set; }
+        public string fileData { get; set; }
+        public string contentType { get; set; }
+        public int fileSize { get; set; }
+    }
+
+    /// <summary>
+    /// Damaged Items By Room
+    /// </summary>
+    public class DamagedItemsByRoom
+    {
+        public IEnumerable<DamagedRoom> damagedRooms { get; set; }
+        public IEnumerable<FileUpload> damagePhotos { get; set; }
+    }
+
+    /// <summary>
+    /// Damaged Room
+    /// </summary>
+    public class DamagedRoom
+    {
+        public RoomType roomType { get; set; }
+        public string? otherRoomType { get; set; }
+        public string description { get; set; }
+    }
+
+    /// <summary>
+    /// Supporting Documents
+    /// </summary>
+    public class SupportingDocuments
+    {
+        public FileUpload? insuranceTemplate { get; set; }
+        public IEnumerable<FileUpload>? supportingDocuments { get; set; }
+    }
+
+    /// <summary>
+    /// Damaged Property Address
+    /// </summary>
+    public class SignAndSubmit
+    {
+        public SignatureBlock? applicantSignature { get; set; }
+        public SignatureBlock? secondaryApplicantSignature { get; set; }
     }
 }

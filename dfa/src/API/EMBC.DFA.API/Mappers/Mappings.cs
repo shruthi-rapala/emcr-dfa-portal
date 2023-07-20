@@ -43,6 +43,36 @@ namespace EMBC.DFA.API.Mappers
                 }))
                 ;
 
+            CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
+                .ForMember(d => d.Id, opts => opts.Ignore())
+                .ForMember(d => d.AuthenticatedUser, opts => opts.Ignore())
+                .ForMember(d => d.VerifiedUser, opts => opts.Ignore())
+                .ForMember(d => d.IsMinor, opts => opts.Ignore())
+                .ForMember(d => d.UserId, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.PersonalDetails.FirstName))
+                .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.PersonalDetails.LastName))
+                .ForMember(d => d.Initials, opts => opts.MapFrom(s => s.PersonalDetails.Initials))
+                .ForMember(d => d.Email, opts => opts.MapFrom(s => s.ContactDetails.Email))
+                .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.ContactDetails.CellPhoneNumber))
+                .ForMember(d => d.CreatedOn, opts => opts.Ignore())
+                .ForMember(d => d.LastModified, opts => opts.Ignore())
+                .ForMember(d => d.CreatedByDisplayName, opts => opts.Ignore())
+                .ForMember(d => d.CreatedByUserId, opts => opts.Ignore())
+                .ForMember(d => d.LastModifiedDisplayName, opts => opts.Ignore())
+                .ForMember(d => d.LastModifiedUserId, opts => opts.Ignore())
+
+                .ReverseMap()
+
+                .ForMember(d => d.IsMailingAddressSameAsPrimaryAddress, opts => opts.MapFrom(s =>
+                    string.Equals(s.MailingAddress.Country, s.PrimaryAddress.Country, StringComparison.InvariantCultureIgnoreCase) &&
+                    string.Equals(s.MailingAddress.StateProvince, s.PrimaryAddress.StateProvince, StringComparison.InvariantCultureIgnoreCase) &&
+                    string.Equals(s.MailingAddress.Community, s.PrimaryAddress.Community, StringComparison.InvariantCultureIgnoreCase) &&
+                    string.Equals(s.MailingAddress.City, s.PrimaryAddress.City, StringComparison.InvariantCultureIgnoreCase) &&
+                    string.Equals(s.MailingAddress.PostalCode, s.PrimaryAddress.PostalCode, StringComparison.InvariantCultureIgnoreCase) &&
+                    string.Equals(s.MailingAddress.AddressLine1, s.PrimaryAddress.AddressLine1, StringComparison.InvariantCultureIgnoreCase) &&
+                    string.Equals(s.MailingAddress.AddressLine2, s.PrimaryAddress.AddressLine2, StringComparison.InvariantCultureIgnoreCase)))
+                ;
+
             CreateMap<DFAApplicationStart, dfa_appapplicationstart>()
                 .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantOption == ApplicantOption.Homeowner ? ApplicantTypeOptionSet.HomeOwner :
                     (s.AppTypeInsurance.applicantOption == ApplicantOption.ResidentialTenant ? ApplicantTypeOptionSet.ResidentialTenant :
@@ -87,35 +117,42 @@ namespace EMBC.DFA.API.Mappers
                     (s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.No ? InsuranceOption.No :
                     (s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.YesBut ? InsuranceOption.Unsure : InsuranceOption.Yes))));
 
-            CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
-                .ForMember(d => d.Id, opts => opts.Ignore())
-                .ForMember(d => d.AuthenticatedUser, opts => opts.Ignore())
-                .ForMember(d => d.VerifiedUser, opts => opts.Ignore())
-                .ForMember(d => d.IsMinor, opts => opts.Ignore())
-                .ForMember(d => d.UserId, opts => opts.MapFrom(s => s.Id))
-                .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.PersonalDetails.FirstName))
-                .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.PersonalDetails.LastName))
-                .ForMember(d => d.Initials, opts => opts.MapFrom(s => s.PersonalDetails.Initials))
-                .ForMember(d => d.Email, opts => opts.MapFrom(s => s.ContactDetails.Email))
-                .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.ContactDetails.CellPhoneNumber))
-                .ForMember(d => d.CreatedOn, opts => opts.Ignore())
-                .ForMember(d => d.LastModified, opts => opts.Ignore())
-                .ForMember(d => d.CreatedByDisplayName, opts => opts.Ignore())
-                .ForMember(d => d.CreatedByUserId, opts => opts.Ignore())
-                .ForMember(d => d.LastModifiedDisplayName, opts => opts.Ignore())
-                .ForMember(d => d.LastModifiedUserId, opts => opts.Ignore())
+            CreateMap<DFAApplicationMain, dfa_appapplicationmain>()
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.dfa_primaryapplicantprintname, opts => opts.MapFrom(s => s.SignAndSubmit.applicantSignature.signedName))
+                .ForMember(d => d.dfa_primaryapplicantsigneddate, opts => opts.MapFrom(s => s.SignAndSubmit.applicantSignature.dateSigned))
+                .ForMember(d => d.dfa_primaryapplicantsignature, opts => opts.MapFrom(s => s.SignAndSubmit.applicantSignature.signature))
+                .ForMember(d => d.dfa_primaryapplicantsigned, opts => opts.MapFrom(s => s.SignAndSubmit.applicantSignature.signature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_secondaryapplicantprintname, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.signedName))
+                .ForMember(d => d.dfa_secondaryapplicantsigneddate, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.dateSigned))
+                .ForMember(d => d.dfa_secondaryapplicantsignature, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.signature))
+                .ForMember(d => d.dfa_secondaryapplicantsigned, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.signature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No));
 
-                .ReverseMap()
+            CreateMap<dfa_appapplicationmain, DamagedPropertyAddress>()
+                .ForMember(d => d.addressLine1, opts => opts.MapFrom(s => s.dfa_damagedpropertystreet1));
 
-                .ForMember(d => d.IsMailingAddressSameAsPrimaryAddress, opts => opts.MapFrom(s =>
-                    string.Equals(s.MailingAddress.Country, s.PrimaryAddress.Country, StringComparison.InvariantCultureIgnoreCase) &&
-                    string.Equals(s.MailingAddress.StateProvince, s.PrimaryAddress.StateProvince, StringComparison.InvariantCultureIgnoreCase) &&
-                    string.Equals(s.MailingAddress.Community, s.PrimaryAddress.Community, StringComparison.InvariantCultureIgnoreCase) &&
-                    string.Equals(s.MailingAddress.City, s.PrimaryAddress.City, StringComparison.InvariantCultureIgnoreCase) &&
-                    string.Equals(s.MailingAddress.PostalCode, s.PrimaryAddress.PostalCode, StringComparison.InvariantCultureIgnoreCase) &&
-                    string.Equals(s.MailingAddress.AddressLine1, s.PrimaryAddress.AddressLine1, StringComparison.InvariantCultureIgnoreCase) &&
-                    string.Equals(s.MailingAddress.AddressLine2, s.PrimaryAddress.AddressLine2, StringComparison.InvariantCultureIgnoreCase)))
-                ;
+            CreateMap<dfa_appapplicationmain, PropertyDamage>()
+                .ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildfire == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.stormDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagestorm == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.floodDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageflood == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
+                .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => s.dfa_dateofdamage))
+                .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => s.dfa_dateofdamageto))
+                .ForMember(d => d.residingInResidence, opts => opts.MapFrom(s => s.dfa_areyounowresidingintheresidence == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.dateReturned, opts => opts.MapFrom(s => s.dfa_dateofreturntotheresidence))
+                .ForMember(d => d.briefDescription, opts => opts.MapFrom(s => s.dfa_description))
+                .ForMember(d => d.lossesExceed1000, opts => opts.MapFrom(s => s.dfa_doyourlossestotalmorethan1000 == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.wereYouEvacuated, opts => opts.MapFrom(s => s.dfa_wereyouevacuatedduringtheevent == (int)YesNoOptionSet.Yes ? true : false));
+
+            CreateMap<dfa_appapplicationmain, SignAndSubmit>()
+                .ForPath(d => d.applicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_primaryapplicantprintname))
+                .ForPath(d => d.applicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_primaryapplicantsigneddate))
+                .ForPath(d => d.applicantSignature.signature, opts => opts.MapFrom(s => s.dfa_primaryapplicantsignature))
+                .ForPath(d => d.secondaryApplicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_secondaryapplicantprintname))
+                .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddate))
+                .ForPath(d => d.secondaryApplicantSignature.signature, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsignature));
 
             CreateMap<SecurityQuestion, ESS.Shared.Contracts.Events.SecurityQuestion>()
                 .ReverseMap()

@@ -1,4 +1,7 @@
-﻿namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
+﻿using Org.BouncyCastle.Asn1.Mozilla;
+using Org.BouncyCastle.Bcpg.OpenPgp;
+
+namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 {
     public class Country
     {
@@ -44,6 +47,49 @@
         public string? dfa_secondaryapplicantprintnamenoins { get; set; } // optional string
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
         public string? dfa_secondaryapplicantsignaturenoins { get; set; } // new field Dynamics annotation attachment
+    }
+
+    public class dfa_appapplicationmain
+    {
+        public string dfa_appapplicationid { get; set; } // required
+        public int? dfa_isprimaryanddamagedaddresssame { get; set; } // optional Two Options
+        public string? dfa_damagedpropertystreet1 { get; set; } // optional string
+        public string? dfa_damagedpropertystreet2 { get; set; } // optional string
+        public string? dfa_damagedpropertycity { get; set; } // optional string
+        public string? dfa_damagedpropertyprovince { get; set; } // optional string
+        public string? dfa_damagedpropertypostalcode { get; set; } // optional string
+        public int? dfa_isthispropertyyourp { get; set; } // optional Two Options
+        public int? dfa_indigenousreserve { get; set; } // optional Two Options
+        public string? dfa_nameoffirstnationsr { get; set; } // optional string
+        public int? dfa_manufacturedhom { get; set; } // optional Two Options
+        public int? dfa_eligibleforbchomegrantonthisproperty { get; set; } // optional Two Options
+        public string? dfa_contactfirstname { get; set; } // optional string
+        public string? dfa_contactlastname { get; set; } // optional string
+        public string? dfa_contactphone1 { get; set; } // optional string
+        public string? dfa_contactemail { get; set; } // optional string
+        public int dfa_acopyofarentalagreementorlease { get; set; } // required Two Options
+        public int? dfa_areyounowresidingintheresidence { get; set; } // optional Two Options
+        public int? dfa_causeofdamageflood { get; set; } // optional Two Options
+        public int? dfa_causeofdamagestorm { get; set; } // optoinal Two Options
+        public int? dfa_causeofdamagewildfire { get; set; } // optional Two Options
+        public int? dfa_causeofdamagelandslide { get; set; } // optional Two Options
+        public int? dfa_causeofdamageother { get; set; } // optional Two Options
+        public string? dfa_causeofdamageloss { get; set; } // optional string
+        public string? dfa_dateofdamage { get; set; } // optoinal date only
+        public string? dfa_dateofdamageto { get; set; } // optional date only
+        public string? dfa_dateofreturntotheresidence { get; set; } // optional date only
+        public string? dfa_description { get; set; } // optional string
+        public int? dfa_doyourlossestotalmorethan1000 { get; set; } // optional Two Options
+        public int dfa_haveinvoicesreceiptsforcleanuporrepairs { get; set; } // required Two Options
+        public string? dfa_primaryapplicantprintname { get; set; } // optional string
+        public int dfa_primaryapplicantsigned { get; set; } // required Two Options
+        public string? dfa_primaryapplicantsigneddate { get; set; } // optional string
+        public string? dfa_primaryapplicantsignature { get; set; } // optional string
+        public string? dfa_secondaryapplicantprintname { get; set; } // optional string
+        public int dfa_secondaryapplicantsigned { get; set; } // required Two Options
+        public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
+        public string? dfa_secondaryapplicantsignature { get; set; } // optional string
+        public int? dfa_wereyouevacuatedduringtheevent { get; set; } // optional Two Options
     }
 
     public enum ApplicantTypeOptionSet
