@@ -39,11 +39,11 @@
         public int dfa_primaryapplicantsignednoins { get; set; } // required Yes or No option set
         public string? dfa_primaryapplicantprintnamenoins { get; set; } // optional string
         public string? dfa_primaryapplicantsigneddatenoins { get; set; } // optional Date and Time (Date Only)
-        // public byte[]? dfa_primaryapplicantsignaturenoins { get; set; } // new field Dynamics annotation attachment
+        public string? dfa_primaryapplicantsignaturenoins { get; set; } // new field Dynamics annotation attachment
         public int dfa_secondaryapplicantsignednoins { get; set; } // required OptionSet existing Yes or No option set
         public string? dfa_secondaryapplicantprintnamenoins { get; set; } // optional string
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
-        // public byte[]? dfa_secondaryapplicantsignaturenoins { get; set; } // new field Dynamics annotation attachment
+        public string? dfa_secondaryapplicantsignaturenoins { get; set; } // new field Dynamics annotation attachment
     }
 
     public enum ApplicantTypeOptionSet
