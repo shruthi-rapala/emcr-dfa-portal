@@ -9,27 +9,43 @@ import {
 } from '@angular/forms';
 import { RegAddress, Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock } from 'src/app/core/api/models';
+import { SignatureBlock, SignAndSubmit, PropertyDamage, FullTimeOccupant, OtherContact, SecondaryApplicant, SecondaryApplicantTypeOption, CleanUpLogItem,
+  CleanUpLog, FileUpload, FileCategory, RoomType, DamagedRoom, SupportingDocuments } from 'src/app/core/api/models';
 
-export interface DamagedPropertyAddress extends RegAddress {
-  occupyAsPrimaryResidence: boolean;
-  onAFirstNationsReserve: boolean;
-  firstNationsReserve?: FirstNationsReserve | string;
-  manufacturedHome?: boolean;
-  eligibleForHomeOwnerGrant?: boolean;
-  landlordGivenNames?: string;
-  landlordSurname?: string;
-  landlordPhone?: string;
-  landlordEmail?: string;
-}
+// export interface DamagedPropertyAddress extends RegAddress {
+//   occupyAsPrimaryResidence: boolean;
+//   onAFirstNationsReserve: boolean;
+//   firstNationsReserve?: FirstNationsReserve | string;
+//   manufacturedHome?: boolean;
+//   eligibleForHomeOwnerGrant?: boolean;
+//   landlordGivenNames?: string;
+//   landlordSurname?: string;
+//   landlordPhone?: string;
+//   landlordEmail?: string;
+// }
 
-export interface FirstNationsReserve
-{
-  code?: null | string;
-  name?: null | string;
-}
+// export interface FirstNationsReserve
+// {
+//   code?: null | string;
+//   name?: null | string;
+// }
 
-export class DamagedPropertyAddress implements DamagedPropertyAddress {
+export class DamagedPropertyAddress {
+  addressLine1?: null | string;
+  addressLine2?: null | string;
+  community?: null | string;
+  eligibleForHomeOwnerGrant?: null | boolean;
+  firstNationsReserve?: null | string;
+  isPrimaryAndDamagedAddressSame?: null | boolean;
+  landlordEmail?: null | string;
+  landlordGivenNames?: null | string;
+  landlordPhone?: null | string;
+  landlordSurname?: null | string;
+  manufacturedHome?: null | boolean;
+  occupyAsPrimaryResidence?: null | boolean;
+  onAFirstNationsReserve?: null | boolean;
+  postalCode?: null | string;
+  stateProvince?: null | string;
 
   constructor(
     addressLine1?: string,
@@ -40,7 +56,7 @@ export class DamagedPropertyAddress implements DamagedPropertyAddress {
     country?: Country,
     occupyAsPrimaryResidence?: null | boolean,
     onAFirstNationsReserve?: null | boolean,
-    firstNationsReserve?: FirstNationsReserve | string,
+    firstNationsReserve?: string,
     manufacturedHome?: null | boolean,
     eligibleForHomeOwnerGrant?: null | boolean,
     landlordGivenNames?: null | string,
@@ -56,7 +72,6 @@ export class DamagedPropertyAddressForm {
   community = new UntypedFormControl();
   postalCode = new UntypedFormControl();
   stateProvince = new UntypedFormControl();
-  country = new UntypedFormControl();
   occupyAsPrimaryResidence = new UntypedFormControl();
   onAFirstNationsReserve = new UntypedFormControl();
   firstNationsReserve = new UntypedFormControl();
@@ -95,11 +110,6 @@ export class DamagedPropertyAddressForm {
       this.stateProvince.setValue(damagedPropertyAddress.stateProvince);
     }
     this.stateProvince.setValidators([Validators.required]);
-
-    if (damagedPropertyAddress.country) {
-      this.country.setValue(damagedPropertyAddress.country);
-    }
-    this.country.setValidators([Validators.required]);
 
     if (damagedPropertyAddress.occupyAsPrimaryResidence) {
       this.occupyAsPrimaryResidence.setValue(damagedPropertyAddress.occupyAsPrimaryResidence);
@@ -148,37 +158,37 @@ export class DamagedPropertyAddressForm {
   }
 }
 
-export class PropertyDamage {
-  floodDamage?: boolean;
-  landslideDamage?: boolean;
-  wildfireDamage?: boolean;
-  stormDamage?: boolean;
-  otherDamage?: boolean;
-  otherDamageText?: string;
-  damageFromDate?: Date;
-  damageToDate?: Date;
-  briefDescription?: string;
-  lossesExceed1000?: boolean;
-  wereYouEvacuated?: boolean;
-  dateReturned?: Date;
-  residingInResidence?: boolean;
+// export class PropertyDamage {
+//   floodDamage?: boolean;
+//   landslideDamage?: boolean;
+//   wildfireDamage?: boolean;
+//   stormDamage?: boolean;
+//   otherDamage?: boolean;
+//   otherDamageText?: string;
+//   damageFromDate?: Date;
+//   damageToDate?: Date;
+//   briefDescription?: string;
+//   lossesExceed1000?: boolean;
+//   wereYouEvacuated?: boolean;
+//   dateReturned?: Date;
+//   residingInResidence?: boolean;
 
-  constructor(
-    floodDamage?: null | boolean,
-    landslideDamage?: null | boolean,
-    wildfireDamage? : null | boolean,
-    stormDamage?: null | boolean,
-    otherDamage?: null | boolean,
-    otherDamageText?: null | string,
-    damageFromDate?: null | Date,
-    damageToDate?: null | Date,
-    briefDescription?: null | string,
-    lossesExceed1000?: null | boolean,
-    wereYouEvacuated?: null | boolean,
-    dateReturned?: null | Date,
-    residingInResidence?: null | boolean,
-  ) {}
-}
+//   constructor(
+//     floodDamage?: null | boolean,
+//     landslideDamage?: null | boolean,
+//     wildfireDamage? : null | boolean,
+//     stormDamage?: null | boolean,
+//     otherDamage?: null | boolean,
+//     otherDamageText?: null | string,
+//     damageFromDate?: null | Date,
+//     damageToDate?: null | Date,
+//     briefDescription?: null | string,
+//     lossesExceed1000?: null | boolean,
+//     wereYouEvacuated?: null | boolean,
+//     dateReturned?: null | Date,
+//     residingInResidence?: null | boolean,
+//   ) {}
+// }
 
 export class PropertyDamageForm {
   floodDamage = new UntypedFormControl();
@@ -269,32 +279,31 @@ export class PropertyDamageForm {
 // TODO This should be coming in from the API in api/models
 /* tslint:disable */
 /* eslint-disable */
-export enum SecondaryApplicantTypeOption {
-  Contact = 'Contact',
-  Organization = 'Organization',
-}
+// export enum SecondaryApplicantTypeOption {
+//   Contact = 'Contact',
+//   Organization = 'Organization',
+// }
 
+// export interface FullTimeOccupant {
+//   firstName: string;
+//   lastName: string;
+//   relationship: string;
+// }
 
-export interface FullTimeOccupant {
-  firstName: string;
-  lastName: string;
-  relationship: string;
-}
+// export interface OtherContact {
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   email: string;
+// }
 
-export interface OtherContact {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
-}
-
-export interface SecondaryApplicant {
-  applicantType: SecondaryApplicantTypeOption;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
-}
+// export interface SecondaryApplicant {
+//   applicantType: SecondaryApplicantTypeOption;
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   email: string;
+// }
 
 export class Occupants {
   fullTimeOccupants: Array<FullTimeOccupant>;
@@ -474,15 +483,15 @@ export class OccupantsForm {
   }
 }
 
-export class CleanupLog {
-  date: Date;
-  name: string;
-  hours: string;
-  description: string;
-  fileName: string;
-  fileDescription: string;
-  fileDate: Date;
-}
+// export class CleanupLog {
+//   date: Date;
+//   name: string;
+//   hours: string;
+//   description: string;
+//   fileName: string;
+//   fileDescription: string;
+//   fileDate: Date;
+// }
 
 export class CleanUpLogForm {
   name = new UntypedFormControl();
@@ -500,7 +509,7 @@ export class CleanUpLogForm {
   addNewCleanUpLogFileIndicator = new UntypedFormControl(false);
 
   constructor(
-    cleanUpLog: CleanupLog,
+    cleanUpLog: CleanUpLogItem,
     customValidator: CustomValidationService,
     builder: UntypedFormBuilder
   ) {
@@ -567,45 +576,45 @@ export class CleanUpLogForm {
   }
 }
 
-export enum FileCategory {
-  Insurance = "Insurance",
-  Financial = "Financial",
-  ThirdPartyConsent = "Third party consent",
-  TenancyProof = "Tenancy proof",
-  DamagePhoto = "Damage photo",
-  Cleanup = "Cleanup",
-  Appeal = "Appeal"
-}
+// export enum FileCategory {
+//   Insurance = "Insurance",
+//   Financial = "Financial",
+//   ThirdPartyConsent = "Third party consent",
+//   TenancyProof = "Tenancy proof",
+//   DamagePhoto = "Damage photo",
+//   Cleanup = "Cleanup",
+//   Appeal = "Appeal"
+// }
 
-export interface FileUpload {
-  fileName: string,
-  fileDescription: string,
-  fileType: FileCategory,
-  uploadedDate: Date,
-  modifiedBy: string
-  fileData: string,
-  contentType: string // for preview
-  fileSize: number
-}
+// export interface FileUpload {
+//   fileName: string,
+//   fileDescription: string,
+//   fileType: FileCategory,
+//   uploadedDate: Date,
+//   modifiedBy: string
+//   fileData: string,
+//   contentType: string // for preview
+//   fileSize: number
+// }
 
 
-export enum RoomType {
-  Bathroom = 'Bathroom',
-  Bedroom = 'Bedroom',
-  Dining = 'Dining room',
-  Family = 'Family room',
-  Garage = 'Garage',
-  Kitchen = 'Kitchen',
-  Laundry = 'Laundry room',
-  Living = 'Living room',
-  Other = 'Other',
-}
+// export enum RoomType {
+//   Bathroom = 'Bathroom',
+//   Bedroom = 'Bedroom',
+//   Dining = 'Dining room',
+//   Family = 'Family room',
+//   Garage = 'Garage',
+//   Kitchen = 'Kitchen',
+//   Laundry = 'Laundry room',
+//   Living = 'Living room',
+//   Other = 'Other',
+// }
 
-export interface DamagedRoom {
-  roomType: RoomType;
-  otherRoomType: string;
-  description: string;
-}
+// export interface DamagedRoom {
+//   roomType: RoomType;
+//   otherRoomType: string;
+//   description: string;
+// }
 
 
 export class DamagedItemsByRoom {
@@ -768,13 +777,13 @@ export class DamagedItemsByRoomForm {
   }
 }
 
-export class SupportingDocuments {
-  insuranceTemplate: FileUpload;
-  supportingDocuments: Array<FileUpload>;
+// export class SupportingDocuments {
+//   insuranceTemplate: FileUpload;
+//   supportingDocuments: Array<FileUpload>;
 
-  constructor(
-  ) {}
-}
+//   constructor(
+//   ) {}
+// }
 
 export class SupportingDocumentsForm {
   fileName = new UntypedFormControl();
@@ -979,17 +988,6 @@ export class SupportingDocumentsForm {
   }
 }
 
-
-export class SignAndSubmit {
-  applicantSignature?: SignatureBlock;
-  secondaryApplicantSignature?: SignatureBlock;
-
-  constructor(
-    aplicantSignature?: null | SignatureBlock,
-    secondaryApplicantSignature?: null | SignatureBlock,
-  ) {}
-}
-
 export class SignAndSubmitForm {
   applicantSignature: UntypedFormGroup;
   secondaryApplicantSignature: UntypedFormGroup;
@@ -1022,7 +1020,7 @@ export class SignAndSubmitForm {
 // TODO This should be coming in from the API in api/models
 /**
  * DFA Application Main
- */
+ *
 export interface DFAApplicationMain {
   id?: string;
   damagedPropertyAddress?: DamagedPropertyAddress;
@@ -1032,4 +1030,4 @@ export interface DFAApplicationMain {
   damagedItemsByRoom?: DamagedItemsByRoom;
   supportingDocuments?: SupportingDocuments;
   signAndSubmit?: SignAndSubmit;
-}
+} */

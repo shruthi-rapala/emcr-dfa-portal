@@ -112,8 +112,10 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationMain.Id = applicationId;
             dfaApplicationMain.DamagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
             dfaApplicationMain.PropertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
-            // TODO controllers for occupants, clean up log, damaged items by room, document locations,
+            // TODO controllers for occupants, secondary applicants, other contacts, clean up log, damaged items by room, document locations,
             dfaApplicationMain.SignAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
+            dfaApplicationMain.CleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
+            dfaApplicationMain.SupportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
             return Ok(dfaApplicationMain);
         }
     }
@@ -140,11 +142,7 @@ namespace EMBC.DFA.API.Controllers
 
         public PropertyDamage PropertyDamage { get; set; }
 
-        public Occupants Occupants { get; set; }
-
         public CleanUpLog CleanUpLog { get; set; }
-
-        public DamagedItemsByRoom DamagedItemsByRoom { get; set; }
 
         public SupportingDocuments SupportingDocuments { get; set; }
 

@@ -212,7 +212,10 @@ namespace EMBC.DFA.API.Controllers
         Appeal,
 
         [EnumMember(Value = "Identification")]
-        Identification
+        Identification,
+
+        [EnumMember(Value = "Unknown")]
+        Unknown
     }
 
     /// <summary>
@@ -245,7 +248,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Living room")]
         Living,
 
-        [EnumMember(Value ="Other")]
+        [EnumMember(Value = "Other")]
         Other
     }
 
@@ -268,6 +271,7 @@ namespace EMBC.DFA.API.Controllers
         public string? landlordSurname { get; set; }
         public string? landlordPhone { get; set; }
         public string? landlordEmail { get; set; }
+        public bool? isPrimaryAndDamagedAddressSame { get; set; }
     }
 
     /// <summary>
@@ -291,105 +295,11 @@ namespace EMBC.DFA.API.Controllers
     }
 
     /// <summary>
-    /// Occupants
-    /// </summary>
-    public class Occupants
-    {
-       public IEnumerable<FullTimeOccupant>? fullTimeOccupants { get; set; }
-       public IEnumerable<OtherContact>? otherContacts { get; set; }
-       public IEnumerable<SecondaryApplicant>? secondaryApplicants { get; set; }
-    }
-
-    /// <summary>
-    /// Full Time Occupants
-    /// </summary>
-    public class FullTimeOccupant
-    {
-        public string? id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string relationship { get; set; }
-    }
-
-    /// <summary>
-    /// Full Time Other Contact
-    /// </summary>
-    public class OtherContact
-    {
-        public string? id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string phoneNumber { get; set; }
-        public string email { get; set; }
-    }
-
-    /// <summary>
-    /// Full Time Seoondary Applicant
-    /// </summary>
-    public class SecondaryApplicant
-    {
-        public string? id { get; set; }
-        public SecondaryApplicantTypeOption applicantType { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string phoneNumber { get; set; }
-        public string email { get; set; }
-    }
-
-    /// <summary>
     /// Clean Up Log
     /// </summary>
     public class CleanUpLog
     {
-        public IEnumerable<CleanUpLogItem>? cleanUpLogItems { get; set; }
-        public IEnumerable<FileUpload>? damagePhotos { get; set; }
-    }
-
-    /// <summary>
-    /// Clean Up Log Item
-    /// </summary>
-    public class CleanUpLogItem
-    {
-        public string? id { get; set; }
-        public string date { get; set; }
-        public string name { get; set; }
-        public string hours { get; set; }
-        public string description { get; set; }
-    }
-
-    /// <summary>
-    /// File Upload
-    /// </summary>
-    public class FileUpload
-    {
-        public string? id { get; set; }
-        public string fileName { get; set; }
-        public string fileDescription { get; set; }
-        public FileCategory fileType { get; set; }
-        public string uploadedDate { get; set; }
-        public string modifiedBy { get; set; }
-        public string fileData { get; set; }
-        public string contentType { get; set; }
-        public int fileSize { get; set; }
-    }
-
-    /// <summary>
-    /// Damaged Items By Room
-    /// </summary>
-    public class DamagedItemsByRoom
-    {
-        public IEnumerable<DamagedRoom> damagedRooms { get; set; }
-        public IEnumerable<FileUpload> damagePhotos { get; set; }
-    }
-
-    /// <summary>
-    /// Damaged Room
-    /// </summary>
-    public class DamagedRoom
-    {
-        public RoomType roomType { get; set; }
-        public string? otherRoomType { get; set; }
-        public string description { get; set; }
+        public bool? haveInvoicesOrReceiptsForCleanupOrRepairs { get; set; }
     }
 
     /// <summary>
@@ -397,8 +307,7 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class SupportingDocuments
     {
-        public FileUpload? insuranceTemplate { get; set; }
-        public IEnumerable<FileUpload>? supportingDocuments { get; set; }
+        public bool hasCopyOfARentalAgreementOrLease { get; set; }
     }
 
     /// <summary>

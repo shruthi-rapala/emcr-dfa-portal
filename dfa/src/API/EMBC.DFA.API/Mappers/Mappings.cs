@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Xml.Linq;
 using EMBC.DFA.API;
 using EMBC.DFA.API.ConfigurationModule.Models;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace EMBC.DFA.API.Mappers
 {
@@ -126,10 +128,59 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_secondaryapplicantprintname, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.signedName))
                 .ForMember(d => d.dfa_secondaryapplicantsigneddate, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.dateSigned))
                 .ForMember(d => d.dfa_secondaryapplicantsignature, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.signature))
-                .ForMember(d => d.dfa_secondaryapplicantsigned, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.signature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+                .ForMember(d => d.dfa_secondaryapplicantsigned, opts => opts.MapFrom(s => s.SignAndSubmit.secondaryApplicantSignature.signature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamagewildfire, opts => opts.MapFrom(s => s.PropertyDamage.wildfireDamage == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamagestorm, opts => opts.MapFrom(s => s.PropertyDamage.stormDamage == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamageflood, opts => opts.MapFrom(s => s.PropertyDamage.floodDamage == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamagelandslide, opts => opts.MapFrom(s => s.PropertyDamage.landslideDamage == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamageother, opts => opts.MapFrom(s => s.PropertyDamage.otherDamage == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.PropertyDamage.otherDamageText))
+                .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.PropertyDamage.damageFromDate))
+                .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.PropertyDamage.damageToDate))
+                .ForMember(d => d.dfa_areyounowresidingintheresidence, opts => opts.MapFrom(s => s.PropertyDamage.residingInResidence))
+                .ForMember(d => d.dfa_datereturntotheresidence, opts => opts.MapFrom(s => s.PropertyDamage.dateReturned))
+                .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.PropertyDamage.briefDescription))
+                .ForMember(d => d.dfa_doyourlossestotalmorethan1000, opts => opts.MapFrom(s => s.PropertyDamage.lossesExceed1000 == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_wereyouevacuatedduringtheevent, opts => opts.MapFrom(s => s.PropertyDamage.wereYouEvacuated == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_damagedpropertystreet1, opts => opts.MapFrom(s => s.DamagedPropertyAddress.addressLine1))
+                .ForMember(d => d.dfa_damagedpropertystreet2, opts => opts.MapFrom(s => s.DamagedPropertyAddress.addressLine2))
+                .ForMember(d => d.dfa_damagedpropertycitytext, opts => opts.MapFrom(s => s.DamagedPropertyAddress.community))
+                .ForMember(d => d.dfa_damagedpropertypostalcode, opts => opts.MapFrom(s => s.DamagedPropertyAddress.postalCode))
+                .ForMember(d => d.dfa_damagedpropertyprovince, opts => opts.MapFrom(s => s.DamagedPropertyAddress.stateProvince))
+                .ForMember(d => d.dfa_isthispropertyyourp, opts => opts.MapFrom(s => s.DamagedPropertyAddress.occupyAsPrimaryResidence == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_indigenousreserve, opts => opts.MapFrom(s => s.DamagedPropertyAddress.onAFirstNationsReserve == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_nameoffirstnationsr, opts => opts.MapFrom(s => s.DamagedPropertyAddress.firstNationsReserve))
+                .ForMember(d => d.dfa_manufacturedhom, opts => opts.MapFrom(s => s.DamagedPropertyAddress.manufacturedHome == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_eligibleforbchomegrantonthisproperty, opts => opts.MapFrom(s => s.DamagedPropertyAddress.eligibleForHomeOwnerGrant == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_contactfirstname, opts => opts.MapFrom(s => s.DamagedPropertyAddress.landlordGivenNames))
+                .ForMember(d => d.dfa_contactlastname, opts => opts.MapFrom(s => s.DamagedPropertyAddress.landlordSurname))
+                .ForMember(d => d.dfa_contactphone1, opts => opts.MapFrom(s => s.DamagedPropertyAddress.landlordPhone))
+                .ForMember(d => d.dfa_contactemail, opts => opts.MapFrom(s => s.DamagedPropertyAddress.landlordEmail))
+                .ForMember(d => d.dfa_haveinvoicesreceiptsforcleanuporrepairs, opts => opts.MapFrom(s => s.CleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))
+                .ForMember(d => d.dfa_acopyofarentalagreementorlease, opts => opts.MapFrom(s => s.SupportingDocuments.hasCopyOfARentalAgreementOrLease == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+
+            CreateMap<dfa_appapplicationmain, CleanUpLog>()
+                .ForMember(d => d.haveInvoicesOrReceiptsForCleanupOrRepairs, opts => opts.MapFrom(s => s.dfa_haveinvoicesreceiptsforcleanuporrepairs == (int)YesNoOptionSet.Yes ? true : false));
+
+            CreateMap<dfa_appapplicationmain, SupportingDocuments>()
+                .ForMember(d => d.hasCopyOfARentalAgreementOrLease, opts => opts.MapFrom(s => s.dfa_acopyofarentalagreementorlease == (int)YesNoOptionSet.Yes ? true : false));
 
             CreateMap<dfa_appapplicationmain, DamagedPropertyAddress>()
-                .ForMember(d => d.addressLine1, opts => opts.MapFrom(s => s.dfa_damagedpropertystreet1));
+                .ForMember(d => d.addressLine1, opts => opts.MapFrom(s => s.dfa_damagedpropertystreet1))
+                .ForMember(d => d.addressLine2, opts => opts.MapFrom(s => s.dfa_damagedpropertystreet2))
+                .ForMember(d => d.community, opts => opts.MapFrom(s => s.dfa_damagedpropertycitytext))
+                .ForMember(d => d.postalCode, opts => opts.MapFrom(s => s.dfa_damagedpropertypostalcode))
+                .ForMember(d => d.stateProvince, opts => opts.MapFrom(s => s.dfa_damagedpropertyprovince))
+                .ForMember(d => d.occupyAsPrimaryResidence, opts => opts.MapFrom(s => s.dfa_isthispropertyyourp == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.onAFirstNationsReserve, opts => opts.MapFrom(s => s.dfa_indigenousreserve == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.firstNationsReserve, opts => opts.MapFrom(s => s.dfa_nameoffirstnationsr))
+                .ForMember(d => d.manufacturedHome, opts => opts.MapFrom(s => s.dfa_manufacturedhom == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.eligibleForHomeOwnerGrant, opts => opts.MapFrom(s => s.dfa_eligibleforbchomegrantonthisproperty == (int)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.landlordGivenNames, opts => opts.MapFrom(s => s.dfa_contactfirstname))
+                .ForMember(d => d.landlordSurname, opts => opts.MapFrom(s => s.dfa_contactlastname))
+                .ForMember(d => d.landlordPhone, opts => opts.MapFrom(s => s.dfa_contactphone1))
+                .ForMember(d => d.landlordEmail, opts => opts.MapFrom(s => s.dfa_contactemail))
+                .ForMember(d => d.isPrimaryAndDamagedAddressSame, opts => opts.MapFrom(s => s.dfa_isprimaryanddamagedaddresssame == (int)YesNoOptionSet.Yes ? true : false));
 
             CreateMap<dfa_appapplicationmain, PropertyDamage>()
                 .ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildfire == (int)YesNoOptionSet.Yes ? true : false))
@@ -141,7 +192,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => s.dfa_dateofdamage))
                 .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => s.dfa_dateofdamageto))
                 .ForMember(d => d.residingInResidence, opts => opts.MapFrom(s => s.dfa_areyounowresidingintheresidence == (int)YesNoOptionSet.Yes ? true : false))
-                .ForMember(d => d.dateReturned, opts => opts.MapFrom(s => s.dfa_dateofreturntotheresidence))
+                .ForMember(d => d.dateReturned, opts => opts.MapFrom(s => s.dfa_datereturntotheresidence))
                 .ForMember(d => d.briefDescription, opts => opts.MapFrom(s => s.dfa_description))
                 .ForMember(d => d.lossesExceed1000, opts => opts.MapFrom(s => s.dfa_doyourlossestotalmorethan1000 == (int)YesNoOptionSet.Yes ? true : false))
                 .ForMember(d => d.wereYouEvacuated, opts => opts.MapFrom(s => s.dfa_wereyouevacuatedduringtheevent == (int)YesNoOptionSet.Yes ? true : false));
@@ -153,6 +204,122 @@ namespace EMBC.DFA.API.Mappers
                 .ForPath(d => d.secondaryApplicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_secondaryapplicantprintname))
                 .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddate))
                 .ForPath(d => d.secondaryApplicantSignature.signature, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsignature));
+
+            CreateMap<dfa_appsecondaryapplicant, SecondaryApplicant>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appsecondaryapplicantid))
+                .ForMember(d => d.applicantType, opts => opts.MapFrom(s => s.dfa_applicanttype == (int)SecondaryApplicantTypeOptionSet.Contact ? SecondaryApplicantTypeOption.Contact : SecondaryApplicantTypeOption.Organization))
+                .ForMember(d => d.email, opts => opts.MapFrom(s => s.dfa_emailaddress))
+                .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname))
+                .ForMember(d => d.lastName, opts => opts.MapFrom(s => s.dfa_lastname))
+                .ForMember(d => d.phoneNumber, opts => opts.MapFrom(s => s.dfa_phonenumber))
+                .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
+
+            CreateMap<SecondaryApplicant, dfa_appsecondaryapplicant>()
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_appsecondaryapplicantid, opts => opts.MapFrom(s => s.id))
+                .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => s.applicantType == (int)SecondaryApplicantTypeOption.Contact ? SecondaryApplicantTypeOptionSet.Contact : SecondaryApplicantTypeOptionSet.Organization))
+                .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.email))
+                .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.firstName))
+                .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.lastName))
+                .ForMember(d => d.dfa_phonenumber, opts => opts.MapFrom(s => s.phoneNumber))
+                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+
+            CreateMap<dfa_othercontact, OtherContact>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appothercontactid))
+                .ForMember(d => d.email, opts => opts.MapFrom(s => s.dfa_appemailaddress))
+                .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname))
+                .ForMember(d => d.lastName, opts => opts.MapFrom(s => s.dfa_lastname))
+                .ForMember(d => d.phoneNumber, opts => opts.MapFrom(s => s.dfa_phonenumber))
+                .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
+
+            CreateMap<FullTimeOccupant, dfa_appoccupant>()
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_appoccupantid, opts => opts.MapFrom(s => s.id))
+                .ForMember(d => d.dfa_contactid, opts => opts.MapFrom(s => s.contactId))
+                .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.lastName + ", " + s.firstName))
+                .ForMember(d => d.dfa_title, opts => opts.MapFrom(s => s.relationship))
+                .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.firstName))
+                .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.lastName))
+                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+
+            CreateMap<dfa_appoccupant, FullTimeOccupant>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appoccupantid))
+                .ForMember(d => d.contactId, opts => opts.MapFrom(s => s.dfa_contactid))
+                .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname))
+                .ForMember(d => d.lastName, opts => opts.MapFrom(s => s.dfa_lastname))
+                .ForMember(d => d.relationship, opts => opts.MapFrom(s => s.dfa_title))
+                .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
+
+            CreateMap<OtherContact, dfa_othercontact>()
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_appothercontactid, opts => opts.MapFrom(s => s.id))
+                .ForMember(d => d.dfa_appemailaddress, opts => opts.MapFrom(s => s.email))
+                .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.firstName))
+                .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.lastName))
+                .ForMember(d => d.dfa_phonenumber, opts => opts.MapFrom(s => s.phoneNumber))
+                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+
+            CreateMap<dfa_appcleanuplogs, CleanUpLogItem>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appcleanuplogid))
+                .ForMember(d => d.date, opts => opts.MapFrom(s => s.dfa_date))
+                .ForMember(d => d.name, opts => opts.MapFrom(s => s.dfa_name))
+                .ForMember(d => d.hours, opts => opts.MapFrom(s => s.dfa_hoursworked))
+                .ForMember(d => d.description, opts => opts.MapFrom(s => s.dfa_description))
+                .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
+
+            CreateMap<CleanUpLogItem, dfa_appcleanuplogs>()
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_appcleanuplogid, opts => opts.MapFrom(s => s.id))
+                .ForMember(d => d.dfa_date, opts => opts.MapFrom(s => s.date))
+                .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.name))
+                .ForMember(d => d.dfa_hoursworked, opts => opts.MapFrom(s => s.hours))
+                .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.description))
+                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+
+            CreateMap<dfa_appdocumentlocation, FileUpload>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdocumentlocationid))
+                .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_name))
+                .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
+                .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.dfa_documentdescription))
+                .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.dfa_uploadeddate))
+                .ForMember(d => d.modifiedBy, opts => opts.MapFrom(s => s.dfa_modifiedby))
+                .ForMember(d => d.fileData, opts => opts.MapFrom(s => s.dfa_filedata))
+                .ForMember(d => d.contentType, opts => opts.MapFrom(s => s.dfa_contenttype))
+                .ForMember(d => d.fileSize, opts => opts.MapFrom(s => s.dfa_filesize))
+                .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
+
+            CreateMap<FileUpload, dfa_appdocumentlocation>()
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_appdocumentlocationid, opts => opts.MapFrom(s => s.id))
+                .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.fileName))
+                .ForMember(d => d.dfa_documenttype, opts => opts.MapFrom(s => s.fileType.GetTypeCode()))
+                .ForMember(d => d.dfa_documentdescription, opts => opts.MapFrom(s => s.fileDescription))
+                .ForMember(d => d.dfa_uploadeddate, opts => opts.MapFrom(s => s.uploadedDate))
+                .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
+                .ForMember(d => d.dfa_filedata, opts => opts.MapFrom(s => s.fileData))
+                .ForMember(d => d.dfa_contenttype, opts => opts.MapFrom(s => s.contentType))
+                .ForMember(d => d.dfa_filesize, opts => opts.MapFrom(s => s.fileSize))
+                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+
+            CreateMap<dfa_damageditems, DamagedRoom>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_applicationid))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdamageditemid))
+                .ForMember(d => d.roomType, opts => opts.MapFrom(s => ConvertStringToRoomType(s.dfa_roomname)))
+                .ForMember(d => d.otherRoomType, opts => opts.MapFrom(s => ConvertStringToRoomType(s.dfa_roomname) == RoomType.Other ? s.dfa_roomname : null))
+                .ForMember(d => d.description, opts => opts.MapFrom(s => s.dfa_damagedescription))
+                .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
+
+            CreateMap<DamagedRoom, dfa_damageditems>()
+                .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_appdamageditemid, opts => opts.MapFrom(s => s.id))
+                .ForMember(d => d.dfa_roomname, opts => opts.MapFrom(s => s.roomType.GetTypeCode()))
+                .ForMember(d => d.dfa_damagedescription, opts => opts.MapFrom(s => s.description))
+                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
 
             CreateMap<SecurityQuestion, ESS.Shared.Contracts.Events.SecurityQuestion>()
                 .ReverseMap()
@@ -306,6 +473,22 @@ namespace EMBC.DFA.API.Mappers
 
             CreateMap<ESS.Shared.Contracts.Events.TransportationTaxiSupport, TransportationTaxiSupport>()
                 ;
+        }
+
+        public FileCategory ConvertStringToFileCategory(string documenttype)
+        {
+            FileCategory fileCategory = FileCategory.Unknown;
+
+            if (Enum.TryParse(documenttype, out fileCategory)) return fileCategory;
+            else return FileCategory.Unknown;
+        }
+
+        public RoomType ConvertStringToRoomType(string roomname)
+        {
+            RoomType roomType = RoomType.Other;
+
+            if (Enum.TryParse(roomname, out roomType)) return roomType;
+            else return RoomType.Other;
         }
     }
 }

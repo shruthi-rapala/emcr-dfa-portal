@@ -12,9 +12,9 @@ import {
   Restriction,
 } from '../model/profile.model';
 import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm } from '../model/dfa-application-start.model';
-import { InsuranceOption } from 'src/app/core/api/models';
-import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
-  CleanupLog, CleanUpLogForm, SignAndSubmitForm, SignAndSubmit, SecondaryApplicant, SupportingDocuments, SupportingDocumentsForm } from '../model/dfa-application-main.model';
+import { InsuranceOption, CleanUpLogItem, SecondaryApplicant, PropertyDamage, SignAndSubmit, SupportingDocuments, CleanUpLog } from 'src/app/core/api/models';
+import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
+  CleanUpLogForm, SignAndSubmitForm, SupportingDocumentsForm } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import {
   Evacuated,
