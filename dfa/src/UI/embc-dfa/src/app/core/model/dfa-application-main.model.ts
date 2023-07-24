@@ -1,34 +1,12 @@
 import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { RegAddress, Community, Country, StateProvince } from './address';
+import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock, SignAndSubmit, PropertyDamage, FullTimeOccupant, OtherContact, SecondaryApplicant, SecondaryApplicantTypeOption, CleanUpLogItem,
-  CleanUpLog, FileUpload, FileCategory, RoomType, DamagedRoom, SupportingDocuments } from 'src/app/core/api/models';
-
-// export interface DamagedPropertyAddress extends RegAddress {
-//   occupyAsPrimaryResidence: boolean;
-//   onAFirstNationsReserve: boolean;
-//   firstNationsReserve?: FirstNationsReserve | string;
-//   manufacturedHome?: boolean;
-//   eligibleForHomeOwnerGrant?: boolean;
-//   landlordGivenNames?: string;
-//   landlordSurname?: string;
-//   landlordPhone?: string;
-//   landlordEmail?: string;
-// }
-
-// export interface FirstNationsReserve
-// {
-//   code?: null | string;
-//   name?: null | string;
-// }
+import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType } from 'src/app/core/api/models';
 
 export class DamagedPropertyAddress {
   addressLine1?: null | string;
@@ -158,37 +136,37 @@ export class DamagedPropertyAddressForm {
   }
 }
 
-// export class PropertyDamage {
-//   floodDamage?: boolean;
-//   landslideDamage?: boolean;
-//   wildfireDamage?: boolean;
-//   stormDamage?: boolean;
-//   otherDamage?: boolean;
-//   otherDamageText?: string;
-//   damageFromDate?: Date;
-//   damageToDate?: Date;
-//   briefDescription?: string;
-//   lossesExceed1000?: boolean;
-//   wereYouEvacuated?: boolean;
-//   dateReturned?: Date;
-//   residingInResidence?: boolean;
+export class PropertyDamage {
+  briefDescription?: null | string;
+  damageFromDate?: null | string;
+  damageToDate?: null | string;
+  dateReturned?: null | string;
+  floodDamage?: null | boolean;
+  landslideDamage?: null | boolean;
+  lossesExceed1000?: null | boolean;
+  otherDamage?: null | boolean;
+  otherDamageText?: null | string;
+  residingInResidence?: null | boolean;
+  stormDamage?: null | boolean;
+  wereYouEvacuated?: null | boolean;
+  wildfireDamage?: null | boolean;
 
-//   constructor(
-//     floodDamage?: null | boolean,
-//     landslideDamage?: null | boolean,
-//     wildfireDamage? : null | boolean,
-//     stormDamage?: null | boolean,
-//     otherDamage?: null | boolean,
-//     otherDamageText?: null | string,
-//     damageFromDate?: null | Date,
-//     damageToDate?: null | Date,
-//     briefDescription?: null | string,
-//     lossesExceed1000?: null | boolean,
-//     wereYouEvacuated?: null | boolean,
-//     dateReturned?: null | Date,
-//     residingInResidence?: null | boolean,
-//   ) {}
-// }
+  constructor(
+    floodDamage?: null | boolean,
+    landslideDamage?: null | boolean,
+    wildfireDamage? : null | boolean,
+    stormDamage?: null | boolean,
+    otherDamage?: null | boolean,
+    otherDamageText?: null | string,
+    damageFromDate?: null | Date,
+    damageToDate?: null | Date,
+    briefDescription?: null | string,
+    lossesExceed1000?: null | boolean,
+    wereYouEvacuated?: null | boolean,
+    dateReturned?: null | Date,
+    residingInResidence?: null | boolean,
+  ) {}
+}
 
 export class PropertyDamageForm {
   floodDamage = new UntypedFormControl();
@@ -276,67 +254,58 @@ export class PropertyDamageForm {
   }
 }
 
-// TODO This should be coming in from the API in api/models
-/* tslint:disable */
-/* eslint-disable */
-// export enum SecondaryApplicantTypeOption {
-//   Contact = 'Contact',
-//   Organization = 'Organization',
-// }
-
-// export interface FullTimeOccupant {
-//   firstName: string;
-//   lastName: string;
-//   relationship: string;
-// }
-
-// export interface OtherContact {
-//   firstName: string;
-//   lastName: string;
-//   phoneNumber: string;
-//   email: string;
-// }
-
-// export interface SecondaryApplicant {
-//   applicantType: SecondaryApplicantTypeOption;
-//   firstName: string;
-//   lastName: string;
-//   phoneNumber: string;
-//   email: string;
-// }
-
-export class Occupants {
-  fullTimeOccupants: Array<FullTimeOccupant>;
-  otherContacts: Array<OtherContact>;
-  secondaryApplicants: Array<SecondaryApplicant>;
-
-  constructor(
-  ) {}
+export class FullTimeOccupant {
+  applicationId?: string;
+  contactId?: string;
+  deleteFlag?: boolean;
+  firstName?: string;
+  id?: null | string;
+  lastName?: string;
+  relationship?: string;
 }
 
-export class OccupantsForm {
+export class FullTimeOccupantsForm {
+  applicationId = new UntypedFormControl();
+  deleteFlag = new UntypedFormControl();
+  id = new UntypedFormControl();
   firstName = new UntypedFormControl();
   lastName = new UntypedFormControl();
   relationship = new UntypedFormControl();
-  phoneNumber = new UntypedFormControl();
-  email = new UntypedFormControl();
-  secondaryApplicantType = new UntypedFormControl();
   fullTimeOccupant: UntypedFormGroup;
   fullTimeOccupants = new UntypedFormControl([], Validators.required);
   addNewFullTimeOccupantIndicator = new UntypedFormControl(false);
-  addNewOtherContactIndicator = new UntypedFormControl(false);
-  addNewSecondaryApplicantIndicator = new UntypedFormControl(false);
-  otherContact: UntypedFormGroup;
-  secondaryApplicant: UntypedFormGroup;
-  otherContacts = new UntypedFormControl([], Validators.required);
-  secondaryApplicants = new UntypedFormControl([]);
 
   constructor(
-    occupants: Occupants,
+    fullTimeOccupants: Array<FullTimeOccupant>,
     customValidator: CustomValidationService,
     builder: UntypedFormBuilder
   ) {
     this.fullTimeOccupant = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFullTimeOccupantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFullTimeOccupantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        ''
+      ],
       firstName: [
         '',
         [
@@ -371,7 +340,62 @@ export class OccupantsForm {
         ]
       ]
     });
+  }
+}
+
+export class OtherContact {
+  applicationId?: string;
+  deleteFlag?: boolean;
+  email?: string;
+  firstName?: string;
+  id?: null | string;
+  lastName?: string;
+  phoneNumber?: string;
+}
+
+export class OtherContactsForm {
+  applicationId = new UntypedFormControl();
+  deleteFlag = new UntypedFormControl();
+  id = new UntypedFormControl();
+  firstName = new UntypedFormControl();
+  lastName = new UntypedFormControl();
+  phoneNumber = new UntypedFormControl();
+  email = new UntypedFormControl();
+  addNewOtherContactIndicator = new UntypedFormControl(false);
+  otherContact: UntypedFormGroup;
+  otherContacts = new UntypedFormControl([], Validators.required);
+
+  constructor(
+    otherContacts: Array<OtherContact>,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
+  ) {
     this.otherContact = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        ''
+      ],
       firstName: [
         '',
         [
@@ -418,102 +442,179 @@ export class OccupantsForm {
             .bind(customValidator)
         ]
       ]
-
-    });
-    this.secondaryApplicant = builder.group({
-      secondaryApplicantType: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSecondaryApplicantIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      firstName: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSecondaryApplicantIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      lastName: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSecondaryApplicantIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      phoneNumber: [
-        '',
-        [
-          customValidator.maskedNumberLengthValidator().bind(customValidator),
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSecondaryApplicantIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      email: [
-        '',
-        [
-          Validators.email,
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSecondaryApplicantIndicator.value,
-              Validators.required,
-            )
-            .bind(customValidator)
-        ]
-      ]
-
     });
   }
 }
 
-// export class CleanupLog {
-//   date: Date;
-//   name: string;
-//   hours: string;
-//   description: string;
-//   fileName: string;
-//   fileDescription: string;
-//   fileDate: Date;
-// }
+export class SecondaryApplicant {
+  applicantType?: SecondaryApplicantTypeOption;
+  applicationId?: string;
+  deleteFlag?: boolean;
+  email?: string;
+  firstName?: string;
+  id?: null | string;
+  lastName?: string;
+  phoneNumber?: string;
+}
 
-export class CleanUpLogForm {
+export class SecondaryApplicantsForm {
+  applicationId = new UntypedFormControl();
+  deleteFlag = new UntypedFormControl();
+  id = new UntypedFormControl();
+  firstName = new UntypedFormControl();
+  lastName = new UntypedFormControl();
+  phoneNumber = new UntypedFormControl();
+  email = new UntypedFormControl();
+  applicantType = new UntypedFormControl();
+  addNewSecondaryApplicantIndicator = new UntypedFormControl(false);
+  secondaryApplicant: UntypedFormGroup;
+  secondaryApplicants = new UntypedFormControl([]);
+
+  constructor(
+    secondaryApplicants: Array<SecondaryApplicant>,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
+  ) {
+    this.secondaryApplicant = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        ''
+      ],
+      applicantType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      firstName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      lastName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      phoneNumber: [
+        '',
+        [
+          customValidator.maskedNumberLengthValidator().bind(customValidator),
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      email: [
+        '',
+        [
+          Validators.email,
+          customValidator
+            .conditionalValidation(
+              () => this.addNewSecondaryApplicantIndicator.value,
+              Validators.required,
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+  }
+}
+
+export class CleanUpLogItem {
+  applicationId?: string;
+  date?: string;
+  deleteFlag?: boolean;
+  description?: string;
+  hours?: string;
+  id?: null | string;
+  name?: string;
+}
+
+export class CleanUpLogItemsForm {
+  applicationId = new UntypedFormControl();
+  deleteFlag = new UntypedFormControl();
+  id = new UntypedFormControl();
   name = new UntypedFormControl();
   date = new UntypedFormControl();
   hours = new UntypedFormControl();
   description = new UntypedFormControl();
-  fileName = new UntypedFormControl();
-  fileDescription = new UntypedFormControl();
-  fileDate = new UntypedFormControl();
   cleanuplog: UntypedFormGroup;
   cleanuplogs = new UntypedFormControl([]);
   addNewCleanUpLogIndicator = new UntypedFormControl(false);
-  cleanuplogFile: UntypedFormGroup;
-  cleanuplogFiles = new UntypedFormControl([]);
-  addNewCleanUpLogFileIndicator = new UntypedFormControl(false);
 
   constructor(
-    cleanUpLog: CleanUpLogItem,
+    cleanUpLogItems: Array<CleanUpLogItem>,
     customValidator: CustomValidationService,
     builder: UntypedFormBuilder
   ) {
     this.cleanuplog = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewCleanUpLogIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewCleanUpLogIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        ''
+      ],
       date: [
         '',
         [
@@ -551,105 +652,231 @@ export class CleanUpLogForm {
         ''
       ]
     });
-    this.cleanuplogFile = builder.group({
-      uploadedDate: [
-        ''
-      ],
-      fileName: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewCleanUpLogIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileDescription: [
-        ''
-      ],
-      fileType: [
-        ''
-      ]
-    });
   }
 }
 
-// export enum FileCategory {
-//   Insurance = "Insurance",
-//   Financial = "Financial",
-//   ThirdPartyConsent = "Third party consent",
-//   TenancyProof = "Tenancy proof",
-//   DamagePhoto = "Damage photo",
-//   Cleanup = "Cleanup",
-//   Appeal = "Appeal"
-// }
-
-// export interface FileUpload {
-//   fileName: string,
-//   fileDescription: string,
-//   fileType: FileCategory,
-//   uploadedDate: Date,
-//   modifiedBy: string
-//   fileData: string,
-//   contentType: string // for preview
-//   fileSize: number
-// }
-
-
-// export enum RoomType {
-//   Bathroom = 'Bathroom',
-//   Bedroom = 'Bedroom',
-//   Dining = 'Dining room',
-//   Family = 'Family room',
-//   Garage = 'Garage',
-//   Kitchen = 'Kitchen',
-//   Laundry = 'Laundry room',
-//   Living = 'Living room',
-//   Other = 'Other',
-// }
-
-// export interface DamagedRoom {
-//   roomType: RoomType;
-//   otherRoomType: string;
-//   description: string;
-// }
-
-
-export class DamagedItemsByRoom {
-  damagedRooms: Array<DamagedRoom>;
-  damagePhotos: Array<FileUpload>;
-
-  constructor(
-  ) {}
+export class CleanUpLog {
+  haveInvoicesOrReceiptsForCleanupOrRepairs?: null | boolean;
 }
 
-export class DamagedItemsByRoomForm {
-  roomType = new UntypedFormControl();
-  otherRoomType = new UntypedFormControl();
-  description = new UntypedFormControl();
-  damagedRoom: UntypedFormGroup;
-  damagedRooms = new UntypedFormControl([]);
+export class CleanUpLogForm {
+  haveInvoicesOrReceiptsForCleanupOrRepairs = new UntypedFormControl();
+
+  constructor(
+    cleanUpLog: CleanUpLog,
+  ) {
+    if (cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs != null) {
+      this.haveInvoicesOrReceiptsForCleanupOrRepairs.setValue(cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs);
+    }
+    this.haveInvoicesOrReceiptsForCleanupOrRepairs.setValidators(null);
+  }
+}
+
+export class FileUpload {
+  applicationId?: string;
+  contentType?: string;
+  deleteFlag?: boolean;
+  fileData?: string;
+  fileDescription?: string;
+  fileName?: string;
+  fileSize?: number;
+  fileType?: FileCategory;
+  id?: null | string;
+  modifiedBy?: string;
+  uploadedDate?: string;
+}
+
+export class FileUploadsForm {
+  applicationId = new UntypedFormControl();
+  deleteFlag = new UntypedFormControl();
+  id = new UntypedFormControl();
   fileName = new UntypedFormControl();
   fileDescription = new UntypedFormControl();
   fileType = new UntypedFormControl();
   uploadedDate = new UntypedFormControl();
   modifiedBy = new UntypedFormControl();
   fileData = new UntypedFormControl();
-  damagePhoto: UntypedFormGroup;
-  damagePhotos = new UntypedFormControl([]);
   contentType = new UntypedFormControl();
   fileSize = new UntypedFormControl();
-  addNewDamagedRoomIndicator = new UntypedFormControl(false);
-  addNewDamagePhotoIndicator = new UntypedFormControl(false);
+  fileUpload: UntypedFormGroup;
+  fileUploads = new UntypedFormControl([]);
+  addNewFileUploadIndicator = new UntypedFormControl(false);
 
   constructor(
-    damagedItemsByRoom: DamagedItemsByRoom,
+    fileUploads: Array<FileUpload>,
+    customValidator: CustomValidationService,
+    builder: UntypedFormBuilder
+  ) {
+    this.fileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+  }
+}
+
+export class DamagedRoom {
+  applicationId?: string;
+  deleteFlag?: boolean;
+  description?: string;
+  id?: null | string;
+  otherRoomType?: null | string;
+  roomType?: RoomType;
+}
+
+export class DamagedRoomsForm {
+  applicationId = new UntypedFormControl();
+  deleteFlag = new UntypedFormControl();
+  id = new UntypedFormControl();
+  roomType = new UntypedFormControl();
+  otherRoomType = new UntypedFormControl();
+  description = new UntypedFormControl();
+  damagedRoom: UntypedFormGroup;
+  damagedRooms = new UntypedFormControl([]);
+  addNewDamagedRoomIndicator = new UntypedFormControl(false);
+
+  constructor(
+    damagedRooms: Array<DamagedRoom>,
     customValidator: CustomValidationService,
     builder: UntypedFormBuilder
   ) {
     this.damagedRoom = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewDamagedRoomIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewDamagedRoomIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        ''
+      ],
       roomType: [
         '',
         [
@@ -684,314 +911,37 @@ export class DamagedItemsByRoomForm {
         ]
       ],
     });
-    this.damagePhoto = builder.group({
-      fileName: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewDamagePhotoIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileDescription: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewDamagePhotoIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileType: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewDamagePhotoIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      uploadedDate: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewDamagePhotoIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      modifiedBy: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewDamagePhotoIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileData: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewDamagePhotoIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      contentType: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewDamagePhotoIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileSize: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewDamagePhotoIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ]
-    });
   }
 }
 
-// export class SupportingDocuments {
-//   insuranceTemplate: FileUpload;
-//   supportingDocuments: Array<FileUpload>;
+export class SupportingDocuments {
+  hasCopyOfARentalAgreementOrLease?: boolean;
 
-//   constructor(
-//   ) {}
-// }
+  constructor(
+   ) {}
+}
 
 export class SupportingDocumentsForm {
-  fileName = new UntypedFormControl();
-  fileDescription = new UntypedFormControl();
-  fileType = new UntypedFormControl();
-  uploadedDate = new UntypedFormControl();
-  modifiedBy = new UntypedFormControl();
-  fileData = new UntypedFormControl();
-  contentType = new UntypedFormControl();
-  fileSize = new UntypedFormControl();
-  insuranceTemplate: UntypedFormGroup;
-  supportingDocument: UntypedFormGroup;
-  supportingDocuments = new UntypedFormControl([]);
-  addNewSupportingDocumentIndicator = new UntypedFormControl(false);
-  addNewInsuranceTemplateIndicator = new UntypedFormControl(false);
+  hasCopyOfARentalAgreementOrLease = new UntypedFormControl();
 
   constructor(
     supportingDocuments: SupportingDocuments,
-    customValidator: CustomValidationService,
-    builder: UntypedFormBuilder
   ) {
-    this.insuranceTemplate = builder.group({
-      fileName: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewInsuranceTemplateIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileDescription: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewInsuranceTemplateIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileType: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewInsuranceTemplateIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      uploadedDate: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewInsuranceTemplateIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      modifiedBy: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewInsuranceTemplateIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileData: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewInsuranceTemplateIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      contentType: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewInsuranceTemplateIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileSize: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewInsuranceTemplateIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ]
-    });
-    this.supportingDocument = builder.group({
-      fileName: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSupportingDocumentIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileDescription: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSupportingDocumentIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileType: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSupportingDocumentIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      uploadedDate: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSupportingDocumentIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      modifiedBy: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSupportingDocumentIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileData: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSupportingDocumentIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      contentType: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSupportingDocumentIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
-      fileSize: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewSupportingDocumentIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ]
-    });
+    if (supportingDocuments.hasCopyOfARentalAgreementOrLease != null) {
+      this.hasCopyOfARentalAgreementOrLease.setValue(supportingDocuments.hasCopyOfARentalAgreementOrLease);
+    }
+    this.hasCopyOfARentalAgreementOrLease.setValidators(null);
   }
+}
+
+export class SignAndSubmit {
+  applicantSignature?: null | SignatureBlock;
+  secondaryApplicantSignature?: null | SignatureBlock;
 }
 
 export class SignAndSubmitForm {
   applicantSignature: UntypedFormGroup;
   secondaryApplicantSignature: UntypedFormGroup;
-
 
   constructor(
     signAndSubmit: SignAndSubmit,
@@ -1017,17 +967,14 @@ export class SignAndSubmitForm {
   }
 }
 
-// TODO This should be coming in from the API in api/models
 /**
  * DFA Application Main
- *
-export interface DFAApplicationMain {
-  id?: string;
+ **/
+export interface DfaApplicationMain {
+  cleanUpLog?: CleanUpLog;
   damagedPropertyAddress?: DamagedPropertyAddress;
+  id?: string;
   propertyDamage?: PropertyDamage;
-  occupants?: Occupants;
-  cleanUpLog?: CleanupLog;
-  damagedItemsByRoom?: DamagedItemsByRoom;
-  supportingDocuments?: SupportingDocuments;
   signAndSubmit?: SignAndSubmit;
-} */
+  supportingDocuments?: SupportingDocuments;
+}

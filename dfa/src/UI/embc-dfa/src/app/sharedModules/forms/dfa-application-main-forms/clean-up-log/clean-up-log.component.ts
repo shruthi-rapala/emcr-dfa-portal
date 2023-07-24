@@ -19,11 +19,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
-import { FileCategory, FileUpload, SecondaryApplicantTypeOption } from 'src/app/core/model/dfa-application-main.model';
+import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
+import { FileCategory, SecondaryApplicantTypeOption } from 'src/app/core/api/models';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 
 @Component({
   selector: 'app-clean-up-log',
@@ -32,8 +34,12 @@ import { DFAApplicationMainService } from 'src/app/feature-components/dfa-applic
 })
 export default class CleanUpLogComponent implements OnInit, OnDestroy {
   cleanUpLogForm: UntypedFormGroup;
-  formBuilder: UntypedFormBuilder;
   cleanUpLogForm$: Subscription;
+  cleanUpLogWorkForm: UntypedFormGroup;
+  cleanUpLogWorkForm$: Subscription;
+  cleanUpWorkFilesForm: UntypedFormGroup;
+  cleanUpWorkFilesForm$: Subscription;
+  formBuilder: UntypedFormBuilder;
   formCreationService: FormCreationService;
   showCleanUpWorkForm: boolean = false;
   cleanUpWorkColumnsToDisplay = ['date', 'name','hours','description', 'deleteIcon'];
@@ -49,7 +55,8 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
-    private dfaApplicationMainService: DFAApplicationMainService
+    private dfaApplicationMainService: DFAApplicationMainService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -60,37 +67,52 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       .getCleanUpLogForm()
       .subscribe((cleanUpLog) => {
         this.cleanUpLogForm = cleanUpLog;
-        this.cleanUpLogForm.updateValueAndValidity();
       });
 
+    this.cleanUpLogWorkForm$ = this.formCreationService
+      .getCleanUpLogItemsForm()
+      .subscribe((cleanUpLogItems) => {
+        this.cleanUpLogWorkForm = cleanUpLogItems;
+        this.cleanUpLogWorkForm.updateValueAndValidity();
+      });
 
     this.dfaApplicationMainService.deleteCleanupLog.subscribe((cleanupLogFileToDelete)=> {
       let index = this.cleanUpWorkFileData.indexOf(cleanupLogFileToDelete);
       this.deleteCleanupLogFileRow(index);
     });
 
-    this.cleanUpLogForm
+    this.cleanUpLogWorkForm
       .get('addNewCleanUpLogIndicator')
       .valueChanges.subscribe((value) => this.updateCleanupLogOnVisibility());
     this.cleanUpWorkDataSource.next(
-      this.cleanUpLogForm.get('cleanuplogs').value
+      this.cleanUpLogWorkForm.get('cleanuplogs').value
     );
-    this.cleanUpWorkData = this.cleanUpLogForm.get('cleanuplogs').value;
+    this.cleanUpWorkData = this.cleanUpLogWorkForm.get('cleanuplogs').value;
 
-    this.cleanUpLogForm
-      .get('addNewCleanUpLogFileIndicator')
+    this.cleanUpWorkFilesForm$ = this.formCreationService
+      .getFileUploadsForm()
+      .subscribe((fileUploads) => {
+        this.cleanUpWorkFilesForm = fileUploads;
+        this.cleanUpWorkFilesForm.updateValueAndValidity();
+    });
+
+    this.cleanUpWorkFilesForm
+      .get('addNewFileUploadIndicator')
       .valueChanges.subscribe((value) => this.updateCleanupLogFileOnVisibility());
     this.cleanUpWorkFileDataSource.next(
-      this.cleanUpLogForm.get('cleanuplogFiles').value
+      this.cleanUpWorkFilesForm.get('fileUploads').value
     );
-    this.cleanUpWorkFileData = this.cleanUpLogForm.get('cleanuplogFiles').value;
+    this.cleanUpWorkFileData = this.cleanUpWorkFilesForm.get('fileUploads').value;
   }
 
   /**
    * Returns the control of the form
    */
-  get cleanUpLogFormControl(): { [key: string]: AbstractControl } {
-    return this.cleanUpLogForm.controls;
+  get cleanUpLogWorkFormControl(): { [key: string]: AbstractControl } {
+    return this.cleanUpLogWorkForm.controls;
+  }
+  get cleanUpWorkFilesFormControl(): { [key: string]: AbstractControl } {
+    return this.cleanUpWorkFilesForm.controls;
   }
 
   onFileChange(event) {
@@ -106,108 +128,116 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
         return false;
       }
 
-      this.cleanUpLogForm
-        .get('cleanuplogFile.fileName').
+      this.cleanUpWorkFilesForm
+        .get('fileUpload.fileName').
         setValue(file.name);
-      this.cleanUpLogForm
-        .get('cleanuplogFile.fileDescription').
+      this.cleanUpWorkFilesForm
+        .get('fileUpload.fileDescription').
         setValue(file.name);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(file.text);
+      this.cleanUpWorkFilesForm.get('fileUpload.contentType').setValue(file.type);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileSize').setValue(file.size);
+      this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
         //.updateValueAndValidity();
     }
   }
 
-  updateOnVisibility(): void {
-    this.cleanUpLogForm.get('field').updateValueAndValidity();
-  }
-
   updateCleanupLogOnVisibility(): void {
-    this.cleanUpLogForm
+    this.cleanUpLogWorkForm
       .get('cleanuplog.date')
       .updateValueAndValidity();
-    this.cleanUpLogForm
+    this.cleanUpLogWorkForm
       .get('cleanuplog.name')
       .updateValueAndValidity();
-    this.cleanUpLogForm
+    this.cleanUpLogWorkForm
       .get('cleanuplog.hours')
       .updateValueAndValidity();
-    this.cleanUpLogForm
+    this.cleanUpLogWorkForm
       .get('cleanuplog.description')
       .updateValueAndValidity();
   }
 
   updateCleanupLogFileOnVisibility(): void {
-    this.cleanUpLogForm
-      .get('cleanuplogFile.uploadedDate')
+    this.cleanUpWorkFilesForm
+      .get('fileUpload.uploadedDate')
       .updateValueAndValidity();
-    this.cleanUpLogForm
-      .get('cleanuplogFile.fileName')
+    this.cleanUpWorkFilesForm
+      .get('fileUpload.fileName')
       .updateValueAndValidity();
-    this.cleanUpLogForm
-      .get('cleanuplogFile.fileDescription')
+    this.cleanUpWorkFilesForm
+      .get('fileUpload.fileDescription')
       .updateValueAndValidity();
   }
 
   ngOnDestroy(): void {
     this.cleanUpLogForm$.unsubscribe();
+    this.cleanUpLogWorkForm$.unsubscribe();
+    this.cleanUpWorkFilesForm$.unsubscribe();
   }
 
   addCleanupLog(): void {
-    this.cleanUpLogForm.get('cleanuplog').reset();
-    this.cleanUpLogForm.get('cleanuplogFile.fileType').setValue(this.FileCategories.Cleanup);
+    this.cleanUpLogWorkForm.get('cleanuplog').reset();
     this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
-    this.cleanUpLogForm.get('addNewCleanUpLogIndicator').setValue(true);
+    this.cleanUpLogWorkForm.get('addNewCleanUpLogIndicator').setValue(true);
+    this.cleanUpLogWorkForm.get('cleanuplog.deleteFlag').setValue(false);
+    this.cleanUpLogWorkForm.get('cleanuplog.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
   }
 
   addCleanupLogFile(): void {
-    this.cleanUpLogForm.get('cleanuplogFile').reset();
+    this.cleanUpWorkFilesForm.get('fileUpload').reset();
+    this.cleanUpWorkFilesForm.get('fileUpload.fileType').setValue(this.FileCategories.Cleanup);
+    this.cleanUpWorkFilesForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
     this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
-    this.cleanUpLogForm.get('addNewCleanUpLogFileIndicator').setValue(true);
+    this.cleanUpWorkFilesForm.get('fileUpload.modifiedBy').setValue("Applicant");
+    this.cleanUpWorkFilesForm.get('fileUpload.deleteFlag').setValue(false);
+    this.cleanUpWorkFilesForm.get('addNewFileUploadIndicator').setValue(true);
   }
 
   cancelNewCleanupLog(): void {
     this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
-    this.cleanUpLogForm.get('addNewCleanUpLogIndicator').setValue(false);
+    this.cleanUpLogWorkForm.get('addNewCleanUpLogIndicator').setValue(false);
   }
 
   cancelNewCleanupLogFile(): void {
     this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
-    this.cleanUpLogForm.get('addNewCleanUpLogFileIndicator').setValue(false);
+    this.cleanUpWorkFilesForm.get('addNewFileUploadIndicator').setValue(false);
   }
 
   saveNewCleanupLog(): void {
-    if (this.cleanUpLogForm.get('cleanuplog').status === 'VALID') {
-      this.cleanUpWorkData.push(this.cleanUpLogForm.get('cleanuplog').value);
+    if (this.cleanUpLogWorkForm.get('cleanuplog').status === 'VALID') {
+      this.cleanUpWorkData.push(this.cleanUpLogWorkForm.get('cleanuplog').value);
       this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
-      this.cleanUpLogForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
+      this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
       this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
     } else {
-      this.cleanUpLogForm.get('cleanuplog').markAllAsTouched();
+      this.cleanUpLogWorkForm.get('cleanuplog').markAllAsTouched();
     }
   }
 
   saveNewCleanupLogFile(): void {
-    this.cleanUpLogForm
-      .get('cleanuplogFile.uploadedDate').
+    this.cleanUpWorkFilesForm
+      .get('fileUpload.uploadedDate').
       setValue(new Date());
-    this.cleanUpLogForm
-      .get('cleanuplogFile.fileType').
+    this.cleanUpWorkFilesForm
+      .get('fileUpload.fileType').
       setValue(this.FileCategories.Cleanup);
-    if (this.cleanUpLogForm.get('cleanuplogFile').status === 'VALID') {
-      this.cleanUpWorkFileData.push(this.cleanUpLogForm.get('cleanuplogFile').getRawValue());
+    if (this.cleanUpWorkFilesForm.get('fileUpload').status === 'VALID') {
+      this.cleanUpWorkFileData.push(this.cleanUpWorkFilesForm.get('fileUpload').getRawValue());
       this.cleanUpWorkFileDataSource.next(this.cleanUpWorkFileData);
-      this.cleanUpLogForm.get('cleanuplogFiles').setValue(this.cleanUpWorkFileData);
+      this.cleanUpWorkFilesForm.get('fileUploads').setValue(this.cleanUpWorkFileData);
       this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
+      console.log(this.cleanUpWorkFilesForm, this.formCreationService.fileUploadsForm);
     } else {
-      this.cleanUpLogForm.get('cleanuplogFile').markAllAsTouched();
+      this.cleanUpWorkFilesForm.get('fileUpload').markAllAsTouched();
     }
   }
 
   deleteCleanupLogRow(index: number): void {
     this.cleanUpWorkData.splice(index, 1);
     this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
-    this.cleanUpLogForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
+    this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
     if (this.cleanUpWorkData.length === 0) {
-      this.cleanUpLogForm
+      this.cleanUpLogWorkForm
         .get('addNewCleanUpLogIndicator')
         .setValue(false);
     }
@@ -217,10 +247,10 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   deleteCleanupLogFileRow(index: number): void {
     this.cleanUpWorkFileData.splice(index, 1);
     this.cleanUpWorkFileDataSource.next(this.cleanUpWorkFileData);
-    this.cleanUpLogForm.get('cleanuplogFiles').setValue(this.cleanUpWorkFileData);
+    this.cleanUpWorkFilesForm.get('fileUploads').setValue(this.cleanUpWorkFileData);
     if (this.cleanUpWorkFileData.length === 0) {
-      this.cleanUpLogForm
-        .get('addNewCleanUpLogFileIndicator')
+      this.cleanUpWorkFilesForm
+        .get('addNewFileUploadIndicator')
         .setValue(false);
     }
 

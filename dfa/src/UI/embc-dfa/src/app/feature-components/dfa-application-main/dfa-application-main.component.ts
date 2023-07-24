@@ -190,15 +190,11 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.propertyDamage = this.form.value;
         break;
       case 'occupants':
-        this.dfaApplicationMainService.setFullTimeOccupants(this.form.get('fullTimeOccupants').value);
-        this.dfaApplicationMainService.setOtherContacts(this.form.get('otherContacts').value);
-        this.dfaApplicationMainService.setSecondaryApplicants(this.form.get('secondaryApplicants').value);
         break;
       case 'clean-up-log':
         this.dfaApplicationMainDataService.cleanUpLog = this.form.value;
         break;
       case 'damaged-items-by-room':
-        this.dfaApplicationMainDataService.damagedItemsByRoom = this.form.value;
         break;
       case 'supporting-documents':
         this.dfaApplicationMainDataService.supportingDocuments = this.form.value;
@@ -232,12 +228,7 @@ export class DFAApplicationMainComponent
           });
         break;
       case 2:
-        this.form$ = this.formCreationService
-          .getOccupantsForm()
-          .subscribe((occupants) => {
-            this.form = occupants;
-          });
-        break;
+        this.form$ = null;
       case 3:
         this.form$ = this.formCreationService
           .getCleanUpLogForm()
@@ -246,12 +237,7 @@ export class DFAApplicationMainComponent
           });
         break;
       case 4:
-        this.form$ = this.formCreationService
-          .getDamagedItemsByRoomForm()
-          .subscribe((damagedItemsByRoom) => {
-            this.form = damagedItemsByRoom;
-          });
-        break;
+        this.form$ = null;
       case 5:
         this.form$ = this.formCreationService
           .getSupportingDocumentsForm()

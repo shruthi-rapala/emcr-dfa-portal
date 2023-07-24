@@ -15,7 +15,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Subscription, mapTo } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { FileCategory } from 'src/app/core/model/dfa-application-main.model';
+import { FileCategory, SupportStatus } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from 'src/app/core/core.module';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -30,17 +31,23 @@ import { DFAApplicationMainService } from 'src/app/feature-components/dfa-applic
   styleUrls: ['./supporting-documents.component.scss']
 })
 export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
+  insuranceTemplateForm: UntypedFormGroup;
+  insuranceTemplateForm$: Subscription;
+  insuranceTemplateData = [];
+  insuranceTemplateDataSource = new BehaviorSubject([]);
   supportingDocumentsForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
   supportingDocumentsForm$: Subscription;
+  supportingFilesForm: UntypedFormGroup;
+  supportingFilesForm$: Subscription;
   formCreationService: FormCreationService;
-  showSupportingDocumentForm: boolean = false;
-  supportingDocumentsDataSource = new BehaviorSubject([]);
-  supportingDocumentsData = [];
+  showSupportingFileForm: boolean = false;
+  supportingFilesDataSource = new BehaviorSubject([]);
+  supportingFilesData = [];
   documentSummaryColumnsToDisplay = [ 'fileName', 'fileDescription', 'fileType', 'uploadedDate', 'icons']
   documentSummaryDataSource = new BehaviorSubject([]);
   documentSummaryData = [];
-  damagePhotoDataSource = new MatTableDataSource();
+  damagePhotosDataSource = new MatTableDataSource();
   cleanUpWorkFileDataSource = new MatTableDataSource();
   allowedFileTypes = [
     'application/pdf',
@@ -60,7 +67,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
-    private dfaApplicationMainService: DFAApplicationMainService
+    private dfaApplicationMainService: DFAApplicationMainService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -68,39 +76,74 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.supportingDocumentsForm$ = this.formCreationService
+      .getFileUploadsForm()
+      .subscribe((fileUploads) => {
+        this.supportingFilesForm = fileUploads;
+      });
+
+    this.supportingFilesForm$ = this.formCreationService
       .getSupportingDocumentsForm()
       .subscribe((supportingDocuments) => {
         this.supportingDocumentsForm = supportingDocuments;
-        this.supportingDocumentsForm.addValidators([this.validateFormInsuranceTemplate]);
       });
 
-    this.supportingDocumentsForm
-      .get('addNewSupportingDocumentIndicator')
-      .valueChanges.subscribe((value) => this.updateSupportingDocumentOnVisibility());
-    this.supportingDocumentsDataSource.next(
-        this.supportingDocumentsForm.get('supportingDocuments').value
-      );
-    this.supportingDocumentsData = this.supportingDocumentsForm.get('supportingDocuments').value;
+    this.supportingFilesData = this.supportingFilesForm.get('fileUploads').value;
+    this.supportingFilesForm$ = this.formCreationService
+      .getFileUploadsForm()
+      .subscribe((fileUploads) => {
+        this.supportingFilesForm = fileUploads;
+      });
 
-    // Initialize the inusrance template
-    this.supportingDocumentsForm.get('insuranceTemplate').reset();
-    this.supportingDocumentsForm.get('insuranceTemplate.modifiedBy').setValue("Applicant");
-    this.supportingDocumentsForm.get('insuranceTemplate.fileType').setValue(FileCategory.Insurance);
-    this.supportingDocumentsForm.get('addNewInsuranceTemplateIndicator').setValue(true);
+    this.supportingFilesForm$ = this.formCreationService
+      .getFileUploadsForm()
+      .subscribe((fileUploads) => {
+        this.supportingFilesForm = fileUploads;
+      });
+
+    this.supportingFilesForm
+      .get('addNewFileUploadIndicator')
+      .valueChanges.subscribe((value) => this.updateSupportingFilesOnVisibility());
+    this.supportingFilesDataSource.next(
+        this.supportingFilesForm.get('fileUploads').value
+      );
+    this.supportingFilesData = this.supportingFilesForm.get('fileUploads').value;
+
+    // Initialize the insurance template
+    this.insuranceTemplateForm$ = this.formCreationService
+    .getFileUploadsForm()
+    .subscribe((fileUploads) => {
+      this.insuranceTemplateForm = fileUploads;
+      this.insuranceTemplateForm.addValidators([this.validateFormInsuranceTemplate]);
+    });
+
+    this.insuranceTemplateForm
+      .get('addNewFileUploadIndicator')
+      .valueChanges.subscribe((value) => this.updateInsuranceTemplateOnVisibility());
+    this.insuranceTemplateDataSource.next(
+        this.insuranceTemplateForm.get('fileUploads').value
+      );
+    this.insuranceTemplateData = this.insuranceTemplateForm.get('fileUploads').value;
+
+    this.insuranceTemplateForm.get('fileUpload').reset();
+    this.insuranceTemplateForm.get('fileUpload.modifiedBy').setValue("Applicant");
+    this.insuranceTemplateForm.get('fileUpload.fileType').setValue(FileCategory.Insurance);
+    this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
+    this.insuranceTemplateForm.get('fileUpload.deleteFlag').setValue(false);
+    this.insuranceTemplateForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
 
     // subscribe to changes in receipts and invocies
-    const _cleanUpWorkFileFormArray = this.formCreationService.cleanUpLogForm.value.get('cleanuplogFiles');
+    const _cleanUpWorkFileFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _cleanUpWorkFileFormArray.valueChanges
       .pipe(
-        mapTo(_cleanUpWorkFileFormArray.getRawValue())
+        mapTo(_cleanUpWorkFileFormArray.getRawValue().filter(x => x.fileType == FileCategory.Cleanup))
         ).subscribe(data => {this.cleanUpWorkFileDataSource.data = data; this.updateDocumentSummary();});
 
     // subscribe to changes in damage photos
-    const _damagePhotoFormArray = this.formCreationService.damagedItemsByRoomForm.value.get('damagePhotos');
+    const _damagePhotoFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _damagePhotoFormArray.valueChanges
       .pipe(
-        mapTo(_damagePhotoFormArray.getRawValue())
-        ).subscribe(data => {this.damagePhotoDataSource.data = data; this.updateDocumentSummary();});
+        mapTo(_damagePhotoFormArray.getRawValue().filter(x => x.fileType == FileCategory.DamagePhoto))
+        ).subscribe(data => {this.damagePhotosDataSource.data = data; this.updateDocumentSummary();});
   }
 
   // Preserve original property order
@@ -111,8 +154,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   validateFormInsuranceTemplate(form: FormGroup) {
     let FileCategories = FileCategory;
 
-    let supportingDocuments = form.get('supportingDocuments').getRawValue();
-    if (supportingDocuments.filter(x => x.fileType === FileCategories.Insurance).length <= 0) {
+    let supportingFiles = form.get('fileUploads').getRawValue();
+    if (supportingFiles.filter(x => x.fileType === FileCategories.Insurance).length <= 0) {
       return { noInsuranceTemplate: true };
     }
     return null;
@@ -120,66 +163,68 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
   updateDocumentSummary(): void {
     while (this.documentSummaryData.length) this.documentSummaryData.pop();
-    this.supportingDocumentsData.forEach(x => this.documentSummaryData.push(x));
-    this.damagePhotoDataSource.data.forEach(x => this.documentSummaryData.push(x));
+    this.supportingFilesData.forEach(x => this.documentSummaryData.push(x));
+    this.damagePhotosDataSource.data.forEach(x => this.documentSummaryData.push(x));
     this.cleanUpWorkFileDataSource.data.forEach(x => this.documentSummaryData.push(x));
     this.documentSummaryDataSource.next(this.documentSummaryData);
   }
 
-  addSupportingDocument(): void {
-    this.supportingDocumentsForm.get('supportingDocument').reset();
-    this.supportingDocumentsForm.get('supportingDocument.modifiedBy').setValue("Applicant");
-    this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
-    this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(true);
+  addSupportingFile(): void {
+    this.supportingFilesForm.get('fileUpload').reset();
+    this.supportingFilesForm.get('fileUpload.modifiedBy').setValue("Applicant");
+    this.showSupportingFileForm = !this.showSupportingFileForm;
+    this.supportingFilesForm.get('addNewFileUploadIndicator').setValue(true);
+    this.supportingFilesForm.get('fileUpload.deleteFlag').setValue(false);
+    this.supportingFilesForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
   }
 
-  saveSupportingDocuments(): void {
-    if (this.supportingDocumentsForm.get('supportingDocument').status === 'VALID') {
-      this.supportingDocumentsData.push(this.supportingDocumentsForm.get('supportingDocument').value);
-      this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
-      this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
-      this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
+  saveSupportingFiles(): void {
+    if (this.supportingFilesForm.get('fileUpload').status === 'VALID') {
+      this.supportingFilesData.push(this.supportingFilesForm.get('fileUpload').value);
+      this.supportingFilesDataSource.next(this.supportingFilesData);
+      this.supportingFilesForm.get('fileUploads').setValue(this.supportingFilesData);
+      this.showSupportingFileForm = !this.showSupportingFileForm;
       this.updateDocumentSummary();
     } else {
-      this.supportingDocumentsForm.get('supportingDocument').markAllAsTouched();
+      this.supportingFilesForm.get('fileUpload').markAllAsTouched();
     }
   }
 
   saveInsuranceTemplate(): void {
-    if (this.supportingDocumentsForm.get('insuranceTemplate').status === 'VALID') {
-      if (this.supportingDocumentsData.filter(x => x.fileType === this.FileCategories.Insurance).length > 0) {
-        let insuranceFoundIndex = this.supportingDocumentsData.findIndex(x => x.fileType === this.FileCategories.Insurance);
-        this.supportingDocumentsData[insuranceFoundIndex] = this.supportingDocumentsForm.get('insuranceTemplate').getRawValue();
+    if (this.insuranceTemplateForm.get('fileUpload').status === 'VALID') {
+      if (this.insuranceTemplateData.filter(x => x.fileType === this.FileCategories.Insurance).length > 0) {
+        let insuranceFoundIndex = this.supportingFilesData.findIndex(x => x.fileType === this.FileCategories.Insurance);
+        this.supportingFilesData[insuranceFoundIndex] = this.insuranceTemplateForm.get('fileUpload').getRawValue();
       } else {
-        this.supportingDocumentsData.push(this.supportingDocumentsForm.get('insuranceTemplate').value);
+        this.supportingFilesData.push(this.insuranceTemplateForm.get('fileUpload').value);
       }
-      this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
-      this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
+      this.supportingFilesDataSource.next(this.supportingFilesData);
+      this.supportingFilesForm.get('fileUploads').setValue(this.supportingFilesData);
       this.updateDocumentSummary();
     } else {
-      this.supportingDocumentsForm.get('insuranceTemplate').markAllAsTouched();
+      this.insuranceTemplateForm.get('fileUpload').markAllAsTouched();
     }
   }
 
-  cancelSupportingDocuments(): void {
-    this.showSupportingDocumentForm = !this.showSupportingDocumentForm;
-    this.supportingDocumentsForm.get('addNewSupportingDocumentIndicator').setValue(false);
+  cancelSupportingFiles(): void {
+    this.showSupportingFileForm = !this.showSupportingFileForm;
+    this.supportingFilesForm.get('addNewFileUploadIndicator').setValue(false);
   }
 
   deleteDocumentSummaryRow(index: number): void {
     if (this.documentSummaryData[index].fileType === this.FileCategories.Insurance) {
-      this.supportingDocumentsForm.get('insuranceTemplate').reset();
-      this.supportingDocumentsForm.get('addNewInsuranceTemplateIndicator').setValue(false);
-      this.supportingDocumentsForm.get('insuranceTemplate.modifiedBy').setValue("Applicant");
-      this.supportingDocumentsForm.get('insuranceTemplate.fileType').setValue(FileCategory.Insurance);
-      this.supportingDocumentsForm.get('addNewInsuranceTemplateIndicator').setValue(true);
-      let supportingDocsIndex = this.supportingDocumentsData.indexOf(this.documentSummaryData[index]);
-      this.supportingDocumentsData.splice(supportingDocsIndex, 1);
-      this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
-      this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
-      if (this.supportingDocumentsData.length === 0) {
-        this.supportingDocumentsForm
-          .get('addNewSupportingDocumentIndicator')
+      this.insuranceTemplateForm.get('fileUpload').reset();
+      this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(false);
+      this.insuranceTemplateForm.get('fileUpload.modifiedBy').setValue("Applicant");
+      this.insuranceTemplateForm.get('fileUpload.fileType').setValue(FileCategory.Insurance);
+      this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
+      let supportingFilesIndex = this.supportingFilesData.indexOf(this.documentSummaryData[index]);
+      this.supportingFilesData.splice(supportingFilesIndex, 1);
+      this.supportingFilesDataSource.next(this.supportingFilesData);
+      this.supportingFilesForm.get('fileUploads').setValue(this.supportingFilesData);
+      if (this.supportingFilesData.length === 0) {
+        this.supportingFilesForm
+          .get('addNewFileUploadIndicator')
           .setValue(false);
       }
     } else if (this.documentSummaryData[index].fileType === this.FileCategories.DamagePhoto) {
@@ -187,53 +232,79 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     } else if (this.documentSummaryData[index].fileType === this.FileCategories.Cleanup) {
       this.dfaApplicationMainService.deleteCleanupLog.emit(this.documentSummaryData[index]);
     } else {
-      let supportingDocsIndex = this.supportingDocumentsData.indexOf(this.documentSummaryData[index]);
-      this.supportingDocumentsData.splice(supportingDocsIndex, 1);
-      this.supportingDocumentsDataSource.next(this.supportingDocumentsData);
-      this.supportingDocumentsForm.get('supportingDocuments').setValue(this.supportingDocumentsData);
-      if (this.supportingDocumentsData.length === 0) {
-        this.supportingDocumentsForm
-          .get('addNewSupportingDocumentIndicator')
+      let supportingFilesIndex = this.supportingFilesData.indexOf(this.documentSummaryData[index]);
+      this.supportingFilesData.splice(supportingFilesIndex, 1);
+      this.supportingFilesDataSource.next(this.supportingFilesData);
+      this.supportingFilesForm.get('fileUploads').setValue(this.supportingFilesData);
+      if (this.supportingFilesData.length === 0) {
+        this.supportingFilesForm
+          .get('addNewFileUploadIndicator')
           .setValue(false);
       }
     }
     this.updateDocumentSummary();
   }
 
- updateSupportingDocumentOnVisibility(): void {
-    this.supportingDocumentsForm
-      .get('supportingDocument.fileName')
+ updateSupportingFilesOnVisibility(): void {
+    this.supportingFilesForm
+      .get('fileUpload.fileName')
       .updateValueAndValidity();
-    this.supportingDocumentsForm
-      .get('supportingDocument.fileDescription')
+    this.supportingFilesForm
+      .get('fileUpload.fileDescription')
       .updateValueAndValidity();
-    this.supportingDocumentsForm
-      .get('supportingDocument.fileType')
+    this.supportingFilesForm
+      .get('fileUpload.fileType')
       .updateValueAndValidity();
-    this.supportingDocumentsForm
-      .get('supportingDocument.uploadedDate')
+    this.supportingFilesForm
+      .get('fileUpload.uploadedDate')
       .updateValueAndValidity();
-    this.supportingDocumentsForm
-      .get('supportingDocument.modifiedBy')
+    this.supportingFilesForm
+      .get('fileUpload.modifiedBy')
       .updateValueAndValidity();
-    this.supportingDocumentsForm
-      .get('supportingDocument.fileData')
+    this.supportingFilesForm
+      .get('fileUpload.fileData')
+      .updateValueAndValidity();
+  }
+
+  updateInsuranceTemplateOnVisibility(): void {
+    this.insuranceTemplateForm
+      .get('fileUpload.fileName')
+      .updateValueAndValidity();
+    this.insuranceTemplateForm
+      .get('fileUpload.fileDescription')
+      .updateValueAndValidity();
+    this.insuranceTemplateForm
+      .get('fileUpload.fileType')
+      .updateValueAndValidity();
+    this.insuranceTemplateForm
+      .get('fileUpload.uploadedDate')
+      .updateValueAndValidity();
+    this.insuranceTemplateForm
+      .get('fileUpload.modifiedBy')
+      .updateValueAndValidity();
+    this.insuranceTemplateForm
+      .get('fileUpload.fileData')
       .updateValueAndValidity();
   }
 
   /**
    * Returns the control of the form
    */
-  get supportingDocumentsFormControl(): { [key: string]: AbstractControl } {
-    return this.supportingDocumentsForm.controls;
+  get supportingFilesFormControl(): { [key: string]: AbstractControl } {
+    return this.supportingFilesForm.controls;
+  }
+  get insuranceTemplateFormControl(): { [key: string]: AbstractControl } {
+    return this.insuranceTemplateForm.controls;
   }
 
   updateOnVisibility(): void {
-    this.supportingDocumentsForm.get('field').updateValueAndValidity();
+    this.supportingFilesForm.get('field').updateValueAndValidity();
   }
 
   ngOnDestroy(): void {
     this.supportingDocumentsForm$.unsubscribe();
+    this.supportingFilesForm$.unsubscribe();
+    this.insuranceTemplateForm$.unsubscribe();
   }
 
 /**
@@ -241,16 +312,16 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
  *
  * @param event : Attachment drop/browse event
  */
-  setFileFormControl(event: any) {
+  setSupportingFileFormControl(event: any) {
     const reader = new FileReader();
     reader.readAsDataURL(event);
     reader.onload = () => {
-      this.supportingDocumentsForm.get('supportingDocument.fileName').setValue(event.name);
-      this.supportingDocumentsForm.get('supportingDocument.fileDescription').setValue(event.name);
-      this.supportingDocumentsForm.get('supportingDocument.fileData').setValue(reader.result);
-      this.supportingDocumentsForm.get('supportingDocument.contentType').setValue(event.type);
-      this.supportingDocumentsForm.get('supportingDocument.fileSize').setValue(event.size);
-      this.supportingDocumentsForm.get('supportingDocument.uploadedDate').setValue(new Date());
+      this.supportingFilesForm.get('fileUpload.fileName').setValue(event.name);
+      this.supportingFilesForm.get('fileUpload.fileDescription').setValue(event.name);
+      this.supportingFilesForm.get('fileUpload.fileData').setValue(reader.result);
+      this.supportingFilesForm.get('fileUpload.contentType').setValue(event.type);
+      this.supportingFilesForm.get('fileUpload.fileSize').setValue(event.size);
+      this.supportingFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
     };
   }
 
@@ -263,12 +334,12 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     const reader = new FileReader();
     reader.readAsDataURL(event);
     reader.onload = () => {
-      this.supportingDocumentsForm.get('insuranceTemplate.fileName').setValue(event.name);
-      this.supportingDocumentsForm.get('insuranceTemplate.fileDescription').setValue(event.name);
-      this.supportingDocumentsForm.get('insuranceTemplate.fileData').setValue(reader.result);
-      this.supportingDocumentsForm.get('insuranceTemplate.contentType').setValue(event.type);
-      this.supportingDocumentsForm.get('insuranceTemplate.fileSize').setValue(event.size);
-      this.supportingDocumentsForm.get('insuranceTemplate.uploadedDate').setValue(new Date());
+      this.insuranceTemplateForm.get('fileUpload.fileName').setValue(event.name);
+      this.insuranceTemplateForm.get('fileUpload.fileDescription').setValue(event.name);
+      this.insuranceTemplateForm.get('fileUpload.fileData').setValue(reader.result);
+      this.insuranceTemplateForm.get('fileUpload.contentType').setValue(event.type);
+      this.insuranceTemplateForm.get('fileUpload.fileSize').setValue(event.size);
+      this.insuranceTemplateForm.get('fileUpload.uploadedDate').setValue(new Date());
     };
   }
 }

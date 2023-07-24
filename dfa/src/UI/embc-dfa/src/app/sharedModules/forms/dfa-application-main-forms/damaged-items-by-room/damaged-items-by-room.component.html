@@ -1,7 +1,7 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="damagedItemsByRoomForm">
+    <form [formGroup]="damagedRoomsForm">
 
       <p class="sub-heading" style="font-size: 20px">Damaged Items by Room</p>
       <br />
@@ -70,10 +70,10 @@
                   </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="damagedRoomColumnsToDisplay"></tr>
+                <tr mat-header-row *matHeaderRowDef="damagedRoomsColumnsToDisplay"></tr>
                 <tr
                   mat-row
-                  *matRowDef="let element; columns: damagedRoomColumnsToDisplay"
+                  *matRowDef="let element; columns: damagedRoomsColumnsToDisplay"
                   class="example-element-row"
                   [style.height]="'auto'"
                 ></tr>
@@ -107,9 +107,9 @@
                       </mat-select>
                       <mat-error
                         *ngIf="
-                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.invalid &&
-                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.hasError('required') &&
-                          damagedItemsByRoomForm.get('damagedRoom').controls.roomType.touched
+                          damagedRoomsForm.get('damagedRoom').controls.roomType.invalid &&
+                          damagedRoomsForm.get('damagedRoom').controls.roomType.hasError('required') &&
+                          damagedRoomsForm.get('damagedRoom').controls.roomType.touched
                         "
                       >
                         Room type is required</mat-error
@@ -121,9 +121,9 @@
                       <input formControlName="otherRoomType" matInput placeholder="Please specify Other room" required/>
                       <mat-error
                         *ngIf="
-                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.invalid &&
-                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.hasError('required') &&
-                          damagedItemsByRoomForm.get('damagedRoom').controls.otherRoomType.touched
+                          damagedRoomsForm.get('damagedRoom').controls.otherRoomType.invalid &&
+                          damagedRoomsForm.get('damagedRoom').controls.otherRoomType.hasError('required') &&
+                          damagedRoomsForm.get('damagedRoom').controls.otherRoomType.touched
                         "
                       >
                         Other room type is required</mat-error
@@ -142,9 +142,9 @@
                         (keyup)="calcRemainingChars()"></textarea>
                       <mat-error
                         *ngIf="
-                          damagedItemsByRoomForm.get('damagedRoom').controls.description.invalid &&
-                          damagedItemsByRoomForm.get('damagedRoom').controls.description.hasError('required') &&
-                          damagedItemsByRoomForm.get('damagedRoom').controls.description.touched
+                          damagedRoomsForm.get('damagedRoom').controls.description.invalid &&
+                          damagedRoomsForm.get('damagedRoom').controls.description.hasError('required') &&
+                          damagedRoomsForm.get('damagedRoom').controls.description.touched
                         "
                       >
                         Description is required</mat-error
@@ -183,8 +183,11 @@
         </ng-container>
       </div>
       <br/><br/>
+    </form>
 
-      <div formGroupName="damagePhoto">
+    <form [formGroup]="damagePhotosForm">
+
+      <div formGroupName="fileUpload">
         <ng-container>
           <div clas="row">
             <div class="col-md-12">
@@ -253,10 +256,10 @@
                   </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="damagePhotoColumnsToDisplay"></tr>
+                <tr mat-header-row *matHeaderRowDef="damagePhotosColumnsToDisplay"></tr>
                 <tr
                   mat-row
-                  *matRowDef="let element; columns: damagePhotoColumnsToDisplay"
+                  *matRowDef="let element; columns: damagePhotosColumnsToDisplay"
                   class="example-element-row"
                   [style.height]="'auto'"
                 ></tr>
@@ -293,23 +296,23 @@
                   </div>
                   <div class="col-md-6">
                     <br/><br/>
-                    <div [hidden]="!damagedItemsByRoomForm.get('damagePhoto.fileData').value">
+                    <div [hidden]="!damagePhotosForm.get('fileUpload.fileData').value">
                       <mat-label>File name<span style="color:red" >*</span></mat-label>
                       <br/>
-                      {{ damagedItemsByRoomForm.get('damagePhoto.fileName').value }}
+                      {{ damagePhotosForm.get('fileUpload.fileName').value }}
                       <br/><br/>
                     </div>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!damagedItemsByRoomForm.get('damagePhoto.fileData').value"
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!damagePhotosForm.get('fileUpload.fileData').value"
                       >You may update the file description to something more descriptive:</label
                     >
-                    <mat-form-field appearance="outline" [hidden]="!damagedItemsByRoomForm.get('damagePhoto.fileData').value">
+                    <mat-form-field appearance="outline" [hidden]="!damagePhotosForm.get('fileUpload.fileData').value">
                       <mat-label>File description</mat-label>
                       <input formControlName="fileDescription" matInput placeholder="File description" required/>
                       <mat-error
                         *ngIf="
-                          damagedItemsByRoomForm.get('damagePhoto').controls.fileDescription.invalid &&
-                          damagedItemsByRoomForm.get('damagePhoto').controls.fileDescription.hasError('required') &&
-                          damagedItemsByRoomForm.get('damagePhoto').controls.fileDescription.touched
+                          damagePhotosForm.get('damagePhoto').controls.fileDescription.invalid &&
+                          damagePhotosForm.get('damagePhoto').controls.fileDescription.hasError('required') &&
+                          damagePhotosForm.get('damagePhoto').controls.fileDescription.touched
                         "
                       >
                         File description is required</mat-error

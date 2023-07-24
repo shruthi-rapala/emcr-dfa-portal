@@ -18,8 +18,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
-import { SecondaryApplicantTypeOption } from 'src/app/core/model/dfa-application-main.model';
+import { SecondaryApplicantTypeOption } from 'src/app/core/api/models';
 import { MatSelectModule } from '@angular/material/select';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 
 @Component({
   selector: 'app-occupants',
@@ -27,10 +28,14 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrls: ['./occupants.component.scss']
 })
 export default class OccupantsComponent implements OnInit, OnDestroy {
-  occupantsForm: UntypedFormGroup;
+  fullTimeOccupantsForm: UntypedFormGroup;
+  fullTimeOccupantsForm$: Subscription;
+  otherContactsForm: UntypedFormGroup;
+  otherContactsForm$: Subscription;
+  secondaryApplicantsForm: UntypedFormGroup;
+  secondaryApplicantsForm$: Subscription;
   selectApplicantTypeOptions = SecondaryApplicantTypeOption;
   formBuilder: UntypedFormBuilder;
-  occupantsForm$: Subscription;
   formCreationService: FormCreationService;
   showFullTimeOccupantForm: boolean = false;
   fullTimeOccupantsColumnsToDisplay = ['name', 'relationship', 'deleteIcon'];
@@ -62,73 +67,88 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
   }
 
   ngOnInit(): void {
-    this.occupantsForm$ = this.formCreationService
-      .getOccupantsForm()
-      .subscribe((occupants) => {
-        this.occupantsForm = occupants;
+    this.fullTimeOccupantsForm$ = this.formCreationService
+      .getFullTimeOccupantsForm()
+      .subscribe((fullTimeOccupants) => {
+        this.fullTimeOccupantsForm = fullTimeOccupants;
       });
 
-    this.occupantsForm
+    this.fullTimeOccupantsForm
     .get('addNewFullTimeOccupantIndicator')
     .valueChanges.subscribe((value) => this.updateFullTimeOccupantOnVisibility());
     this.fullTimeOccupantsDataSource.next(
-      this.occupantsForm.get('fullTimeOccupants').value
+      this.fullTimeOccupantsForm.get('fullTimeOccupants').value
     );
-    this.fullTimeOccupantsData = this.occupantsForm.get('fullTimeOccupants').value;
+    this.fullTimeOccupantsData = this.fullTimeOccupantsForm.get('fullTimeOccupants').value;
 
-    this.occupantsForm
+    this.otherContactsForm$ = this.formCreationService
+      .getOtherContactsForm()
+      .subscribe((otherContacts) => {
+        this.otherContactsForm = otherContacts;
+      });
+
+    this.otherContactsForm
     .get('addNewOtherContactIndicator')
     .valueChanges.subscribe((value) => this.updateOtherContactOnVisibility());
     this.otherContactsDataSource.next(
-      this.occupantsForm.get('otherContacts').value
+      this.otherContactsForm.get('otherContacts').value
     );
-    this.otherContactsData = this.occupantsForm.get('otherContacts').value;
+    this.otherContactsData = this.otherContactsForm.get('otherContacts').value;
 
-    this.occupantsForm
+    this.secondaryApplicantsForm$ = this.formCreationService
+      .getSecondaryApplicantsForm()
+      .subscribe((secondaryApplicants) => {
+        this.secondaryApplicantsForm = secondaryApplicants;
+      });
+
+    this.secondaryApplicantsForm
     .get('addNewSecondaryApplicantIndicator')
     .valueChanges.subscribe((value) => this.updateSecondaryApplicantOnVisibility());
     this.secondaryApplicantsDataSource.next(
-      this.occupantsForm.get('secondaryApplicants').value
+      this.secondaryApplicantsForm.get('secondaryApplicants').value
     );
-    this.secondaryApplicantsData = this.occupantsForm.get('secondaryApplicants').value;
+    this.secondaryApplicantsData = this.secondaryApplicantsForm.get('secondaryApplicants').value;
     this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   addFullTimeOccupant(): void {
-    this.occupantsForm.get('fullTimeOccupant').reset();
+    this.fullTimeOccupantsForm.get('fullTimeOccupant').reset();
     this.showFullTimeOccupantForm = !this.showFullTimeOccupantForm;
-    this.occupantsForm.get('addNewFullTimeOccupantIndicator').setValue(true);
+    this.fullTimeOccupantsForm.get('addNewFullTimeOccupantIndicator').setValue(true);
+    this.fullTimeOccupantsForm.get('fullTimeOccupant.deleteFlag').setValue(false);
+    this.fullTimeOccupantsForm.get('fullTimeOccupant.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
   }
 
   saveFullTimeOccupants(): void {
-    if (this.occupantsForm.get('fullTimeOccupant').status === 'VALID') {
-      this.fullTimeOccupantsData.push(this.occupantsForm.get('fullTimeOccupant').value);
+    if (this.fullTimeOccupantsForm.get('fullTimeOccupant').status === 'VALID') {
+      this.fullTimeOccupantsData.push(this.fullTimeOccupantsForm.get('fullTimeOccupant').value);
       this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
-      this.occupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
+      this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
       this.showFullTimeOccupantForm = !this.showFullTimeOccupantForm;
     } else {
-      this.occupantsForm.get('fullTimeOccupant').markAllAsTouched();
+      this.fullTimeOccupantsForm.get('fullTimeOccupant').markAllAsTouched();
     }
   }
 
   cancelFullTimeOccupants(): void {
     this.showFullTimeOccupantForm = !this.showFullTimeOccupantForm;
-    this.occupantsForm.get('addNewFullTimeOccupantIndicator').setValue(false);
+    this.fullTimeOccupantsForm.get('addNewFullTimeOccupantIndicator').setValue(false);
   }
 
   deleteFullTimeOccupantRow(index: number): void {
     this.fullTimeOccupantsData.splice(index, 1);
     this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
-    this.occupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
+    this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
     if (this.fullTimeOccupantsData.length === 0) {
-      this.occupantsForm
+      this.fullTimeOccupantsForm
         .get('addNewFullTimeOccupantIndicator')
         .setValue(false);
     }
@@ -136,33 +156,35 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   addOtherContact(): void {
-    this.occupantsForm.get('otherContact').reset();
+    this.otherContactsForm.get('otherContact').reset();
     this.showOtherContactForm = !this.showOtherContactForm;
-    this.occupantsForm.get('addNewOtherContactIndicator').setValue(true);
+    this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
+    this.otherContactsForm.get('otherContact.deleteFlag').setValue(false);
+    this.otherContactsForm.get('otherContact.applicationId').setValue(true);
   }
 
   saveOtherContact(): void {
-    if (this.occupantsForm.get('otherContact').status === 'VALID') {
-      this.otherContactsData.push(this.occupantsForm.get('otherContact').value);
+    if (this.otherContactsForm.get('otherContact').status === 'VALID') {
+      this.otherContactsData.push(this.otherContactsForm.get('otherContact').value);
       this.otherContactsDataSource.next(this.otherContactsData);
-      this.occupantsForm.get('otherContacts').setValue(this.otherContactsData);
+      this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
       this.showOtherContactForm = !this.showOtherContactForm;
     } else {
-      this.occupantsForm.get('otherContact').markAllAsTouched();
+      this.otherContactsForm.get('otherContact').markAllAsTouched();
     }
   }
 
   cancelOtherContact(): void {
     this.showOtherContactForm = !this.showOtherContactForm;
-    this.occupantsForm.get('addNewOtherContactIndicator').setValue(false);
+    this.otherContactsForm.get('addNewOtherContactIndicator').setValue(false);
   }
 
   deleteOtherContactRow(index: number): void {
     this.otherContactsData.splice(index, 1);
     this.otherContactsDataSource.next(this.otherContactsData);
-    this.occupantsForm.get('otherContacts').setValue(this.otherContactsData);
+    this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
     if (this.otherContactsData.length === 0) {
-      this.occupantsForm
+      this.otherContactsForm
         .get('addNewOtherContactIndicator')
         .setValue(false);
     }
@@ -170,36 +192,38 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   addSecondaryApplicant(): void {
-    this.occupantsForm.get('secondaryApplicant').reset();
+    this.secondaryApplicantsForm.get('secondaryApplicant').reset();
     this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
-    this.occupantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
+    this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
+    this.secondaryApplicantsForm.get('secondaryApplicant.deleteFlag').setValue(false);
+    this.secondaryApplicantsForm.get('secondaryApplicant.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
     this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   saveSecondaryApplicants(): void {
-    if (this.occupantsForm.get('secondaryApplicant').status === 'VALID') {
-      this.secondaryApplicantsData.push(this.occupantsForm.get('secondaryApplicant').value);
+    if (this.secondaryApplicantsForm.get('secondaryApplicant').status === 'VALID') {
+      this.secondaryApplicantsData.push(this.secondaryApplicantsForm.get('secondaryApplicant').value);
       this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
-      this.occupantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);
+      this.secondaryApplicantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);
       this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
       this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
     } else {
-      this.occupantsForm.get('secondaryApplicant').markAllAsTouched();
+      this.secondaryApplicantsForm.get('secondaryApplicant').markAllAsTouched();
     }
   }
 
   cancelSecondaryApplicants(): void {
     this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
-    this.occupantsForm.get('addNewSecondaryApplicantIndicator').setValue(false);
+    this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(false);
     this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   deleteSecondaryApplicantRow(index: number): void {
     this.secondaryApplicantsData.splice(index, 1);
     this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
-    this.occupantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);
+    this.secondaryApplicantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);
     if (this.secondaryApplicantsData.length === 0) {
-      this.occupantsForm
+      this.secondaryApplicantsForm
         .get('addNewSecondaryApplicantIndicator')
         .setValue(false);
     }
@@ -207,46 +231,46 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   updateFullTimeOccupantOnVisibility(): void {
-    this.occupantsForm
+    this.fullTimeOccupantsForm
       .get('fullTimeOccupant.firstName')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.fullTimeOccupantsForm
       .get('fullTimeOccupant.lastName')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.fullTimeOccupantsForm
       .get('fullTimeOccupant.relationship')
       .updateValueAndValidity();
   }
 
   updateOtherContactOnVisibility(): void {
-    this.occupantsForm
+    this.otherContactsForm
       .get('otherContact.firstName')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.otherContactsForm
       .get('otherContact.lastName')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.otherContactsForm
       .get('otherContact.phoneNumber')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.otherContactsForm
       .get('otherContact.email')
       .updateValueAndValidity();
   }
 
   updateSecondaryApplicantOnVisibility(): void {
-    this.occupantsForm
-      .get('secondaryApplicant.secondaryApplicantType')
+    this.secondaryApplicantsForm
+      .get('secondaryApplicant.applicantType')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.secondaryApplicantsForm
       .get('secondaryApplicant.firstName')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.secondaryApplicantsForm
       .get('secondaryApplicant.lastName')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.secondaryApplicantsForm
       .get('secondaryApplicant.phoneNumber')
       .updateValueAndValidity();
-    this.occupantsForm
+    this.secondaryApplicantsForm
       .get('secondaryApplicant.email')
       .updateValueAndValidity();
   }
@@ -254,12 +278,20 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   /**
    * Returns the control of the form
    */
-  get occupantsFormControl(): { [key: string]: AbstractControl } {
-    return this.occupantsForm.controls;
+  get fullTimeOccupantsFormControl(): { [key: string]: AbstractControl } {
+    return this.fullTimeOccupantsForm.controls;
+  }
+  get otherContactsFormControl(): { [key: string]: AbstractControl } {
+    return this.otherContactsForm.controls;
+  }
+  get secondaryApplicantsFormControl(): { [key: string]: AbstractControl } {
+    return this.secondaryApplicantsForm.controls;
   }
 
   ngOnDestroy(): void {
-    this.occupantsForm$.unsubscribe();
+    this.fullTimeOccupantsForm$.unsubscribe();
+    this.otherContactsForm$.unsubscribe();
+    this.secondaryApplicantsForm$.unsubscribe();
   }
 }
 
