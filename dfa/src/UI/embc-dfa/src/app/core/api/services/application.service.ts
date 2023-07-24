@@ -146,4 +146,66 @@ export class ApplicationService extends BaseService {
     );
   }
 
+  /**
+   * Path part for operation applicationGetDfaApplications
+   */
+  static readonly ApplicationGetDfaApplicationsPath = '/api/applications/dfaapplication';
+
+  /**
+   * get dfa applications.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `applicationGetDfaApplications()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetDfaApplications$Response(params?: {
+
+    /**
+     * The profile Id.
+     */
+    profileId?: string;
+  }): Observable<StrictHttpResponse<string>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetDfaApplicationsPath, 'get');
+    if (params) {
+      rb.query('profileId', params.profileId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
+  }
+
+  /**
+   * get dfa applications.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `applicationGetDfaApplications$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetDfaApplications(params?: {
+
+    /**
+     * The profile Id.
+     */
+    profileId?: string;
+  }): Observable<string> {
+
+    return this.applicationGetDfaApplications$Response(params).pipe(
+      map((r: StrictHttpResponse<string>) => r.body as string)
+    );
+  }
+
 }

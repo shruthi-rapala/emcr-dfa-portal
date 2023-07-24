@@ -30,11 +30,16 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_secondarycity, opts => opts.MapFrom(s => s.MailingAddress.City))
                 .ForMember(d => d.dfa_secondarypostalcode, opts => opts.MapFrom(s => s.MailingAddress.PostalCode))
                 .ForMember(d => d.dfa_secondarystateprovince, opts => opts.MapFrom(s => s.MailingAddress.StateProvince))
-                .ForMember(d => d.dfa_bcservicecardid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.dfa_bcservicecardid, opts => opts.MapFrom(s => s.BCServiceCardId))
+                .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.Id))
                 .ForMember(d => d.dfa_isprimaryandsecondaryaddresssame, opts => opts.MapFrom(s => (!string.IsNullOrEmpty(s.IsMailingAddressSameAsPrimaryAddress) ?
-                                                (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == "yes" ? 222710000 :
-                                                (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == "no" ? 222710001 : 222710002)) : 222710002)))
+                                                (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == SameAddressOptionSet.Yes.ToString().ToLower() ? Convert.ToInt32(SameAddressOptionSet.Yes) :
+                                                (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == SameAddressOptionSet.No.ToString().ToLower() ? Convert.ToInt32(SameAddressOptionSet.No) : Convert.ToInt32(SameAddressOptionSet.NoAddress))) : Convert.ToInt32(SameAddressOptionSet.NoAddress))))
                 .ReverseMap()
+                .ForMember(d => d.Id, opts => opts.MapFrom(s => s.dfa_appcontactid))
+                .ForMember(d => d.IsMailingAddressSameAsPrimaryAddress, opts => opts.MapFrom(s => (s.dfa_isprimaryandsecondaryaddresssame.HasValue ?
+                                                (s.dfa_isprimaryandsecondaryaddresssame == Convert.ToInt32(SameAddressOptionSet.Yes) ? SameAddressOptionSet.Yes.ToString() :
+                                                (s.dfa_isprimaryandsecondaryaddresssame == Convert.ToInt32(SameAddressOptionSet.No) ? SameAddressOptionSet.No.ToString() : SameAddressOptionSet.NoAddress.ToString())) : SameAddressOptionSet.NoAddress.ToString())))
                 .ForMember(d => d.PersonalDetails, opts => opts.MapFrom(s => new PersonDetails()
                 {
                     FirstName = s.dfa_firstname,

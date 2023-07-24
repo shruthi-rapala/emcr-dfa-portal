@@ -190,7 +190,7 @@ export class LocationService {
       addressLine2: addressObject.addressLine2,
       //community: addressCommunity || addressObject.city || '',
       //stateProvince: addressStateProvince,
-      community: '',
+      community: addressObject.city,
       stateProvince: addressObject.stateProvince,
       postalCode: addressObject.postalCode,
       country: { code: 'CAN', name: 'Canada' }
