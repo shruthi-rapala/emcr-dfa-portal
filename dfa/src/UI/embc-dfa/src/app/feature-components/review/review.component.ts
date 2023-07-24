@@ -129,8 +129,8 @@ export class ReviewComponent implements OnInit {
 
   editDetails(componentToEdit: string): void {
     let route: string;
-    if (this.currentFlow === 'non-verified-registration') {
-      route = '/non-verified-registration/edit/' + componentToEdit;
+    if (this.currentFlow === 'dfa-dashboard') {
+      route = '/dfa-dashboard/edit/' + componentToEdit;
     } else {
       route = '/verified-registration/edit/' + componentToEdit;
     }

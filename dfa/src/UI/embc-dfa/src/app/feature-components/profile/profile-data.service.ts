@@ -105,7 +105,8 @@ export class ProfileDataService {
       primaryAddress: this.locationService.setAddressObjectForDTO(
         this.primaryAddressDetails
       ),
-      isMailingAddressSameAsPrimaryAddress: this.isMailingAddressSameAsPrimaryAddress
+      isMailingAddressSameAsPrimaryAddress: this.isMailingAddressSameAsPrimaryAddress,
+      id: this.profileId
     };
   }
 }

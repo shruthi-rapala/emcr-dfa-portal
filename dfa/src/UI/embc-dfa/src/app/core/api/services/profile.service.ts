@@ -9,7 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { DfaAppapplication } from '../models/dfa-appapplication';
 import { InviteRequest } from '../models/invite-request';
 import { InviteToken } from '../models/invite-token';
 import { Profile } from '../models/profile';
@@ -187,57 +186,6 @@ export class ProfileService extends BaseService {
 
     return this.profileGetDoesUserExists$Response(params).pipe(
       map((r: StrictHttpResponse<boolean>) => r.body as boolean)
-    );
-  }
-
-  /**
-   * Path part for operation profileGetDfaApplications
-   */
-  static readonly ProfileGetDfaApplicationsPath = '/api/profiles/dfaapplications';
-
-  /**
-   * get dfa applications.
-   *
-   *
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `profileGetDfaApplications()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  profileGetDfaApplications$Response(params?: {
-  }): Observable<StrictHttpResponse<DfaAppapplication>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ProfileService.ProfileGetDfaApplicationsPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<DfaAppapplication>;
-      })
-    );
-  }
-
-  /**
-   * get dfa applications.
-   *
-   *
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `profileGetDfaApplications$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  profileGetDfaApplications(params?: {
-  }): Observable<DfaAppapplication> {
-
-    return this.profileGetDfaApplications$Response(params).pipe(
-      map((r: StrictHttpResponse<DfaAppapplication>) => r.body as DfaAppapplication)
     );
   }
 

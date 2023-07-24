@@ -89,19 +89,6 @@ namespace EMBC.DFA.API.Controllers
         }
 
         /// <summary>
-        /// get dfa applications
-        /// </summary>
-        /// <returns>true if existing user, false if a new user</returns>
-        [HttpGet("dfaapplications")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<dfa_appapplication>> GetDFAApplications()
-        {
-            var userId = currentUserId;
-            var profile = await handler.HandleApplicationList();
-            return Ok(profile);
-        }
-
-        /// <summary>
         /// Create or update the current user's profile
         /// </summary>
         /// <param name="profile">The profile information</param>
@@ -112,7 +99,7 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> AddContact(Profile profile)
         {
-            profile.Id = currentUserId;
+            profile.BCServiceCardId = currentUserId;
             var mappedProfile = mapper.Map<dfa_appcontact>(profile);
             if (profile == null) return BadRequest("Profile details cannot be empty!");
 
@@ -183,6 +170,8 @@ namespace EMBC.DFA.API.Controllers
         public Address MailingAddress { get; set; }
 
         public string IsMailingAddressSameAsPrimaryAddress { get; set; }
+
+        public string? BCServiceCardId { get; set; }
     }
 
     /// <summary>

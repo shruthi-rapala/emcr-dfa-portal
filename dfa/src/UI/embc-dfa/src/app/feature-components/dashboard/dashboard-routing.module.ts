@@ -41,6 +41,12 @@ const routes: Routes = [{
           'src/app/sharedModules/dashboard-components/dfa-profile/dfa-profile.module'
         ).then((m) => m.DFAProfileModule),
       data: { flow: 'dfa-dashboard' }
+    },
+    {
+      path: 'edit/:type',
+      loadChildren: () =>
+        import('../edit/edit.module').then((m) => m.EditModule),
+      data: { flow: 'dfa-dashboard' }
     }
     //{
     //  path: 'profile',

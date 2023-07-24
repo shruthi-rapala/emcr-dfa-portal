@@ -42,7 +42,6 @@ export { LodgingGroupSupport } from './models/lodging-group-support';
 export { LodgingHotelSupport } from './models/lodging-hotel-support';
 export { TransportationOtherSupport } from './models/transportation-other-support';
 export { TransportationTaxiSupport } from './models/transportation-taxi-support';
-export { DfaAppapplication } from './models/dfa-appapplication';
 export { ProfileDataConflict } from './models/profile-data-conflict';
 export { DateOfBirthDataConflict } from './models/date-of-birth-data-conflict';
 export { NameDataConflict } from './models/name-data-conflict';

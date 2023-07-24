@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class DfaProfileComponent implements OnInit {
   type = 'profile';
   profileHeading: string;
-  parentPageName = 'dashboard';
+  parentPageName = 'dfa-dashboard';
   currentFlow: string;
 
   constructor(

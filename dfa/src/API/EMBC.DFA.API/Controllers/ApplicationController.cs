@@ -36,6 +36,8 @@ namespace EMBC.DFA.API.Controllers
             this.handler = handler;
         }
 
+        private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
         /// <summary>
         /// Create or update an application
         /// </summary>
@@ -74,6 +76,21 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationStart.Consent = mapper.Map<Consent>(dfa_appapplication);
             dfaApplicationStart.AppTypeInsurance = mapper.Map<AppTypeInsurance>(dfa_appapplication);
             return Ok(dfaApplicationStart);
+        }
+
+        /// <summary>
+        /// get dfa applications
+        /// </summary>
+        /// <returns>list of dfa applications</returns>
+        /// <param name="profileId">The profile Id.</param>
+        [HttpGet("dfaapplication")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<string>> GetDFAApplications(string profileId)
+        {
+            profileId = "15bbbd7b-9e25-ee11-b844-00505683fbf4";
+            //var userId = currentUserId;
+            var lstApplications = await handler.HandleApplicationList(profileId);
+            return Ok("Success");
         }
     }
 

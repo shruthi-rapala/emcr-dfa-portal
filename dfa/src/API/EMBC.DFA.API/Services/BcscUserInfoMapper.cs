@@ -43,22 +43,21 @@ namespace EMBC.DFA.API.Services
             return new Profile
             {
                 Id = userId,
-                // DisplayName = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.DisplayName)?.GetString(),
                 PersonalDetails = new PersonDetails
                 {
                     FirstName = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.GivenName)?.GetString(),
                     LastName = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.FamilyName)?.GetString(),
-                    //Gender = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Gender)?.GetString(),
                 },
                 ContactDetails = new ContactDetails
                 {
-                    //Email = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Email)?.GetString(),
+                    Email = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Email)?.GetString(),
                 },
                 PrimaryAddress = new Address
                 {
                     AddressLine1 = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Address)?.AttemptToGetProperty(BcscTokenKeys.AddressStreet)?.GetString(),
                     StateProvince = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Address)?.AttemptToGetProperty(BcscTokenKeys.AddressRegion)?.GetString(),
                     PostalCode = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Address)?.AttemptToGetProperty(BcscTokenKeys.AddressPostalCode)?.GetString(),
+                    City = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Address)?.AttemptToGetProperty(BcscTokenKeys.AddressLocality)?.GetString()
                 }
             };
         }
