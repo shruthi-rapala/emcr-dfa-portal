@@ -11,7 +11,7 @@ import {
   RestrictionForm,
   Restriction,
 } from '../model/profile.model';
-import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm } from '../model/dfa-application-start.model';
+import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm } from '../model/dfa-application-start.model';
 import { InsuranceOption } from 'src/app/core/api/models';
 import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
   CleanupLog, CleanUpLogForm, SignAndSubmitForm, SignAndSubmit, SecondaryApplicant, SupportingDocuments, SupportingDocumentsForm } from '../model/dfa-application-main.model';
@@ -99,17 +99,17 @@ export class FormCreationService {
   consentForm$: Observable<UntypedFormGroup | undefined> =
    this.consentForm.asObservable();
 
-  profileVerificationForm: BehaviorSubject<UntypedFormGroup | undefined> =
-   new BehaviorSubject(
-     this.formBuilder.group(
-       new ProfileVerificationForm(
-         new ProfileVerification()
-       )
-     )
-   );
+  // profileVerificationForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  //  new BehaviorSubject(
+  //    this.formBuilder.group(
+  //      new ProfileVerificationForm(
+  //        new ProfileVerification()
+  //      )
+  //    )
+  //  );
 
-  profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
-    this.profileVerificationForm.asObservable();
+  // profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
+  //   this.profileVerificationForm.asObservable();
 
   // DFA Applciation Main Forms
   damagedPropertyAddressForm: BehaviorSubject<UntypedFormGroup | undefined> =
@@ -424,23 +424,23 @@ export class FormCreationService {
     );
   }
 
-  getProfileVerificationForm(): Observable<UntypedFormGroup> {
-    return this.profileVerificationForm$;
-  }
+  // getProfileVerificationForm(): Observable<UntypedFormGroup> {
+  //   return this.profileVerificationForm$;
+  // }
 
-  setProfileVerificationForm(profileVerificationForm: UntypedFormGroup): void {
-    this.profileVerificationForm.next(profileVerificationForm);
-  }
+  // setProfileVerificationForm(profileVerificationForm: UntypedFormGroup): void {
+  //   this.profileVerificationForm.next(profileVerificationForm);
+  // }
 
-  clearProfileVerificationData(): void {
-    this.profileVerificationForm.next(
-      this.formBuilder.group(
-        new ProfileVerificationForm(
-          new ProfileVerification()
-        )
-      )
-    );
-  }
+  // clearProfileVerificationData(): void {
+  //   this.profileVerificationForm.next(
+  //     this.formBuilder.group(
+  //       new ProfileVerificationForm(
+  //         new ProfileVerification()
+  //       )
+  //     )
+  //   );
+  // }
 
   getDamagedPropertyAddressForm(): Observable<UntypedFormGroup> {
     return this.damagedPropertyAddressForm$;

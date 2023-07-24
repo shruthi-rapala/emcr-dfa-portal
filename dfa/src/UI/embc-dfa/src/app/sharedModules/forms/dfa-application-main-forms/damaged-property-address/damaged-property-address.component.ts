@@ -84,12 +84,12 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((damagedPropertyAddress) => {
         this.damagedPropertyAddressForm = damagedPropertyAddress;
         // this.damagedPropertyAddressForm.updateValueAndValidity();
-        if (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOption.Homeowner) {
+        if (ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOption.Homeowner) {
           this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordPhone.removeValidators([Validators.required]);
-        } else if (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOption.ResidentialTenant) {
+        } else if (ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOption.ResidentialTenant) {
           this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required]);

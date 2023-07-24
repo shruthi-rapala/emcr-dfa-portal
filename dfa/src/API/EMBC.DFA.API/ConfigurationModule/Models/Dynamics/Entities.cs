@@ -37,16 +37,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class dfa_appapplicationstart
     {
         public int dfa_applicanttype { get; set; } // required (already existing)
-        public int dfa_doyouhaveinsurancecoverage2 { get; set; } // represents new field with new option set Dynamics Type New OptionSet (Yes, No, Yes But)
-        public string dfa_appcontactid { get; set; } // string passed in to PROC, PROC looks up appcontact to fill in application fields
-        public int dfa_primaryapplicantsignednoins { get; set; } // new field Dynamics Type OptionSet with existing Yes or No option set
-        public string? dfa_primaryapplicantprintnamenoins { get; set; } // new field string Dynamics type string
-        public string? dfa_primaryapplicantsigneddatenoins { get; set; } // new field string Dynamics Type Date and Time (Date Only)
-        public byte[]? dfa_primaryapplicantsignaturenoins { get; set; } // new field Dynamics Type Image
-        public int dfa_secondaryapplicantsignednoins { get; set; } // new field existing Dynamics Type OptionSet existing Yes or No option set
-        public string? dfa_secondaryapplicantprintnamenoins { get; set; } // new field Dynamics Type string
-        public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // new field string Dynamics Type Date and Time (Date Only)
-        public byte[]? dfa_secondaryapplicantsignaturenoins { get; set; } // new field Dynamics Type Image
+        public int dfa_doyouhaveinsurancecoverage2 { get; set; } // required
+        public string dfa_appcontactid { get; set; } // required string passed in to PROC, PROC looks up appcontact to fill in application fields
+        public int dfa_primaryapplicantsignednoins { get; set; } // required Yes or No option set
+        public string? dfa_primaryapplicantprintnamenoins { get; set; } // optional string
+        public string? dfa_primaryapplicantsigneddatenoins { get; set; } // optional Date and Time (Date Only)
+        public string? dfa_primaryapplicantsignaturenoins { get; set; } // new field Dynamics annotation attachment
+        public int dfa_secondaryapplicantsignednoins { get; set; } // required OptionSet existing Yes or No option set
+        public string? dfa_secondaryapplicantprintnamenoins { get; set; } // optional string
+        public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
+        public string? dfa_secondaryapplicantsignaturenoins { get; set; } // new field Dynamics annotation attachment
     }
 
     public enum ApplicantTypeOptionSet
