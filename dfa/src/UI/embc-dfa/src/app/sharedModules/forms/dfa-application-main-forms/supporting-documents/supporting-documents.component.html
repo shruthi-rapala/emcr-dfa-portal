@@ -1,13 +1,13 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="supportingDocumentsForm">
+    <p class="sub-heading" style="font-size: 20px">Supporting Documents</p>
+    On this page provide the required and other supporting documents.
+    <br/><br/>
 
-      <p class="sub-heading" style="font-size: 20px">Supporting Documents</p>
-      On this page provide the required and other supporting documents.
-      <br/><br/>
+    <form [formGroup]="insuranceTemplateForm">
 
-      <div formGroupName="insuranceTemplate">
+      <div formGroupName="fileUpload">
         <ng-container>
           <div clas="row">
             <div class="col-md-12">
@@ -19,7 +19,7 @@
             </div>
           </div>
           <mat-card>
-            <div class="row" *ngIf="supportingDocumentsForm.hasError('noInsuranceTemplate')">
+            <div class="row" *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
               <div class="col-md-6">
                 <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
                 <b>Insurance Template<span style="color:red;">*</span></b><br/>
@@ -35,23 +35,23 @@
               </div>
               <div class="col-md-6">
                 <br/><br/>
-                <div [hidden]="!supportingDocumentsForm.get('insuranceTemplate.fileData').value">
+                <div [hidden]="!insuranceTemplateForm.get('fileUpload.fileData').value">
                   <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
                   <br/>
-                  {{ supportingDocumentsForm.get('insuranceTemplate.fileName').value }}
+                  {{ insuranceTemplateForm.get('fileUpload.fileName').value }}
                   <br/><br/>
                 </div>
-                <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingDocumentsForm.get('insuranceTemplate.fileData').value"
+                <label class="sub-heading" style="font-size: 15px" [hidden]="!insuranceTemplateForm.get('fileUpload.fileData').value"
                   >You may update the file description to something more descriptive:</label
                 >
-                <mat-form-field appearance="outline" [hidden]="!supportingDocumentsForm.get('insuranceTemplate.fileData').value">
+                <mat-form-field appearance="outline" [hidden]="!insuranceTemplateForm.get('fileUpload.fileData').value">
                   <mat-label>File description</mat-label>
                   <input formControlName="fileDescription" matInput placeholder="File description" required/>
                   <mat-error
                     *ngIf="
-                      supportingDocumentsForm.get('insuranceTemplate.fileDescription').invalid &&
-                      supportingDocumentsForm.get('insuranceTemplate.fileDescription').hasError('required') &&
-                      supportingDocumentsForm.get('insuranceTemplate.fileDescription').touched
+                      insuranceTemplateForm.get('fileUpload.fileDescription').invalid &&
+                      insuranceTemplateForm.get('fileUpload.fileDescription').hasError('required') &&
+                      insuranceTemplateForm.get('fileUpload.fileDescription').touched
                     "
                   >
                     File description is required</mat-error
@@ -59,12 +59,12 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="row" *ngIf="!supportingDocumentsForm.hasError('noInsuranceTemplate')">
+            <div class="row" *ngIf="!insuranceTemplateForm.hasError('noInsuranceTemplate')">
               <p class="sub-heading" style="font-size: 15px">Insurance template has been uploaded and can be found in the list of supporting documents.</p>
             </div>
 
             <br/><br/>
-            <div class="row" *ngIf="supportingDocumentsForm.hasError('noInsuranceTemplate')">
+            <div class="row" *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
               <div class="col-md-6">
                 <button
                   class="family-button details-button save-button"
@@ -82,7 +82,10 @@
         </ng-container>
       </div>
 
-      <div formGroupName="supportingDocument">
+    </form>
+    <form [formGroup]="supportingFilesForm">
+
+      <div formGroupName="fileUpload">
         <br/><br/>
         <ng-container>
           <div clas="row">
@@ -90,16 +93,16 @@
               <p class="sub-heading" style="font-size: 15px">Other Supporting Documents (Optional)</p>
               If applicable, you may include additional documents related to your application.<br/>
               <button
-                *ngIf="!showSupportingDocumentForm"
+                *ngIf="!showSupportingFileForm"
                 class="family-button"
                 mat-button
                 type="button"
-                (click)="addSupportingDocument()"
+                (click)="addSupportingFile()"
               >
                 + Add Supporting Documents
               </button>
 
-              <mat-card *ngIf="showSupportingDocumentForm">
+              <mat-card *ngIf="showSupportingFileForm">
                 <div class="row">
                   <div class="col-md-6">
                     <label class="sub-heading" style="font-size: 15px"
@@ -107,7 +110,7 @@
                   >
                     <app-file-upload
                       [noOfAttachments]="1"
-                      (attachedFile)="setFileFormControl($event)"
+                      (attachedFile)="setSupportingFileFormControl($event)"
                       [allowedFileTypes]="allowedFileTypes"
                       allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
                     >
@@ -115,30 +118,30 @@
                   </div>
                   <div class="col-md-6">
                     <br/><br/>
-                    <div [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
+                    <div [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">
                       <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
                       <br/>
-                      {{ supportingDocumentsForm.get('supportingDocument.fileName').value }}
+                      {{ supportingFilesForm.get('fileUpload.fileName').value }}
                       <br/><br/>
                     </div>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value"
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value"
                       >You may update the file description to something more descriptive:</label
                     >
-                    <mat-form-field appearance="outline" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
+                    <mat-form-field appearance="outline" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">
                       <mat-label>File description</mat-label>
                       <input formControlName="fileDescription" matInput placeholder="File description" required/>
                       <mat-error
                         *ngIf="
-                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.invalid &&
-                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.hasError('required') &&
-                          supportingDocumentsForm.get('supportingDocument').controls.fileDescription.touched
+                          supportingFilesForm.get('fileUpload').controls.fileDescription.invalid &&
+                          supportingFilesForm.get('fileUpload').controls.fileDescription.hasError('required') &&
+                          supportingFilesForm.get('fileUpload').controls.fileDescription.touched
                         "
                       >
                         File description is required</mat-error
                       >
                     </mat-form-field>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">Category: please select a category that describes the file you are attaching to your application.</label>
-                    <mat-form-field appearance="outline" [hidden]="!supportingDocumentsForm.get('supportingDocument.fileData').value">
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">Category: please select a category that describes the file you are attaching to your application.</label>
+                    <mat-form-field appearance="outline" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">
                       <mat-label>File category</mat-label>
                       <mat-select formControlName="fileType" matInput placeholder="File category" required>
                         <div *ngFor="let option of FileCategories | keyvalue: originalOrder">
@@ -147,9 +150,9 @@
                       </mat-select>
                       <mat-error
                         *ngIf="
-                          supportingDocumentsForm.get('supportingDocument').controls.fileType.invalid &&
-                          supportingDocumentsForm.get('supportingDocument').controls.fileType.hasError('required') &&
-                          supportingDocumentsForm.get('supportingDocument').controls.fileType.touched
+                          supportingFilesForm.get('fileUpload').controls.fileType.invalid &&
+                          supportingFilesForm.get('fileUpload').controls.fileType.hasError('required') &&
+                          supportingFilesForm.get('fileUpload').controls.fileType.touched
                         "
                       >
                         Category is required</mat-error
@@ -165,7 +168,7 @@
                       class="button-s details-button"
                       mat-button
                       type="button"
-                      (click)="cancelSupportingDocuments()"
+                      (click)="cancelSupportingFiles()"
                     >
                       Cancel
                     </button>
@@ -175,7 +178,7 @@
                       class="family-button details-button save-button"
                       mat-button
                       type="button"
-                      (click)="saveSupportingDocuments()"
+                      (click)="saveSupportingFiles()"
                     >
                       Save
                     </button>
@@ -184,12 +187,12 @@
 
               </mat-card>
 
-              <div *ngIf="documentSummaryDataSource.getValue().length > 0">
+              <div *ngIf="documentSummaryDataSource.data.length > 0">
                 <br /><br/>
                 <p class="sub-heading" style="font-size: 15px">Document Summary</p>
               </div>
 
-              <table mat-table [dataSource]="documentSummaryDataSource" *ngIf="documentSummaryDataSource.getValue().length > 0" style="width:100%">
+              <table mat-table [dataSource]="documentSummaryDataSource" *ngIf="documentSummaryDataSource.data.length > 0" style="width:100%">
                 <!-- File Name Column -->
                 <ng-container matColumnDef="fileName" style="width:25%">
                   <th mat-header-cell *matHeaderCellDef >
@@ -240,7 +243,7 @@
                       class="delete-image"
                       mat-icon-button
                       aria-label="Remove"
-                      (click)="deleteDocumentSummaryRow(index)"
+                      (click)="deleteDocumentSummaryRow(element)"
                     >
                       <img src="/assets/images/delete.svg" height="35" width="35" />
                       <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
@@ -258,7 +261,7 @@
 
               </table>
 
-              <mat-error *ngIf="supportingDocumentsForm.hasError('noInsuranceTemplate')">
+              <mat-error *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
                 <br/>Insurance template is required.
               </mat-error>
 

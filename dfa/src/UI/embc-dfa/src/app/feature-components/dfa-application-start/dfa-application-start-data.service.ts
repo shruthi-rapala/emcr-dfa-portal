@@ -91,6 +91,7 @@ export class DFAApplicationStartDataService {
   public createDFAApplicationStartDTO(): DfaApplicationStart {
     return {
       consent: { consent: this.consent },
+      id: this._applicationId,
       profileVerification: { profileVerified: this.profileVerified, profileId: this.profileId },
       appTypeInsurance: {
         applicantOption: this.applicantOption,

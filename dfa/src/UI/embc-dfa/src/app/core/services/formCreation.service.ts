@@ -13,8 +13,9 @@ import {
 } from '../model/profile.model';
 import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm } from '../model/dfa-application-start.model';
 import { InsuranceOption } from 'src/app/core/api/models';
-import { PropertyDamage, PropertyDamageForm, DamagedPropertyAddress, DamagedPropertyAddressForm, DamagedItemsByRoom, DamagedItemsByRoomForm, Occupants, OccupantsForm,
-  CleanupLog, CleanUpLogForm, SignAndSubmitForm, SignAndSubmit, SecondaryApplicant, SupportingDocuments, SupportingDocumentsForm } from '../model/dfa-application-main.model';
+import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress, PropertyDamage, SignAndSubmit, SupportingDocuments, DamagedRoomsForm,
+  FullTimeOccupantsForm, SecondaryApplicantsForm, OtherContactsForm,
+  CleanUpLogForm, SignAndSubmitForm, SupportingDocumentsForm, CleanUpLog, CleanUpLogItemsForm, SecondaryApplicant, FileUploadsForm, FullTimeOccupant, OtherContact, CleanUpLogItem, FileUpload, DamagedRoom  } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import {
   Evacuated,
@@ -73,7 +74,6 @@ export class FormCreationService {
     );
 
   addressForm$: Observable<UntypedFormGroup> = this.addressForm.asObservable();
-
 
   appTypeInsuranceForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
@@ -137,27 +137,53 @@ export class FormCreationService {
   propertyDamageForm$: Observable<UntypedFormGroup | undefined> =
     this.propertyDamageForm.asObservable();
 
-  occupantsForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  fullTimeOccupantsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
-       new OccupantsForm(
-         new Occupants(),
+       new FullTimeOccupantsForm(
+         new Array<FullTimeOccupant>(),
          this.customValidator,
          this.formBuilder
        )
      )
    );
 
-  occupantsForm$: Observable<UntypedFormGroup | undefined> =
-    this.occupantsForm.asObservable();
+  fullTimeOccupantsForm$: Observable<UntypedFormGroup | undefined> =
+    this.fullTimeOccupantsForm.asObservable();
+
+  otherContactsForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new OtherContactsForm(
+         new Array<OtherContact>(),
+         this.customValidator,
+         this.formBuilder
+       )
+     )
+   );
+
+  otherContactsForm$: Observable<UntypedFormGroup | undefined> =
+    this.otherContactsForm.asObservable();
+
+  secondaryApplicantsForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new SecondaryApplicantsForm(
+         new Array<SecondaryApplicant>(),
+         this.customValidator,
+         this.formBuilder
+       )
+     )
+   );
+
+  secondaryApplicantsForm$: Observable<UntypedFormGroup | undefined> =
+    this.secondaryApplicantsForm.asObservable();
 
   cleanUpLogForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
        new CleanUpLogForm(
-         new CleanupLog(),
-         this.customValidator,
-         this.formBuilder
+         new CleanUpLog(),
        )
      )
    );
@@ -165,27 +191,53 @@ export class FormCreationService {
   cleanUpLogForm$: Observable<UntypedFormGroup | undefined> =
     this.cleanUpLogForm.asObservable();
 
-  damagedItemsByRoomForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  cleanUpLogItemsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
-       new DamagedItemsByRoomForm(
-         new DamagedItemsByRoom(),
+       new CleanUpLogItemsForm(
+         new Array<CleanUpLogItem>(),
          this.customValidator,
          this.formBuilder
        )
      )
    );
 
-  damagedItemsByRoomForm$: Observable<UntypedFormGroup | undefined> =
-    this.damagedItemsByRoomForm.asObservable();
+  cleanUpLogItemsForm$: Observable<UntypedFormGroup | undefined> =
+    this.cleanUpLogItemsForm.asObservable();
+
+  fileUploadsForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new FileUploadsForm(
+         new Array<FileUpload>(),
+         this.customValidator,
+         this.formBuilder
+       )
+     )
+   );
+
+  fileUploadsForm$: Observable<UntypedFormGroup | undefined> =
+    this.fileUploadsForm.asObservable();
+
+  damagedRoomsForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+       new DamagedRoomsForm(
+         new Array<DamagedRoom>(),
+         this.customValidator,
+         this.formBuilder
+       )
+     )
+   );
+
+  damagedRoomsForm$: Observable<UntypedFormGroup | undefined> =
+    this.damagedRoomsForm.asObservable();
 
   supportingDocumentsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
        new SupportingDocumentsForm(
          new SupportingDocuments(),
-         this.customValidator,
-         this.formBuilder
        )
      )
    );
@@ -193,7 +245,7 @@ export class FormCreationService {
   supportingDocumentsForm$: Observable<UntypedFormGroup | undefined> =
     this.supportingDocumentsForm.asObservable();
 
-    signAndSubmitForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  signAndSubmitForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
        new SignAndSubmitForm(
@@ -478,25 +530,67 @@ export class FormCreationService {
       )
     );
   }
-  getOccupantsForm(): Observable<UntypedFormGroup> {
-    return this.occupantsForm$;
+
+  getFullTimeOccupantsForm(): Observable<UntypedFormGroup> {
+    return this.fullTimeOccupantsForm$;
   }
 
-  setOccupantsForm(occupantsForm: UntypedFormGroup): void {
-    this.occupantsForm.next(occupantsForm);
+  setFullTimeOccupantsForm(fullTimeOccupantsForm: UntypedFormGroup): void {
+    this.fullTimeOccupantsForm.next(fullTimeOccupantsForm);
   }
 
-  clearOccupantsData(): void {
-    this.occupantsForm.next(
+  clearFullTimeOccupantsData(): void {
+    this.fullTimeOccupantsForm.next(
       this.formBuilder.group(
-        new OccupantsForm(
-          new Occupants(),
+        new FullTimeOccupantsForm(
+          new Array<FullTimeOccupant>(),
           this.customValidator,
           this.formBuilder
         )
       )
     );
   }
+
+  getOtherContactsForm(): Observable<UntypedFormGroup> {
+    return this.otherContactsForm$;
+  }
+
+  setOtherContactsForm(otherContactsForm: UntypedFormGroup): void {
+    this.otherContactsForm.next(otherContactsForm);
+  }
+
+  clearOtherContactsData(): void {
+    this.otherContactsForm.next(
+      this.formBuilder.group(
+        new OtherContactsForm(
+          new Array<OtherContact>(),
+          this.customValidator,
+          this.formBuilder
+        )
+      )
+    );
+  }
+
+  getSecondaryApplicantsForm(): Observable<UntypedFormGroup> {
+    return this.secondaryApplicantsForm$;
+  }
+
+  setSecondaryApplicantsForm(secondaryApplicantsForm: UntypedFormGroup): void {
+    this.secondaryApplicantsForm.next(secondaryApplicantsForm);
+  }
+
+  clearSecondaryApplicantsData(): void {
+    this.secondaryApplicantsForm.next(
+      this.formBuilder.group(
+        new SecondaryApplicantsForm(
+          new Array<SecondaryApplicant>(),
+          this.customValidator,
+          this.formBuilder
+        )
+      )
+    );
+  }
+
   getCleanUpLogForm(): Observable<UntypedFormGroup> {
     return this.cleanUpLogForm$;
   }
@@ -509,7 +603,25 @@ export class FormCreationService {
     this.cleanUpLogForm.next(
       this.formBuilder.group(
         new CleanUpLogForm(
-          new CleanupLog(),
+          new CleanUpLog()
+        )
+      )
+    );
+  }
+
+  getCleanUpLogItemsForm(): Observable<UntypedFormGroup> {
+    return this.cleanUpLogItemsForm$;
+  }
+
+  setCleanUpLogItemsForm(cleanUpLogItemsForm: UntypedFormGroup): void {
+    this.cleanUpLogForm.next(cleanUpLogItemsForm);
+  }
+
+  clearCleanUpLogItemsData(): void {
+    this.cleanUpLogItemsForm.next(
+      this.formBuilder.group(
+        new CleanUpLogItemsForm(
+          new Array<CleanUpLogItem>(),
           this.customValidator,
           this.formBuilder
         )
@@ -517,19 +629,39 @@ export class FormCreationService {
     );
   }
 
-  getDamagedItemsByRoomForm(): Observable<UntypedFormGroup> {
-    return this.damagedItemsByRoomForm$;
+  getDamagedRoomsForm(): Observable<UntypedFormGroup> {
+    return this.damagedRoomsForm$;
   }
 
-  setDamagedItemsByRoomForm(damagedItemsByRoomForm: UntypedFormGroup): void {
-    this.damagedItemsByRoomForm.next(damagedItemsByRoomForm);
+  setDamagedRoomsForm(damagedRoomsForm: UntypedFormGroup): void {
+    this.damagedRoomsForm.next(damagedRoomsForm);
   }
 
-  clearDamagedItemsByRoomData(): void {
-    this.damagedItemsByRoomForm.next(
+  clearDamagedRoomsData(): void {
+    this.damagedRoomsForm.next(
       this.formBuilder.group(
-        new DamagedItemsByRoomForm(
-          new DamagedItemsByRoom(),
+        new DamagedRoomsForm(
+          new Array<DamagedRoom>(),
+          this.customValidator,
+          this.formBuilder
+        )
+      )
+    );
+  }
+
+  getFileUploadsForm(): Observable<UntypedFormGroup> {
+    return this.fileUploadsForm$;
+  }
+
+  setFileUploadsForm(fileUploadsForm: UntypedFormGroup): void {
+    this.fileUploadsForm.next(fileUploadsForm);
+  }
+
+  clearFileUploadsData(): void {
+    this.fileUploadsForm.next(
+      this.formBuilder.group(
+        new FileUploadsForm(
+          new Array<FileUpload>(),
           this.customValidator,
           this.formBuilder
         )
@@ -549,9 +681,7 @@ export class FormCreationService {
     this.supportingDocumentsForm.next(
       this.formBuilder.group(
         new SupportingDocumentsForm(
-          new SupportingDocuments(),
-          this.customValidator,
-          this.formBuilder
+          new SupportingDocuments()
         )
       )
     );

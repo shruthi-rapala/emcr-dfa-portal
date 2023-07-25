@@ -21,9 +21,9 @@
               aria-label="Select an option">
               <mat-radio-button value="0">Yes</mat-radio-button>
               <div class="row radio-extra-label">
-                {{ profileAddress.addressLine1}}<br/>
-                <div *ngIf="profileAddress.addressLine2">{{ profileAddress.addressLine2}}<br/></div>
-                {{ profileAddress.community }}&nbsp;{{ profileAddress.postalCode }}<br /><br/>
+                {{ profileAddress?.addressLine1}}<br/>
+                <div *ngIf="profileAddress?.addressLine2">{{ profileAddress?.addressLine2}}<br/></div>
+                {{ profileAddress?.community }}&nbsp;{{ profileAddress?.postalCode }}<br /><br/>
               </div>
               <mat-radio-button value="1">No</mat-radio-button>
               <div class="row radio-extra-label" *ngIf="useProfileAddress === '1'">

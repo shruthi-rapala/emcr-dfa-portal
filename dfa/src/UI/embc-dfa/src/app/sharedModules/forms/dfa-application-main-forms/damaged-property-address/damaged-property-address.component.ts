@@ -134,15 +134,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       });
 
     this.damagedPropertyAddressForm
-      .get('country')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.damagedPropertyAddressForm.get('country').reset();
-        }
-      });
-
-    this.damagedPropertyAddressForm
       .get('postalCode')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
@@ -283,7 +274,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   }
 
   onUseProfileAddressChoice(choice: any) {
-    this.damagedPropertyAddressForm.controls.country.setValue("Canada");
     this.damagedPropertyAddressForm.controls.stateProvince.setValue("BC");
     if (!choice.value) return; // not a radio button change
     if (choice.value == "0") // yes
@@ -292,7 +282,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       this.damagedPropertyAddressForm.controls.addressLine1.setValue(this.profileAddress.addressLine1);
       this.damagedPropertyAddressForm.controls.addressLine2.setValue(this.profileAddress.addressLine2);
       this.damagedPropertyAddressForm.controls.community.setValue(this.profileAddress.community);
-      this.damagedPropertyAddressForm.controls.country.setValue(this.profileAddress.country?.name);
       this.damagedPropertyAddressForm.controls.stateProvince.setValue(this.profileAddress.stateProvince);
       this.damagedPropertyAddressForm.controls.postalCode.setValue(this.profileAddress.postalCode);
 
