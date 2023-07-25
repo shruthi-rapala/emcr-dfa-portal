@@ -17,7 +17,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> UpdateApplication(dfa_appapplicationmain application);
         Task<dfa_appapplicationstart> GetApplicationStartById(string applicationId);
         Task<dfa_appapplicationmain> GetApplicationMainById(string applicationId);
-        Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync();
         Task<IEnumerable<dfa_damageditems>> GetDamagedItemsListAsync(string applicationId);
         Task<string> UpsertDeleteDamagedItemAsync(dfa_damageditems objDamagedItems);
         Task<string> UpsertDeleteSecondaryApplicantAsync(dfa_appsecondaryapplicant objSecondaryApplicant);
@@ -30,6 +29,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcleanuplogs>> GetCleanUpLogItemsListAsync(string applicationId);
         Task<string> UpsertDeleteDocumentLocationAsync(dfa_appdocumentlocation objDocumentLocation);
         Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(string applicationId);
+        Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
 
         //Task<IEnumerable> GetDistrictsAsync();
 

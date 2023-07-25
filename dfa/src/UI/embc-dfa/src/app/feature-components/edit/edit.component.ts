@@ -94,7 +94,7 @@ export class EditComponent implements OnInit, OnDestroy {
           [this.verifiedRoute],
           this.profileNavigationExtras
         );
-      } else if (this.appSessionService.editParentPage === 'dashboard') {
+      } else if (this.appSessionService.editParentPage === 'dfa-dashboard') {
         this.showLoader = !this.showLoader;
         this.profileService
           .upsertProfile(this.profileDataService.createProfileDTO())
@@ -165,6 +165,8 @@ export class EditComponent implements OnInit, OnDestroy {
         );
       } else if (this.appSessionService.editParentPage === 'dashboard') {
         this.router.navigate(['/verified-registration/dashboard/profile']);
+      } else if (this.appSessionService.editParentPage === 'dfa-dashboard') {
+        this.router.navigate(['/dfa-dashboard/profile']);
       } else if (this.appSessionService.editParentPage === 'needs-assessment') {
         if (this.evacuationFileDataService.essFileId !== undefined) {
           this.router.navigate([

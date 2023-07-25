@@ -34,7 +34,7 @@ namespace EMBC.DFA.API.Controllers
         public string LastName { get; set; }
 
         public string? Initials { get; set; }
-        public string IndigenousStatus { get; set; }
+        public string? IndigenousStatus { get; set; }
     }
 
     /// <summary>

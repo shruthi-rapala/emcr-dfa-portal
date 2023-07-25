@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 
@@ -32,7 +33,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondarystateprovince { get; set; }
         public string? dfa_secondarypostalcode { get; set; }
         public bool? dfa_isindigenous { get; set; }
-        public int dfa_isprimaryandsecondaryaddresssame { get; set; }
+        public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
+        public string dfa_appcontactid { get; set; }
     }
 
     public class dfa_appapplicationstart
@@ -197,5 +199,17 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string dfa_appapplicationid { get; set; }
         public string dfa_applicanttype { get; set; }
+    }
+
+    public enum SameAddressOptionSet
+    {
+        [Description("Yes")]
+        Yes = 222710000,
+
+        [Description("No")]
+        No = 222710001,
+
+        [Description("I don't have a permanent address right now")]
+        NoAddress = 222710002
     }
 }

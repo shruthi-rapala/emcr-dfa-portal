@@ -54,13 +54,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_primaryaddressline2", "dfa_primarycity", "dfa_primarypostalcode",
                         "dfa_primarystateprovince", "dfa_secondaryaddressline1", "dfa_secondaryaddressline2",
                         "dfa_secondarycity", "dfa_secondarypostalcode", "dfa_secondarystateprovince",
-                        //"dfa_isprimaryandsecondaryaddresssame",
+                        "dfa_isprimaryandsecondaryaddresssame", "dfa_appcontactid",
                         "dfa_bcservicecardid"
                     },
                     Filter = $"dfa_bcservicecardid eq '{userId}'"
                 });
 
-                return userObj != null ? userObj.List.FirstOrDefault() : null;
+                return userObj != null ? userObj.List.LastOrDefault() : null;
             }
             catch (System.Exception ex)
             {
@@ -168,13 +168,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
             return list.List.FirstOrDefault();
         }
-        public async Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync()
+
+        public async Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId)
         {
             try
             {
                 var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
                 {
-                    Select = new[] { "dfa_appapplicationid", "dfa_applicanttype" }
+                    Select = new[] { "dfa_appapplicationid", "dfa_applicanttype" },
+                    Filter = $"_dfa_applicant_value eq {profileId}"
                 });
 
                 return list.List;

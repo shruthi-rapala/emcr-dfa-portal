@@ -178,7 +178,8 @@ export class AddressForm {
       postalCode: [
         '',
         [customValidator.postalValidation().bind(customValidator)]
-      ]
+      ],
+      country: ''
     });
 
     this.mailingAddress = builder.group({
@@ -189,7 +190,8 @@ export class AddressForm {
       postalCode: [
         '',
         [customValidator.postalValidation().bind(customValidator)]
-      ]
+      ],
+      country: ''
     });
 
     //this.isBcAddress.setValue(address.isBcAddress);

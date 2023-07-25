@@ -36,6 +36,8 @@ namespace EMBC.DFA.API.Controllers
             this.handler = handler;
         }
 
+        private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
         /// <summary>
         /// Create an application
         /// </summary>
@@ -112,11 +114,25 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationMain.Id = applicationId;
             dfaApplicationMain.DamagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
             dfaApplicationMain.PropertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
-            // TODO controllers for occupants, secondary applicants, other contacts, clean up log, damaged items by room, document locations,
             dfaApplicationMain.SignAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
             dfaApplicationMain.CleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
             dfaApplicationMain.SupportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
             return Ok(dfaApplicationMain);
+        }
+
+        /// <summary>
+        /// get dfa applications
+        /// </summary>
+        /// <returns>list of dfa applications</returns>
+        /// <param name="profileId">The profile Id.</param>
+        [HttpGet("dfaapplication")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<string>> GetDFAApplications(string profileId)
+        {
+            profileId = "15bbbd7b-9e25-ee11-b844-00505683fbf4";
+            //var userId = currentUserId;
+            var lstApplications = await handler.HandleApplicationList(profileId);
+            return Ok("Success");
         }
     }
 

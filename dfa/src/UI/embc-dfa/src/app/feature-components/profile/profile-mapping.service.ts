@@ -135,8 +135,7 @@ export class ProfileMappingService {
           isBcMailingAddress: this.isBCAddress(
             profile.mailingAddress.stateProvince
           ),
-          mailingAddress: mailingAddress,
-          country: ''
+          mailingAddress: mailingAddress
         });
         formGroup = address;
       });
@@ -144,6 +143,8 @@ export class ProfileMappingService {
       this.locationService.getAddressRegFromAddress(profile.primaryAddress);
     this.profileDataService.mailingAddressDetails =
       this.locationService.getAddressRegFromAddress(profile.mailingAddress);
+    this.profileDataService.IsMailingAddressSameAsPrimaryAddressDetails =
+      profile.isMailingAddressSameAsPrimaryAddress;
   }
 
   private setContactDetails(profile: Profile): void {

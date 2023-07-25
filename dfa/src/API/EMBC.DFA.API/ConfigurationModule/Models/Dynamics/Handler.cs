@@ -26,7 +26,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleApplicationUpdate(dfa_appapplicationmain objApplication);
         Task<dfa_appapplicationstart> GetApplicationStartAsync(string applicationId);
         Task<dfa_appapplicationmain> GetApplicationMainAsync(string applicationId);
-        Task<IEnumerable<dfa_appapplication>> HandleApplicationList();
         Task<string> HandleDamagedItemsAsync(dfa_damageditems objDamagedItems);
         Task<IEnumerable<dfa_damageditems>> GetDamagedItemsAsync(string applicationId);
         Task<string> HandleSecondaryApplicantAsync(dfa_appsecondaryapplicant objSecondaryApplicants);
@@ -39,6 +38,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcleanuplogs>> GetCleanUpLogItemsAsync(string applicationId);
         Task<string> HandleFileUploadAsync(dfa_appdocumentlocation objFileUpload);
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(string applicationId);
+        Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId);
     }
 
     public class Handler : IConfigurationHandler
@@ -126,9 +126,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return dfa_appapplication;
         }
 
-        public async Task<IEnumerable<dfa_appapplication>> HandleApplicationList()
+        public async Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId)
         {
-            return await listsGateway.GetApplicationListAsync();
+            return await listsGateway.GetApplicationListAsync(profileId);
         }
 
         public async Task<string> HandleDamagedItemsAsync(dfa_damageditems objDamagedItems)

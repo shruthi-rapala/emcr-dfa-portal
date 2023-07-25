@@ -55,7 +55,6 @@ export { TransportationOtherSupport } from './models/transportation-other-suppor
 export { TransportationTaxiSupport } from './models/transportation-taxi-support';
 export { FullTimeOccupant } from './models/full-time-occupant';
 export { OtherContact } from './models/other-contact';
-export { DfaAppapplication } from './models/dfa-appapplication';
 export { ProfileDataConflict } from './models/profile-data-conflict';
 export { DateOfBirthDataConflict } from './models/date-of-birth-data-conflict';
 export { NameDataConflict } from './models/name-data-conflict';

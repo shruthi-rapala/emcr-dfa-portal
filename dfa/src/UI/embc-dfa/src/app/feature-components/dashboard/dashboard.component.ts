@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { TabModel } from 'src/app/core/model/tab.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
-import { ProfileService as Service } from '../../core/api/services/profile.service';
+import { ApplicationService as Service } from '../../core/api/services/application.service';
 import { ProfileService } from '../profile/profile.service';
+import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
 import { tap } from 'rxjs/internal/operators/tap';
-import {
-  DfaAppapplication
-} from 'src/app/core/api/models';
+//import {
+//  DfaAppapplication
+//} from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-dfa-dashboard',
@@ -56,8 +57,9 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public formCreationService: FormCreationService,
-    private profileService: Service,
+    private appService: Service,
     private profService: ProfileService,
+    private profileDataService: ProfileDataService
   ) { }
 
   ngOnInit(): void {
@@ -67,11 +69,14 @@ export class DashboardComponent implements OnInit {
 
   navigateToDFAApplicationStart(): void {
     this.router.navigate(['/dfa-application-start']);
-    //this.profileService.profileGetDfaApplications().pipe(
-    //  tap((c: DfaAppapplication) => {
-    //    alert('response')
-    //  })
-    //);;
+    //var profileId = this.profileDataService.getProfileId();
+    //this.appService.applicationGetDfaApplications({ profileId: profileId }).subscribe({
+    //  next: (loginProfile) => {
+    //    //this.profileMapping.mapLoginProfile(loginProfile);
+    //  },
+    //  error: (error) => {        
+    //  }
+    //});;
   }
 
 }
