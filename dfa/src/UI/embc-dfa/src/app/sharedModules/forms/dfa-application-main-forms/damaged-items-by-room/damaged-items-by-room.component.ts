@@ -71,7 +71,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
-    //private damagedRoomService: DamagedRoomService
+    private damagedRoomService: DamagedRoomService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -117,10 +117,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       .get('addNewDamagedRoomIndicator')
       .valueChanges.subscribe((value) => this.updateDamagedRoomOnVisibility());
     this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
-    this.damagedRoomsDataSource.next(
-        this.damagedRoomsForm.get('damagedRooms').value
-      );
-    this.damagedRoomsData = this.damagedRoomsForm.get('damagedRooms').value;
+    this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
 
     this.damagePhotosForm
       .get('addNewFileUploadIndicator')
@@ -131,6 +128,19 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
          mapTo(_damagePhotosFormArray.getRawValue())
          ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === this.FileCategories.DamagePhoto && x.deleteFlag === false));
 
+  }
+
+  getDamagedRoomsForApplication(applicationId: string) {
+    this.damagedRoomService.damagedRoomGetDamagedRooms({applicationId: applicationId}).subscribe({
+      next: (damagedRooms) => {
+        this.damagedRoomsData = damagedRooms;
+        this.damagedRoomsDataSource.next(this.damagedRoomsData);
+        this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   calcRemainingChars() {
@@ -151,26 +161,26 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   saveDamagedRooms(): void {
     if (this.damagedRoomsForm.get('damagedRoom').status === 'VALID') {
       if (this.damagedRoomEditIndex !== undefined && this.damagedRoomRowEdit) {
-        //this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.getRawValue() }).subscribe({
-         // next: (damagedRoomId) => {
+        this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.get('damagedRoom').getRawValue() }).subscribe({
+         next: (damagedRoomId) => {
             this.damagedRoomsData[this.damagedRoomEditIndex] = this.damagedRoomsForm.get('damagedRoom').value;
             this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
             this.damagedRoomEditIndex = undefined;
-         //     },
-        //  error: (error) => {
-        //    console.error(error);
-       //   }
-      //  });
+             },
+         error: (error) => {
+           console.error(error);
+         }
+       });
       } else {
-      //  this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.getRawValue()}).subscribe({
-      //    next: (damagedRoomId) => {
-      //      this.damagedRoomsForm.get('id').setValue(damagedRoomId);
-            this.damagedRoomsData.push(this.damagedRoomsForm.get('damagedRoom').value);
-     //     },
-     //     error: (error) => {
-     //       console.error(error);
-     //     }
-     //   });
+       this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.get('damagedRoom').getRawValue()}).subscribe({
+         next: (damagedRoomId) => {
+           this.damagedRoomsForm.get('id').setValue(damagedRoomId);
+           this.damagedRoomsData.push(this.damagedRoomsForm.get('damagedRoom').value);
+         },
+         error: (error) => {
+           console.error(error);
+         }
+       });
       }
       this.damagedRoomsDataSource.next(this.damagedRoomsData);
       this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
@@ -188,14 +198,22 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   deleteDamagedRoomRow(index: number): void {
-    this.damagedRoomsData.splice(index, 1);
-    this.damagedRoomsDataSource.next(this.damagedRoomsData);
-    this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
-    if (this.damagedRoomsData.length === 0) {
-      this.damagedRoomsForm
-        .get('addNewDamagedRoomIndicator')
-        .setValue(false);
-    }
+    this.damagedRoomsData[index].deleteFlag = true;
+    this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsData[index]}).subscribe({
+      next: (damagedRoomId) => {
+        this.damagedRoomsData.splice(index, 1);
+        this.damagedRoomsDataSource.next(this.damagedRoomsData);
+        this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
+        if (this.damagedRoomsData.length === 0) {
+          this.damagedRoomsForm
+            .get('addNewDamagedRoomIndicator')
+            .setValue(false);
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
    editDamagedRoomRow(element, index): void {

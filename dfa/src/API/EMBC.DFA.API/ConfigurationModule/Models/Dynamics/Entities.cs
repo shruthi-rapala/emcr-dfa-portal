@@ -162,7 +162,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_appdamageditemid { get; set; } // optional string
         public string dfa_roomname { get; set; } // required string
         public string dfa_damagedescription { get; set; } // required string
-        public int? dfa_deleteflag { get; set; } // required enum
+        public bool delete { get; set; } // required boolean
     }
 
     public enum ApplicantTypeOptionSet

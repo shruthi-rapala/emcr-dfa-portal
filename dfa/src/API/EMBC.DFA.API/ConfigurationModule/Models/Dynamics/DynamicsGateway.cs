@@ -101,7 +101,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             //catch (System.Exception ex)
             catch
             {
-                return "anewapplication";
+                return Guid.Empty.ToString();
                 //  throw new Exception($"Failed to add application {ex.Message}", ex);
             }
 
@@ -122,7 +122,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             //catch (System.Exception ex)
             catch
             {
-                return "updatedapplication";
+                return Guid.Empty.ToString();
                 //  throw new Exception($"Failed to update application {ex.Message}", ex);
             }
 
@@ -191,7 +191,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var result = await api.ExecuteAction("dfa_appdamageditem", objDamagedItems); // TODO correct name parms
+                var result = await api.ExecuteAction("dfa_DFAPortalCreateAppDamagedItem", objDamagedItems); // TODO correct name parms
 
                 if (result != null)
                 {
@@ -201,7 +201,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             //catch (System.Exception ex)
             catch
             {
-                return "updateddamageditems";
+                return Guid.Empty.ToString();
                 //  throw new Exception($"Failed to update damaged items {ex.Message}", ex);
             }
 
@@ -212,9 +212,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var list = await api.GetList<dfa_damageditems>("dfa_damageditems", new CRMGetListOptions
+                var list = await api.GetList<dfa_damageditems>("dfa_appdamageditems", new CRMGetListOptions
                 {
-                    Select = new[] { "dfa_applicationid", "dfa_appdamageditemid", "dfa_roomname", "dfa_damagedescription" } // TODO for application id
+                    Select = new[] { "dfa_ApplicationId", "dfa_appdamageditemid", "dfa_roomname", "dfa_damagedescription" },
+                    Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
 
                 return list.List;
@@ -239,7 +240,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             //catch (System.Exception ex)
             catch
             {
-                return "updatedsecondaryapplicant";
+                return Guid.Empty.ToString();
                 //  throw new Exception($"Failed to update secondary applicant {ex.Message}", ex);
             }
 
@@ -250,13 +251,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var list = await api.GetList<dfa_appsecondaryapplicant>("dfa_appsecondaryapplicant", new CRMGetListOptions // TODO by application Id
+                var list = await api.GetList<dfa_appsecondaryapplicant>("dfa_appsecondaryapplicants", new CRMGetListOptions // TODO by application Id
                 {
                     Select = new[]
                     {
-                        "dfa_appapplicationid", "dfa_appsecondaryapplicantid", "dfa_applicanttype", "dfa_emailaddress",
+                        "dfa_AppApplicationId", "dfa_appsecondaryapplicantid", "dfa_applicanttype", "dfa_emailaddress",
                         "dfa_firstname", "dfa_lastname", "dfa_phonenumber"
-                    }
+                    },
+                    Filter = $"_dfa_appapplicationid_value eq {applicationId}"
                 });
 
                 return list.List;
@@ -281,7 +283,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             //catch (System.Exception ex)
             catch
             {
-                return "updatedothercontact";
+                return Guid.Empty.ToString();
                 //  throw new Exception($"Failed to update other contact {ex.Message}", ex);
             }
 
@@ -292,13 +294,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var list = await api.GetList<dfa_othercontact>("dfa_othercontact", new CRMGetListOptions // TODO by applciation id
+                var list = await api.GetList<dfa_othercontact>("dfa_appothercontacts", new CRMGetListOptions // TODO by applciation id
                 {
                     Select = new[]
                     {
                         "dfa_appapplicationid", "dfa_appothercontactid", "dfa_appemailaddress", "dfa_firstname",
                         "dfa_lastname", "dfa_phonenumber"
-                    }
+                    },
+                    Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
 
                 return list.List;
@@ -323,7 +326,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             //catch (System.Exception ex)
             catch
             {
-                return "updatedfulltimeoccupant";
+                return Guid.Empty.ToString();
                 //  throw new Exception($"Failed to update full time occupant {ex.Message}", ex);
             }
 
@@ -334,13 +337,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var list = await api.GetList<dfa_appoccupant>("dfa_appoccupant", new CRMGetListOptions // TODO by applciation id
+                var list = await api.GetList<dfa_appoccupant>("dfa_appoccupants", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "dfa_appapplicationid", "dfa_appoccupantid", "dfa_contactid", "dfa_name", "dfa_title",
+                        "dfa_AppApplicationId", "dfa_appoccupantid", "dfa_contactid", "dfa_name", "dfa_title",
                         "dfa_firstname", "dfa_lastname"
-                    }
+                    },
+                    Filter = $"_dfa_appapplicationid_value eq {applicationId}"
                 });
 
                 return list.List;
@@ -373,7 +377,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             //catch (System.Exception ex)
             catch
             {
-                return "updatedcleanuplogitem";
+                return Guid.Empty.ToString();
                 //  throw new Exception($"Failed to update clean up log item {ex.Message}", ex);
             }
 
@@ -384,13 +388,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var list = await api.GetList<dfa_appcleanuplogs>("dfa_appcleanuplogs", new CRMGetListOptions // TODO by applciation id
+                var list = await api.GetList<dfa_appcleanuplogs>("dfa_appcleanuplogs", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "dfa_appapplicationid", "dfa_appcleanuplogid", "dfa_name", "dfa_date", "dfa_hoursworked",
+                        "dfa_AppApplicationId", "dfa_appcleanuplogid", "dfa_name", "dfa_date", "dfa_hoursworked",
                         "dfa_description"
-                    }
+                    },
+                    Filter = $"_dfa_appapplicationid_value eq {applicationId}"
                 });
 
                 return list.List;
@@ -415,7 +420,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             //catch (System.Exception ex)
             catch
             {
-                return "updateddocumentlocation";
+                return Guid.Empty.ToString();
                 //  throw new Exception($"Failed to update document location {ex.Message}", ex);
             }
 
@@ -426,13 +431,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var list = await api.GetList<dfa_appdocumentlocation>("dfa_appdocumentlocation", new CRMGetListOptions // TODO by applciation id
+                var list = await api.GetList<dfa_appdocumentlocation>("dfa_appdocumentlocations", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "dfa_appapplicationid", "dfa_appdocumentlocationid", "dfa_name", "dfa_documenttype", "dfa_documentdescription",
+                        "dfa_ApplicationId", "dfa_appdocumentlocationid", "dfa_name", "dfa_documenttype", "dfa_documentdescription",
                         "dfa_uploadeddate", "dfa_modifiedby", "dfa_filedata", "dfa_contenttype", "dfa_filesize"
-                    }
+                    },
+                    Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
 
                 return list.List;

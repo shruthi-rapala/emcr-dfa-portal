@@ -4,6 +4,7 @@ using EMBC.DFA.API;
 using EMBC.DFA.API.ConfigurationModule.Models;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.StaticFiles;
 
 namespace EMBC.DFA.API.Mappers
@@ -322,9 +323,17 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<DamagedRoom, dfa_damageditems>()
                 .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appdamageditemid, opts => opts.MapFrom(s => s.id))
-                .ForMember(d => d.dfa_roomname, opts => opts.MapFrom(s => s.roomType.GetTypeCode()))
+                .ForMember(d => d.dfa_roomname, opts => opts.MapFrom(s => s.roomType == RoomType.Family ? "Family" :
+                        (s.roomType == RoomType.Laundry ? "Laundry" :
+                        (s.roomType == RoomType.Garage ? "Garage" :
+                        (s.roomType == RoomType.Other ? "Other" :
+                        (s.roomType == RoomType.Kitchen ? "Kitchen" :
+                        (s.roomType == RoomType.Bathroom ? "Bathroom" :
+                        (s.roomType == RoomType.Bedroom ? "Bedroom" :
+                        (s.roomType == RoomType.Dining ? "Dining" :
+                        (s.roomType == RoomType.Living ? "Living" : "Other"))))))))))
                 .ForMember(d => d.dfa_damagedescription, opts => opts.MapFrom(s => s.description))
-                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
             CreateMap<SecurityQuestion, ESS.Shared.Contracts.Events.SecurityQuestion>()
                 .ReverseMap()
@@ -484,7 +493,7 @@ namespace EMBC.DFA.API.Mappers
         {
             FileCategory fileCategory = FileCategory.Unknown;
 
-            if (Enum.TryParse(documenttype, out fileCategory)) return fileCategory;
+            if (System.Enum.TryParse(documenttype, out fileCategory)) return fileCategory;
             else return FileCategory.Unknown;
         }
 
@@ -492,7 +501,7 @@ namespace EMBC.DFA.API.Mappers
         {
             RoomType roomType = RoomType.Other;
 
-            if (Enum.TryParse(roomname, out roomType)) return roomType;
+            if (System.Enum.TryParse(roomname, out roomType)) return roomType;
             else return RoomType.Other;
         }
     }
