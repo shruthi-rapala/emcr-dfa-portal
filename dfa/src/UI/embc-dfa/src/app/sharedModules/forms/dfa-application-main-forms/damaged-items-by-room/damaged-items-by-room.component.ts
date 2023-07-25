@@ -15,7 +15,7 @@ import { DirectivesModule } from '../../../../core/directives/directives.module'
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged, mapTo } from 'rxjs/operators';
 import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
-import { FileCategory, RoomType } from 'src/app/core/api/models';
+import { DamagedRoom, FileCategory, RoomType } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -25,6 +25,7 @@ import { CoreModule } from 'src/app/core/core.module';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import * as constant from 'src/app/core/services/globalConstants'; // referenced in html
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { DamagedRoomService } from 'src/app/core/api/services';
 
 @Component({
   selector: 'app-damaged-items-by-room',
@@ -69,7 +70,8 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    //private damagedRoomService: DamagedRoomService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -149,12 +151,26 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   saveDamagedRooms(): void {
     if (this.damagedRoomsForm.get('damagedRoom').status === 'VALID') {
       if (this.damagedRoomEditIndex !== undefined && this.damagedRoomRowEdit) {
-        this.damagedRoomsData[this.damagedRoomEditIndex] =
-          this.damagedRoomsForm.get('damagedRoom').value;
-        this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
-        this.damagedRoomEditIndex = undefined;
+        //this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.getRawValue() }).subscribe({
+         // next: (damagedRoomId) => {
+            this.damagedRoomsData[this.damagedRoomEditIndex] = this.damagedRoomsForm.get('damagedRoom').value;
+            this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
+            this.damagedRoomEditIndex = undefined;
+         //     },
+        //  error: (error) => {
+        //    console.error(error);
+       //   }
+      //  });
       } else {
-        this.damagedRoomsData.push(this.damagedRoomsForm.get('damagedRoom').value);
+      //  this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.getRawValue()}).subscribe({
+      //    next: (damagedRoomId) => {
+      //      this.damagedRoomsForm.get('id').setValue(damagedRoomId);
+            this.damagedRoomsData.push(this.damagedRoomsForm.get('damagedRoom').value);
+     //     },
+     //     error: (error) => {
+     //       console.error(error);
+     //     }
+     //   });
       }
       this.damagedRoomsDataSource.next(this.damagedRoomsData);
       this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
