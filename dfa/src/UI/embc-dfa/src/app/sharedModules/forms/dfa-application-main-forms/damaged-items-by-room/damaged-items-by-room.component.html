@@ -194,7 +194,7 @@
               <p class="sub-heading" style="font-size: 15px">
                 If you have photos of damaged items, please have them available during the site meeting to help the evaluator identify eligible costs. You may also attach them to this application.
               </p>
-              <table mat-table [dataSource]="damagePhotosDataSource" *ngIf="damagePhotosDataSource.getValue().length > 0" style="width:100%">
+              <table mat-table [dataSource]="damagePhotosDataSource" *ngIf="damagePhotosDataSource.data.length > 0" style="width:100%">
                 <!-- File Name Column -->
                 <ng-container matColumnDef="fileName" style="width:25%">
                   <th mat-header-cell *matHeaderCellDef >
@@ -248,7 +248,7 @@
                       class="delete-image"
                       mat-icon-button
                       aria-label="Remove"
-                      (click)="deleteDamagePhotoRow(index)"
+                      (click)="deleteDamagePhotoRow(element)"
                     >
                       <img src="/assets/images/delete.svg" height="35" width="35" />
                       <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
@@ -266,7 +266,7 @@
 
               </table>
 
-              <div  *ngIf="damagePhotosDataSource.getValue().length > 0">
+              <div  *ngIf="damagePhotosDataSource.data.length > 0">
                 <br /><br/>
               </div>
 
@@ -310,9 +310,9 @@
                       <input formControlName="fileDescription" matInput placeholder="File description" required/>
                       <mat-error
                         *ngIf="
-                          damagePhotosForm.get('damagePhoto').controls.fileDescription.invalid &&
-                          damagePhotosForm.get('damagePhoto').controls.fileDescription.hasError('required') &&
-                          damagePhotosForm.get('damagePhoto').controls.fileDescription.touched
+                          damagePhotosForm.get('fileUpload').controls.fileDescription.invalid &&
+                          damagePhotosForm.get('fileUpload').controls.fileDescription.hasError('required') &&
+                          damagePhotosForm.get('fileUpload').controls.fileDescription.touched
                         "
                       >
                         File description is required</mat-error

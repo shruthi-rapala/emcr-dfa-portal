@@ -109,7 +109,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string dfa_appapplicationid { get; set; } // required string
         public string? dfa_appothercontactid { get; set; } // optional string
-        public string dfa_appemailaddress { get; set; } // required string
+        public string dfa_emailaddress { get; set; } // required string
         public string dfa_firstname { get; set; } // required string
         public string dfa_lastname { get; set; } // required string
         public string dfa_phonenumber { get; set; } // required string
@@ -118,7 +118,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
     public class dfa_appoccupant
     {
-        public string dfa_appapplicationid { get; set; } // required string
+        public string dfa_applicationid { get; set; } // required string
         public string? dfa_appoccupantid { get; set; } // optional string
         public string? dfa_contactid { get; set; } // optional string
         public string dfa_name { get; set; } // required string

@@ -26,7 +26,6 @@ export class DFAApplicationMainDataService {
     private dfaApplicationStartDataService: DFAApplicationStartDataService
   ) {
       this._dfaApplicationStart = this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
-      console.log(this._dfaApplicationStart);
   }
 
   public get fullTimeOccupants(): Array<FullTimeOccupant> {

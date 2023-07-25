@@ -293,7 +293,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       this.damagedPropertyAddressForm.controls.postalCode.setValue(null);
 
     }
-    console.log(this.damagedPropertyAddressForm.value, this.profileAddress);
   }
 
   /**

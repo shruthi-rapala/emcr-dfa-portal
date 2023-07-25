@@ -12,8 +12,8 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { MatTableModule } from '@angular/material/table';
+import { distinctUntilChanged, mapTo } from 'rxjs/operators';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,8 +47,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   cleanUpWorkData = [];
   showCleanUpWorkFileForm: boolean = false;
   cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'deleteIcon'];
-  cleanUpWorkFileDataSource = new BehaviorSubject([]);
-  cleanUpWorkFileData = [] as FileUpload[];
+  cleanUpWorkFileDataSource = new MatTableDataSource();
   FileCategories = FileCategory;
 
   constructor(
@@ -77,8 +76,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       });
 
     this.dfaApplicationMainService.deleteCleanupLog.subscribe((cleanupLogFileToDelete)=> {
-      let index = this.cleanUpWorkFileData.indexOf(cleanupLogFileToDelete);
-      this.deleteCleanupLogFileRow(index);
+      this.deleteCleanupLogFileRow(cleanupLogFileToDelete);
     });
 
     this.cleanUpLogWorkForm
@@ -99,10 +97,12 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.cleanUpWorkFilesForm
       .get('addNewFileUploadIndicator')
       .valueChanges.subscribe((value) => this.updateCleanupLogFileOnVisibility());
-    this.cleanUpWorkFileDataSource.next(
-      this.cleanUpWorkFilesForm.get('fileUploads').value
-    );
-    this.cleanUpWorkFileData = this.cleanUpWorkFilesForm.get('fileUploads').value;
+
+    const _cleanUpWorkFileFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+     _cleanUpWorkFileFormArray.valueChanges
+       .pipe(
+         mapTo(_cleanUpWorkFileFormArray.getRawValue())
+         ).subscribe(data => this.cleanUpWorkFileDataSource.data = data.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false));
   }
 
   /**
@@ -222,11 +222,10 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       .get('fileUpload.fileType').
       setValue(this.FileCategories.Cleanup);
     if (this.cleanUpWorkFilesForm.get('fileUpload').status === 'VALID') {
-      this.cleanUpWorkFileData.push(this.cleanUpWorkFilesForm.get('fileUpload').getRawValue());
-      this.cleanUpWorkFileDataSource.next(this.cleanUpWorkFileData);
-      this.cleanUpWorkFilesForm.get('fileUploads').setValue(this.cleanUpWorkFileData);
+      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+      fileUploads.push(this.cleanUpWorkFilesForm.get('fileUpload').getRawValue());
+      this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
       this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
-      console.log(this.cleanUpWorkFilesForm, this.formCreationService.fileUploadsForm);
     } else {
       this.cleanUpWorkFilesForm.get('fileUpload').markAllAsTouched();
     }
@@ -244,16 +243,17 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   }
 
-  deleteCleanupLogFileRow(index: number): void {
-    this.cleanUpWorkFileData.splice(index, 1);
-    this.cleanUpWorkFileDataSource.next(this.cleanUpWorkFileData);
-    this.cleanUpWorkFilesForm.get('fileUploads').setValue(this.cleanUpWorkFileData);
-    if (this.cleanUpWorkFileData.length === 0) {
+  deleteCleanupLogFileRow(element): void {
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    let index = fileUploads.indexOf(element);
+    element.deleteFlag = true;
+    fileUploads[index] = element;
+    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+    if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
       this.cleanUpWorkFilesForm
-        .get('addNewFileUploadIndicator')
-        .setValue(false);
+          .get('addNewFileUploadIndicator')
+          .setValue(false);
     }
-
   }
 }
 

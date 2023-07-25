@@ -110,7 +110,7 @@
                   >
                     <app-file-upload
                       [noOfAttachments]="1"
-                      (attachedFile)="setSupportingFileFileFormControl($event)"
+                      (attachedFile)="setSupportingFileFormControl($event)"
                       [allowedFileTypes]="allowedFileTypes"
                       allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
                     >
@@ -121,7 +121,7 @@
                     <div [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">
                       <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
                       <br/>
-                      {{ supportingDocumentsForm.get('supportingDocument.fileName').value }}
+                      {{ supportingFilesForm.get('fileUpload.fileName').value }}
                       <br/><br/>
                     </div>
                     <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value"
@@ -187,12 +187,12 @@
 
               </mat-card>
 
-              <div *ngIf="documentSummaryDataSource.getValue().length > 0">
+              <div *ngIf="documentSummaryDataSource.data.length > 0">
                 <br /><br/>
                 <p class="sub-heading" style="font-size: 15px">Document Summary</p>
               </div>
 
-              <table mat-table [dataSource]="documentSummaryDataSource" *ngIf="documentSummaryDataSource.getValue().length > 0" style="width:100%">
+              <table mat-table [dataSource]="documentSummaryDataSource" *ngIf="documentSummaryDataSource.data.length > 0" style="width:100%">
                 <!-- File Name Column -->
                 <ng-container matColumnDef="fileName" style="width:25%">
                   <th mat-header-cell *matHeaderCellDef >
@@ -243,7 +243,7 @@
                       class="delete-image"
                       mat-icon-button
                       aria-label="Remove"
-                      (click)="deleteDocumentSummaryRow(index)"
+                      (click)="deleteDocumentSummaryRow(element)"
                     >
                       <img src="/assets/images/delete.svg" height="35" width="35" />
                       <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>

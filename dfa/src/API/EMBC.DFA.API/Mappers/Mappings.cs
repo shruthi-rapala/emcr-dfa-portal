@@ -228,14 +228,14 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<dfa_othercontact, OtherContact>()
                 .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appothercontactid))
-                .ForMember(d => d.email, opts => opts.MapFrom(s => s.dfa_appemailaddress))
+                .ForMember(d => d.email, opts => opts.MapFrom(s => s.dfa_emailaddress))
                 .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname))
                 .ForMember(d => d.lastName, opts => opts.MapFrom(s => s.dfa_lastname))
                 .ForMember(d => d.phoneNumber, opts => opts.MapFrom(s => s.dfa_phonenumber))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
             CreateMap<FullTimeOccupant, dfa_appoccupant>()
-                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appoccupantid, opts => opts.MapFrom(s => s.id))
                 .ForMember(d => d.dfa_contactid, opts => opts.MapFrom(s => s.contactId))
                 .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.lastName + ", " + s.firstName))
@@ -245,7 +245,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
 
             CreateMap<dfa_appoccupant, FullTimeOccupant>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_applicationid))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appoccupantid))
                 .ForMember(d => d.contactId, opts => opts.MapFrom(s => s.dfa_contactid))
                 .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname))
@@ -256,7 +256,7 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<OtherContact, dfa_othercontact>()
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appothercontactid, opts => opts.MapFrom(s => s.id))
-                .ForMember(d => d.dfa_appemailaddress, opts => opts.MapFrom(s => s.email))
+                .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.email))
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.firstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.lastName))
                 .ForMember(d => d.dfa_phonenumber, opts => opts.MapFrom(s => s.phoneNumber))

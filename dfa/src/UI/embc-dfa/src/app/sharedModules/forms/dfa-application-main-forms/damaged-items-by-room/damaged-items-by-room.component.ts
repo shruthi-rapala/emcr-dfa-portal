@@ -13,10 +13,10 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, mapTo } from 'rxjs/operators';
 import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
 import { FileCategory, RoomType } from 'src/app/core/api/models';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -51,8 +51,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   damagedRoomEditFlag = false;
   showDamagePhotoForm: boolean = false;
   damagePhotosColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
-  damagePhotosDataSource = new BehaviorSubject([]);
-  damagePhotosData = [] as FileUpload[];
+  damagePhotosDataSource = new MatTableDataSource();
   allowedFileTypes = [
     'application/pdf',
     'image/jpg',
@@ -90,8 +89,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       });
 
     this.dfaApplicationMainService.deleteDamagePhoto.subscribe((damagePhotoToDelete)=> {
-      let index = this.damagePhotosData.indexOf(damagePhotoToDelete);
-      this.deleteDamagePhotoRow(index);
+      this.deleteDamagePhotoRow(damagePhotoToDelete);
     })
 
     this.damagedRoomsForm
@@ -125,10 +123,11 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     this.damagePhotosForm
       .get('addNewFileUploadIndicator')
       .valueChanges.subscribe((value) => this.updateDamagePhotoOnVisibility());
-    this.damagePhotosDataSource.next(
-        this.damagePhotosForm.get('fileUploads').value
-      );
-    this.damagePhotosData = this.damagePhotosForm.get('fileUploads').value;
+     const _damagePhotosFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+     _damagePhotosFormArray.valueChanges
+       .pipe(
+         mapTo(_damagePhotosFormArray.getRawValue())
+         ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === this.FileCategories.DamagePhoto && x.deleteFlag === false));
 
   }
 
@@ -218,16 +217,15 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   saveDamagePhotos(): void {
     if (this.damagePhotosForm.get('fileUpload').status === 'VALID') {
+      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       if (this.damagePhotoEditIndex !== undefined && this.damagePhotoRowEdit) {
-        this.damagePhotosData[this.damagePhotoEditIndex] =
-          this.damagePhotosForm.get('fileUpload').getRawValue();
+        fileUploads[this.damagePhotoEditIndex] = this.damagePhotosForm.get('fileUpload').getRawValue();
         this.damagePhotoRowEdit = !this.damagePhotoRowEdit;
         this.damagePhotoEditIndex = undefined;
       } else {
-        this.damagePhotosData.push(this.damagePhotosForm.get('fileUpload').value);
+        fileUploads.push(this.damagePhotosForm.get('fileUpload').getRawValue());
       }
-      this.damagePhotosDataSource.next(this.damagePhotosData);
-      this.damagePhotosForm.get('fileUploads').setValue(this.damagePhotosData);
+      this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
       this.showDamagePhotoForm = !this.showDamagePhotoForm;
       this.damagePhotoEditFlag = !this.damagePhotoEditFlag;
     } else {
@@ -241,19 +239,22 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(false);
   }
 
-  deleteDamagePhotoRow(index: number): void {
-    this.damagePhotosData.splice(index, 1);
-    this.damagePhotosDataSource.next(this.damagePhotosData);
-    this.damagePhotosForm.get('fileUploads').setValue(this.damagePhotosData);
-    if (this.damagePhotosData.length === 0) {
+  deleteDamagePhotoRow(element): void {
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    let index = fileUploads.indexOf(element);
+    element.deleteFlag = true;
+    fileUploads[index] = element;
+    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+    if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
       this.damagePhotosForm
-        .get('addNewFileUploadIndicator')
-        .setValue(false);
+          .get('addNewFileUploadIndicator')
+          .setValue(false);
     }
   }
 
-   editDamagePhotoRow(element, index): void {
-    this.damagePhotoEditIndex = index;
+   editDamagePhotoRow(element): void {
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    this.damagePhotoEditIndex = fileUploads.indexOf(element);
     this.damagePhotoRowEdit = !this.damagePhotoRowEdit;
     this.damagePhotosForm.get('fileUpload').setValue(element);
     this.showDamagePhotoForm = !this.showDamagePhotoForm;

@@ -1491,7 +1491,7 @@
               <b>Date</b>
             </th>
             <td *matCellDef="let elementFile" mat-cell>
-              {{ elementFile.fileDate | date : "yyyy/MM/dd" }}
+              {{ elementFile.uploadedDate | date : "yyyy/MM/dd" }}
             </td>
           </ng-container>
             <tr mat-header-row *matHeaderRowDef="cleanUpWorkFileColumnsToDisplay"></tr>
@@ -1629,7 +1629,7 @@
         <hr />
         <div class="row info-detail" *ngIf="supportingDocumentsDataSource?.data?.length > 0">
           <b>Supporting Documents & Insurance Template</b>
-          <table mat-table [dataSource]="supportingDocumentDataSource">
+          <table mat-table [dataSource]="supportingDocumentsDataSource">
              <!-- File Name Column -->
              <ng-container matColumnDef="fileName" style="width:25%">
               <th mat-header-cell *matHeaderCellDef >
@@ -1670,10 +1670,10 @@
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="supportingDocumentColumnsToDisplay"></tr>
+            <tr mat-header-row *matHeaderRowDef="supportingDocumentsColumnsToDisplay"></tr>
             <tr
               mat-row
-              *matRowDef="let element; columns: supportingDocumentColumnsToDisplay"
+              *matRowDef="let element; columns: supportingDocumentsColumnsToDisplay"
               class="example-element-row"
             ></tr>
           </table>

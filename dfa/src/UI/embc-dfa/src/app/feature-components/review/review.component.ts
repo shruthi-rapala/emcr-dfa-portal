@@ -43,8 +43,8 @@ export class ReviewComponent implements OnInit {
   damagedRoomsColumnsToDisplay = ['roomType', 'description'];
   damagePhotosDataSource = new MatTableDataSource();
   damagePhotosColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
-  supportingDocumentDataSource = new MatTableDataSource();
-  supportingDocumentColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
+  supportingDocumentsDataSource = new MatTableDataSource();
+  supportingDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
   RoomTypes = RoomType;
   FileCategories = FileCategory;
 
@@ -94,8 +94,8 @@ export class ReviewComponent implements OnInit {
     const _cleanUpWorkFileFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _cleanUpWorkFileFormArray.valueChanges
       .pipe(
-        mapTo(_cleanUpWorkFileFormArray.getRawValue().filter(x => x.fileType === this.FileCategories.Cleanup))
-        ).subscribe(data => {console.log(data); this.cleanUpWorkFileDataSource.data = data });
+        mapTo(_cleanUpWorkFileFormArray.getRawValue())
+        ).subscribe(data => { this.cleanUpWorkFileDataSource.data = data.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag == false) });
 
     // subscribe to changes in damaged rooms
     const _damagedRoomsFormArray = this.formCreationService.damagedRoomsForm.value.get('damagedRooms');
@@ -108,15 +108,15 @@ export class ReviewComponent implements OnInit {
     const _damagePhotosFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _damagePhotosFormArray.valueChanges
       .pipe(
-        mapTo(_damagePhotosFormArray.getRawValue().filter(x => x.fileType === this.FileCategories.DamagePhoto))
-        ).subscribe(data => this.damagePhotosDataSource.data = data);
+        mapTo(_damagePhotosFormArray.getRawValue())
+        ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === this.FileCategories.DamagePhoto && x.deleteFlag == false));
 
     // subscribe to changes in supporting documents
     const _supportingDocumentsFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _supportingDocumentsFormArray.valueChanges
       .pipe(
-        mapTo(_supportingDocumentsFormArray.getRawValue().filter(x => [this.FileCategories.Financial, this.FileCategories.Identification, this.FileCategories.TenancyProof, this.FileCategories.ThirdPartyConsent].indexOf(x.fileType) >= 0))
-        ).subscribe(data => this.supportingDocumentDataSource.data = data);
+        mapTo(_supportingDocumentsFormArray.getRawValue())
+        ).subscribe(data => { this.supportingDocumentsDataSource.data = data.filter(x => x.fileType !== this.FileCategories.DamagePhoto && x.fileType !== this.FileCategories.Cleanup && x.deleteFlag == false) } );
   }
 
   // callParentMoveStep(index: number) {
