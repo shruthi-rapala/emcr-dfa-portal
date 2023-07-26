@@ -334,7 +334,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.CreatedByDisplayName, opts => opts.Ignore())
                 .ForMember(d => d.CreatedByUserId, opts => opts.Ignore())
                 .ForMember(d => d.LastModifiedDisplayName, opts => opts.Ignore())
-                .ForMember(d => d.LastModifiedUserId, opts => opts.Ignore())
+                .ForMember(d => d.LastModifiedUserId, opts => opts.Ignore());
 
             CreateMap<dfa_damageditems, DamagedRoom>()
                 .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_applicationid))
