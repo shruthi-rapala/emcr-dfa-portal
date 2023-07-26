@@ -3,6 +3,7 @@ import { CacheService } from 'src/app/core/services/cache.service';
 import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
 import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, PropertyDamage, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, FileUpload, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
+import { AttachmentService } from 'src/app/core/api/services';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainDataService {
@@ -23,9 +24,22 @@ export class DFAApplicationMainDataService {
 
   constructor(
     private cacheService: CacheService,
-    private dfaApplicationStartDataService: DFAApplicationStartDataService
+    private dfaApplicationStartDataService: DFAApplicationStartDataService,
+    private fileUploadsService: AttachmentService
   ) {
       this._dfaApplicationStart = this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
+      this.getFileUploadsForApplication(this.dfaApplicationStart.id);
+  }
+
+  public getFileUploadsForApplication(applicationId: string) {
+    this.fileUploadsService.attachmentGetAttachments({applicationId: applicationId}).subscribe({
+      next: (attachments) => {
+        this.fileUploads = attachments;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   public get fullTimeOccupants(): Array<FullTimeOccupant> {

@@ -211,8 +211,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddate))
                 .ForPath(d => d.secondaryApplicantSignature.signature, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsignature));
 
-            CreateMap<dfa_appsecondaryapplicant, SecondaryApplicant>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+            CreateMap<dfa_appsecondaryapplicant_retrieve, SecondaryApplicant>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_appapplicationid_value))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appsecondaryapplicantid))
                 .ForMember(d => d.applicantType, opts => opts.MapFrom(s => s.dfa_applicanttype == (int)SecondaryApplicantTypeOptionSet.Contact ? SecondaryApplicantTypeOption.Contact : SecondaryApplicantTypeOption.Organization))
                 .ForMember(d => d.email, opts => opts.MapFrom(s => s.dfa_emailaddress))
@@ -221,7 +221,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.phoneNumber, opts => opts.MapFrom(s => s.dfa_phonenumber))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
-            CreateMap<SecondaryApplicant, dfa_appsecondaryapplicant>()
+            CreateMap<SecondaryApplicant, dfa_appsecondaryapplicant_params>()
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appsecondaryapplicantid, opts => opts.MapFrom(s => s.id))
                 .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => s.applicantType == (int)SecondaryApplicantTypeOption.Contact ? SecondaryApplicantTypeOptionSet.Contact : SecondaryApplicantTypeOptionSet.Organization))
@@ -229,18 +229,18 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.firstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.lastName))
                 .ForMember(d => d.dfa_phonenumber, opts => opts.MapFrom(s => s.phoneNumber))
-                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
-            CreateMap<dfa_othercontact, OtherContact>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+            CreateMap<dfa_appothercontact_retrieve, OtherContact>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_appapplicationid_value))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appothercontactid))
                 .ForMember(d => d.email, opts => opts.MapFrom(s => s.dfa_emailaddress))
-                .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname))
-                .ForMember(d => d.lastName, opts => opts.MapFrom(s => s.dfa_lastname))
+                .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname != null ? s.dfa_firstname : s.dfa_name))
+                .ForMember(d => d.lastName, opts => opts.MapFrom(s => s.dfa_lastname != null ? s.dfa_lastname : s.dfa_name))
                 .ForMember(d => d.phoneNumber, opts => opts.MapFrom(s => s.dfa_phonenumber))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
-            CreateMap<FullTimeOccupant, dfa_appoccupant>()
+            CreateMap<FullTimeOccupant, dfa_appoccupant_params>()
                 .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appoccupantid, opts => opts.MapFrom(s => s.id))
                 .ForMember(d => d.dfa_contactid, opts => opts.MapFrom(s => s.contactId))
@@ -248,28 +248,29 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_title, opts => opts.MapFrom(s => s.relationship))
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.firstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.lastName))
-                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
-            CreateMap<dfa_appoccupant, FullTimeOccupant>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_applicationid))
+            CreateMap<dfa_appoccupant_retrieve, FullTimeOccupant>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appoccupantid))
-                .ForMember(d => d.contactId, opts => opts.MapFrom(s => s.dfa_contactid))
+                .ForMember(d => d.contactId, opts => opts.MapFrom(s => s._dfa_contactid_value))
                 .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname))
                 .ForMember(d => d.lastName, opts => opts.MapFrom(s => s.dfa_lastname))
                 .ForMember(d => d.relationship, opts => opts.MapFrom(s => s.dfa_title))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
-            CreateMap<OtherContact, dfa_othercontact>()
+            CreateMap<OtherContact, dfa_appothercontact_params>()
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appothercontactid, opts => opts.MapFrom(s => s.id))
                 .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.email))
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.firstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.lastName))
+                .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.firstName + " " + s.lastName))
                 .ForMember(d => d.dfa_phonenumber, opts => opts.MapFrom(s => s.phoneNumber))
-                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
-            CreateMap<dfa_appcleanuplogs, CleanUpLogItem>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+            CreateMap<dfa_appcleanuplogs_retrieve, CleanUpLogItem>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appcleanuplogid))
                 .ForMember(d => d.date, opts => opts.MapFrom(s => s.dfa_date))
                 .ForMember(d => d.name, opts => opts.MapFrom(s => s.dfa_name))
@@ -277,17 +278,17 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.description, opts => opts.MapFrom(s => s.dfa_description))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
-            CreateMap<CleanUpLogItem, dfa_appcleanuplogs>()
-                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+            CreateMap<CleanUpLogItem, dfa_appcleanuplogs_params>()
+                .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appcleanuplogid, opts => opts.MapFrom(s => s.id))
                 .ForMember(d => d.dfa_date, opts => opts.MapFrom(s => s.date))
                 .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.name))
                 .ForMember(d => d.dfa_hoursworked, opts => opts.MapFrom(s => s.hours))
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.description))
-                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
-            CreateMap<dfa_appdocumentlocation, FileUpload>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+            CreateMap<dfa_appdocumentlocation_retrieve, FileUpload>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdocumentlocationid))
                 .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_name))
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
@@ -299,8 +300,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.fileSize, opts => opts.MapFrom(s => s.dfa_filesize))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
-            CreateMap<FileUpload, dfa_appdocumentlocation>()
-                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+            CreateMap<FileUpload, dfa_appdocumentlocation_params>()
+                .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appdocumentlocationid, opts => opts.MapFrom(s => s.id))
                 .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.fileName))
                 .ForMember(d => d.dfa_documenttype, opts => opts.MapFrom(s => s.fileType.GetTypeCode()))
@@ -310,17 +311,17 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_filedata, opts => opts.MapFrom(s => s.fileData))
                 .ForMember(d => d.dfa_contenttype, opts => opts.MapFrom(s => s.contentType))
                 .ForMember(d => d.dfa_filesize, opts => opts.MapFrom(s => s.fileSize))
-                .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
-            CreateMap<dfa_damageditems, DamagedRoom>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_applicationid))
+            CreateMap<dfa_appdamageditems_retrieve, DamagedRoom>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdamageditemid))
                 .ForMember(d => d.roomType, opts => opts.MapFrom(s => ConvertStringToRoomType(s.dfa_roomname)))
                 .ForMember(d => d.otherRoomType, opts => opts.MapFrom(s => ConvertStringToRoomType(s.dfa_roomname) == RoomType.Other ? s.dfa_roomname : null))
                 .ForMember(d => d.description, opts => opts.MapFrom(s => s.dfa_damagedescription))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
-            CreateMap<DamagedRoom, dfa_damageditems>()
+            CreateMap<DamagedRoom, dfa_appdamageditems_params>()
                 .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_appdamageditemid, opts => opts.MapFrom(s => s.id))
                 .ForMember(d => d.dfa_roomname, opts => opts.MapFrom(s => s.roomType == RoomType.Family ? "Family" :

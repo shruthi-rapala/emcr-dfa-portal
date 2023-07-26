@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Org.BouncyCastle.Bcpg.OpenPgp;
@@ -35,6 +37,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_isindigenous { get; set; }
         public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
         public string dfa_appcontactid { get; set; }
+        public string? dfa_title { get; set; }
+        public string? dfa_name { get; set; }
     }
 
     public class dfa_appapplicationstart
@@ -95,71 +99,139 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_wereyouevacuatedduringtheevent { get; set; } // optional Two Options
     }
 
-    public class dfa_appsecondaryapplicant
+    public class dfa_appsecondaryapplicant_retrieve
     {
-        public string dfa_appapplicationid { get; set; } // required string
         public string? dfa_appsecondaryapplicantid { get; set; } // optional string
         public int dfa_applicanttype { get; set; } // required enum
         public string dfa_emailaddress { get; set; } // required string
         public string dfa_firstname { get; set; } // required string
         public string dfa_lastname { get; set; } // required string
         public string dfa_phonenumber { get; set; } // required string
-        public int? dfa_deleteflag { get; set; } // required enum
+        public string _dfa_appapplicationid_value { get; set; }
     }
 
-    public class dfa_othercontact
+    public class dfa_appsecondaryapplicant_params
     {
-        public string dfa_appapplicationid { get; set; } // required string
+        public Guid dfa_appapplicationid { get; set; } // required string
+        public Guid? dfa_appsecondaryapplicantid { get; set; } // optional string
+        public int dfa_applicanttype { get; set; } // required enum
+        public string dfa_emailaddress { get; set; } // required string
+        public string dfa_firstname { get; set; } // required string
+        public string dfa_lastname { get; set; } // required string
+        public string dfa_phonenumber { get; set; } // required string
+        public bool delete { get; set; } // required enum
+    }
+
+    public class dfa_appothercontact_retrieve
+    {
         public string? dfa_appothercontactid { get; set; } // optional string
         public string dfa_emailaddress { get; set; } // required string
         public string dfa_firstname { get; set; } // required string
         public string dfa_lastname { get; set; } // required string
         public string dfa_phonenumber { get; set; } // required string
-        public int? dfa_deleteflag { get; set; } // required enum
+        public string? _dfa_appapplicationid_value { get; set; } // optional string
+        public string? dfa_name { get; set; } // optional string
     }
 
-    public class dfa_appoccupant
+    public class dfa_appothercontact_params
     {
-        public string dfa_applicationid { get; set; } // required string
+        public Guid dfa_appapplicationid { get; set; } // required string
+        public Guid? dfa_appothercontactid { get; set; } // optional string
+        public string dfa_emailaddress { get; set; } // required string
+        public string dfa_firstname { get; set; } // required string
+        public string dfa_lastname { get; set; } // required string
+        public string dfa_phonenumber { get; set; } // required string
+        public string? dfa_name { get; set; } // optional string
+        public bool delete { get; set; } // required enum
+    }
+
+    public class dfa_appoccupant_retrieve
+    {
         public string? dfa_appoccupantid { get; set; } // optional string
-        public string? dfa_contactid { get; set; } // optional string
         public string dfa_name { get; set; } // required string
         public string dfa_title { get; set; } // required string
         public string dfa_firstname { get; set; } // required string
         public string dfa_lastname { get; set; } // required string
-        public int? dfa_deleteflag { get; set; } // required enum
+        public string? _dfa_applicationid_value { get; set; } // for retrieving from entity
+        public string? _dfa_contactid_value { get; set; } // for retrieving
     }
 
-    public class dfa_appcleanuplogs
+    public class dfa_appoccupant_params
     {
-        public string dfa_appapplicationid { get; set; } // required string
+        public Guid dfa_applicationid { get; set; } // required string
+        public Guid? dfa_appoccupantid { get; set; } // optional string
+        public Guid? dfa_contactid { get; set; } // optional string
+        public string dfa_name { get; set; } // required string
+        public string dfa_title { get; set; } // required string
+        public string dfa_firstname { get; set; } // required string
+        public string dfa_lastname { get; set; } // required string
+        public bool delete { get; set; } // required enum
+    }
+
+    public class dfa_appcleanuplogs_retrieve
+    {
         public string? dfa_appcleanuplogid { get; set; } // optional string
         public string dfa_name { get; set; } // required string
         public string? dfa_date { get; set; } // optional string
         public string? dfa_hoursworked { get; set; } // optional string
         public string dfa_description { get; set; } // required string
-        public int? dfa_deleteflag { get; set; } // required enum
+        public string? _dfa_applicationid_value { get; set; } // optional string
+        public string? _dfa_contactid_value { get; set; } // optional string
     }
 
-    public class dfa_appdocumentlocation
+    public class dfa_appcleanuplogs_params
     {
-        public string dfa_appapplicationid { get; set; } // required string
+        public Guid dfa_applicationid { get; set; } // required string ??? table vs process app or not app for process
+        public Guid? dfa_appcleanuplogid { get; set; } // optional string
+        public string dfa_name { get; set; } // required string
+        public string? dfa_date { get; set; } // optional string
+        public string? dfa_hoursworked { get; set; } // optional string
+        public string dfa_description { get; set; } // required string
+        public Guid? dfa_contactid { get; set; } // optional string
+        public bool delete { get; set; } // required enum
+    }
+
+    // TODO add dfa_documentdescription, dfa_uploadeddate, dfa_modifiedby, dfa_contenttype fields
+    public class dfa_appdocumentlocation_retrieve
+    {
         public string? dfa_appdocumentlocationid { get; set; } // optional string
         public string dfa_name { get; set; } // required string
         public string dfa_documenttype { get; set; } // required string
-        public string? dfa_documentdescription { get; set; } // optional string
-        public string dfa_uploadeddate { get; set; } // required string
-        public string dfa_modifiedby { get; set; } // required string
+        public string? dfa_documentdescription { get; set; } // optional string  *** NEW FIELD
+        public string dfa_uploadeddate { get; set; } // required string ** NEW FIELD timestamp
+        public string dfa_modifiedby { get; set; } // required string *** NEW FIELD string
         public string dfa_filedata { get; set; } // required string
-        public string dfa_contenttype { get; set; } // required string
-        public int dfa_filesize { get; set; } // required int
-        public int? dfa_deleteflag { get; set; } // required enum
+        public string dfa_contenttype { get; set; } // required string ** NEW FIELD
+        public int dfa_filesize { get; set; } // required int ** NEW FIELD
+        public string? _dfa_applicationid_value { get; set; } // optional string
+    }
+    public class dfa_appdocumentlocation_params
+    {
+        public Guid dfa_applicationid { get; set; } // required string
+        public Guid? dfa_appdocumentlocationid { get; set; } // optional string
+        public string dfa_name { get; set; } // required string
+        public string dfa_documenttype { get; set; } // required string
+        public string? dfa_documentdescription { get; set; } // optional string  *** NEW FIELD
+        public string dfa_uploadeddate { get; set; } // required string ** NEW FIELD timestamp
+        public string dfa_modifiedby { get; set; } // required string *** NEW FIELD string
+        public string dfa_filedata { get; set; } // required string
+        public string dfa_contenttype { get; set; } // required string ** NEW FIELD
+        public int dfa_filesize { get; set; } // required int ** NEW FIELD
+        public bool delete { get; set; } // required bool
     }
 
-    public class dfa_damageditems
+    public class dfa_appdamageditems_retrieve
     {
-        public string dfa_applicationid { get; set; } // required string
         public string? dfa_appdamageditemid { get; set; } // optional string
+        public string dfa_roomname { get; set; } // required string
+        public string dfa_damagedescription { get; set; } // required string
+        public string? _dfa_applicationid_value { get; set; } // optional string for retrieving
+    }
+
+    public class dfa_appdamageditems_params
+    {
+        public Guid dfa_applicationid { get; set; } // required string
+        public Guid? dfa_appdamageditemid { get; set; } // optional string
         public string dfa_roomname { get; set; } // required string
         public string dfa_damagedescription { get; set; } // required string
         public bool delete { get; set; } // required boolean

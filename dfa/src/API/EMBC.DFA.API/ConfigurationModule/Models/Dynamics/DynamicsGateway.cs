@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Web;
 using EMBC.ESS.Shared.Contracts.Metadata;
 using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Xrm.Tools.WebAPI;
 using Xrm.Tools.WebAPI.Requests;
@@ -130,14 +134,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         }
         public async Task<dfa_appapplicationstart> GetApplicationStartById(string applicationId)
         {
-            var list = await api.GetList<dfa_appapplicationstart>("dfa_appapplications(" + applicationId + ")", new CRMGetListOptions
+            var list = await api.GetList<dfa_appapplicationstart>("dfa_appapplications", new CRMGetListOptions
             {
                 Select = new[]
                 {
                     "dfa_appapplicationid", "dfa_applicanttype", "dfa_doyouhaveinsurancecoverage2", "dfa_applicant.dfa_appcontactid", "dfa_primaryapplicantisignednoins",
                     "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "entityimagenoins", "dfa_secondaryapplicantsignednoins",
                     "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins", "secondaryentityimagenoins"
-                }
+                },
+                Filter = "_dfa_appapplicationid_value eq {applicationId}"
             });
 
             return list.List.FirstOrDefault();
@@ -145,13 +150,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<dfa_appapplicationmain> GetApplicationMainById(string applicationId)
         {
-            var list = await api.GetList<dfa_appapplicationmain>("dfa_appapplications(" + applicationId + ")", new CRMGetListOptions
+            var list = await api.GetList<dfa_appapplicationmain>("dfa_appapplications", new CRMGetListOptions
             {
                 // TODO Update list of fields
                 Select = new[]
                 {
                     "dfa_appapplicationid", "dfa_isprimaryanddamagedaddresssame", "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2",
-                    "dfa_damagedpropertycity", "dfa_damagedpropertyprovince", "dfa_damagedpropertypostalcode", "dfa_isthispropertyyourp",
+                    "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince", "dfa_damagedpropertypostalcode", "dfa_isthispropertyyourp",
                     "dfa_indigenousreserve", "dfa_nameoffirstnationsr", "dfa_manufacturedhom", "dfa_eligibleforbchomegrantonthisproperty",
                     "dfa_appbuildingownerlandlord.dfa_contactfirstname", "dfa_appbuildingownerlandlord.dfa_contactlastname",
                     "dfa_appbuildingownerlandlord.dfa_contactphone1", "dfa_appbuildingownerlandlord.dfa_contactemail",
@@ -163,7 +168,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_primaryapplicantsignature", "dfa_secondaryyapplicantprintname", "dfa_secondaryapplicantsigned",
                     "dfa_secondaryapplicantsigneddate", "dfa_secondaryapplicantsignature"
                 },
-                Filter = "dfa_appapplicationid = " + applicationId
+                Filter = "_dfa_appapplicationid_value eq {applicationId}"
             });
 
             return list.List.FirstOrDefault();
@@ -187,7 +192,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteDamagedItemAsync(dfa_damageditems objDamagedItems)
+        // TODO: fails with a message about Guid not formulated correctly
+        public async Task<string> UpsertDeleteDamagedItemAsync(dfa_appdamageditems_params objDamagedItems)
         {
             try
             {
@@ -198,23 +204,23 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
                 }
             }
-            //catch (System.Exception ex)
+            // catch (System.Exception ex)
             catch
             {
                 return Guid.Empty.ToString();
-                //  throw new Exception($"Failed to update damaged items {ex.Message}", ex);
+                // throw new Exception($"Failed to update damaged items {ex.Message}", ex);
             }
 
             return string.Empty;
         }
 
-        public async Task<IEnumerable<dfa_damageditems>> GetDamagedItemsListAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appdamageditems_retrieve>> GetDamagedItemsListAsync(Guid applicationId)
         {
             try
             {
-                var list = await api.GetList<dfa_damageditems>("dfa_appdamageditems", new CRMGetListOptions
+                var list = await api.GetList<dfa_appdamageditems_retrieve>("dfa_appdamageditems", new CRMGetListOptions
                 {
-                    Select = new[] { "dfa_ApplicationId", "dfa_appdamageditemid", "dfa_roomname", "dfa_damagedescription" },
+                    Select = new[] { "_dfa_applicationid_value", "dfa_appdamageditemid", "dfa_roomname", "dfa_damagedescription" },
                     Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
 
@@ -226,36 +232,36 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteSecondaryApplicantAsync(dfa_appsecondaryapplicant objSecondaryApplicant)
+        // TODO: Dynamics endpoint fails with Message='dfa_appsecondaryapplicant' entity doesn't contain attribute with Name = 'dfa_emailaddress ' and NameMapping = 'Logical'.
+        public async Task<string> UpsertDeleteSecondaryApplicantAsync(dfa_appsecondaryapplicant_params objSecondaryApplicant)
         {
             try
             {
-                var result = await api.ExecuteAction("dfa_appsecondaryapplicant", objSecondaryApplicant); // TODO correct name parms
+                var result = await api.ExecuteAction("dfa_DFAPortalAppSecondaryApplicant", objSecondaryApplicant); // TODO correct name parms
 
                 if (result != null)
                 {
                     return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
                 }
             }
-            //catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return Guid.Empty.ToString();
-                //  throw new Exception($"Failed to update secondary applicant {ex.Message}", ex);
+                // return Guid.Empty.ToString();
+                throw new Exception($"Failed to update secondary applicant {ex.Message}", ex);
             }
 
             return string.Empty;
         }
 
-        public async Task<IEnumerable<dfa_appsecondaryapplicant>> GetSecondaryApplicantsListAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appsecondaryapplicant_retrieve>> GetSecondaryApplicantsListAsync(Guid applicationId)
         {
             try
             {
-                var list = await api.GetList<dfa_appsecondaryapplicant>("dfa_appsecondaryapplicants", new CRMGetListOptions // TODO by application Id
+                var list = await api.GetList<dfa_appsecondaryapplicant_retrieve>("dfa_appsecondaryapplicants", new CRMGetListOptions // TODO by application Id
                 {
                     Select = new[]
                     {
-                        "dfa_AppApplicationId", "dfa_appsecondaryapplicantid", "dfa_applicanttype", "dfa_emailaddress",
+                        "_dfa_appapplicationid_value", "dfa_appsecondaryapplicantid", "dfa_applicanttype", "dfa_emailaddress",
                         "dfa_firstname", "dfa_lastname", "dfa_phonenumber"
                     },
                     Filter = $"_dfa_appapplicationid_value eq {applicationId}"
@@ -269,11 +275,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteOtherContactAsync(dfa_othercontact objOtherContact)
+        public async Task<string> UpsertDeleteOtherContactAsync(dfa_appothercontact_params objOtherContact)
         {
             try
             {
-                var result = await api.ExecuteAction("dfa_othercontact", objOtherContact); // TODO correct name and parms
+                var result = await api.ExecuteAction("dfa_DFAPortalCreateOtherContact", objOtherContact); // TODO correct name and parms
 
                 if (result != null)
                 {
@@ -290,18 +296,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
-        public async Task<IEnumerable<dfa_othercontact>> GetOtherContactsListAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appothercontact_retrieve>> GetOtherContactsListAsync(Guid applicationId)
         {
             try
             {
-                var list = await api.GetList<dfa_othercontact>("dfa_appothercontacts", new CRMGetListOptions // TODO by applciation id
+                var list = await api.GetList<dfa_appothercontact_retrieve>("dfa_appothercontacts", new CRMGetListOptions // TODO by applciation id
                 {
                     Select = new[]
                     {
-                        "dfa_appapplicationid", "dfa_appothercontactid", "dfa_appemailaddress", "dfa_firstname",
-                        "dfa_lastname", "dfa_phonenumber"
+                        "_dfa_appapplicationid_value", "dfa_appothercontactid", "dfa_emailaddress", "dfa_firstname",
+                        "dfa_lastname", "dfa_phonenumber", "dfa_name"
                     },
-                    Filter = $"_dfa_applicationid_value eq {applicationId}"
+                    Filter = $"_dfa_appapplicationid_value eq {applicationId}"
                 });
 
                 return list.List;
@@ -312,11 +318,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteFullTimeOccupantAsync(dfa_appoccupant objAppOccupant)
+        public async Task<string> UpsertDeleteFullTimeOccupantAsync(dfa_appoccupant_params objAppOccupant)
         {
             try
             {
-                var result = await api.ExecuteAction("dfa_appoccupant", objAppOccupant); // TODO correct name and parms
+                var result = await api.ExecuteAction("dfa_DFAPortalCreateAppOccupant", objAppOccupant); // TODO correct name and parms
 
                 if (result != null)
                 {
@@ -333,19 +339,37 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
-        public async Task<IEnumerable<dfa_appoccupant>> GetFullTimeOccupantsListAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsListAsync(Guid applicationId)
         {
             try
             {
-                var list = await api.GetList<dfa_appoccupant>("dfa_appoccupants", new CRMGetListOptions
+                var list = await api.GetList<dfa_appoccupant_retrieve>("dfa_appoccupants", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "dfa_AppApplicationId", "dfa_appoccupantid", "dfa_contactid", "dfa_name", "dfa_title",
-                        "dfa_firstname", "dfa_lastname"
+                        "_dfa_applicationid_value", "dfa_appoccupantid", "_dfa_contactid_value", "dfa_name"
                     },
-                    Filter = $"_dfa_appapplicationid_value eq {applicationId}"
+                    Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
+
+                foreach (dfa_appoccupant_retrieve item in list.List)
+                {
+                    var contactList = await api.GetList<dfa_appcontact>("dfa_appcontacts", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                            "dfa_appcontactid", "dfa_firstname", "dfa_lastname", "dfa_title"
+                        },
+                        Filter = $"dfa_appcontactid eq {item._dfa_contactid_value}"
+                    });
+
+                    if (contactList != null)
+                    {
+                        item.dfa_title = contactList.List.Last().dfa_title;
+                        item.dfa_firstname = contactList.List.Last().dfa_firstname;
+                        item.dfa_lastname = contactList.List.Last().dfa_lastname;
+                    }
+                }
 
                 return list.List;
             }
@@ -355,7 +379,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteCleanUpLogItemAsync(dfa_appcleanuplogs objCleanUpLog)
+        public async Task<string> UpsertDeleteCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLog)
         {
             try
             {
@@ -384,19 +408,36 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
-        public async Task<IEnumerable<dfa_appcleanuplogs>> GetCleanUpLogItemsListAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsListAsync(Guid applicationId)
         {
             try
             {
-                var list = await api.GetList<dfa_appcleanuplogs>("dfa_appcleanuplogs", new CRMGetListOptions
+                var list = await api.GetList<dfa_appcleanuplogs_retrieve>("dfa_appcleanuplogs", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "dfa_AppApplicationId", "dfa_appcleanuplogid", "dfa_name", "dfa_date", "dfa_hoursworked",
-                        "dfa_description"
+                        "_dfa_applicationid_value", "dfa_appcleanuplogid", "dfa_name", "dfa_date", "dfa_hoursworked", "_dfa_contactid_value"
                     },
-                    Filter = $"_dfa_appapplicationid_value eq {applicationId}"
+                    Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
+
+                foreach (var item in list.List)
+                {
+                    item.dfa_description = item.dfa_name; // name from cleanup logs entity is description of work
+                    var contactList = await api.GetList<dfa_appcontact>("dfa_appcontacts", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                            "dfa_name"
+                        },
+                        Filter = $"dfa_appcontactid eq {item._dfa_contactid_value}"
+                    });
+
+                    if (contactList != null)
+                    {
+                        item.dfa_name = contactList.List.Last().dfa_name;
+                    }
+                }
 
                 return list.List;
             }
@@ -406,7 +447,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteDocumentLocationAsync(dfa_appdocumentlocation objDocumentLocation)
+        public async Task<string> UpsertDeleteDocumentLocationAsync(dfa_appdocumentlocation_params objDocumentLocation)
         {
             try
             {
@@ -427,15 +468,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
-        public async Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(string applicationId)
+        // TODO : fails
+        public async Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetDocumentLocationsListAsync(Guid applicationId)
         {
             try
             {
-                var list = await api.GetList<dfa_appdocumentlocation>("dfa_appdocumentlocations", new CRMGetListOptions
+                var list = await api.GetList<dfa_appdocumentlocation_retrieve>("dfa_appdocumentlocations", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "dfa_ApplicationId", "dfa_appdocumentlocationid", "dfa_name", "dfa_documenttype", "dfa_documentdescription",
+                        "_dfa_applicationid_value", "dfa_appdocumentlocationid", "dfa_name", "dfa_documenttype", "dfa_documentdescription",
                         "dfa_uploadeddate", "dfa_modifiedby", "dfa_filedata", "dfa_contenttype", "dfa_filesize"
                     },
                     Filter = $"_dfa_applicationid_value eq {applicationId}"
@@ -443,9 +485,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
                 return list.List;
             }
-            catch (System.Exception ex)
+            // catch (System.Exception ex)
+            catch
             {
-                throw new Exception($"Failed to get document locations {ex.Message}", ex);
+                return null;
+                // throw new Exception($"Failed to get document locations {ex.Message}", ex);
             }
         }
     }

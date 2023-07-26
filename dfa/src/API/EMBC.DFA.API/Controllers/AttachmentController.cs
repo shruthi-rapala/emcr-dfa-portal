@@ -47,7 +47,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteAttachment(FileUpload fileUpload)
         {
             if (fileUpload == null) return BadRequest("FileUpload details cannot be empty.");
-            var mappedFileUpload = mapper.Map<dfa_appdocumentlocation>(fileUpload);
+            var mappedFileUpload = mapper.Map<dfa_appdocumentlocation_params>(fileUpload);
 
             var fileUploadId = await handler.HandleFileUploadAsync(mappedFileUpload);
             return Ok(fileUploadId);
@@ -64,16 +64,23 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<IEnumerable<FileUpload>>> GetAttachments(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
-            IEnumerable<dfa_appdocumentlocation> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(applicationId);
+            IEnumerable<dfa_appdocumentlocation_retrieve> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(applicationId);
             IEnumerable<FileUpload> fileUploads = new FileUpload[] { };
-            foreach (dfa_appdocumentlocation dfa_appdocumentlocation in dfa_appdocumentlocations)
+            if (dfa_appdocumentlocations != null)
             {
-                FileUpload fileUpload = mapper.Map<FileUpload>(dfa_appdocumentlocation);
-                fileUploads.Append<FileUpload>(fileUpload);
+                foreach (dfa_appdocumentlocation_retrieve dfa_appdocumentlocation in dfa_appdocumentlocations)
+                {
+                    FileUpload fileUpload = mapper.Map<FileUpload>(dfa_appdocumentlocation);
+                    fileUploads = fileUploads.Append<FileUpload>(fileUpload);
+                }
+                return Ok(fileUploads);
             }
-            return Ok(fileUploads);
+            else
+            {
+                return Ok(null);
+            }
         }
     }
 
@@ -82,8 +89,8 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class FileUpload
     {
-        public string applicationId { get; set; }
-        public string? id { get; set; }
+        public Guid applicationId { get; set; }
+        public Guid? id { get; set; }
         public string fileName { get; set; }
         public string fileDescription { get; set; }
         public FileCategory fileType { get; set; }

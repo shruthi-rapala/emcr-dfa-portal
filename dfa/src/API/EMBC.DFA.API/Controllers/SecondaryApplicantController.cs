@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace EMBC.DFA.API.Controllers
 {
-    [Route("api/secondaryapplicant")]
+    [Route("api/secondaryapplicants")]
     [ApiController]
     [Authorize]
     public class SecondaryApplicantController : ControllerBase
@@ -47,7 +47,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteSecondaryApplicant(SecondaryApplicant secondaryApplicant)
         {
             if (secondaryApplicant == null) return BadRequest("SecondaryApplicant details cannot be empty.");
-            var mappedSecondaryApplicant = mapper.Map<dfa_appsecondaryapplicant>(secondaryApplicant);
+            var mappedSecondaryApplicant = mapper.Map<dfa_appsecondaryapplicant_params>(secondaryApplicant);
 
             var secondaryApplicationId = await handler.HandleSecondaryApplicantAsync(mappedSecondaryApplicant);
             return Ok(secondaryApplicationId);
@@ -64,14 +64,14 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<IEnumerable<SecondaryApplicant>>> GetSecondaryApplicants(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
-            IEnumerable<dfa_appsecondaryapplicant> dfa_appsecondaryapplicants = await handler.GetSecondaryApplicantsAsync(applicationId);
+            IEnumerable<dfa_appsecondaryapplicant_retrieve> dfa_appsecondaryapplicants = await handler.GetSecondaryApplicantsAsync(applicationId);
             IEnumerable<SecondaryApplicant> secondaryApplicants = new SecondaryApplicant[] { };
-            foreach (dfa_appsecondaryapplicant dfa_appsecondaryapplicant in dfa_appsecondaryapplicants)
+            foreach (dfa_appsecondaryapplicant_retrieve dfa_appsecondaryapplicant in dfa_appsecondaryapplicants)
             {
                 SecondaryApplicant secondaryApplicant = mapper.Map<SecondaryApplicant>(dfa_appsecondaryapplicant);
-                secondaryApplicants.Append<SecondaryApplicant>(secondaryApplicant);
+                secondaryApplicants = secondaryApplicants.Append<SecondaryApplicant>(secondaryApplicant);
             }
             return Ok(secondaryApplicants);
         }
@@ -82,8 +82,8 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class SecondaryApplicant
     {
-        public string? id { get; set; }
-        public string applicationId { get; set; }
+        public Guid? id { get; set; }
+        public Guid applicationId { get; set; }
         public SecondaryApplicantTypeOption applicantType { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }

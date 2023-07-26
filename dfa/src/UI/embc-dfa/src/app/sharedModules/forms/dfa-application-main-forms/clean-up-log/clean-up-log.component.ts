@@ -26,6 +26,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { CleanUpLogItemService } from 'src/app/core/api/services';
 
 @Component({
   selector: 'app-clean-up-log',
@@ -55,7 +56,8 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private cleanUpLogsService: CleanUpLogItemService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -82,10 +84,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.cleanUpLogWorkForm
       .get('addNewCleanUpLogIndicator')
       .valueChanges.subscribe((value) => this.updateCleanupLogOnVisibility());
-    this.cleanUpWorkDataSource.next(
-      this.cleanUpLogWorkForm.get('cleanuplogs').value
-    );
-    this.cleanUpWorkData = this.cleanUpLogWorkForm.get('cleanuplogs').value;
+    this.getCleanUpLogsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
 
     this.cleanUpWorkFilesForm$ = this.formCreationService
       .getFileUploadsForm()
@@ -103,6 +102,19 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
        .pipe(
          mapTo(_cleanUpWorkFileFormArray.getRawValue())
          ).subscribe(data => this.cleanUpWorkFileDataSource.data = data.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false));
+  }
+
+  getCleanUpLogsForApplication(applicationId: string) {
+    this.cleanUpLogsService.cleanUpLogItemGetCleanUpLogItems({applicationId: applicationId}).subscribe({
+      next: (cleanUpLogs) => {
+        this.cleanUpWorkData = cleanUpLogs;
+        this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
+        this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   /**
@@ -205,10 +217,18 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   saveNewCleanupLog(): void {
     if (this.cleanUpLogWorkForm.get('cleanuplog').status === 'VALID') {
-      this.cleanUpWorkData.push(this.cleanUpLogWorkForm.get('cleanuplog').value);
-      this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
-      this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
-      this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
+      this.cleanUpLogsService.cleanUpLogItemUpsertDeleteCleanUpLogItem({body: this.cleanUpLogWorkForm.get('cleanuplog').getRawValue() }).subscribe({
+        next: (cleanUpLogId) => {
+          this.cleanUpLogWorkForm.get('id').setValue(cleanUpLogId);
+          this.cleanUpWorkData.push(this.cleanUpLogWorkForm.get('cleanuplog').value);
+          this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
+          this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
+          this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
     } else {
       this.cleanUpLogWorkForm.get('cleanuplog').markAllAsTouched();
     }
@@ -232,15 +252,22 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   }
 
   deleteCleanupLogRow(index: number): void {
-    this.cleanUpWorkData.splice(index, 1);
-    this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
-    this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
-    if (this.cleanUpWorkData.length === 0) {
-      this.cleanUpLogWorkForm
-        .get('addNewCleanUpLogIndicator')
-        .setValue(false);
-    }
-
+    this.cleanUpWorkData[index].deleteFlag = true;
+    this.cleanUpLogsService.cleanUpLogItemUpsertDeleteCleanUpLogItem({body: this.cleanUpWorkData[index]}).subscribe({
+      next: (cleanUpLogId) => {
+          this.cleanUpWorkData.splice(index, 1);
+          this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
+          this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
+          if (this.cleanUpWorkData.length === 0) {
+            this.cleanUpLogWorkForm
+              .get('addNewCleanUpLogIndicator')
+              .setValue(false);
+          }
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   deleteCleanupLogFileRow(element): void {

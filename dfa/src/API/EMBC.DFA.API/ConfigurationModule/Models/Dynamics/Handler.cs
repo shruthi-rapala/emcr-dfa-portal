@@ -26,18 +26,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleApplicationUpdate(dfa_appapplicationmain objApplication);
         Task<dfa_appapplicationstart> GetApplicationStartAsync(string applicationId);
         Task<dfa_appapplicationmain> GetApplicationMainAsync(string applicationId);
-        Task<string> HandleDamagedItemsAsync(dfa_damageditems objDamagedItems);
-        Task<IEnumerable<dfa_damageditems>> GetDamagedItemsAsync(string applicationId);
-        Task<string> HandleSecondaryApplicantAsync(dfa_appsecondaryapplicant objSecondaryApplicants);
-        Task<IEnumerable<dfa_appsecondaryapplicant>> GetSecondaryApplicantsAsync(string applicationId);
-        Task<string> HandleOtherContactAsync(dfa_othercontact objOtherContact);
-        Task<IEnumerable<dfa_othercontact>> GetOtherContactsAsync(string applicationId);
-        Task<string> HandleFullTimeOccupantAsync(dfa_appoccupant objAppOccupant);
-        Task<IEnumerable<dfa_appoccupant>> GetFullTimeOccupantsAsync(string applicationId);
-        Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs objCleanUpLogItem);
-        Task<IEnumerable<dfa_appcleanuplogs>> GetCleanUpLogItemsAsync(string applicationId);
-        Task<string> HandleFileUploadAsync(dfa_appdocumentlocation objFileUpload);
-        Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(string applicationId);
+        Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems);
+        Task<IEnumerable<dfa_appdamageditems_retrieve>> GetDamagedItemsAsync(Guid applicationId);
+        Task<string> HandleSecondaryApplicantAsync(dfa_appsecondaryapplicant_params objSecondaryApplicants);
+        Task<IEnumerable<dfa_appsecondaryapplicant_retrieve>> GetSecondaryApplicantsAsync(Guid applicationId);
+        Task<string> HandleOtherContactAsync(dfa_appothercontact_params objOtherContact);
+        Task<IEnumerable<dfa_appothercontact_retrieve>> GetOtherContactsAsync(Guid applicationId);
+        Task<string> HandleFullTimeOccupantAsync(dfa_appoccupant_params objAppOccupant);
+        Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsAsync(Guid applicationId);
+        Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLogItem);
+        Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId);
+        Task<string> HandleFileUploadAsync(dfa_appdocumentlocation_params objFileUpload);
+        Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetFileUploadsAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId);
     }
 
@@ -131,68 +131,68 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return await listsGateway.GetApplicationListAsync(profileId);
         }
 
-        public async Task<string> HandleDamagedItemsAsync(dfa_damageditems objDamagedItems)
+        public async Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems)
         {
             var dfa_appdamageitemid = await listsGateway.UpsertDeleteDamagedItemAsync(objDamagedItems);
             return dfa_appdamageitemid;
         }
 
-        public async Task<IEnumerable<dfa_damageditems>> GetDamagedItemsAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appdamageditems_retrieve>> GetDamagedItemsAsync(Guid applicationId)
         {
             return await listsGateway.GetDamagedItemsListAsync(applicationId);
         }
 
-        public async Task<string> HandleSecondaryApplicantAsync(dfa_appsecondaryapplicant objSecondaryApplicant)
+        public async Task<string> HandleSecondaryApplicantAsync(dfa_appsecondaryapplicant_params objSecondaryApplicant)
         {
             var dfa_appsecondaryappid = await listsGateway.UpsertDeleteSecondaryApplicantAsync(objSecondaryApplicant);
             return dfa_appsecondaryappid;
         }
 
-        public async Task<IEnumerable<dfa_appsecondaryapplicant>> GetSecondaryApplicantsAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appsecondaryapplicant_retrieve>> GetSecondaryApplicantsAsync(Guid applicationId)
         {
             return await listsGateway.GetSecondaryApplicantsListAsync(applicationId);
         }
 
-        public async Task<string> HandleOtherContactAsync(dfa_othercontact objOtherContact)
+        public async Task<string> HandleOtherContactAsync(dfa_appothercontact_params objOtherContact)
         {
             var dfa_appothercontactid = await listsGateway.UpsertDeleteOtherContactAsync(objOtherContact);
             return dfa_appothercontactid;
         }
 
-        public async Task<IEnumerable<dfa_othercontact>> GetOtherContactsAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appothercontact_retrieve>> GetOtherContactsAsync(Guid applicationId)
         {
             return await listsGateway.GetOtherContactsListAsync(applicationId);
         }
 
-        public async Task<string> HandleFullTimeOccupantAsync(dfa_appoccupant objAppOccupant)
+        public async Task<string> HandleFullTimeOccupantAsync(dfa_appoccupant_params objAppOccupant)
         {
             var dfa_appoccupantid = await listsGateway.UpsertDeleteFullTimeOccupantAsync(objAppOccupant);
             return dfa_appoccupantid;
         }
 
-        public async Task<IEnumerable<dfa_appoccupant>> GetFullTimeOccupantsAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsAsync(Guid applicationId)
         {
             return await listsGateway.GetFullTimeOccupantsListAsync(applicationId);
         }
 
-        public async Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs objCleanUpLogItem)
+        public async Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLogItem)
         {
             var dfa_appcleanuplogid = await listsGateway.UpsertDeleteCleanUpLogItemAsync(objCleanUpLogItem);
             return dfa_appcleanuplogid;
         }
 
-        public async Task<IEnumerable<dfa_appcleanuplogs>> GetCleanUpLogItemsAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId)
         {
             return await listsGateway.GetCleanUpLogItemsListAsync(applicationId);
         }
 
-        public async Task<string> HandleFileUploadAsync(dfa_appdocumentlocation objFileUpload)
+        public async Task<string> HandleFileUploadAsync(dfa_appdocumentlocation_params objFileUpload)
         {
             var dfa_appdocumentlocationid = await listsGateway.UpsertDeleteDocumentLocationAsync(objFileUpload);
             return dfa_appdocumentlocationid;
         }
 
-        public async Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(string applicationId)
+        public async Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetFileUploadsAsync(Guid applicationId)
         {
             return await listsGateway.GetDocumentLocationsListAsync(applicationId);
         }
