@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
-import { DFAApplicationMain, DamagedPropertyAddress, PropertyDamage, DamagedItemsByRoom, CleanupLog, OtherContact, SecondaryApplicant, Occupants, SignAndSubmit, SupportingDocuments} from 'src/app/core/model/dfa-application-main.model';
 import { CacheService } from 'src/app/core/services/cache.service';
-import { ApplicantOption, InsuranceOption, DfaApplicationStart } from 'src/app/core/api/models';
+import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
+import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, PropertyDamage, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, FileUpload, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainDataService {
   private _damagedPropertyAddress: DamagedPropertyAddress;
   private _propertyDamage: PropertyDamage;
-  private _occupants: Occupants;
-  private _cleanUpLog: CleanupLog;
-  private _damagedItemsByRoom: DamagedItemsByRoom;
-  private _dfaApplicationMain: DFAApplicationMain;
-  private _dfaApplicationStart: DfaApplicationStart;
+  private _cleanUpLog: CleanUpLog;
   private _supportingDocuments: SupportingDocuments;
-  private _dfaApplicationMainId: string;
-  private ApplicantOptions = ApplicantOption;
-  private InsuranceOptions = InsuranceOption;
   private _signAndSubmit: SignAndSubmit;
+  private _fullTimeOccupants: Array<FullTimeOccupant>;
+  private _otherContacts: Array<OtherContact>;
+  private _secondaryApplicants: Array<SecondaryApplicant>;
+  private _cleanUpLogItems: Array<CleanUpLogItem>;
+  private _damagedRooms: Array<DamagedRoom>;
+  private _fileUploads: Array<FileUpload>;
+  private _dfaApplicationMain: DfaApplicationMain;
+  private _dfaApplicationStart: DfaApplicationStart;
   private _isSubmitted: boolean = false;
 
   constructor(
@@ -27,7 +28,49 @@ export class DFAApplicationMainDataService {
       this._dfaApplicationStart = this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
   }
 
-  public getDFAApplicationMain(): DFAApplicationMain {
+  public get fullTimeOccupants(): Array<FullTimeOccupant> {
+    return this._fullTimeOccupants;
+  }
+  public set fullTimeOccupants(value: Array<FullTimeOccupant>) {
+    this._fullTimeOccupants = value;
+  }
+
+  public get otherContacts(): Array<OtherContact> {
+    return this._otherContacts;
+  }
+  public set otherContacts(value: Array<OtherContact>) {
+    this._otherContacts = value;
+  }
+
+  public get secondaryApplicants(): Array<SecondaryApplicant> {
+    return this._secondaryApplicants;
+  }
+  public set secondaryApplicants(value: Array<SecondaryApplicant>) {
+    this._secondaryApplicants = value;
+  }
+
+  public get cleanUpLogItems(): Array<CleanUpLogItem> {
+    return this._cleanUpLogItems;
+  }
+  public set cleanUpLogItems(value: Array<CleanUpLogItem>) {
+    this._cleanUpLogItems = value;
+  }
+
+  public get damagedRooms(): Array<DamagedRoom> {
+    return this._damagedRooms;
+  }
+  public set damagedRooms(value: Array<DamagedRoom>) {
+    this._damagedRooms = value;
+  }
+
+  public get fileUploads(): Array<FileUpload> {
+    return this._fileUploads;
+  }
+  public set fileUploads(value: Array<FileUpload>) {
+    this._fileUploads = value;
+  }
+
+  public getDFAApplicationMain(): DfaApplicationMain {
     if (this._dfaApplicationMain === null || undefined) {
       this._dfaApplicationMain = JSON.parse(this.cacheService.get('dfa-application-main'));
     }
@@ -45,13 +88,9 @@ export class DFAApplicationMainDataService {
     return this._dfaApplicationStart;
   }
 
-  public setDFAApplicationMain(dfaApplicationMain: DFAApplicationMain): void {
+  public setDFAApplicationMain(dfaApplicationMain: DfaApplicationMain): void {
     this._dfaApplicationMain = dfaApplicationMain;
     this.cacheService.set('dfa-application-main', dfaApplicationMain);
-  }
-
-  public setDFAApplicationMainId(id: string): void {
-    this._dfaApplicationMainId = id;
   }
 
   public get damagedPropertyAddress(): DamagedPropertyAddress {
@@ -86,34 +125,19 @@ export class DFAApplicationMainDataService {
     this._propertyDamage = value;
   }
 
-  public get occupants(): Occupants {
-    return this._occupants;
-  }
-
-  public set occupants(value: Occupants) {
-    this._occupants = value;
-  }
-  public get cleanUpLog(): CleanupLog {
+  public get cleanUpLog(): CleanUpLog {
     return this._cleanUpLog;
   }
 
-  public set cleanUpLog(value: CleanupLog) {
+  public set cleanUpLog(value: CleanUpLog) {
     this._cleanUpLog = value;
   }
-  public get damagedItemsByRoom(): DamagedItemsByRoom {
-    return this._damagedItemsByRoom;
-  }
-
-  public set damagedItemsByRoom(value: DamagedItemsByRoom) {
-    this._damagedItemsByRoom = value;
-  }
-   public createDFAApplicationMainDTO(): DFAApplicationMain {
+   public createDFAApplicationMainDTO(): DfaApplicationMain {
     return {
+      id: this.dfaApplicationStart.id,
+      cleanUpLog: this.cleanUpLog,
       damagedPropertyAddress: this._damagedPropertyAddress,
       propertyDamage: this._propertyDamage,
-      occupants: this._occupants,
-      cleanUpLog: this._cleanUpLog,
-      damagedItemsByRoom: this._damagedItemsByRoom,
       supportingDocuments: this._supportingDocuments,
       signAndSubmit: this._signAndSubmit
     };

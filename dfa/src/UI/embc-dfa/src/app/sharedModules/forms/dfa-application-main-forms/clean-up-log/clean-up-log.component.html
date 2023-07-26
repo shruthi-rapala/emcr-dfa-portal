@@ -1,10 +1,10 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="cleanUpLogForm">
+  <p class="sub-heading" style="font-size: 20px">Clean Up Log</p>
+  <br />
 
-      <p class="sub-heading" style="font-size: 20px">Clean Up Log</p>
-      <br />
+  <form [formGroup]="cleanUpLogWorkForm">
 
       <div formGroupName="cleanuplog">
         <ng-container>
@@ -234,8 +234,11 @@
         </ng-container>
 
       </div>
+  </form>
 
-      <div formGroupName="cleanuplogFile">
+  <form [formGroup]="cleanUpWorkFilesForm">
+
+      <div formGroupName="fileUpload">
         <ng-container>
           <div class="row">
             <div class="col-md-12">
@@ -246,7 +249,7 @@
                 </b>
               </p>
 
-              <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.getValue().length > 0">
+              <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.data.length > 0">
 
 
                 <!-- File Name Column -->
@@ -289,7 +292,7 @@
                     class="delete-image"
                     mat-icon-button
                     aria-label="Remove"
-                    (click)="deleteCleanupLogFileRow(index)"
+                    (click)="deleteCleanupLogFileRow(elementFile)"
                   >
                     <img src="/assets/images/delete.svg" height="35" width="35" />
                     <img
@@ -310,7 +313,7 @@
 
               </table>
 
-              <div  *ngIf="cleanUpWorkFileDataSource.getValue().length > 0">
+              <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
                 <br /><br/>
               </div>
 

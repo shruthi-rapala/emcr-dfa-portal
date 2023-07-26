@@ -140,7 +140,7 @@
             Return to Dashboard
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.occupantsForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.damagedItemsByRoomForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid">
+        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid">
           <button
             class="button-p save-button"
             mat-stroked-button
@@ -150,7 +150,7 @@
             Submit
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.occupantsForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.damagedItemsByRoomForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid)">
+        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid)">
           <span style="color:red">Enter all required information and sign before submitting.</span>
         </div>
       </div>

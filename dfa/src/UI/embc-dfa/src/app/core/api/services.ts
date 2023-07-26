@@ -1,4 +1,10 @@
 export { ApplicationService } from './services/application.service';
+export { AttachmentService } from './services/attachment.service';
+export { CleanUpLogItemService } from './services/clean-up-log-item.service';
 export { ConfigurationService } from './services/configuration.service';
+export { DamagedRoomService } from './services/damaged-room.service';
 export { EvacuationsService } from './services/evacuations.service';
+export { FullTimeOccupantService } from './services/full-time-occupant.service';
+export { OtherContactService } from './services/other-contact.service';
 export { ProfileService } from './services/profile.service';
+export { SecondaryApplicantService } from './services/secondary-applicant.service';
