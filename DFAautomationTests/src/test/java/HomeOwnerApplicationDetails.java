@@ -16,15 +16,15 @@ public class HomeOwnerApplicationDetails {
     private WebDriver driver;
 
 
-    @After
-    public void tearDown() {
-        driver.close();
-        driver.quit();
-    }
-    @AfterClass
-    public static void afterClass() {
-        WebDriverManager.instance = null;
-    }
+//    @After
+//    public void tearDown() {
+//        driver.close();
+//        driver.quit();
+//    }
+//    @AfterClass
+//    public static void afterClass() {
+//        WebDriverManager.instance = null;
+//    }
 
 
     @Test
@@ -37,11 +37,11 @@ public class HomeOwnerApplicationDetails {
         CreateNewApplicationHomeowner applDetails = new CreateNewApplicationHomeowner();
         applDetails.test();
 
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-16")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-4")));
         element.sendKeys("3220 Test");
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-18")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-5")));
         element.sendKeys("Victoria");
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-20")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-6")));
         element.sendKeys("V8X1G3");
 
         //Questions

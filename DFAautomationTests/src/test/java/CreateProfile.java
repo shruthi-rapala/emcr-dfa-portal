@@ -19,15 +19,15 @@ public class CreateProfile {
     private WebDriver driver;
 
 
-    @After
-    public void tearDown() {
-        driver.close();
-        driver.quit();
-    }
-    @AfterClass
-    public static void afterClass() {
-        WebDriverManager.instance = null;
-    }
+//    @After
+//    public void tearDown() {
+//        driver.close();
+//        driver.quit();
+//    }
+//    @AfterClass
+//    public static void afterClass() {
+//        WebDriverManager.instance = null;
+//    }
 
 
     @Test
@@ -40,6 +40,11 @@ public class CreateProfile {
         Login login = new Login();
         login.test();
 
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        Thread.sleep(1000);
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next ')]")));
+        js.executeScript("arguments[0].click();", element);
+
         //Check the first and last name are polled
 
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
@@ -47,18 +52,17 @@ public class CreateProfile {
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'THREE')]")));
 
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        JavascriptExecutor js1 = (JavascriptExecutor) driver;
         //Scroll down till the bottom of the page
-        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        js1.executeScript("window.scrollBy(0,document.body.scrollHeight)");
         Thread.sleep(1500);
-        element = driverWait.until(ExpectedConditions
-                .presenceOfElementLocated(By.id("mat-input-2")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-2")));
         element.sendKeys("ET");
 
-        JavascriptExecutor js1 = (JavascriptExecutor) driver;
+        JavascriptExecutor js2 = (JavascriptExecutor) driver;
         element = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='radio' and @value='Yes']")));
-        js1.executeScript("arguments[0].click();", element);
+        js2.executeScript("arguments[0].click();", element);
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Address ')]"))).click();
 
@@ -73,10 +77,10 @@ public class CreateProfile {
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'V3R 3H7')]")));
         //Scroll down till the bottom of the page
         Thread.sleep(1000);
-        JavascriptExecutor js2 = (JavascriptExecutor) driver;
+        JavascriptExecutor js3 = (JavascriptExecutor) driver;
         element = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-5 .mat-radio-outer-circle")));
-        js2.executeScript("arguments[0].click();", element);
+        js3.executeScript("arguments[0].click();", element);
 
         js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
         Thread.sleep(1000);

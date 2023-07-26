@@ -40,23 +40,25 @@ public class CreateNewApplicationHomeowner {
         WebElement element = WebDriverManager.getElement();
         WebDriverManager.getElements();
 
-        CreateProfile createProfile = new CreateProfile();
-        createProfile.test();
+//        CreateProfile createProfile = new CreateProfile();
+//        createProfile.test();
+
+        Login login = new Login();
+        login.test();
+
 
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Yes, I want to apply now ')]"))).click();
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Create New Application ')]"))).click();
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Notice of Collection')]")));
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
         Thread.sleep(1000);
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Profile Verification ')]"))).click();
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Application Type & Insurance ')]"))).click();
 
         //TO DO - Profile verification
         Thread.sleep(1000);
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Application Type ')]"))).click();
 
         //Homeowner
         JavascriptExecutor js1 = (JavascriptExecutor) driver;
@@ -88,10 +90,10 @@ public class CreateNewApplicationHomeowner {
         action.moveToElement(ele).clickAndHold().moveByOffset(xcord, ycord).build().perform();*/
 
         element = driverWait.until(ExpectedConditions
-                .presenceOfElementLocated(By.id("mat-input-12")));
+                .presenceOfElementLocated(By.id("mat-input-0")));
         element.sendKeys("Test Test");
         element = driverWait.until(ExpectedConditions
-                .presenceOfElementLocated(By.id("mat-input-13")));
+                .presenceOfElementLocated(By.id("mat-input-1")));
         element.sendKeys("12/12/2024");
 
         Thread.sleep(1000);

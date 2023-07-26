@@ -59,12 +59,8 @@ public class Login {
         element.click();
 
         //Display notice of Collention
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Notice of Collection ')]")));
+//        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+//                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'This page is for homeowners and residential tenants.')]")));
 
-        JavascriptExecutor js1 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions
-                .presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next ')]")));
-        js1.executeScript("arguments[0].click();", element);
     }
 }
