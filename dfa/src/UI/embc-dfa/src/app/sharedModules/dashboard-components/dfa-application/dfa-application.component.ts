@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { DashboardComponent } from '../../../feature-components/dashboard/dashboard.component'
+import { DashboardComponent } from '../../../feature-components/dashboard/dashboard.component';
+import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
+import { ApplicationService as Service } from '../../../core/api/services/application.service';
 
 @Component({
   selector: 'app-dfadashboard-application',
@@ -13,26 +15,30 @@ export class DfaApplicationComponent implements OnInit {
     this.currentApplicationsCount.emit(value);
   }
 
-  lstApplications = [{
-                "dfa_applicanttype": "Small Business",
-                "dfa_damagedpropertyaddress": "1600 Riverside, Courtenay",
-                "dfa_caseid": "1101",
-                "dfa_dateofdamage": "13-Jul-2023",
-                "dfa_eventid": "Atmospheric River"
-              },
-              {
-                "dfa_applicanttype": "Home Owner",
-                "dfa_damagedpropertyaddress": "8900 Fitzgerald, Victoria",
-                "dfa_caseid": "2204",
-                "dfa_dateofdamage": "13-Jul-2023",
-                "dfa_eventid": "Atmospheric River"
-              }];
+  lstApplications = [];
 
-  constructor() { }
+  constructor(
+    private profileDataService: ProfileDataService,
+    private appService: Service
+  ) {  }
 
   ngOnInit(): void {
-    //DashboardComponent.currentApplicationsCount = 2
-    //this.addNewItem(3);
+    
+    this.appService.applicationGetDfaApplications().subscribe({
+      next: (lstData) => {
+        if (lstData != null) {
+          this.mapData(lstData);
+        }
+      },
+      error: (error) => {
+      }
+    });
+
+  }
+
+  mapData(lstApp: Object): void {
+    var res = JSON.parse(JSON.stringify(lstApp));
+    this.lstApplications = res;
   }
 
 }

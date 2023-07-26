@@ -92,6 +92,14 @@ namespace EMBC.DFA.API.Mappers
                     (s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.No ? InsuranceOption.No :
                     (s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.YesBut ? InsuranceOption.Unsure : InsuranceOption.Yes))));
 
+            CreateMap<dfa_appapplication, CurrentApplication>()
+                .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
+                .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => s.dfa_applicanttype))
+                .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => "4536"))
+                .ForMember(d => d.EventId, opts => opts.MapFrom(s => "Atmospheric River"))
+                .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => s.dfa_damagedpropertystreet1 + ", " + s.dfa_damagedpropertycitytext))
+                .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));
+
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
                 .ForMember(d => d.Id, opts => opts.Ignore())
                 .ForMember(d => d.AuthenticatedUser, opts => opts.Ignore())

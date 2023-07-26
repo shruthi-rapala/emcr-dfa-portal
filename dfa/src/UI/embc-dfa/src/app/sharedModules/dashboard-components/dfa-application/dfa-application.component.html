@@ -1,7 +1,7 @@
 <!--<div>
   Current Applications
 </div>-->
-<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;">
+<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstApplications.length > 0">
       <div class="row"
            *ngFor="let applItem of lstApplications"
            >
@@ -23,24 +23,24 @@
             
             <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px;">
               <span>Event ID</span><br />
-              <span style="font-size: 20px;"><b>{{applItem.dfa_eventid}}</b></span>
+              <span style="font-size: 20px;"><b>{{applItem.eventId}}</b></span>
             </div>
            <div class="row" style="padding-top: 20px;">
              <div class="col-md-3">
                 <span><b>Application Type</b></span><br />
-                <span>{{applItem.dfa_applicanttype}}</span>
+                <span>{{applItem.applicationType}}</span>
               </div>
              <div class="col-md-3">
                 <span><b>Damaged Property Address</b></span><br />
-                <span>{{applItem.dfa_damagedpropertyaddress}}</span>
+                <span>{{applItem.damagedAddress}}</span>
               </div>
              <div class="col-md-3">
                 <span><b>Case Number</b></span><br />
-                <span>{{applItem.dfa_caseid}}</span>
+                <span>{{applItem.caseNumber}}</span>
               </div>
              <div class="col-md-3">
                 <span><b>Date of Damage</b></span><br />
-                <span>{{applItem.dfa_dateofdamage}}</span>
+                <span>{{applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
               </div>
             </div>
            <div style="padding-top: 35px;">
@@ -84,3 +84,12 @@
       </div>
       
 </div>
+<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstApplications.length == 0">
+ <div class="heading-container">
+    <div class="row">
+      <div class="col-md-12">
+        <span class="page-heading" style=""> No Active Applications</span> <br />
+      </div>
+    </div>
+  </div>
+  </div>

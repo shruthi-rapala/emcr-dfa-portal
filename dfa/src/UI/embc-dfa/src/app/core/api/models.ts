@@ -8,6 +8,7 @@ export { InsuranceOption } from './models/insurance-option';
 export { SmallBusinessOption } from './models/small-business-option';
 export { FarmOption } from './models/farm-option';
 export { SignatureBlock } from './models/signature-block';
+export { CurrentApplication } from './models/current-application';
 export { Configuration } from './models/configuration';
 export { OidcOptions } from './models/oidc-options';
 export { OutageInformation } from './models/outage-information';

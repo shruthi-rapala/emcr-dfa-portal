@@ -24,7 +24,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleContact(dfa_appcontact objContact);
         Task<string> HandleApplication(dfa_appapplicationstart objApplication);
         Task<dfa_appapplicationstart> GetApplicationStartAsync(string applicationId);
-        Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId);
+        Task<List<CurrentApplication>> HandleApplicationList(string profileId);
     }
     public class Handler : IConfigurationHandler
     {
@@ -100,9 +100,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return dfa_appapplication;
         }
 
-        public async Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId)
+        public async Task<List<CurrentApplication>> HandleApplicationList(string profileId)
         {
-            return await listsGateway.GetApplicationListAsync(profileId);
+            var lstApps = await listsGateway.GetApplicationListAsync(profileId);
+            var mappedApps = mapper.Map<List<CurrentApplication>>(lstApps);
+            return mappedApps;
         }
     }
 }

@@ -126,8 +126,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             {
                 var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
                 {
-                    Select = new[] { "dfa_appapplicationid", "dfa_applicanttype" },
-                    Filter = $"_dfa_applicant_value eq {profileId}"
+                    Select = new[]
+                    {
+                        "dfa_appapplicationid", "dfa_applicanttype",
+                        "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext", "_dfa_eventid_value"
+                    },
+                    Filter = $"_dfa_applicant_value eq {profileId}",
+                    Expand = new CRMExpandOptions[]
+                        {
+                            new CRMExpandOptions()
+                            {
+                              Property = "dfa_eventid",
+                              Select = new string[] { "dfa_eventid", "dfa_id" }
+                            }
+                        }
                 });
 
                 return list.List;
