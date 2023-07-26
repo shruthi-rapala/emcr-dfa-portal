@@ -71,6 +71,11 @@ namespace EMBC.DFA.API.Controllers
             //    profile = GetUserFromPrincipal();
             //}
             var profile = await handler.HandleGetUser(userId);
+            if (profile == null)
+            {
+                //try get BCSC profile
+                profile = GetUserFromPrincipal();
+            }
             if (profile == null) return NotFound(userId);
             return Ok(profile);
         }

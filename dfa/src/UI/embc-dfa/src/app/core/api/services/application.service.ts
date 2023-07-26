@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { DfaApplicationMain } from '../models/dfa-application-main';
+import { CurrentApplication } from '../models/current-application';
 import { DfaApplicationStart } from '../models/dfa-application-start';
 
 @Injectable({
@@ -287,16 +288,10 @@ export class ApplicationService extends BaseService {
    * This method doesn't expect any request body.
    */
   applicationGetDfaApplications$Response(params?: {
-
-    /**
-     * The profile Id.
-     */
-    profileId?: string;
-  }): Observable<StrictHttpResponse<string>> {
+  }): Observable<StrictHttpResponse<Array<CurrentApplication>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetDfaApplicationsPath, 'get');
     if (params) {
-      rb.query('profileId', params.profileId, {});
     }
 
     return this.http.request(rb.build({
@@ -305,7 +300,7 @@ export class ApplicationService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return r as StrictHttpResponse<Array<CurrentApplication>>;
       })
     );
   }
@@ -321,15 +316,10 @@ export class ApplicationService extends BaseService {
    * This method doesn't expect any request body.
    */
   applicationGetDfaApplications(params?: {
-
-    /**
-     * The profile Id.
-     */
-    profileId?: string;
-  }): Observable<string> {
+  }): Observable<Array<CurrentApplication>> {
 
     return this.applicationGetDfaApplications$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+      map((r: StrictHttpResponse<Array<CurrentApplication>>) => r.body as Array<CurrentApplication>)
     );
   }
 

@@ -310,6 +310,31 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_contenttype, opts => opts.MapFrom(s => s.contentType))
                 .ForMember(d => d.dfa_filesize, opts => opts.MapFrom(s => s.fileSize))
                 .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+            CreateMap<dfa_appapplication, CurrentApplication>()
+                .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
+                .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => s.dfa_applicanttype))
+                .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => "4536"))
+                .ForMember(d => d.EventId, opts => opts.MapFrom(s => "Atmospheric River"))
+                .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => s.dfa_damagedpropertystreet1 + ", " + s.dfa_damagedpropertycitytext))
+                .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));
+
+            CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
+                .ForMember(d => d.Id, opts => opts.Ignore())
+                .ForMember(d => d.AuthenticatedUser, opts => opts.Ignore())
+                .ForMember(d => d.VerifiedUser, opts => opts.Ignore())
+                .ForMember(d => d.IsMinor, opts => opts.Ignore())
+                .ForMember(d => d.UserId, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.PersonalDetails.FirstName))
+                .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.PersonalDetails.LastName))
+                .ForMember(d => d.Initials, opts => opts.MapFrom(s => s.PersonalDetails.Initials))
+                .ForMember(d => d.Email, opts => opts.MapFrom(s => s.ContactDetails.Email))
+                .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.ContactDetails.CellPhoneNumber))
+                .ForMember(d => d.CreatedOn, opts => opts.Ignore())
+                .ForMember(d => d.LastModified, opts => opts.Ignore())
+                .ForMember(d => d.CreatedByDisplayName, opts => opts.Ignore())
+                .ForMember(d => d.CreatedByUserId, opts => opts.Ignore())
+                .ForMember(d => d.LastModifiedDisplayName, opts => opts.Ignore())
+                .ForMember(d => d.LastModifiedUserId, opts => opts.Ignore());
 
             CreateMap<dfa_damageditems, DamagedRoom>()
                 .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_applicationid))

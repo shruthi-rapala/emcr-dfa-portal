@@ -17,6 +17,7 @@ export { SignAndSubmit } from './models/sign-and-submit';
 export { FileUpload } from './models/file-upload';
 export { FileCategory } from './models/file-category';
 export { CleanUpLogItem } from './models/clean-up-log-item';
+export { CurrentApplication } from './models/current-application';
 export { Configuration } from './models/configuration';
 export { OidcOptions } from './models/oidc-options';
 export { OutageInformation } from './models/outage-information';

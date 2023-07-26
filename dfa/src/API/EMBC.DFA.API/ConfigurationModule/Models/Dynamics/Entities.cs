@@ -199,6 +199,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string dfa_appapplicationid { get; set; }
         public string dfa_applicanttype { get; set; }
+        public string dfa_dateofdamage { get; set; }
+        public string dfa_damagedpropertystreet1 { get; set; }
+        public string dfa_damagedpropertycitytext { get; set; }
     }
 
     public enum SameAddressOptionSet

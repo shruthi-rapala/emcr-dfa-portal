@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -124,15 +125,17 @@ namespace EMBC.DFA.API.Controllers
         /// get dfa applications
         /// </summary>
         /// <returns>list of dfa applications</returns>
-        /// <param name="profileId">The profile Id.</param>
         [HttpGet("dfaapplication")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<string>> GetDFAApplications(string profileId)
+        public async Task<ActionResult<List<CurrentApplication>>> GetDFAApplications()
         {
-            profileId = "15bbbd7b-9e25-ee11-b844-00505683fbf4";
-            //var userId = currentUserId;
+            var userId = currentUserId;
+            var profile = await handler.HandleGetUser(userId);
+            if (profile == null) return NotFound(userId);
+            //var profileId = profile.Id;
+            var profileId = "45b9d9af-7a90-4b06-9ffc-9783603f7866";
             var lstApplications = await handler.HandleApplicationList(profileId);
-            return Ok("Success");
+            return Ok(lstApplications);
         }
     }
 
@@ -163,5 +166,15 @@ namespace EMBC.DFA.API.Controllers
         public SupportingDocuments SupportingDocuments { get; set; }
 
         public SignAndSubmit SignAndSubmit { get; set; }
+    }
+
+    public class CurrentApplication
+    {
+        public string ApplicationId { get; set; }
+        public string EventId { get; set; }
+        public string ApplicationType { get; set; }
+        public string DamagedAddress { get; set; }
+        public string CaseNumber { get; set; }
+        public string DateOfDamage { get; set; }
     }
 }

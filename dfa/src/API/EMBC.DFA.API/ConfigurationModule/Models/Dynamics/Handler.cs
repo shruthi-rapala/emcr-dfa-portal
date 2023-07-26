@@ -38,7 +38,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcleanuplogs>> GetCleanUpLogItemsAsync(string applicationId);
         Task<string> HandleFileUploadAsync(dfa_appdocumentlocation objFileUpload);
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(string applicationId);
-        Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId);
+        Task<List<CurrentApplication>> HandleApplicationList(string profileId);
     }
 
     public class Handler : IConfigurationHandler
@@ -126,9 +126,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return dfa_appapplication;
         }
 
-        public async Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId)
+        public async Task<List<CurrentApplication>> HandleApplicationList(string profileId)
         {
-            return await listsGateway.GetApplicationListAsync(profileId);
+            var lstApps = await listsGateway.GetApplicationListAsync(profileId);
+            var mappedApps = mapper.Map<List<CurrentApplication>>(lstApps);
+            return mappedApps;
         }
 
         public async Task<string> HandleDamagedItemsAsync(dfa_damageditems objDamagedItems)
