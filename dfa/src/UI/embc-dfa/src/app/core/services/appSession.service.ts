@@ -4,6 +4,7 @@ import { CacheService } from './cache.service';
 @Injectable({ providedIn: 'root' })
 export class AppSessionService {
   private editParentPageVal: string;
+  private appNumberVal: string;
 
   constructor(private cacheService: CacheService) {}
 
@@ -15,5 +16,15 @@ export class AppSessionService {
   public set editParentPage(value: string) {
     this.editParentPageVal = value;
     this.cacheService.set('editParentPage', value);
+  }
+
+  public get appNumber(): string {
+    return this.appNumberVal
+      ? this.appNumberVal
+      : this.cacheService.get('appNumber');
+  }
+  public set appNumber(value: string) {
+    this.appNumberVal = value;
+    this.cacheService.set('appNumber', value);
   }
 }

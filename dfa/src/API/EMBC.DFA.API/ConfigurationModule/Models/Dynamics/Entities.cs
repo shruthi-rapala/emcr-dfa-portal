@@ -167,12 +167,25 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
     public enum ApplicantTypeOptionSet
     {
+        [Description("Charitable Organization")]
         CharitableOrganization = 222710000,
+
+        [Description("Farm Owner")]
         FarmOwner = 222710001,
+
+        [Description("Home Owner")]
         HomeOwner = 222710002,
+
+        [Description("Residential Tenant")]
         ResidentialTenant = 222710003,
+
+        [Description("Small Business Owner")]
         SmallBusinessOwner = 222710004,
+
+        [Description("Government Body")]
         GovernmentBody = 222710005,
+
+        [Description("Incorporated")]
         Incorporated = 222710006
     }
 
@@ -202,6 +215,22 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_dateofdamage { get; set; }
         public string dfa_damagedpropertystreet1 { get; set; }
         public string dfa_damagedpropertycitytext { get; set; }
+        public string _dfa_eventid_value { get; set; }
+        public string _dfa_casecreatedid_value { get; set; }
+        public string dfa_event { get; set; }
+        public string dfa_casenumber { get; set; }
+    }
+
+    public class dfa_event
+    {
+        public string dfa_eventid { get; set; }
+        public string dfa_id { get; set; }
+    }
+
+    public class dfa_incident
+    {
+        public string incidentid { get; set; }
+        public string ticketnumber { get; set; }
     }
 
     public enum SameAddressOptionSet

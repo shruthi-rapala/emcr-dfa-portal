@@ -173,25 +173,57 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
+                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_eventid", "dfa_id"
+                    }
+                });
+
+                var lstCases = await api.GetList<dfa_incident>("incidents", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "incidentid", "ticketnumber"
+                    }
+                });
+
                 var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
                 {
                     Select = new[]
                     {
                         "dfa_appapplicationid", "dfa_applicanttype",
-                        "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext", "_dfa_eventid_value"
+                        "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext", "_dfa_eventid_value", "_dfa_casecreatedid_value"
                     },
-                    Filter = $"_dfa_applicant_value eq {profileId}",
-                    Expand = new CRMExpandOptions[]
-                        {
-                            new CRMExpandOptions()
-                            {
-                              Property = "dfa_eventid",
-                              Select = new string[] { "dfa_eventid", "dfa_id" }
-                            }
-                        }
+                    Filter = $"_dfa_applicant_value eq {profileId}"
+                    //Expand = new CRMExpandOptions[]
+                    //{
+                    //    new CRMExpandOptions()
+                    //    {
+                    //        Property = "_dfa_eventid_value",
+                    //        Select = new string[] { "dfa_eventid", "dfa_id" }
+                    //    }
+                    //}
                 });
 
-                return list.List;
+                var lstApps = (from objApp in list.List
+                            from objEvent in lstEvents.List
+                            where objEvent.dfa_eventid == objApp._dfa_eventid_value
+                            from objCase in lstCases.List
+                            where objCase.incidentid == objApp._dfa_casecreatedid_value
+                            select new dfa_appapplication
+                            {
+                                dfa_appapplicationid = objApp.dfa_appapplicationid,
+                                dfa_applicanttype = objApp.dfa_applicanttype,
+                                dfa_dateofdamage = objApp.dfa_dateofdamage,
+                                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                                dfa_event = objEvent.dfa_id,
+                                dfa_casenumber = objCase.ticketnumber
+                            }).AsEnumerable();
+
+                return lstApps;
             }
             catch (System.Exception ex)
             {

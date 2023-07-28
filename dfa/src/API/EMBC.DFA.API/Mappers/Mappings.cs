@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using EMBC.DFA.API;
 using EMBC.DFA.API.ConfigurationModule.Models;
@@ -310,12 +313,13 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_contenttype, opts => opts.MapFrom(s => s.contentType))
                 .ForMember(d => d.dfa_filesize, opts => opts.MapFrom(s => s.fileSize))
                 .ForMember(d => d.dfa_deleteflag, opts => opts.MapFrom(s => s.deleteFlag == true ? YesNoOptionSet.Yes : YesNoOptionSet.No));
+
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
-                .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => s.dfa_applicanttype))
-                .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => "4536"))
-                .ForMember(d => d.EventId, opts => opts.MapFrom(s => "Atmospheric River"))
-                .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => s.dfa_damagedpropertystreet1 + ", " + s.dfa_damagedpropertycitytext))
+                .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.dfa_applicanttype))))
+                .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => s.dfa_casenumber))
+                .ForMember(d => d.EventId, opts => opts.MapFrom(s => s.dfa_event))
+                .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => string.Join(", ", (new string[] { s.dfa_damagedpropertystreet1, s.dfa_damagedpropertycitytext }).Where(m => !string.IsNullOrEmpty(m)))))
                 .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
@@ -519,6 +523,20 @@ namespace EMBC.DFA.API.Mappers
 
             if (Enum.TryParse(roomname, out roomType)) return roomType;
             else return RoomType.Other;
+        }
+
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+
+            if (attributes != null && attributes.Any())
+            {
+                return attributes.First().Description;
+            }
+
+            return value.ToString();
         }
     }
 }

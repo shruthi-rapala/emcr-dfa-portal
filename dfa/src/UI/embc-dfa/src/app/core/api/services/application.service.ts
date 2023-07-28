@@ -9,8 +9,8 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { DfaApplicationMain } from '../models/dfa-application-main';
 import { CurrentApplication } from '../models/current-application';
+import { DfaApplicationMain } from '../models/dfa-application-main';
 import { DfaApplicationStart } from '../models/dfa-application-start';
 
 @Injectable({
