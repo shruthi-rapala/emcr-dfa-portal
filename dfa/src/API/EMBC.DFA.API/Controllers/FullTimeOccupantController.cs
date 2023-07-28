@@ -84,7 +84,6 @@ namespace EMBC.DFA.API.Controllers
     {
         public Guid? id { get; set; }
         public Guid applicationId { get; set; }
-        public string contactId { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string relationship { get; set; }

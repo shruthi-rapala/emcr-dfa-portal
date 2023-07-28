@@ -13,10 +13,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcontact>> GetContactsAsync();
         Task<dfa_appcontact> GetUserProfileAsync(string userId);
         Task<string> AddContact(dfa_appcontact contact);
-        Task<string> AddApplication(dfa_appapplicationstart application);
-        Task<string> UpdateApplication(dfa_appapplicationmain application);
-        Task<dfa_appapplicationstart> GetApplicationStartById(string applicationId);
-        Task<dfa_appapplicationmain> GetApplicationMainById(string applicationId);
+        Task<string> AddApplication(dfa_appapplicationstart_params application);
+        Task<System.Dynamic.ExpandoObject> AddApplicationAnnotation(dfa_createapplicationannotation annotation);
+        Task<string> UpdateApplication(dfa_appapplicationmain_params application);
+        Task<dfa_appapplicationstart_retrieve> GetApplicationStartById(Guid applicationId);
+        Task<dfa_appapplicationmain_retrieve> GetApplicationMainById(Guid applicationId);
         Task<IEnumerable<dfa_appdamageditems_retrieve>> GetDamagedItemsListAsync(Guid applicationId);
         Task<string> UpsertDeleteDamagedItemAsync(dfa_appdamageditems_params objDamagedItems);
         Task<string> UpsertDeleteSecondaryApplicantAsync(dfa_appsecondaryapplicant_params objSecondaryApplicant);

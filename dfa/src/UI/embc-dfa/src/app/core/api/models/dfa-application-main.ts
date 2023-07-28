@@ -8,6 +8,7 @@ import { SupportingDocuments } from './supporting-documents';
 export interface DfaApplicationMain {
   cleanUpLog?: CleanUpLog;
   damagedPropertyAddress?: DamagedPropertyAddress;
+  deleteFlag?: boolean;
   id?: string;
   propertyDamage?: PropertyDamage;
   signAndSubmit?: SignAndSubmit;

@@ -977,4 +977,5 @@ export interface DfaApplicationMain {
   propertyDamage?: PropertyDamage;
   signAndSubmit?: SignAndSubmit;
   supportingDocuments?: SupportingDocuments;
+  deleteFlag?: boolean;
 }

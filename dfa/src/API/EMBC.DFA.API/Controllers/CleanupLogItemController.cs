@@ -86,7 +86,7 @@ namespace EMBC.DFA.API.Controllers
         public Guid? id { get; set; }
         public string date { get; set; }
         public string name { get; set; }
-        public string hours { get; set; }
+        public decimal hours { get; set; }
         public string description { get; set; }
         public bool deleteFlag { get; set; }
     }

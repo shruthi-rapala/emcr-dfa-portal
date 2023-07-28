@@ -22,10 +22,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<Profile> HandleGetUser(string userID);
         Task<IEnumerable<Country>> HandleCountry();
         Task<string> HandleContact(dfa_appcontact objContact);
-        Task<string> HandleApplication(dfa_appapplicationstart objApplication);
-        Task<string> HandleApplicationUpdate(dfa_appapplicationmain objApplication);
-        Task<dfa_appapplicationstart> GetApplicationStartAsync(string applicationId);
-        Task<dfa_appapplicationmain> GetApplicationMainAsync(string applicationId);
+        Task<string> HandleApplication(dfa_appapplicationstart_params objApplication);
+        Task<System.Dynamic.ExpandoObject> HandleAnnotation(dfa_createapplicationannotation objAnnotation);
+        Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication);
+        Task<dfa_appapplicationstart_retrieve> GetApplicationStartAsync(Guid applicationId);
+        Task<dfa_appapplicationmain_retrieve> GetApplicationMainAsync(Guid applicationId);
         Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems);
         Task<IEnumerable<dfa_appdamageditems_retrieve>> GetDamagedItemsAsync(Guid applicationId);
         Task<string> HandleSecondaryApplicantAsync(dfa_appsecondaryapplicant_params objSecondaryApplicants);
@@ -38,7 +39,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId);
         Task<string> HandleFileUploadAsync(dfa_appdocumentlocation_params objFileUpload);
         Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetFileUploadsAsync(Guid applicationId);
-        Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId);
+        Task<List<CurrentApplication>> HandleApplicationList(string profileId);
     }
 
     public class Handler : IConfigurationHandler
@@ -103,32 +104,40 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return contactId;
         }
 
-        public async Task<string> HandleApplication(dfa_appapplicationstart objApplication)
+        public async Task<string> HandleApplication(dfa_appapplicationstart_params objApplication)
         {
             var applicationId = await listsGateway.AddApplication(objApplication);
             return applicationId;
         }
 
-        public async Task<string> HandleApplicationUpdate(dfa_appapplicationmain objApplication)
+        public async Task<System.Dynamic.ExpandoObject> HandleAnnotation(dfa_createapplicationannotation objAnnotation)
+        {
+            var result = await listsGateway.AddApplicationAnnotation(objAnnotation);
+            return result;
+        }
+
+        public async Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication)
         {
             var applicationId = await listsGateway.UpdateApplication(objApplication);
             return applicationId;
         }
 
-        public async Task<dfa_appapplicationstart> GetApplicationStartAsync(string applicationId)
+        public async Task<dfa_appapplicationstart_retrieve> GetApplicationStartAsync(Guid applicationId)
         {
             var dfa_appapplication = await listsGateway.GetApplicationStartById(applicationId);
             return dfa_appapplication;
         }
-        public async Task<dfa_appapplicationmain> GetApplicationMainAsync(string applicationId)
+        public async Task<dfa_appapplicationmain_retrieve> GetApplicationMainAsync(Guid applicationId)
         {
             var dfa_appapplication = await listsGateway.GetApplicationMainById(applicationId);
             return dfa_appapplication;
         }
 
-        public async Task<IEnumerable<dfa_appapplication>> HandleApplicationList(string profileId)
+        public async Task<List<CurrentApplication>> HandleApplicationList(string profileId)
         {
-            return await listsGateway.GetApplicationListAsync(profileId);
+            var lstApps = await listsGateway.GetApplicationListAsync(profileId);
+            var mappedApps = mapper.Map<List<CurrentApplication>>(lstApps);
+            return mappedApps;
         }
 
         public async Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems)

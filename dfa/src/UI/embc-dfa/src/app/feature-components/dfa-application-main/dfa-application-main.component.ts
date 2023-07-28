@@ -162,17 +162,17 @@ export class DFAApplicationMainComponent
     if (isLast && component === 'review') {
       this.submitFile();
     } else {
-      if (isLast) {
-        if (this.currentFlow === 'non-verified-registration') {
-          // const navigationPath = '/' + this.currentFlow + '/needs-assessment';
-          // this.router.navigate([navigationPath]);
-        }
-      }
       this.setFormData(component);
-      this.form$.unsubscribe();
-      stepper.selected.completed = true;
-      stepper.next();
-      this.form.markAllAsTouched();
+      let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+      this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+        this.form$.unsubscribe();
+        stepper.selected.completed = true;
+        stepper.next();
+        this.form.markAllAsTouched();
+      },
+      error => {
+        console.error(error);
+      });
     }
   }
 
@@ -260,23 +260,15 @@ export class DFAApplicationMainComponent
   }
 
   submitFile(): void {
-    alert("saved");
-    this.showLoader = !this.showLoader;
-    this.isSubmitted = !this.isSubmitted;
-    this.alertService.clearAlert();
-    this.dfaApplicationMainDataService.isSubmitted = true;
-    // this.dfaStartApplicationService
-      // .upsertProfile(this.profileDataService.createProfileDTO())
-      // .subscribe({
-        // next: (profileId) => {
-          // this.profileDataService.setProfileId(profileId);
-          // this.router.navigate(['/verified-registration/dashboard']);
-        // },
-        // error: (error) => {
-          // this.showLoader = !this.showLoader;
-          // this.isSubmitted = !this.isSubmitted;
-          // this.alertService.setAlert('danger', globalConst.saveProfileError);
-        // }
-      // });
+    let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+    this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+      this.showLoader = !this.showLoader;
+      this.isSubmitted = !this.isSubmitted;
+      this.alertService.clearAlert();
+      this.dfaApplicationMainDataService.isSubmitted = true;
+    },
+    error => {
+      console.error(error);
+    });
   }
 }

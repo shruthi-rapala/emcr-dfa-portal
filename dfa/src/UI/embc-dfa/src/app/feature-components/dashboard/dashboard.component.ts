@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
     //  },
     //  error: (error) => {        
     //  }
-    //});;
+    //});
   }
 
 }

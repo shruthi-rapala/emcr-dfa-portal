@@ -153,7 +153,8 @@ export class DFAApplicationMainDataService {
       damagedPropertyAddress: this._damagedPropertyAddress,
       propertyDamage: this._propertyDamage,
       supportingDocuments: this._supportingDocuments,
-      signAndSubmit: this._signAndSubmit
+      signAndSubmit: this._signAndSubmit,
+      deleteFlag: false
     };
   }
 }

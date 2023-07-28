@@ -55,7 +55,7 @@ export class ProfileMappingService {
           firstName: profile.personalDetails.firstName,
           lastName: profile.personalDetails.lastName,
           indigenousStatus: '',
-          preferredName: null,
+          //preferredName: null,
           initials: null,
         });
       });
@@ -75,7 +75,8 @@ export class ProfileMappingService {
             community: this.profileDataService.primaryAddressDetails.community,
             stateProvince:
               this.profileDataService.primaryAddressDetails.stateProvince,
-            postalCode: this.profileDataService.primaryAddressDetails.postalCode
+            postalCode: this.profileDataService.primaryAddressDetails.postalCode,
+            country: null,
           },
           isBcAddress: null,
           isNewMailingAddress: null,
@@ -85,7 +86,7 @@ export class ProfileMappingService {
             addressLine2: null,
             community: null,
             stateProvince: null,
-            //country: null,
+            country: null,
             postalCode: null
           }
         });

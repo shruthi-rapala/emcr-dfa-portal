@@ -25,7 +25,7 @@ export class SecondaryApplicantService extends BaseService {
   /**
    * Path part for operation secondaryApplicantUpsertDeleteSecondaryApplicant
    */
-  static readonly SecondaryApplicantUpsertDeleteSecondaryApplicantPath = '/api/secondaryapplicant';
+  static readonly SecondaryApplicantUpsertDeleteSecondaryApplicantPath = '/api/secondaryapplicants';
 
   /**
    * Create / update / delete a secondary applicant.
@@ -87,7 +87,7 @@ export class SecondaryApplicantService extends BaseService {
   /**
    * Path part for operation secondaryApplicantGetSecondaryApplicants
    */
-  static readonly SecondaryApplicantGetSecondaryApplicantsPath = '/api/secondaryapplicant/byApplicationId';
+  static readonly SecondaryApplicantGetSecondaryApplicantsPath = '/api/secondaryapplicants/byApplicationId';
 
   /**
    * Get a list of secondary applicants by id.

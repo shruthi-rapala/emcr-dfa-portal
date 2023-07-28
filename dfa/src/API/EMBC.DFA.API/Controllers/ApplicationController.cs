@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -50,9 +51,29 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> AddApplication(DFAApplicationStart application)
         {
             if (application == null) return BadRequest("Application details cannot be empty.");
-            var mappedApplication = mapper.Map<dfa_appapplicationstart>(application);
+            var mappedApplication = mapper.Map<dfa_appapplicationstart_params>(application);
 
             var applicationId = await handler.HandleApplication(mappedApplication);
+
+            // If no insurance, add signatures
+            if (application.AppTypeInsurance.insuranceOption == InsuranceOption.No)
+            {
+                if (application.AppTypeInsurance.applicantSignature != null && application.AppTypeInsurance.applicantSignature.signature != null)
+                {
+                    var primarySignature = new dfa_createapplicationannotation();
+                    primarySignature.FileContent = application.AppTypeInsurance.applicantSignature.signature;
+                    primarySignature.FileName = "primaryApplicantSignatureNoIns";
+                    var result = await handler.HandleAnnotation(primarySignature);
+                }
+
+                if (application.AppTypeInsurance.secondaryApplicantSignature != null && application.AppTypeInsurance.secondaryApplicantSignature.signature != null)
+                {
+                    var secondarySignature = new dfa_createapplicationannotation();
+                    secondarySignature.FileContent = application.AppTypeInsurance.secondaryApplicantSignature.signature;
+                    secondarySignature.FileName = "secondaryApplicantSignatureNoIns";
+                    var result = await handler.HandleAnnotation(secondarySignature);
+                }
+            }
             return Ok(applicationId);
         }
 
@@ -68,9 +89,28 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpdateApplication(DFAApplicationMain application)
         {
             if (application == null) return BadRequest("Application details cannot be empty.");
-            var mappedApplication = mapper.Map<dfa_appapplicationmain>(application);
+            var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
 
             var applicationId = await handler.HandleApplicationUpdate(mappedApplication);
+
+            // If no insurance, add signatures
+            if (application.signAndSubmit.applicantSignature != null && application.signAndSubmit.applicantSignature.signature != null &&
+                application.deleteFlag == false)
+            {
+                var primarySignature = new dfa_createapplicationannotation();
+                primarySignature.FileContent = application.signAndSubmit.applicantSignature.signature;
+                primarySignature.FileName = "primaryApplicantSignature";
+                var result = await handler.HandleAnnotation(primarySignature);
+            }
+
+            if (application.signAndSubmit.secondaryApplicantSignature != null && application.signAndSubmit.secondaryApplicantSignature.signature != null &&
+                application.deleteFlag == false)
+            {
+                var secondarySignature = new dfa_createapplicationannotation();
+                secondarySignature.FileContent = application.signAndSubmit.secondaryApplicantSignature.signature;
+                secondarySignature.FileName = "secondaryApplicantSignature";
+                var result = await handler.HandleAnnotation(secondarySignature);
+            }
             return Ok(applicationId);
         }
 
@@ -85,7 +125,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<DFAApplicationStart>> GetApplicationStart(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
             var dfa_appapplication = await handler.GetApplicationStartAsync(applicationId);
             DFAApplicationStart dfaApplicationStart = new DFAApplicationStart();
@@ -107,16 +147,16 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<DFAApplicationStart>> GetApplicationMain(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
-            dfaApplicationMain.DamagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
-            dfaApplicationMain.PropertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
-            dfaApplicationMain.SignAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
-            dfaApplicationMain.CleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
-            dfaApplicationMain.SupportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
+            dfaApplicationMain.damagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
+            dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
+            dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
+            dfaApplicationMain.cleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
+            dfaApplicationMain.supportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
             return Ok(dfaApplicationMain);
         }
 
@@ -124,15 +164,17 @@ namespace EMBC.DFA.API.Controllers
         /// get dfa applications
         /// </summary>
         /// <returns>list of dfa applications</returns>
-        /// <param name="profileId">The profile Id.</param>
         [HttpGet("dfaapplication")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<string>> GetDFAApplications(string profileId)
+        public async Task<ActionResult<List<CurrentApplication>>> GetDFAApplications()
         {
-            profileId = "15bbbd7b-9e25-ee11-b844-00505683fbf4";
-            //var userId = currentUserId;
+            var userId = currentUserId;
+            var profile = await handler.HandleGetUser(userId);
+            if (profile == null) return NotFound(userId);
+            //var profileId = profile.Id;
+            var profileId = "45b9d9af-7a90-4b06-9ffc-9783603f7866";
             var lstApplications = await handler.HandleApplicationList(profileId);
-            return Ok("Success");
+            return Ok(lstApplications);
         }
     }
 
@@ -141,7 +183,7 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class DFAApplicationStart
     {
-        public string? Id { get; set; }
+        public Guid? Id { get; set; }
 
         public Consent Consent { get; set; }
 
@@ -152,16 +194,27 @@ namespace EMBC.DFA.API.Controllers
 
     public class DFAApplicationMain
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
-        public DamagedPropertyAddress DamagedPropertyAddress { get; set; }
+        public DamagedPropertyAddress? damagedPropertyAddress { get; set; }
 
-        public PropertyDamage PropertyDamage { get; set; }
+        public PropertyDamage? propertyDamage { get; set; }
 
-        public CleanUpLog CleanUpLog { get; set; }
+        public CleanUpLog? cleanUpLog { get; set; }
 
-        public SupportingDocuments SupportingDocuments { get; set; }
+        public SupportingDocuments? supportingDocuments { get; set; }
 
-        public SignAndSubmit SignAndSubmit { get; set; }
+        public SignAndSubmit? signAndSubmit { get; set; }
+        public bool deleteFlag { get; set; }
+    }
+
+    public class CurrentApplication
+    {
+        public string ApplicationId { get; set; }
+        public string EventId { get; set; }
+        public string ApplicationType { get; set; }
+        public string DamagedAddress { get; set; }
+        public string CaseNumber { get; set; }
+        public string DateOfDamage { get; set; }
     }
 }
