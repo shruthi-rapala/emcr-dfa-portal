@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DashboardComponent } from '../../../feature-components/dashboard/dashboard.component';
 import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
 import { ApplicationService as Service } from '../../../core/api/services/application.service';
+import { AppSessionService } from 'src/app/core/services/appSession.service';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-dfadashboard-application',
@@ -19,8 +21,17 @@ export class DfaApplicationComponent implements OnInit {
 
   constructor(
     private profileDataService: ProfileDataService,
-    private appService: Service
-  ) {  }
+    private appService: Service,
+    private appSessionService: AppSessionService,
+    private router: Router,
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    //if (navigation?.extras?.state !== undefined) {
+    //  const state = navigation.extras.state as { parentPageName: string };
+    //  this.parentPageName = state.parentPageName;
+    //  this.appSessionService.editParentPage = state.parentPageName;
+    //}
+  }
 
   ngOnInit(): void {
     
@@ -38,6 +49,7 @@ export class DfaApplicationComponent implements OnInit {
 
   mapData(lstApp: Object): void {
     var res = JSON.parse(JSON.stringify(lstApp));
+    this.appSessionService.appNumber = res.length.toString();
     this.lstApplications = res;
   }
 
