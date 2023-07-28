@@ -85,7 +85,7 @@
                   <th mat-header-cell *matHeaderCellDef>
                     &nbsp;
                   </th>
-                  <td *matCellDef="let element" mat-cell>
+                  <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
                     mat-icon-button

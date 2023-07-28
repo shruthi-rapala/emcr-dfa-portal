@@ -165,7 +165,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     if (this.fullTimeOccupantsForm.get('fullTimeOccupant').status === 'VALID') {
       this.fullTimeOccupantsService.fullTimeOccupantUpsertDeleteFullTimeOccupant({body: this.fullTimeOccupantsForm.get('fullTimeOccupant').getRawValue()}).subscribe({
         next: (fullTimeOccupantId) => {
-        this.fullTimeOccupantsForm.get('id').setValue(fullTimeOccupantId);
+        this.fullTimeOccupantsForm.get('fullTimeOccupant').get('id').setValue(fullTimeOccupantId);
         this.fullTimeOccupantsData.push(this.fullTimeOccupantsForm.get('fullTimeOccupant').value);
         this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
         this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
@@ -209,14 +209,14 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
     this.otherContactsForm.get('otherContact.deleteFlag').setValue(false);
-    this.otherContactsForm.get('otherContact.applicationId').setValue(true);
+    this.otherContactsForm.get('otherContact.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
   }
 
   saveOtherContact(): void {
     if (this.otherContactsForm.get('otherContact').status === 'VALID') {
       this.otherContactsService.otherContactUpsertDeleteOtherContact({body: this.otherContactsForm.get('otherContact').getRawValue() }).subscribe({
         next: (otherContactId) => {
-          this.otherContactsForm.get('id').setValue(otherContactId);
+          this.otherContactsForm.get('otherContact').get('id').setValue(otherContactId);
           this.otherContactsData.push(this.otherContactsForm.get('otherContact').value);
           this.otherContactsDataSource.next(this.otherContactsData);
           this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
@@ -268,7 +268,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     if (this.secondaryApplicantsForm.get('secondaryApplicant').status === 'VALID') {
       this.secondaryApplicantsService.secondaryApplicantUpsertDeleteSecondaryApplicant({body: this.secondaryApplicantsForm.get('secondaryApplicant').getRawValue()}).subscribe({
         next: (secondaryApplicantId) => {
-          this.secondaryApplicantsForm.get('id').setValue(secondaryApplicantId);
+          this.secondaryApplicantsForm.get('secondaryApplicant').get('id').setValue(secondaryApplicantId);
           this.secondaryApplicantsData.push(this.secondaryApplicantsForm.get('secondaryApplicant').value);
           this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
           this.secondaryApplicantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);

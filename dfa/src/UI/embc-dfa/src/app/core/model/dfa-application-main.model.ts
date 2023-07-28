@@ -36,6 +36,7 @@ export class DamagedPropertyAddress {
     onAFirstNationsReserve?: null | boolean,
     firstNationsReserve?: string,
     manufacturedHome?: null | boolean,
+    isPrimaryAndDamagedAddressSame?: null | boolean,
     eligibleForHomeOwnerGrant?: null | boolean,
     landlordGivenNames?: null | string,
     landlordSurname?: null | string,
@@ -55,6 +56,7 @@ export class DamagedPropertyAddressForm {
   firstNationsReserve = new UntypedFormControl();
   manufacturedHome = new UntypedFormControl();
   eligibleForHomeOwnerGrant = new UntypedFormControl();
+  isPrimaryAndDamagedAddressSame = new UntypedFormControl();
   landlordGivenNames = new UntypedFormControl();
   landlordSurname = new UntypedFormControl();
   landlordPhone = new UntypedFormControl();
@@ -103,6 +105,11 @@ export class DamagedPropertyAddressForm {
       this.firstNationsReserve.setValue(damagedPropertyAddress.firstNationsReserve);
     }
     this.firstNationsReserve.setValidators(null);
+
+    if (damagedPropertyAddress.isPrimaryAndDamagedAddressSame) {
+      this.isPrimaryAndDamagedAddressSame.setValue(damagedPropertyAddress.isPrimaryAndDamagedAddressSame);
+    }
+    this.isPrimaryAndDamagedAddressSame.setValidators([Validators.required]);
 
     if (damagedPropertyAddress.manufacturedHome) {
       this.manufacturedHome.setValue(damagedPropertyAddress.manufacturedHome);
@@ -676,7 +683,7 @@ export class FileUpload {
   applicationId?: string;
   contentType?: string;
   deleteFlag?: boolean;
-  fileData?: string;
+  // fileData?: string;
   fileDescription?: string;
   fileName?: string;
   fileSize?: number;
@@ -695,7 +702,7 @@ export class FileUploadsForm {
   fileType = new UntypedFormControl();
   uploadedDate = new UntypedFormControl();
   modifiedBy = new UntypedFormControl();
-  fileData = new UntypedFormControl();
+  // fileData = new UntypedFormControl();
   contentType = new UntypedFormControl();
   fileSize = new UntypedFormControl();
   fileUpload: UntypedFormGroup;
@@ -789,17 +796,17 @@ export class FileUploadsForm {
             .bind(customValidator)
         ]
       ],
-      fileData: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewFileUploadIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
-      ],
+      // fileData: [
+      //   '',
+      //   [
+      //     customValidator
+      //       .conditionalValidation(
+      //         () => this.addNewFileUploadIndicator.value,
+      //         Validators.required
+      //       )
+      //       .bind(customValidator)
+      //   ]
+      // ],
       contentType: [
         '',
         [

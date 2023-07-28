@@ -288,7 +288,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.dfa_documentdescription))
                 .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.dfa_uploadeddate))
                 .ForMember(d => d.modifiedBy, opts => opts.MapFrom(s => s.dfa_modifiedby))
-                .ForMember(d => d.fileData, opts => opts.MapFrom(s => s.dfa_filedata))
+                //.ForMember(d => d.fileData, opts => opts.MapFrom(s => s.dfa_filedata))
                 .ForMember(d => d.contentType, opts => opts.MapFrom(s => s.dfa_contenttype))
                 .ForMember(d => d.fileSize, opts => opts.MapFrom(s => s.dfa_filesize))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
@@ -301,7 +301,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_documentdescription, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.dfa_uploadeddate, opts => opts.MapFrom(s => s.uploadedDate))
                 .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
-                .ForMember(d => d.dfa_filedata, opts => opts.MapFrom(s => s.fileData))
+                //.ForMember(d => d.dfa_filedata, opts => opts.MapFrom(s => s.fileData))
                 .ForMember(d => d.dfa_contenttype, opts => opts.MapFrom(s => s.contentType))
                 .ForMember(d => d.dfa_filesize, opts => opts.MapFrom(s => s.fileSize))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));

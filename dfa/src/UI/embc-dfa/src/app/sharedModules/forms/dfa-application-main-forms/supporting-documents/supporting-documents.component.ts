@@ -44,8 +44,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   supportingFilesDataSource = new MatTableDataSource();
   documentSummaryColumnsToDisplay = [ 'fileName', 'fileDescription', 'fileType', 'uploadedDate', 'icons']
   documentSummaryDataSource = new MatTableDataSource();
-  // damagePhotosDataSource = new MatTableDataSource();
-  // cleanUpWorkFileDataSource = new MatTableDataSource();
   allowedFileTypes = [
     'application/pdf',
     'image/jpg',
@@ -76,6 +74,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       .getSupportingDocumentsForm()
       .subscribe((supportingDocuments) => {
         this.supportingDocumentsForm = supportingDocuments;
+        this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
       });
 
     this.supportingFilesForm$ = this.formCreationService
@@ -135,8 +134,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   validateFormInsuranceTemplate(form: FormGroup) {
     let FileCategories = FileCategory;
 
-    let supportingFiles = form.get('fileUploads').getRawValue();
-    if (supportingFiles.filter(x => x.fileType === FileCategories.Insurance && x.deleteFlag == false).length <= 0) {
+    let supportingFiles = form.get('fileUploads')?.getRawValue();
+    if (supportingFiles?.filter(x => x.fileType === FileCategories.Insurance && x.deleteFlag == false).length <= 0) {
       return { noInsuranceTemplate: true };
     }
     return null;
@@ -157,6 +156,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       fileUploads.push(this.supportingFilesForm.get('fileUpload').getRawValue());
       this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
       this.showSupportingFileForm = !this.showSupportingFileForm;
+      if (this.supportingFilesForm.get('fileUpload').get('fileType').value == this.FileCategories.TenancyProof)
+        this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
     } else {
       this.supportingFilesForm.get('fileUpload').markAllAsTouched();
     }
@@ -206,6 +207,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       element.deleteFlag = true;
       fileUploads[index] = element;
       this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+      if (fileUploads.filter(x => x.fileType == FileCategory.TenancyProof)?.length == 0)
+        this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
       if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
         this.supportingFilesForm
           .get('addNewFileUploadIndicator')
@@ -230,9 +233,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.supportingFilesForm
       .get('fileUpload.modifiedBy')
       .updateValueAndValidity();
-    this.supportingFilesForm
-      .get('fileUpload.fileData')
-      .updateValueAndValidity();
+    // this.supportingFilesForm
+    //   .get('fileUpload.fileData')
+    //   .updateValueAndValidity();
   }
 
   updateInsuranceTemplateOnVisibility(): void {
@@ -251,9 +254,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.insuranceTemplateForm
       .get('fileUpload.modifiedBy')
       .updateValueAndValidity();
-    this.insuranceTemplateForm
-      .get('fileUpload.fileData')
-      .updateValueAndValidity();
+    // this.insuranceTemplateForm
+    //   .get('fileUpload.fileData')
+    //   .updateValueAndValidity();
   }
 
   /**
@@ -287,7 +290,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     reader.onload = () => {
       this.supportingFilesForm.get('fileUpload.fileName').setValue(event.name);
       this.supportingFilesForm.get('fileUpload.fileDescription').setValue(event.name);
-      this.supportingFilesForm.get('fileUpload.fileData').setValue(reader.result);
+      // this.supportingFilesForm.get('fileUpload.fileData').setValue(reader.result);
       this.supportingFilesForm.get('fileUpload.contentType').setValue(event.type);
       this.supportingFilesForm.get('fileUpload.fileSize').setValue(event.size);
       this.supportingFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
@@ -305,7 +308,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     reader.onload = () => {
       this.insuranceTemplateForm.get('fileUpload.fileName').setValue(event.name);
       this.insuranceTemplateForm.get('fileUpload.fileDescription').setValue(event.name);
-      this.insuranceTemplateForm.get('fileUpload.fileData').setValue(reader.result);
+      // this.insuranceTemplateForm.get('fileUpload.fileData').setValue(reader.result);
       this.insuranceTemplateForm.get('fileUpload.contentType').setValue(event.type);
       this.insuranceTemplateForm.get('fileUpload.fileSize').setValue(event.size);
       this.insuranceTemplateForm.get('fileUpload.uploadedDate').setValue(new Date());

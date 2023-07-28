@@ -35,16 +35,16 @@
               </div>
               <div class="col-md-6">
                 <br/><br/>
-                <div [hidden]="!insuranceTemplateForm.get('fileUpload.fileData').value">
+                <div [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value">
                   <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
                   <br/>
                   {{ insuranceTemplateForm.get('fileUpload.fileName').value }}
                   <br/><br/>
                 </div>
-                <label class="sub-heading" style="font-size: 15px" [hidden]="!insuranceTemplateForm.get('fileUpload.fileData').value"
+                <label class="sub-heading" style="font-size: 15px" [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value"
                   >You may update the file description to something more descriptive:</label
                 >
-                <mat-form-field appearance="outline" [hidden]="!insuranceTemplateForm.get('fileUpload.fileData').value">
+                <mat-form-field appearance="outline" [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value">
                   <mat-label>File description</mat-label>
                   <input formControlName="fileDescription" matInput placeholder="File description" required/>
                   <mat-error
@@ -118,16 +118,16 @@
                   </div>
                   <div class="col-md-6">
                     <br/><br/>
-                    <div [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">
+                    <div [hidden]="!supportingFilesForm.get('fileUpload.fileName').value">
                       <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
                       <br/>
                       {{ supportingFilesForm.get('fileUpload.fileName').value }}
                       <br/><br/>
                     </div>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value"
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileName').value"
                       >You may update the file description to something more descriptive:</label
                     >
-                    <mat-form-field appearance="outline" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">
+                    <mat-form-field appearance="outline" [hidden]="!supportingFilesForm.get('fileUpload.fileName').value">
                       <mat-label>File description</mat-label>
                       <input formControlName="fileDescription" matInput placeholder="File description" required/>
                       <mat-error
@@ -140,8 +140,8 @@
                         File description is required</mat-error
                       >
                     </mat-form-field>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">Category: please select a category that describes the file you are attaching to your application.</label>
-                    <mat-form-field appearance="outline" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileName').value">Category: please select a category that describes the file you are attaching to your application.</label>
+                    <mat-form-field appearance="outline" [hidden]="!supportingFilesForm.get('fileUpload.fileName').value">
                       <mat-label>File category</mat-label>
                       <mat-select formControlName="fileType" matInput placeholder="File category" required>
                         <div *ngFor="let option of FileCategories | keyvalue: originalOrder">

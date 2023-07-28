@@ -252,7 +252,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_appcontactname { get; set; } // required string with app contact name
         public string? dfa_date { get; set; } // optional string
         public decimal? dfa_hoursworked { get; set; } // optional string
-        public Guid? dfa_contactid { get; set; } // optional string
         public bool delete { get; set; } // required enum
     }
 

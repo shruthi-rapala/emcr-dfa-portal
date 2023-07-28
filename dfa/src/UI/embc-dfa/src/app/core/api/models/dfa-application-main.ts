@@ -6,11 +6,11 @@ import { PropertyDamage } from './property-damage';
 import { SignAndSubmit } from './sign-and-submit';
 import { SupportingDocuments } from './supporting-documents';
 export interface DfaApplicationMain {
-  cleanUpLog?: CleanUpLog;
-  damagedPropertyAddress?: DamagedPropertyAddress;
+  cleanUpLog?: null | CleanUpLog;
+  damagedPropertyAddress?: null | DamagedPropertyAddress;
   deleteFlag?: boolean;
   id?: string;
-  propertyDamage?: PropertyDamage;
-  signAndSubmit?: SignAndSubmit;
-  supportingDocuments?: SupportingDocuments;
+  propertyDamage?: null | PropertyDamage;
+  signAndSubmit?: null | SignAndSubmit;
+  supportingDocuments?: null | SupportingDocuments;
 }

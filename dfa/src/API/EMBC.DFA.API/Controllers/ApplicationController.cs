@@ -94,7 +94,7 @@ namespace EMBC.DFA.API.Controllers
             var applicationId = await handler.HandleApplicationUpdate(mappedApplication);
 
             // If no insurance, add signatures
-            if (application.signAndSubmit.applicantSignature != null && application.signAndSubmit.applicantSignature.signature != null &&
+            if (application.signAndSubmit?.applicantSignature?.signature != null &&
                 application.deleteFlag == false)
             {
                 var primarySignature = new dfa_createapplicationannotation();
@@ -103,7 +103,7 @@ namespace EMBC.DFA.API.Controllers
                 var result = await handler.HandleAnnotation(primarySignature);
             }
 
-            if (application.signAndSubmit.secondaryApplicantSignature != null && application.signAndSubmit.secondaryApplicantSignature.signature != null &&
+            if (application.signAndSubmit?.secondaryApplicantSignature?.signature != null &&
                 application.deleteFlag == false)
             {
                 var secondarySignature = new dfa_createapplicationannotation();

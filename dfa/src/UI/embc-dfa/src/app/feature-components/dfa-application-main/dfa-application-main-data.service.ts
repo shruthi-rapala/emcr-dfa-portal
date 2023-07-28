@@ -17,7 +17,7 @@ export class DFAApplicationMainDataService {
   private _secondaryApplicants: Array<SecondaryApplicant>;
   private _cleanUpLogItems: Array<CleanUpLogItem>;
   private _damagedRooms: Array<DamagedRoom>;
-  private _fileUploads: Array<FileUpload>;
+  private _fileUploads = [];
   private _dfaApplicationMain: DfaApplicationMain;
   private _dfaApplicationStart: DfaApplicationStart;
   private _isSubmitted: boolean = false;
@@ -34,7 +34,7 @@ export class DFAApplicationMainDataService {
   public getFileUploadsForApplication(applicationId: string) {
     this.fileUploadsService.attachmentGetAttachments({applicationId: applicationId}).subscribe({
       next: (attachments) => {
-        this.fileUploads = attachments;
+        if (attachments) this.fileUploads = attachments;
       },
       error: (error) => {
         console.error(error);

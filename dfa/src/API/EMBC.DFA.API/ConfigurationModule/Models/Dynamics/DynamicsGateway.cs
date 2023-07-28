@@ -245,7 +245,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        // update fails: object not set to instance of an object
         public async Task<string> UpsertDeleteDamagedItemAsync(dfa_appdamageditems_params objDamagedItems)
         {
             try
@@ -423,7 +422,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        // TODO: Update failed with Failed to update/insert/delete clean up log item The entity with a name = 'dfa_appapplicationid' with namemapping = 'Logical' was not found in the MetadataCach
         public async Task<string> UpsertDeleteCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLog)
         {
             try
@@ -435,11 +433,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
                 }
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return Guid.Empty.ToString();
-                //throw new Exception($"Failed to update/insert/delete clean up log item {ex.Message}", ex);
+              throw new Exception($"Failed to update/insert/delete clean up log item {ex.Message}", ex);
             }
 
             return string.Empty;

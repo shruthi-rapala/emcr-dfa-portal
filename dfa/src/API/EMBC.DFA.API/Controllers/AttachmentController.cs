@@ -96,7 +96,7 @@ namespace EMBC.DFA.API.Controllers
         public FileCategory fileType { get; set; }
         public string uploadedDate { get; set; }
         public string modifiedBy { get; set; }
-        public string fileData { get; set; }
+        // public byte[] fileData { get; set; }
         public string contentType { get; set; }
         public int fileSize { get; set; }
         public bool deleteFlag { get; set; }

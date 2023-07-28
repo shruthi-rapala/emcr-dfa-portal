@@ -26,7 +26,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { CleanUpLogItemService } from 'src/app/core/api/services';
+import { AttachmentService, CleanUpLogItemService } from 'src/app/core/api/services';
+import { CoreModule } from 'src/app/core/core.module';
 
 @Component({
   selector: 'app-clean-up-log',
@@ -57,7 +58,8 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
-    private cleanUpLogsService: CleanUpLogItemService
+    private cleanUpLogsService: CleanUpLogItemService,
+    private attachmentsService: AttachmentService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -146,7 +148,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       this.cleanUpWorkFilesForm
         .get('fileUpload.fileDescription').
         setValue(file.name);
-      this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(file.text);
+      //this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(file.text);
       this.cleanUpWorkFilesForm.get('fileUpload.contentType').setValue(file.type);
       this.cleanUpWorkFilesForm.get('fileUpload.fileSize').setValue(file.size);
       this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
@@ -219,7 +221,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     if (this.cleanUpLogWorkForm.get('cleanuplog').status === 'VALID') {
       this.cleanUpLogsService.cleanUpLogItemUpsertDeleteCleanUpLogItem({body: this.cleanUpLogWorkForm.get('cleanuplog').getRawValue() }).subscribe({
         next: (cleanUpLogId) => {
-          this.cleanUpLogWorkForm.get('id').setValue(cleanUpLogId);
+          this.cleanUpLogWorkForm.get('cleanuplog').get('id').setValue(cleanUpLogId);
           this.cleanUpWorkData.push(this.cleanUpLogWorkForm.get('cleanuplog').value);
           this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
           this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
@@ -242,10 +244,18 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       .get('fileUpload.fileType').
       setValue(this.FileCategories.Cleanup);
     if (this.cleanUpWorkFilesForm.get('fileUpload').status === 'VALID') {
-      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-      fileUploads.push(this.cleanUpWorkFilesForm.get('fileUpload').getRawValue());
-      this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-      this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
+      this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.cleanUpWorkFilesForm.get('fileUpload').getRawValue() }).subscribe({
+        next: (fileUploadId) => {
+          this.cleanUpWorkFilesForm.get('fileUpload').get('id').setValue(fileUploadId);
+          this.dfaApplicationMainDataService.fileUploads.push(this.cleanUpWorkFilesForm.get('fileUpload').getRawValue());
+          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(this.dfaApplicationMainDataService.fileUploads);
+          this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('true');
+          this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
     } else {
       this.cleanUpWorkFilesForm.get('fileUpload').markAllAsTouched();
     }
@@ -274,19 +284,28 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
     let index = fileUploads.indexOf(element);
     element.deleteFlag = true;
-    fileUploads[index] = element;
-    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-    if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
-      this.cleanUpWorkFilesForm
-          .get('addNewFileUploadIndicator')
-          .setValue(false);
-    }
+    this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
+      next: (fileUploadId) => {
+        fileUploads[index] = element;
+        this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+        if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value?.filter(x => x.fileType == FileCategory.Cleanup).length === 0) {
+          this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('false');
+          this.cleanUpWorkFilesForm
+            .get('addNewFileUploadIndicator')
+            .setValue(false);
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 }
 
 @NgModule({
   imports: [
     CommonModule,
+    CoreModule,
     MatTableModule,
     MatCardModule,
     MatButtonModule,
