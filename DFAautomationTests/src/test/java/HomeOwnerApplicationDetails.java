@@ -75,6 +75,7 @@ public class HomeOwnerApplicationDetails {
         driver.findElement(By.cssSelector("#mat-checkbox-2 .mat-checkbox-inner-container")).click();
         driver.findElement(By.cssSelector("#mat-checkbox-3 .mat-checkbox-inner-container")).click();
         driver.findElement(By.cssSelector("#mat-checkbox-4 .mat-checkbox-inner-container")).click();
+        driver.findElement(By.cssSelector("#mat-checkbox-5 .mat-checkbox-inner-container")).click();
 
 
 
