@@ -65,7 +65,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Controllers
     //            {
     //                ClientId = oidcConfig["clientId"],
     //                Issuer = oidcConfig["issuer"],
-    //                Scope = oidcConfig.GetValue("scope", "openid offline_access registrants-portal-api"),
+    //                Scope = oidcConfig.GetValue("scope", "openid offline_access dfa-portal"),
     //                Idp = oidcConfig.GetValue("idp", "bcsc")
     //            },
     //            OutageInfo = mapper.Map<OutageInformation>(outageInfo),

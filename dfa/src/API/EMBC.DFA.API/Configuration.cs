@@ -110,7 +110,7 @@ namespace EMBC.DFA.API
                     policy
                     .RequireAuthenticatedUser()
                     .AddAuthenticationSchemes("jwt")
-                    .RequireClaim("scope", "registrants-portal-api");
+                    .RequireClaim("scope", "dfa-portal-api");
                 });
 
                 options.DefaultPolicy = options.GetPolicy(JwtBearerDefaults.AuthenticationScheme) ?? null!;
