@@ -88,6 +88,14 @@
               >
                 First Nations Reserve Name is required</mat-error
               >
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('firstNationsReserve').invalid &&
+                  damagedPropertyAddressForm.get('firstNationsReserve').hasError('maxLength')
+                "
+              >
+                Maximum length reached</mat-error
+              >
             </mat-form-field>
             <br/><br/><br/>
           </div>

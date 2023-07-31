@@ -53,6 +53,14 @@
               >
                 Text is required</mat-error
               >
+              <mat-error
+                *ngIf="
+                  propertyDamageForm.get('otherDamageText').invalid &&
+                propertyDamageForm.get('otherDamageText').hasError('maxLength')
+                "
+              >
+                Maximum length reached</mat-error
+              >
             </mat-form-field>
             <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage')">
               <br/>At least one cause of damage is required.
@@ -124,6 +132,14 @@
               required
               (keyup)="calcRemainingChars()"></textarea>
             <mat-hint>{{ remainingLength }} characters remaining.</mat-hint>
+            <mat-error
+                *ngIf="
+                  propertyDamageForm.get('briefDescription').invalid &&
+                propertyDamageForm.get('briefDescription').hasError('maxLength')
+                "
+              >
+                Maximum length reached</mat-error
+              >
           </mat-form-field>
         </div><br/>
 

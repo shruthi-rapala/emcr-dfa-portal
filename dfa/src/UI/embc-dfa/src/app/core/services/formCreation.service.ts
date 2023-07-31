@@ -79,7 +79,7 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
         new AppTypeInsuranceForm(
-          new AppTypeInsurance(), this.formBuilder
+          new AppTypeInsurance(), this.formBuilder, this.customValidator
         )
       )
     );
@@ -129,7 +129,8 @@ export class FormCreationService {
     new BehaviorSubject(
       this.formBuilder.group(
        new PropertyDamageForm(
-         new PropertyDamage()
+         new PropertyDamage(),
+         this.customValidator
        )
      )
    );
@@ -452,7 +453,7 @@ export class FormCreationService {
     this.appTypeInsuranceForm.next(
       this.formBuilder.group(
         new AppTypeInsuranceForm(
-          new AppTypeInsurance(), this.formBuilder
+          new AppTypeInsurance(), this.formBuilder, this.customValidator
         )
       )
     );
@@ -525,7 +526,8 @@ export class FormCreationService {
     this.propertyDamageForm.next(
       this.formBuilder.group(
         new PropertyDamageForm(
-          new PropertyDamage()
+          new PropertyDamage(),
+          this.customValidator
         )
       )
     );

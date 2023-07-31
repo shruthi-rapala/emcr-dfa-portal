@@ -67,7 +67,11 @@ export class DamagedPropertyAddressForm {
     if (damagedPropertyAddress.addressLine1) {
       this.addressLine1.setValue(damagedPropertyAddress.addressLine1);
     }
-    this.addressLine1.setValidators([Validators.required]);
+    this.addressLine1.setValidators([Validators.required,
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+      ]);
 
     if (damagedPropertyAddress.addressLine2) {
       this.addressLine2.setValue(damagedPropertyAddress.addressLine2);
@@ -102,7 +106,9 @@ export class DamagedPropertyAddressForm {
     if (damagedPropertyAddress.firstNationsReserve) {
       this.firstNationsReserve.setValue(damagedPropertyAddress.firstNationsReserve);
     }
-    this.firstNationsReserve.setValidators(null);
+    this.firstNationsReserve.setValidators([customValidator
+      .maxLengthValidator()
+      .bind(customValidator)]);
 
     if (damagedPropertyAddress.manufacturedHome) {
       this.manufacturedHome.setValue(damagedPropertyAddress.manufacturedHome);
@@ -184,7 +190,8 @@ export class PropertyDamageForm {
   residingInResidence = new UntypedFormControl();
 
   constructor(
-    propertyDamage: PropertyDamage
+    propertyDamage: PropertyDamage,
+    customValidator: CustomValidationService
   ) {
     if (propertyDamage.floodDamage) {
       this.floodDamage.setValue(propertyDamage.floodDamage);
@@ -214,7 +221,9 @@ export class PropertyDamageForm {
     if (propertyDamage.otherDamageText) {
       this.otherDamageText.setValue(propertyDamage.otherDamageText);
     }
-    this.otherDamageText.setValidators(null);
+    this.otherDamageText.setValidators([customValidator
+      .maxLengthValidator()
+      .bind(customValidator)]);
 
     if (propertyDamage.damageFromDate) {
       this.damageFromDate.setValue(propertyDamage.damageFromDate);
@@ -229,7 +238,9 @@ export class PropertyDamageForm {
     if (propertyDamage.briefDescription) {
       this.briefDescription.setValue(propertyDamage.briefDescription);
     }
-    this.briefDescription.setValidators(null);
+    this.briefDescription.setValidators([customValidator
+      .maxLengthValidator()
+      .bind(customValidator)]);
 
     if (propertyDamage.lossesExceed1000) {
       this.lossesExceed1000.setValue(propertyDamage.lossesExceed1000);
