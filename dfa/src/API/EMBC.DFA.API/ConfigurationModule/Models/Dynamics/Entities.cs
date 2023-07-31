@@ -281,7 +281,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_modifiedby { get; set; } // required string *** NEW FIELD string
         public string dfa_contenttype { get; set; } // required string ** NEW FIELD
         public int dfa_filesize { get; set; } // required int ** NEW FIELD
-        public byte[] dfa_filecontent { get; set; } // required byte array
+        public byte[]? dfa_filecontent { get; set; } // required byte array
         public bool delete { get; set; } // required bool
     }
 

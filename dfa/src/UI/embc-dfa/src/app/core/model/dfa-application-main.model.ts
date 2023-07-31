@@ -683,7 +683,7 @@ export class FileUpload {
   applicationId?: string;
   contentType?: string;
   deleteFlag?: boolean;
-  // fileData?: string;
+  fileData?: string;
   fileDescription?: string;
   fileName?: string;
   fileSize?: number;
@@ -702,7 +702,7 @@ export class FileUploadsForm {
   fileType = new UntypedFormControl();
   uploadedDate = new UntypedFormControl();
   modifiedBy = new UntypedFormControl();
-  // fileData = new UntypedFormControl();
+  fileData = new UntypedFormControl();
   contentType = new UntypedFormControl();
   fileSize = new UntypedFormControl();
   fileUpload: UntypedFormGroup;
@@ -796,17 +796,17 @@ export class FileUploadsForm {
             .bind(customValidator)
         ]
       ],
-      // fileData: [
-      //   '',
-      //   [
-      //     customValidator
-      //       .conditionalValidation(
-      //         () => this.addNewFileUploadIndicator.value,
-      //         Validators.required
-      //       )
-      //       .bind(customValidator)
-      //   ]
-      // ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
       contentType: [
         '',
         [

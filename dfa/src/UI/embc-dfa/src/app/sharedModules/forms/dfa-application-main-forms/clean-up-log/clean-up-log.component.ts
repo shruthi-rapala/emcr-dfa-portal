@@ -51,6 +51,12 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'deleteIcon'];
   cleanUpWorkFileDataSource = new MatTableDataSource();
   FileCategories = FileCategory;
+  allowedFileTypes = [
+    'application/pdf',
+    'image/jpg',
+    'image/jpeg',
+    'image/png'
+  ];
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -131,7 +137,6 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   onFileChange(event) {
     const file: File = event[0];
-
     if (file) {
       var extension = file.name.substr(file.name.lastIndexOf('.'));
       if ((extension.toLowerCase() != ".pdf") &&
@@ -154,6 +159,19 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
         //.updateValueAndValidity();
     }
+  }
+
+  setCleanUpWorkFileFormControl(event: any) {
+    const reader = new FileReader();
+    reader.readAsDataURL(event);
+    reader.onload = () => {
+      this.cleanUpWorkFilesForm.get('fileUpload.fileName').setValue(event.name);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileDescription').setValue(event.name);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(reader.result);
+      this.cleanUpWorkFilesForm.get('fileUpload.contentType').setValue(event.type);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileSize').setValue(event.size);
+      this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
+    };
   }
 
   updateCleanupLogOnVisibility(): void {

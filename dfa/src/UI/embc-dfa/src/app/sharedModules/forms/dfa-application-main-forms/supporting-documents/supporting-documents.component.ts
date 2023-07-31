@@ -279,9 +279,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.supportingFilesForm
       .get('fileUpload.modifiedBy')
       .updateValueAndValidity();
-    // this.supportingFilesForm
-    //   .get('fileUpload.fileData')
-    //   .updateValueAndValidity();
+    this.supportingFilesForm
+      .get('fileUpload.fileData')
+      .updateValueAndValidity();
   }
 
   updateInsuranceTemplateOnVisibility(): void {
@@ -300,9 +300,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.insuranceTemplateForm
       .get('fileUpload.modifiedBy')
       .updateValueAndValidity();
-    // this.insuranceTemplateForm
-    //   .get('fileUpload.fileData')
-    //   .updateValueAndValidity();
+    this.insuranceTemplateForm
+      .get('fileUpload.fileData')
+      .updateValueAndValidity();
   }
 
   /**
@@ -332,11 +332,12 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
  */
   setSupportingFileFormControl(event: any) {
     const reader = new FileReader();
+    var fileData;
     reader.readAsDataURL(event);
     reader.onload = () => {
       this.supportingFilesForm.get('fileUpload.fileName').setValue(event.name);
       this.supportingFilesForm.get('fileUpload.fileDescription').setValue(event.name);
-      // this.supportingFilesForm.get('fileUpload.fileData').setValue(reader.result);
+      this.supportingFilesForm.get('fileUpload.fileData').setValue(reader.result);
       this.supportingFilesForm.get('fileUpload.contentType').setValue(event.type);
       this.supportingFilesForm.get('fileUpload.fileSize').setValue(event.size);
       this.supportingFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
@@ -354,7 +355,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     reader.onload = () => {
       this.insuranceTemplateForm.get('fileUpload.fileName').setValue(event.name);
       this.insuranceTemplateForm.get('fileUpload.fileDescription').setValue(event.name);
-      // this.insuranceTemplateForm.get('fileUpload.fileData').setValue(reader.result);
+      this.insuranceTemplateForm.get('fileUpload.fileData').setValue(reader.result);
       this.insuranceTemplateForm.get('fileUpload.contentType').setValue(event.type);
       this.insuranceTemplateForm.get('fileUpload.fileSize').setValue(event.size);
       this.insuranceTemplateForm.get('fileUpload.uploadedDate').setValue(new Date());
