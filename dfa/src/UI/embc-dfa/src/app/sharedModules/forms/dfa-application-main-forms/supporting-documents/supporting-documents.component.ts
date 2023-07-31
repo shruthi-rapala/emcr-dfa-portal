@@ -195,6 +195,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           }
         });
       } else {
+        this.insuranceTemplateForm.get('fileUpload.modifiedBy').setValue("Applicant");
+        this.insuranceTemplateForm.get('fileUpload.fileType').setValue(FileCategory.Insurance);
+        this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
+        this.insuranceTemplateForm.get('fileUpload.deleteFlag').setValue(false);
+        this.insuranceTemplateForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
         this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.insuranceTemplateForm.get('fileUpload').getRawValue() }).subscribe({
           next: (fileUploadId) => {
             this.insuranceTemplateForm.get('fileUpload').get('id').setValue(fileUploadId);
@@ -207,6 +212,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         });
       }
     } else {
+      console.error(this.insuranceTemplateForm.get('fileUpload'));
       this.insuranceTemplateForm.get('fileUpload').markAllAsTouched();
     }
   }
