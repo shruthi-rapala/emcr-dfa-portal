@@ -545,7 +545,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             // catch (System.Exception ex)
             catch
             {
-                return "failed";
+                return Guid.Empty.ToString();
                 // throw new Exception($"Failed to update document location {ex.Message}", ex);
             }
 

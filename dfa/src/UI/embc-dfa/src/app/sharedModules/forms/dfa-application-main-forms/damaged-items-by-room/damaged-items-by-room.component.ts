@@ -350,9 +350,9 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     this.damagePhotosForm
       .get('fileUpload.modifiedBy')
       .updateValueAndValidity();
-    // this.damagePhotosForm
-    //   .get('fileUpload.fileData')
-    //   .updateValueAndValidity();
+    this.damagePhotosForm
+      .get('fileUpload.fileData')
+      .updateValueAndValidity();
   }
 
   /**
@@ -381,7 +381,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     reader.onload = () => {
       this.damagePhotosForm.get('fileUpload.fileName').setValue(event.name);
       this.damagePhotosForm.get('fileUpload.fileDescription').setValue(event.name);
-      //this.damagePhotosForm.get('fileUpload.fileData').setValue(reader.result);
+      this.damagePhotosForm.get('fileUpload.fileData').setValue(reader.result);
       this.damagePhotosForm.get('fileUpload.contentType').setValue(event.type);
       this.damagePhotosForm.get('fileUpload.fileSize').setValue(event.size);
       this.damagePhotosForm.get('fileUpload.uploadedDate').setValue(new Date());

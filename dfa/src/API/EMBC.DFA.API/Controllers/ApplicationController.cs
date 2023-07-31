@@ -69,6 +69,8 @@ namespace EMBC.DFA.API.Controllers
                     primarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.applicantSignature.signature);
                     primarySignature.FileName = "primaryApplicantSignatureNoIns";
                     primarySignature.ContentType = "image/png";
+                    primarySignature.Regarding = "dfa_appapplication";
+                    primarySignature.id = applicationId;
                     insuranceSignatures.Append(primarySignature);
                 }
 
@@ -78,6 +80,8 @@ namespace EMBC.DFA.API.Controllers
                     secondarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.secondaryApplicantSignature.signature);
                     secondarySignature.FileName = "secondaryApplicantSignatureNoIns";
                     secondarySignature.ContentType = "image/png";
+                    secondarySignature.Regarding = "dfa_appapplication";
+                    secondarySignature.id = applicationId;
                     insuranceSignatures.Append(secondarySignature);
                 }
                 var result = await handler.HandleSignatures(insuranceSignatures);
@@ -110,6 +114,8 @@ namespace EMBC.DFA.API.Controllers
                 primarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.applicantSignature.signature);
                 primarySignature.FileName = "primaryApplicantSignature";
                 primarySignature.ContentType = "image/png";
+                primarySignature.Regarding = "dfa_appapplication";
+                primarySignature.id = applicationId;
                 appSignatures.Append(primarySignature);
             }
 
@@ -120,6 +126,8 @@ namespace EMBC.DFA.API.Controllers
                 secondarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.secondaryApplicantSignature.signature);
                 secondarySignature.FileName = "secondaryApplicantSignature";
                 secondarySignature.ContentType = "image/png";
+                secondarySignature.Regarding = applicationId;
+                secondarySignature.id = applicationId;
                 appSignatures.Append(secondarySignature);
             }
 

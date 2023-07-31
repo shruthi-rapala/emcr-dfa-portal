@@ -59,6 +59,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public byte[] Content { get; set; }
         public string ContentType { get; set; }
         public string FileName { get; set; }
+        public string Regarding { get; set; }
+        public string id { get; set; }
     }
 
     public class dfa_appapplicationstart_retrieve

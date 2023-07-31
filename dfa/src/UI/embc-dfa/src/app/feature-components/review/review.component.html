@@ -1001,10 +1001,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .occupyAsPrimaryResidence === 'true'
+                .occupyAsPrimaryResidence == 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .occupyAsPrimaryResidence === 'false' ? 'No' : 'Make a selection')
+                .occupyAsPrimaryResidence == 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -1298,7 +1298,7 @@
                 <b>Type</b>
               </th>
               <td *matCellDef="let element" mat-cell>
-                {{ element.secondaryApplicantType }}
+                {{ element.applicantType }}
               </td>
             </ng-container>
 

@@ -184,7 +184,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     if (this.insuranceTemplateForm.get('fileUpload').status === 'VALID') {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       if (fileUploads.filter(x => x.fileType === this.FileCategories.Insurance).length > 0) {
-        this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.supportingFilesForm.get('fileUpload').getRawValue() }).subscribe({
+        this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.insuranceTemplateForm.get('fileUpload').getRawValue() }).subscribe({
           next: (fileUploadId) => {
             let insuranceFoundIndex = fileUploads.findIndex(x => x.fileType === this.FileCategories.Insurance);
             fileUploads[insuranceFoundIndex] = this.insuranceTemplateForm.get('fileUpload').getRawValue();
@@ -195,7 +195,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           }
         });
       } else {
-        this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.supportingFilesForm.get('fileUpload').getRawValue() }).subscribe({
+        this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.insuranceTemplateForm.get('fileUpload').getRawValue() }).subscribe({
           next: (fileUploadId) => {
             this.insuranceTemplateForm.get('fileUpload').get('id').setValue(fileUploadId);
             fileUploads.push(this.insuranceTemplateForm.get('fileUpload').value);
