@@ -135,8 +135,8 @@ namespace EMBC.DFA.API.Controllers
             var userId = currentUserId;
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
-            //var profileId = profile.Id;
-            var profileId = "d4e3d345-d106-4f32-85d8-4ee301683b5f";
+            var profileId = profile.Id;
+            //var profileId = "d4e3d345-d106-4f32-85d8-4ee301683b5f";
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }
