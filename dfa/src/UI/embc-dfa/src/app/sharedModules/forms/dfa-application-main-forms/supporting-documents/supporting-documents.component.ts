@@ -332,7 +332,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
  */
   setSupportingFileFormControl(event: any) {
     const reader = new FileReader();
-    var fileData;
     reader.readAsDataURL(event);
     reader.onload = () => {
       this.supportingFilesForm.get('fileUpload.fileName').setValue(event.name);
