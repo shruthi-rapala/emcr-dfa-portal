@@ -19,15 +19,15 @@ public class HomeOwnerApplicationDetails {
     private WebDriver driver;
 
 
-    @After
-    public void tearDown() {
-        driver.close();
-        driver.quit();
-    }
-    @AfterClass
-    public static void afterClass() {
-        WebDriverManager.instance = null;
-    }
+//    @After
+//    public void tearDown() {
+//        driver.close();
+//        driver.quit();
+//    }
+//    @AfterClass
+//    public static void afterClass() {
+//        WebDriverManager.instance = null;
+//    }
 
 
     @Test
@@ -262,7 +262,23 @@ public class HomeOwnerApplicationDetails {
 
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Declaration')]")));
-
+        Thread.sleep(1000);
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.id("canvas"))).click();
+        JavascriptExecutor js50= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-13")));
+        js50.executeScript("arguments[0].click();", element);
+        Thread.sleep(1000);
+        driver.findElement(By.id("mat-input-13")).sendKeys("Lorem ipsum dolor si");
+        JavascriptExecutor js51= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-14")));
+        js51.executeScript("arguments[0].click();", element);
+        driver.findElement(By.id("mat-input-14")).sendKeys("7/31/2023");
+        Thread.sleep(1000);
+        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        JavascriptExecutor js52= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Submit ')]")));
+        js52.executeScript("arguments[0].click();", element);
 
 
     }
