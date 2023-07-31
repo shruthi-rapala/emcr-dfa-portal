@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -186,7 +188,7 @@ namespace EMBC.DFA.API.Controllers
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             //var profileId = profile.Id;
-            var profileId = "45b9d9af-7a90-4b06-9ffc-9783603f7866";
+            var profileId = "d4e3d345-d106-4f32-85d8-4ee301683b5f";
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }

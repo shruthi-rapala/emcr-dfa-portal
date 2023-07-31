@@ -148,7 +148,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       this.cleanUpWorkFilesForm
         .get('fileUpload.fileDescription').
         setValue(file.name);
-      //this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(file.text);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(file.text);
       this.cleanUpWorkFilesForm.get('fileUpload.contentType').setValue(file.type);
       this.cleanUpWorkFilesForm.get('fileUpload.fileSize').setValue(file.size);
       this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());

@@ -203,4 +203,18 @@ export class CustomValidationService {
       return null;
     };
   }
+
+  /**
+   * Checks max length of input fields
+   */
+  maxLengthValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value !== null && control.value !== undefined) {
+        if (control.value.length > 20) {
+          return { maxLength: true };
+        }
+      }
+      return null;
+    };
+  }
 }

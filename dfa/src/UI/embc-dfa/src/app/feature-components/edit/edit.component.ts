@@ -102,7 +102,7 @@ export class EditComponent implements OnInit, OnDestroy {
             next: (profileId) => {
               this.showLoader = !this.showLoader;
               this.router.navigate([
-                '/verified-registration/dashboard/profile'
+                '/dfa-dashboard/profile'
               ]);
             },
             error: (error) => {
@@ -114,26 +114,26 @@ export class EditComponent implements OnInit, OnDestroy {
             }
           });
       } else if (this.appSessionService.editParentPage === 'needs-assessment') {
-        if (this.evacuationFileDataService.essFileId === undefined) {
-          this.router.navigate(
-            [this.verifiedNeedsAssessments],
-            this.needsAssessmentNavigationExtras
-          );
-        } else {
-          this.showLoader = !this.showLoader;
-          this.evacuationFileService.updateEvacuationFile().subscribe({
-            next: (essFileId) => {
-              this.showLoader = !this.showLoader;
-              this.router.navigate([
-                '/verified-registration/dashboard/current/' + essFileId
-              ]);
-            },
-            error: (error) => {
-              this.showLoader = !this.showLoader;
-              this.alertService.setAlert('danger', globalConst.editNeedsError);
-            }
-          });
-        }
+        //if (this.evacuationFileDataService.essFileId === undefined) {
+        //  this.router.navigate(
+        //    [this.verifiedNeedsAssessments],
+        //    this.needsAssessmentNavigationExtras
+        //  );
+        //} else {
+        //  this.showLoader = !this.showLoader;
+        //  this.evacuationFileService.updateEvacuationFile().subscribe({
+        //    next: (essFileId) => {
+        //      this.showLoader = !this.showLoader;
+        //      this.router.navigate([
+        //        '/verified-registration/dashboard/current/' + essFileId
+        //      ]);
+        //    },
+        //    error: (error) => {
+        //      this.showLoader = !this.showLoader;
+        //      this.alertService.setAlert('danger', globalConst.editNeedsError);
+        //    }
+        //  });
+        //}
       } else if (this.appSessionService.editParentPage === 'dfa-application-start') {
         this.router.navigate(
           [this.verifiedRoute]

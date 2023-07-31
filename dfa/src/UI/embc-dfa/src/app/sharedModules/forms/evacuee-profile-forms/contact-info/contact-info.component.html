@@ -53,6 +53,13 @@ information and to verify that the information provided by you is accurate.
               >
                 Telephone number must have 10 digits</mat-error
               >
+              <mat-error
+                *ngIf="
+                  contactFormControl.cellPhoneNumber.invalid &&
+                  contactFormControl.cellPhoneNumber.hasError('maxLength')
+                "
+                >Maximum length reached</mat-error
+              >
             </mat-form-field>
             <mat-form-field appearance="outline">
               <!--[hideRequiredMarker]="contactFormControl?.hidePhoneRequired?.value" [errorStateMatcher]="requiredFieldsMatcher" -->
@@ -63,7 +70,13 @@ information and to verify that the information provided by you is accurate.
                 placeholder="Residence Telephone Number"
                 [textMask]="{ mask: phoneMask, keepCharPositions: true }"
               />
-              
+              <mat-error
+                *ngIf="
+                  contactFormControl.residencePhone.invalid &&
+                  contactFormControl.residencePhone.hasError('maxLength')
+                "
+                >Maximum length reached</mat-error
+              >
               <!--<mat-error
                 *ngIf="
                   contactFormControl.phone.invalid &&
@@ -82,6 +95,13 @@ information and to verify that the information provided by you is accurate.
                 placeholder="Alternate Telephone Number"
                 [textMask]="{ mask: phoneMask, keepCharPositions: true }"
               />
+              <mat-error
+                *ngIf="
+                  contactFormControl.alternatePhone.invalid &&
+                  contactFormControl.alternatePhone.hasError('maxLength')
+                "
+                >Maximum length reached</mat-error
+              >
               
               <!--<mat-error
                 *ngIf="
@@ -135,6 +155,13 @@ information and to verify that the information provided by you is accurate.
                   contactFormControl.email.hasError('email')
                 "
                 >Invalid email</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  contactFormControl.email.invalid &&
+                  contactFormControl.email.hasError('maxLength')
+                "
+                >Maximum length reached</mat-error
               >
             </mat-form-field>
           </div>

@@ -102,19 +102,33 @@ export class ContactDetailsForm {
     //this.showContacts.setValidators([Validators.required]);
 
     //this.email.setValue(contactDetails.email);
-    //this.email.setValidators([
-    //  Validators.email,
-    //  customValidator
-    //    .conditionalValidation(
-    //      () =>
-    //        (this.phone.value === '' ||
-    //          this.phone.value === undefined ||
-    //          this.phone.value === null) &&
-    //        this.showContacts.value === true,
-    //      Validators.required
-    //    )
-    //    .bind(customValidator)
-    //]);
+    this.email.setValidators([
+      Validators.email,
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
+
+    this.cellPhoneNumber.setValidators([
+      customValidator.maskedNumberLengthValidator().bind(customValidator),
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
+
+    this.residencePhone.setValidators([
+      customValidator.maskedNumberLengthValidator().bind(customValidator),
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
+
+    this.alternatePhone.setValidators([
+      customValidator.maskedNumberLengthValidator().bind(customValidator),
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
 
     //this.confirmEmail.setValue(contactDetails.confirmEmail);
     //this.confirmEmail.setValidators([
@@ -183,13 +197,33 @@ export class AddressForm {
     });
 
     this.mailingAddress = builder.group({
-      addressLine1: [''],
-      addressLine2: [''],
-      community: [''],
-      stateProvince: [''],
+      addressLine1: ['',
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+      ],
+      addressLine2: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
+      community: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
+      stateProvince: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
       postalCode: [
         '',
-        [customValidator.postalValidation().bind(customValidator)]
+        [customValidator.postalValidation().bind(customValidator),
+          customValidator
+            .maxLengthValidator()
+            .bind(customValidator)
+        ]
       ],
       country: ''
     });
