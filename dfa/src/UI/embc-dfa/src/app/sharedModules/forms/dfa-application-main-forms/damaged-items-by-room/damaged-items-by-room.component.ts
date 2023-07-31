@@ -127,7 +127,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
      _damagePhotosFormArray.valueChanges
        .pipe(
          mapTo(_damagePhotosFormArray.getRawValue())
-         ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === this.FileCategories.DamagePhoto && x.deleteFlag === false));
+         ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType ===Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false));
 
   }
 
@@ -242,7 +242,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   addDamagePhoto(): void {
     this.damagePhotosForm.get('fileUpload').reset();
     this.damagePhotosForm.get('fileUpload.modifiedBy').setValue("Applicant");
-    this.damagePhotosForm.get('fileUpload.fileType').setValue(this.FileCategories.DamagePhoto);
+    this.damagePhotosForm.get('fileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]);
     this.showDamagePhotoForm = !this.showDamagePhotoForm;
     this.damagePhotoEditFlag = !this.damagePhotoEditFlag;
     this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(true);
@@ -268,7 +268,6 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
           }
         });
       } else {
-        console.log(this.damagePhotosForm.get('fileUpload').getRawValue());
         this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.damagePhotosForm.get('fileUpload').getRawValue() }).subscribe({
           next: (fileUploadId) => {
             this.damagePhotosForm.get('fileUpload').get('id').setValue(fileUploadId);

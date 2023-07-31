@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
@@ -58,21 +60,25 @@ namespace EMBC.DFA.API.Controllers
             // If no insurance, add signatures
             if (application.AppTypeInsurance.insuranceOption == InsuranceOption.No)
             {
+                IEnumerable<dfa_signature> insuranceSignatures = Enumerable.Empty<dfa_signature>();
                 if (application.AppTypeInsurance.applicantSignature != null && application.AppTypeInsurance.applicantSignature.signature != null)
                 {
-                    var primarySignature = new dfa_createapplicationannotation();
-                    primarySignature.FileContent = application.AppTypeInsurance.applicantSignature.signature;
+                    var primarySignature = new dfa_signature();
+                    primarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.applicantSignature.signature);
                     primarySignature.FileName = "primaryApplicantSignatureNoIns";
-                    var result = await handler.HandleAnnotation(primarySignature);
+                    primarySignature.ContentType = "image/png";
+                    insuranceSignatures.Append(primarySignature);
                 }
 
                 if (application.AppTypeInsurance.secondaryApplicantSignature != null && application.AppTypeInsurance.secondaryApplicantSignature.signature != null)
                 {
-                    var secondarySignature = new dfa_createapplicationannotation();
-                    secondarySignature.FileContent = application.AppTypeInsurance.secondaryApplicantSignature.signature;
+                    var secondarySignature = new dfa_signature();
+                    secondarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.secondaryApplicantSignature.signature);
                     secondarySignature.FileName = "secondaryApplicantSignatureNoIns";
-                    var result = await handler.HandleAnnotation(secondarySignature);
+                    secondarySignature.ContentType = "image/png";
+                    insuranceSignatures.Append(secondarySignature);
                 }
+                var result = await handler.HandleSignatures(insuranceSignatures);
             }
             return Ok(applicationId);
         }
@@ -92,24 +98,32 @@ namespace EMBC.DFA.API.Controllers
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
 
             var applicationId = await handler.HandleApplicationUpdate(mappedApplication);
+            IEnumerable<dfa_signature> appSignatures = Enumerable.Empty<dfa_signature>();
 
-            // If no insurance, add signatures
+            // Add signatures
             if (application.signAndSubmit?.applicantSignature?.signature != null &&
                 application.deleteFlag == false)
             {
-                var primarySignature = new dfa_createapplicationannotation();
-                primarySignature.FileContent = application.signAndSubmit.applicantSignature.signature;
+                var primarySignature = new dfa_signature();
+                primarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.applicantSignature.signature);
                 primarySignature.FileName = "primaryApplicantSignature";
-                var result = await handler.HandleAnnotation(primarySignature);
+                primarySignature.ContentType = "image/png";
+                appSignatures.Append(primarySignature);
             }
 
             if (application.signAndSubmit?.secondaryApplicantSignature?.signature != null &&
                 application.deleteFlag == false)
             {
-                var secondarySignature = new dfa_createapplicationannotation();
-                secondarySignature.FileContent = application.signAndSubmit.secondaryApplicantSignature.signature;
+                var secondarySignature = new dfa_signature();
+                secondarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.secondaryApplicantSignature.signature);
                 secondarySignature.FileName = "secondaryApplicantSignature";
-                var result = await handler.HandleAnnotation(secondarySignature);
+                secondarySignature.ContentType = "image/png";
+                appSignatures.Append(secondarySignature);
+            }
+
+            if (appSignatures != null)
+            {
+                var result = await handler.HandleSignatures(appSignatures);
             }
             return Ok(applicationId);
         }

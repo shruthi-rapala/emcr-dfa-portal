@@ -109,14 +109,14 @@ export class ReviewComponent implements OnInit {
     _damagePhotosFormArray.valueChanges
       .pipe(
         mapTo(_damagePhotosFormArray.getRawValue())
-        ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === this.FileCategories.DamagePhoto && x.deleteFlag == false));
+        ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag == false));
 
     // subscribe to changes in supporting documents
     const _supportingDocumentsFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _supportingDocumentsFormArray.valueChanges
       .pipe(
         mapTo(_supportingDocumentsFormArray.getRawValue())
-        ).subscribe(data => { this.supportingDocumentsDataSource.data = data.filter(x => x.fileType !== this.FileCategories.DamagePhoto && x.fileType !== this.FileCategories.Cleanup && x.deleteFlag == false) } );
+        ).subscribe(data => { this.supportingDocumentsDataSource.data = data.filter(x => x.fileType !== Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.fileType !== this.FileCategories.Cleanup && x.deleteFlag == false) } );
   }
 
   // callParentMoveStep(index: number) {

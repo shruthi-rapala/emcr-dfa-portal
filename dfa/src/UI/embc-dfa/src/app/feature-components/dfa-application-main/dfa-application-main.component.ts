@@ -208,11 +208,13 @@ export class DFAApplicationMainComponent
       case 'occupants':
         break;
       case 'clean-up-log':
+        this.dfaApplicationMainDataService.cleanUpLog = this.form.value;
         this.dfaApplicationMainDataService.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs = this.form.get('haveInvoicesOrReceiptsForCleanupOrRepairs').value == 'true' ? true : false;
         break;
       case 'damaged-items-by-room':
         break;
       case 'supporting-documents':
+        this.dfaApplicationMainDataService.supportingDocuments = this.form.value;
         this.dfaApplicationMainDataService.supportingDocuments.hasCopyOfARentalAgreementOrLease = this.form.get('hasCopyOfARentalAgreementOrLease').value == 'true' ? true : false;
         break;
       case 'sign-and-submit':

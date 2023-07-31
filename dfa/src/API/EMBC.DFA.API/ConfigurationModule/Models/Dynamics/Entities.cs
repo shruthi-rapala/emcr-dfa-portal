@@ -54,6 +54,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
     }
 
+    public class dfa_signature
+    {
+        public byte[] Content { get; set; }
+        public string ContentType { get; set; }
+        public string FileName { get; set; }
+    }
+
     public class dfa_appapplicationstart_retrieve
     {
         public string? dfa_appapplicationid { get; set; } // optional string
@@ -66,12 +73,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantprintnamenoins { get; set; } // optional string
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
         public string? _dfa_applicant_value { get; set; }
-    }
-
-    public class dfa_createapplicationannotation
-    {
-        public string? FileContent { get; set; }
-        public string? FileName { get; set; }
     }
 
     public class dfa_appapplicationmain_params

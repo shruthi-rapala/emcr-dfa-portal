@@ -113,11 +113,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         }
 
         // TODO: Fails with resource not found for the segment
-        public async Task<System.Dynamic.ExpandoObject> AddApplicationAnnotation(dfa_createapplicationannotation annotation)
+        public async Task<System.Dynamic.ExpandoObject> AddApplicationSignatures(IEnumerable<dfa_signature> dfa_signatures)
         {
             try
             {
-                return await api.ExecuteAction("dfa_DFAPortalCreateApplicationAnnotation", annotation);
+                return await api.ExecuteAction("dfa_DFAPortalCreateApplicationAnnotation", dfa_signatures);
             }
             // catch (System.Exception ex)
             catch
@@ -487,18 +487,34 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var result = await api.ExecuteAction("dfa_appdocumentlocation", objDocumentLocation); // TODO correct name and parms
+                /* if (objDocumentLocation?.dfa_appdocumentlocationid != null && objDocumentLocation?.delete == true)
+                {
+                    await api.Delete("dfa_appdocumentlocations", (System.Guid)objDocumentLocation.dfa_appdocumentlocationid);
+                    return "Deleted successfully";
+                }
+                else if (objDocumentLocation?.dfa_appdocumentlocationid != null)
+                {
+                    var result = api.Update("dfa_appdocumentlocations", (System.Guid)objDocumentLocation.dfa_appdocumentlocationid, objDocumentLocation);
+                    return "Updated successfully";
+                }
+                else if (objDocumentLocation?.dfa_appdocumentlocationid == null)
+                {
+                    var result = await api.Create("dfa_appdocumentlocations", objDocumentLocation);
+                    return result.ToString();
+                } */
+
+                var result = await api.ExecuteAction("dfa_DFAPortalAppDocumentLocation", objDocumentLocation);
 
                 if (result != null)
                 {
                     return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
                 }
             }
-            //catch (System.Exception ex)
+            // catch (System.Exception ex)
             catch
             {
-                return Guid.Empty.ToString();
-                //  throw new Exception($"Failed to update document location {ex.Message}", ex);
+                return "failed";
+                // throw new Exception($"Failed to update document location {ex.Message}", ex);
             }
 
             return string.Empty;
