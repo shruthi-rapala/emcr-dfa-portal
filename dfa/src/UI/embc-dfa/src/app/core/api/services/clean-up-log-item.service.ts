@@ -25,7 +25,7 @@ export class CleanUpLogItemService extends BaseService {
   /**
    * Path part for operation cleanUpLogItemUpsertDeleteCleanUpLogItem
    */
-  static readonly CleanUpLogItemUpsertDeleteCleanUpLogItemPath = '/api/cleanuplogitem';
+  static readonly CleanUpLogItemUpsertDeleteCleanUpLogItemPath = '/api/cleanuplogitems';
 
   /**
    * Create / update / delete a clean up log item.
@@ -87,7 +87,7 @@ export class CleanUpLogItemService extends BaseService {
   /**
    * Path part for operation cleanUpLogItemGetCleanUpLogItems
    */
-  static readonly CleanUpLogItemGetCleanUpLogItemsPath = '/api/cleanuplogitem/byApplicationId';
+  static readonly CleanUpLogItemGetCleanUpLogItemsPath = '/api/cleanuplogitems/byApplicationId';
 
   /**
    * Get a list of clean up log items by application Id.

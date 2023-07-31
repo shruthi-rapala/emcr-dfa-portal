@@ -9,7 +9,7 @@ export interface CleanUpLogItem {
   date?: string;
   deleteFlag?: boolean;
   description?: string;
-  hours?: string;
+  hours?: number;
   id?: null | string;
   name?: string;
 }

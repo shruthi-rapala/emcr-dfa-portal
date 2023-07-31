@@ -9,7 +9,7 @@ export interface FileUpload {
   applicationId?: string;
   contentType?: string;
   deleteFlag?: boolean;
-  fileData?: string;
+  fileData?: null | string;
   fileDescription?: string;
   fileName?: string;
   fileSize?: number;

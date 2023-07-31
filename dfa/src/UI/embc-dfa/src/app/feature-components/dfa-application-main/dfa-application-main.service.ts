@@ -3,6 +3,8 @@ import { FullTimeOccupant, DfaApplicationMain, OtherContact, SecondaryApplicant 
 import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
+import { Observable } from 'rxjs';
+import { ApplicationService } from 'src/app/core/api/services';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainService {
@@ -14,7 +16,8 @@ export class DFAApplicationMainService {
 
   constructor(
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private applicationService: ApplicationService
   ) {}
 
   public get fullTimeOccupants(): Array<FullTimeOccupant> {
@@ -94,5 +97,9 @@ export class DFAApplicationMainService {
     }
     this.secondaryApplicants = secondaryApplicantsArray;
     this.dfaApplicationMainDataService.secondaryApplicants = this.secondaryApplicants;
+  }
+
+  public upsertApplication(updatedApplication: DfaApplicationMain): Observable<string> {
+    return this.applicationService.applicationUpdateApplication({ body: updatedApplication });
   }
 }

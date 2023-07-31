@@ -25,7 +25,7 @@ import { CoreModule } from 'src/app/core/core.module';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import * as constant from 'src/app/core/services/globalConstants'; // referenced in html
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { DamagedRoomService } from 'src/app/core/api/services';
+import { AttachmentService, DamagedRoomService } from 'src/app/core/api/services';
 
 @Component({
   selector: 'app-damaged-items-by-room',
@@ -71,7 +71,8 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
-    //private damagedRoomService: DamagedRoomService
+    private damagedRoomService: DamagedRoomService,
+    private attachmentsService: AttachmentService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -117,10 +118,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       .get('addNewDamagedRoomIndicator')
       .valueChanges.subscribe((value) => this.updateDamagedRoomOnVisibility());
     this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
-    this.damagedRoomsDataSource.next(
-        this.damagedRoomsForm.get('damagedRooms').value
-      );
-    this.damagedRoomsData = this.damagedRoomsForm.get('damagedRooms').value;
+    this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
 
     this.damagePhotosForm
       .get('addNewFileUploadIndicator')
@@ -129,8 +127,21 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
      _damagePhotosFormArray.valueChanges
        .pipe(
          mapTo(_damagePhotosFormArray.getRawValue())
-         ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === this.FileCategories.DamagePhoto && x.deleteFlag === false));
+         ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType ===Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false));
 
+  }
+
+  getDamagedRoomsForApplication(applicationId: string) {
+    this.damagedRoomService.damagedRoomGetDamagedRooms({applicationId: applicationId}).subscribe({
+      next: (damagedRooms) => {
+        this.damagedRoomsData = damagedRooms;
+        this.damagedRoomsDataSource.next(this.damagedRoomsData);
+        this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   calcRemainingChars() {
@@ -151,26 +162,26 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   saveDamagedRooms(): void {
     if (this.damagedRoomsForm.get('damagedRoom').status === 'VALID') {
       if (this.damagedRoomEditIndex !== undefined && this.damagedRoomRowEdit) {
-        //this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.getRawValue() }).subscribe({
-         // next: (damagedRoomId) => {
+        this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.get('damagedRoom').getRawValue() }).subscribe({
+         next: (damagedRoomId) => {
             this.damagedRoomsData[this.damagedRoomEditIndex] = this.damagedRoomsForm.get('damagedRoom').value;
             this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
             this.damagedRoomEditIndex = undefined;
-         //     },
-        //  error: (error) => {
-        //    console.error(error);
-       //   }
-      //  });
+             },
+         error: (error) => {
+           console.error(error);
+         }
+       });
       } else {
-      //  this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.getRawValue()}).subscribe({
-      //    next: (damagedRoomId) => {
-      //      this.damagedRoomsForm.get('id').setValue(damagedRoomId);
-            this.damagedRoomsData.push(this.damagedRoomsForm.get('damagedRoom').value);
-     //     },
-     //     error: (error) => {
-     //       console.error(error);
-     //     }
-     //   });
+       this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.get('damagedRoom').getRawValue()}).subscribe({
+         next: (damagedRoomId) => {
+           this.damagedRoomsForm.get('damagedRoom').get('id').setValue(damagedRoomId);
+           this.damagedRoomsData.push(this.damagedRoomsForm.get('damagedRoom').value);
+         },
+         error: (error) => {
+           console.error(error);
+         }
+       });
       }
       this.damagedRoomsDataSource.next(this.damagedRoomsData);
       this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
@@ -188,14 +199,22 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   deleteDamagedRoomRow(index: number): void {
-    this.damagedRoomsData.splice(index, 1);
-    this.damagedRoomsDataSource.next(this.damagedRoomsData);
-    this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
-    if (this.damagedRoomsData.length === 0) {
-      this.damagedRoomsForm
-        .get('addNewDamagedRoomIndicator')
-        .setValue(false);
-    }
+    this.damagedRoomsData[index].deleteFlag = true;
+    this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsData[index]}).subscribe({
+      next: (damagedRoomId) => {
+        this.damagedRoomsData.splice(index, 1);
+        this.damagedRoomsDataSource.next(this.damagedRoomsData);
+        this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
+        if (this.damagedRoomsData.length === 0) {
+          this.damagedRoomsForm
+            .get('addNewDamagedRoomIndicator')
+            .setValue(false);
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
    editDamagedRoomRow(element, index): void {
@@ -223,7 +242,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   addDamagePhoto(): void {
     this.damagePhotosForm.get('fileUpload').reset();
     this.damagePhotosForm.get('fileUpload.modifiedBy').setValue("Applicant");
-    this.damagePhotosForm.get('fileUpload.fileType').setValue(this.FileCategories.DamagePhoto);
+    this.damagePhotosForm.get('fileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]);
     this.showDamagePhotoForm = !this.showDamagePhotoForm;
     this.damagePhotoEditFlag = !this.damagePhotoEditFlag;
     this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(true);
@@ -235,15 +254,33 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     if (this.damagePhotosForm.get('fileUpload').status === 'VALID') {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       if (this.damagePhotoEditIndex !== undefined && this.damagePhotoRowEdit) {
-        fileUploads[this.damagePhotoEditIndex] = this.damagePhotosForm.get('fileUpload').getRawValue();
-        this.damagePhotoRowEdit = !this.damagePhotoRowEdit;
-        this.damagePhotoEditIndex = undefined;
+        this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.damagePhotosForm.get('fileUpload').getRawValue() }).subscribe({
+          next: (fileUploadId) => {
+            fileUploads[this.damagePhotoEditIndex] = this.damagePhotosForm.get('fileUpload').getRawValue();
+            this.damagePhotoRowEdit = !this.damagePhotoRowEdit;
+            this.damagePhotoEditIndex = undefined;
+            this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+            this.showDamagePhotoForm = !this.showDamagePhotoForm;
+            this.damagePhotoEditFlag = !this.damagePhotoEditFlag;
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
       } else {
-        fileUploads.push(this.damagePhotosForm.get('fileUpload').getRawValue());
+        this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.damagePhotosForm.get('fileUpload').getRawValue() }).subscribe({
+          next: (fileUploadId) => {
+            this.damagePhotosForm.get('fileUpload').get('id').setValue(fileUploadId);
+            fileUploads.push(this.damagePhotosForm.get('fileUpload').getRawValue());
+            this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+            this.showDamagePhotoForm = !this.showDamagePhotoForm;
+            this.damagePhotoEditFlag = !this.damagePhotoEditFlag;
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
       }
-      this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-      this.showDamagePhotoForm = !this.showDamagePhotoForm;
-      this.damagePhotoEditFlag = !this.damagePhotoEditFlag;
     } else {
       this.damagePhotosForm.get('fileUpload').markAllAsTouched();
     }
@@ -259,13 +296,20 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
     let index = fileUploads.indexOf(element);
     element.deleteFlag = true;
-    fileUploads[index] = element;
-    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-    if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
-      this.damagePhotosForm
-          .get('addNewFileUploadIndicator')
-          .setValue(false);
-    }
+    this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
+      next: (fileUploadId) => {
+        fileUploads[index] = element;
+        this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+        if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
+          this.damagePhotosForm
+              .get('addNewFileUploadIndicator')
+              .setValue(false);
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
    editDamagePhotoRow(element): void {

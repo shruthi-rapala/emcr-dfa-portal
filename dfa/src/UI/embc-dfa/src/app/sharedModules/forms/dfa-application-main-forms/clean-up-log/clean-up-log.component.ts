@@ -26,6 +26,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { AttachmentService, CleanUpLogItemService } from 'src/app/core/api/services';
+import { CoreModule } from 'src/app/core/core.module';
 
 @Component({
   selector: 'app-clean-up-log',
@@ -49,13 +51,21 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'deleteIcon'];
   cleanUpWorkFileDataSource = new MatTableDataSource();
   FileCategories = FileCategory;
+  allowedFileTypes = [
+    'application/pdf',
+    'image/jpg',
+    'image/jpeg',
+    'image/png'
+  ];
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private cleanUpLogsService: CleanUpLogItemService,
+    private attachmentsService: AttachmentService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -82,10 +92,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.cleanUpLogWorkForm
       .get('addNewCleanUpLogIndicator')
       .valueChanges.subscribe((value) => this.updateCleanupLogOnVisibility());
-    this.cleanUpWorkDataSource.next(
-      this.cleanUpLogWorkForm.get('cleanuplogs').value
-    );
-    this.cleanUpWorkData = this.cleanUpLogWorkForm.get('cleanuplogs').value;
+    this.getCleanUpLogsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
 
     this.cleanUpWorkFilesForm$ = this.formCreationService
       .getFileUploadsForm()
@@ -105,6 +112,19 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
          ).subscribe(data => this.cleanUpWorkFileDataSource.data = data.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false));
   }
 
+  getCleanUpLogsForApplication(applicationId: string) {
+    this.cleanUpLogsService.cleanUpLogItemGetCleanUpLogItems({applicationId: applicationId}).subscribe({
+      next: (cleanUpLogs) => {
+        this.cleanUpWorkData = cleanUpLogs;
+        this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
+        this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
   /**
    * Returns the control of the form
    */
@@ -117,7 +137,6 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   onFileChange(event) {
     const file: File = event[0];
-
     if (file) {
       var extension = file.name.substr(file.name.lastIndexOf('.'));
       if ((extension.toLowerCase() != ".pdf") &&
@@ -140,6 +159,19 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
         //.updateValueAndValidity();
     }
+  }
+
+  setCleanUpWorkFileFormControl(event: any) {
+    const reader = new FileReader();
+    reader.readAsDataURL(event);
+    reader.onload = () => {
+      this.cleanUpWorkFilesForm.get('fileUpload.fileName').setValue(event.name);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileDescription').setValue(event.name);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(reader.result);
+      this.cleanUpWorkFilesForm.get('fileUpload.contentType').setValue(event.type);
+      this.cleanUpWorkFilesForm.get('fileUpload.fileSize').setValue(event.size);
+      this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
+    };
   }
 
   updateCleanupLogOnVisibility(): void {
@@ -205,10 +237,18 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   saveNewCleanupLog(): void {
     if (this.cleanUpLogWorkForm.get('cleanuplog').status === 'VALID') {
-      this.cleanUpWorkData.push(this.cleanUpLogWorkForm.get('cleanuplog').value);
-      this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
-      this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
-      this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
+      this.cleanUpLogsService.cleanUpLogItemUpsertDeleteCleanUpLogItem({body: this.cleanUpLogWorkForm.get('cleanuplog').getRawValue() }).subscribe({
+        next: (cleanUpLogId) => {
+          this.cleanUpLogWorkForm.get('cleanuplog').get('id').setValue(cleanUpLogId);
+          this.cleanUpWorkData.push(this.cleanUpLogWorkForm.get('cleanuplog').value);
+          this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
+          this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
+          this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
     } else {
       this.cleanUpLogWorkForm.get('cleanuplog').markAllAsTouched();
     }
@@ -222,44 +262,68 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       .get('fileUpload.fileType').
       setValue(this.FileCategories.Cleanup);
     if (this.cleanUpWorkFilesForm.get('fileUpload').status === 'VALID') {
-      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-      fileUploads.push(this.cleanUpWorkFilesForm.get('fileUpload').getRawValue());
-      this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-      this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
+      this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.cleanUpWorkFilesForm.get('fileUpload').getRawValue() }).subscribe({
+        next: (fileUploadId) => {
+          this.cleanUpWorkFilesForm.get('fileUpload').get('id').setValue(fileUploadId);
+          this.dfaApplicationMainDataService.fileUploads.push(this.cleanUpWorkFilesForm.get('fileUpload').getRawValue());
+          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(this.dfaApplicationMainDataService.fileUploads);
+          this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('true');
+          this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
     } else {
       this.cleanUpWorkFilesForm.get('fileUpload').markAllAsTouched();
     }
   }
 
   deleteCleanupLogRow(index: number): void {
-    this.cleanUpWorkData.splice(index, 1);
-    this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
-    this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
-    if (this.cleanUpWorkData.length === 0) {
-      this.cleanUpLogWorkForm
-        .get('addNewCleanUpLogIndicator')
-        .setValue(false);
-    }
-
+    this.cleanUpWorkData[index].deleteFlag = true;
+    this.cleanUpLogsService.cleanUpLogItemUpsertDeleteCleanUpLogItem({body: this.cleanUpWorkData[index]}).subscribe({
+      next: (cleanUpLogId) => {
+          this.cleanUpWorkData.splice(index, 1);
+          this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
+          this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
+          if (this.cleanUpWorkData.length === 0) {
+            this.cleanUpLogWorkForm
+              .get('addNewCleanUpLogIndicator')
+              .setValue(false);
+          }
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   deleteCleanupLogFileRow(element): void {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
     let index = fileUploads.indexOf(element);
     element.deleteFlag = true;
-    fileUploads[index] = element;
-    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-    if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
-      this.cleanUpWorkFilesForm
-          .get('addNewFileUploadIndicator')
-          .setValue(false);
-    }
+    this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
+      next: (fileUploadId) => {
+        fileUploads[index] = element;
+        this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+        if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value?.filter(x => x.fileType == FileCategory.Cleanup).length === 0) {
+          this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('false');
+          this.cleanUpWorkFilesForm
+            .get('addNewFileUploadIndicator')
+            .setValue(false);
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 }
 
 @NgModule({
   imports: [
     CommonModule,
+    CoreModule,
     MatTableModule,
     MatCardModule,
     MatButtonModule,

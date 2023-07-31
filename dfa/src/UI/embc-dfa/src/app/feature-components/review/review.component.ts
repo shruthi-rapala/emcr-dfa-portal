@@ -67,28 +67,28 @@ export class ReviewComponent implements OnInit {
     _fullTimeOccupantsFormArray.valueChanges
       .pipe(
         mapTo(_fullTimeOccupantsFormArray.getRawValue())
-        ).subscribe(data => this.fullTimeOccupantsDataSource.data = data);
+        ).subscribe(data => this.fullTimeOccupantsDataSource.data =  _fullTimeOccupantsFormArray.getRawValue());
 
     // subscribe to changes in secondary applicants
     const _secondaryApplicantsFormArray = this.formCreationService.secondaryApplicantsForm.value.get('secondaryApplicants');
     _secondaryApplicantsFormArray.valueChanges
       .pipe(
         mapTo(_secondaryApplicantsFormArray.getRawValue())
-        ).subscribe(data => this.secondaryApplicantsDataSource.data = data);
+        ).subscribe(data => this.secondaryApplicantsDataSource.data = _secondaryApplicantsFormArray.getRawValue());
 
     // subscribe to changes in other contacts
     const _otherContactsFormArray = this.formCreationService.otherContactsForm.value.get('otherContacts');
     _otherContactsFormArray.valueChanges
       .pipe(
         mapTo(_otherContactsFormArray.getRawValue())
-        ).subscribe(data => this.otherContactsDataSource.data = data);
+        ).subscribe(data => this.otherContactsDataSource.data = _otherContactsFormArray.getRawValue());
 
     // subscribe to changes in clean up logs
     const _cleanUpWorkFormArray = this.formCreationService.cleanUpLogItemsForm.value.get('cleanuplogs');
     _cleanUpWorkFormArray.valueChanges
       .pipe(
         mapTo(_cleanUpWorkFormArray.getRawValue())
-        ).subscribe(data => this.cleanUpWorkDataSource.data = data);
+        ).subscribe(data => this.cleanUpWorkDataSource.data = _cleanUpWorkFormArray.getRawValue());
 
     // subscribe to changes in receipts and invocies
     const _cleanUpWorkFileFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
@@ -102,21 +102,21 @@ export class ReviewComponent implements OnInit {
     _damagedRoomsFormArray.valueChanges
       .pipe(
         mapTo(_damagedRoomsFormArray.getRawValue())
-        ).subscribe(data => this.damagedRoomsDataSource.data = data);
+        ).subscribe(data => this.damagedRoomsDataSource.data = _damagedRoomsFormArray.getRawValue());
 
     // subscribe to changes in damage photos
     const _damagePhotosFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _damagePhotosFormArray.valueChanges
       .pipe(
         mapTo(_damagePhotosFormArray.getRawValue())
-        ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === this.FileCategories.DamagePhoto && x.deleteFlag == false));
+        ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag == false));
 
     // subscribe to changes in supporting documents
     const _supportingDocumentsFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _supportingDocumentsFormArray.valueChanges
       .pipe(
         mapTo(_supportingDocumentsFormArray.getRawValue())
-        ).subscribe(data => { this.supportingDocumentsDataSource.data = data.filter(x => x.fileType !== this.FileCategories.DamagePhoto && x.fileType !== this.FileCategories.Cleanup && x.deleteFlag == false) } );
+        ).subscribe(data => { this.supportingDocumentsDataSource.data = data.filter(x => x.fileType !== Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.fileType !== this.FileCategories.Cleanup && x.deleteFlag == false) } );
   }
 
   // callParentMoveStep(index: number) {

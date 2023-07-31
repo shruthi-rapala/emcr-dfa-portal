@@ -25,7 +25,7 @@ export class OtherContactService extends BaseService {
   /**
    * Path part for operation otherContactUpsertDeleteOtherContact
    */
-  static readonly OtherContactUpsertDeleteOtherContactPath = '/api/othercontact';
+  static readonly OtherContactUpsertDeleteOtherContactPath = '/api/othercontacts';
 
   /**
    * Create / update / delete an other contact.
@@ -87,7 +87,7 @@ export class OtherContactService extends BaseService {
   /**
    * Path part for operation otherContactGetOtherContacts
    */
-  static readonly OtherContactGetOtherContactsPath = '/api/othercontact/byApplicationId';
+  static readonly OtherContactGetOtherContactsPath = '/api/othercontacts/byApplicationId';
 
   /**
    * Get a list of other contacts by application id.

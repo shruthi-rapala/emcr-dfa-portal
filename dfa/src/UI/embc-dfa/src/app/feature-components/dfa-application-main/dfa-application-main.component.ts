@@ -95,6 +95,9 @@ export class DFAApplicationMainComponent
     this.appTypeInsuranceForm.controls.applicantOption.setValue(this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption);
     this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.insuranceOption);
     this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
+
+    // initialize list of file uploads
+    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(this.dfaApplicationMainDataService.fileUploads);
   }
 
   checkSignaturesValid() {
@@ -162,17 +165,17 @@ export class DFAApplicationMainComponent
     if (isLast && component === 'review') {
       this.submitFile();
     } else {
-      if (isLast) {
-        if (this.currentFlow === 'non-verified-registration') {
-          // const navigationPath = '/' + this.currentFlow + '/needs-assessment';
-          // this.router.navigate([navigationPath]);
-        }
-      }
       this.setFormData(component);
-      this.form$.unsubscribe();
-      stepper.selected.completed = true;
-      stepper.next();
-      this.form.markAllAsTouched();
+      let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+      this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+        this.form$.unsubscribe();
+        stepper.selected.completed = true;
+        stepper.next();
+        this.form.markAllAsTouched();
+      },
+      error => {
+        console.error(error);
+      });
     }
   }
 
@@ -185,24 +188,40 @@ export class DFAApplicationMainComponent
     switch (component) {
       case 'damaged-property-address':
         this.dfaApplicationMainDataService.damagedPropertyAddress = this.form.value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.eligibleForHomeOwnerGrant = this.form.get('eligibleForHomeOwnerGrant').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.isPrimaryAndDamagedAddressSame = this.form.get('isPrimaryAndDamagedAddressSame').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.manufacturedHome = this.form.get('manufacturedHome').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.occupyAsPrimaryResidence = this.form.get('occupyAsPrimaryResidence').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.onAFirstNationsReserve = this.form.get('onAFirstNationsReserve').value == 'true' ? true : false;
         break;
       case 'property-damage':
         this.dfaApplicationMainDataService.propertyDamage = this.form.value;
+        this.dfaApplicationMainDataService.propertyDamage.floodDamage = this.form.get('floodDamage').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.propertyDamage.landslideDamage = this.form.get('landslideDamage').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.propertyDamage.lossesExceed1000 = this.form.get('lossesExceed1000').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.propertyDamage.otherDamage = this.form.get('otherDamage').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.propertyDamage.residingInResidence = this.form.get('residingInResidence').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.propertyDamage.stormDamage = this.form.get('stormDamage').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.propertyDamage.wereYouEvacuated = this.form.get('wereYouEvacuated').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.propertyDamage.wildfireDamage = this.form.get('wildfireDamage').value == 'true' ? true : false;
         break;
       case 'occupants':
         break;
       case 'clean-up-log':
         this.dfaApplicationMainDataService.cleanUpLog = this.form.value;
+        this.dfaApplicationMainDataService.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs = this.form.get('haveInvoicesOrReceiptsForCleanupOrRepairs').value == 'true' ? true : false;
         break;
       case 'damaged-items-by-room':
         break;
       case 'supporting-documents':
         this.dfaApplicationMainDataService.supportingDocuments = this.form.value;
+        this.dfaApplicationMainDataService.supportingDocuments.hasCopyOfARentalAgreementOrLease = this.form.get('hasCopyOfARentalAgreementOrLease').value == 'true' ? true : false;
         break;
       case 'sign-and-submit':
         this.dfaApplicationMainDataService.signAndSubmit = this.form.value;
         break;
       default:
+        break;
     }
   }
 
@@ -260,23 +279,15 @@ export class DFAApplicationMainComponent
   }
 
   submitFile(): void {
-    alert("saved");
-    this.showLoader = !this.showLoader;
-    this.isSubmitted = !this.isSubmitted;
-    this.alertService.clearAlert();
-    this.dfaApplicationMainDataService.isSubmitted = true;
-    // this.dfaStartApplicationService
-      // .upsertProfile(this.profileDataService.createProfileDTO())
-      // .subscribe({
-        // next: (profileId) => {
-          // this.profileDataService.setProfileId(profileId);
-          // this.router.navigate(['/verified-registration/dashboard']);
-        // },
-        // error: (error) => {
-          // this.showLoader = !this.showLoader;
-          // this.isSubmitted = !this.isSubmitted;
-          // this.alertService.setAlert('danger', globalConst.saveProfileError);
-        // }
-      // });
+    let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+    this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+      this.showLoader = !this.showLoader;
+      this.isSubmitted = !this.isSubmitted;
+      this.alertService.clearAlert();
+      this.dfaApplicationMainDataService.isSubmitted = true;
+    },
+    error => {
+      console.error(error);
+    });
   }
 }

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace EMBC.DFA.API.Controllers
 {
-    [Route("api/cleanuplogitem")]
+    [Route("api/cleanuplogitems")]
     [ApiController]
     [Authorize]
     public class CleanUpLogItemController : ControllerBase
@@ -47,7 +47,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteCleanUpLogItem(CleanUpLogItem cleanupLogItem)
         {
             if (cleanupLogItem == null) return BadRequest("CleanUpLogItem details cannot be empty.");
-            var mappedCleanUpLogItem = mapper.Map<dfa_appcleanuplogs>(cleanupLogItem);
+            var mappedCleanUpLogItem = mapper.Map<dfa_appcleanuplogs_params>(cleanupLogItem);
 
             var cleanupLogItemId = await handler.HandleCleanUpLogItemAsync(mappedCleanUpLogItem);
             return Ok(cleanupLogItemId);
@@ -64,14 +64,14 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<IEnumerable<CleanUpLogItem>>> GetCleanUpLogItems(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
-            IEnumerable<dfa_appcleanuplogs> dfa_cleanupLogItems = await handler.GetCleanUpLogItemsAsync(applicationId);
+            IEnumerable<dfa_appcleanuplogs_retrieve> dfa_cleanupLogItems = await handler.GetCleanUpLogItemsAsync(applicationId);
             IEnumerable<CleanUpLogItem> cleanupLogItems = new CleanUpLogItem[] { };
-            foreach (dfa_appcleanuplogs dfa_cleanupLogItem in dfa_cleanupLogItems)
+            foreach (dfa_appcleanuplogs_retrieve dfa_cleanupLogItem in dfa_cleanupLogItems)
             {
                 CleanUpLogItem cleanupLogItem = mapper.Map<CleanUpLogItem>(dfa_cleanupLogItem);
-                cleanupLogItems.Append<CleanUpLogItem>(cleanupLogItem);
+                cleanupLogItems = cleanupLogItems.Append<CleanUpLogItem>(cleanupLogItem);
             }
             return Ok(cleanupLogItems);
         }
@@ -82,11 +82,11 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class CleanUpLogItem
     {
-        public string applicationId { get; set; }
-        public string? id { get; set; }
+        public Guid applicationId { get; set; }
+        public Guid? id { get; set; }
         public string date { get; set; }
         public string name { get; set; }
-        public string hours { get; set; }
+        public decimal hours { get; set; }
         public string description { get; set; }
         public bool deleteFlag { get; set; }
     }

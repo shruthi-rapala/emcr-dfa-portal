@@ -3,6 +3,7 @@ import { CacheService } from 'src/app/core/services/cache.service';
 import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
 import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, PropertyDamage, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, FileUpload, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
+import { AttachmentService } from 'src/app/core/api/services';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainDataService {
@@ -16,16 +17,29 @@ export class DFAApplicationMainDataService {
   private _secondaryApplicants: Array<SecondaryApplicant>;
   private _cleanUpLogItems: Array<CleanUpLogItem>;
   private _damagedRooms: Array<DamagedRoom>;
-  private _fileUploads: Array<FileUpload>;
+  private _fileUploads = [];
   private _dfaApplicationMain: DfaApplicationMain;
   private _dfaApplicationStart: DfaApplicationStart;
   private _isSubmitted: boolean = false;
 
   constructor(
     private cacheService: CacheService,
-    private dfaApplicationStartDataService: DFAApplicationStartDataService
+    private dfaApplicationStartDataService: DFAApplicationStartDataService,
+    private fileUploadsService: AttachmentService
   ) {
       this._dfaApplicationStart = this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
+      this.getFileUploadsForApplication(this.dfaApplicationStart.id);
+  }
+
+  public getFileUploadsForApplication(applicationId: string) {
+    this.fileUploadsService.attachmentGetAttachments({applicationId: applicationId}).subscribe({
+      next: (attachments) => {
+        if (attachments) this.fileUploads = attachments;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   public get fullTimeOccupants(): Array<FullTimeOccupant> {
@@ -139,7 +153,8 @@ export class DFAApplicationMainDataService {
       damagedPropertyAddress: this._damagedPropertyAddress,
       propertyDamage: this._propertyDamage,
       supportingDocuments: this._supportingDocuments,
-      signAndSubmit: this._signAndSubmit
+      signAndSubmit: this._signAndSubmit,
+      deleteFlag: false
     };
   }
 }
