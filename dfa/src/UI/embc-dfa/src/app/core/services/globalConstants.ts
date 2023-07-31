@@ -49,7 +49,7 @@ export const yesFullyInsuredBody: DialogContent = {
 }
 
 export const dontOccupyDamagedPropertyBody: DialogContent = {
-  text: '<p>You must occupy the property as your principal residence to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Do you occupy the damaged property as your personal residence?</b></p>',
+  text: '<p>You must occupy the property as your principal residence to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Do you occupy the damaged property as your personal residence? If you are a landlord, you must apply and qualify as a small business owner.</b></p>',
   cancelButton: 'No, Save & Close my Application',
   confirmButton: 'Yes, Continue my Application'
 }
@@ -105,10 +105,12 @@ export const supportCategoryListError =
   'Unable to retrieve support categories at this time. Please try again later';
 export const supportStatusListError =
   'Unable to retrieve support status at this time. Please try again later';
+  export const saveApplicationError =
+  'Unable to save application at this time. Please try again later';
 
 export const zeroFileMessage = 'Attachment file size must be greater than 0Kb';
-export const fileTooLargeMessage = 'Attachment file size must not be more than 50Mb';
-export const fileTypeMessage = 'Only files type pdf, jpg, jpeg, png allowed.';
+export const fileTooLargeMessage = 'Attachment file size must not be more than 5.12Mb';
+export const fileTypeMessage = 'Invalid file type.';
 export const fileNameFormat = /^[\w,\s-_()]+\.[A-Za-z]{3,4}$/;
 export const invalidFileNameMessage =
   'File name must not contain the following characters: ~ " . # % & * : < > ? /  { | }. Leading and trailing spaces are not allowed.';

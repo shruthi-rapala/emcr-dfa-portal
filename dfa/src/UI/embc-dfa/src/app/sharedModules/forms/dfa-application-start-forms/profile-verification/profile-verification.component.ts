@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
 
 @Component({
   selector: 'app-profile-verification',
@@ -28,46 +29,49 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    private profileDataService: ProfileDataService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
   }
 
   ngOnInit(): void {
-    this.profileVerificationForm$ = this.formCreationService
-      .getProfileVerificationForm()
-      .subscribe((profileVerification) => {
-        this.profileVerificationForm = profileVerification;
-        this.profileVerificationForm.updateValueAndValidity();
-      });
+    // this.profileVerificationForm$ = this.formCreationService
+    //   .getProfileVerificationForm()
+    //   .subscribe((profileVerification) => {
+    //     this.profileVerificationForm = profileVerification;
+    //     this.profileVerificationForm.updateValueAndValidity();
+    //   });
 
-    this.profileVerificationForm
-      .get('profileVerification')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.profileVerificationForm.get('profileVerification').reset();
-        }
-      });
+    // this.profileVerificationForm.get('profileId').setValue(this.profileDataService.getProfileId());
 
-    // TODO: Implement the correct setting of this value, will it be a radio button or checkbox??
-    this.profileVerificationForm.get('profileVerification').setValue(true);
+    // this.profileVerificationForm
+    //   .get('profileVerified')
+    //   .valueChanges.pipe(distinctUntilChanged())
+    //   .subscribe((value) => {
+    //     if (value === '') {
+    //       this.profileVerificationForm.get('profileVerified').reset();
+    //     }
+    //   });
+
+    // // TODO: Implement the correct setting of this value, will it be a radio button or checkbox??
+    // this.profileVerificationForm.get('profileVerified').setValue(true);
   }
 
   /**
    * Returns the control of the form
    */
-  get profileVerificationFormControl(): { [key: string]: AbstractControl } {
-    return this.profileVerificationForm.controls;
-  }
+  // get profileVerificationFormControl(): { [key: string]: AbstractControl } {
+  //   return this.profileVerificationForm.controls;
+  // }
 
-  updateOnVisibility(): void {
-    this.profileVerificationForm.get('profileVerification').updateValueAndValidity();
-  }
+  // updateOnVisibility(): void {
+  //   this.profileVerificationForm.get('profileVerified').updateValueAndValidity();
+  // }
 
   ngOnDestroy(): void {
-    this.profileVerificationForm$.unsubscribe();
+    // this.profileVerificationForm$.unsubscribe();
   }
 }
 

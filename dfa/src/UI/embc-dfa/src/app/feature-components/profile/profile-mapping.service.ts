@@ -36,7 +36,7 @@ export class ProfileMappingService {
   }
 
   setExistingProfile(profile: Profile): void {
-    this.setRestrictionDetails(profile);
+    //this.setRestrictionDetails(profile);
     this.setPersonalDetails(profile);
     this.setAddressDetails(profile);
     this.setContactDetails(profile);
@@ -55,7 +55,7 @@ export class ProfileMappingService {
           firstName: profile.personalDetails.firstName,
           lastName: profile.personalDetails.lastName,
           indigenousStatus: '',
-          preferredName: null,
+          //preferredName: null,
           initials: null,
         });
       });
@@ -75,7 +75,8 @@ export class ProfileMappingService {
             community: this.profileDataService.primaryAddressDetails.community,
             stateProvince:
               this.profileDataService.primaryAddressDetails.stateProvince,
-            postalCode: this.profileDataService.primaryAddressDetails.postalCode
+            postalCode: this.profileDataService.primaryAddressDetails.postalCode,
+            country: null,
           },
           isBcAddress: null,
           isNewMailingAddress: null,
@@ -85,7 +86,7 @@ export class ProfileMappingService {
             addressLine2: null,
             community: null,
             stateProvince: null,
-            //country: null,
+            country: null,
             postalCode: null
           }
         });
@@ -135,7 +136,7 @@ export class ProfileMappingService {
           isBcMailingAddress: this.isBCAddress(
             profile.mailingAddress.stateProvince
           ),
-          mailingAddress
+          mailingAddress: mailingAddress
         });
         formGroup = address;
       });
@@ -143,6 +144,8 @@ export class ProfileMappingService {
       this.locationService.getAddressRegFromAddress(profile.primaryAddress);
     this.profileDataService.mailingAddressDetails =
       this.locationService.getAddressRegFromAddress(profile.mailingAddress);
+    this.profileDataService.IsMailingAddressSameAsPrimaryAddressDetails =
+      profile.isMailingAddressSameAsPrimaryAddress;
   }
 
   private setContactDetails(profile: Profile): void {

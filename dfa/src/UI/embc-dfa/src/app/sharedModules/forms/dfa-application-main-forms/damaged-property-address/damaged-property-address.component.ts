@@ -24,9 +24,8 @@ import { RegAddress } from 'src/app/core/model/address';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Profile } from 'src/app/core/api/models';
+import { Profile, ApplicantOption } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatInputModule } from '@angular/material/input';
 
@@ -85,12 +84,12 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((damagedPropertyAddress) => {
         this.damagedPropertyAddressForm = damagedPropertyAddress;
         // this.damagedPropertyAddressForm.updateValueAndValidity();
-        if (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOption.Homeowner) {
+        if (ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOption.Homeowner) {
           this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordPhone.removeValidators([Validators.required]);
-        } else if (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption === ApplicantOption.ResidentialTenant) {
+        } else if (ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOption.ResidentialTenant) {
           this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required]);
@@ -131,15 +130,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('stateProvince').reset();
-        }
-      });
-
-    this.damagedPropertyAddressForm
-      .get('country')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.damagedPropertyAddressForm.get('country').reset();
         }
       });
 
@@ -241,15 +231,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         }
       });
 
-    // TODO: retrieve actual profile address
-    this.profileAddress = {
-      addressLine1: "564 Vedder Rd.",
-      addressLine2: null,
-      community: "Abbotsford",
-      country: { name: "Canada", code: "CAN" },
-      stateProvince: "BC",
-      postalCode: "V1V 1V1"
-    }
+    this.profileAddress = this.profileDataService.primaryAddressDetails;
     this.onUseProfileAddressChoice("1");
   }
 
@@ -292,7 +274,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   }
 
   onUseProfileAddressChoice(choice: any) {
-    this.damagedPropertyAddressForm.controls.country.setValue("Canada");
     this.damagedPropertyAddressForm.controls.stateProvince.setValue("BC");
     if (!choice.value) return; // not a radio button change
     if (choice.value == "0") // yes
@@ -301,7 +282,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       this.damagedPropertyAddressForm.controls.addressLine1.setValue(this.profileAddress.addressLine1);
       this.damagedPropertyAddressForm.controls.addressLine2.setValue(this.profileAddress.addressLine2);
       this.damagedPropertyAddressForm.controls.community.setValue(this.profileAddress.community);
-      this.damagedPropertyAddressForm.controls.country.setValue(this.profileAddress.country.name);
       this.damagedPropertyAddressForm.controls.stateProvince.setValue(this.profileAddress.stateProvince);
       this.damagedPropertyAddressForm.controls.postalCode.setValue(this.profileAddress.postalCode);
 

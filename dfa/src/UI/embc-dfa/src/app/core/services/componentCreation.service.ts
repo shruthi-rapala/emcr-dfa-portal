@@ -53,22 +53,23 @@ export class ComponentCreationService {
   dfaApplicationStartComponents: Array<any> = [
     {
       component: 'consent',
-      nextButtonLabel: 'Next - Profile Verification',
+      nextButtonLabel: 'Next - Application Type & Insurance',
       backButtonLabel: 'Cancel',
       isLast: false,
       loadWrapperButton: false,
       lastStep: -2,
       stepName: 'Consent'
     },
-    {
-      component: 'profile-verification',
-      nextButtonLabel: 'Next - Application Type',
-      backButtonLabel: 'Cancel',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Profile Verification'
-    },
+    //TODO add this back during phase 2 and only show if its more than 24hrs since profile creation
+    // {
+    //   component: 'profile-verification',
+    //   nextButtonLabel: 'Next - Application Type',
+    //   backButtonLabel: 'Cancel',
+    //   isLast: false,
+    //   loadWrapperButton: false,
+    //   lastStep: 0,
+    //   stepName: 'Profile Verification'
+    // },
     {
       component: 'apptype-insurance',
       nextButtonLabel: 'Next - Damaged Property',
@@ -119,13 +120,23 @@ export class ComponentCreationService {
     },
     {
       component: 'damaged-items-by-room',
-      nextButtonLabel: 'Next - Review',
+      nextButtonLabel: 'Next - Supporting Documents',
       backButtonLabel: 'Go Back & Edit',
       isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
       stepName: 'Damaged Items By Room'
+    },
+    {
+      component: 'supporting-documents',
+      nextButtonLabel: 'Next - Review',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Supporting Documents'
     }
+
   ];
 
   needsAssessmentComponents: Array<any> = [

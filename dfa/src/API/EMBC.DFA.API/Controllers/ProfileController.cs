@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.Serialization;
 using System.Security.Claims;
 using System.Text.Json;
@@ -59,7 +60,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("current")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Profile> GetProfile()
+        public async Task<ActionResult<Profile>> GetProfile()
         {
             var userId = currentUserId;
             //var profile = mapper.Map<Profile>(await evacuationSearchService.GetRegistrantByUserId(userId));
@@ -69,7 +70,12 @@ namespace EMBC.DFA.API.Controllers
             //    //try get BCSC profile
             //    profile = GetUserFromPrincipal();
             //}
-            var profile = GetUserFromPrincipal();
+            var profile = await handler.HandleGetUser(userId);
+            if (profile == null)
+            {
+                //try get BCSC profile
+                profile = GetUserFromPrincipal();
+            }
             if (profile == null) return NotFound(userId);
             return Ok(profile);
         }
@@ -83,7 +89,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<bool>> GetDoesUserExists()
         {
             var userId = currentUserId;
-            var profile = await evacuationSearchService.GetRegistrantByUserId(userId);
+            var profile = await handler.HandleGetUser(userId);
             return Ok(profile != null);
         }
 
@@ -98,7 +104,7 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> AddContact(Profile profile)
         {
-            profile.Id = currentUserId;
+            profile.BCServiceCardId = currentUserId;
             var mappedProfile = mapper.Map<dfa_appcontact>(profile);
             if (profile == null) return BadRequest("Profile details cannot be empty!");
 
@@ -169,6 +175,8 @@ namespace EMBC.DFA.API.Controllers
         public Address MailingAddress { get; set; }
 
         public string IsMailingAddressSameAsPrimaryAddress { get; set; }
+
+        public string? BCServiceCardId { get; set; }
     }
 
     /// <summary>

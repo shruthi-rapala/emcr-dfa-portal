@@ -6,7 +6,7 @@
  */
 export interface PersonDetails {
   firstName: string;
-  indigenousStatus?: string;
+  indigenousStatus?: null | string;
   initials?: null | string;
   lastName: string;
 }

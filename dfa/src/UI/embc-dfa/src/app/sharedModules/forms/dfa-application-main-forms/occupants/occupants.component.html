@@ -1,11 +1,10 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="occupantsForm">
+    <p class="sub-heading" style="font-size: 20px">Occupants, Applicants and Contacts</p>
+    <br />
 
-      <p class="sub-heading" style="font-size: 20px">Occupants, Applicants and Contacts</p>
-      <br />
-
+    <form [formGroup]="fullTimeOccupantsForm">
       <div formGroupName="fullTimeOccupant">
         <ng-container>
           <div class="row">
@@ -73,7 +72,7 @@
                 <br /><br/>
               </div>
 
-              <div *ngIf="occupantsForm.get('fullTimeOccupants').invalid && occupantsForm.get('fullTimeOccupants').hasError('required')">
+              <div *ngIf="fullTimeOccupantsForm.get('fullTimeOccupants').invalid && fullTimeOccupantsForm.get('fullTimeOccupants').hasError('required')">
                 <span style="color:red">At least one full time occupant is required.</span>
               </div>
 
@@ -98,9 +97,9 @@
                       <input formControlName="firstName" matInput placeholder="Full-time occupant first name" required/>
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.firstName.touched
                         "
                       >
                         First Name is required</mat-error
@@ -113,9 +112,9 @@
                       <input formControlName="lastName" matInput placeholder="Full-time occupant last name" required/>
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.touched
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.lastName.invalid &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.lastName.hasError('required') &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.lastName.touched
                         "
                       >
                         Last Name is required</mat-error
@@ -128,9 +127,9 @@
                       <input formControlName="relationship" matInput placeholder="Relationship to Applicant" required />
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.touched
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.relationship.touched
                         "
                       >
                       Relationship is required</mat-error
@@ -171,7 +170,9 @@
         </ng-container>
 
       </div><br/><br/>
+    </form>
 
+    <form [formGroup]="secondaryApplicantsForm">
       <div formGroupName="secondaryApplicant">
         <ng-container>
           <div class="row">
@@ -190,7 +191,7 @@
                     <b>Type</b>
                   </th>
                   <td *matCellDef="let element" mat-cell>
-                    {{ element.secondaryApplicantType }}
+                    {{ element.applicantType }}
                   </td>
                 </ng-container>
 
@@ -277,15 +278,15 @@
                   <div class="col-md-2">
                     <mat-form-field appearance="outline">
                       <mat-label>Applicant type</mat-label>
-                      <mat-select formControlName="secondaryApplicantType" required>
+                      <mat-select formControlName="applicantType" required>
                         <mat-option [value]="selectApplicantTypeOptions.Contact">{{ selectApplicantTypeOptions.Contact }}</mat-option>
                         <mat-option [value]="selectApplicantTypeOptions.Organization">{{ selectApplicantTypeOptions.Organization }}</mat-option>
                       </mat-select>
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('secondaryApplicant').controls.secondaryApplicantType.invalid &&
-                          occupantsForm.get('secondaryApplicant').controls.secondaryApplicantType.hasError('required') &&
-                          occupantsForm.get('secondaryApplicant').controls.secondaryApplicantType.touched
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.applicantType.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.applicantType.hasError('required') &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.applicantType.touched
                         "
                       >
                         Applicant type is required</mat-error
@@ -298,9 +299,9 @@
                       <input formControlName="firstName" matInput placeholder="First name" required/>
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('secondaryApplicant').controls.firstName.invalid &&
-                          occupantsForm.get('secondaryApplicant').controls.firstName.hasError('required') &&
-                          occupantsForm.get('secondaryApplicant').controls.firstName.touched
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.firstName.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.firstName.hasError('required') &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.firstName.touched
                         "
                       >
                         First Name is required</mat-error
@@ -313,9 +314,9 @@
                       <input formControlName="lastName" matInput placeholder="Last name" required/>
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('secondaryApplicant').controls.lastName.invalid &&
-                          occupantsForm.get('secondaryApplicant').controls.lastName.hasError('required') &&
-                          occupantsForm.get('secondaryApplicant').controls.lastName.touched
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.lastName.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.lastName.hasError('required') &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.lastName.touched
                         "
                       >
                         Last Name is required</mat-error
@@ -331,17 +332,17 @@
                         [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
-                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.hasError('incorrectLength')
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.hasError('incorrectLength')
                         "
                       >
                         Telephone number must have 10 digits</mat-error
                       >
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
-                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.hasError('required') &&
-                          occupantsForm.get('secondaryApplicant').controls.phoneNumber.touched
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.hasError('required') &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.touched
                         "
                       >
                         Telephone number is required</mat-error
@@ -354,17 +355,17 @@
                       <input formControlName="email" matInput placeholder="Applicant contact email" required/>
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('secondaryApplicant').controls.email.invalid &&
-                          occupantsForm.get('secondaryApplicant').controls.email.hasError('email')
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.email.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.email.hasError('email')
                         "
                         >
                         Invalid email address</mat-error
                       >
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('secondaryApplicant').controls.email.invalid &&
-                          occupantsForm.get('secondaryApplicant').controls.email.hasError('required') &&
-                          occupantsForm.get('secondaryApplicant').controls.email.touched
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.email.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.email.hasError('required') &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.email.touched
                         "
                         >
                         Email address is required</mat-error
@@ -401,7 +402,9 @@
           </div>
         </ng-container>
       </div><br/><br/>
+    </form>
 
+    <form [formGroup]="otherContactsForm">
       <div formGroupName="otherContact">
         <ng-container>
           <div class="row">
@@ -480,7 +483,7 @@
                 <br /><br/>
               </div>
 
-              <div *ngIf="occupantsForm.get('otherContacts').invalid && occupantsForm.get('otherContacts').hasError('required')">
+              <div *ngIf="otherContactsForm.get('otherContacts').invalid && otherContactsForm.get('otherContacts').hasError('required')">
                 <span style="color:red">At least one other contact is required.</span>
               </div>
 
@@ -505,9 +508,9 @@
                       <input formControlName="firstName" matInput placeholder="Contact first name" required/>
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('otherContact').controls.firstName.invalid &&
-                          occupantsForm.get('otherContact').controls.firstName.hasError('required') &&
-                          occupantsForm.get('otherContact').controls.firstName.touched
+                          otherContactsForm.get('otherContact').controls.firstName.invalid &&
+                          otherContactsForm.get('otherContact').controls.firstName.hasError('required') &&
+                          otherContactsForm.get('otherContact').controls.firstName.touched
                         "
                       >
                         First Name is required</mat-error
@@ -520,9 +523,9 @@
                       <input formControlName="lastName" matInput placeholder="Contact last name" required/>
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('otherContact').controls.lastName.invalid &&
-                          occupantsForm.get('otherContact').controls.lastName.hasError('required') &&
-                          occupantsForm.get('otherContact').controls.lastName.touched
+                          otherContactsForm.get('otherContact').controls.lastName.invalid &&
+                          otherContactsForm.get('otherContact').controls.lastName.hasError('required') &&
+                          otherContactsForm.get('otherContact').controls.lastName.touched
                         "
                       >
                         Last Name is required</mat-error
@@ -539,17 +542,17 @@
                         [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
                         <mat-error
                         *ngIf="
-                          occupantsForm.get('otherContact').controls.phoneNumber.invalid &&
-                          occupantsForm.get('otherContact').controls.phoneNumber.hasError('required') &&
-                          occupantsForm.get('otherContact').controls.phoneNumber.touched
+                          otherContactsForm.get('otherContact').controls.phoneNumber.invalid &&
+                          otherContactsForm.get('otherContact').controls.phoneNumber.hasError('required') &&
+                          otherContactsForm.get('otherContact').controls.phoneNumber.touched
                         "
                       >
                        Telephone number is required</mat-error
                       >
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('otherContact').controls.phoneNumber.invalid &&
-                          occupantsForm.get('otherContact').controls.phoneNumber.hasError('incorrectLength')
+                          otherContactsForm.get('otherContact').controls.phoneNumber.invalid &&
+                          otherContactsForm.get('otherContact').controls.phoneNumber.hasError('incorrectLength')
                         "
                       >
                         Telephone number must have 10 digits</mat-error
@@ -562,16 +565,16 @@
                       <input formControlName="email" required matInput placeholder="Contact email" />
                       <mat-error
                         *ngIf="
-                          occupantsForm.get('otherContact').controls.email.invalid &&
-                          occupantsForm.get('otherContact').controls.email.hasError('required') &&
-                          occupantsForm.get('otherContact').controls.email.touched
+                          otherContactsForm.get('otherContact').controls.email.invalid &&
+                          otherContactsForm.get('otherContact').controls.email.hasError('required') &&
+                          otherContactsForm.get('otherContact').controls.email.touched
                         "
                       >
                         Email is required</mat-error
                       >
                       <mat-error
                       *ngIf="
-                        occupantsForm.get('otherContact').controls.email.invalid
+                        otherContactsForm.get('otherContact').controls.email.invalid
                       "
                     >
                       Invalid email address</mat-error
@@ -579,7 +582,6 @@
                     </mat-form-field>
                   </div>
                 </div>
-                <!-- <button type="button" (click)="showOtherContactsForm()">Show Form</button> -->
 
                 <div class="row">
                   <div class="col-md-3">
@@ -610,7 +612,6 @@
           </div>
         </ng-container>
       </div>
-
     </form>
 
   </mat-card-content>

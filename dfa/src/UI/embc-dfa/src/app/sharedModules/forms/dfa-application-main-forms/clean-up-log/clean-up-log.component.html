@@ -1,10 +1,10 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="cleanUpLogForm">
+  <p class="sub-heading" style="font-size: 20px">Clean Up Log</p>
+  <br />
 
-      <p class="sub-heading" style="font-size: 20px">Clean Up Log</p>
-      <br />
+  <form [formGroup]="cleanUpLogWorkForm">
 
       <div formGroupName="cleanuplog">
         <ng-container>
@@ -25,9 +25,9 @@
                     equipment or other suppliers to assist you with cleanup, keep receipts or invoices.<br />
                     You may provide these receipts to the evaluator during the site visit.<br />
                     4. For further information about cleanup and disinfection, please refer to<br />
-                    <a target="_blank" style="" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/know-your-hazards/floods/after-flood">Recovering After a Flood</a>
+                    <a target="_blank" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/know-your-hazards/floods/after-flood">Recovering After a Flood</a>
                     which is available on the
-                    <a target="_blank" style="" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">DFA website</a>
+                    <a target="_blank" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">DFA website</a>
                     or by contacting our office toll-free at 1-888-257-4777
                   </p>
                 </div>
@@ -234,8 +234,11 @@
         </ng-container>
 
       </div>
+  </form>
 
-      <div formGroupName="cleanuplogFile">
+  <form [formGroup]="cleanUpWorkFilesForm">
+
+      <div formGroupName="fileUpload">
         <ng-container>
           <div class="row">
             <div class="col-md-12">
@@ -246,7 +249,7 @@
                 </b>
               </p>
 
-              <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.getValue().length > 0">
+              <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.data.length > 0">
 
 
                 <!-- File Name Column -->
@@ -270,12 +273,12 @@
                 </ng-container>
 
                  <!-- Date Column -->
-                <ng-container matColumnDef="fileDate" style="width:40%">
+                <ng-container matColumnDef="uploadedDate" style="width:40%">
                   <th mat-header-cell *matHeaderCellDef >
                     <b>Date</b>
                   </th>
                   <td *matCellDef="let elementFile" mat-cell>
-                    {{ elementFile.fileDate | date : "yyyy/MM/dd" }}
+                    {{ elementFile.uploadedDate | date : "yyyy/MM/dd" }}
                   </td>
                 </ng-container>
 
@@ -289,7 +292,7 @@
                     class="delete-image"
                     mat-icon-button
                     aria-label="Remove"
-                    (click)="deleteCleanupLogFileRow(index)"
+                    (click)="deleteCleanupLogFileRow(elementFile)"
                   >
                     <img src="/assets/images/delete.svg" height="35" width="35" />
                     <img
@@ -310,7 +313,7 @@
 
               </table>
 
-              <div  *ngIf="cleanUpWorkFileDataSource.getValue().length > 0">
+              <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
                 <br /><br/>
               </div>
 

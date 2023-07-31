@@ -94,7 +94,7 @@ namespace EMBC.Tests.Unit.DFA.API.Profiles
 
                 .RuleFor(o => o.PrimaryAddress, f => FakeClientEnteredAddress())
                 .RuleFor(o => o.MailingAddress, f => FakeClientEnteredAddress())
-                .RuleFor(o => o.IsMailingAddressSameAsPrimaryAddress, f => f.Random.Bool())
+                //.RuleFor(o => o.IsMailingAddressSameAsPrimaryAddress, f => f.Random.Bool())
 
                 .Generate();
         }

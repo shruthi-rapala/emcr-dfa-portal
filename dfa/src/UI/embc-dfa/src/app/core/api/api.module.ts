@@ -4,9 +4,16 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { ApplicationService } from './services/application.service';
+import { AttachmentService } from './services/attachment.service';
+import { CleanUpLogItemService } from './services/clean-up-log-item.service';
 import { ConfigurationService } from './services/configuration.service';
+import { DamagedRoomService } from './services/damaged-room.service';
 import { EvacuationsService } from './services/evacuations.service';
+import { FullTimeOccupantService } from './services/full-time-occupant.service';
+import { OtherContactService } from './services/other-contact.service';
 import { ProfileService } from './services/profile.service';
+import { SecondaryApplicantService } from './services/secondary-applicant.service';
 
 /**
  * Module that provides all services and configuration.
@@ -16,9 +23,16 @@ import { ProfileService } from './services/profile.service';
   exports: [],
   declarations: [],
   providers: [
+    ApplicationService,
+    AttachmentService,
+    CleanUpLogItemService,
     ConfigurationService,
+    DamagedRoomService,
     EvacuationsService,
+    FullTimeOccupantService,
+    OtherContactService,
     ProfileService,
+    SecondaryApplicantService,
     ApiConfiguration
   ],
 })

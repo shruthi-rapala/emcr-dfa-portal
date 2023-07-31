@@ -16,8 +16,7 @@ import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 import { DFAApplicationMainService } from './dfa-application-main.service';
-import { ApplicantOption } from 'src/app/core/model/dfa-application-start.model';
-import { SignAndSubmit } from 'src/app/core/model/dfa-application-main.model';
+import { ApplicantOption } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -71,7 +70,7 @@ export class DFAApplicationMainComponent
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    this.dfaApplicationMainHeading = this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption + ' Application';
+    this.dfaApplicationMainHeading = ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] + ' Application';
     this.steps = this.componentService.createDFAApplicationMainSteps();
 
     this.formCreationService.secondaryApplicantsChanged.subscribe(secondaryApplicants => {
@@ -191,15 +190,14 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.propertyDamage = this.form.value;
         break;
       case 'occupants':
-        this.dfaApplicationMainService.setFullTimeOccupants(this.form.get('fullTimeOccupants').value);
-        this.dfaApplicationMainService.setOtherContacts(this.form.get('otherContacts').value);
-        this.dfaApplicationMainService.setSecondaryApplicants(this.form.get('secondaryApplicants').value);
         break;
       case 'clean-up-log':
         this.dfaApplicationMainDataService.cleanUpLog = this.form.value;
         break;
       case 'damaged-items-by-room':
-        this.dfaApplicationMainDataService.damagedItemsByRoom = this.form.value;
+        break;
+      case 'supporting-documents':
+        this.dfaApplicationMainDataService.supportingDocuments = this.form.value;
         break;
       case 'sign-and-submit':
         this.dfaApplicationMainDataService.signAndSubmit = this.form.value;
@@ -230,12 +228,7 @@ export class DFAApplicationMainComponent
           });
         break;
       case 2:
-        this.form$ = this.formCreationService
-          .getOccupantsForm()
-          .subscribe((occupants) => {
-            this.form = occupants;
-          });
-        break;
+        this.form$ = null;
       case 3:
         this.form$ = this.formCreationService
           .getCleanUpLogForm()
@@ -244,13 +237,15 @@ export class DFAApplicationMainComponent
           });
         break;
       case 4:
+        this.form$ = null;
+      case 5:
         this.form$ = this.formCreationService
-          .getDamagedItemsByRoomForm()
-          .subscribe((damagedItemsByRoom) => {
-            this.form = damagedItemsByRoom;
+          .getSupportingDocumentsForm()
+          .subscribe((supportingDocuments) => {
+            this.form = supportingDocuments;
           });
         break;
-      case 6:
+      case 7:
         this.form$ = this.formCreationService
           .getSignAndSubmitForm()
           .subscribe((signAndSubmit)=> {

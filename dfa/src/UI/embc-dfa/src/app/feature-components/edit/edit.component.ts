@@ -94,7 +94,7 @@ export class EditComponent implements OnInit, OnDestroy {
           [this.verifiedRoute],
           this.profileNavigationExtras
         );
-      } else if (this.appSessionService.editParentPage === 'dashboard') {
+      } else if (this.appSessionService.editParentPage === 'dfa-dashboard') {
         this.showLoader = !this.showLoader;
         this.profileService
           .upsertProfile(this.profileDataService.createProfileDTO())
@@ -102,7 +102,7 @@ export class EditComponent implements OnInit, OnDestroy {
             next: (profileId) => {
               this.showLoader = !this.showLoader;
               this.router.navigate([
-                '/verified-registration/dashboard/profile'
+                '/dfa-dashboard/profile'
               ]);
             },
             error: (error) => {
@@ -114,26 +114,26 @@ export class EditComponent implements OnInit, OnDestroy {
             }
           });
       } else if (this.appSessionService.editParentPage === 'needs-assessment') {
-        if (this.evacuationFileDataService.essFileId === undefined) {
-          this.router.navigate(
-            [this.verifiedNeedsAssessments],
-            this.needsAssessmentNavigationExtras
-          );
-        } else {
-          this.showLoader = !this.showLoader;
-          this.evacuationFileService.updateEvacuationFile().subscribe({
-            next: (essFileId) => {
-              this.showLoader = !this.showLoader;
-              this.router.navigate([
-                '/verified-registration/dashboard/current/' + essFileId
-              ]);
-            },
-            error: (error) => {
-              this.showLoader = !this.showLoader;
-              this.alertService.setAlert('danger', globalConst.editNeedsError);
-            }
-          });
-        }
+        //if (this.evacuationFileDataService.essFileId === undefined) {
+        //  this.router.navigate(
+        //    [this.verifiedNeedsAssessments],
+        //    this.needsAssessmentNavigationExtras
+        //  );
+        //} else {
+        //  this.showLoader = !this.showLoader;
+        //  this.evacuationFileService.updateEvacuationFile().subscribe({
+        //    next: (essFileId) => {
+        //      this.showLoader = !this.showLoader;
+        //      this.router.navigate([
+        //        '/verified-registration/dashboard/current/' + essFileId
+        //      ]);
+        //    },
+        //    error: (error) => {
+        //      this.showLoader = !this.showLoader;
+        //      this.alertService.setAlert('danger', globalConst.editNeedsError);
+        //    }
+        //  });
+        //}
       } else if (this.appSessionService.editParentPage === 'dfa-application-start') {
         this.router.navigate(
           [this.verifiedRoute]
@@ -165,6 +165,8 @@ export class EditComponent implements OnInit, OnDestroy {
         );
       } else if (this.appSessionService.editParentPage === 'dashboard') {
         this.router.navigate(['/verified-registration/dashboard/profile']);
+      } else if (this.appSessionService.editParentPage === 'dfa-dashboard') {
+        this.router.navigate(['/dfa-dashboard/profile']);
       } else if (this.appSessionService.editParentPage === 'needs-assessment') {
         if (this.evacuationFileDataService.essFileId !== undefined) {
           this.router.navigate([
@@ -282,15 +284,15 @@ export class EditComponent implements OnInit, OnDestroy {
         this.editHeading = 'Application Type & Insurance';
         this.dfaApplicationStartFolderPath = 'dfa-application-start-forms';
         break;
-      case 'profile-verification':
-        this.form$ = this.formCreationService
-          .getProfileVerificationForm()
-          .subscribe((profileVerification) => {
-            this.form = profileVerification;
-          });
-        this.editHeading = 'Profile Verification';
-        this.dfaApplicationStartFolderPath = 'dfa-application-start-forms';
-        break;
+      // case 'profile-verification':
+      //   this.form$ = this.formCreationService
+      //     .getProfileVerificationForm()
+      //     .subscribe((profileVerification) => {
+      //       this.form = profileVerification;
+      //     });
+      //   this.editHeading = 'Profile Verification';
+      //   this.dfaApplicationStartFolderPath = 'dfa-application-start-forms';
+      //   break;
       case 'consent':
         this.form$ = this.formCreationService
           .getConsentForm()

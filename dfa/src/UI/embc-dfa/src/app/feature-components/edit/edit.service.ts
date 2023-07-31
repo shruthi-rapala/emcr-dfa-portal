@@ -38,6 +38,8 @@ export class EditService {
           form.get('address').value;
         this.profileDataService.mailingAddressDetails =
           form.get('mailingAddress').value;
+        this.profileDataService.IsMailingAddressSameAsPrimaryAddressDetails =
+          form.get('isNewMailingAddress').value;
         let evacFromPrimary: string;
         this.formCreationService
           .getEvacuatedForm()

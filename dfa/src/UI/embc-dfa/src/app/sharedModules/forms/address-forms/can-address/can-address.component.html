@@ -19,6 +19,14 @@
         >
           Address Line 1 is required</mat-error
         >
+        <mat-error
+          *ngIf="
+            addressFormControl?.addressLine1.invalid &&
+            addressFormControl?.addressLine1.hasError('maxLength')
+          "
+        >
+          Maximum length reached</mat-error
+        >
       </mat-form-field>
     </div>
   </div>
@@ -33,6 +41,14 @@
           matInput
           placeholder="Address Line 2"
         />
+        <mat-error
+          *ngIf="
+            addressFormControl?.addressLine2.invalid &&
+            addressFormControl?.addressLine2.hasError('maxLength')
+          "
+        >
+          Maximum length reached</mat-error
+        >
       </mat-form-field>
     </div>
   </div>
@@ -55,6 +71,14 @@
           "
         >
           City is required</mat-error
+        >
+        <mat-error
+          *ngIf="
+            addressFormControl?.community.invalid &&
+            addressFormControl?.community.hasError('maxLength')
+          "
+        >
+          Maximum length reached</mat-error
         >
       </mat-form-field>
     </div>
@@ -79,6 +103,14 @@
           "
         >
           Postal Code is invalid</mat-error
+        >
+        <mat-error
+          *ngIf="
+            addressFormControl?.postalCode.invalid &&
+            addressFormControl?.postalCode.hasError('maxLength')
+          "
+        >
+          Maximum length reached</mat-error
         >
       </mat-form-field>
     </div>
@@ -113,6 +145,14 @@
           "
         >
           Province is required</mat-error
+        >
+        <mat-error
+          *ngIf="
+            addressFormControl?.stateProvince.invalid &&
+            addressFormControl?.stateProvince.hasError('maxLength')
+          "
+        >
+          Maximum length reached</mat-error
         >
         <!--<mat-error *ngIf="validateProvince()"> Province is invalid</mat-error>-->
       </mat-form-field>

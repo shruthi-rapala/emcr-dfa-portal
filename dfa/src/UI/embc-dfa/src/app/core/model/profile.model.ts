@@ -45,7 +45,7 @@ export class PersonDetails {
 export class PersonDetailsForm {
   firstName = new UntypedFormControl();
   lastName = new UntypedFormControl();
-  preferredName = new UntypedFormControl();
+  //preferredName = new UntypedFormControl();
   initials = new UntypedFormControl();
   indigenousStatus = new UntypedFormControl();
 
@@ -77,8 +77,8 @@ export class ContactDetails {
   cellPhoneNumber: string;
   confirmEmail: string;
   showContacts: boolean;
-  hideEmailRequired: boolean;
-  hidePhoneRequired: boolean;
+  //hideEmailRequired: boolean;
+  //hidePhoneRequired: boolean;
   residencePhone: string;
   alternatePhone: string;
   constructor() {}
@@ -89,8 +89,8 @@ export class ContactDetailsForm {
   cellPhoneNumber = new UntypedFormControl();
   confirmEmail = new UntypedFormControl();
   showContacts = new UntypedFormControl();
-  hideEmailRequired = new UntypedFormControl(false);
-  hidePhoneRequired = new UntypedFormControl(false);
+  //hideEmailRequired = new UntypedFormControl(false);
+  //hidePhoneRequired = new UntypedFormControl(false);
   residencePhone = new UntypedFormControl();
   alternatePhone = new UntypedFormControl();
 
@@ -102,19 +102,33 @@ export class ContactDetailsForm {
     //this.showContacts.setValidators([Validators.required]);
 
     //this.email.setValue(contactDetails.email);
-    //this.email.setValidators([
-    //  Validators.email,
-    //  customValidator
-    //    .conditionalValidation(
-    //      () =>
-    //        (this.phone.value === '' ||
-    //          this.phone.value === undefined ||
-    //          this.phone.value === null) &&
-    //        this.showContacts.value === true,
-    //      Validators.required
-    //    )
-    //    .bind(customValidator)
-    //]);
+    this.email.setValidators([
+      Validators.email,
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
+
+    this.cellPhoneNumber.setValidators([
+      customValidator.maskedNumberLengthValidator().bind(customValidator),
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
+
+    this.residencePhone.setValidators([
+      customValidator.maskedNumberLengthValidator().bind(customValidator),
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
+
+    this.alternatePhone.setValidators([
+      customValidator.maskedNumberLengthValidator().bind(customValidator),
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
 
     //this.confirmEmail.setValue(contactDetails.confirmEmail);
     //this.confirmEmail.setValidators([
@@ -178,18 +192,40 @@ export class AddressForm {
       postalCode: [
         '',
         [customValidator.postalValidation().bind(customValidator)]
-      ]
+      ],
+      country: ''
     });
 
     this.mailingAddress = builder.group({
-      addressLine1: [''],
-      addressLine2: [''],
-      community: [''],
-      stateProvince: [''],
+      addressLine1: ['',
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+      ],
+      addressLine2: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
+      community: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
+      stateProvince: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
       postalCode: [
         '',
-        [customValidator.postalValidation().bind(customValidator)]
-      ]
+        [customValidator.postalValidation().bind(customValidator),
+          customValidator
+            .maxLengthValidator()
+            .bind(customValidator)
+        ]
+      ],
+      country: ''
     });
 
     //this.isBcAddress.setValue(address.isBcAddress);

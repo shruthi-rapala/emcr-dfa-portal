@@ -1,1 +1,95 @@
-<p>dfa-application works!</p>
+<!--<div>
+  Current Applications
+</div>-->
+<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstApplications.length > 0">
+      <div class="row"
+           *ngFor="let applItem of lstApplications"
+           >
+        <!--<div class="row block">
+          <div class="row">
+            <div class="col-md-6">
+              <span>Event ID</span><br />
+              <span>{{applItem.dfa_eventid}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <span>Application Type</span><br />
+              <span>{{applItem.dfa_applicanttype}}</span>
+            </div>
+          </div>
+        </div>-->
+         <mat-card class="mat-elevation-z4 content">
+            
+            <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px;">
+              <span>Event ID</span><br />
+              <span style="font-size: 20px;"><b>{{applItem.eventId}}</b></span>
+            </div>
+           <div class="row" style="padding-top: 20px;">
+             <div class="col-md-3">
+                <span><b>Application Type</b></span><br />
+                <span>{{applItem.applicationType}}</span>
+              </div>
+             <div class="col-md-3">
+                <span><b>Damaged Property Address</b></span><br />
+                <span>{{applItem.damagedAddress}}</span>
+              </div>
+             <div class="col-md-3">
+                <span><b>Case Number</b></span><br />
+                <span>{{applItem.caseNumber}}</span>
+              </div>
+             <div class="col-md-3">
+                <span><b>Date of Damage</b></span><br />
+                <span>{{applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
+              </div>
+            </div>
+           <div style="padding-top: 35px;">
+               <button
+                      class="application-button"
+                      type="button"
+                    >
+                      View Application
+                </button>
+              
+               <button
+                      class="application-button whitebutton"
+                      type="button"
+                    >
+                      Add to Clean Up Log
+                </button>
+              
+               <button
+                      class="application-button whitebutton"
+                      type="button"
+                    >
+                      Add to Damaged Items
+                </button>
+             
+               <button
+                      class="application-button whitebutton"
+                      type="button"
+                    >
+                      Add Supporting Docs
+                </button>
+              
+               <button
+                      class="application-button redbutton"
+                      type="button"
+                    >
+                      Delete Application
+                </button>
+            </div>
+
+          </mat-card>
+      </div>
+      
+</div>
+<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstApplications.length == 0">
+ <div class="heading-container">
+    <div class="row">
+      <div class="col-md-12">
+        <span class="page-heading" style=""> No Active Applications</span> <br />
+      </div>
+    </div>
+  </div>
+  </div>

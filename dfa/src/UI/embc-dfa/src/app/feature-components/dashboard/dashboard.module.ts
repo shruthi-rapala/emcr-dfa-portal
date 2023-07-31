@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import { ReviewModule } from '../review/review.module';
 import { DashboardComponent } from './dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -15,7 +16,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CommonModule,
     ReactiveFormsModule,
     DashboardRoutingModule,
-    MatTabsModule
+    MatTabsModule,
+    ReviewModule
   ]
 })
 export class DashboardModule { }

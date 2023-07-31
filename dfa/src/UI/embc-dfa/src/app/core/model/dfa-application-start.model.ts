@@ -4,7 +4,8 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { SignatureBlock } from '../components/signature/signature.component';
+import { SignatureBlock } from 'src/app/core/api/models';
+import { ApplicantOption, SmallBusinessOption, FarmOption, InsuranceOption, DfaApplicationStart } from '../api/models';
 
 export class Consent {
   consent: boolean;
@@ -29,29 +30,29 @@ export class ConsentForm {
 }
 
 export class ProfileVerification {
-  profileVerification: boolean;
+  profileVerified: boolean;
+  profileId: string;
 
   constructor(
-    profileVerification?: boolean
+    profileVerified?: boolean,
+    profileId?: string
   ) {}
 }
 
-export class ProfileVerificationForm {
-  profileVerification = new UntypedFormControl();
+// export class ProfileVerificationForm {
+//   profileVerified = new UntypedFormControl();
+//   profileId = new UntypedFormControl();
 
-  constructor(
-    profileVerification: ProfileVerification
-  ) {
-    if (profileVerification.profileVerification) {
-      this.profileVerification.setValue(profileVerification.profileVerification);
-    }
+//   constructor(
+//     profileVerification: ProfileVerification
+//   ) {
+//     this.profileVerified.setValidators([Validators.required]);
+//     this.profileVerified.setValue(profileVerification.profileVerified);
 
-    this.profileVerification.setValidators([Validators.required]);
-
-    this.profileVerification.setValue(profileVerification.profileVerification);
-    this.profileVerification.setValidators([Validators.required]);
-  }
-}
+//     this.profileId.setValue(profileVerification.profileId);
+//     this.profileId.setValidators([Validators.required]);
+//   }
+// }
 
 export class AppTypeInsurance {
   applicantOption: ApplicantOption;
@@ -112,45 +113,4 @@ export class AppTypeInsuranceForm {
     this.secondaryApplicantSignature?.controls.dateSigned.setValue(appTypeInsurance?.secondaryApplicantSignature?.dateSigned);
     this.secondaryApplicantSignature?.controls.signedName.setValue(appTypeInsurance?.secondaryApplicantSignature?.signedName);
   }
-}
-
-// TODO This should be coming in from the API in api/models
-/* tslint:disable */
-/* eslint-disable */
-export enum ApplicantOption {
-  Homeowner = 'Homeowner',
-  ResidentialTenant = 'Residential Tenant',
-  SmallBusinessOwner = 'Small Business Owner (including landlords)',
-  FarmOwner = 'Farm Owner',
-  CharitableOrganization = 'Charitable Organization (including non-profilts)',
-}
-
-// TODO this should be coming in from the API in api/models
-export enum InsuranceOption {
- Yes = 'Yes, my insurance will cover all my losses.',
- Unsure = 'Yes but I don\'t know if my insurance will cover all damages or for this event.',
- No = 'No.'
-}
-
-// TODO this should be coming in from the API in api/models
-export enum SmallBusinessOption {
-  General = 'General or Sole Proprietorship or DBA name',
-  Corporate = 'Corporate (Ltd./Inc.) Company',
-  Landlord = 'Landlord'
- }
-
- // TODO this should be coming in from the API in api/models
-export enum FarmOption {
-  General = 'General or Sole Proprietorship or DBA name',
-  Corporate = 'Corporate (Ltd./Inc.) Company',
- }
-
-// TODO This should be coming in from the API in api/models
-/**
- * DFA Application
- */
-export interface DFAApplicationStart {
-  consent?: Consent;
-  profileVerification?: ProfileVerification;
-  appTypeInsurance?: AppTypeInsurance;
 }
