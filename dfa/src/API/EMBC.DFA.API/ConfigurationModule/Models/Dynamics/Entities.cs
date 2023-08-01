@@ -37,6 +37,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_isindigenous { get; set; }
         public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
         public string dfa_appcontactid { get; set; }
+    }
+
+    public class dfa_appcontact_extended : dfa_appcontact
+    {
         public string? dfa_title { get; set; }
         public string? dfa_name { get; set; }
     }

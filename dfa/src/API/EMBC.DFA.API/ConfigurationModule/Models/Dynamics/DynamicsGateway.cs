@@ -429,7 +429,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
                 foreach (dfa_appoccupant_retrieve item in list.List)
                 {
-                    var contactList = await api.GetList<dfa_appcontact>("dfa_appcontacts", new CRMGetListOptions
+                    var contactList = await api.GetList<dfa_appcontact_extended>("dfa_appcontacts", new CRMGetListOptions
                     {
                         Select = new[]
                         {
@@ -491,7 +491,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     item.dfa_description = item.dfa_name; // name from cleanup logs entity is description of work
                     if (item._dfa_contactid_value != null)
                     {
-                        var contactList = await api.GetList<dfa_appcontact>("dfa_appcontacts", new CRMGetListOptions
+                        var contactList = await api.GetList<dfa_appcontact_extended>("dfa_appcontacts", new CRMGetListOptions
                         {
                             Select = new[]
                             {
