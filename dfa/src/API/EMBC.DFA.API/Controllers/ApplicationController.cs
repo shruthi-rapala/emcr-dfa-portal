@@ -71,7 +71,7 @@ namespace EMBC.DFA.API.Controllers
                     primarySignature.ContentType = "image/png";
                     primarySignature.Regarding = "dfa_appapplication";
                     primarySignature.id = applicationId;
-                    insuranceSignatures.Append(primarySignature);
+                    insuranceSignatures = insuranceSignatures.Append(primarySignature);
                 }
 
                 if (application.AppTypeInsurance.secondaryApplicantSignature != null && application.AppTypeInsurance.secondaryApplicantSignature.signature != null)
@@ -82,7 +82,7 @@ namespace EMBC.DFA.API.Controllers
                     secondarySignature.ContentType = "image/png";
                     secondarySignature.Regarding = "dfa_appapplication";
                     secondarySignature.id = applicationId;
-                    insuranceSignatures.Append(secondarySignature);
+                    insuranceSignatures = insuranceSignatures.Append(secondarySignature);
                 }
                 var result = await handler.HandleSignatures(insuranceSignatures);
             }
@@ -116,7 +116,7 @@ namespace EMBC.DFA.API.Controllers
                 primarySignature.ContentType = "image/png";
                 primarySignature.Regarding = "dfa_appapplication";
                 primarySignature.id = applicationId;
-                appSignatures.Append(primarySignature);
+                appSignatures = appSignatures.Append(primarySignature);
             }
 
             if (application.signAndSubmit?.secondaryApplicantSignature?.signature != null &&
@@ -128,7 +128,7 @@ namespace EMBC.DFA.API.Controllers
                 secondarySignature.ContentType = "image/png";
                 secondarySignature.Regarding = applicationId;
                 secondarySignature.id = applicationId;
-                appSignatures.Append(secondarySignature);
+                appSignatures = appSignatures.Append(secondarySignature);
             }
 
             if (appSignatures != null)
