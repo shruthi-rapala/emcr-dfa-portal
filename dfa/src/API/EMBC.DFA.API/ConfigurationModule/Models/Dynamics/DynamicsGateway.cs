@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
 using EMBC.ESS.Shared.Contracts.Metadata;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -123,7 +124,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             catch
             {
                 return new System.Dynamic.ExpandoObject();
-                //throw new Exception($"Failed to add application annotation {ex.Message}", ex);
+                // throw new Exception($"Failed to add application signatures {ex.Message}", ex);
             }
         }
 
