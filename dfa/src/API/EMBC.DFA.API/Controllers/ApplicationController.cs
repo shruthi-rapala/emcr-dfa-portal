@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
@@ -54,9 +55,37 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> AddApplication(DFAApplicationStart application)
         {
             if (application == null) return BadRequest("Application details cannot be empty.");
-            var mappedApplication = mapper.Map<dfa_appapplicationstart>(application);
+            var mappedApplication = mapper.Map<dfa_appapplicationstart_params>(application);
 
             var applicationId = await handler.HandleApplication(mappedApplication);
+
+            // If no insurance, add signatures
+            if (application.AppTypeInsurance.insuranceOption == InsuranceOption.No)
+            {
+                IEnumerable<dfa_signature> insuranceSignatures = Enumerable.Empty<dfa_signature>();
+                if (application.AppTypeInsurance.applicantSignature != null && application.AppTypeInsurance.applicantSignature.signature != null)
+                {
+                    var primarySignature = new dfa_signature();
+                    primarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.applicantSignature.signature);
+                    primarySignature.FileName = "primaryApplicantSignatureNoIns";
+                    primarySignature.ContentType = "image/png";
+                    primarySignature.Regarding = "dfa_appapplication";
+                    primarySignature.id = applicationId;
+                    insuranceSignatures.Append(primarySignature);
+                }
+
+                if (application.AppTypeInsurance.secondaryApplicantSignature != null && application.AppTypeInsurance.secondaryApplicantSignature.signature != null)
+                {
+                    var secondarySignature = new dfa_signature();
+                    secondarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.secondaryApplicantSignature.signature);
+                    secondarySignature.FileName = "secondaryApplicantSignatureNoIns";
+                    secondarySignature.ContentType = "image/png";
+                    secondarySignature.Regarding = "dfa_appapplication";
+                    secondarySignature.id = applicationId;
+                    insuranceSignatures.Append(secondarySignature);
+                }
+                var result = await handler.HandleSignatures(insuranceSignatures);
+            }
             return Ok(applicationId);
         }
 
@@ -72,9 +101,40 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpdateApplication(DFAApplicationMain application)
         {
             if (application == null) return BadRequest("Application details cannot be empty.");
-            var mappedApplication = mapper.Map<dfa_appapplicationmain>(application);
+            var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
 
             var applicationId = await handler.HandleApplicationUpdate(mappedApplication);
+            IEnumerable<dfa_signature> appSignatures = Enumerable.Empty<dfa_signature>();
+
+            // Add signatures
+            if (application.signAndSubmit?.applicantSignature?.signature != null &&
+                application.deleteFlag == false)
+            {
+                var primarySignature = new dfa_signature();
+                primarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.applicantSignature.signature);
+                primarySignature.FileName = "primaryApplicantSignature";
+                primarySignature.ContentType = "image/png";
+                primarySignature.Regarding = "dfa_appapplication";
+                primarySignature.id = applicationId;
+                appSignatures.Append(primarySignature);
+            }
+
+            if (application.signAndSubmit?.secondaryApplicantSignature?.signature != null &&
+                application.deleteFlag == false)
+            {
+                var secondarySignature = new dfa_signature();
+                secondarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.secondaryApplicantSignature.signature);
+                secondarySignature.FileName = "secondaryApplicantSignature";
+                secondarySignature.ContentType = "image/png";
+                secondarySignature.Regarding = applicationId;
+                secondarySignature.id = applicationId;
+                appSignatures.Append(secondarySignature);
+            }
+
+            if (appSignatures != null)
+            {
+                var result = await handler.HandleSignatures(appSignatures);
+            }
             return Ok(applicationId);
         }
 
@@ -89,7 +149,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<DFAApplicationStart>> GetApplicationStart(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
             var dfa_appapplication = await handler.GetApplicationStartAsync(applicationId);
             DFAApplicationStart dfaApplicationStart = new DFAApplicationStart();
@@ -111,16 +171,16 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<DFAApplicationStart>> GetApplicationMain(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
-            dfaApplicationMain.DamagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
-            dfaApplicationMain.PropertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
-            dfaApplicationMain.SignAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
-            dfaApplicationMain.CleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
-            dfaApplicationMain.SupportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
+            dfaApplicationMain.damagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
+            dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
+            dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
+            dfaApplicationMain.cleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
+            dfaApplicationMain.supportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
             return Ok(dfaApplicationMain);
         }
 
@@ -147,7 +207,7 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class DFAApplicationStart
     {
-        public string? Id { get; set; }
+        public Guid? Id { get; set; }
 
         public Consent Consent { get; set; }
 
@@ -158,17 +218,18 @@ namespace EMBC.DFA.API.Controllers
 
     public class DFAApplicationMain
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
-        public DamagedPropertyAddress DamagedPropertyAddress { get; set; }
+        public DamagedPropertyAddress? damagedPropertyAddress { get; set; }
 
-        public PropertyDamage PropertyDamage { get; set; }
+        public PropertyDamage? propertyDamage { get; set; }
 
-        public CleanUpLog CleanUpLog { get; set; }
+        public CleanUpLog? cleanUpLog { get; set; }
 
-        public SupportingDocuments SupportingDocuments { get; set; }
+        public SupportingDocuments? supportingDocuments { get; set; }
 
-        public SignAndSubmit SignAndSubmit { get; set; }
+        public SignAndSubmit? signAndSubmit { get; set; }
+        public bool deleteFlag { get; set; }
     }
 
     public class CurrentApplication

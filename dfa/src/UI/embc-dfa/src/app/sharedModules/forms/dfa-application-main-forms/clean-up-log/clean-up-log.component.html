@@ -85,7 +85,7 @@
                   <th mat-header-cell *matHeaderCellDef>
                     &nbsp;
                   </th>
-                  <td *matCellDef="let element" mat-cell>
+                  <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
                     mat-icon-button
@@ -169,7 +169,7 @@
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Hours</mat-label>
-                      <input formControlName="hours" matInput placeholder="Hours" required/>
+                      <input formControlName="hours" matInput placeholder="Hours" required type="number"/>
                       <!--<mat-error
                         *ngIf="
                           occupantsForm.get('fullTimeOccupant').controls.lastName.invalid &&
@@ -334,7 +334,14 @@
                 <div class="row">
 
                   <div class="col-md-4">
-                    <div>
+                    <app-file-upload
+                    [noOfAttachments]="1"
+                    (attachedFile)="setCleanUpWorkFileFormControl($event)"
+                    [allowedFileTypes]="allowedFileTypes"
+                    allowedFileExtensionsList=".pdf,.jpg,.jpeg,.png"
+                  >
+                  </app-file-upload>
+                    <!-- <div>
                       <div
                         class="dropzone"
                         fileDragDrop
@@ -363,7 +370,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <br />
                   </div>
                   <div class="col-md-6">

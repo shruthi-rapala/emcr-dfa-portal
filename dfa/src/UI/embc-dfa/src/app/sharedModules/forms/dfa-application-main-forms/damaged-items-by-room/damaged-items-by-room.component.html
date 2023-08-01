@@ -296,16 +296,16 @@
                   </div>
                   <div class="col-md-6">
                     <br/><br/>
-                    <div [hidden]="!damagePhotosForm.get('fileUpload.fileData').value">
+                    <div [hidden]="!damagePhotosForm.get('fileUpload.fileName').value">
                       <mat-label>File name<span style="color:red" >*</span></mat-label>
                       <br/>
                       {{ damagePhotosForm.get('fileUpload.fileName').value }}
                       <br/><br/>
                     </div>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!damagePhotosForm.get('fileUpload.fileData').value"
+                    <label class="sub-heading" style="font-size: 15px" [hidden]="!damagePhotosForm.get('fileUpload.fileName').value"
                       >You may update the file description to something more descriptive:</label
                     >
-                    <mat-form-field appearance="outline" [hidden]="!damagePhotosForm.get('fileUpload.fileData').value">
+                    <mat-form-field appearance="outline" [hidden]="!damagePhotosForm.get('fileUpload.fileName').value">
                       <mat-label>File description</mat-label>
                       <input formControlName="fileDescription" matInput placeholder="File description" required/>
                       <mat-error

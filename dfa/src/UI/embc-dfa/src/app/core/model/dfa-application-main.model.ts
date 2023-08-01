@@ -36,6 +36,7 @@ export class DamagedPropertyAddress {
     onAFirstNationsReserve?: null | boolean,
     firstNationsReserve?: string,
     manufacturedHome?: null | boolean,
+    isPrimaryAndDamagedAddressSame?: null | boolean,
     eligibleForHomeOwnerGrant?: null | boolean,
     landlordGivenNames?: null | string,
     landlordSurname?: null | string,
@@ -55,6 +56,7 @@ export class DamagedPropertyAddressForm {
   firstNationsReserve = new UntypedFormControl();
   manufacturedHome = new UntypedFormControl();
   eligibleForHomeOwnerGrant = new UntypedFormControl();
+  isPrimaryAndDamagedAddressSame = new UntypedFormControl();
   landlordGivenNames = new UntypedFormControl();
   landlordSurname = new UntypedFormControl();
   landlordPhone = new UntypedFormControl();
@@ -103,6 +105,11 @@ export class DamagedPropertyAddressForm {
       this.firstNationsReserve.setValue(damagedPropertyAddress.firstNationsReserve);
     }
     this.firstNationsReserve.setValidators(null);
+
+    if (damagedPropertyAddress.isPrimaryAndDamagedAddressSame) {
+      this.isPrimaryAndDamagedAddressSame.setValue(damagedPropertyAddress.isPrimaryAndDamagedAddressSame);
+    }
+    this.isPrimaryAndDamagedAddressSame.setValidators([Validators.required]);
 
     if (damagedPropertyAddress.manufacturedHome) {
       this.manufacturedHome.setValue(damagedPropertyAddress.manufacturedHome);
@@ -977,4 +984,5 @@ export interface DfaApplicationMain {
   propertyDamage?: PropertyDamage;
   signAndSubmit?: SignAndSubmit;
   supportingDocuments?: SupportingDocuments;
+  deleteFlag?: boolean;
 }

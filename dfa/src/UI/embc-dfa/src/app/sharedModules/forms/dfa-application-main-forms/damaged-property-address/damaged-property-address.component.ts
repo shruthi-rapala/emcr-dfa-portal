@@ -28,6 +28,7 @@ import { Profile, ApplicantOption } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatInputModule } from '@angular/material/input';
+import { ApplicationService } from 'src/app/core/api/services';
 
 @Component({
   selector: 'app-damaged-property-address',
@@ -39,7 +40,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   formBuilder: UntypedFormBuilder;
   damagedPropertyAddressForm$: Subscription;
   formCreationService: FormCreationService;
-  useProfileAddress: string = "1";
   private _profileAddress: RegAddress;
   public ApplicantOptions = ApplicantOption;
   readonly phoneMask = [
@@ -64,7 +64,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     private router: Router,
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
     public profileDataService: ProfileDataService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private applicationService: ApplicationService
 
   ) {
     this.formBuilder = formBuilder;
@@ -232,7 +233,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       });
 
     this.profileAddress = this.profileDataService.primaryAddressDetails;
-    this.onUseProfileAddressChoice("1");
+    this.damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').setValue(false);
+    this.onUseProfileAddressChoice(false);
   }
 
   dontOccupyDamagedProperty(): void {
@@ -258,27 +260,23 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   }
 
   submitFile(): void {
-    // this.dfaApplicationStartService
-      // .upsertProfile(this.profileDataService.createProfileDTO())
-      // .subscribe({
-        // next: (profileId) => {
-          // this.profileDataService.setProfileId(profileId);
+    this.applicationService
+      .applicationUpdateApplication({body: this.dfaApplicationMainDataService.createDFAApplicationMainDTO()})
+      .subscribe({
+       next: (updateMessage) => {
           this.router.navigate(['/verified-registration/dashboard']);
-        // },
-        // error: (error) => {
-          // this.showLoader = !this.showLoader;
-          // this.isSubmitted = !this.isSubmitted;
-          // this.alertService.setAlert('danger', globalConst.saveProfileError);
-        // }
-      // });
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
   }
 
   onUseProfileAddressChoice(choice: any) {
     this.damagedPropertyAddressForm.controls.stateProvince.setValue("BC");
     if (!choice.value) return; // not a radio button change
-    if (choice.value == "0") // yes
+    if (choice.value == true) // yes
     {
-      // TODO: Update these values from Profile
       this.damagedPropertyAddressForm.controls.addressLine1.setValue(this.profileAddress.addressLine1);
       this.damagedPropertyAddressForm.controls.addressLine2.setValue(this.profileAddress.addressLine2);
       this.damagedPropertyAddressForm.controls.community.setValue(this.profileAddress.community);
