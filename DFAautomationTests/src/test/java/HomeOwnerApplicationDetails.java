@@ -280,6 +280,6 @@ public class HomeOwnerApplicationDetails {
         JavascriptExecutor js52= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-7\"]/div/div[2]/button/span[1]")));
         js52.executeScript("arguments[0].click();", element);
-        
+
     }
 }
