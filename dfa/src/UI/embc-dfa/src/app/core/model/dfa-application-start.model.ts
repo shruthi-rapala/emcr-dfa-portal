@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { SignatureBlock } from 'src/app/core/api/models';
 import { ApplicantOption, SmallBusinessOption, FarmOption, InsuranceOption, DfaApplicationStart } from '../api/models';
+import { CustomValidationService } from '../services/customValidation.service';
 
 export class Consent {
   consent: boolean;
@@ -82,7 +83,8 @@ export class AppTypeInsuranceForm {
 
   constructor(
     appTypeInsurance: AppTypeInsurance,
-    fb: UntypedFormBuilder
+    fb: UntypedFormBuilder,
+    customValidator: CustomValidationService
   ) {
     if (appTypeInsurance.applicantOption) {
       this.applicantOption.setValue(appTypeInsurance.applicantOption);
@@ -103,6 +105,12 @@ export class AppTypeInsuranceForm {
     this.applicantSignature?.controls.signature.setValue(appTypeInsurance?.applicantSignature?.signature);
     this.applicantSignature?.controls.dateSigned.setValue(appTypeInsurance?.applicantSignature?.dateSigned);
     this.applicantSignature?.controls.signedName.setValue(appTypeInsurance?.applicantSignature?.signedName);
+
+    this.applicantSignature?.controls.signedName.setValidators([
+      customValidator
+        .maxLengthValidator()
+        .bind(customValidator)
+    ]);
 
     this.secondaryApplicantSignature = fb.group({
       signature: null,

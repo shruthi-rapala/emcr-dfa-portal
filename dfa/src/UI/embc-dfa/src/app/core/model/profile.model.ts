@@ -185,13 +185,32 @@ export class AddressForm {
     customValidator: CustomValidationService
   ) {
     this.address = builder.group({
-      addressLine1: [''],
-      addressLine2: [''],
-      community: [''],
-      stateProvince: ['British Columbia'],
+      addressLine1: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
+      addressLine2: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
+      community: ['',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
+      stateProvince: ['British Columbia',
+        customValidator
+          .maxLengthValidator()
+          .bind(customValidator)
+      ],
       postalCode: [
         '',
-        [customValidator.postalValidation().bind(customValidator)]
+        [customValidator.postalValidation().bind(customValidator),
+          customValidator
+            .maxLengthValidator()
+            .bind(customValidator)]
       ],
       country: ''
     });
