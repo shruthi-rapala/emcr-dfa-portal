@@ -6,7 +6,6 @@
  */
 export interface FullTimeOccupant {
   applicationId?: string;
-  contactId?: string;
   deleteFlag?: boolean;
   firstName?: string;
   id?: null | string;

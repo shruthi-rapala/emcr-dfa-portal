@@ -25,7 +25,7 @@ export class FullTimeOccupantService extends BaseService {
   /**
    * Path part for operation fullTimeOccupantUpsertDeleteFullTimeOccupant
    */
-  static readonly FullTimeOccupantUpsertDeleteFullTimeOccupantPath = '/api/fulltimeoccupant';
+  static readonly FullTimeOccupantUpsertDeleteFullTimeOccupantPath = '/api/fulltimeoccupants';
 
   /**
    * Create / update / delete a full time occupant.
@@ -87,7 +87,7 @@ export class FullTimeOccupantService extends BaseService {
   /**
    * Path part for operation fullTimeOccupantGetFullTimeOccupants
    */
-  static readonly FullTimeOccupantGetFullTimeOccupantsPath = '/api/fulltimeoccupant/byApplicationId';
+  static readonly FullTimeOccupantGetFullTimeOccupantsPath = '/api/fulltimeoccupants/byApplicationId';
 
   /**
    * Get a list of full time occupants by application Id.

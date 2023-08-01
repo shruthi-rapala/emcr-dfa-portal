@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace EMBC.DFA.API.Controllers
 {
-    [Route("api/fulltimeoccupant")]
+    [Route("api/fulltimeoccupants")]
     [ApiController]
     [Authorize]
     public class FullTimeOccupantController : ControllerBase
@@ -47,7 +47,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteFullTimeOccupant(FullTimeOccupant fullTimeOccupant)
         {
             if (fullTimeOccupant == null) return BadRequest("FullTimeOccupant details cannot be empty.");
-            var mappedFullTimeOccupant = mapper.Map<dfa_appoccupant>(fullTimeOccupant);
+            var mappedFullTimeOccupant = mapper.Map<dfa_appoccupant_params>(fullTimeOccupant);
 
             var fullTimeOccupantId = await handler.HandleFullTimeOccupantAsync(mappedFullTimeOccupant);
             return Ok(fullTimeOccupantId);
@@ -64,14 +64,14 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<IEnumerable<FullTimeOccupant>>> GetFullTimeOccupants(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
-            IEnumerable<dfa_appoccupant> dfa_appOcupants = await handler.GetFullTimeOccupantsAsync(applicationId);
+            IEnumerable<dfa_appoccupant_retrieve> dfa_appOcupants = await handler.GetFullTimeOccupantsAsync(applicationId);
             IEnumerable<FullTimeOccupant> fullTimeOccupants = new FullTimeOccupant[] { };
-            foreach (dfa_appoccupant dfa_appOcupant in dfa_appOcupants)
+            foreach (dfa_appoccupant_retrieve dfa_appOcupant in dfa_appOcupants)
             {
                 FullTimeOccupant fullTimeOccupant = mapper.Map<FullTimeOccupant>(dfa_appOcupant);
-                fullTimeOccupants.Append<FullTimeOccupant>(fullTimeOccupant);
+                fullTimeOccupants = fullTimeOccupants.Append<FullTimeOccupant>(fullTimeOccupant);
             }
             return Ok(fullTimeOccupants);
         }
@@ -82,9 +82,8 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class FullTimeOccupant
     {
-        public string? id { get; set; }
-        public string applicationId { get; set; }
-        public string contactId { get; set; }
+        public Guid? id { get; set; }
+        public Guid applicationId { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string relationship { get; set; }

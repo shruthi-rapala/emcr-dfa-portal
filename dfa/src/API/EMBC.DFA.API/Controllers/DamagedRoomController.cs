@@ -47,7 +47,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteDamagedRoom(DamagedRoom damagedRoom)
         {
             if (damagedRoom == null) return BadRequest("DamagedRoom details cannot be empty.");
-            var mappedDamagedRoom = mapper.Map<dfa_damageditems>(damagedRoom);
+            var mappedDamagedRoom = mapper.Map<dfa_appdamageditems_params>(damagedRoom);
 
             var damagedRoomId = await handler.HandleDamagedItemsAsync(mappedDamagedRoom);
             return Ok(damagedRoomId);
@@ -64,14 +64,14 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<IEnumerable<DamagedRoom>>> GetDamagedRooms(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
-            IEnumerable<dfa_damageditems> dfa_damagedItems = await handler.GetDamagedItemsAsync(applicationId);
+            IEnumerable<dfa_appdamageditems_retrieve> dfa_appdamagedItems = await handler.GetDamagedItemsAsync(applicationId);
             IEnumerable<DamagedRoom> damagedRooms = new DamagedRoom[] { };
-            foreach (dfa_damageditems dfa_damagedItem in dfa_damagedItems)
+            foreach (dfa_appdamageditems_retrieve dfa_appdamagedItem in dfa_appdamagedItems)
             {
-                DamagedRoom damagedRoom = mapper.Map<DamagedRoom>(dfa_damagedItem);
-                damagedRooms.Append<DamagedRoom>(damagedRoom);
+                DamagedRoom damagedRoom = mapper.Map<DamagedRoom>(dfa_appdamagedItem);
+                damagedRooms = damagedRooms.Append<DamagedRoom>(damagedRoom);
             }
             return Ok(damagedRooms);
         }
@@ -82,8 +82,8 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class DamagedRoom
     {
-        public string applicationId { get; set; }
-        public string? id { get; set; }
+        public Guid applicationId { get; set; }
+        public Guid? id { get; set; }
         public RoomType roomType { get; set; }
         public string? otherRoomType { get; set; }
         public string description { get; set; }

@@ -42,7 +42,7 @@
                   <th mat-header-cell *matHeaderCellDef>
                     &nbsp;
                   </th>
-                  <td *matCellDef="let element" mat-cell>
+                  <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
                     mat-icon-button
@@ -161,7 +161,6 @@
                     </mat-form-field>
                   </div>
                 </div>
-                <!-- <button type="button" (click)="showFullTimeOccupantsForm()">Show Form</button> -->
 
                 <div class="row">
                   <div class="col-md-3">
@@ -254,7 +253,7 @@
                   <th mat-header-cell *matHeaderCellDef>
                     &nbsp;
                   </th>
-                  <td *matCellDef="let element" mat-cell>
+                  <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
                     mat-icon-button
@@ -509,7 +508,7 @@
                   <th mat-header-cell *matHeaderCellDef>
                     &nbsp;
                   </th>
-                  <td *matCellDef="let element" mat-cell>
+                  <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
                     mat-icon-button

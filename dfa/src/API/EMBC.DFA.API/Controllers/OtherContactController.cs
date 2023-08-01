@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace EMBC.DFA.API.Controllers
 {
-    [Route("api/othercontact")]
+    [Route("api/othercontacts")]
     [ApiController]
     [Authorize]
     public class OtherContactController : ControllerBase
@@ -47,7 +47,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteOtherContact(OtherContact otherContact)
         {
             if (otherContact == null) return BadRequest("OtherContact details cannot be empty.");
-            var mappedOtherContact = mapper.Map<dfa_othercontact>(otherContact);
+            var mappedOtherContact = mapper.Map<dfa_appothercontact_params>(otherContact);
 
             var otherContactId = await handler.HandleOtherContactAsync(mappedOtherContact);
             return Ok(otherContactId);
@@ -64,14 +64,14 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<IEnumerable<OtherContact>>> GetOtherContacts(
             [FromQuery]
             [Required]
-            string applicationId)
+            Guid applicationId)
         {
-            IEnumerable<dfa_othercontact> dfa_OtherContacts = await handler.GetOtherContactsAsync(applicationId);
+            IEnumerable<dfa_appothercontact_retrieve> dfa_OtherContacts = await handler.GetOtherContactsAsync(applicationId);
             IEnumerable<OtherContact> otherContacts = new OtherContact[] { };
-            foreach (dfa_othercontact dfa_otherContact in dfa_OtherContacts)
+            foreach (dfa_appothercontact_retrieve dfa_otherContact in dfa_OtherContacts)
             {
                 OtherContact otherContact = mapper.Map<OtherContact>(dfa_otherContact);
-                otherContacts.Append<OtherContact>(otherContact);
+                otherContacts = otherContacts.Append<OtherContact>(otherContact);
             }
             return Ok(otherContacts);
         }
@@ -82,8 +82,8 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class OtherContact
     {
-        public string? id { get; set; }
-        public string applicationId { get; set; }
+        public Guid? id { get; set; }
+        public Guid applicationId { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string phoneNumber { get; set; }
