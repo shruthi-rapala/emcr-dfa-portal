@@ -12,7 +12,7 @@
     "logLevel": "debug"
   },
   "/token": {
-    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca"https://era-evacuees-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca"
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
