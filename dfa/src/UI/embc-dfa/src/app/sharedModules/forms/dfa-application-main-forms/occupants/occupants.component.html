@@ -104,6 +104,14 @@
                       >
                         First Name is required</mat-error
                       >
+                      <mat-error
+                        *ngIf="
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.firstName.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
@@ -119,6 +127,14 @@
                       >
                         Last Name is required</mat-error
                       >
+                      <mat-error
+                        *ngIf="
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.lastName.invalid &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.lastName.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
@@ -133,6 +149,14 @@
                         "
                       >
                       Relationship is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
+                          fullTimeOccupantsForm.get('fullTimeOccupant').controls.relationship.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
                       >
                     </mat-form-field>
                   </div>
@@ -306,6 +330,14 @@
                       >
                         First Name is required</mat-error
                       >
+                      <mat-error
+                        *ngIf="
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.firstName.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.firstName.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-2">
@@ -320,6 +352,14 @@
                         "
                       >
                         Last Name is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.lastName.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.lastName.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
                       >
                     </mat-form-field>
                   </div>
@@ -347,6 +387,14 @@
                       >
                         Telephone number is required</mat-error
                     >
+                      <mat-error
+                        *ngIf="
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-3">
@@ -369,6 +417,14 @@
                         "
                         >
                         Email address is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.email.invalid &&
+                          secondaryApplicantsForm.get('secondaryApplicant').controls.email.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
                       >
                     </mat-form-field>
                   </div>
@@ -515,6 +571,14 @@
                       >
                         First Name is required</mat-error
                       >
+                      <mat-error
+                        *ngIf="
+                          otherContactsForm.get('otherContact').controls.firstName.invalid &&
+                          otherContactsForm.get('otherContact').controls.firstName.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-3">
@@ -529,6 +593,14 @@
                         "
                       >
                         Last Name is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          otherContactsForm.get('otherContact').controls.lastName.invalid &&
+                          otherContactsForm.get('otherContact').controls.lastName.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
                       >
                     </mat-form-field>
                   </div>
@@ -579,6 +651,14 @@
                     >
                       Invalid email address</mat-error
                     >
+                      <mat-error
+                        *ngIf="
+                          otherContactsForm.get('otherContact').controls.email.invalid &&
+                          otherContactsForm.get('otherContact').controls.email.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                 </div>

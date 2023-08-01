@@ -128,6 +128,14 @@
                       >
                         Other room type is required</mat-error
                       >
+                      <mat-error
+                        *ngIf="
+                          damagedRoomsForm.get('damagedRoom').controls.otherRoomType.invalid &&
+                          damagedRoomsForm.get('damagedRoom').controls.otherRoomType.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-8">
@@ -148,6 +156,14 @@
                         "
                       >
                         Description is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          damagedRoomsForm.get('damagedRoom').controls.description.invalid &&
+                          damagedRoomsForm.get('damagedRoom').controls.description.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
                       >
                     </mat-form-field>
                   </div>
@@ -316,6 +332,14 @@
                         "
                       >
                         File description is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          damagePhotosForm.get('fileUpload').controls.fileDescription.invalid &&
+                          damagePhotosForm.get('fileUpload').controls.fileDescription.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
                       >
                     </mat-form-field>
                   </div>

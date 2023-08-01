@@ -56,6 +56,14 @@
                   >
                     File description is required</mat-error
                   >
+                  <mat-error
+                        *ngIf="
+                          insuranceTemplateForm.get('fileUpload.fileDescription').invalid &&
+                      insuranceTemplateForm.get('fileUpload.fileDescription').hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                 </mat-form-field>
               </div>
             </div>
@@ -138,6 +146,14 @@
                         "
                       >
                         File description is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          supportingFilesForm.get('fileUpload').controls.fileDescription.invalid &&
+                          supportingFilesForm.get('fileUpload').controls.fileDescription.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
                       >
                     </mat-form-field>
                     <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileData').value">Category: please select a category that describes the file you are attaching to your application.</label>

@@ -325,6 +325,9 @@ export class FullTimeOccupantsForm {
               () => this.addNewFullTimeOccupantIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -336,6 +339,9 @@ export class FullTimeOccupantsForm {
               () => this.addNewFullTimeOccupantIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -347,6 +353,9 @@ export class FullTimeOccupantsForm {
               () => this.addNewFullTimeOccupantIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ]
@@ -415,6 +424,9 @@ export class OtherContactsForm {
               () => this.addNewOtherContactIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -426,6 +438,9 @@ export class OtherContactsForm {
               () => this.addNewOtherContactIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -450,6 +465,9 @@ export class OtherContactsForm {
               () => this.addNewOtherContactIndicator.value,
               Validators.required,
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ]
@@ -531,6 +549,9 @@ export class SecondaryApplicantsForm {
               () => this.addNewSecondaryApplicantIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -542,6 +563,9 @@ export class SecondaryApplicantsForm {
               () => this.addNewSecondaryApplicantIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -554,6 +578,9 @@ export class SecondaryApplicantsForm {
               () => this.addNewSecondaryApplicantIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -566,6 +593,9 @@ export class SecondaryApplicantsForm {
               () => this.addNewSecondaryApplicantIndicator.value,
               Validators.required,
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ]
@@ -645,6 +675,9 @@ export class CleanUpLogItemsForm {
               () => this.addNewCleanUpLogIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -656,11 +689,19 @@ export class CleanUpLogItemsForm {
               () => this.addNewCleanUpLogIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
       description: [
-        ''
+        '',
+        [
+          customValidator
+            .maxLengthValidator()
+            .bind(customValidator)
+        ]
       ]
     });
   }
@@ -764,6 +805,9 @@ export class FileUploadsForm {
               () => this.addNewFileUploadIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -907,6 +951,9 @@ export class DamagedRoomsForm {
               () => this.addNewDamagedRoomIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
@@ -918,6 +965,9 @@ export class DamagedRoomsForm {
               () => this.addNewDamagedRoomIndicator.value,
               Validators.required
             )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator()
             .bind(customValidator)
         ]
       ],
