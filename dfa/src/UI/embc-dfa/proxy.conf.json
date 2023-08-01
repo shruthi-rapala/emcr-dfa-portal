@@ -1,37 +1,37 @@
 {
   "/api/*": {
-    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/login": {
-    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/token": {
-    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/signin-oidc": {
-    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/join": {
-    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "logLevel": "debug"
   },
   "/env/info.json": {
-    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/version": {
-    "target": "https://dev-dfa-portal-api-route-b5e079-dev.apps.silver.devops.gov.bc.ca",
+    "target": "https://dfa-portal-api-route-c2ee1a-dev.apps.silver.devops.gov.bc.ca",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
