@@ -123,7 +123,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             catch
             {
                 return new System.Dynamic.ExpandoObject();
-                //throw new Exception($"Failed to add application annotation {ex.Message}", ex);
+                // throw new Exception($"Failed to add application annotation {ex.Message}", ex);
             }
         }
 

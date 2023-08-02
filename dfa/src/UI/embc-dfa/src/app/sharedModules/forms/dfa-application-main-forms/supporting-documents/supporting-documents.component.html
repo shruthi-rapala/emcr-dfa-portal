@@ -1,88 +1,267 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <p class="sub-heading" style="font-size: 20px">Supporting Documents</p>
-    On this page provide the required and other supporting documents.
+    <ng-container>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="sub-heading" style="font-size: 20px">Supporting Documents</p>
+          On this page provide the required and other supporting documents.
+        </div>
+        <div class="col-md-4">
+          <p class="sub-heading" style="font-size: 15px">Need help?</p>
+          If you can't provide the required documents to submit your application, please contact us at DFA.Private@gov.bc.ca or call toll free at 1-844-537-7377 for help.
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="sub-heading" style="font-size: 15px">Required Documents</p>
+          You must provide the following document before you can submit your application:
+          <ul>
+            <li>Insurance template completed by your insurance broker</li>
+            <li *ngIf="isResidentialTenant">Rental agreement: a copy of your rental agreement, lease, or other documentation to show that you are/were legally occupying the damaged property at the time of the event, and</li>
+            <li *ngIf="isResidentialTenant">Identification: a copy of government issued identification such as Driver's License, Service Card, or BC ID.</li>
+          </ul>
+          <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container>
+      <div class="row">
+        <div class="col-md-8">
+          <form [formGroup]="insuranceTemplateForm">
+
+            <div formGroupName="fileUpload">
+              <ng-container>
+
+                <mat-card>
+                  <div class="row" *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
+                    <div class="col-md-6">
+                      <b>Insurance Template<span style="color:red;">*</span></b><br/>
+                      Attach the insurance template completed by your insurance broker.<br/>
+                      <a target="_blank" href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf">Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a><br/><br/>
+                      <app-file-upload
+                        [noOfAttachments]="1"
+                        (attachedFile)="setFileFormControl(insuranceTemplateForm, $event)"
+                        [allowedFileTypes]="allowedFileTypes"
+                        allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+                      >
+                      </app-file-upload>
+                    </div>
+                    <div class="col-md-6">
+                      <br/><br/>
+                      <div [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value">
+                        <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
+                        <br/>
+                        {{ insuranceTemplateForm.get('fileUpload.fileName').value }}
+                        <br/><br/>
+                      </div>
+                      <label class="sub-heading" style="font-size: 15px" [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value"
+                        >You may update the file description to something more descriptive:</label
+                      >
+                      <mat-form-field appearance="outline" [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value">
+                        <mat-label>File description</mat-label>
+                        <input formControlName="fileDescription" matInput placeholder="File description" required/>
+                        <mat-error
+                          *ngIf="
+                            insuranceTemplateForm.get('fileUpload.fileDescription').invalid &&
+                            insuranceTemplateForm.get('fileUpload.fileDescription').hasError('required') &&
+                            insuranceTemplateForm.get('fileUpload.fileDescription').touched
+                          "
+                        >
+                          File description is required</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!insuranceTemplateForm.hasError('noInsuranceTemplate')">
+                    <p class="sub-heading" style="font-size: 15px">Insurance template has been uploaded and can be found in the list of supporting documents.</p>
+                  </div>
+
+                  <br/><br/>
+                  <div class="row" *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
+                    <div class="col-md-6">
+                      <button
+                        class="family-button details-button save-button"
+                        mat-button
+                        type="button"
+                        (click)="saveRequiredForm(this.insuranceTemplateForm)"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+
+                </mat-card>
+
+              </ng-container>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </ng-container>
     <br/><br/>
 
-    <form [formGroup]="insuranceTemplateForm">
+    <ng-container *ngIf="isResidentialTenant">
+      <div class="row">
+        <div class="col-md-8">
+          <form [formGroup]="rentalAgreementForm">
 
-      <div formGroupName="fileUpload">
-        <ng-container>
-          <div clas="row">
-            <div class="col-md-12">
-              <p class="sub-heading" style="font-size: 15px">Required Documents</p>
-              You must provide the following document before you can submit your application:
-              <ul>
-                <li>Insurance template completed by your insurance broker</li>
-              </ul>
-            </div>
-          </div>
-          <mat-card>
-            <div class="row" *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
-              <div class="col-md-6">
-                <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
-                <b>Insurance Template<span style="color:red;">*</span></b><br/>
-                Attach the insurance template completed by your insurance broker.<br/>
-                <a target="_blank" href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf">Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a><br/><br/>
-                <app-file-upload
-                  [noOfAttachments]="1"
-                  (attachedFile)="setInsuranceTemplateFileFormControl($event)"
-                  [allowedFileTypes]="allowedFileTypes"
-                  allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
-                >
-                </app-file-upload>
-              </div>
-              <div class="col-md-6">
-                <br/><br/>
-                <div [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value">
-                  <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
-                  <br/>
-                  {{ insuranceTemplateForm.get('fileUpload.fileName').value }}
+            <div formGroupName="fileUpload">
+              <ng-container>
+                <mat-card>
+                  <div class="row" *ngIf="rentalAgreementForm.hasError('noRentalAgreement')">
+                    <div class="col-md-6">
+                      <b>Rental Agreement<span style="color:red;">*</span></b><br/>
+                       Attach your rental agreement, lease, or <a (click)="onToggleOtherDocuments()"><u>other documentation</u></a> to show that you are/were legally occupying the damaged property at the time of the event.<br/>
+                      <app-file-upload
+                        [noOfAttachments]="1"
+                        (attachedFile)="setFileFormControl(rentalAgreementForm, $event)"
+                        [allowedFileTypes]="allowedFileTypes"
+                        allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+                      >
+                      </app-file-upload>
+                    </div>
+                    <div class="col-md-6">
+                      <br/><br/>
+                      <div [hidden]="!rentalAgreementForm.get('fileUpload.fileName').value">
+                        <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
+                        <br/>
+                        {{ rentalAgreementForm.get('fileUpload.fileName').value }}
+                        <br/><br/>
+                      </div>
+                      <label class="sub-heading" style="font-size: 15px" [hidden]="!rentalAgreementForm.get('fileUpload.fileName').value"
+                        >You may update the file description to something more descriptive:</label
+                      >
+                      <mat-form-field appearance="outline" [hidden]="!rentalAgreementForm.get('fileUpload.fileName').value">
+                        <mat-label>File description</mat-label>
+                        <input formControlName="fileDescription" matInput placeholder="File description" required/>
+                        <mat-error
+                          *ngIf="
+                            rentalAgreementForm.get('fileUpload.fileDescription').invalid &&
+                            rentalAgreementForm.get('fileUpload.fileDescription').hasError('required') &&
+                            rentalAgreementForm.get('fileUpload.fileDescription').touched
+                          "
+                        >
+                          File description is required</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!rentalAgreementForm.hasError('noRentalAgreement')">
+                    <p class="sub-heading" style="font-size: 15px">Residential tenancy proof has been uploaded and can be found in the list of supporting documents.</p>
+                  </div>
+
                   <br/><br/>
-                </div>
-                <label class="sub-heading" style="font-size: 15px" [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value"
-                  >You may update the file description to something more descriptive:</label
-                >
-                <mat-form-field appearance="outline" [hidden]="!insuranceTemplateForm.get('fileUpload.fileName').value">
-                  <mat-label>File description</mat-label>
-                  <input formControlName="fileDescription" matInput placeholder="File description" required/>
-                  <mat-error
-                    *ngIf="
-                      insuranceTemplateForm.get('fileUpload.fileDescription').invalid &&
-                      insuranceTemplateForm.get('fileUpload.fileDescription').hasError('required') &&
-                      insuranceTemplateForm.get('fileUpload.fileDescription').touched
-                    "
-                  >
-                    File description is required</mat-error
-                  >
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row" *ngIf="!insuranceTemplateForm.hasError('noInsuranceTemplate')">
-              <p class="sub-heading" style="font-size: 15px">Insurance template has been uploaded and can be found in the list of supporting documents.</p>
+                  <div class="row" *ngIf="rentalAgreementForm.hasError('noRentalAgreement')">
+                    <div class="col-md-6">
+                      <button
+                        class="family-button details-button save-button"
+                        mat-button
+                        type="button"
+                        (click)="saveRequiredForm(this.rentalAgreementForm)"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+
+                </mat-card>
+
+              </ng-container>
             </div>
 
-            <br/><br/>
-            <div class="row" *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
-              <div class="col-md-6">
-                <button
-                  class="family-button details-button save-button"
-                  mat-button
-                  type="button"
-                  (click)="saveInsuranceTemplate()"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-
-          </mat-card>
-
-        </ng-container>
+          </form>
+        </div>
+        <div class="sub-heading radio-extra-label col-md-4" *ngIf="showOtherDocuments === true" style="border: 3px solid #70abd9">
+          <br/>
+          <b>Other documentation to show tenancy:</b>
+          If you don't have a rental or lease agreement, you may include:
+          <ul>
+            <li>written correspondence from your landlord showing the dates and terms of your tenancy, or</li>
+            <li>a piece of mail showing you lived in the residence at the time of the event, such as BC Hydro bill, utility bill, bank statement, or vehicle insurance.</li>
+          </ul>
+        </div>
       </div>
+    </ng-container>
+    <br/><br/>
 
-    </form>
+    <ng-container *ngIf="isResidentialTenant">
+      <div class="row">
+        <div class="col-md-8">
+          <form [formGroup]="identificationForm">
+
+            <div formGroupName="fileUpload">
+              <ng-container>
+                <mat-card>
+                  <div class="row" *ngIf="identificationForm.hasError('noIdentification')">
+                    <div class="col-md-6">
+                      <b>Identification<span style="color:red;">*</span></b><br/>
+                      Attach a copy of government issued identification such as Driver's License, Service Card, or BC ID.<br/>
+                      <app-file-upload
+                        [noOfAttachments]="1"
+                        (attachedFile)="setFileFormControl(identificationForm, $event)"
+                        [allowedFileTypes]="allowedFileTypes"
+                        allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+                      >
+                      </app-file-upload>
+                    </div>
+                    <div class="col-md-6">
+                      <br/><br/>
+                      <div [hidden]="!identificationForm.get('fileUpload.fileName').value">
+                        <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
+                        <br/>
+                        {{ identificationForm.get('fileUpload.fileName').value }}
+                        <br/><br/>
+                      </div>
+                      <label class="sub-heading" style="font-size: 15px" [hidden]="!identificationForm.get('fileUpload.fileName').value"
+                        >You may update the file description to something more descriptive:</label
+                      >
+                      <mat-form-field appearance="outline" [hidden]="!identificationForm.get('fileUpload.fileName').value">
+                        <mat-label>File description</mat-label>
+                        <input formControlName="fileDescription" matInput placeholder="File description" required/>
+                        <mat-error
+                          *ngIf="
+                            identificationForm.get('fileUpload.fileDescription').invalid &&
+                            identificationForm.get('fileUpload.fileDescription').hasError('required') &&
+                            identificationForm.get('fileUpload.fileDescription').touched
+                          "
+                        >
+                          File description is required</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!identificationForm.hasError('noIdentification')">
+                    <p class="sub-heading" style="font-size: 15px">Identification has been uploaded and can be found in the list of supporting documents.</p>
+                  </div>
+
+                  <br/><br/>
+                  <div class="row" *ngIf="identificationForm.hasError('noIdentification')">
+                    <div class="col-md-6">
+                      <button
+                        class="family-button details-button save-button"
+                        mat-button
+                        type="button"
+                        (click)="saveRequiredForm(this.identificationForm)"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+
+                </mat-card>
+
+              </ng-container>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </ng-container>
+    <br/><br/>
+
     <form [formGroup]="supportingFilesForm">
 
       <div formGroupName="fileUpload">
@@ -110,7 +289,7 @@
                   >
                     <app-file-upload
                       [noOfAttachments]="1"
-                      (attachedFile)="setSupportingFileFormControl($event)"
+                      (attachedFile)="setFileFormControl(supportingFilesForm, $event)"
                       [allowedFileTypes]="allowedFileTypes"
                       allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
                     >
@@ -145,7 +324,10 @@
                       <mat-label>File category</mat-label>
                       <mat-select formControlName="fileType" matInput placeholder="File category" required>
                         <div *ngFor="let option of FileCategories | keyvalue: originalOrder">
-                          <mat-option *ngIf="option.value !== FileCategories.Insurance && option.value !== FileCategories.Cleanup && option.value !== FileCategories.DamagePhoto" [value]="option.key">{{ option.value }}</mat-option>
+                          <mat-option *ngIf="option.value !== FileCategories.Insurance && option.value !== FileCategories.Cleanup && option.value !== FileCategories.DamagePhoto && (!isResidentialTenant || option.value != FileCategories.Identification) && (isResidentialTenant || option.value != FileCategories.TenancyProof)"
+                            [value]="option.key">
+                            {{ option.value }}
+                          </mat-option>
                         </div>
                       </mat-select>
                       <mat-error
@@ -264,7 +446,12 @@
               <mat-error *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
                 <br/>Insurance template is required.
               </mat-error>
-
+              <mat-error *ngIf="rentalAgreementForm.hasError('noRentalAgreement') && isResidentialTenant">
+                <br/>Proof of tenancy is required.
+              </mat-error>
+              <mat-error *ngIf="identificationForm.hasError('noIdentification') && isResidentialTenant">
+                <br/>Identification is required.
+              </mat-error>
             </div>
           </div>
 
