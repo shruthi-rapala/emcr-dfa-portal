@@ -147,7 +147,6 @@ namespace EMBC.DFA.API
                 document.GenerateAbstractProperties = true;
             });
 
-            services.AddTransient<IEvacuationSearchService, EvacuationSearchService>();
             services.AddTransient<IProfileInviteService, ProfileInviteService>();
             services.AddTransient<IConfigurationHandler, Handler>();
             services.AddTransient<IDynamicsGateway, DynamicsGateway>();

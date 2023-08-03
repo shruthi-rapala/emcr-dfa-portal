@@ -302,9 +302,6 @@ namespace EMBC.DFA.API.Controllers
             //    .ForMember(d => d.CommunityType, opts => opts.MapFrom(s => s.Type))
             //    .ForMember(d => d.ParentCode, opts => opts.MapFrom(s => new Code { Value = s.StateProvinceCode, Type = nameof(StateProvince), ParentCode = new Code { Value = s.CountryCode, Type = nameof(Country) } }))
             //    ;
-
-            CreateMap<ESS.Shared.Contracts.Metadata.OutageInformation, OutageInformation>()
-                ;
         }
     }
 }
