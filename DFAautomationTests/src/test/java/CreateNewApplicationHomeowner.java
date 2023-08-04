@@ -40,22 +40,12 @@ public class CreateNewApplicationHomeowner {
         WebElement element = WebDriverManager.getElement();
         WebDriverManager.getElements();
 
-//        CreateProfile createProfile = new CreateProfile();
-//        createProfile.test();
-
         Login login = new Login();
         login.test();
 
 
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Create New Application ')]"))).click();
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Notice of Collection')]")));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-        Thread.sleep(1000);
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Application Type & Insurance ')]"))).click();
+        CreateNewApplicationHomeowner createAp = new CreateNewApplicationHomeowner();
+        createAp.createAppl(element, driverWait, driver);
 
         //TO DO - Profile verification
         Thread.sleep(1000);
@@ -96,12 +86,26 @@ public class CreateNewApplicationHomeowner {
                 .presenceOfElementLocated(By.id("mat-input-1")));
         element.sendKeys("12/12/2024");
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         JavascriptExecutor js3 = (JavascriptExecutor) driver;
         element = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Damaged Property ')]")));
         js3.executeScript("arguments[0].click();", element);
 
+
+        }
+
+    public void createAppl(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
+
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Create New Application ')]"))).click();
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Notice of Collection')]")));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        Thread.sleep(1000);
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Application Type & Insurance ')]"))).click();
 
         }
     }

@@ -55,8 +55,8 @@ public class Login {
         element.sendKeys(bceidPASSWORD);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("submit-btn")));
         element.click();
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnSubmit")));
-        element.click();
+//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnSubmit")));
+//        element.click();
 
         //Display notice of Collention
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
