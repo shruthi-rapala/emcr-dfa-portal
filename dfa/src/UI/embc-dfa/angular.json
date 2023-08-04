@@ -83,8 +83,17 @@
               "browserTarget": "embc-dfa:build:local",
               "proxyConfig": "proxy.dev.conf.json"
             },
+            "test": {
+              "browserTarget": "embc-dfa:build:local",
+              "proxyConfig": "proxy.test.conf.json"
+            },
+            "training": {
+              "browserTarget": "embc-dfa:build:local",
+              "proxyConfig": "proxy.training.conf.json"
+            },
             "production": {
-              "browserTarget": "embc-dfa:build:production"
+              "browserTarget": "embc-dfa:build:production",
+              "proxyConfig": "proxy.conf.json"
             }
           }
         },
