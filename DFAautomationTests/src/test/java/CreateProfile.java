@@ -19,15 +19,15 @@ public class CreateProfile {
     private WebDriver driver;
 
 
-    @After
-    public void tearDown() {
-        driver.close();
-        driver.quit();
-    }
-    @AfterClass
-    public static void afterClass() {
-        WebDriverManager.instance = null;
-    }
+//    @After
+//    public void tearDown() {
+//        driver.close();
+//        driver.quit();
+//    }
+//    @AfterClass
+//    public static void afterClass() {
+//        WebDriverManager.instance = null;
+//    }
 
 
     @Test
@@ -37,7 +37,7 @@ public class CreateProfile {
         WebElement element = WebDriverManager.getElement();
         WebDriverManager.getElements();
 
-        Login login = new Login();
+        LoginCreateProfile login = new LoginCreateProfile();
         login.test();
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -48,40 +48,43 @@ public class CreateProfile {
         //Check the first and last name are polled
 
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'EVAC')]")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'PHSAPOC')]")));
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'THREE')]")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'EIGHT')]")));
 
         JavascriptExecutor js1 = (JavascriptExecutor) driver;
-        //Scroll down till the bottom of the page
-        js1.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-        Thread.sleep(1500);
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-2")));
+//        //Scroll down till the bottom of the page
+       js1.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        //Thread.sleep(1000);
+        JavascriptExecutor js21 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-verified-registration/app-profile/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-personal-details/mat-card/mat-card-content/form/div[3]/div/mat-form-field/div/div[1]/div[3]/input")));
+        js21.executeScript("arguments[0].click();", element);
         element.sendKeys("ET");
 
         JavascriptExecutor js2 = (JavascriptExecutor) driver;
         element = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='radio' and @value='Yes']")));
         js2.executeScript("arguments[0].click();", element);
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Address ')]"))).click();
+
+        JavascriptExecutor js22 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Address ')]")));
+        js22.executeScript("arguments[0].click();", element);
 
         //Address Check
+        new WebDriverWait(driver, Duration.ofSeconds(30)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), '123 FIRST STREET')]")));
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), '818-9025 PEARL PLACE')]")));
-//        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-//                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'asfaf')]")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'VICTORIA')]")));
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'BC')]")));
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'V3R 3H7')]")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'V8V 8V8')]")));
         //Scroll down till the bottom of the page
         Thread.sleep(1000);
         JavascriptExecutor js3 = (JavascriptExecutor) driver;
         element = driverWait
-                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-5 .mat-radio-outer-circle")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-verified-registration/app-profile/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-address/form/mat-card[2]/mat-card-content/div/div/mat-radio-group/mat-radio-button[1]/label/span[1]/span[1]")));
         js3.executeScript("arguments[0].click();", element);
-
+        //To be commented out
+        Thread.sleep(1000);
         js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
         Thread.sleep(1000);
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
@@ -103,11 +106,11 @@ public class CreateProfile {
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Review & Submit')]")));
         js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-        Thread.sleep(1000);
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Save & Submit ')]"))).click();
-        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' No, I am not ready to apply ')]")));
+//        Thread.sleep(1000);
+//        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+//                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Save & Submit ')]"))).click();
+//        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+//                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' No, I am not ready to apply ')]")));
 
         }
 

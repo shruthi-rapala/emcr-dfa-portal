@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class Login {
+public class LoginCreateProfile {
 
     private WebDriver driver;
     private static String  bceidUSERNAME = System.getenv("USERNAME_BCEID");
@@ -60,7 +60,9 @@ public class Login {
 
         //Display notice of Collention
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'This page is for homeowners and residential tenants.')]")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Notice of Collection')]")));
+
+
 
     }
 }

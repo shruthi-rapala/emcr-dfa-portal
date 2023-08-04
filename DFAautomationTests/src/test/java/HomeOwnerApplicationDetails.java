@@ -19,15 +19,15 @@ public class HomeOwnerApplicationDetails {
     private WebDriver driver;
 
 
-//    @After
-//    public void tearDown() {
-//        driver.close();
-//        driver.quit();
-//    }
-//    @AfterClass
-//    public static void afterClass() {
-//        WebDriverManager.instance = null;
-//    }
+    @After
+    public void tearDown() {
+        driver.close();
+        driver.quit();
+    }
+    @AfterClass
+    public static void afterClass() {
+        WebDriverManager.instance = null;
+    }
 
 
     @Test
@@ -39,6 +39,10 @@ public class HomeOwnerApplicationDetails {
 
         CreateNewApplicationHomeowner applDetails = new CreateNewApplicationHomeowner();
         applDetails.test();
+        Thread.sleep(1000);
+        JavascriptExecutor js100 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-13-input")));
+        js100.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
         JavascriptExecutor js5 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-4")));
@@ -58,7 +62,7 @@ public class HomeOwnerApplicationDetails {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-18-input")));
         js.executeScript("arguments[0].click();", element);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-16")));
-        element.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu");
+        element.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m");
         Thread.sleep(1000);
         //Is your home a manufactured home?
         JavascriptExecutor js21 = (JavascriptExecutor) driver;
@@ -72,14 +76,27 @@ public class HomeOwnerApplicationDetails {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Cause of Damage ')]")));
         js31.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
-        driver.findElement(By.cssSelector("#mat-checkbox-1 .mat-checkbox-inner-container")).click();
-        driver.findElement(By.cssSelector("#mat-checkbox-2 .mat-checkbox-inner-container")).click();
-        driver.findElement(By.cssSelector("#mat-checkbox-3 .mat-checkbox-inner-container")).click();
-        driver.findElement(By.cssSelector("#mat-checkbox-4 .mat-checkbox-inner-container")).click();
-        driver.findElement(By.cssSelector("#mat-checkbox-5 .mat-checkbox-inner-container")).click();
 
-        element = driverWait
-                .until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-9")));
+        JavascriptExecutor js311 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-1 .mat-checkbox-inner-container")));
+        js311.executeScript("arguments[0].click();", element);
+        JavascriptExecutor js312 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-2 .mat-checkbox-inner-container")));
+        js312.executeScript("arguments[0].click();", element);
+        JavascriptExecutor js313 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-3 .mat-checkbox-inner-container")));
+        js313.executeScript("arguments[0].click();", element);
+        JavascriptExecutor js314 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-4 .mat-checkbox-inner-container")));
+        js314.executeScript("arguments[0].click();", element);
+        JavascriptExecutor js315 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-5 .mat-checkbox-inner-container")));
+        js315.executeScript("arguments[0].click();", element);
+
+        Thread.sleep(1000);
+        JavascriptExecutor js316 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-9")));
+        js316.executeScript("arguments[0].click();", element);
         element.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu");
 
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-10")));
@@ -177,7 +194,7 @@ public class HomeOwnerApplicationDetails {
         JavascriptExecutor js16= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add to clean up log ')]")));
         js16.executeScript("arguments[0].click();", element);
-
+        Thread.sleep(1000);
         JavascriptExecutor js17= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-25")));
         js17.executeScript("arguments[0].click();", element);
