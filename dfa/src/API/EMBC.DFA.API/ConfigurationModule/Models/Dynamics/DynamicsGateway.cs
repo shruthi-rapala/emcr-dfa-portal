@@ -255,20 +255,36 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 });
 
                 var lstApps = (from objApp in list.List
-                            from objEvent in lstEvents.List
-                            where objEvent.dfa_eventid == objApp._dfa_eventid_value
-                            from objCase in lstCases.List
-                            where objCase.incidentid == objApp._dfa_casecreatedid_value
-                            select new dfa_appapplication
-                            {
-                                dfa_appapplicationid = objApp.dfa_appapplicationid,
-                                dfa_applicanttype = objApp.dfa_applicanttype,
-                                dfa_dateofdamage = objApp.dfa_dateofdamage,
-                                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
-                                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                                dfa_event = objEvent.dfa_id,
-                                dfa_casenumber = objCase.ticketnumber
-                            }).AsEnumerable();
+                               join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
+                               from objAppEvent in appEvent.DefaultIfEmpty()
+                               join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
+                               from objCaseEvent in appCase.DefaultIfEmpty()
+                               select new dfa_appapplication
+                               {
+                                   dfa_appapplicationid = objApp.dfa_appapplicationid,
+                                   dfa_applicanttype = objApp.dfa_applicanttype,
+                                   dfa_dateofdamage = objApp.dfa_dateofdamage,
+                                   dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                                   dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                                   dfa_event = objAppEvent != null ? objAppEvent.dfa_id : null,
+                                   dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null
+                               }).AsEnumerable();
+
+                //from objEvent in lstEvents.List
+                //            where objEvent.dfa_eventid == objApp._dfa_eventid_value
+                //            from objCase in lstCases.List
+                //            where objCase.incidentid == objApp._dfa_casecreatedid_value into reslist
+                //            from p in ps_jointable.DefaultIfEmpty()
+                //            select new dfa_appapplication
+                //            {
+                //                dfa_appapplicationid = objApp.dfa_appapplicationid,
+                //                dfa_applicanttype = objApp.dfa_applicanttype,
+                //                dfa_dateofdamage = objApp.dfa_dateofdamage,
+                //                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                //                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                //                dfa_event = objEvent.dfa_id,
+                //                dfa_casenumber = objCase.ticketnumber
+                //            }).AsEnumerable();
 
                 return lstApps;
             }

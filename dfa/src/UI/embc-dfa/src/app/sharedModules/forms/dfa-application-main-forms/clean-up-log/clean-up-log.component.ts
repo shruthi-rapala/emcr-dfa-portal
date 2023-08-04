@@ -113,6 +113,12 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   }
 
   getCleanUpLogsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+      //alert("applicationId: " + applicationId)
+    }
+
     this.cleanUpLogsService.cleanUpLogItemGetCleanUpLogItems({applicationId: applicationId}).subscribe({
       next: (cleanUpLogs) => {
         this.cleanUpWorkData = cleanUpLogs;

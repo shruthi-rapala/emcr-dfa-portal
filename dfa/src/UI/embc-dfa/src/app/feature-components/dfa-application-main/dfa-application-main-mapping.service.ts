@@ -33,7 +33,11 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((damagedPropertyAddress) => {
         damagedPropertyAddress.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.damagedPropertyAddress,
+          isPrimaryAndDamagedAddressSame: dfaApplicationMain.damagedPropertyAddress.isPrimaryAndDamagedAddressSame === true ? 'true' : 'false',
+          occupyAsPrimaryResidence: dfaApplicationMain.damagedPropertyAddress.occupyAsPrimaryResidence === true ? 'true' : 'false',
+          onAFirstNationsReserve: dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === true ? 'true' : 'false',
+          manufacturedHome: dfaApplicationMain.damagedPropertyAddress.manufacturedHome === true ? 'true' : 'false',
         });
         formGroup = damagedPropertyAddress;
       });
@@ -48,7 +52,7 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((cleanUpLog) => {
         cleanUpLog.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.cleanUpLog
         });
         formGroup = cleanUpLog;
       });
@@ -63,7 +67,7 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((supportingDocuments) => {
         supportingDocuments.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.supportingDocuments
         });
         formGroup = supportingDocuments;
       });
@@ -78,7 +82,7 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((signAndSubmit) => {
         signAndSubmit.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.signAndSubmit
         });
         formGroup = signAndSubmit;
       });
@@ -93,7 +97,7 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((propertyDamage) => {
         propertyDamage.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.propertyDamage
         });
         formGroup = propertyDamage;
       });

@@ -48,20 +48,20 @@ export class DashboardComponent implements OnInit {
         inactiveImage: '/assets/images/past-evac.svg',
         count: this.currentApplicationsCount
       },
-      {
-        label: 'DFA Events',
-        route: 'eventlist',
-        activeImage: '/assets/images/curr-evac-active.svg',
-        inactiveImage: '/assets/images/curr-evac.svg',
-        count: this.eventsCount
-      },
-      {
-        label: 'Past Applications',
-        route: 'past',
-        activeImage: '/assets/images/past-evac-active.svg',
-        inactiveImage: '/assets/images/past-evac.svg',
-        count: this.pastApplicationsCount
-      },
+      //{
+      //  label: 'DFA Events',
+      //  route: 'eventlist',
+      //  activeImage: '/assets/images/curr-evac-active.svg',
+      //  inactiveImage: '/assets/images/curr-evac.svg',
+      //  count: this.eventsCount
+      //},
+      //{
+      //  label: 'Past Applications',
+      //  route: 'past',
+      //  activeImage: '/assets/images/past-evac-active.svg',
+      //  inactiveImage: '/assets/images/past-evac.svg',
+      //  count: this.pastApplicationsCount
+      //},
       {
         label: 'Profile',
         route: 'profile',

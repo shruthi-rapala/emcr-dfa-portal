@@ -47,6 +47,7 @@
                <button
                       class="application-button"
                       type="button"
+                       (click)="ViewApplication(applItem.applicationId)"
                     >
                       View Application
                 </button>
@@ -72,12 +73,12 @@
                       Add Supporting Docs
                 </button>
               
-               <button
+               <!--<button
                       class="application-button redbutton"
                       type="button"
                     >
                       Delete Application
-                </button>
+                </button>-->
             </div>
 
           </mat-card>

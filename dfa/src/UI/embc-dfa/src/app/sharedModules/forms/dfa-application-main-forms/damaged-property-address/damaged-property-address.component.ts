@@ -29,6 +29,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatInputModule } from '@angular/material/input';
 import { ApplicationService } from 'src/app/core/api/services';
+import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
 
 @Component({
   selector: 'app-damaged-property-address',
@@ -65,7 +66,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
     public profileDataService: ProfileDataService,
     public dialog: MatDialog,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private dfaApplicationMainMapping: DFAApplicationMainMappingService,
 
   ) {
     this.formBuilder = formBuilder;
@@ -233,8 +235,25 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       });
 
     this.profileAddress = this.profileDataService.primaryAddressDetails;
+    
     this.damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').setValue(false);
     this.onUseProfileAddressChoice(false);
+
+    this.getDamagedPropertyForApplication(this.dfaApplicationMainDataService.getApplicationId());
+  }
+
+  getDamagedPropertyForApplication(applicationId: string) {
+    this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
+      next: (dfaApplicationMain) => {
+        //this.damagedRoomsData = damagedRooms;
+        //this.damagedRoomsDataSource.next(this.damagedRoomsData);
+        //this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
+        this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   dontOccupyDamagedProperty(): void {

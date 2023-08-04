@@ -119,7 +119,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       .valueChanges.subscribe((value) => this.updateDamagedRoomOnVisibility());
     this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
     this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
-
+    
     this.damagePhotosForm
       .get('addNewFileUploadIndicator')
       .valueChanges.subscribe((value) => this.updateDamagePhotoOnVisibility());
@@ -128,10 +128,15 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
        .pipe(
          mapTo(_damagePhotosFormArray.getRawValue())
          ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType ===Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false));
-
+    
   }
 
   getDamagedRoomsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    }
+
     this.damagedRoomService.damagedRoomGetDamagedRooms({applicationId: applicationId}).subscribe({
       next: (damagedRooms) => {
         this.damagedRoomsData = damagedRooms;

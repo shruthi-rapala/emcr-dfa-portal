@@ -21,6 +21,7 @@ export class DFAApplicationMainDataService {
   private _dfaApplicationMain: DfaApplicationMain;
   private _dfaApplicationStart: DfaApplicationStart;
   private _isSubmitted: boolean = false;
+  private _applicationId: string;
 
   constructor(
     private cacheService: CacheService,
@@ -32,6 +33,11 @@ export class DFAApplicationMainDataService {
   }
 
   public getFileUploadsForApplication(applicationId: string) {
+    
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationStartDataService.getApplicationId();
+    }
+
     this.fileUploadsService.attachmentGetAttachments({applicationId: applicationId}).subscribe({
       next: (attachments) => {
         if (attachments) this.fileUploads = attachments;
@@ -145,6 +151,13 @@ export class DFAApplicationMainDataService {
 
   public set cleanUpLog(value: CleanUpLog) {
     this._cleanUpLog = value;
+  }
+
+  public setApplicationId(applicationId: string): void {
+    this._applicationId = applicationId;
+  }
+  public getApplicationId(): string {
+    return this._applicationId;
   }
    public createDFAApplicationMainDTO(): DfaApplicationMain {
     return {

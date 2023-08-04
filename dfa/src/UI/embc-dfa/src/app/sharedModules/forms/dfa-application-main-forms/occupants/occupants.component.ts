@@ -115,6 +115,11 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   getSecondaryApplicantsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    }
+
     this.secondaryApplicantsService.secondaryApplicantGetSecondaryApplicants({applicationId: applicationId}).subscribe({
       next: (secondaryApplicants) => {
         this.secondaryApplicantsData = secondaryApplicants;
@@ -128,6 +133,11 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   getOtherContactsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    }
+
     this.otherContactsService.otherContactGetOtherContacts({applicationId: applicationId}).subscribe({
       next: (otherContacts) => {
         this.otherContactsData = otherContacts;
@@ -141,6 +151,11 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   getFullTimeOccupantsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    }
+
     this.fullTimeOccupantsService.fullTimeOccupantGetFullTimeOccupants({applicationId: applicationId}).subscribe({
       next: (fullTimeOccupants) => {
         this.fullTimeOccupantsData = fullTimeOccupants;
