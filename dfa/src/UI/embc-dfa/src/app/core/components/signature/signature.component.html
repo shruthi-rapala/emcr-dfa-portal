@@ -18,6 +18,13 @@
           [(ngModel)]="signatureBlock.signedName"
           placeholder="Print Name*"
         />
+        <!--<mat-error
+                *ngIf="
+                  signAndSubmitForm.applicantSignature.signedName.invalid &&
+                  signatureBlock.signedName.hasError('maxLength')
+                "
+                >Maximum length reached</mat-error
+              >-->
       </mat-form-field>
     </div>
   </div>

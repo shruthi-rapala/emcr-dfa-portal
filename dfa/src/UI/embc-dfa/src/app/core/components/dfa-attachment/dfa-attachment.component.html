@@ -1,0 +1,87 @@
+<form [formGroup]="fileUploadsForm">
+
+  <div formGroupName="fileUpload">
+    <ng-container>
+        <mat-card>
+          <div class="row" *ngIf="missingRequiredFile || !requiredFile">
+            <div class="col-md-6">
+              <b>{{title}}<span style="color:red;" *ngIf="requiredFile">*</span></b><br/>
+              <div [innerHtml]="description"></div>
+              <app-file-upload
+                [noOfAttachments]="1"
+                (attachedFile)="setFileFormControl($event)"
+                [allowedFileTypes]="allowedFileTypes"
+                [allowedFileExtensionsList]="allowedFileExtensionsList"
+              >
+              </app-file-upload>
+            </div>
+            <div class="col-md-6">
+              <br/><br/>
+              <div [hidden]="!fileUploadsForm.get('fileUpload.fileName').value">
+                <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
+                <br/>
+                {{ fileUploadsForm.get('fileUpload.fileName').value }}
+                <br/><br/>
+              </div>
+              <label class="sub-heading" style="font-size: 15px" [hidden]="!fileUploadsForm.get('fileUpload.fileName').value"
+                >You may update the file description to something more descriptive:</label
+              >
+              <mat-form-field appearance="outline" [hidden]="!fileUploadsForm.get('fileUpload.fileName').value">
+                <mat-label>File description</mat-label>
+                <input formControlName="fileDescription" matInput placeholder="File description" required/>
+                <mat-error
+                  *ngIf="
+                    fileUploadsForm.get('fileUpload.fileDescription').invalid &&
+                    fileUploadsForm.get('fileUpload.fileDescription').hasError('required') &&
+                    fileUploadsForm.get('fileUpload.fileDescription').touched
+                  "
+                >
+                  File description is required</mat-error
+                >
+              </mat-form-field>
+              <label class="sub-heading" style="font-size: 15px" [hidden]="!fileUploadsForm.get('fileUpload.fileName').value" *ngIf="!fileType">Category: please select a category that describes the file you are attaching to your application.</label>
+              <mat-form-field appearance="outline" [hidden]="!fileUploadsForm.get('fileUpload.fileName').value" *ngIf="!fileType">
+                <mat-label>File category</mat-label>
+                <mat-select formControlName="fileType" matInput placeholder="File category" required>
+                  <div *ngFor="let option of FileCategories | keyvalue: originalOrder">
+                    <mat-option *ngIf="excludeFileTypes.indexOf(option.value) <0"
+                      [value]="option.key">
+                      {{ option.value }}
+                    </mat-option>
+                  </div>
+                </mat-select>
+                <mat-error
+                  *ngIf="
+                    fileUploadsForm.get('fileUpload.fileType').invalid &&
+                    fileUploadsForm.get('fileUpload.fileType').hasError('required') &&
+                    fileUploadsForm.get('fileUpload.fileType').touched
+                  "
+                >
+                  Category is required</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" *ngIf="!missingRequiredFile && requiredFile">
+            <p class="sub-heading" style="font-size: 15px">Required file has been uploaded.</p>
+          </div>
+
+          <br/><br/>
+          <div class="row" *ngIf="(missingRequiredFile || !requiredFile) && fileUploadsForm.get('fileUpload').valid">
+            <div class="col-md-6">
+              <button
+                class="family-button details-button save-button"
+                mat-button
+                type="button"
+                (click)="saveRequiredForm()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+          <button (click)="showForm()">Show Form</button>
+
+        </mat-card>
+    </ng-container>
+  </div>
+</form>

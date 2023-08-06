@@ -29,7 +29,18 @@
     <ng-container>
       <div class="row">
         <div class="col-md-8">
-          <form [formGroup]="insuranceTemplateForm">
+          <app-dfa-attachment
+            title="Insurance Template"
+            description="Attach the insurance template completed by your insurance broker.<br/><a target='_blank' href='https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf'>Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a>"
+            [missingRequiredFile]="insuranceTemplateForm.hasError('noInsuranceTemplate')"
+            requiredFile="true"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="Insurance"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+          ></app-dfa-attachment>
+          <!-- <form [formGroup]="insuranceTemplateForm">
 
             <div formGroupName="fileUpload">
               <ng-container>
@@ -85,7 +96,7 @@
                         class="family-button details-button save-button"
                         mat-button
                         type="button"
-                        (click)="saveRequiredForm(this.insuranceTemplateForm)"
+                        (click)="saveRequiredForm(this.insuranceTemplateForm.get('fileUpload').getRawValue())"
                       >
                         Save
                       </button>
@@ -97,7 +108,7 @@
               </ng-container>
             </div>
 
-          </form>
+          </form> -->
         </div>
       </div>
     </ng-container>
@@ -106,7 +117,19 @@
     <ng-container *ngIf="isResidentialTenant">
       <div class="row">
         <div class="col-md-8">
-          <form [formGroup]="rentalAgreementForm">
+          <app-dfa-attachment
+            title="Rental Agreement"
+            description="Attach your rental agreement, lease, or <a (click)='onToggleSideNote()'><u>other documentation</u></a> to show that you are/were legally occupying the damaged property at the time of the event."
+            [missingRequiredFile]="rentalAgreementForm.hasError('noRentalAgreement')"
+            requiredFile="true"
+            (showSideNote)="onToggleOtherDocuments()"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="TenancyProof"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+          ></app-dfa-attachment>
+          <!-- <form [formGroup]="rentalAgreementForm">
 
             <div formGroupName="fileUpload">
               <ng-container>
@@ -160,7 +183,7 @@
                         class="family-button details-button save-button"
                         mat-button
                         type="button"
-                        (click)="saveRequiredForm(this.rentalAgreementForm)"
+                        (click)="saveRequiredForm(this.rentalAgreementForm.get('fileUpload').getRawValue())"
                       >
                         Save
                       </button>
@@ -172,7 +195,7 @@
               </ng-container>
             </div>
 
-          </form>
+          </form> -->
         </div>
         <div class="sub-heading radio-extra-label col-md-4" *ngIf="showOtherDocuments === true" style="border: 3px solid #70abd9">
           <br/>
@@ -244,7 +267,7 @@
                         class="family-button details-button save-button"
                         mat-button
                         type="button"
-                        (click)="saveRequiredForm(this.identificationForm)"
+                        (click)="saveRequiredForm(this.identificationForm).get('fileUpload').getRawValue()"
                       >
                         Save
                       </button>
@@ -317,6 +340,14 @@
                         "
                       >
                         File description is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          supportingFilesForm.get('fileUpload').controls.fileDescription.invalid &&
+                          supportingFilesForm.get('fileUpload').controls.fileDescription.hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
                       >
                     </mat-form-field>
                     <label class="sub-heading" style="font-size: 15px" [hidden]="!supportingFilesForm.get('fileUpload.fileName').value">Category: please select a category that describes the file you are attaching to your application.</label>

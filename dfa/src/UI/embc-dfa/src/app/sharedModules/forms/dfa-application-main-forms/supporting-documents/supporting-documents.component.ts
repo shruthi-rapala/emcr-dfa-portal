@@ -15,7 +15,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Subscription, mapTo } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { ApplicantOption, FileCategory, SupportStatus } from 'src/app/core/api/models';
+import { ApplicantOption, FileCategory, FileUpload, SupportStatus } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -144,7 +144,12 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let insuranceFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
       this.insuranceTemplateForm.get('fileUpload').setValue(fileUploads[insuranceFoundIndex]);
     } else {
-      this.initFileUploadForm(this.insuranceTemplateForm, Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
+      this.insuranceTemplateForm.get('fileUpload').reset();
+      this.insuranceTemplateForm.get('fileUpload.modifiedBy').setValue("Applicant");
+      this.insuranceTemplateForm.get('fileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
+      this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
+      this.insuranceTemplateForm.get('fileUpload.deleteFlag').setValue(false);
+      this.insuranceTemplateForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
     }
   }
 
@@ -173,7 +178,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let rentalAgreementFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
       this.rentalAgreementForm.get('fileUpload').setValue(fileUploads[rentalAgreementFoundIndex]);
     } else {
-      this.initFileUploadForm(this.rentalAgreementForm, Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
+      this.rentalAgreementForm.get('fileUpload').reset();
+      this.rentalAgreementForm.get('fileUpload.modifiedBy').setValue("Applicant");
+      this.rentalAgreementForm.get('fileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
+      this.rentalAgreementForm.get('addNewFileUploadIndicator').setValue(true);
+      this.rentalAgreementForm.get('fileUpload.deleteFlag').setValue(false);
+      this.rentalAgreementForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+
     }
   }
 
@@ -201,17 +212,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let identificationFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]);
       this.identificationForm.get('fileUpload').setValue(fileUploads[identificationFoundIndex]);
     } else {
-      this.initFileUploadForm(this.identificationForm, Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]);
+      this.identificationForm.get('fileUpload').reset();
+      this.identificationForm.get('fileUpload.modifiedBy').setValue("Applicant");
+      this.identificationForm.get('fileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]);
+      this.identificationForm.get('addNewFileUploadIndicator').setValue(true);
+      this.identificationForm.get('fileUpload.deleteFlag').setValue(false);
+      this.identificationForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
     }
-  }
-
-  initFileUploadForm(form: UntypedFormGroup, fileCategory: string) {
-    form.get('fileUpload').reset();
-    form.get('fileUpload.modifiedBy').setValue("Applicant");
-    form.get('fileUpload.fileType').setValue(fileCategory);
-    form.get('addNewFileUploadIndicator').setValue(true);
-    form.get('fileUpload.deleteFlag').setValue(false);
-    form.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
   }
 
   // Preserve original property order
@@ -223,7 +230,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let FileCategories = FileCategory;
 
     let supportingFiles = form.get('fileUploads')?.getRawValue();
-    if (supportingFiles?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)] && x.deleteFlag == false).length <= 0) {
+    if (supportingFiles?.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length <= 0) {
       return { noInsuranceTemplate: true };
     }
     return null;
@@ -233,7 +240,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let FileCategories = FileCategory;
 
     let supportingFiles = form.get('fileUploads')?.getRawValue();
-    if (supportingFiles?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)] && x.deleteFlag == false).length <= 0) {
+    if (supportingFiles?.filter(x => x.fileType === "Tenancy proof" && x.deleteFlag == false).length <= 0) {
       return { noRentalAgreement: true };
     }
     return null;
@@ -243,7 +250,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let FileCategories = FileCategory;
 
     let supportingFiles = form.get('fileUploads')?.getRawValue();
-    if (supportingFiles?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)] && x.deleteFlag == false).length <= 0) {
+    if (supportingFiles?.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length <= 0) {
       return { noIdentification: true };
     }
     return null;
@@ -279,37 +286,30 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     }
   }
 
-  saveRequiredForm(form: UntypedFormGroup): void {
-    console.log(form);
-    if (form.get('fileUpload').status === 'VALID') {
-      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-      if (fileUploads.filter(x => x.fileType === form.get('fileUpload.fileType').value).length > 0) {
-        this.attachmentsService.attachmentUpsertDeleteAttachment({body: form.get('fileUpload').getRawValue() }).subscribe({
-          next: (fileUploadId) => {
-            let typeFoundIndex = fileUploads.findIndex(x => x.fileType === form.get('fileUpload.fileType').value);
-            fileUploads[typeFoundIndex] = form.get('fileUpload').getRawValue();
-            this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        });
-      } else {
-        this.initFileUploadForm(form, form.get('fileUpload.fileType').value);
-        this.attachmentsService.attachmentUpsertDeleteAttachment({body: form.get('fileUpload').getRawValue() }).subscribe({
-          next: (fileUploadId) => {
-            form.get('fileUpload').get('id').setValue(fileUploadId);
-            fileUploads.push(form.get('fileUpload').value);
-            this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        });
-      }
+  saveRequiredForm(fileUpload: FileUpload): void {
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    if (fileUploads.filter(x => x.fileType === fileUpload.fileType).length > 0) {
+      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+        next: (fileUploadId) => {
+          let typeFoundIndex = fileUploads.findIndex(x => x.fileType === fileUpload.fileType);
+          fileUploads[typeFoundIndex] = fileUpload;
+          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
     } else {
-      console.error(form.get('fileUpload'));
-      form.get('fileUpload').markAllAsTouched();
+      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+        next: (fileUploadId) => {
+          fileUpload.id = fileUploadId;
+          fileUploads.push(fileUpload);
+          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
     }
   }
 
@@ -330,7 +330,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         next: (fileUploadId) => {
           fileUploads[foundIndex] = element;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          this.initFileUploadForm(form, element.fileType);
+          // this.initFileUploadForm(form, element.fileType);
         },
         error: (error) => {
           console.error(error);

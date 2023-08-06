@@ -164,6 +164,14 @@
                       >
                         First Name is required</mat-error
                       >-->
+                      <mat-error
+                        *ngIf="
+                          cleanUpLogWorkForm.get('cleanuplog.name').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.name').hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
@@ -179,6 +187,14 @@
                       >
                         Last Name is required</mat-error
                       >-->
+                      <mat-error
+                        *ngIf="
+                          cleanUpLogWorkForm.get('cleanuplog.hours').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.hours').hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
@@ -194,6 +210,14 @@
                       >
                       Relationship is required</mat-error
                       >-->
+                      <mat-error
+                        *ngIf="
+                          cleanUpLogWorkForm.get('cleanuplog.description').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.description').hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                 </div>
@@ -403,6 +427,14 @@
                       >
                       Relationship is required</mat-error
                       >-->
+                      <mat-error
+                        *ngIf="
+                          cleanUpWorkFilesForm.get('fileUpload.fileDescription').invalid &&
+                          cleanUpWorkFilesForm.get('fileUpload.fileDescription').hasError('maxLength')
+                        "
+                      >
+                        Maximum length reached</mat-error
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">

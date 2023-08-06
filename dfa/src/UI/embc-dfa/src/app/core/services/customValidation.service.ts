@@ -210,7 +210,7 @@ export class CustomValidationService {
   maxLengthValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== null && control.value !== undefined) {
-        if (control.value.length > 20) {
+        if (control.value.length > 2000) {
           return { maxLength: true };
         }
       }

@@ -14,7 +14,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<dfa_appcontact> GetUserProfileAsync(string userId);
         Task<string> AddContact(dfa_appcontact contact);
         Task<string> AddApplication(dfa_appapplicationstart_params application);
-        Task<System.Dynamic.ExpandoObject> AddApplicationSignatures(IEnumerable<dfa_signature> dfa_signatures);
+        Task<string> AddApplicationSignatures(IEnumerable<signature> dfa_signatures);
         Task<string> UpdateApplication(dfa_appapplicationmain_params application);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartById(Guid applicationId);
         Task<dfa_appapplicationmain_retrieve> GetApplicationMainById(Guid applicationId);
