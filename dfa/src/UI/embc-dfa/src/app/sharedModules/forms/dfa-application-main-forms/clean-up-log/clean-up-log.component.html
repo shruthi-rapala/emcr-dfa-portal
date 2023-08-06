@@ -284,12 +284,6 @@
   <ng-container>
     <div class="row">
       <div class="col-md-12">
-        <!-- <p class="sub-heading">
-          <b>
-            If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs.
-            <br />You may also attach them to this application
-          </b>
-        </p> -->
 
         <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.data.length > 0">
 
@@ -358,87 +352,6 @@
         <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
           <br /><br/>
         </div>
-
-        <!-- <button
-          *ngIf="!showCleanUpWorkFileForm"
-          class="addcleanup-button"
-          mat-button
-          type="button"
-          (click)="addCleanupLogFile()"
-        >
-          + Add receipt or invoice
-        </button> -->
-
-        <!-- <mat-card *ngIf="showCleanUpWorkFileForm">
-          <p class="sub-heading" style="font-size: 15px">
-            Attach a photo/scanned copy of receipts or invoices
-          </p>
-          <div class="row">
-
-            <div class="col-md-4">
-              <app-file-upload
-              [noOfAttachments]="1"
-              (attachedFile)="setCleanUpWorkFileFormControl($event)"
-              [allowedFileTypes]="allowedFileTypes"
-              allowedFileExtensionsList=".pdf,.jpg,.jpeg,.png"
-            >
-            </app-file-upload>
-
-              <br />
-            </div>
-            <div class="col-md-6">
-              <mat-form-field appearance="outline">
-                <mat-label>File Name</mat-label>
-                <input formControlName="fileName" readonly value="{{fileName}}" matInput placeholder="File Name" required/>
-
-              </mat-form-field>
-                <p class="sub-heading" style="font-size: 15px">
-                  You may update the file description to something more descriptive:
-                </p>
-              <mat-form-field appearance="outline">
-
-                <mat-label>File Description</mat-label>
-                <input formControlName="fileDescription" matInput placeholder="File Description" />
-
-                <mat-error
-                  *ngIf="
-                    cleanUpWorkFilesForm.get('fileUpload.fileDescription').invalid &&
-                    cleanUpWorkFilesForm.get('fileUpload.fileDescription').hasError('maxLength')
-                  "
-                >
-                  Maximum length reached</mat-error
-                >
-              </mat-form-field>
-            </div>
-            <div class="col-md-4">
-
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-3">
-              <button
-                class="button-s details-button"
-                mat-button
-                type="button"
-                (click)="cancelNewCleanupLogFile()"
-              >
-                Cancel
-              </button>
-            </div>
-            <div class="col-md-3">
-              <button
-                class="addcleanup-button details-button save-button"
-                mat-button
-                type="button"
-                (click)="saveNewCleanupLogFile()"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-
-        </mat-card> -->
       </div>
     </div>
   </ng-container>
