@@ -120,16 +120,17 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             {
                 foreach (signature dfa_signature in dfa_signatures)
                 {
-                    // var signature = JsonHelper.JsonSerializer<signature>(dfa_signature);
+                    var signature = JsonHelper.JsonSerializer<signature>(dfa_signature);
                     await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", dfa_signature);
                 }
                 return "signatureadded";
             }
-            catch (System.Exception ex)
+            // catch (System.Exception ex)
+            catch
             {
-                //return "failed";
+                return "failed";
                 // return new System.Dynamic.ExpandoObject();
-                throw new Exception($"Failed to add application signatures {ex.Message}", ex);
+                // throw new Exception($"Failed to add application signatures {ex.Message}", ex);
             }
         }
 

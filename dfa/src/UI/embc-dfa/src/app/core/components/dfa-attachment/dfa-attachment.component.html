@@ -1,9 +1,18 @@
 <form [formGroup]="fileUploadsForm">
 
-  <div formGroupName="fileUpload">
+  <div [formGroup]="fileUpload">
     <ng-container>
-        <mat-card>
-          <div class="row" *ngIf="missingRequiredFile || !requiredFile">
+      <button
+          *ngIf="!showFileUpload"
+          class="family-button"
+          mat-button
+          type="button"
+          (click)="showFileUpload = !showFileUpload"
+        >
+          + Add {{ title }}
+        </button>
+        <mat-card *ngIf="showFileUpload">
+          <div class="row" [hidden]="!(missingRequiredFile === 'yes' || requiredFile === 'no')">
             <div class="col-md-6">
               <b>{{title}}<span style="color:red;" *ngIf="requiredFile">*</span></b><br/>
               <div [innerHtml]="description"></div>
@@ -17,30 +26,30 @@
             </div>
             <div class="col-md-6">
               <br/><br/>
-              <div [hidden]="!fileUploadsForm.get('fileUpload.fileName').value">
+              <div [hidden]="!fileUpload.get('fileName').value">
                 <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
                 <br/>
-                {{ fileUploadsForm.get('fileUpload.fileName').value }}
+                {{ fileUpload.get('fileName').value }}
                 <br/><br/>
               </div>
-              <label class="sub-heading" style="font-size: 15px" [hidden]="!fileUploadsForm.get('fileUpload.fileName').value"
+              <label class="sub-heading" style="font-size: 15px" [hidden]="!fileUpload.get('fileName').value"
                 >You may update the file description to something more descriptive:</label
               >
-              <mat-form-field appearance="outline" [hidden]="!fileUploadsForm.get('fileUpload.fileName').value">
+              <mat-form-field appearance="outline" [hidden]="!fileUpload.get('fileName').value">
                 <mat-label>File description</mat-label>
                 <input formControlName="fileDescription" matInput placeholder="File description" required/>
                 <mat-error
                   *ngIf="
-                    fileUploadsForm.get('fileUpload.fileDescription').invalid &&
-                    fileUploadsForm.get('fileUpload.fileDescription').hasError('required') &&
-                    fileUploadsForm.get('fileUpload.fileDescription').touched
+                    fileUpload.get('fileDescription').invalid &&
+                    fileUpload.get('fileDescription').hasError('required') &&
+                    fileUpload.get('fileDescription').touched
                   "
                 >
                   File description is required</mat-error
                 >
               </mat-form-field>
-              <label class="sub-heading" style="font-size: 15px" [hidden]="!fileUploadsForm.get('fileUpload.fileName').value" *ngIf="!fileType">Category: please select a category that describes the file you are attaching to your application.</label>
-              <mat-form-field appearance="outline" [hidden]="!fileUploadsForm.get('fileUpload.fileName').value" *ngIf="!fileType">
+              <label class="sub-heading" style="font-size: 15px" [hidden]="!fileUpload.get('fileName').value" *ngIf="!fileType">Category: please select a category that describes the file you are attaching to your application.</label>
+              <mat-form-field appearance="outline" [hidden]="!fileUpload.get('fileName').value" *ngIf="!fileType">
                 <mat-label>File category</mat-label>
                 <mat-select formControlName="fileType" matInput placeholder="File category" required>
                   <div *ngFor="let option of FileCategories | keyvalue: originalOrder">
@@ -52,9 +61,9 @@
                 </mat-select>
                 <mat-error
                   *ngIf="
-                    fileUploadsForm.get('fileUpload.fileType').invalid &&
-                    fileUploadsForm.get('fileUpload.fileType').hasError('required') &&
-                    fileUploadsForm.get('fileUpload.fileType').touched
+                    fileUpload.get('fileType').invalid &&
+                    fileUpload.get('fileType').hasError('required') &&
+                    fileUpload.get('fileType').touched
                   "
                 >
                   Category is required</mat-error
@@ -62,26 +71,35 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="row" *ngIf="!missingRequiredFile && requiredFile">
-            <p class="sub-heading" style="font-size: 15px">Required file has been uploaded.</p>
+          <div class="row" [hidden]="(missingRequiredFile === 'yes' || requiredFile === 'no')">
+            <p class="sub-heading" style="font-size: 15px">Required {{ title }} has been uploaded.</p>
           </div>
 
           <br/><br/>
-          <div class="row" *ngIf="(missingRequiredFile || !requiredFile) && fileUploadsForm.get('fileUpload').valid">
-            <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6" *ngIf="requiredFile === 'no'">
+              <button
+                class="button-s details-button"
+                mat-button
+                type="button"
+                (click)="cancelAttachment()"
+              >
+                Cancel
+              </button>
+            </div>
+            <div class="col-md-6" *ngIf="(missingRequiredFile === 'yes' || requiredFile === 'no') && fileUpload.valid">
               <button
                 class="family-button details-button save-button"
                 mat-button
                 type="button"
-                (click)="saveRequiredForm()"
+                (click)="saveAttachment()"
               >
                 Save
               </button>
             </div>
           </div>
-          <button (click)="showForm()">Show Form</button>
-
         </mat-card>
+        <button (click)="showForm()">Show Form</button>
     </ng-container>
   </div>
 </form>

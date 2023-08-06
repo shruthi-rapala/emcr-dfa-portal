@@ -260,219 +260,188 @@
       </div>
   </form>
 
-  <form [formGroup]="cleanUpWorkFilesForm">
+  <ng-container>
+    <div class="row">
+      <div class="col-md-8">
+        <app-dfa-attachment
+          title="Cleanup Invoices/Receipts"
+          description=" If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs. <br />You may also attach them to this application"
+          missingRequiredFile="no"
+          requiredFile="no"
+          [allowedFileTypes]="allowedFileTypes"
+          allowedFileExtensionsList=".pdf,.jpg,.jpeg,.png"
+          fileType="Cleanup"
+          excludeFileTypes="[]"
+          (saveFileUpload)="saveNewCleanupLogFile($event)"
+          (cencelFileUpload)="cancelNewCleanupLogFile()"
+          [fileUpload]="formCreationService.fileUploadsForm.value.get('cleanupFileUpload')"
+        ></app-dfa-attachment>
+      </div>
+    </div>
+  </ng-container>
+  <br/><br/>
 
-      <div formGroupName="fileUpload">
-        <ng-container>
-          <div class="row">
-            <div class="col-md-12">
-              <p class="sub-heading">
-                <b>
-                  If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs.
-                  <br />You may also attach them to this application
-                </b>
-              </p>
+  <ng-container>
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <p class="sub-heading">
+          <b>
+            If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs.
+            <br />You may also attach them to this application
+          </b>
+        </p> -->
 
-              <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.data.length > 0">
+        <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.data.length > 0">
 
 
-                <!-- File Name Column -->
-                <ng-container matColumnDef="fileName" style="width:40%">
-                  <th mat-header-cell *matHeaderCellDef >
-                    <b>File Name</b>
-                  </th>
-                  <td *matCellDef="let elementFile" mat-cell>
-                    {{ elementFile.fileName }}
-                  </td>
-                </ng-container>
+          <!-- File Name Column -->
+          <ng-container matColumnDef="fileName" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef >
+              <b>File Name</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.fileName }}
+            </td>
+          </ng-container>
 
-                <!-- File Description Column -->
-                <ng-container matColumnDef="fileDescription" style="width:40%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <b>File Description</b>
-                  </th>
-                  <td *matCellDef="let elementFile" mat-cell>
-                    {{ elementFile.fileDescription}}
-                  </td>
-                </ng-container>
+          <!-- File Description Column -->
+          <ng-container matColumnDef="fileDescription" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef>
+              <b>File Description</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.fileDescription}}
+            </td>
+          </ng-container>
 
-                 <!-- Date Column -->
-                <ng-container matColumnDef="uploadedDate" style="width:40%">
-                  <th mat-header-cell *matHeaderCellDef >
-                    <b>Date</b>
-                  </th>
-                  <td *matCellDef="let elementFile" mat-cell>
-                    {{ elementFile.uploadedDate | date : "yyyy/MM/dd" }}
-                  </td>
-                </ng-container>
+            <!-- Date Column -->
+          <ng-container matColumnDef="uploadedDate" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef >
+              <b>Date</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.uploadedDate | date : "yyyy/MM/dd" }}
+            </td>
+          </ng-container>
 
-                <!-- Delete Icon Column -->
-                <ng-container matColumnDef="deleteIcon" style="width:20%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    &nbsp;
-                  </th>
-                  <td *matCellDef="let elementFile" mat-cell>
-                    <button
-                    class="delete-image"
-                    mat-icon-button
-                    aria-label="Remove"
-                    (click)="deleteCleanupLogFileRow(elementFile)"
-                  >
-                    <img src="/assets/images/delete.svg" height="35" width="35" />
-                    <img
-                      src="/assets/images/delete_onhover.svg"
-                      height="35"
-                      width="35"
-                    />
-                    </button>
-                  </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="cleanUpWorkFileColumnsToDisplay"></tr>
-                <tr
-                  mat-row
-                  *matRowDef="let elementFile; columns: cleanUpWorkFileColumnsToDisplay"
-                  class="example-element-row"
-                ></tr>
-
-              </table>
-
-              <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
-                <br /><br/>
-              </div>
-
+          <!-- Delete Icon Column -->
+          <ng-container matColumnDef="deleteIcon" style="width:20%">
+            <th mat-header-cell *matHeaderCellDef>
+              &nbsp;
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
               <button
-                *ngIf="!showCleanUpWorkFileForm"
-                class="addcleanup-button"
-                mat-button
-                type="button"
-                (click)="addCleanupLogFile()"
-              >
-                + Add receipt or invoice
+              class="delete-image"
+              mat-icon-button
+              aria-label="Remove"
+              (click)="deleteCleanupLogFileRow(elementFile)"
+            >
+              <img src="/assets/images/delete.svg" height="35" width="35" />
+              <img
+                src="/assets/images/delete_onhover.svg"
+                height="35"
+                width="35"
+              />
               </button>
+            </td>
+          </ng-container>
 
-              <mat-card *ngIf="showCleanUpWorkFileForm">
+          <tr mat-header-row *matHeaderRowDef="cleanUpWorkFileColumnsToDisplay"></tr>
+          <tr
+            mat-row
+            *matRowDef="let elementFile; columns: cleanUpWorkFileColumnsToDisplay"
+            class="example-element-row"
+          ></tr>
+
+        </table>
+
+        <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
+          <br /><br/>
+        </div>
+
+        <!-- <button
+          *ngIf="!showCleanUpWorkFileForm"
+          class="addcleanup-button"
+          mat-button
+          type="button"
+          (click)="addCleanupLogFile()"
+        >
+          + Add receipt or invoice
+        </button> -->
+
+        <!-- <mat-card *ngIf="showCleanUpWorkFileForm">
+          <p class="sub-heading" style="font-size: 15px">
+            Attach a photo/scanned copy of receipts or invoices
+          </p>
+          <div class="row">
+
+            <div class="col-md-4">
+              <app-file-upload
+              [noOfAttachments]="1"
+              (attachedFile)="setCleanUpWorkFileFormControl($event)"
+              [allowedFileTypes]="allowedFileTypes"
+              allowedFileExtensionsList=".pdf,.jpg,.jpeg,.png"
+            >
+            </app-file-upload>
+
+              <br />
+            </div>
+            <div class="col-md-6">
+              <mat-form-field appearance="outline">
+                <mat-label>File Name</mat-label>
+                <input formControlName="fileName" readonly value="{{fileName}}" matInput placeholder="File Name" required/>
+
+              </mat-form-field>
                 <p class="sub-heading" style="font-size: 15px">
-                  Attach a photo/scanned copy of receipts or invoices
+                  You may update the file description to something more descriptive:
                 </p>
-                <div class="row">
+              <mat-form-field appearance="outline">
 
-                  <div class="col-md-4">
-                    <app-file-upload
-                    [noOfAttachments]="1"
-                    (attachedFile)="setCleanUpWorkFileFormControl($event)"
-                    [allowedFileTypes]="allowedFileTypes"
-                    allowedFileExtensionsList=".pdf,.jpg,.jpeg,.png"
-                  >
-                  </app-file-upload>
-                    <!-- <div>
-                      <div
-                        class="dropzone"
-                        fileDragDrop
-                        (filesChangeEmiter)="onFileChange($event)"
-                      >
-                        <div class="text-wrapper">
-                          <div class="centered">
-                            <input
-                              type="file"
-                              name="file"
-                              id="file"
-                              (change)="onFileChange($event.target.files)"
-                              accept=".pdf,.jpg,.jpeg,.png"
-                            />
-                            <label for="file"
-                              >Drag and drop or <span class="textLink">browse</span> your files
-                            <br />
-                            <span style="font-size:14px;">
-                              Allowed file types - pdf, jpg, jpeg, png<br />
-                              Restricted characters in file name:<br />
-                              <b>~"#%&*:.<>?/{{ '{' }}|{{ '}' }}.</b> Leading and trailing<br />
-                              spaces in file name aren't allowed
-                            </span>
-                              </label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div> -->
-                    <br />
-                  </div>
-                  <div class="col-md-6">
-                    <mat-form-field appearance="outline">
-                      <mat-label>File Name</mat-label>
-                      <input formControlName="fileName" readonly value="{{fileName}}" matInput placeholder="File Name" required/>
-                      <!--<mat-error
-                        *ngIf="
-                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.invalid &&
-                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.hasError('required') &&
-                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.touched
-                        "
-                      >
-                        Incorrect file type</mat-error
-                      >-->
-                    </mat-form-field>
-                      <p class="sub-heading" style="font-size: 15px">
-                        You may update the file description to something more descriptive:
-                      </p>
-                    <mat-form-field appearance="outline">
+                <mat-label>File Description</mat-label>
+                <input formControlName="fileDescription" matInput placeholder="File Description" />
 
-                      <mat-label>File Description</mat-label>
-                      <input formControlName="fileDescription" matInput placeholder="File Description" />
-                      <!--<mat-error
-                        *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.touched
-                        "
-                      >
-                      Relationship is required</mat-error
-                      >-->
-                      <mat-error
-                        *ngIf="
-                          cleanUpWorkFilesForm.get('fileUpload.fileDescription').invalid &&
-                          cleanUpWorkFilesForm.get('fileUpload.fileDescription').hasError('maxLength')
-                        "
-                      >
-                        Maximum length reached</mat-error
-                      >
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
+                <mat-error
+                  *ngIf="
+                    cleanUpWorkFilesForm.get('fileUpload.fileDescription').invalid &&
+                    cleanUpWorkFilesForm.get('fileUpload.fileDescription').hasError('maxLength')
+                  "
+                >
+                  Maximum length reached</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
 
-                  </div>
-                </div>
-                <!-- <button type="button" (click)="showFullTimeOccupantsForm()">Show Form</button> -->
-
-                <div class="row">
-                  <div class="col-md-3">
-                    <button
-                      class="button-s details-button"
-                      mat-button
-                      type="button"
-                      (click)="cancelNewCleanupLogFile()"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <div class="col-md-3">
-                    <button
-                      class="addcleanup-button details-button save-button"
-                      mat-button
-                      type="button"
-                      (click)="saveNewCleanupLogFile()"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-
-              </mat-card>
             </div>
           </div>
-        </ng-container>
-      </div>
 
-    </form>
+          <div class="row">
+            <div class="col-md-3">
+              <button
+                class="button-s details-button"
+                mat-button
+                type="button"
+                (click)="cancelNewCleanupLogFile()"
+              >
+                Cancel
+              </button>
+            </div>
+            <div class="col-md-3">
+              <button
+                class="addcleanup-button details-button save-button"
+                mat-button
+                type="button"
+                (click)="saveNewCleanupLogFile()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+
+        </mat-card> -->
+      </div>
+    </div>
+  </ng-container>
 
   </mat-card-content>
 </mat-card>

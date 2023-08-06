@@ -8,6 +8,7 @@ import {
 } from 'src/app/core/components/captcha-v2/captcha-v2.component';
 import { ApplicantOption, FileCategory, RoomType } from 'src/app/core/api/models';
 import { MatTableDataSource } from '@angular/material/table';
+import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
 
 @Component({
   selector: 'app-review',
@@ -47,11 +48,16 @@ export class ReviewComponent implements OnInit {
   supportingDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
   RoomTypes = RoomType;
   FileCategories = FileCategory;
+  isResidentialTenant: boolean = false;
+
 
   constructor(
     private router: Router,
-    public formCreationService: FormCreationService
+    public formCreationService: FormCreationService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
+    this.isResidentialTenant = (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+
   }
 
   ngOnInit(): void {
