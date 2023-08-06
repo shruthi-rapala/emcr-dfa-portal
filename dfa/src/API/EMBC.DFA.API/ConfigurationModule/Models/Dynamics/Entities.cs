@@ -1,7 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 
@@ -58,13 +61,36 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
     }
 
-    public class dfa_signature
+    public class signature
     {
         public byte[] Content { get; set; }
         public string ContentType { get; set; }
         public string FileName { get; set; }
         public string Regarding { get; set; }
         public string id { get; set; }
+    }
+
+    public class JsonHelper
+    {
+        internal static string JsonSerializer<T>(T t)
+        {
+            string jsonString = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T));
+                ser.WriteObject(ms, t);
+                jsonString = Encoding.UTF8.GetString(ms.ToArray());
+            }
+            return jsonString;
+        }
+
+        internal static T JsonDeserialize<T>(string jsonString)
+        {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T));
+            MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
+            T obj = (T)ser.ReadObject(ms);
+            return obj;
+        }
     }
 
     public class dfa_appapplicationstart_retrieve
