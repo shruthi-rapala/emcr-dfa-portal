@@ -61,13 +61,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
     }
 
-    public class signature
+    public class dfa_signature
     {
-        public byte[] Content { get; set; }
-        public string ContentType { get; set; }
-        public string FileName { get; set; }
-        public string Regarding { get; set; }
-        public string id { get; set; }
+        public string signature { get; set; }
+        //public string ContentType { get; set; }
+        public string filename { get; set; }
+        //public string Regarding { get; set; }
+        public string dfa_appapplicationid { get; set; }
     }
 
     public class JsonHelper
