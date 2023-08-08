@@ -67,7 +67,7 @@ namespace EMBC.DFA.API.Controllers
                 {
                     var primarySignature = new dfa_signature();
                     // primarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.applicantSignature.signature);
-                    primarySignature.signature = application.AppTypeInsurance.applicantSignature.signature;
+                    primarySignature.signature = application.AppTypeInsurance.applicantSignature.signature.Substring(application.AppTypeInsurance.applicantSignature.signature.IndexOf(',') + 1);
                     primarySignature.filename = "primaryApplicantSignatureNoIns";
                    // primarySignature.ContentType = "image/png";
                     //primarySignature.Regarding = "dfa_appapplication";
@@ -80,7 +80,7 @@ namespace EMBC.DFA.API.Controllers
                 {
                     var secondarySignature = new dfa_signature();
                     // secondarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.secondaryApplicantSignature.signature);
-                    secondarySignature.signature = application.AppTypeInsurance.secondaryApplicantSignature.signature;
+                    secondarySignature.signature = application.AppTypeInsurance.secondaryApplicantSignature.signature.Substring(application.AppTypeInsurance.secondaryApplicantSignature.signature.IndexOf(',') + 1);
                     secondarySignature.filename = "secondaryApplicantSignatureNoIns";
                     //secondarySignature.ContentType = "image/png";
                     //secondarySignature.Regarding = "dfa_appapplication";
@@ -116,7 +116,7 @@ namespace EMBC.DFA.API.Controllers
             {
                 var primarySignature = new dfa_signature();
                 // primarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.applicantSignature.signature);
-                primarySignature.signature = application.signAndSubmit.applicantSignature.signature;
+                primarySignature.signature = application.signAndSubmit.applicantSignature.signature.Substring(application.signAndSubmit.applicantSignature.signature.IndexOf(',') + 1);
                 primarySignature.filename = "primaryApplicantSignature";
                 //primarySignature.ContentType = "image/png";
                // primarySignature.Regarding = "dfa_appapplication";
@@ -130,7 +130,7 @@ namespace EMBC.DFA.API.Controllers
             {
                 var secondarySignature = new dfa_signature();
                 // secondarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.secondaryApplicantSignature.signature);
-                secondarySignature.signature = application.signAndSubmit.secondaryApplicantSignature.signature;
+                secondarySignature.signature = application.signAndSubmit.secondaryApplicantSignature.signature.Substring(application.signAndSubmit.secondaryApplicantSignature.signature.IndexOf(',') + 1);
                 secondarySignature.filename = "secondaryApplicantSignature";
                 //secondarySignature.ContentType = "image/png";
                 //secondarySignature.Regarding = applicationId;
