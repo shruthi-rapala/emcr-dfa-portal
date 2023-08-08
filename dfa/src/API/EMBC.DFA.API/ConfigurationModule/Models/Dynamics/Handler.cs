@@ -23,7 +23,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<Country>> HandleCountry();
         Task<string> HandleContact(dfa_appcontact objContact);
         Task<string> HandleApplication(dfa_appapplicationstart_params objApplication);
-        Task<string> HandleSignatures(IEnumerable<signature> objSignatures);
+        Task<string> HandleSignatures(IEnumerable<dfa_signature> objSignatures);
+        Task<string> HandleSignature(dfa_signature objSignature);
         Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartAsync(Guid applicationId);
         Task<dfa_appapplicationmain_retrieve> GetApplicationMainAsync(Guid applicationId);
@@ -110,9 +111,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return applicationId;
         }
 
-        public async Task<string> HandleSignatures(IEnumerable<signature> objSignatures)
+        public async Task<string> HandleSignatures(IEnumerable<dfa_signature> objSignatures)
         {
             var result = await listsGateway.AddApplicationSignatures(objSignatures);
+            return result;
+        }
+
+        public async Task<string> HandleSignature(dfa_signature objSignature)
+        {
+            var result = await listsGateway.AddApplicationSignature(objSignature);
             return result;
         }
 

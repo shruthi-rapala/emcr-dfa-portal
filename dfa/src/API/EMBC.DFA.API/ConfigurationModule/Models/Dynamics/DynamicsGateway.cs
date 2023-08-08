@@ -114,14 +114,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         }
 
         // TODO: Fails with resource not found for the segment
-        public async Task<string> AddApplicationSignatures(IEnumerable<signature> dfa_signatures)
+        public async Task<string> AddApplicationSignatures(IEnumerable<dfa_signature> dfa_signatures)
         {
             try
             {
-                foreach (signature dfa_signature in dfa_signatures)
+                foreach (dfa_signature dfa_signature in dfa_signatures)
                 {
-                    var signature = JsonHelper.JsonSerializer<signature>(dfa_signature);
-                    await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", dfa_signature);
+                    var signature = JsonHelper.JsonSerializer<dfa_signature>(dfa_signature);
+                    await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", signature);
                 }
                 return "signatureadded";
             }
@@ -130,6 +130,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             {
                 return "failed";
                 // return new System.Dynamic.ExpandoObject();
+                // throw new Exception($"Failed to add application signatures {ex.Message}", ex);
+            }
+        }
+
+        public async Task<string> AddApplicationSignature(dfa_signature dfa_signature)
+        {
+            try
+            {
+               await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", dfa_signature);
+               return "signatureadded";
+            }
+            // catch (System.Exception ex)
+            catch
+            {
+                return "failed";
                 // throw new Exception($"Failed to add application signatures {ex.Message}", ex);
             }
         }

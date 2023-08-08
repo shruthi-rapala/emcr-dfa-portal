@@ -39,7 +39,8 @@ export class SignatureComponent implements AfterViewInit {
   // store in signature block to emit
   updateCanvas() {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    this.signatureBlock.signature = canvasEl.toDataURL("image/jpeg").replace(/^data:image\/(png|jpeg);base64,/, "")
+    //this.signatureBlock.signature = canvasEl.toDataURL("image/jpeg").replace(/^data:image\/(png|jpeg);base64,/, "");
+    this.signatureBlock.signature = canvasEl.toDataURL();
     this.updateSignatureBlock();
   }
 
