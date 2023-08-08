@@ -62,11 +62,12 @@ namespace EMBC.DFA.API.Controllers
             // If no insurance, add signatures
             if (application.AppTypeInsurance.insuranceOption == InsuranceOption.No)
             {
-                IEnumerable<dfa_signature> insuranceSignatures = Enumerable.Empty<dfa_signature>();
+                IEnumerable<signature> insuranceSignatures = Enumerable.Empty<signature>();
                 if (application.AppTypeInsurance.applicantSignature != null && application.AppTypeInsurance.applicantSignature.signature != null)
                 {
-                    var primarySignature = new dfa_signature();
-                    primarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.applicantSignature.signature);
+                    var primarySignature = new signature();
+                    // primarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.applicantSignature.signature);
+                    primarySignature.Content = new byte[] { };
                     primarySignature.FileName = "primaryApplicantSignatureNoIns";
                     primarySignature.ContentType = "image/png";
                     primarySignature.Regarding = "dfa_appapplication";
@@ -76,8 +77,9 @@ namespace EMBC.DFA.API.Controllers
 
                 if (application.AppTypeInsurance.secondaryApplicantSignature != null && application.AppTypeInsurance.secondaryApplicantSignature.signature != null)
                 {
-                    var secondarySignature = new dfa_signature();
-                    secondarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.secondaryApplicantSignature.signature);
+                    var secondarySignature = new signature();
+                    // secondarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.secondaryApplicantSignature.signature);
+                    secondarySignature.Content = new byte[] { };
                     secondarySignature.FileName = "secondaryApplicantSignatureNoIns";
                     secondarySignature.ContentType = "image/png";
                     secondarySignature.Regarding = "dfa_appapplication";
@@ -104,14 +106,15 @@ namespace EMBC.DFA.API.Controllers
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
 
             var applicationId = await handler.HandleApplicationUpdate(mappedApplication);
-            IEnumerable<dfa_signature> appSignatures = Enumerable.Empty<dfa_signature>();
+            IEnumerable<signature> appSignatures = Enumerable.Empty<signature>();
 
             // Add signatures
             if (application.signAndSubmit?.applicantSignature?.signature != null &&
                 application.deleteFlag == false)
             {
-                var primarySignature = new dfa_signature();
-                primarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.applicantSignature.signature);
+                var primarySignature = new signature();
+                // primarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.applicantSignature.signature);
+                primarySignature.Content = new byte[] { };
                 primarySignature.FileName = "primaryApplicantSignature";
                 primarySignature.ContentType = "image/png";
                 primarySignature.Regarding = "dfa_appapplication";
@@ -122,8 +125,9 @@ namespace EMBC.DFA.API.Controllers
             if (application.signAndSubmit?.secondaryApplicantSignature?.signature != null &&
                 application.deleteFlag == false)
             {
-                var secondarySignature = new dfa_signature();
-                secondarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.secondaryApplicantSignature.signature);
+                var secondarySignature = new signature();
+                // secondarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.secondaryApplicantSignature.signature);
+                secondarySignature.Content = new byte[] { };
                 secondarySignature.FileName = "secondaryApplicantSignature";
                 secondarySignature.ContentType = "image/png";
                 secondarySignature.Regarding = applicationId;

@@ -1681,8 +1681,14 @@
         <div class="row info-detail" *ngIf="supportingDocumentsDataSource?.data?.length == 0">
           <span>No supporting documents.</span>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.supportingDocumentsForm$ | async)?.hasError('noInsuranceTemplate')">
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noInsuranceTemplate')">
           <span style="color:red">Insurance template is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noRentalAgreement') && isResidentialTenant">
+          <span style="color:red">Rental Agreement is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noIdentification') && isResidentialTenant">
+          <span style="color:red">Identification is required.</span>
         </div>
       </mat-card-content>
     </div>

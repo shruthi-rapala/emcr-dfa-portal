@@ -15,7 +15,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Subscription, mapTo } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { FileCategory, SupportStatus } from 'src/app/core/api/models';
+import { ApplicantOption, FileCategory, FileUpload, SupportStatus } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -25,6 +25,8 @@ import { CoreModule } from 'src/app/core/core.module';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { AttachmentService } from 'src/app/core/api/services';
+import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
+import { MatTab } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -34,7 +36,13 @@ import { AttachmentService } from 'src/app/core/api/services';
 export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   insuranceTemplateForm: UntypedFormGroup;
   insuranceTemplateForm$: Subscription;
+  rentalAgreementForm: UntypedFormGroup;
+  rentalAgreementForm$: Subscription;
+  identificationForm: UntypedFormGroup;
+  identificationForm$: Subscription;
   insuranceTemplateDataSource = new MatTableDataSource();
+  rentalAgreementDataSource = new MatTableDataSource();
+  identificationDataSource = new MatTableDataSource();
   supportingDocumentsForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
   supportingDocumentsForm$: Subscription;
@@ -58,6 +66,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   ];
   FileCategories = FileCategory;
+  showOtherDocuments: boolean = false;
+  isResidentialTenant: boolean = false;
+  AppOptions = ApplicantOption;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -69,6 +80,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+    this.isResidentialTenant = (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
   }
 
   ngOnInit(): void {
@@ -79,22 +91,20 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
       });
 
-    this.supportingFilesForm$ = this.formCreationService
-      .getFileUploadsForm()
-      .subscribe((fileUploads) => {
-        this.supportingFilesForm = fileUploads;
-      });
+    this.initInsuranceTemplate();
+    this.initRentalAgreement();
+    this.initIdentification();
+    this.initSupportingFiles();
 
-    this.supportingFilesForm
-      .get('addNewFileUploadIndicator')
-      .valueChanges.subscribe((value) => this.updateSupportingFilesOnVisibility());
+    // subscribe to changes for document summary
+    const _documentSummaryFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+    _documentSummaryFormArray.valueChanges
+      .pipe(
+        mapTo(_documentSummaryFormArray.getRawValue())
+        ).subscribe(data => this.documentSummaryDataSource.data = data.filter(x => x.deleteFlag == false));
+  }
 
-    const _supportingFilesFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
-      _supportingFilesFormArray.valueChanges
-        .pipe(
-          mapTo(_supportingFilesFormArray.getRawValue())
-          ).subscribe(data => this.supportingFilesDataSource.data = data.filter(x => [this.FileCategories.Financial, this.FileCategories.Identification, Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)], Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.ThirdPartyConsent)]].indexOf(x.fileType) >= 0 && x.deleteFlag == false));
-
+  initInsuranceTemplate() {
     // set up insurance template
     this.insuranceTemplateForm$ = this.formCreationService
     .getFileUploadsForm()
@@ -105,34 +115,95 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
     this.insuranceTemplateForm
       .get('addNewFileUploadIndicator')
-      .valueChanges.subscribe((value) => this.updateInsuranceTemplateOnVisibility());
+      .valueChanges.subscribe((value) => this.updateFileUploadFormOnVisibility(this.insuranceTemplateForm.get('insuranceTemplateFileUpload')));
 
     const _insuranceTemplateFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
       _insuranceTemplateFormArray.valueChanges
         .pipe(
           mapTo(_insuranceTemplateFormArray.getRawValue())
-          ).subscribe(data => this.insuranceTemplateDataSource.data = data.filter(x => [this.FileCategories.Insurance].indexOf(x.fileType) >= 0 && x.deleteFlag == false));
+          ).subscribe(data => this.insuranceTemplateDataSource.data = data.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)] && x.deleteFlag == false));
 
     // initialize insurance template
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-    if (fileUploads.filter(x => x.fileType === this.FileCategories.Insurance).length > 0) {
-      let insuranceFoundIndex = fileUploads.findIndex(x => x.fileType === this.FileCategories.Insurance);
-      this.insuranceTemplateForm.get('fileUpload').setValue(fileUploads[insuranceFoundIndex]);
+    if (fileUploads.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]).length > 0) {
+      let insuranceFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
+      this.insuranceTemplateForm.get('insuranceTemplateFileUpload').setValue(fileUploads[insuranceFoundIndex]);
     } else {
-      this.insuranceTemplateForm.get('fileUpload').reset();
-      this.insuranceTemplateForm.get('fileUpload.modifiedBy').setValue("Applicant");
-      this.insuranceTemplateForm.get('fileUpload.fileType').setValue(FileCategory.Insurance);
+      this.insuranceTemplateForm.get('insuranceTemplateFileUpload').reset();
+      this.insuranceTemplateForm.get('insuranceTemplateFileUpload.modifiedBy').setValue("Applicant");
+      this.insuranceTemplateForm.get('insuranceTemplateFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
       this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
-      this.insuranceTemplateForm.get('fileUpload.deleteFlag').setValue(false);
-      this.insuranceTemplateForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+      this.insuranceTemplateForm.get('insuranceTemplateFileUpload.deleteFlag').setValue(false);
+      this.insuranceTemplateForm.get('insuranceTemplateFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
     }
+  }
 
-    // subscribe to changes for document summary
-    const _documentSummaryFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
-    _documentSummaryFormArray.valueChanges
-      .pipe(
-        mapTo(_documentSummaryFormArray.getRawValue())
-        ).subscribe(data => this.documentSummaryDataSource.data = data.filter(x => x.deleteFlag == false));
+  initRentalAgreement() {
+    // set up rental agreement
+    this.rentalAgreementForm$ = this.formCreationService
+    .getFileUploadsForm()
+    .subscribe((fileUploads) => {
+      this.rentalAgreementForm = fileUploads;
+      this.rentalAgreementForm.addValidators([this.validateFormRentalAgreement]);
+    });
+
+    this.rentalAgreementForm
+      .get('addNewFileUploadIndicator')
+      .valueChanges.subscribe((value) => this.updateFileUploadFormOnVisibility(this.rentalAgreementForm.get('rentalAgreementFileUpload')));
+
+    const _rentalAgreementFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+      _rentalAgreementFormArray.valueChanges
+        .pipe(
+          mapTo(_rentalAgreementFormArray.getRawValue())
+          ).subscribe(data => this.rentalAgreementDataSource.data = data.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)] && x.deleteFlag == false));
+
+    // initialize file upload form
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    if (fileUploads.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]).length > 0) {
+      let rentalAgreementFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
+      this.rentalAgreementForm.get('rentalAgreementFileUpload').setValue(fileUploads[rentalAgreementFoundIndex]);
+    } else {
+      this.rentalAgreementForm.get('rentalAgreementFileUpload').reset();
+      this.rentalAgreementForm.get('rentalAgreementFileUpload.modifiedBy').setValue("Applicant");
+      this.rentalAgreementForm.get('rentalAgreementFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
+      this.rentalAgreementForm.get('addNewFileUploadIndicator').setValue(true);
+      this.rentalAgreementForm.get('rentalAgreementFileUpload.deleteFlag').setValue(false);
+      this.rentalAgreementForm.get('rentalAgreementFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+
+    }
+  }
+
+  initIdentification() {
+    this.identificationForm$ = this.formCreationService
+    .getFileUploadsForm()
+    .subscribe((fileUploads) => {
+      this.identificationForm = fileUploads;
+      this.identificationForm.addValidators([this.validateFormIdentification]);
+    });
+
+    this.identificationForm
+      .get('addNewFileUploadIndicator')
+      .valueChanges.subscribe((value) => this.updateFileUploadFormOnVisibility(this.identificationForm.get('identificationFileUpload')));
+
+    const _identificationFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+      _identificationFormArray.valueChanges
+        .pipe(
+          mapTo(_identificationFormArray.getRawValue())
+          ).subscribe(data => this.identificationDataSource.data = data.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)] && x.deleteFlag == false));
+
+    // initialize file upload form
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    if (fileUploads.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]).length > 0) {
+      let identificationFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]);
+      this.identificationForm.get('identificationFileUpload').setValue(fileUploads[identificationFoundIndex]);
+    } else {
+      this.identificationForm.get('identificationFileUpload').reset();
+      this.identificationForm.get('identificationFileUpload.modifiedBy').setValue("Applicant");
+      this.identificationForm.get('identificationFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]);
+      this.identificationForm.get('addNewFileUploadIndicator').setValue(true);
+      this.identificationForm.get('identificationFileUpload.deleteFlag').setValue(false);
+      this.identificationForm.get('identificationFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    }
   }
 
   // Preserve original property order
@@ -144,31 +215,67 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let FileCategories = FileCategory;
 
     let supportingFiles = form.get('fileUploads')?.getRawValue();
-    if (supportingFiles?.filter(x => x.fileType === FileCategories.Insurance && x.deleteFlag == false).length <= 0) {
+    if (supportingFiles?.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length <= 0) {
       return { noInsuranceTemplate: true };
     }
     return null;
   }
 
-  addSupportingFile(): void {
-    this.supportingFilesForm.get('fileUpload').reset();
-    this.supportingFilesForm.get('fileUpload.modifiedBy').setValue("Applicant");
-    this.showSupportingFileForm = !this.showSupportingFileForm;
-    this.supportingFilesForm.get('addNewFileUploadIndicator').setValue(true);
-    this.supportingFilesForm.get('fileUpload.deleteFlag').setValue(false);
-    this.supportingFilesForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+  validateFormRentalAgreement(form: FormGroup) {
+    let FileCategories = FileCategory;
+
+    let supportingFiles = form.get('fileUploads')?.getRawValue();
+    if (supportingFiles?.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length <= 0) {
+      return { noRentalAgreement: true };
+    }
+    return null;
   }
 
-  saveSupportingFiles(): void {
-    if (this.supportingFilesForm.get('fileUpload').status === 'VALID') {
+  validateFormIdentification(form: FormGroup) {
+    let FileCategories = FileCategory;
+
+    let supportingFiles = form.get('fileUploads')?.getRawValue();
+    if (supportingFiles?.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length <= 0) {
+      return { noIdentification: true };
+    }
+    return null;
+  }
+
+  initSupportingFiles(): void {
+    this.supportingFilesForm$ = this.formCreationService
+    .getFileUploadsForm()
+    .subscribe((fileUploads) => {
+      this.supportingFilesForm = fileUploads;
+    });
+
+    this.supportingFilesForm
+      .get('addNewFileUploadIndicator')
+      .valueChanges.subscribe((value) => this.updateFileUploadFormOnVisibility(this.supportingFilesForm.get('supportingFilesFileUpload')));
+
+    const _supportingFilesFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+      _supportingFilesFormArray.valueChanges
+        .pipe(
+          mapTo(_supportingFilesFormArray.getRawValue())
+          ).subscribe(data => this.supportingFilesDataSource.data = data.filter(x => [this.FileCategories.Financial, this.FileCategories.Identification, Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)], Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.ThirdPartyConsent)]].indexOf(x.fileType) >= 0 && x.deleteFlag == false));
+
+    this.supportingFilesForm.get('supportingFilesFileUpload').reset();
+    this.supportingFilesForm.get('supportingFilesFileUpload.modifiedBy').setValue("Applicant");
+    this.showSupportingFileForm = !this.showSupportingFileForm;
+    this.supportingFilesForm.get('addNewFileUploadIndicator').setValue(true);
+    this.supportingFilesForm.get('supportingFilesFileUpload.deleteFlag').setValue(false);
+    this.supportingFilesForm.get('supportingFilesFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+  }
+
+  saveSupportingFiles(fileUpload: FileUpload): void {
+    if (this.supportingFilesForm.get('supportingFilesFileUpload').status === 'VALID') {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.supportingFilesForm.get('fileUpload').getRawValue() }).subscribe({
+      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
-          this.supportingFilesForm.get('fileUpload').get('id').setValue(fileUploadId);
-          fileUploads.push(this.supportingFilesForm.get('fileUpload').getRawValue());
+          fileUpload.id = fileUploadId;
+          fileUploads.push(fileUpload);
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.showSupportingFileForm = !this.showSupportingFileForm;
-          if (this.supportingFilesForm.get('fileUpload').get('fileType').value == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
+          if (fileUpload.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
         },
         error: (error) => {
@@ -176,44 +283,36 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.supportingFilesForm.get('fileUpload').markAllAsTouched();
+      this.supportingFilesForm.get('supportingFilesFileUpload').markAllAsTouched();
     }
   }
 
-  saveInsuranceTemplate(): void {
-    if (this.insuranceTemplateForm.get('fileUpload').status === 'VALID') {
-      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-      if (fileUploads.filter(x => x.fileType === this.FileCategories.Insurance).length > 0) {
-        this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.insuranceTemplateForm.get('fileUpload').getRawValue() }).subscribe({
-          next: (fileUploadId) => {
-            let insuranceFoundIndex = fileUploads.findIndex(x => x.fileType === this.FileCategories.Insurance);
-            fileUploads[insuranceFoundIndex] = this.insuranceTemplateForm.get('fileUpload').getRawValue();
-            this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        });
-      } else {
-        this.insuranceTemplateForm.get('fileUpload.modifiedBy').setValue("Applicant");
-        this.insuranceTemplateForm.get('fileUpload.fileType').setValue(FileCategory.Insurance);
-        this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
-        this.insuranceTemplateForm.get('fileUpload.deleteFlag').setValue(false);
-        this.insuranceTemplateForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
-        this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.insuranceTemplateForm.get('fileUpload').getRawValue() }).subscribe({
-          next: (fileUploadId) => {
-            this.insuranceTemplateForm.get('fileUpload').get('id').setValue(fileUploadId);
-            fileUploads.push(this.insuranceTemplateForm.get('fileUpload').value);
-            this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        });
-      }
+  saveRequiredForm(fileUpload: FileUpload): void {
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    if (fileUploads.filter(x => x.fileType === fileUpload.fileType).length > 0) {
+      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+        next: (fileUploadId) => {
+          let typeFoundIndex = fileUploads.findIndex(x => x.fileType === fileUpload.fileType);
+          fileUploads[typeFoundIndex] = fileUpload;
+          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
     } else {
-      console.error(this.insuranceTemplateForm.get('fileUpload'));
-      this.insuranceTemplateForm.get('fileUpload').markAllAsTouched();
+      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+        next: (fileUploadId) => {
+          fileUpload.id = fileUploadId;
+          fileUploads.push(fileUpload);
+          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+          if (fileUpload.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
+            this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
     }
   }
 
@@ -223,20 +322,17 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   }
 
   deleteDocumentSummaryRow(element): void {
-    if (element.fileType === this.FileCategories.Insurance) {
+    var form = (element.fileType == "Insurance" ? this.insuranceTemplateForm :
+    (element.fileType == "Identification" ? this.identificationForm :
+    (element.fileType == "TenancyProof" ? this.rentalAgreementForm : null)));
+    if (form != null) {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-      let insuranceFoundIndex = fileUploads.findIndex(x => x.fileType === this.FileCategories.Insurance);
+      let foundIndex = fileUploads.findIndex(x => x.fileType === element.fileType);
       element.deleteFlag = true;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
         next: (fileUploadId) => {
-          fileUploads[insuranceFoundIndex] = element;
+          fileUploads[foundIndex] = element;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          this.insuranceTemplateForm.get('fileUpload').reset();
-          this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(false);
-          this.insuranceTemplateForm.get('fileUpload.modifiedBy').setValue("Applicant");
-          this.insuranceTemplateForm.get('fileUpload.fileType').setValue(FileCategory.Insurance);
-          this.insuranceTemplateForm.get('fileUpload.deleteFlag').setValue(false);
-          this.insuranceTemplateForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
         },
         error: (error) => {
           console.error(error);
@@ -269,46 +365,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     }
   }
 
- updateSupportingFilesOnVisibility(): void {
-    this.supportingFilesForm
-      .get('fileUpload.fileName')
-      .updateValueAndValidity();
-    this.supportingFilesForm
-      .get('fileUpload.fileDescription')
-      .updateValueAndValidity();
-    this.supportingFilesForm
-      .get('fileUpload.fileType')
-      .updateValueAndValidity();
-    this.supportingFilesForm
-      .get('fileUpload.uploadedDate')
-      .updateValueAndValidity();
-    this.supportingFilesForm
-      .get('fileUpload.modifiedBy')
-      .updateValueAndValidity();
-    this.supportingFilesForm
-      .get('fileUpload.fileData')
-      .updateValueAndValidity();
-  }
-
-  updateInsuranceTemplateOnVisibility(): void {
-    this.insuranceTemplateForm
-      .get('fileUpload.fileName')
-      .updateValueAndValidity();
-    this.insuranceTemplateForm
-      .get('fileUpload.fileDescription')
-      .updateValueAndValidity();
-    this.insuranceTemplateForm
-      .get('fileUpload.fileType')
-      .updateValueAndValidity();
-    this.insuranceTemplateForm
-      .get('fileUpload.uploadedDate')
-      .updateValueAndValidity();
-    this.insuranceTemplateForm
-      .get('fileUpload.modifiedBy')
-      .updateValueAndValidity();
-    this.insuranceTemplateForm
-      .get('fileUpload.fileData')
-      .updateValueAndValidity();
+  updateFileUploadFormOnVisibility(form: AbstractControl): void {
+    form.get('fileName').updateValueAndValidity();
+    form.get('fileDescription').updateValueAndValidity();
+    form.get('fileType').updateValueAndValidity();
+    form.get('uploadedDate').updateValueAndValidity();
+    form.get('modifiedBy').updateValueAndValidity();
+    form.get('fileData').updateValueAndValidity();
   }
 
   /**
@@ -320,9 +383,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   get insuranceTemplateFormControl(): { [key: string]: AbstractControl } {
     return this.insuranceTemplateForm.controls;
   }
-
-  updateOnVisibility(): void {
-    this.supportingFilesForm.get('field').updateValueAndValidity();
+  get rentalAgreementFormControl(): { [key: string]: AbstractControl } {
+    return this.rentalAgreementForm.controls;
+  }
+  get identificationFormControl(): { [key: string]: AbstractControl} {
+    return this.identificationForm.controls;
   }
 
   ngOnDestroy(): void {
@@ -331,40 +396,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.insuranceTemplateForm$.unsubscribe();
   }
 
-/**
- * Reads the attachment content and encodes it as base64
- *
- * @param event : Attachment drop/browse event
- */
-  setSupportingFileFormControl(event: any) {
-    const reader = new FileReader();
-    reader.readAsDataURL(event);
-    reader.onload = () => {
-      this.supportingFilesForm.get('fileUpload.fileName').setValue(event.name);
-      this.supportingFilesForm.get('fileUpload.fileDescription').setValue(event.name);
-      this.supportingFilesForm.get('fileUpload.fileData').setValue(reader.result);
-      this.supportingFilesForm.get('fileUpload.contentType').setValue(event.type);
-      this.supportingFilesForm.get('fileUpload.fileSize').setValue(event.size);
-      this.supportingFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
-    };
-  }
-
-  /**
-   * Reads the attachment content and encodes it as base64
-  *
-  * @param event : Attachment drop/browse event
-  */
-  setInsuranceTemplateFileFormControl(event: any) {
-    const reader = new FileReader();
-    reader.readAsDataURL(event);
-    reader.onload = () => {
-      this.insuranceTemplateForm.get('fileUpload.fileName').setValue(event.name);
-      this.insuranceTemplateForm.get('fileUpload.fileDescription').setValue(event.name);
-      this.insuranceTemplateForm.get('fileUpload.fileData').setValue(reader.result);
-      this.insuranceTemplateForm.get('fileUpload.contentType').setValue(event.type);
-      this.insuranceTemplateForm.get('fileUpload.fileSize').setValue(event.size);
-      this.insuranceTemplateForm.get('fileUpload.uploadedDate').setValue(new Date());
-    };
+  public onToggleOtherDocuments() {
+    this.showOtherDocuments = !this.showOtherDocuments;
   }
 }
 

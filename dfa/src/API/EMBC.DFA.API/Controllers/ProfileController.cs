@@ -31,6 +31,7 @@ namespace EMBC.DFA.API.Controllers
         private readonly IHostEnvironment env;
         private readonly IMessagingClient messagingClient;
         private readonly IMapper mapper;
+        private readonly IEvacuationSearchService evacuationSearchService;
         private readonly IProfileInviteService profileInviteService;
         private readonly IConfigurationHandler handler;
 
@@ -40,12 +41,14 @@ namespace EMBC.DFA.API.Controllers
             IHostEnvironment env,
             IMessagingClient messagingClient,
             IMapper mapper,
+            IEvacuationSearchService evacuationSearchService,
             IProfileInviteService profileInviteService,
             IConfigurationHandler handler)
         {
             this.env = env;
             this.messagingClient = messagingClient;
             this.mapper = mapper;
+            this.evacuationSearchService = evacuationSearchService;
             this.profileInviteService = profileInviteService;
             this.handler = handler;
         }
@@ -120,7 +123,7 @@ namespace EMBC.DFA.API.Controllers
         {
             var userId = currentUserId;
 
-            var profile = await handler.HandleGetUser(userId);
+            var profile = await evacuationSearchService.GetRegistrantByUserId(userId);
             if (profile == null) return NotFound(userId);
 
             var userProfile = GetUserFromPrincipal();
