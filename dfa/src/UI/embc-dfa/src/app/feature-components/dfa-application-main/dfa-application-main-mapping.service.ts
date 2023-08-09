@@ -33,7 +33,11 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((damagedPropertyAddress) => {
         damagedPropertyAddress.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.damagedPropertyAddress,
+          isPrimaryAndDamagedAddressSame: dfaApplicationMain.damagedPropertyAddress.isPrimaryAndDamagedAddressSame === true ? 'true' : 'false',
+          occupyAsPrimaryResidence: dfaApplicationMain.damagedPropertyAddress.occupyAsPrimaryResidence === true ? 'true' : 'false',
+          onAFirstNationsReserve: dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === true ? 'true' : 'false',
+          manufacturedHome: dfaApplicationMain.damagedPropertyAddress.manufacturedHome === true ? 'true' : 'false',
         });
         formGroup = damagedPropertyAddress;
       });
@@ -48,7 +52,7 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((cleanUpLog) => {
         cleanUpLog.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.cleanUpLog
         });
         formGroup = cleanUpLog;
       });
@@ -63,7 +67,7 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((supportingDocuments) => {
         supportingDocuments.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.supportingDocuments
         });
         formGroup = supportingDocuments;
       });
@@ -78,7 +82,7 @@ export class DFAApplicationMainMappingService {
       .pipe(first())
       .subscribe((signAndSubmit) => {
         signAndSubmit.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.signAndSubmit
         });
         formGroup = signAndSubmit;
       });
@@ -87,13 +91,23 @@ export class DFAApplicationMainMappingService {
 
   private setPropertyDamageDetails(dfaApplicationMain: DfaApplicationMain): void {
     let formGroup: UntypedFormGroup;
-
     this.formCreationService
       .getPropertyDamageForm()
       .pipe(first())
       .subscribe((propertyDamage) => {
         propertyDamage.setValue({
-          ...dfaApplicationMain
+          ...dfaApplicationMain.propertyDamage,
+          //floodDamage: dfaApplicationMain.propertyDamage.floodDamage === true ? 'true' : 'false',
+          //landslideDamage: dfaApplicationMain.propertyDamage.landslideDamage === true ? 'true' : 'false',
+          //wildfireDamage: dfaApplicationMain.propertyDamage.wildfireDamage === true ? 'true' : 'false',
+          //stormDamage: true, //dfaApplicationMain.propertyDamage.stormDamage === true ? 'true' : 'false',
+          //otherDamage: true, //dfaApplicationMain.propertyDamage.otherDamage === true ? 'true' : 'false',
+          lossesExceed1000: dfaApplicationMain.propertyDamage.lossesExceed1000 === true ? 'true' : 'false',
+          wereYouEvacuated: dfaApplicationMain.propertyDamage.wereYouEvacuated === true ? 'true' : 'false',
+          residingInResidence: dfaApplicationMain.propertyDamage.residingInResidence === true ? 'true' : 'false',
+          damageFromDate: new Date(dfaApplicationMain.propertyDamage.damageFromDate),
+          damageToDate: new Date(dfaApplicationMain.propertyDamage.damageToDate),
+          dateReturned: new Date(dfaApplicationMain.propertyDamage.dateReturned),
         });
         formGroup = propertyDamage;
       });

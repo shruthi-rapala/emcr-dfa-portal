@@ -64,6 +64,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     /\d/,
     /\d/
   ];
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -79,6 +80,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.fullTimeOccupantsForm$ = this.formCreationService
       .getFullTimeOccupantsForm()
       .subscribe((fullTimeOccupants) => {
@@ -115,6 +117,11 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   getSecondaryApplicantsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    }
+
     this.secondaryApplicantsService.secondaryApplicantGetSecondaryApplicants({applicationId: applicationId}).subscribe({
       next: (secondaryApplicants) => {
         this.secondaryApplicantsData = secondaryApplicants;
@@ -128,6 +135,11 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   getOtherContactsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    }
+
     this.otherContactsService.otherContactGetOtherContacts({applicationId: applicationId}).subscribe({
       next: (otherContacts) => {
         this.otherContactsData = otherContacts;
@@ -141,6 +153,11 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   getFullTimeOccupantsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    }
+
     this.fullTimeOccupantsService.fullTimeOccupantGetFullTimeOccupants({applicationId: applicationId}).subscribe({
       next: (fullTimeOccupants) => {
         this.fullTimeOccupantsData = fullTimeOccupants;

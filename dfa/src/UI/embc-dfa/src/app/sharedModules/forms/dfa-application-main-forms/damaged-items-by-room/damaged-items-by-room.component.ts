@@ -60,6 +60,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     'image/png'
   ];
   FileCategories = FileCategory;
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -75,6 +76,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.damagedRoomsForm$ = this.formCreationService
       .getDamagedRoomsForm()
       .subscribe((damagedRooms) => {
@@ -115,7 +117,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       .valueChanges.subscribe((value) => this.updateDamagedRoomOnVisibility());
     this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
     this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
-
+    
     this.damagePhotosForm
       .get('addNewFileUploadIndicator')
       .valueChanges.subscribe((value) => this.updateDamagePhotoOnVisibility());
@@ -129,6 +131,11 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   getDamagedRoomsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    }
+
     this.damagedRoomService.damagedRoomGetDamagedRooms({applicationId: applicationId}).subscribe({
       next: (damagedRooms) => {
         this.damagedRoomsData = damagedRooms;

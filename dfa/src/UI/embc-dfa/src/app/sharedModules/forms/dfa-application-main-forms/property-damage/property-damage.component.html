@@ -1,4 +1,4 @@
-<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" [ngStyle]="{'pointer-events': vieworedit === 'view' || vieworedit === 'edit' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <form [formGroup]="propertyDamageForm">
@@ -40,7 +40,7 @@
             <mat-form-field appearance="outline" [hidden]="propertyDamageForm.get('otherDamage').value !== true" class="col-md-4">
               <mat-label>Cause of Damage</mat-label>
               <input matInput
-                [required]="propertyDamageForm.get('otherDamage').value === true"
+                [required]="propertyDamageForm.get('otherDamage').value === true || propertyDamageForm.get('otherDamage').value === 'true'"
                 type="text"
                 formControlName="otherDamageText"
                 placeholder="Cause of damage*"

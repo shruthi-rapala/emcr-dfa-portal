@@ -7,6 +7,7 @@ import { ProfileService } from '../profile/profile.service';
 import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
 import { tap } from 'rxjs/internal/operators/tap';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 //import {
 //  DfaAppapplication
 //} from 'src/app/core/api/models';
@@ -33,6 +34,7 @@ export class DashboardComponent implements OnInit {
     private profService: ProfileService,
     private profileDataService: ProfileDataService,
     private appSessionService: AppSessionService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
   ) { }
 
   ngOnInit(): void {
@@ -48,20 +50,20 @@ export class DashboardComponent implements OnInit {
         inactiveImage: '/assets/images/past-evac.svg',
         count: this.currentApplicationsCount
       },
-      {
-        label: 'DFA Events',
-        route: 'eventlist',
-        activeImage: '/assets/images/curr-evac-active.svg',
-        inactiveImage: '/assets/images/curr-evac.svg',
-        count: this.eventsCount
-      },
-      {
-        label: 'Past Applications',
-        route: 'past',
-        activeImage: '/assets/images/past-evac-active.svg',
-        inactiveImage: '/assets/images/past-evac.svg',
-        count: this.pastApplicationsCount
-      },
+      //{
+      //  label: 'DFA Events',
+      //  route: 'eventlist',
+      //  activeImage: '/assets/images/curr-evac-active.svg',
+      //  inactiveImage: '/assets/images/curr-evac.svg',
+      //  count: this.eventsCount
+      //},
+      //{
+      //  label: 'Past Applications',
+      //  route: 'past',
+      //  activeImage: '/assets/images/past-evac-active.svg',
+      //  inactiveImage: '/assets/images/past-evac.svg',
+      //  count: this.pastApplicationsCount
+      //},
       {
         label: 'Profile',
         route: 'profile',
@@ -73,6 +75,7 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateToDFAApplicationStart(): void {
+    this.dfaApplicationMainDataService.setViewOrEdit('add');
     this.router.navigate(['/dfa-application-start']);
     //var profileId = this.profileDataService.getProfileId();
     //this.appService.applicationGetDfaApplications({ profileId: profileId }).subscribe({

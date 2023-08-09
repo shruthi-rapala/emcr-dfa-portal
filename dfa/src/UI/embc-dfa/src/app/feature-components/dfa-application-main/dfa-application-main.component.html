@@ -3,7 +3,7 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationMainHeading }}</span>
     </div>
-    <div class="col-4">
+    <div class="col-4" *ngIf="vieworedit !== 'view'" >
       <button
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"
@@ -13,6 +13,22 @@
         type="button"
         >
          Save & Back to Dashboard
+         <app-loader
+          [strokeWidth]="3"
+          [diameter]="25"
+          [showLoader]="showLoader"
+        ></app-loader>
+      </button>
+    </div>
+    <div class="col-4" *ngIf="vieworedit === 'view'" >
+      <button
+        class="button-p save-button col-4"
+        style="height:40px !important; vertical-align: middle; width:220px;"
+        (click)="BackToDashboard()"
+        mat-stroked-button
+        type="button"
+        >
+         Back to Dashboard
          <app-loader
           [strokeWidth]="3"
           [diameter]="25"
@@ -38,7 +54,7 @@
       ></app-component-wrapper>
       <br />
       <div class="row justify-content-between resp-style">
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'">
           <button
             class="button-s"
             mat-button
@@ -48,7 +64,7 @@
             {{ step.backButtonLabel }}
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'">
           <button
             *ngIf="
               currentFlow === 'verified-registration' &&
@@ -73,7 +89,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step *ngIf="currentFlow === 'verified-registration'">
+    <mat-step *ngIf="currentFlow === 'verified-registration' && vieworedit !== 'view' && vieworedit !== 'edit'">
       <ng-template matStepLabel>Review</ng-template>
       <app-review
         [type]="type"
@@ -114,7 +130,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step *ngIf="currentFlow === 'verified-registration'">
+    <mat-step *ngIf="currentFlow === 'verified-registration' && vieworedit !== 'view' && vieworedit !== 'edit'">
       <ng-template matStepLabel>Sign & Submit</ng-template>
       <app-component-wrapper
         componentName="sign-and-submit"

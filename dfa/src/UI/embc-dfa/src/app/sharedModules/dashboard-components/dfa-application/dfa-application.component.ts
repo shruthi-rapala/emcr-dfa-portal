@@ -4,6 +4,8 @@ import { ProfileDataService } from 'src/app/feature-components/profile/profile-d
 import { ApplicationService as Service } from '../../../core/api/services/application.service';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 
 @Component({
   selector: 'app-dfadashboard-application',
@@ -24,6 +26,8 @@ export class DfaApplicationComponent implements OnInit {
     private appService: Service,
     private appSessionService: AppSessionService,
     private router: Router,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private dfaApplicationStartDataService: DFAApplicationStartDataService,
   ) {
     const navigation = this.router.getCurrentNavigation();
     //if (navigation?.extras?.state !== undefined) {
@@ -49,8 +53,39 @@ export class DfaApplicationComponent implements OnInit {
 
   mapData(lstApp: Object): void {
     var res = JSON.parse(JSON.stringify(lstApp));
-    this.appSessionService.appNumber = res.length.toString();
+    this.appSessionService.appNumber = res.length.toString() != null ? res.length.toString() : "0" ;
     this.lstApplications = res;
+  }
+
+  ViewApplication(applicationId: string): void {
+    this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.setViewOrEdit('view');
+    this.router.navigate(['/dfa-application-main']);
+  }
+
+  EditCleanUpLog(applicationId: string): void {
+    this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.setViewOrEdit('edit');
+    this.dfaApplicationMainDataService.setEditStep('3');
+    this.router.navigate(['/dfa-application-main']);
+  }
+
+  EditDamagedItems(applicationId: string): void {
+    this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.setViewOrEdit('edit');
+    this.dfaApplicationMainDataService.setEditStep('4');
+    this.router.navigate(['/dfa-application-main']);
+  }
+
+  EditSupportingDocs(applicationId: string): void {
+    this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.setViewOrEdit('edit');
+    this.dfaApplicationMainDataService.setEditStep('5');
+    this.router.navigate(['/dfa-application-main']);
   }
 
 }
