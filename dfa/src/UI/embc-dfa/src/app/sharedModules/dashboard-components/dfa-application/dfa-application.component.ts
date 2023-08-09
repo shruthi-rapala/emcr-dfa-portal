@@ -60,6 +60,31 @@ export class DfaApplicationComponent implements OnInit {
   ViewApplication(applicationId: string): void {
     this.dfaApplicationMainDataService.setApplicationId(applicationId);
     this.dfaApplicationStartDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.setViewOrEdit('view');
+    this.router.navigate(['/dfa-application-main']);
+  }
+
+  EditCleanUpLog(applicationId: string): void {
+    this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.setViewOrEdit('edit');
+    this.dfaApplicationMainDataService.setEditStep('3');
+    this.router.navigate(['/dfa-application-main']);
+  }
+
+  EditDamagedItems(applicationId: string): void {
+    this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.setViewOrEdit('edit');
+    this.dfaApplicationMainDataService.setEditStep('4');
+    this.router.navigate(['/dfa-application-main']);
+  }
+
+  EditSupportingDocs(applicationId: string): void {
+    this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.setViewOrEdit('edit');
+    this.dfaApplicationMainDataService.setEditStep('5');
     this.router.navigate(['/dfa-application-main']);
   }
 

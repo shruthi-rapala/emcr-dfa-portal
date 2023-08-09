@@ -60,6 +60,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     'image/png'
   ];
   FileCategories = FileCategory;
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -75,6 +76,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.damagedRoomsForm$ = this.formCreationService
       .getDamagedRoomsForm()
       .subscribe((damagedRooms) => {

@@ -91,13 +91,23 @@ export class DFAApplicationMainMappingService {
 
   private setPropertyDamageDetails(dfaApplicationMain: DfaApplicationMain): void {
     let formGroup: UntypedFormGroup;
-
     this.formCreationService
       .getPropertyDamageForm()
       .pipe(first())
       .subscribe((propertyDamage) => {
         propertyDamage.setValue({
-          ...dfaApplicationMain.propertyDamage
+          ...dfaApplicationMain.propertyDamage,
+          //floodDamage: dfaApplicationMain.propertyDamage.floodDamage === true ? 'true' : 'false',
+          //landslideDamage: dfaApplicationMain.propertyDamage.landslideDamage === true ? 'true' : 'false',
+          //wildfireDamage: dfaApplicationMain.propertyDamage.wildfireDamage === true ? 'true' : 'false',
+          //stormDamage: true, //dfaApplicationMain.propertyDamage.stormDamage === true ? 'true' : 'false',
+          //otherDamage: true, //dfaApplicationMain.propertyDamage.otherDamage === true ? 'true' : 'false',
+          lossesExceed1000: dfaApplicationMain.propertyDamage.lossesExceed1000 === true ? 'true' : 'false',
+          wereYouEvacuated: dfaApplicationMain.propertyDamage.wereYouEvacuated === true ? 'true' : 'false',
+          residingInResidence: dfaApplicationMain.propertyDamage.residingInResidence === true ? 'true' : 'false',
+          damageFromDate: new Date(dfaApplicationMain.propertyDamage.damageFromDate),
+          damageToDate: new Date(dfaApplicationMain.propertyDamage.damageToDate),
+          dateReturned: new Date(dfaApplicationMain.propertyDamage.dateReturned),
         });
         formGroup = propertyDamage;
       });

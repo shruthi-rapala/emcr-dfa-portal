@@ -48,6 +48,8 @@ export class DFAApplicationMainComponent
   isSignaturesValid: boolean = false;
   appTypeInsuranceForm: UntypedFormGroup;
   appTypeInsuranceForm$: Subscription;
+  vieworedit: string;
+  editstep: string;
 
   constructor(
     private router: Router,
@@ -69,10 +71,14 @@ export class DFAApplicationMainComponent
   }
 
   ngOnInit(): void {
+    
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     this.dfaApplicationMainHeading = ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] + ' Application';
     this.steps = this.componentService.createDFAApplicationMainSteps();
-
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+    this.editstep = this.dfaApplicationMainDataService.getEditStep();
+    
+    //this.dfaApplicationMainDataService.setViewOrEdit('');
     this.formCreationService.secondaryApplicantsChanged.subscribe(secondaryApplicants => {
       if (secondaryApplicants?.length > 0) this.isSecondaryApplicant = true;
       else this.isSecondaryApplicant = false;
@@ -111,6 +117,18 @@ export class DFAApplicationMainComponent
   }
 
   ngAfterViewInit(): void {
+    if (this.vieworedit == 'view' || this.vieworedit == 'edit') {
+      for (var i = 0; i <= 5; i++) {
+        this.dfaApplicationMainStepper.selected.completed = true;
+        this.dfaApplicationMainStepper.next();
+      }
+
+      this.dfaApplicationMainStepper.selectedIndex = 0;
+
+      if (this.vieworedit == 'edit') {
+        this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
+      }
+    }    
   }
 
   navigateToStep(stepIndex: number) {
@@ -289,5 +307,9 @@ export class DFAApplicationMainComponent
     error => {
       console.error(error);
     });
+  }
+
+  BackToDashboard(): void {
+    this.router.navigate(['/dfa-dashboard']);
   }
 }

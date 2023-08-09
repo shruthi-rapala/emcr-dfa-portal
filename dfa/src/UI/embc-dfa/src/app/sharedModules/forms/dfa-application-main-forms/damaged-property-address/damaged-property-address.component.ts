@@ -57,6 +57,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     /\d/,
     /\d/
   ];
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -82,6 +83,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.damagedPropertyAddressForm$ = this.formCreationService
       .getDamagedPropertyAddressForm()
       .subscribe((damagedPropertyAddress) => {

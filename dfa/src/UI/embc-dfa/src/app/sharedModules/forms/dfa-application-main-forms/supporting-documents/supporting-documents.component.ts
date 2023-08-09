@@ -69,6 +69,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   showOtherDocuments: boolean = false;
   isResidentialTenant: boolean = false;
   AppOptions = ApplicantOption;
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -84,6 +85,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.supportingDocumentsForm$ = this.formCreationService
       .getSupportingDocumentsForm()
       .subscribe((supportingDocuments) => {

@@ -22,6 +22,8 @@ export class DFAApplicationMainDataService {
   private _dfaApplicationStart: DfaApplicationStart;
   private _isSubmitted: boolean = false;
   private _applicationId: string;
+  private _vieworedit: string;
+  private _editstep: string;
 
   constructor(
     private cacheService: CacheService,
@@ -159,6 +161,21 @@ export class DFAApplicationMainDataService {
   public getApplicationId(): string {
     return this._applicationId;
   }
+
+  public setViewOrEdit(vieworedit: string): void {
+    this._vieworedit = vieworedit;
+  }
+  public getViewOrEdit(): string {
+    return this._vieworedit;
+  }
+
+  public setEditStep(editstep: string): void {
+    this._editstep = editstep;
+  }
+  public getEditStep(): string {
+    return this._editstep;
+  }
+
    public createDFAApplicationMainDTO(): DfaApplicationMain {
     return {
       id: this.dfaApplicationStart.id,

@@ -7,6 +7,7 @@ import { ProfileService } from '../profile/profile.service';
 import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
 import { tap } from 'rxjs/internal/operators/tap';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 //import {
 //  DfaAppapplication
 //} from 'src/app/core/api/models';
@@ -33,6 +34,7 @@ export class DashboardComponent implements OnInit {
     private profService: ProfileService,
     private profileDataService: ProfileDataService,
     private appSessionService: AppSessionService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
   ) { }
 
   ngOnInit(): void {
@@ -73,6 +75,7 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateToDFAApplicationStart(): void {
+    this.dfaApplicationMainDataService.setViewOrEdit('add');
     this.router.navigate(['/dfa-application-start']);
     //var profileId = this.profileDataService.getProfileId();
     //this.appService.applicationGetDfaApplications({ profileId: profileId }).subscribe({

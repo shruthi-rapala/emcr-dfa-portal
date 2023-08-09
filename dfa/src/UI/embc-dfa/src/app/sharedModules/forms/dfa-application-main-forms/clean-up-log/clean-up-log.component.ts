@@ -57,6 +57,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     'image/jpeg',
     'image/png'
   ];
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -72,6 +73,8 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+
     this.cleanUpLogForm$ = this.formCreationService
       .getCleanUpLogForm()
       .subscribe((cleanUpLog) => {
