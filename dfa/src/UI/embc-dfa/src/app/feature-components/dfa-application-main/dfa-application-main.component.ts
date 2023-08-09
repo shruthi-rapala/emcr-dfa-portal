@@ -274,6 +274,17 @@ export class DFAApplicationMainComponent
       }
   }
 
+  saveAndBackToDashboard() {
+    let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+    this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+      this.showLoader = !this.showLoader;
+      this.returnToDashboard();
+    },
+    error => {
+      console.error(error);
+    });
+  }
+
   returnToDashboard() {
     this.router.navigate(['/verified-registration/dashboard']);
   }
