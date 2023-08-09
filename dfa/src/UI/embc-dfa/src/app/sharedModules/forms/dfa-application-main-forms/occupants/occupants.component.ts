@@ -188,7 +188,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   deleteFullTimeOccupantRow(index: number): void {
     this.fullTimeOccupantsData[index].deleteFlag = true;
     this.fullTimeOccupantsService.fullTimeOccupantUpsertDeleteFullTimeOccupant({body: this.fullTimeOccupantsData[index]}).subscribe({
-      next: (fullTimeOccupantId) => {
+      next: (result) => {
         this.fullTimeOccupantsData.splice(index, 1);
         this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
         this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
@@ -239,7 +239,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   deleteOtherContactRow(index: number): void {
     this.otherContactsData[index].deleteFlag = true;
     this.otherContactsService.otherContactUpsertDeleteOtherContact({body: this.otherContactsData[index]}).subscribe({
-      next: (otherContactId) => {
+      next: (result) => {
         this.otherContactsData.splice(index, 1);
         this.otherContactsDataSource.next(this.otherContactsData);
         this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
@@ -293,7 +293,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   deleteSecondaryApplicantRow(index: number): void {
     this.secondaryApplicantsData[index].deleteFlag = true;
     this.secondaryApplicantsService.secondaryApplicantUpsertDeleteSecondaryApplicant({body: this.secondaryApplicantsData[index]}).subscribe({
-      next: (secondaryApplicantId) => {
+      next: (result) => {
           this.secondaryApplicantsData.splice(index, 1);
           this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
           this.secondaryApplicantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);

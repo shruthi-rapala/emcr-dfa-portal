@@ -215,7 +215,7 @@ export class DFAApplicationMainComponent
         break;
       case 'supporting-documents':
         this.dfaApplicationMainDataService.supportingDocuments = this.form.value;
-        this.dfaApplicationMainDataService.supportingDocuments.hasCopyOfARentalAgreementOrLease = this.form.get('hasCopyOfARentalAgreementOrLease').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.supportingDocuments.hasCopyOfARentalAgreementOrLease = this.form.get('hasCopyOfARentalAgreementOrLease').value == true ? true : false;
         break;
       case 'sign-and-submit':
         this.dfaApplicationMainDataService.signAndSubmit = this.form.value;

@@ -160,7 +160,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     if (this.damagedRoomsForm.get('damagedRoom').status === 'VALID') {
       if (this.damagedRoomEditIndex !== undefined && this.damagedRoomRowEdit) {
         this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.get('damagedRoom').getRawValue() }).subscribe({
-         next: (damagedRoomId) => {
+         next: (result) => {
             this.damagedRoomsData[this.damagedRoomEditIndex] = this.damagedRoomsForm.get('damagedRoom').value;
             this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
             this.damagedRoomEditIndex = undefined;
@@ -198,7 +198,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   deleteDamagedRoomRow(index: number): void {
     this.damagedRoomsData[index].deleteFlag = true;
     this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsData[index]}).subscribe({
-      next: (damagedRoomId) => {
+      next: (result) => {
         this.damagedRoomsData.splice(index, 1);
         this.damagedRoomsDataSource.next(this.damagedRoomsData);
         this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
@@ -276,7 +276,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     let index = fileUploads.indexOf(element);
     element.deleteFlag = true;
     this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
-      next: (fileUploadId) => {
+      next: (result) => {
         fileUploads[index] = element;
         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
         if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {

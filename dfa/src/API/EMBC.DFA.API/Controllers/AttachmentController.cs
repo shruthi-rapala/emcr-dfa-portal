@@ -49,8 +49,8 @@ namespace EMBC.DFA.API.Controllers
             if (fileUpload == null) return BadRequest("FileUpload details cannot be empty.");
             var mappedFileUpload = mapper.Map<dfa_appdocumentlocation_params>(fileUpload);
 
-            var fileUploadId = await handler.HandleFileUploadAsync(mappedFileUpload);
-            return Ok(fileUploadId);
+            var result = await handler.HandleFileUploadAsync(mappedFileUpload);
+            return Ok(result);
         }
 
         /// <summary>

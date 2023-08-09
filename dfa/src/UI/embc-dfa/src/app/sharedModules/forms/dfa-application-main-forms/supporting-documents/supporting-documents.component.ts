@@ -162,6 +162,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     if (fileUploads.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]).length > 0) {
       let rentalAgreementFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
       this.rentalAgreementForm.get('rentalAgreementFileUpload').setValue(fileUploads[rentalAgreementFoundIndex]);
+      this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
     } else {
       this.rentalAgreementForm.get('rentalAgreementFileUpload').reset();
       this.rentalAgreementForm.get('rentalAgreementFileUpload.modifiedBy').setValue("Applicant");
@@ -291,7 +292,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
     if (fileUploads.filter(x => x.fileType === fileUpload.fileType).length > 0) {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
-        next: (fileUploadId) => {
+        next: (result) => {
           let typeFoundIndex = fileUploads.findIndex(x => x.fileType === fileUpload.fileType);
           fileUploads[typeFoundIndex] = fileUpload;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
@@ -330,7 +331,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let foundIndex = fileUploads.findIndex(x => x.fileType === element.fileType);
       element.deleteFlag = true;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
-        next: (fileUploadId) => {
+        next: (result) => {
           fileUploads[foundIndex] = element;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
         },
@@ -347,7 +348,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let index = fileUploads.indexOf(element);
       element.deleteFlag = true;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
-        next: (fileUploadId) => {
+        next: (result) => {
           fileUploads[index] = element;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           if (fileUploads.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])?.length == 0)

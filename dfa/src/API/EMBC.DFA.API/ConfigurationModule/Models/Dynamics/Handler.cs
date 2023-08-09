@@ -23,7 +23,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<Country>> HandleCountry();
         Task<string> HandleContact(dfa_appcontact objContact);
         Task<string> HandleApplication(dfa_appapplicationstart_params objApplication);
-        Task<string> HandleSignatures(IEnumerable<dfa_signature> objSignatures);
         Task<string> HandleSignature(dfa_signature objSignature);
         Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartAsync(Guid applicationId);
@@ -111,12 +110,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return applicationId;
         }
 
-        public async Task<string> HandleSignatures(IEnumerable<dfa_signature> objSignatures)
-        {
-            var result = await listsGateway.AddApplicationSignatures(objSignatures);
-            return result;
-        }
-
         public async Task<string> HandleSignature(dfa_signature objSignature)
         {
             var result = await listsGateway.AddApplicationSignature(objSignature);
@@ -125,8 +118,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication)
         {
-            var applicationId = await listsGateway.UpdateApplication(objApplication);
-            return applicationId;
+            var result = await listsGateway.UpdateApplication(objApplication);
+            return result;
         }
 
         public async Task<dfa_appapplicationstart_retrieve> GetApplicationStartAsync(Guid applicationId)
@@ -149,8 +142,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems)
         {
-            var dfa_appdamageitemid = await listsGateway.UpsertDeleteDamagedItemAsync(objDamagedItems);
-            return dfa_appdamageitemid;
+            var result = await listsGateway.UpsertDeleteDamagedItemAsync(objDamagedItems);
+            return result;
         }
 
         public async Task<IEnumerable<dfa_appdamageditems_retrieve>> GetDamagedItemsAsync(Guid applicationId)
@@ -160,8 +153,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<string> HandleSecondaryApplicantAsync(dfa_appsecondaryapplicant_params objSecondaryApplicant)
         {
-            var dfa_appsecondaryappid = await listsGateway.UpsertDeleteSecondaryApplicantAsync(objSecondaryApplicant);
-            return dfa_appsecondaryappid;
+            var result = await listsGateway.UpsertDeleteSecondaryApplicantAsync(objSecondaryApplicant);
+            return result;
         }
 
         public async Task<IEnumerable<dfa_appsecondaryapplicant_retrieve>> GetSecondaryApplicantsAsync(Guid applicationId)
@@ -171,8 +164,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<string> HandleOtherContactAsync(dfa_appothercontact_params objOtherContact)
         {
-            var dfa_appothercontactid = await listsGateway.UpsertDeleteOtherContactAsync(objOtherContact);
-            return dfa_appothercontactid;
+            var result = await listsGateway.UpsertDeleteOtherContactAsync(objOtherContact);
+            return result;
         }
 
         public async Task<IEnumerable<dfa_appothercontact_retrieve>> GetOtherContactsAsync(Guid applicationId)
@@ -182,8 +175,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<string> HandleFullTimeOccupantAsync(dfa_appoccupant_params objAppOccupant)
         {
-            var dfa_appoccupantid = await listsGateway.UpsertDeleteFullTimeOccupantAsync(objAppOccupant);
-            return dfa_appoccupantid;
+            var result = await listsGateway.UpsertDeleteFullTimeOccupantAsync(objAppOccupant);
+            return result;
         }
 
         public async Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsAsync(Guid applicationId)
@@ -193,8 +186,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLogItem)
         {
-            var dfa_appcleanuplogid = await listsGateway.UpsertDeleteCleanUpLogItemAsync(objCleanUpLogItem);
-            return dfa_appcleanuplogid;
+            var result = await listsGateway.UpsertDeleteCleanUpLogItemAsync(objCleanUpLogItem);
+            return result;
         }
 
         public async Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId)
@@ -204,8 +197,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public async Task<string> HandleFileUploadAsync(dfa_appdocumentlocation_params objFileUpload)
         {
-            var dfa_appdocumentlocationid = await listsGateway.UpsertDeleteDocumentLocationAsync(objFileUpload);
-            return dfa_appdocumentlocationid;
+            var result = await listsGateway.UpsertDeleteDocumentLocationAsync(objFileUpload);
+            return result;
         }
 
         public async Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetFileUploadsAsync(Guid applicationId)

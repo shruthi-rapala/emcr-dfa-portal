@@ -113,27 +113,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
-        // TODO: Fails with resource not found for the segment
-        public async Task<string> AddApplicationSignatures(IEnumerable<dfa_signature> dfa_signatures)
-        {
-            try
-            {
-                foreach (dfa_signature dfa_signature in dfa_signatures)
-                {
-                    var signature = JsonHelper.JsonSerializer<dfa_signature>(dfa_signature);
-                    await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", signature);
-                }
-                return "signatureadded";
-            }
-            // catch (System.Exception ex)
-            catch
-            {
-                return "failed";
-                // return new System.Dynamic.ExpandoObject();
-                // throw new Exception($"Failed to add application signatures {ex.Message}", ex);
-            }
-        }
-
         public async Task<string> AddApplicationSignature(dfa_signature dfa_signature)
         {
             try
@@ -141,20 +120,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", dfa_signature);
                return "signatureadded";
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return "failed";
-                // throw new Exception($"Failed to add application signatures {ex.Message}", ex);
+                throw new Exception($"Failed to add application signature {ex.Message}", ex);
             }
         }
 
-        // TODO: missing parameters dfa_acopyofarentalagreementorlease (existing field), dfa_areyounowresidingintheresidence (existing),
-        // dfa_causeofdamageflood (new field), dfa_causeofdamagewildfire (new field), dfa_causeofdamagelandslide (new field), dfa_causeofdamagestorm (new field), dfa_causeofdamageother (new field)
-        // dfa_causeofdamageloss (existing field), dfa_dateofdamage (existing field), dfa_dateofdamageto (existing field), dfa_datereturntoresidence (existing field)
-        // dfa_description (existing field), dfa_doyourlossestotalmorethan1000 (existing field), dfa_havereceiptsforcleanupsorrepairs (existing field)
-        // dfa_wereyouevacuatedduringtheevent (existing field), dfa_primaryapplicantprintname, dfa_primaryapplicantsigned, dfa_primaryapplicantsigneddate,
-        // dfa_secondaryapplicantsigned, dfa_secondaryapplicantprintname, dfa_secondaryapplicantsigneddate
         public async Task<string> UpdateApplication(dfa_appapplicationmain_params application)
         {
             try
@@ -174,17 +145,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
-        // TODO: missing fields for no ins signatures
         public async Task<dfa_appapplicationstart_retrieve> GetApplicationStartById(Guid applicationId)
         {
             var list = await api.GetList<dfa_appapplicationstart_retrieve>("dfa_appapplications", new CRMGetListOptions
             {
                 Select = new[]
                 {
-                    "dfa_appapplicationid", "dfa_applicanttype", "dfa_doyouhaveinsurancecoverage2", "_dfa_applicant_value"
-                    // "dfa_primaryapplicantsignednoins"
-                    // "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "dfa_secondaryapplicantsignednoins",
-                    // "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins"
+                    "dfa_appapplicationid", "dfa_applicanttype", "dfa_doyouhaveinsurancecoverage2", "_dfa_applicant_value",
+                    "dfa_primaryapplicantsignednoins",
+                    "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "dfa_secondaryapplicantsignednoins",
+                    "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -192,7 +162,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return list.List.FirstOrDefault();
         }
 
-        // TODO: missing fields "dfa_causeofdamageflood", "dfa_causeofdamagestorm", "dfa_causeofdamagewildfire", "dfa_causeofdamagelandslide", "dfa_causeofdamageother",
         public async Task<dfa_appapplicationmain_retrieve> GetApplicationMainById(Guid applicationId)
         {
             var list = await api.GetList<dfa_appapplicationmain_retrieve>("dfa_appapplications", new CRMGetListOptions
@@ -205,11 +174,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_indigenousreserve", "dfa_nameoffirstnationsr", "dfa_manufacturedhom", "dfa_eligibleforbchomegrantonthisproperty",
                     "_dfa_confirmedbuildinglandlord_value",
                     "dfa_acopyofarentalagreementorlease", "dfa_areyounowresidingintheresidence",
-                    // "dfa_causeofdamageflood", "dfa_causeofdamagestorm", "dfa_causeofdamagewildfire", "dfa_causeofdamagelandslide", "dfa_causeofdamageother",
+                    "dfa_causeofdamageflood", "dfa_causeofdamagestorm", "dfa_causeofdamagewildfire", "dfa_causeofdamagelandslide", "dfa_causeofdamageother",
                     "dfa_causeofdamageloss", "dfa_dateofdamage", "dfa_dateofdamageto", "dfa_datereturntotheresidence",
                     "dfa_description", "dfa_doyourlossestotalmorethan1000", "dfa_haveinvoicesreceiptsforcleanuporrepairs",
                     "dfa_primaryapplicantprintname", "dfa_primaryapplicantsigned", "dfa_primaryapplicantsigneddate",
-                    "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate"
+                    "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
+                    "dfa_wereyouevacuatedduringtheevent"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });

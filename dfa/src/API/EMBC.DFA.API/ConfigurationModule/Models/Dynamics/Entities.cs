@@ -64,9 +64,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class dfa_signature
     {
         public string signature { get; set; }
-        //public string ContentType { get; set; }
         public string filename { get; set; }
-        //public string Regarding { get; set; }
         public string dfa_appapplicationid { get; set; }
     }
 
@@ -116,59 +114,59 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_damagedpropertycitytext { get; set; } // optional string
         public string? dfa_damagedpropertyprovince { get; set; } // optional string
         public string? dfa_damagedpropertypostalcode { get; set; } // optional string
-        public bool? dfa_isthispropertyyourp { get; set; } // optional Two Options
-        public bool? dfa_indigenousreserve { get; set; } // optional Two Options
+        public bool? dfa_isthispropertyyourp { get; set; } // optional boolean
+        public bool? dfa_indigenousreserve { get; set; } // optional boolean
         public string? dfa_nameoffirstnationsr { get; set; } // optional string
-        public bool? dfa_manufacturedhom { get; set; } // optional Two Options
-        public bool? dfa_eligibleforbchomegrantonthisproperty { get; set; } // optional Two Options
+        public bool? dfa_manufacturedhom { get; set; } // optional boolean
+        public bool? dfa_eligibleforbchomegrantonthisproperty { get; set; } // optional boolean
         public string? dfa_contactfirstname { get; set; } // optional string
         public string? dfa_contactlastname { get; set; } // optional string
         public string? dfa_contactphone1 { get; set; } // optional string
         public string? dfa_contactemail { get; set; } // optional string
-        // public int dfa_acopyofarentalagreementorlease { get; set; } // required Two Options
-        // public int? dfa_areyounowresidingintheresidence { get; set; } // optional Two Options
-        // public int? dfa_causeofdamageflood { get; set; } // optional Two Options
-        // public int? dfa_causeofdamagestorm { get; set; } // optoinal Two Options
-        // public int? dfa_causeofdamagewildfire { get; set; } // optional Two Options
-        // public int? dfa_causeofdamagelandslide { get; set; } // optional Two Options
-        // public int? dfa_causeofdamageother { get; set; } // optional Two Options
-        // public string? dfa_causeofdamageloss { get; set; } // optional string
-        // public string? dfa_dateofdamage { get; set; } // optoinal date only
-        // public string? dfa_dateofdamageto { get; set; } // optional date only
-        // public string? dfa_datereturntotheresidence { get; set; } // optional date only
-        // public string? dfa_description { get; set; } // optional string
-        // public int? dfa_doyourlossestotalmorethan1000 { get; set; } // optional Two Options
-        // public int dfa_haveinvoicesreceiptsforcleanuporrepairs { get; set; } // required Two Options
-        // public string? dfa_primaryapplicantprintname { get; set; } // optional string
-        // public int dfa_primaryapplicantsigned { get; set; } // required Two Options
-        // public string? dfa_primaryapplicantsigneddate { get; set; } // optional string
-        // public string? dfa_secondaryapplicantprintname { get; set; } // optional string
-        // public int dfa_secondaryapplicantsigned { get; set; } // required Two Options
-        // public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
-        // public int? dfa_wereyouevacuatedduringtheevent { get; set; } // optional Two Options
+        public bool dfa_acopyofarentalagreementorlease { get; set; } // required boolean
+        public bool? dfa_areyounowresidingintheresidence { get; set; } // optional boolean
+        public bool? dfa_causeofdamageflood { get; set; } // optional boolean
+        public bool? dfa_causeofdamagestorm { get; set; } // optoinal boolean
+        public bool? dfa_causeofdamagewildfire { get; set; } // optional boolean
+        public bool? dfa_causeofdamagelandslide { get; set; } // optional boolean
+        public bool? dfa_causeofdamageother { get; set; } // optional boolean
+        public string? dfa_causeofdamageloss { get; set; } // optional string
+        public string? dfa_dateofdamage { get; set; } // optoinal date only
+        public string? dfa_dateofdamageto { get; set; } // optional date only
+        public string? dfa_datereturntoresidence { get; set; } // optional date only
+        public string? dfa_description { get; set; } // optional string
+        // public bool? dfa_doyourlossestotalmorethan1000 { get; set; } // optional boolean
+        public bool dfa_havereceiptsforcleanupsorrepairs { get; set; } // required boolean
+        public string? dfa_primaryapplicantprintname { get; set; } // optional string
+        public int dfa_primaryapplicantsigned { get; set; } // required Two Options
+        public string? dfa_primaryapplicantsigneddate { get; set; } // optional string
+        public string? dfa_secondaryapplicantprintname { get; set; } // optional string
+        public int dfa_secondaryapplicantsigned { get; set; } // required Two Options
+        public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
+        public bool? dfa_wereyouevacuatedduringtheevent { get; set; } // optional boolean
         public bool delete { get; set; } // delete or not
     }
 
     public class dfa_appapplicationmain_retrieve
     {
         public string dfa_appapplicationid { get; set; } // required
-        public bool? dfa_isprimaryanddamagedaddresssame { get; set; } // optional Two Options
+        public int? dfa_isprimaryanddamagedaddresssame { get; set; } // optional Two Options
         public string? dfa_damagedpropertystreet1 { get; set; } // optional string
         public string? dfa_damagedpropertystreet2 { get; set; } // optional string
         public string? dfa_damagedpropertycitytext { get; set; } // optional string
         public string? dfa_damagedpropertyprovince { get; set; } // optional string
         public string? dfa_damagedpropertypostalcode { get; set; } // optional string
-        public bool? dfa_isthispropertyyourp { get; set; } // optional boolean
-        public bool? dfa_indigenousreserve { get; set; } // optional Two Options
+        public int? dfa_isthispropertyyourp { get; set; } // optional Two Options
+        public int? dfa_indigenousreserve { get; set; } // optional Two Options
         public string? dfa_nameoffirstnationsr { get; set; } // optional string
-        public bool? dfa_manufacturedhom { get; set; } // optional Two Options
-        public bool? dfa_eligibleforbchomegrantonthisproperty { get; set; } // optional Two Options
+        public int? dfa_manufacturedhom { get; set; } // optional Two Options
+        public int? dfa_eligibleforbchomegrantonthisproperty { get; set; } // optional Two Options
         public string? dfa_contactfirstname { get; set; } // optional string
         public string? dfa_contactlastname { get; set; } // optional string
         public string? dfa_contactphone1 { get; set; } // optional string
         public string? dfa_contactemail { get; set; } // optional string
-        public bool? dfa_acopyofarentalagreementorlease { get; set; } // required Two Options
-        public bool? dfa_areyounowresidingintheresidence { get; set; } // optional Two Options
+        public int? dfa_acopyofarentalagreementorlease { get; set; } // required Two Options
+        public int? dfa_areyounowresidingintheresidence { get; set; } // optional Two Options
         public int? dfa_causeofdamageflood { get; set; } // optional Two Options
         public int? dfa_causeofdamagestorm { get; set; } // optoinal Two Options
         public int? dfa_causeofdamagewildfire { get; set; } // optional Two Options
@@ -179,10 +177,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_dateofdamageto { get; set; } // optional date only
         public string? dfa_datereturntotheresidence { get; set; } // optional date only
         public string? dfa_description { get; set; } // optional string
-        public bool? dfa_doyourlossestotalmorethan1000 { get; set; } // optional Two Options
-        public bool? dfa_haveinvoicesreceiptsforcleanuporrepairs { get; set; } // required Two Options
+        public int? dfa_doyourlossestotalmorethan1000 { get; set; } // optional Two Options
+        public int? dfa_haveinvoicesreceiptsforcleanuporrepairs { get; set; } // required Two Options
         public string? dfa_primaryapplicantprintname { get; set; } // optional string
-        public bool? dfa_primaryapplicantsigned { get; set; } // required Two Options
+        public int? dfa_primaryapplicantsigned { get; set; } // required Two Options
         public string? dfa_primaryapplicantsigneddate { get; set; } // optional string
         public string? dfa_secondaryapplicantprintname { get; set; } // optional string
         public int? dfa_secondaryapplicantsigned { get; set; } // required Two Options

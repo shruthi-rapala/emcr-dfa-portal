@@ -46,10 +46,6 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
     this.formCreationService = formCreationService;
   }
 
-  showForm() {
-    console.log(this.fileUpload, this.fileType);
-  }
-
   onToggleSideNote() {
     this.showSideNote.emit();
   }

@@ -241,7 +241,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   deleteCleanupLogRow(index: number): void {
     this.cleanUpWorkData[index].deleteFlag = true;
     this.cleanUpLogsService.cleanUpLogItemUpsertDeleteCleanUpLogItem({body: this.cleanUpWorkData[index]}).subscribe({
-      next: (cleanUpLogId) => {
+      next: (result) => {
           this.cleanUpWorkData.splice(index, 1);
           this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
           this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
@@ -262,7 +262,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     let index = fileUploads.indexOf(element);
     element.deleteFlag = true;
     this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
-      next: (fileUploadId) => {
+      next: (result) => {
         fileUploads[index] = element;
         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
         if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value?.filter(x => x.fileType == FileCategory.Cleanup).length === 0) {
