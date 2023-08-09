@@ -15,7 +15,7 @@
           <div class="row" [hidden]="!(missingRequiredFile === 'yes' || requiredFile === 'no')">
             <div class="col-md-6">
               <b>{{title}}<span style="color:red;" *ngIf="requiredFile">*</span></b><br/>
-              <div [innerHtml]="description"></div>
+              <div [innerHTML]="description" (click)="onToggleSideNote()"></div>
               <app-file-upload
                 [noOfAttachments]="1"
                 (attachedFile)="setFileFormControl($event)"
@@ -99,7 +99,6 @@
             </div>
           </div>
         </mat-card>
-        <button (click)="showForm()">Show Form</button>
     </ng-container>
   </div>
 </form>

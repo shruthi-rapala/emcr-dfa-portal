@@ -49,8 +49,8 @@ namespace EMBC.DFA.API.Controllers
             if (otherContact == null) return BadRequest("OtherContact details cannot be empty.");
             var mappedOtherContact = mapper.Map<dfa_appothercontact_params>(otherContact);
 
-            var otherContactId = await handler.HandleOtherContactAsync(mappedOtherContact);
-            return Ok(otherContactId);
+            var result = await handler.HandleOtherContactAsync(mappedOtherContact);
+            return Ok(result);
         }
 
         /// <summary>

@@ -7,8 +7,7 @@
       <button
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"
-        *ngIf="!dfaApplicationMainDataService.isSubmitted"
-        (click)="submitFile()"
+        (click)="saveAndBackToDashboard()"
         mat-stroked-button
         type="button"
         >

@@ -49,8 +49,8 @@ namespace EMBC.DFA.API.Controllers
             if (cleanupLogItem == null) return BadRequest("CleanUpLogItem details cannot be empty.");
             var mappedCleanUpLogItem = mapper.Map<dfa_appcleanuplogs_params>(cleanupLogItem);
 
-            var cleanupLogItemId = await handler.HandleCleanUpLogItemAsync(mappedCleanUpLogItem);
-            return Ok(cleanupLogItemId);
+            var result = await handler.HandleCleanUpLogItemAsync(mappedCleanUpLogItem);
+            return Ok(result);
         }
 
         /// <summary>

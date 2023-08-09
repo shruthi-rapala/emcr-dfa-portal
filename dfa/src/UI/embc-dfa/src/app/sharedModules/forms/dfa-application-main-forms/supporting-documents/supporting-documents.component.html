@@ -51,7 +51,7 @@
         <div class="col-md-8">
           <app-dfa-attachment
             title="Rental Agreement"
-            description="Attach your rental agreement, lease, or <a (click)='onToggleSideNote()'><u>other documentation</u></a> to show that you are/were legally occupying the damaged property at the time of the event."
+            description="Attach your rental agreement, lease, or <u>other documentation</u> to show that you are/were legally occupying the damaged property at the time of the event."
             [missingRequiredFile]="rentalAgreementForm.hasError('noRentalAgreement') ? 'yes': 'no'"
             requiredFile="yes"
             (showSideNote)="onToggleOtherDocuments()"

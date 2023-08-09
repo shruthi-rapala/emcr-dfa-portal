@@ -49,8 +49,8 @@ namespace EMBC.DFA.API.Controllers
             if (damagedRoom == null) return BadRequest("DamagedRoom details cannot be empty.");
             var mappedDamagedRoom = mapper.Map<dfa_appdamageditems_params>(damagedRoom);
 
-            var damagedRoomId = await handler.HandleDamagedItemsAsync(mappedDamagedRoom);
-            return Ok(damagedRoomId);
+            var result = await handler.HandleDamagedItemsAsync(mappedDamagedRoom);
+            return Ok(result);
         }
 
         /// <summary>

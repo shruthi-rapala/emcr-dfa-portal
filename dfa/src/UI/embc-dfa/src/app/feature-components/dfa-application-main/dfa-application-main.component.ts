@@ -233,7 +233,7 @@ export class DFAApplicationMainComponent
         break;
       case 'supporting-documents':
         this.dfaApplicationMainDataService.supportingDocuments = this.form.value;
-        this.dfaApplicationMainDataService.supportingDocuments.hasCopyOfARentalAgreementOrLease = this.form.get('hasCopyOfARentalAgreementOrLease').value == 'true' ? true : false;
+        this.dfaApplicationMainDataService.supportingDocuments.hasCopyOfARentalAgreementOrLease = this.form.get('hasCopyOfARentalAgreementOrLease').value == true ? true : false;
         break;
       case 'sign-and-submit':
         this.dfaApplicationMainDataService.signAndSubmit = this.form.value;
@@ -290,6 +290,17 @@ export class DFAApplicationMainComponent
         });
         break;
       }
+  }
+
+  saveAndBackToDashboard() {
+    let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+    this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+      this.showLoader = !this.showLoader;
+      this.returnToDashboard();
+    },
+    error => {
+      console.error(error);
+    });
   }
 
   returnToDashboard() {
