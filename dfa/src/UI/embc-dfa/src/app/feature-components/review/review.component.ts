@@ -56,7 +56,9 @@ export class ReviewComponent implements OnInit {
     private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application =>{
-      this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+      if (application) {
+        this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+      }
     });
   }
 

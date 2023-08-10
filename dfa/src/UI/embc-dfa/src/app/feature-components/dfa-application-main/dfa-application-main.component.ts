@@ -78,17 +78,21 @@ export class DFAApplicationMainComponent
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     let applicationId = this.route.snapshot.paramMap.get('id');
     this.dfaApplicationMainDataService.setApplicationId(applicationId);
-    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-      this.getFileUploadsForApplication(applicationId);
-      this.dfaApplicationMainHeading = ApplicantOption[application.appTypeInsurance.applicantOption] + ' Application';
-      this.appTypeInsuranceForm$ = this.formCreationService
+
+    this.appTypeInsuranceForm$ = this.formCreationService
       .getAppTypeInsuranceForm()
       .subscribe((appTypeInsurance) => {
         this.appTypeInsuranceForm = appTypeInsurance;
+      });
+
+    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+      if (application) {
+        this.getFileUploadsForApplication(applicationId);
+        this.dfaApplicationMainHeading = ApplicantOption[application.appTypeInsurance.applicantOption] + ' Application';
         this.appTypeInsuranceForm.controls.applicantOption.setValue(application.appTypeInsurance.applicantOption);
         this.appTypeInsuranceForm.controls.insuranceOption.setValue(application.appTypeInsurance.insuranceOption);
         this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
-      });
+      }
     });
 
     this.steps = this.componentService.createDFAApplicationMainSteps();

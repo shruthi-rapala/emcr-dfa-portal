@@ -55,7 +55,8 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> AddApplication(DFAApplicationStart application)
         {
             // fill in current user
-            application.ProfileVerification.profileId = currentUserId;
+            var dfa_appcontact = await handler.HandleGetUser(currentUserId);
+            application.ProfileVerification.profileId = dfa_appcontact.Id;
 
             if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationstart_params>(application);

@@ -99,9 +99,9 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class SignatureBlock
     {
-        public string dateSigned { get; set; }
-        public string signedName { get; set; }
-        public string signature { get; set; }
+        public string? dateSigned { get; set; }
+        public string? signedName { get; set; }
+        public string? signature { get; set; }
     }
 
     /// <summary>

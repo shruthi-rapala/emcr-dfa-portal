@@ -29,7 +29,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'dfa-application-start/',
+    path: 'dfa-application-start',
     loadChildren: () =>
       import(
         './feature-components/dfa-application-start/dfa-application-start.module'

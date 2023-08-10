@@ -82,7 +82,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-      this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
+      if (application) {
+        this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
+      }
     });
   }
 

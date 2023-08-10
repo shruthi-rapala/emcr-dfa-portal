@@ -86,25 +86,33 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   ngOnInit(): void {
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-      this.damagedPropertyAddressForm$ = this.formCreationService
-      .getDamagedPropertyAddressForm()
-      .subscribe((damagedPropertyAddress) => {
-        this.damagedPropertyAddressForm = damagedPropertyAddress;
-        // this.damagedPropertyAddressForm.updateValueAndValidity();
+      if (application) {
         if (ApplicantOption[application.appTypeInsurance.applicantOption] === ApplicantOption.Homeowner) {
           this.isResidentialTenant = true;
-          this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
-          this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators(null);
-          this.damagedPropertyAddressForm.controls.landlordSurname.setValidators(null);
-          this.damagedPropertyAddressForm.controls.landlordPhone.removeValidators([Validators.required]);
         } else if (ApplicantOption[application.appTypeInsurance.applicantOption] === ApplicantOption.ResidentialTenant) {
           this.isResidentialTenant = false;
-          this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
-          this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required]);
-          this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required]);
-          this.damagedPropertyAddressForm.controls.landlordPhone.addValidators([Validators.required]);
         }
-      });
+      }
+    });
+
+    this.damagedPropertyAddressForm$ = this.formCreationService
+    .getDamagedPropertyAddressForm()
+    .subscribe((damagedPropertyAddress) => {
+      this.damagedPropertyAddressForm = damagedPropertyAddress;
+      // this.damagedPropertyAddressForm.updateValueAndValidity();
+      if (!this.isResidentialTenant) {
+        this.isResidentialTenant = true;
+        this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
+        this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators(null);
+        this.damagedPropertyAddressForm.controls.landlordSurname.setValidators(null);
+        this.damagedPropertyAddressForm.controls.landlordPhone.removeValidators([Validators.required]);
+      } else if (this.isResidentialTenant) {
+        this.isResidentialTenant = false;
+        this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
+        this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required]);
+        this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required]);
+        this.damagedPropertyAddressForm.controls.landlordPhone.addValidators([Validators.required]);
+      }
     });
 
     this.damagedPropertyAddressForm
@@ -158,7 +166,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('occupyAsPrimaryResidence').reset();
-        } else if (value === 'false') {
+        } else if (value === 'false' && this.damagedPropertyAddressForm.get('occupyAsPrimaryResidence').touched) {
           this.dontOccupyDamagedProperty();
         }
       });
