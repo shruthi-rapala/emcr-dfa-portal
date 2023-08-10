@@ -22,7 +22,7 @@
               <div class="row radio-extra-label">
                 {{ profileAddress?.addressLine1}}<br/>
                 <div *ngIf="profileAddress?.addressLine2">{{ profileAddress?.addressLine2}}<br/></div>
-                {{ profileAddress?.community }}&nbsp;{{ profileAddress?.postalCode }}<br /><br/>
+                {{ profileAddress?.city }}&nbsp;{{profileAddress?.stateProvince}}&nbsp;{{ profileAddress?.postalCode }}<br /><br/>
               </div>
               <mat-radio-button value=false>No</mat-radio-button>
               <div class="row radio-extra-label" *ngIf="damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').value != 'true'">

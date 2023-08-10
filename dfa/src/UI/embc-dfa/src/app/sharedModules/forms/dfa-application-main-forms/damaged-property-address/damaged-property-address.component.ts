@@ -24,11 +24,11 @@ import { RegAddress } from 'src/app/core/model/address';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Profile, ApplicantOption } from 'src/app/core/api/models';
+import { Profile, ApplicantOption, Address } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatInputModule } from '@angular/material/input';
-import { ApplicationService } from 'src/app/core/api/services';
+import { ApplicationService, ProfileService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
 
 @Component({
@@ -41,7 +41,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   formBuilder: UntypedFormBuilder;
   damagedPropertyAddressForm$: Subscription;
   formCreationService: FormCreationService;
-  private _profileAddress: RegAddress;
+  private _profileAddress: Address;
   public ApplicantOptions = ApplicantOption;
   readonly phoneMask = [
     /\d/,
@@ -70,16 +70,17 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     public dialog: MatDialog,
     private applicationService: ApplicationService,
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
+    private profileService: ProfileService
 
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
   }
 
-  public get profileAddress(): RegAddress {
+  public get profileAddress(): Address {
     return this._profileAddress;
   }
-  public set profileAddress(value: RegAddress) {
+  public set profileAddress(value: Address) {
     this._profileAddress = value;
   }
 
@@ -87,10 +88,17 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
-        if (ApplicantOption[application.appTypeInsurance.applicantOption] === ApplicantOption.Homeowner) {
-          this.isResidentialTenant = true;
-        } else if (ApplicantOption[application.appTypeInsurance.applicantOption] === ApplicantOption.ResidentialTenant) {
-          this.isResidentialTenant = false;
+        this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+        if (!this.profileAddress) {
+          this.profileService.profileGetProfile().subscribe(profile => {
+            this.profileAddress = {
+              addressLine1: profile?.primaryAddress?.addressLine1,
+              addressLine2: profile?.primaryAddress?.addressLine2,
+              postalCode: profile?.primaryAddress?.postalCode,
+              stateProvince: profile?.primaryAddress?.stateProvince ? profile.primaryAddress?.stateProvince : "BC",
+              city: profile?.primaryAddress?.city
+            }
+          })
         }
       }
     });
@@ -101,13 +109,11 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       this.damagedPropertyAddressForm = damagedPropertyAddress;
       // this.damagedPropertyAddressForm.updateValueAndValidity();
       if (!this.isResidentialTenant) {
-        this.isResidentialTenant = true;
         this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
         this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators(null);
         this.damagedPropertyAddressForm.controls.landlordSurname.setValidators(null);
         this.damagedPropertyAddressForm.controls.landlordPhone.removeValidators([Validators.required]);
       } else if (this.isResidentialTenant) {
-        this.isResidentialTenant = false;
         this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
         this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required]);
         this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required]);
@@ -309,21 +315,18 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   onUseProfileAddressChoice(choice: any) {
     this.damagedPropertyAddressForm.controls.stateProvince.setValue("BC");
     if (!choice.value) return; // not a radio button change
-    if (choice.value == true) // yes
+    if (choice.value == 'true') // yes
     {
       this.damagedPropertyAddressForm.controls.addressLine1.setValue(this.profileAddress.addressLine1);
       this.damagedPropertyAddressForm.controls.addressLine2.setValue(this.profileAddress.addressLine2);
-      this.damagedPropertyAddressForm.controls.community.setValue(this.profileAddress.community);
+      this.damagedPropertyAddressForm.controls.community.setValue(this.profileAddress.city);
       this.damagedPropertyAddressForm.controls.stateProvince.setValue(this.profileAddress.stateProvince);
       this.damagedPropertyAddressForm.controls.postalCode.setValue(this.profileAddress.postalCode);
-
     } else { // no
-
       this.damagedPropertyAddressForm.controls.addressLine1.setValue(null);
       this.damagedPropertyAddressForm.controls.addressLine2.setValue(null);
       this.damagedPropertyAddressForm.controls.community.setValue(null);
       this.damagedPropertyAddressForm.controls.postalCode.setValue(null);
-
     }
   }
 
