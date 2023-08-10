@@ -55,12 +55,62 @@ public class HomeOwnerApplicationDetails {
         element.sendKeys("V8X1G3");
 
         //Questions
+        HomeOwnerApplicationDetails questions = new HomeOwnerApplicationDetails();
+        questions.questionsOnDamaga(element, driverWait, driver);
+
+        JavascriptExecutor js31 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Cause of Damage ')]")));
+        js31.executeScript("arguments[0].click();", element);
+        Thread.sleep(1000);
+
+        HomeOwnerApplicationDetails damageAppl = new HomeOwnerApplicationDetails();
+        damageAppl.damage(element, driverWait, driver);
+
+        //reside in
+        JavascriptExecutor js4 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-33-input")));
+        js4.executeScript("arguments[0].click();", element);
+
+        JavascriptExecutor js6= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Occupants ')]")));
+        js6.executeScript("arguments[0].click();", element);
+        Thread.sleep(1000);
+        //add full time occupant
+        HomeOwnerApplicationDetails ocupantsAppl = new HomeOwnerApplicationDetails();
+        ocupantsAppl.ocupants(element, driverWait, driver);
+
+        JavascriptExecutor js7= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Clean Up Log ')]")));
+        js7.executeScript("arguments[0].click();", element);
+
+        //CleanUp logs
+        HomeOwnerApplicationDetails clean = new HomeOwnerApplicationDetails();
+        clean.cleanLogs(element, driverWait, driver);
+
+        JavascriptExecutor js37= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Supporting Documents ')]")));
+        js37.executeScript("arguments[0].click();", element);
+
+        //Supporting docs
+        HomeOwnerApplicationDetails supDocs = new HomeOwnerApplicationDetails();
+        supDocs.docs(element, driverWait, driver);
+
+        //Sign and Submit
+        HomeOwnerApplicationDetails signSubmit = new HomeOwnerApplicationDetails();
+        signSubmit.submit(element, driverWait, driver);
+
+    }
+
+    public void questionsOnDamaga(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
+
+        //Questions
         JavascriptExecutor js2 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-15-input")));
         js2.executeScript("arguments[0].click();", element);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-18-input")));
         js.executeScript("arguments[0].click();", element);
+        Thread.sleep(1000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-16")));
         element.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m");
         Thread.sleep(1000);
@@ -72,10 +122,9 @@ public class HomeOwnerApplicationDetails {
         JavascriptExecutor js3 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-24 .mat-radio-outer-circle")));
         js3.executeScript("arguments[0].click();", element);
-        JavascriptExecutor js31 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Cause of Damage ')]")));
-        js31.executeScript("arguments[0].click();", element);
-        Thread.sleep(1000);
+    }
+
+    public void damage(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
 
         JavascriptExecutor js311 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-1 .mat-checkbox-inner-container")));
@@ -90,6 +139,7 @@ public class HomeOwnerApplicationDetails {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-4 .mat-checkbox-inner-container")));
         js314.executeScript("arguments[0].click();", element);
         JavascriptExecutor js315 = (JavascriptExecutor) driver;
+        Thread.sleep(1000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-5 .mat-checkbox-inner-container")));
         js315.executeScript("arguments[0].click();", element);
 
@@ -121,16 +171,9 @@ public class HomeOwnerApplicationDetails {
         //date return
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-17")));
         element.sendKeys("7/28/2023");
-        //reside in
-        JavascriptExecutor js4 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-33-input")));
-        js4.executeScript("arguments[0].click();", element);
+    }
+    public void ocupants(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
 
-        JavascriptExecutor js6= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Occupants ')]")));
-        js6.executeScript("arguments[0].click();", element);
-        Thread.sleep(1000);
-        //add full time occupant
         JavascriptExecutor js61= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add full-time occupant ')]")));
         js61.executeScript("arguments[0].click();", element);
@@ -185,12 +228,9 @@ public class HomeOwnerApplicationDetails {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-2\"]/app-component-wrapper/app-occupants/mat-card/mat-card-content/form[3]/div/div/div/mat-card/div[2]/div[2]/button")));
         js40.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
+    }
+    public void cleanLogs(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
 
-        JavascriptExecutor js7= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Clean Up Log ')]")));
-        js7.executeScript("arguments[0].click();", element);
-
-        //CleanUp logs
         JavascriptExecutor js16= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add to clean up log ')]")));
         js16.executeScript("arguments[0].click();", element);
@@ -255,9 +295,9 @@ public class HomeOwnerApplicationDetails {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-4\"]/app-component-wrapper/app-damaged-items-by-room/mat-card/mat-card-content/form[2]/div/div/div/mat-card/div[2]/div[2]/button")));
         js36.executeScript("arguments[0].click();", element);
 
-        JavascriptExecutor js37= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Supporting Documents ')]")));
-        js37.executeScript("arguments[0].click();", element);
+    }
+
+    public void docs(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
 
         Thread.sleep(1000);
         WebElement uploadInsur = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("fileDrop")));
@@ -271,8 +311,8 @@ public class HomeOwnerApplicationDetails {
         JavascriptExecutor js39= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Review Submission ')]")));
         js39.executeScript("arguments[0].click();", element);
-
-        //Sign and Submit
+    }
+    public void submit(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
         JavascriptExecutor js42= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Sign & Submit ')]")));
         js42.executeScript("arguments[0].click();", element);
@@ -292,11 +332,11 @@ public class HomeOwnerApplicationDetails {
         js51.executeScript("arguments[0].click();", element);
         driver.findElement(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/app-component-wrapper/app-sign-and-submit/mat-card/mat-card-content/form/div[2]/div[1]/app-signature/div/div[3]/div/mat-form-field/div/div[1]/div[3]/input")).sendKeys("7/31/2023");
         Thread.sleep(1000);
+        JavascriptExecutor js= (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
         Thread.sleep(1000);
         JavascriptExecutor js52= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-7\"]/div/div[2]/button/span[1]")));
         js52.executeScript("arguments[0].click();", element);
-
     }
 }

@@ -65,11 +65,11 @@ public class CreateProfile {
         element = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='radio' and @value='Yes']")));
         js2.executeScript("arguments[0].click();", element);
-
+        Thread.sleep(1000);
         JavascriptExecutor js22 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Address ')]")));
         js22.executeScript("arguments[0].click();", element);
-
+        Thread.sleep(1000);
         //Address Check
         new WebDriverWait(driver, Duration.ofSeconds(30)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), '123 FIRST STREET')]")));
