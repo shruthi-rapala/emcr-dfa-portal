@@ -38,7 +38,7 @@ export class DfaApplicationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
     this.appService.applicationGetDfaApplications().subscribe({
       next: (lstData) => {
         if (lstData != null) {
@@ -61,7 +61,7 @@ export class DfaApplicationComponent implements OnInit {
     this.dfaApplicationMainDataService.setApplicationId(applicationId);
     this.dfaApplicationStartDataService.setApplicationId(applicationId);
     this.dfaApplicationMainDataService.setViewOrEdit('view');
-    this.router.navigate(['/dfa-application-main']);
+    this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
   EditCleanUpLog(applicationId: string): void {
@@ -69,7 +69,7 @@ export class DfaApplicationComponent implements OnInit {
     this.dfaApplicationStartDataService.setApplicationId(applicationId);
     this.dfaApplicationMainDataService.setViewOrEdit('edit');
     this.dfaApplicationMainDataService.setEditStep('3');
-    this.router.navigate(['/dfa-application-main']);
+    this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
   EditDamagedItems(applicationId: string): void {
@@ -77,7 +77,7 @@ export class DfaApplicationComponent implements OnInit {
     this.dfaApplicationStartDataService.setApplicationId(applicationId);
     this.dfaApplicationMainDataService.setViewOrEdit('edit');
     this.dfaApplicationMainDataService.setEditStep('4');
-    this.router.navigate(['/dfa-application-main']);
+    this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
   EditSupportingDocs(applicationId: string): void {
@@ -85,7 +85,7 @@ export class DfaApplicationComponent implements OnInit {
     this.dfaApplicationStartDataService.setApplicationId(applicationId);
     this.dfaApplicationMainDataService.setViewOrEdit('edit');
     this.dfaApplicationMainDataService.setEditStep('5');
-    this.router.navigate(['/dfa-application-main']);
+    this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
 }

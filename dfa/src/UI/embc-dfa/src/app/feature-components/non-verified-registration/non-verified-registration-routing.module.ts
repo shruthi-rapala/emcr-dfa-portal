@@ -36,7 +36,7 @@ const routes: Routes = [
         data: { flow: 'non-verified-registration' }
       },
       {
-        path: 'dfa-application',
+        path: 'dfa-application/:id',
         loadChildren: () =>
           import('../dfa-application-start/dfa-application-start.module').then((m) => m.DFAApplicationStartModule),
         data: { flow: 'non-verified-registration' }

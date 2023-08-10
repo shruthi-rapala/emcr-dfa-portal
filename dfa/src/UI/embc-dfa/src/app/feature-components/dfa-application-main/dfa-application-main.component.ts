@@ -17,6 +17,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 import { DFAApplicationMainService } from './dfa-application-main.service';
 import { ApplicantOption } from 'src/app/core/api/models';
+import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -59,7 +60,9 @@ export class DFAApplicationMainComponent
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
-    private dfaApplicationMainService: DFAApplicationMainService
+    private dfaApplicationMainService: DFAApplicationMainService,
+    private applicationService: ApplicationService,
+    private fileUploadsService: AttachmentService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -71,13 +74,29 @@ export class DFAApplicationMainComponent
   }
 
   ngOnInit(): void {
-    
+
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    this.dfaApplicationMainHeading = ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] + ' Application';
+    let applicationId = this.route.snapshot.paramMap.get('id');
+    this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.applicationService.applicationGetApplicationStart({applicationId: applicationId}).subscribe(application => {
+      this.dfaApplicationMainDataService.dfaApplicationStart = application;
+      this.getFileUploadsForApplication(applicationId);
+      this.dfaApplicationMainHeading = ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] + ' Application';
+      // initialize app type insurance form in form creation service to show details in review
+      this.appTypeInsuranceForm$ = this.formCreationService
+        .getAppTypeInsuranceForm()
+        .subscribe((appTypeInsurance) => {
+          this.appTypeInsuranceForm = appTypeInsurance;
+          this.appTypeInsuranceForm.controls.applicantOption.setValue(this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption);
+          this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.insuranceOption);
+          this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
+        });
+    });
+
     this.steps = this.componentService.createDFAApplicationMainSteps();
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.editstep = this.dfaApplicationMainDataService.getEditStep();
-    
+
     //this.dfaApplicationMainDataService.setViewOrEdit('');
     this.formCreationService.secondaryApplicantsChanged.subscribe(secondaryApplicants => {
       if (secondaryApplicants?.length > 0) this.isSecondaryApplicant = true;
@@ -90,20 +109,21 @@ export class DFAApplicationMainComponent
       this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
       this.checkSignaturesValid();
     });
+  }
 
-    // initialize app type insurance form in form creation service to show details in review
-    this.appTypeInsuranceForm$ = this.formCreationService
-      .getAppTypeInsuranceForm()
-      .subscribe((appTypeInsurance) => {
-        this.appTypeInsuranceForm = appTypeInsurance;
-      });
 
-    this.appTypeInsuranceForm.controls.applicantOption.setValue(this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption);
-    this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.insuranceOption);
-    this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
+  public getFileUploadsForApplication(applicationId: string) {
 
-    // initialize list of file uploads
-    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(this.dfaApplicationMainDataService.fileUploads);
+    this.fileUploadsService.attachmentGetAttachments({applicationId: applicationId}).subscribe({
+      next: (attachments) => {
+         // initialize list of file uploads
+        this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(attachments);
+
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   checkSignaturesValid() {
@@ -128,7 +148,7 @@ export class DFAApplicationMainComponent
       if (this.vieworedit == 'edit') {
         this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
       }
-    }    
+    }
   }
 
   navigateToStep(stepIndex: number) {
@@ -167,8 +187,7 @@ export class DFAApplicationMainComponent
     } else if (lastStep === -1) {
       this.showStep = !this.showStep;
     } else if (lastStep === -2) {
-      const navigationPath = '/' + this.currentFlow + '/dfa-application-start';
-      this.router.navigate([navigationPath]);
+      this.returnToDashboard();
     }
   }
 

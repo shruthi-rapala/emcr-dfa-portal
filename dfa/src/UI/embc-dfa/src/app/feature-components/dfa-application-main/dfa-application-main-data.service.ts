@@ -3,7 +3,8 @@ import { CacheService } from 'src/app/core/services/cache.service';
 import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
 import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, PropertyDamage, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, FileUpload, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
-import { AttachmentService } from 'src/app/core/api/services';
+import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
+import { DFAApplicationStartService } from '../dfa-application-start/dfa-application-start.service';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainDataService {
@@ -28,14 +29,13 @@ export class DFAApplicationMainDataService {
   constructor(
     private cacheService: CacheService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private fileUploadsService: AttachmentService
+    private fileUploadsService: AttachmentService,
+    private applicationService: ApplicationService
   ) {
-      this._dfaApplicationStart = this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
-      this.getFileUploadsForApplication(this.dfaApplicationStart.id);
   }
 
   public getFileUploadsForApplication(applicationId: string) {
-    
+
     if (applicationId === undefined) {
       applicationId = this.dfaApplicationStartDataService.getApplicationId();
     }
@@ -108,6 +108,10 @@ export class DFAApplicationMainDataService {
 
   public get dfaApplicationStart(): DfaApplicationStart {
     return this._dfaApplicationStart;
+  }
+
+  public set dfaApplicationStart(application: DfaApplicationStart) {
+    this._dfaApplicationStart = application;
   }
 
   public setDFAApplicationMain(dfaApplicationMain: DfaApplicationMain): void {

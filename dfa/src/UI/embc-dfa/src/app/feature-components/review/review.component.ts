@@ -56,8 +56,7 @@ export class ReviewComponent implements OnInit {
     public formCreationService: FormCreationService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
-    this.isResidentialTenant = (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
-
+    this.isResidentialTenant = (this.dfaApplicationMainDataService.dfaApplicationStart?.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
   }
 
   ngOnInit(): void {
