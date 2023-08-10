@@ -235,14 +235,9 @@ export class DFAApplicationMainComponent
         break;
       case 'property-damage':
         this.dfaApplicationMainDataService.propertyDamage = this.form.value;
-        this.dfaApplicationMainDataService.propertyDamage.floodDamage = this.form.get('floodDamage').value == 'true' ? true : false;
-        this.dfaApplicationMainDataService.propertyDamage.landslideDamage = this.form.get('landslideDamage').value == 'true' ? true : false;
         this.dfaApplicationMainDataService.propertyDamage.lossesExceed1000 = this.form.get('lossesExceed1000').value == 'true' ? true : false;
-        this.dfaApplicationMainDataService.propertyDamage.otherDamage = this.form.get('otherDamage').value == 'true' ? true : false;
         this.dfaApplicationMainDataService.propertyDamage.residingInResidence = this.form.get('residingInResidence').value == 'true' ? true : false;
-        this.dfaApplicationMainDataService.propertyDamage.stormDamage = this.form.get('stormDamage').value == 'true' ? true : false;
         this.dfaApplicationMainDataService.propertyDamage.wereYouEvacuated = this.form.get('wereYouEvacuated').value == 'true' ? true : false;
-        this.dfaApplicationMainDataService.propertyDamage.wildfireDamage = this.form.get('wildfireDamage').value == 'true' ? true : false;
         break;
       case 'occupants':
         break;

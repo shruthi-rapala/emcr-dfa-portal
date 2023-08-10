@@ -144,7 +144,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_areyounowresidingintheresidence, opts => opts.MapFrom(s => s.propertyDamage.residingInResidence))
                 .ForMember(d => d.dfa_datereturntoresidence, opts => opts.MapFrom(s => s.propertyDamage.dateReturned))
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.propertyDamage.briefDescription))
-                //.ForMember(d => d.dfa_doyourlossestotalmorethan1000, opts => opts.MapFrom(s => s.propertyDamage.lossesExceed1000))
+                .ForMember(d => d.dfa_doyourlossestotalmorethan1000, opts => opts.MapFrom(s => s.propertyDamage.lossesExceed1000))
                 .ForMember(d => d.dfa_wereyouevacuatedduringtheevent, opts => opts.MapFrom(s => s.propertyDamage.wereYouEvacuated))
                 .ForMember(d => d.dfa_damagedpropertystreet1, opts => opts.MapFrom(s => s.damagedPropertyAddress.addressLine1))
                 .ForMember(d => d.dfa_damagedpropertystreet2, opts => opts.MapFrom(s => s.damagedPropertyAddress.addressLine2))
