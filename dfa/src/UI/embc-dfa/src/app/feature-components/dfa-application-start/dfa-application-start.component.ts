@@ -75,7 +75,6 @@ export class DFAApplicationStartComponent
     this.dfaApplicationStartHeading = 'Create Your Application';
     this.steps = this.componentService.createDFAApplicationStartSteps();
     this.dfaApplicationStartDataService.profileVerified = true;
-    this.dfaApplicationStartDataService.profileId = this.profileDataService.getProfileId();
   }
 
   ngAfterViewChecked(): void {
@@ -241,7 +240,7 @@ export class DFAApplicationStartComponent
      .subscribe({
       next: (applicationId) => {
        this.dfaApplicationStartDataService.setApplicationId(applicationId);
-        this.router.navigate(['/dfa-application-main']);
+        this.router.navigate(['/dfa-application-main/'+applicationId]);
       },
       error: (error) => {
         this.showLoader = !this.showLoader;

@@ -116,8 +116,8 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       .get('addNewDamagedRoomIndicator')
       .valueChanges.subscribe((value) => this.updateDamagedRoomOnVisibility());
     this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
-    this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
-    
+    this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+
     this.damagePhotosForm
       .get('addNewFileUploadIndicator')
       .valueChanges.subscribe((value) => this.updateDamagePhotoOnVisibility());
@@ -157,7 +157,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
     this.damagedRoomsForm.get('addNewDamagedRoomIndicator').setValue(true);
     this.damagedRoomsForm.get('damagedRoom.deleteFlag').setValue(false);
-    this.damagedRoomsForm.get('damagedRoom.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.damagedRoomsForm.get('damagedRoom.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     this.showOtherRoomType = false;
     this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
     this.showDamagedRoomForm = !this.showDamagedRoomForm;
@@ -250,7 +250,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     this.showDamagePhotoForm = !this.showDamagePhotoForm;
     this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(true);
     this.damagePhotosForm.get('damagePhotoFileUpload.deleteFlag').setValue(false);
-    this.damagePhotosForm.get('damagePhotoFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.damagePhotosForm.get('damagePhotoFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
   }
 
   saveDamagePhotos(fileUpload: FileUpload): void {

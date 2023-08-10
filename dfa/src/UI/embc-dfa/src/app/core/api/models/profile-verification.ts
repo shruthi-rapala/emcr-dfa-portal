@@ -5,6 +5,6 @@
  * Profile Verification
  */
 export interface ProfileVerification {
-  profileId?: string;
+  profileId?: null | string;
   profileVerified?: boolean;
 }
