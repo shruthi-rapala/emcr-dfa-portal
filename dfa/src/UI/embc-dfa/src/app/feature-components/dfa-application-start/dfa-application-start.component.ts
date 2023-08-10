@@ -72,11 +72,9 @@ export class DFAApplicationStartComponent
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    this.dfaApplicationStartDataService.profileId = this.route.snapshot.paramMap.get('id');
     this.dfaApplicationStartHeading = 'Create Your Application';
     this.steps = this.componentService.createDFAApplicationStartSteps();
     this.dfaApplicationStartDataService.profileVerified = true;
-    this.dfaApplicationStartDataService.profileId = this.profileDataService.getProfileId();
   }
 
   ngAfterViewChecked(): void {

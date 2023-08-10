@@ -21,7 +21,7 @@ export class NextstepsprofileComponent implements OnInit {
   }
 
   navigateToDFAApplicationStart(): void {
-    this.router.navigate(['/dfa-application-start/'+this.profileId]);
+    this.router.navigate(['/dfa-application-start']);
   }
 
   navigateToDashboard(): void {

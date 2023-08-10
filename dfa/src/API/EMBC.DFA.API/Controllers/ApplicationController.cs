@@ -54,6 +54,9 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> AddApplication(DFAApplicationStart application)
         {
+            // fill in current user
+            application.ProfileVerification.profileId = currentUserId;
+
             if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationstart_params>(application);
 

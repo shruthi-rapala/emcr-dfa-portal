@@ -77,7 +77,7 @@ export class DashboardComponent implements OnInit {
   navigateToDFAApplicationStart(): void {
     this.dfaApplicationMainDataService.setViewOrEdit('add');
     var profileId = this.profileDataService.getProfileId();
-    this.router.navigate(['/dfa-application-start/'+profileId]);
+    this.router.navigate(['/dfa-application-start']);
     //this.appService.applicationGetDfaApplications({ profileId: profileId }).subscribe({
     //  next: (loginProfile) => {
     //    //this.profileMapping.mapLoginProfile(loginProfile);

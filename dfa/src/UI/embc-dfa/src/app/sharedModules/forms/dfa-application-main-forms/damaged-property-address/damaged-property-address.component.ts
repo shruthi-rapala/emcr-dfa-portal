@@ -58,6 +58,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     /\d/
   ];
   vieworedit: string;
+  isResidentialTenant: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -84,23 +85,27 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
 
   ngOnInit(): void {
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
-    this.damagedPropertyAddressForm$ = this.formCreationService
+    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+      this.damagedPropertyAddressForm$ = this.formCreationService
       .getDamagedPropertyAddressForm()
       .subscribe((damagedPropertyAddress) => {
         this.damagedPropertyAddressForm = damagedPropertyAddress;
         // this.damagedPropertyAddressForm.updateValueAndValidity();
-        if (ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOption.Homeowner) {
+        if (ApplicantOption[application.appTypeInsurance.applicantOption] === ApplicantOption.Homeowner) {
+          this.isResidentialTenant = true;
           this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordPhone.removeValidators([Validators.required]);
-        } else if (ApplicantOption[this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOption.ResidentialTenant) {
+        } else if (ApplicantOption[application.appTypeInsurance.applicantOption] === ApplicantOption.ResidentialTenant) {
+          this.isResidentialTenant = false;
           this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
           this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required]);
           this.damagedPropertyAddressForm.controls.landlordPhone.addValidators([Validators.required]);
         }
       });
+    });
 
     this.damagedPropertyAddressForm
       .get('addressLine1')
@@ -237,7 +242,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       });
 
     this.profileAddress = this.profileDataService.primaryAddressDetails;
-    
+
     this.damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').setValue(false);
     this.onUseProfileAddressChoice(false);
 
