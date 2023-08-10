@@ -90,7 +90,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.fullTimeOccupantsForm
       .get('addNewFullTimeOccupantIndicator')
       .valueChanges.subscribe((value) => this.updateFullTimeOccupantOnVisibility());
-    this.getFullTimeOccupantsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.getFullTimeOccupantsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
     this.otherContactsForm$ = this.formCreationService
       .getOtherContactsForm()
@@ -101,7 +101,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.otherContactsForm
       .get('addNewOtherContactIndicator')
       .valueChanges.subscribe((value) => this.updateOtherContactOnVisibility());
-    this.getOtherContactsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
     this.secondaryApplicantsForm$ = this.formCreationService
       .getSecondaryApplicantsForm()
@@ -112,7 +112,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.secondaryApplicantsForm
       .get('addNewSecondaryApplicantIndicator')
       .valueChanges.subscribe((value) => this.updateSecondaryApplicantOnVisibility());
-    this.getSecondaryApplicantsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.getSecondaryApplicantsForApplication(this.dfaApplicationMainDataService.getApplicationId());
     this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
@@ -175,7 +175,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.showFullTimeOccupantForm = !this.showFullTimeOccupantForm;
     this.fullTimeOccupantsForm.get('addNewFullTimeOccupantIndicator').setValue(true);
     this.fullTimeOccupantsForm.get('fullTimeOccupant.deleteFlag').setValue(false);
-    this.fullTimeOccupantsForm.get('fullTimeOccupant.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.fullTimeOccupantsForm.get('fullTimeOccupant.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
   }
 
   saveFullTimeOccupants(): void {
@@ -226,7 +226,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
     this.otherContactsForm.get('otherContact.deleteFlag').setValue(false);
-    this.otherContactsForm.get('otherContact.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.otherContactsForm.get('otherContact.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
   }
 
   saveOtherContact(): void {
@@ -277,7 +277,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
     this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
     this.secondaryApplicantsForm.get('secondaryApplicant.deleteFlag').setValue(false);
-    this.secondaryApplicantsForm.get('secondaryApplicant.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.secondaryApplicantsForm.get('secondaryApplicant.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 

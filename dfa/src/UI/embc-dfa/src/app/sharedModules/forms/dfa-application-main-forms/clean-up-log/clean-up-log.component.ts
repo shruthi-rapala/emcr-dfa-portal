@@ -95,7 +95,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.cleanUpLogWorkForm
       .get('addNewCleanUpLogIndicator')
       .valueChanges.subscribe((value) => this.updateCleanupLogOnVisibility());
-    this.getCleanUpLogsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.getCleanUpLogsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
     this.cleanUpWorkFilesForm$ = this.formCreationService
       .getFileUploadsForm()
@@ -184,13 +184,13 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
     this.cleanUpLogWorkForm.get('addNewCleanUpLogIndicator').setValue(true);
     this.cleanUpLogWorkForm.get('cleanuplog.deleteFlag').setValue(false);
-    this.cleanUpLogWorkForm.get('cleanuplog.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.cleanUpLogWorkForm.get('cleanuplog.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
   }
 
   initCleanUpWorkFiles(): void {
     this.cleanUpWorkFilesForm.get('cleanupFileUpload').reset();
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
-    this.cleanUpWorkFilesForm.get('cleanupFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.modifiedBy').setValue("Applicant");
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.deleteFlag').setValue(false);

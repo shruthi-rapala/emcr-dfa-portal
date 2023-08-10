@@ -81,7 +81,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
-    this.isResidentialTenant = (this.dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
+    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+      if (application) {
+        this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -136,7 +140,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.insuranceTemplateForm.get('insuranceTemplateFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
       this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
       this.insuranceTemplateForm.get('insuranceTemplateFileUpload.deleteFlag').setValue(false);
-      this.insuranceTemplateForm.get('insuranceTemplateFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+      this.insuranceTemplateForm.get('insuranceTemplateFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     }
   }
 
@@ -171,7 +175,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.rentalAgreementForm.get('rentalAgreementFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
       this.rentalAgreementForm.get('addNewFileUploadIndicator').setValue(true);
       this.rentalAgreementForm.get('rentalAgreementFileUpload.deleteFlag').setValue(false);
-      this.rentalAgreementForm.get('rentalAgreementFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+      this.rentalAgreementForm.get('rentalAgreementFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
 
     }
   }
@@ -205,7 +209,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.identificationForm.get('identificationFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]);
       this.identificationForm.get('addNewFileUploadIndicator').setValue(true);
       this.identificationForm.get('identificationFileUpload.deleteFlag').setValue(false);
-      this.identificationForm.get('identificationFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+      this.identificationForm.get('identificationFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     }
   }
 
@@ -266,7 +270,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.showSupportingFileForm = !this.showSupportingFileForm;
     this.supportingFilesForm.get('addNewFileUploadIndicator').setValue(true);
     this.supportingFilesForm.get('supportingFilesFileUpload.deleteFlag').setValue(false);
-    this.supportingFilesForm.get('supportingFilesFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.supportingFilesForm.get('supportingFilesFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
   }
 
   saveSupportingFiles(fileUpload: FileUpload): void {

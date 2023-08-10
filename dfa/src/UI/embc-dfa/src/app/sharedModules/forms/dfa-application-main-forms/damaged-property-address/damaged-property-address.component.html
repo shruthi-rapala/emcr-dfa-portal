@@ -119,7 +119,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="ApplicantOptions[dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOptions.Homeowner">
+        <div class="row" *ngIf="!isResidentialTenant">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               As the Home Owner, are you eligible for a BC Home Owner Grant for this property?<span style="color:red" >*</span>
@@ -134,7 +134,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="ApplicantOptions[dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOptions.ResidentialTenant">
+        <div class="row" *ngIf="isResidentialTenant">
           <p class="sub-heading" style="font-size: 15px">
            Provide the registered building owner(s) and/or landlord(s) name(s) and/or phone number(s).<span style="color:red" >*</span>
           </p>

@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   currentApplicationsCount = "0";
   pastApplicationsCount = "0";
   eventsCount = "0";
-  
+
 
   tabs: DashTabModel[];
 
@@ -76,13 +76,13 @@ export class DashboardComponent implements OnInit {
 
   navigateToDFAApplicationStart(): void {
     this.dfaApplicationMainDataService.setViewOrEdit('add');
+    var profileId = this.profileDataService.getProfileId();
     this.router.navigate(['/dfa-application-start']);
-    //var profileId = this.profileDataService.getProfileId();
     //this.appService.applicationGetDfaApplications({ profileId: profileId }).subscribe({
     //  next: (loginProfile) => {
     //    //this.profileMapping.mapLoginProfile(loginProfile);
     //  },
-    //  error: (error) => {        
+    //  error: (error) => {
     //  }
     //});
   }
