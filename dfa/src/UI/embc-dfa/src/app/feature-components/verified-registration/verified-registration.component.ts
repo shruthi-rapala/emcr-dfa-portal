@@ -63,8 +63,8 @@ export class VerifiedRegistrationComponent implements OnInit {
     }
 
     this.timeOutService.init(
-      this.timeOutService.timeOutInfo?.sessionTimeoutInMinutes ? this.timeOutService.timeOutInfo?.sessionTimeoutInMinutes : 5,
-      this.timeOutService.timeOutInfo?.warningMessageDuration ? this.timeOutService.timeOutInfo?.warningMessageDuration : 3
+      this.timeOutService.timeOutInfo?.sessionTimeoutInMinutes ? this.timeOutService.timeOutInfo?.sessionTimeoutInMinutes : 10,
+      this.timeOutService.timeOutInfo?.warningMessageDuration ? this.timeOutService.timeOutInfo?.warningMessageDuration : 6
     );
   }
 
