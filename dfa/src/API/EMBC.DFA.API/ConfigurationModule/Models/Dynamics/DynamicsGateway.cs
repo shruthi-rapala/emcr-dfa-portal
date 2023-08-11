@@ -527,37 +527,41 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                /* if (objDocumentLocation?.dfa_appdocumentlocationid != null && objDocumentLocation?.delete == true)
+                if (objDocumentLocation?.dfa_appdocumentlocationsid != null && objDocumentLocation?.delete == true)
                 {
-                    await api.Delete("dfa_appdocumentlocations", (System.Guid)objDocumentLocation.dfa_appdocumentlocationid);
-                    return "Deleted successfully";
+                    await api.Delete("dfa_appdocumentlocationses", (System.Guid)objDocumentLocation.dfa_appdocumentlocationsid);
+                    return "Deleted";
                 }
-                else if (objDocumentLocation?.dfa_appdocumentlocationid != null)
+                else if (objDocumentLocation?.dfa_appdocumentlocationsid != null)
                 {
-                    var result = api.Update("dfa_appdocumentlocations", (System.Guid)objDocumentLocation.dfa_appdocumentlocationid, objDocumentLocation);
-                    return "Updated successfully";
+                    var doc = new dfa_appdocumentlocations();
+                    doc.dfa_name = objDocumentLocation.dfa_name;
+                    doc.dfa_documenttype = objDocumentLocation.dfa_documenttype;
+                    doc.dfa_url = objDocumentLocation.dfa_url;
+                    await api.Update("dfa_appdocumentlocationses", (System.Guid)objDocumentLocation.dfa_appdocumentlocationsid, doc, true);
+                    return "Updated";
                 }
-                else if (objDocumentLocation?.dfa_appdocumentlocationid == null)
+                else if (objDocumentLocation?.dfa_appdocumentlocationsid == null)
                 {
-                    var result = await api.Create("dfa_appdocumentlocations", objDocumentLocation);
+                    var doc = new dfa_appdocumentlocations();
+                    doc._dfa_applicationid_value = objDocumentLocation._dfa_applicationid_value;
+                    doc.dfa_name = objDocumentLocation.dfa_name;
+                    doc.dfa_documenttype = objDocumentLocation.dfa_documenttype;
+                    doc.dfa_appdocumentlocationsid = objDocumentLocation.dfa_appdocumentlocationsid;
+                    doc.dfa_url = objDocumentLocation.dfa_url;
+                    var result = await api.Create("dfa_appdocumentlocationses", doc);
                     return result.ToString();
-                } */
-
-                var result = await api.ExecuteAction("dfa_DFAPortalAppDocumentLocation", objDocumentLocation);
-
-                if (result != null)
+                }
+                else
                 {
-                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
+                    return "No Action";
                 }
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return Guid.Empty.ToString();
-                // throw new Exception($"Failed to update document location {ex.Message}", ex);
+                // return Guid.Empty.ToString();
+                throw new Exception($"Failed to update document location {ex.Message}", ex);
             }
-
-            return string.Empty;
         }
 
         // TODO : fails
@@ -565,23 +569,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var list = await api.GetList<dfa_appdocumentlocation_retrieve>("dfa_appdocumentlocations", new CRMGetListOptions
+                var list = await api.GetList<dfa_appdocumentlocation_retrieve>("dfa_appdocumentlocationses", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "_dfa_applicationid_value", "dfa_appdocumentlocationid", "dfa_name", "dfa_documenttype", "dfa_documentdescription",
-                        "dfa_uploadeddate", "dfa_modifiedby", "dfa_filedata", "dfa_contenttype", "dfa_filesize"
+                        "_dfa_applicationid_value", "dfa_appdocumentlocationsid", "dfa_name", "dfa_documenttype",
+                        "createdon", "createdby", "dfa_url"
                     },
                     Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
 
                 return list.List;
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return null;
-                // throw new Exception($"Failed to get document locations {ex.Message}", ex);
+                throw new Exception($"Failed to get document locations {ex.Message}", ex);
             }
         }
     }

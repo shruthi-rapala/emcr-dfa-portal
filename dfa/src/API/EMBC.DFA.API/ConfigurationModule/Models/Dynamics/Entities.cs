@@ -289,30 +289,31 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     // TODO add dfa_documentdescription, dfa_uploadeddate, dfa_modifiedby, dfa_contenttype fields
     public class dfa_appdocumentlocation_retrieve
     {
-        public string? dfa_appdocumentlocationid { get; set; } // optional string
-        public string dfa_name { get; set; } // required string
-        public string dfa_documenttype { get; set; } // required string
-        public string? dfa_documentdescription { get; set; } // optional string  *** NEW FIELD
-        public string dfa_uploadeddate { get; set; } // required string ** NEW FIELD timestamp
-        public string dfa_modifiedby { get; set; } // required string *** NEW FIELD string
-        public string dfa_filedata { get; set; } // required string
-        public string dfa_contenttype { get; set; } // required string ** NEW FIELD
-        public int dfa_filesize { get; set; } // required int ** NEW FIELD
-        public string? _dfa_applicationid_value { get; set; } // optional string
+        public string? dfa_appdocumentlocationsid { get; set; } // optional string
+        public string dfa_name { get; set; } // file description
+        public string dfa_documenttype { get; set; } // document type
+        public string createdon { get; set; } // uploaded date
+        public string dfa_url { get; set; } // file name
+        public string? _dfa_applicationid_value { get; set; } // application id
     }
     public class dfa_appdocumentlocation_params
     {
-        public Guid dfa_applicationid { get; set; } // required string
-        public Guid? dfa_appdocumentlocationid { get; set; } // optional string
+        public Guid _dfa_applicationid_value { get; set; } // required string
+        public Guid? dfa_appdocumentlocationsid { get; set; } // optional string
         public string dfa_name { get; set; } // required string
         public string dfa_documenttype { get; set; } // required string
-        public string? dfa_documentdescription { get; set; } // optional string  *** NEW FIELD
-        public string dfa_uploadeddate { get; set; } // required string ** NEW FIELD timestamp
-        public string dfa_modifiedby { get; set; } // required string *** NEW FIELD string
-        public string dfa_contenttype { get; set; } // required string ** NEW FIELD
-        public int dfa_filesize { get; set; } // required int ** NEW FIELD
-        public byte[]? dfa_filecontent { get; set; } // required byte array
+        public string? dfa_url { get; set; } // optional string
+        //public string createdon { get; set; } // required string
         public bool delete { get; set; } // required bool
+    }
+
+    public class dfa_appdocumentlocations
+    {
+        public Guid _dfa_applicationid_value { get; set; } // required string
+        public Guid? dfa_appdocumentlocationsid { get; set; } // optional string
+        public string dfa_name { get; set; } // required string
+        public string dfa_documenttype { get; set; } // required string
+        public string? dfa_url { get; set; } // optional string
     }
 
     public class dfa_appdamageditems_retrieve
