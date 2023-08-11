@@ -34,10 +34,10 @@ export class DFAApplicationMainMappingService {
       .subscribe((damagedPropertyAddress) => {
         damagedPropertyAddress.setValue({
           ...dfaApplicationMain.damagedPropertyAddress,
-          isPrimaryAndDamagedAddressSame: dfaApplicationMain.damagedPropertyAddress.isPrimaryAndDamagedAddressSame === true ? 'true' : 'false',
-          occupyAsPrimaryResidence: dfaApplicationMain.damagedPropertyAddress.occupyAsPrimaryResidence === true ? 'true' : 'false',
-          onAFirstNationsReserve: dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === true ? 'true' : 'false',
-          manufacturedHome: dfaApplicationMain.damagedPropertyAddress.manufacturedHome === true ? 'true' : 'false',
+          isPrimaryAndDamagedAddressSame: dfaApplicationMain.damagedPropertyAddress.isPrimaryAndDamagedAddressSame === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.isPrimaryAndDamagedAddressSame === false ? 'false' : null),
+          occupyAsPrimaryResidence: dfaApplicationMain.damagedPropertyAddress.occupyAsPrimaryResidence === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.occupyAsPrimaryResidence === false ? 'false' : null),
+          onAFirstNationsReserve: dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === false ? 'false' : null),
+          manufacturedHome: dfaApplicationMain.damagedPropertyAddress.manufacturedHome === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.manufacturedHome === false ? 'false' : null),
         });
         formGroup = damagedPropertyAddress;
       });
@@ -97,17 +97,17 @@ export class DFAApplicationMainMappingService {
       .subscribe((propertyDamage) => {
         propertyDamage.setValue({
           ...dfaApplicationMain.propertyDamage,
-          //floodDamage: dfaApplicationMain.propertyDamage.floodDamage === true ? 'true' : 'false',
-          //landslideDamage: dfaApplicationMain.propertyDamage.landslideDamage === true ? 'true' : 'false',
-          //wildfireDamage: dfaApplicationMain.propertyDamage.wildfireDamage === true ? 'true' : 'false',
-          //stormDamage: true, //dfaApplicationMain.propertyDamage.stormDamage === true ? 'true' : 'false',
-          //otherDamage: true, //dfaApplicationMain.propertyDamage.otherDamage === true ? 'true' : 'false',
-          lossesExceed1000: dfaApplicationMain.propertyDamage.lossesExceed1000 === true ? 'true' : 'false',
-          wereYouEvacuated: dfaApplicationMain.propertyDamage.wereYouEvacuated === true ? 'true' : 'false',
-          residingInResidence: dfaApplicationMain.propertyDamage.residingInResidence === true ? 'true' : 'false',
-          damageFromDate: new Date(dfaApplicationMain.propertyDamage.damageFromDate),
-          damageToDate: new Date(dfaApplicationMain.propertyDamage.damageToDate),
-          dateReturned: new Date(dfaApplicationMain.propertyDamage.dateReturned),
+          //floodDamage: dfaApplicationMain.propertyDamage.floodDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.floodDamage === false ? 'false' : null),
+          //landslideDamage: dfaApplicationMain.propertyDamage.landslideDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.landslideDamage === false ? 'false' : null),
+          //wildfireDamage: dfaApplicationMain.propertyDamage.wildfireDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.wildfireDamage === false ? 'false' : null),
+          //stormDamage: dfaApplicationMain.propertyDamage.stormDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.stormDamage === false ? 'false' : null),
+          //otherDamage: dfaApplicationMain.propertyDamage.otherDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.otherDamage === false ? 'false' : null),
+          lossesExceed1000: dfaApplicationMain.propertyDamage.lossesExceed1000 === true ? 'true' : (dfaApplicationMain.propertyDamage.lossesExceed1000 === false ? 'false' : null),
+          wereYouEvacuated: dfaApplicationMain.propertyDamage.wereYouEvacuated === true ? 'true' : (dfaApplicationMain.propertyDamage.wereYouEvacuated === false ? 'false' : null),
+          residingInResidence: dfaApplicationMain.propertyDamage.residingInResidence === true ? 'true' : (dfaApplicationMain.propertyDamage.residingInResidence === false ? 'false' : null),
+          damageFromDate: dfaApplicationMain.propertyDamage.damageFromDate ? new Date(dfaApplicationMain.propertyDamage.damageFromDate) : null,
+          damageToDate: dfaApplicationMain.propertyDamage.damageToDate ? new Date(dfaApplicationMain.propertyDamage.damageToDate) : null,
+          dateReturned: dfaApplicationMain.propertyDamage.dateReturned ? new Date(dfaApplicationMain.propertyDamage.dateReturned) : null,
         });
         formGroup = propertyDamage;
       });
