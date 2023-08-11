@@ -112,7 +112,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
      _cleanUpWorkFileFormArray.valueChanges
        .pipe(
          mapTo(_cleanUpWorkFileFormArray.getRawValue())
-         ).subscribe(data => this.cleanUpWorkFileDataSource.data = data.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false));
+         ).subscribe(data => this.cleanUpWorkFileDataSource.data = _cleanUpWorkFileFormArray.getRawValue()?.filter(x => x.fileType === "Cleanup" && x.deleteFlag === false));
 
     this.initCleanUpWorkFiles();
   }

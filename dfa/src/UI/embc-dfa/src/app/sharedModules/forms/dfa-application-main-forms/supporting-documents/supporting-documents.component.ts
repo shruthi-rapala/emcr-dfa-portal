@@ -107,7 +107,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     _documentSummaryFormArray.valueChanges
       .pipe(
         mapTo(_documentSummaryFormArray.getRawValue())
-        ).subscribe(data => this.documentSummaryDataSource.data = data.filter(x => x.deleteFlag == false));
+        ).subscribe(data => this.documentSummaryDataSource.data = _documentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false));
   }
 
   initInsuranceTemplate() {
@@ -127,7 +127,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       _insuranceTemplateFormArray.valueChanges
         .pipe(
           mapTo(_insuranceTemplateFormArray.getRawValue())
-          ).subscribe(data => this.insuranceTemplateDataSource.data = data.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)] && x.deleteFlag == false));
+          ).subscribe(data => this.insuranceTemplateDataSource.data = _insuranceTemplateFormArray.getRawValue()?.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)] && x.deleteFlag == false));
 
     // initialize insurance template
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
@@ -161,7 +161,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       _rentalAgreementFormArray.valueChanges
         .pipe(
           mapTo(_rentalAgreementFormArray.getRawValue())
-          ).subscribe(data => this.rentalAgreementDataSource.data = data.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)] && x.deleteFlag == false));
+          ).subscribe(data => this.rentalAgreementDataSource.data = _rentalAgreementFormArray.getRawValue()?.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)] && x.deleteFlag == false));
 
     // initialize file upload form
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
@@ -196,7 +196,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       _identificationFormArray.valueChanges
         .pipe(
           mapTo(_identificationFormArray.getRawValue())
-          ).subscribe(data => this.identificationDataSource.data = data.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)] && x.deleteFlag == false));
+          ).subscribe(data => this.identificationDataSource.data = _identificationFormArray.getRawValue()?.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)] && x.deleteFlag == false));
 
     // initialize file upload form
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
