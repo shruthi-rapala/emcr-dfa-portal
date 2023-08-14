@@ -32,6 +32,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { DirectivesModule } from './directives/directives.module';
 import { MatSelectModule } from '@angular/material/select';
+import { DFAApplicationAlertDialogComponent } from './components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
 
 @NgModule({
   imports: [
@@ -68,7 +69,8 @@ import { MatSelectModule } from '@angular/material/select';
     FileUploadWarningDialogComponent,
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
-    TimeOutDialogComponent
+    TimeOutDialogComponent,
+    DFAApplicationAlertDialogComponent
   ],
   exports: [
     AppLoaderComponent,
@@ -84,7 +86,8 @@ import { MatSelectModule } from '@angular/material/select';
     FileUploadWarningDialogComponent,
     TimeOutDialogComponent,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    DFAApplicationAlertDialogComponent
   ]
 })
 export class CoreModule {}

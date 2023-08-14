@@ -57,10 +57,17 @@ export class DfaApplicationComponent implements OnInit {
     this.lstApplications = res;
   }
 
-  ViewApplication(applicationId: string): void {
+  ViewApplication(applicationId: string, primaryApplicantSignedDate: string): void {
     this.dfaApplicationMainDataService.setApplicationId(applicationId);
     this.dfaApplicationStartDataService.setApplicationId(applicationId);
-    this.dfaApplicationMainDataService.setViewOrEdit('view');
+
+    if (primaryApplicantSignedDate == null) {
+      this.dfaApplicationMainDataService.setViewOrEdit('update');
+    }
+    else {
+      this.dfaApplicationMainDataService.setViewOrEdit('view');
+    }
+    
     this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
