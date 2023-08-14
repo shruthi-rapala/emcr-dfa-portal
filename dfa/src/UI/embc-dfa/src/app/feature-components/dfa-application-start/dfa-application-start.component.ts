@@ -19,6 +19,9 @@ import { DFAApplicationStartDataService } from './dfa-application-start-data.ser
 import { DFAApplicationStartService } from './dfa-application-start.service';
 import { InsuranceOption, SignatureBlock } from 'src/app/core/api/models';
 import { ProfileDataService } from '../profile/profile-data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DFAApplicationAlertDialogComponent } from 'src/app/core/components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
+
 
 @Component({
   selector: 'app-dfa-application-start',
@@ -55,7 +58,8 @@ export class DFAApplicationStartComponent
     private alertService: AlertService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private dfaApplicationStartService: DFAApplicationStartService,
-    private profileDataService: ProfileDataService
+    private profileDataService: ProfileDataService,
+    public dialog: MatDialog,
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -123,9 +127,11 @@ export class DFAApplicationStartComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
+    
     if (isLast) {
-      this.setFormData(component);
-      this.submitFile();
+      this.alertMessage(component);
+      //this.setFormData(component);
+      //this.submitFile();
     } else if (this.form.status === 'VALID') {
       if (isLast) {
         if (this.currentFlow === 'non-verified-registration') {
@@ -248,5 +254,28 @@ export class DFAApplicationStartComponent
         this.alertService.setAlert('danger', globalConst.saveApplicationError);
       }
      });
+  }
+
+  alertMessage(component: string): void {
+    this.dialog
+      .open(DFAApplicationAlertDialogComponent, {
+        data: {
+          content: globalConst.uneditableApplicationTypeAlert
+        },
+        height: '300px',
+        width: '600px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'cancel') {
+          //this.cancelApplication();
+        }
+        else if (result === 'confirm') {
+          this.setFormData(component);
+          this.submitFile();
+        }
+        //else this.appTypeInsuranceForm.controls.insuranceOption.setValue(null);
+      });
   }
 }

@@ -232,7 +232,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_appapplicationid", "dfa_applicanttype",
-                        "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext", "_dfa_eventid_value", "_dfa_casecreatedid_value"
+                        "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext",
+                        "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate"
                     },
                     Filter = $"_dfa_applicant_value eq {profileId}"
                     //Expand = new CRMExpandOptions[]
@@ -258,7 +259,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
                                    dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
                                    dfa_event = objAppEvent != null ? objAppEvent.dfa_id : null,
-                                   dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null
+                                   dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
+                                   dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate
                                }).AsEnumerable();
 
                 //from objEvent in lstEvents.List

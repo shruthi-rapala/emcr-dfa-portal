@@ -119,6 +119,13 @@ export const invalidFileNameMessage =
     'image/jpg',
     'image/jpeg',
     'image/png'
-  ];
+];
+
+export const uneditableApplicationTypeAlert: DialogContent = {
+  text: 'You can\'t change the application type or insurance selection after this page.' +
+    '<br/><br/>Are you sure you want to continue?<br/><br/>',
+  cancelButton: 'No, I want to change the application<br/>\r\ntype or insurance selection',
+  confirmButton: 'Yes, I have selected the correct\r\napplication type and insurance selection'
+}
 
 
