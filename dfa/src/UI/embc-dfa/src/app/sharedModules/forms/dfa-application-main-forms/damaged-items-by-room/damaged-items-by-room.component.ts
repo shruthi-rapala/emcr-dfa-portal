@@ -125,7 +125,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
      _damagePhotosFormArray.valueChanges
        .pipe(
          mapTo(_damagePhotosFormArray.getRawValue())
-         ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType ===Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false));
+         ).subscribe(data => this.damagePhotosDataSource.data = _damagePhotosFormArray.getRawValue()?.filter(x => x.fileType ===Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false));
 
     this.initDamagePhoto();
   }
