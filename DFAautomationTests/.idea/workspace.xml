@@ -6,9 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="2e2c1a18-e64c-44c1-869d-cdbed49dcc8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dfa/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dfa/Config.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/CreateProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CreateProfile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/HomeOwnerApplicationDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/HomeOwnerApplicationDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/CreateProfile.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/CreateProfile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ResidentialTenantYInsurance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ResidentialTenantYInsurance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dfa/CommonUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dfa/CommonUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dfa/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dfa/Config.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/HomeOwnerApplicationDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/HomeOwnerApplicationDetails.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,21 +64,7 @@
       <recent name="C:\workspace4\emcr-dfa-portal\DFAautomationTests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ResidentialTenantYInsurance.test">
-    <configuration name="CreateProfile.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="DFAautomationTests" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="CreateProfile" />
-      <option name="METHOD_NAME" value="test" />
-      <option name="TEST_OBJECT" value="method" />
-      <envs>
-        <env name="USERNAME_BCEID" value="DFA00008" />
-        <env name="PASSWORD_BCEID" value="98900008" />
-      </envs>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.HomeOwnerApplicationDetails">
     <configuration name="HomeOwnerApplicationDetails" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
@@ -96,6 +85,20 @@
       <option name="MAIN_CLASS_NAME" value="HomeOwnerApplicationDetails" />
       <option name="METHOD_NAME" value="test" />
       <option name="TEST_OBJECT" value="method" />
+      <envs>
+        <env name="USERNAME_BCEID" value="DFA00004" />
+        <env name="PASSWORD_BCEID" value="98900004" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Login" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DFAautomationTests" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="Login" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
       <envs>
         <env name="USERNAME_BCEID" value="DFA00004" />
         <env name="PASSWORD_BCEID" value="98900004" />
@@ -134,18 +137,18 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.HomeOwnerApplicationDetails.test" />
-      <item itemvalue="JUnit.CreateProfile.test" />
       <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
       <item itemvalue="JUnit.ResidentialTenantYInsurance" />
       <item itemvalue="JUnit.ResidentialTenantYInsurance.test" />
+      <item itemvalue="JUnit.Login" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ResidentialTenantYInsurance.test" />
-        <item itemvalue="JUnit.ResidentialTenantYInsurance" />
         <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
         <item itemvalue="JUnit.HomeOwnerApplicationDetails.test" />
-        <item itemvalue="JUnit.CreateProfile.test" />
+        <item itemvalue="JUnit.Login" />
+        <item itemvalue="JUnit.ResidentialTenantYInsurance.test" />
+        <item itemvalue="JUnit.ResidentialTenantYInsurance" />
       </list>
     </recent_temporary>
   </component>
