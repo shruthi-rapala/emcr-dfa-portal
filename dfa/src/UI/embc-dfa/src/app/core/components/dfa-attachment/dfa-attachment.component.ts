@@ -17,8 +17,8 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
   styleUrls: ['./dfa-attachment.component.scss']
 })
 export class DfaAttachmentComponent implements OnInit, OnDestroy {
-  @Input() missingRequiredFile: boolean;
-  @Input() requiredFile: boolean;
+  @Input() missingRequiredFile: string;
+  @Input() requiredFile: string;
   @Input() title: string;
   @Input() description: string;
   @Input() allowedFileTypes: string[];
@@ -33,7 +33,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   fileUploadsForm: UntypedFormGroup;
   fileUploadsForm$: Subscription;
   formCreationService: FormCreationService;
-  showFileUpload: boolean = true;
+  showFileUpload: boolean = false;
   FileCategories = FileCategory;
 
   constructor(
@@ -79,6 +79,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   saveAttachment(): void {
     if (this.fileUpload.status === 'VALID') {
       this.saveFileUpload.emit(this.fileUpload.value);
+      if (this.missingRequiredFile === 'yes' || this.requiredFile === 'no') this.showFileUpload = false;
     } else {
       console.error(this.fileUpload);
       this.fileUpload.markAllAsTouched();
