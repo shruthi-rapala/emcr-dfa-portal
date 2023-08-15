@@ -12,9 +12,9 @@
           + Add {{ title }}
         </button>
         <mat-card *ngIf="showFileUpload">
-          <div class="row" [hidden]="!(missingRequiredFile === 'yes' || requiredFile === 'no')">
+          <div class="row">
             <div class="col-md-6">
-              <b>{{title}}<span style="color:red;" *ngIf="requiredFile">*</span></b><br/>
+              <b>{{title}}<span style="color:red;" *ngIf="requiredFile === 'yes'">*</span></b><br/>
               <div [innerHTML]="description" (click)="onToggleSideNote()"></div>
               <app-file-upload
                 [noOfAttachments]="1"
@@ -71,13 +71,10 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="row" [hidden]="(missingRequiredFile === 'yes' || requiredFile === 'no')">
-            <p class="sub-heading" style="font-size: 15px">Required {{ title }} has been uploaded.</p>
-          </div>
 
           <br/><br/>
           <div class="row">
-            <div class="col-md-6" *ngIf="requiredFile === 'no'">
+            <div class="col-md-6">
               <button
                 class="button-s details-button"
                 mat-button
@@ -87,7 +84,7 @@
                 Cancel
               </button>
             </div>
-            <div class="col-md-6" *ngIf="(missingRequiredFile === 'yes' || requiredFile === 'no') && fileUpload.valid">
+            <div class="col-md-6" *ngIf="fileUpload.valid">
               <button
                 class="family-button details-button save-button"
                 mat-button

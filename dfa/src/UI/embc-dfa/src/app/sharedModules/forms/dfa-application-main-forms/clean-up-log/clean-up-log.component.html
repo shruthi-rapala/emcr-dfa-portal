@@ -179,15 +179,6 @@
                     <mat-form-field appearance="outline">
                       <mat-label>Hours</mat-label>
                       <input formControlName="hours" matInput placeholder="Hours" required type="number"/>
-                      <!--<mat-error
-                        *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.touched
-                        "
-                      >
-                        Last Name is required</mat-error
-                      >-->
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.hours').invalid &&
@@ -201,16 +192,16 @@
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Description</mat-label>
-                      <input formControlName="description" matInput placeholder="Description" />
-                      <!--<mat-error
+                      <input formControlName="description" matInput placeholder="Description" required />
+                      <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.touched
+                          cleanUpLogWorkForm.get('cleanuplog.description').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.description').hasError('required') &&
+                          cleanUpLogWorkForm.get('cleanuplog.description').touched
                         "
                       >
-                      Relationship is required</mat-error
-                      >-->
+                      Description is required</mat-error
+                      >
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.description').invalid &&
@@ -266,7 +257,6 @@
         <app-dfa-attachment
           title="Cleanup Invoices/Receipts"
           description=" If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs. <br />You may also attach them to this application"
-          missingRequiredFile="no"
           requiredFile="no"
           [allowedFileTypes]="allowedFileTypes"
           allowedFileExtensionsList=".pdf,.jpg,.jpeg,.png"

@@ -186,7 +186,7 @@ namespace EMBC.DFA.API.Controllers
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             var profileId = profile.Id;
-            //var profileId = "d4e3d345-d106-4f32-85d8-4ee301683b5f";
+            //var profileId = "d245240e-99f0-46d1-8d82-78e1196f4e09";
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }
@@ -230,5 +230,6 @@ namespace EMBC.DFA.API.Controllers
         public string DamagedAddress { get; set; }
         public string CaseNumber { get; set; }
         public string DateOfDamage { get; set; }
+        public string PrimaryApplicantSignedDate { get; set; }
     }
 }
