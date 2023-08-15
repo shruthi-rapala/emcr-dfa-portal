@@ -178,8 +178,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.rentalAgreementForm.get('addNewFileUploadIndicator').setValue(true);
       this.rentalAgreementForm.get('rentalAgreementFileUpload.deleteFlag').setValue(false);
       this.rentalAgreementForm.get('rentalAgreementFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
-
     }
+    this.rentalAgreementForm.updateValueAndValidity();
   }
 
   initIdentification() {
@@ -213,6 +213,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.identificationForm.get('identificationFileUpload.deleteFlag').setValue(false);
       this.identificationForm.get('identificationFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     }
+    this.identificationForm.updateValueAndValidity();
   }
 
   // Preserve original property order
@@ -273,6 +274,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.supportingFilesForm.get('addNewFileUploadIndicator').setValue(true);
     this.supportingFilesForm.get('supportingFilesFileUpload.deleteFlag').setValue(false);
     this.supportingFilesForm.get('supportingFilesFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    this.supportingDocumentsForm.updateValueAndValidity();
   }
 
   saveSupportingFiles(fileUpload: FileUpload): void {
