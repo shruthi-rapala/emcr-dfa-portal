@@ -17,7 +17,6 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
   styleUrls: ['./dfa-attachment.component.scss']
 })
 export class DfaAttachmentComponent implements OnInit, OnDestroy {
-  @Input() missingRequiredFile: string;
   @Input() requiredFile: string;
   @Input() title: string;
   @Input() description: string;
@@ -66,7 +65,6 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
     this.fileUpload.reset();
     this.fileUpload.get('modifiedBy').setValue("Applicant");
     if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType);
-    this.fileUpload.get('addNewFileUploadIndicator').setValue(true);
     this.fileUpload.get('deleteFlag').setValue(false);
     this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
   }
@@ -79,7 +77,8 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   saveAttachment(): void {
     if (this.fileUpload.status === 'VALID') {
       this.saveFileUpload.emit(this.fileUpload.value);
-      if (this.missingRequiredFile === 'yes' || this.requiredFile === 'no') this.showFileUpload = false;
+      this.showFileUpload = false;
+      this.initFileUploadForm();
     } else {
       console.error(this.fileUpload);
       this.fileUpload.markAllAsTouched();
@@ -89,6 +88,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   cancelAttachment(): void {
     this.showFileUpload = !this.showFileUpload;
     this.cancelFileUpload.emit();
+    this.initFileUploadForm();
   }
 
   updateFileUploadFormOnVisibility(): void {

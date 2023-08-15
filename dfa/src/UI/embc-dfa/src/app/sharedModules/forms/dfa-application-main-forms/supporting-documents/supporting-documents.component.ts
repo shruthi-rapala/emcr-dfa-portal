@@ -77,7 +77,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
-    private attachmentsService: AttachmentService
+    private attachmentsService: AttachmentService,
+    private cd: ChangeDetectorRef
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -86,6 +87,10 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
       }
     });
+  }
+
+  ngAfterViewChecked(): void {
+    this.cd.detectChanges();
   }
 
   ngOnInit(): void {
@@ -142,6 +147,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.insuranceTemplateForm.get('insuranceTemplateFileUpload.deleteFlag').setValue(false);
       this.insuranceTemplateForm.get('insuranceTemplateFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     }
+    this.insuranceTemplateForm.updateValueAndValidity();
   }
 
   initRentalAgreement() {
@@ -222,7 +228,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let FileCategories = FileCategory;
 
     let supportingFiles = form.get('fileUploads')?.getRawValue();
-    if (supportingFiles?.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length <= 0) {
+    if (!supportingFiles || supportingFiles?.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length <= 0) {
       return { noInsuranceTemplate: true };
     }
     return null;
@@ -232,7 +238,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let FileCategories = FileCategory;
 
     let supportingFiles = form.get('fileUploads')?.getRawValue();
-    if (supportingFiles?.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length <= 0) {
+    if (!supportingFiles || supportingFiles?.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length <= 0) {
       return { noRentalAgreement: true };
     }
     return null;
@@ -242,7 +248,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let FileCategories = FileCategory;
 
     let supportingFiles = form.get('fileUploads')?.getRawValue();
-    if (supportingFiles?.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length <= 0) {
+    if (!supportingFiles || supportingFiles?.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length <= 0) {
       return { noIdentification: true };
     }
     return null;
@@ -296,7 +302,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
   saveRequiredForm(fileUpload: FileUpload): void {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-    if (fileUploads.filter(x => x.fileType === fileUpload.fileType).length > 0) {
+    if (fileUploads?.filter(x => x.fileType === fileUpload.fileType).length > 0) {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (result) => {
           let typeFoundIndex = fileUploads.findIndex(x => x.fileType === fileUpload.fileType);
@@ -311,7 +317,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
-          fileUploads.push(fileUpload);
+          if (fileUploads) fileUploads.push(fileUpload);
+          else fileUploads = [fileUpload];
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           if (fileUpload.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);

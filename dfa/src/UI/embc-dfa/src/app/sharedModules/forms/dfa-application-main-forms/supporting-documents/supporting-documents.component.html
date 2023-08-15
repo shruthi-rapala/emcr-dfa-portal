@@ -32,7 +32,6 @@
           <app-dfa-attachment
             title="Insurance Template"
             description="Attach the insurance template completed by your insurance broker.<br/><a target='_blank' href='https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf'>Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a>"
-            [missingRequiredFile]="insuranceTemplateForm.hasError('noInsuranceTemplate') ? 'yes' : 'no'"
             requiredFile="yes"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
@@ -40,7 +39,11 @@
             excludeFileTypes="[]"
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('insuranceTemplateFileUpload')"
+            *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')"
           ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!insuranceTemplateForm.hasError('noInsuranceTemplate')">
+            <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
+          </mat-card>
         </div>
       </div>
     </ng-container>
@@ -52,7 +55,7 @@
           <app-dfa-attachment
             title="Rental Agreement"
             description="Attach your rental agreement, lease, or <u>other documentation</u> to show that you are/were legally occupying the damaged property at the time of the event."
-            [missingRequiredFile]="rentalAgreementForm.hasError('noRentalAgreement') ? 'yes': 'no'"
+            *ngIf="rentalAgreementForm.hasError('noRentalAgreement')"
             requiredFile="yes"
             (showSideNote)="onToggleOtherDocuments()"
             [allowedFileTypes]="allowedFileTypes"
@@ -63,6 +66,9 @@
             [fileUpload]="formCreationService.fileUploadsForm.value.get('rentalAgreementFileUpload')"
 
           ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!rentalAgreementForm.hasError('noRentalAgreement')">
+            <p class="sub-heading" style="font-size: 15px">Required rental agreement form has been uploaded.</p>
+          </mat-card>
         </div>
         <div class="sub-heading radio-extra-label col-md-4" *ngIf="showOtherDocuments === true" style="border: 3px solid #70abd9">
           <br/>
@@ -83,7 +89,7 @@
           <app-dfa-attachment
             title="Identification"
             description=" Attach a copy of government issued identification such as Driver's License, Service Card, or BC ID."
-            [missingRequiredFile]="identificationForm.hasError('noIdentification') ? 'yes' : 'no'"
+            *ngIf="identificationForm.hasError('noIdentification')"
             requiredFile="yes"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
@@ -92,6 +98,9 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('identificationFileUpload')"
           ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!identificationForm.hasError('noIdentification')">
+            <p class="sub-heading" style="font-size: 15px">Required identification form has been uploaded.</p>
+          </mat-card>
         </div>
       </div>
     </ng-container>
@@ -104,7 +113,6 @@
             title="OtherSuporting Documents (Optional)"
             description="If applicable, you may include additional documents related to your application."
             requiredFile="no"
-            missingRequiredFile="no"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             excludeFileTypes="['Insurance', 'Cleanup', 'Damage photo', 'Identification', 'Tenancy proof']"
@@ -122,7 +130,6 @@
           <app-dfa-attachment
             title="OtherSuporting Documents (Optional)"
             description="If applicable, you may include additional documents related to your application."
-            missingRequiredFile="no"
             requiredFile="no"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
