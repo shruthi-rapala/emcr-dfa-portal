@@ -89,10 +89,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngAfterViewChecked(): void {
-    this.cd.detectChanges();
-  }
-
   ngOnInit(): void {
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.supportingDocumentsForm$ = this.formCreationService
