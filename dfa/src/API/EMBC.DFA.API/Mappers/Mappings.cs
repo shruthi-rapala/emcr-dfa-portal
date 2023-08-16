@@ -160,7 +160,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_contactlastname, opts => opts.MapFrom(s => s.damagedPropertyAddress.landlordSurname))
                 .ForMember(d => d.dfa_contactphone1, opts => opts.MapFrom(s => s.damagedPropertyAddress.landlordPhone))
                 .ForMember(d => d.dfa_contactemail, opts => opts.MapFrom(s => s.damagedPropertyAddress.landlordEmail))
-                .ForMember(d => d.dfa_havereceiptsforcleanupsorrepairs, opts => opts.MapFrom(s => s.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs == null ? (int?)null : (s.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_havereceiptsforcleanupsorrepairs2, opts => opts.MapFrom(s => s.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs == null ? (int?)null : (s.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_acopyofarentalagreementorlease2, opts => opts.MapFrom(s => s.supportingDocuments.hasCopyOfARentalAgreementOrLease == null ? (int?)null : (s.supportingDocuments.hasCopyOfARentalAgreementOrLease == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_isprimaryanddamagedaddresssame2, opts => opts.MapFrom(s => s.damagedPropertyAddress.isPrimaryAndDamagedAddressSame == null ? (int?)null : (s.damagedPropertyAddress.isPrimaryAndDamagedAddressSame == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
