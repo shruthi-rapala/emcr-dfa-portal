@@ -7,4 +7,5 @@ export interface CurrentApplication {
   damagedAddress?: string;
   dateOfDamage?: string;
   eventId?: string;
+  primaryApplicantSignedDate?: string;
 }

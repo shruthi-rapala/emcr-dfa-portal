@@ -10,6 +10,7 @@ using EMBC.ESS.Shared.Contracts.Metadata;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Xrm.Tools.WebAPI;
 using Xrm.Tools.WebAPI.Requests;
@@ -169,17 +170,17 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 // TODO Update list of fields
                 Select = new[]
                 {
-                    "dfa_appapplicationid", "dfa_isprimaryanddamagedaddresssame", "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2",
-                    "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince", "dfa_damagedpropertypostalcode", "dfa_isthispropertyyourp",
-                    "dfa_indigenousreserve", "dfa_nameoffirstnationsr", "dfa_manufacturedhom", "dfa_eligibleforbchomegrantonthisproperty",
+                    "dfa_appapplicationid", "dfa_isprimaryanddamagedaddresssame2", "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2",
+                    "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince", "dfa_damagedpropertypostalcode", "dfa_isthispropertyyourp2",
+                    "dfa_indigenousreserve2", "dfa_nameoffirstnationsr", "dfa_manufacturedhom2", "dfa_eligibleforbchomegrantonthisproperty2",
                     "_dfa_confirmedbuildinglandlord_value",
-                    "dfa_acopyofarentalagreementorlease", "dfa_areyounowresidingintheresidence",
-                    "dfa_causeofdamageflood", "dfa_causeofdamagestorm", "dfa_causeofdamagewildfire", "dfa_causeofdamagelandslide", "dfa_causeofdamageother",
+                    "dfa_acopyofarentalagreementorlease2", "dfa_areyounowresidingintheresidence2",
+                    "dfa_causeofdamageflood2", "dfa_causeofdamagestorm2", "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageother2",
                     "dfa_causeofdamageloss", "dfa_dateofdamage", "dfa_dateofdamageto", "dfa_datereturntotheresidence",
-                    "dfa_description", "dfa_doyourlossestotalmorethan1000", "dfa_haveinvoicesreceiptsforcleanuporrepairs",
+                    "dfa_description", "dfa_doyourlossestotalmorethan10002", "dfa_haveinvoicesreceiptsforcleanuporrepairs",
                     "dfa_primaryapplicantprintname", "dfa_primaryapplicantsigned", "dfa_primaryapplicantsigneddate",
                     "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
-                    "dfa_wereyouevacuatedduringtheevent"
+                    "dfa_wereyouevacuatedduringtheevent2"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
