@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 
@@ -287,24 +289,30 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     }
 
     // TODO add dfa_documentdescription, dfa_uploadeddate, dfa_modifiedby, dfa_contenttype fields
-    public class dfa_appdocumentlocation_retrieve
+    public class sharepointdocumentlocation
     {
-        public string? dfa_appdocumentlocationsid { get; set; } // optional string
-        public string dfa_name { get; set; } // file description
-        public string dfa_documenttype { get; set; } // document type
-        public string createdon { get; set; } // uploaded date
-        public string dfa_url { get; set; } // file name
-        public string? _dfa_applicationid_value { get; set; } // application id
+        public string? sharepointdocumentlocationid { get; set; } // optional string
+        // public Guid? dfa_appapplicationid { get; set; } // application id
+        public string name { get; set; } // file name TODO: could be wrong field
+        public string description { get; set; } // file description TODO: could be wrong field
+        public string createdon { get; set; } // uploaded date TODO: check if correct field
+        // TODO: need a field for file category
+        // TODO: need a field for modifiedby e.g. Applicant
     }
-    public class dfa_appdocumentlocation_params
+    public class AttachmentEntity
     {
-        public Guid _dfa_applicationid_value { get; set; } // required string
-        public Guid? dfa_appdocumentlocationsid { get; set; } // optional string
-        public string dfa_name { get; set; } // required string
-        public string dfa_documenttype { get; set; } // required string
-        public string? dfa_url { get; set; } // optional string
-        //public string createdon { get; set; } // required string
-        public bool delete { get; set; } // required bool
+        [JsonProperty("@odata.type")]
+        public string Type { get; set; } = "Microsoft.Dynamics.CRM.activitymimeattachment";
+        public string filename { get; set; } // pass in description
+        public string subject { get; set; } // pass in modified by
+        public string activitysubject { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
+        public byte[] body { get; set; }
+    }
+
+    public class SubmissionEntity
+    {
+        public Guid dfa_appapplicationid { get; set; }
+        public IEnumerable<AttachmentEntity> documentCollection { get; set; }
     }
 
     public class dfa_appdocumentlocations

@@ -525,67 +525,73 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteDocumentLocationAsync(dfa_appdocumentlocation_params objDocumentLocation)
+        public async Task<string> UpsertDeleteDocumentLocationAsync(SubmissionEntity submission)
         {
             try
             {
-                if (objDocumentLocation?.dfa_appdocumentlocationsid != null && objDocumentLocation?.delete == true)
+                //             if (objDocumentLocation?.dfa_appdocumentlocationsid != null && objDocumentLocation?.delete == true)
+                //             {
+                //                 await api.Delete("dfa_appdocumentlocationses", (System.Guid)objDocumentLocation.dfa_appdocumentlocationsid);
+                //                 return "Deleted";
+                //             }
+                //             else if (objDocumentLocation?.dfa_appdocumentlocationsid != null)
+                //             {
+                //                 var doc = new dfa_appdocumentlocations();
+                //                 doc.dfa_name = objDocumentLocation.dfa_name;
+                //                 doc.dfa_documenttype = objDocumentLocation.dfa_documenttype;
+                //                 doc.dfa_url = objDocumentLocation.dfa_url;
+                //                 await api.Update("dfa_appdocumentlocationses", (System.Guid)objDocumentLocation.dfa_appdocumentlocationsid, doc, true);
+                //                 return "Updated";
+                //             }
+                //             else if (objDocumentLocation?.dfa_appdocumentlocationsid == null)
+                //            {
+                dynamic result = await api.ExecuteAction("dfa_SubmitDFADocuments", submission);
+
+                if (!result.submissionFlag)
                 {
-                    await api.Delete("dfa_appdocumentlocationses", (System.Guid)objDocumentLocation.dfa_appdocumentlocationsid);
-                    return "Deleted";
+                    throw new Exception($"dfa_SubmitDFADocuments call failed: {result.message}");
                 }
-                else if (objDocumentLocation?.dfa_appdocumentlocationsid != null)
-                {
-                    var doc = new dfa_appdocumentlocations();
-                    doc.dfa_name = objDocumentLocation.dfa_name;
-                    doc.dfa_documenttype = objDocumentLocation.dfa_documenttype;
-                    doc.dfa_url = objDocumentLocation.dfa_url;
-                    await api.Update("dfa_appdocumentlocationses", (System.Guid)objDocumentLocation.dfa_appdocumentlocationsid, doc, true);
-                    return "Updated";
-                }
-                else if (objDocumentLocation?.dfa_appdocumentlocationsid == null)
-                {
-                    var doc = new dfa_appdocumentlocations();
-                    doc._dfa_applicationid_value = objDocumentLocation._dfa_applicationid_value;
-                    doc.dfa_name = objDocumentLocation.dfa_name;
-                    doc.dfa_documenttype = objDocumentLocation.dfa_documenttype;
-                    doc.dfa_appdocumentlocationsid = objDocumentLocation.dfa_appdocumentlocationsid;
-                    doc.dfa_url = objDocumentLocation.dfa_url;
-                    var result = await api.Create("dfa_appdocumentlocationses", doc);
-                    return result.ToString();
-                }
-                else
-                {
-                    return "No Action";
-                }
+                return "Submitted";
+//                var doc = new dfa_appdocumentlocations();
+//                    doc._dfa_applicationid_value = objDocumentLocation._dfa_applicationid_value;
+//                    doc.dfa_name = objDocumentLocation.dfa_name;
+//                    doc.dfa_documenttype = objDocumentLocation.dfa_documenttype;
+//                    doc.dfa_appdocumentlocationsid = objDocumentLocation.dfa_appdocumentlocationsid;
+ //                   doc.dfa_url = objDocumentLocation.dfa_url;
+ //                   var result = await api.Create("dfa_appdocumentlocationses", doc);
+ //                   return result.ToString();
+    //            }
+    //            else
+    //            {
+    //                return "No Action";
+    //            }
             }
             catch (System.Exception ex)
             {
                 // return Guid.Empty.ToString();
-                throw new Exception($"Failed to update document location {ex.Message}", ex);
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
             }
         }
 
         // TODO : fails
-        public async Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetDocumentLocationsListAsync(Guid applicationId)
+        public async Task<IEnumerable<sharepointdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId)
         {
             try
             {
-                var list = await api.GetList<dfa_appdocumentlocation_retrieve>("dfa_appdocumentlocationses", new CRMGetListOptions
+                var list = await api.GetList<sharepointdocumentlocation>("sharepointdocumentlocations", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "_dfa_applicationid_value", "dfa_appdocumentlocationsid", "dfa_name", "dfa_documenttype",
-                        "createdon", "createdby", "dfa_url"
-                    },
-                    Filter = $"_dfa_applicationid_value eq {applicationId}"
+                        "name", "description", "createdon", "sharepointdocumentlocationid"
+                    }
+                    //Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
 
                 return list.List;
             }
             catch (System.Exception ex)
             {
-                throw new Exception($"Failed to get document locations {ex.Message}", ex);
+                throw new Exception($"Failed to get documents {ex.Message}", ex);
             }
         }
     }

@@ -282,23 +282,20 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_appcontactname, opts => opts.MapFrom(s => s.name))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
-            CreateMap<dfa_appdocumentlocation_retrieve, FileUpload>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
-                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdocumentlocationsid))
-                .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_url))
-                .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
-                .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.dfa_name))
+            CreateMap<sharepointdocumentlocation, FileUpload>()
+                //.ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.sharepointdocumentlocationid))
+                .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.name))
+                //.ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
+                .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.description))
                 .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
-            CreateMap<FileUpload, dfa_appdocumentlocation_params>()
-                .ForMember(d => d._dfa_applicationid_value, opts => opts.MapFrom(s => s.applicationId))
-                .ForMember(d => d.dfa_appdocumentlocationsid, opts => opts.MapFrom(s => s.id))
-                .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.fileName))
-                .ForMember(d => d.dfa_documenttype, opts => opts.MapFrom(s => s.fileType.ToString()))
-                .ForMember(d => d.dfa_url, opts => opts.MapFrom(s => s.fileDescription))
-                //.ForMember(d => d.createdon, opts => opts.MapFrom(s => s.uploadedDate))
-                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
+            CreateMap<FileUpload, AttachmentEntity>()
+                .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileDescription))
+                .ForMember(d => d.subject, opts => opts.MapFrom(s => s.modifiedBy))
+                .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => s.fileType.ToString()))
+                .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))

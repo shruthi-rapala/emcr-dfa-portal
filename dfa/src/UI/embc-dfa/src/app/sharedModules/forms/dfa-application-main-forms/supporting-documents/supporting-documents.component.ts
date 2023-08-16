@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
-import { BehaviorSubject, Subscription, mapTo } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, catchError, mapTo, throwError } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { ApplicantOption, FileCategory, FileUpload, SupportStatus } from 'src/app/core/api/models';
@@ -27,6 +27,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { AttachmentService } from 'src/app/core/api/services';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { MatTab } from '@angular/material/tabs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -78,6 +79,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     private dfaApplicationMainService: DFAApplicationMainService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private attachmentsService: AttachmentService,
+    private http: HttpClient,
     private cd: ChangeDetectorRef
   ) {
     this.formBuilder = formBuilder;
@@ -279,7 +281,22 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
   saveSupportingFiles(fileUpload: FileUpload): void {
     if (this.supportingFilesForm.get('supportingFilesFileUpload').status === 'VALID') {
+      fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+      // this.submitForm(fileUpload).subscribe({
+      //   next: (fileUploadId) => {
+      //     console.log(fileUploadId);
+      //     // fileUpload.id = fileUploadId;
+      //     // fileUploads.push(fileUpload);
+      //     // this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+      //     // this.showSupportingFileForm = !this.showSupportingFileForm;
+      //     // if (fileUpload.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
+      //     //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+      //   },
+      //   error: (error) => {
+      //     console.error(error);
+      //   }
+      // });
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
@@ -296,6 +313,29 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     } else {
       this.supportingFilesForm.get('supportingFilesFileUpload').markAllAsTouched();
     }
+  }
+
+  submitForm(fileUpload: FileUpload) {
+    return this.http
+      .post(`/api/Attachments`, fileUpload, { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) })
+      .pipe(
+        catchError((error) => {
+          return this.handleError(error);
+        })
+      );
+  }
+
+  protected handleError(err): Observable<never> {
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      errorMessage = err.error.message;
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      errorMessage = err.error;
+    }
+    return throwError(errorMessage);
   }
 
   saveRequiredForm(fileUpload: FileUpload): void {
