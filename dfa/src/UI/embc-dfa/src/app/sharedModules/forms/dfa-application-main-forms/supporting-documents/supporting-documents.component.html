@@ -220,10 +220,10 @@
     <mat-error *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
       <br/>Insurance template is required.
     </mat-error>
-    <mat-error *ngIf="rentalAgreementForm.hasError('noRentalAgreement') && isResidentialTenant">
+    <mat-error *ngIf="rentalAgreementForm?.hasError('noRentalAgreement') && isResidentialTenant">
       <br/>Proof of tenancy is required.
     </mat-error>
-    <mat-error *ngIf="identificationForm.hasError('noIdentification') && isResidentialTenant">
+    <mat-error *ngIf="identificationForm?.hasError('noIdentification') && isResidentialTenant">
       <br/>Identification is required.
     </mat-error>
 
