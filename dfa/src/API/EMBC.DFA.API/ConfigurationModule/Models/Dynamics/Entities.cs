@@ -178,7 +178,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_datereturntotheresidence { get; set; } // optional date only
         public string? dfa_description { get; set; } // optional string
         public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional Two Options
-        public int? dfa_haveinvoicesreceiptsforcleanuporrepairs { get; set; } // required Two Options
+        public int? dfa_haveinvoicesreceiptsforcleanuporrepairs2 { get; set; } // required Two Options
         public string? dfa_primaryapplicantprintname { get; set; } // optional string
         public int? dfa_primaryapplicantsigned { get; set; } // required Two Options
         public string? dfa_primaryapplicantsigneddate { get; set; } // optional string
