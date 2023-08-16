@@ -5,5 +5,5 @@
  * Supporting Documents
  */
 export interface SupportingDocuments {
-  hasCopyOfARentalAgreementOrLease?: boolean;
+  hasCopyOfARentalAgreementOrLease?: null | boolean;
 }
