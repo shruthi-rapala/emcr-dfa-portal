@@ -230,6 +230,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.uploadedDate').setValue(new Date());
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
     if (this.cleanUpWorkFilesForm.get('cleanupFileUpload').status === 'VALID') {
+      fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
@@ -270,6 +271,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
     let index = fileUploads.indexOf(element);
     element.deleteFlag = true;
+    element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
       next: (result) => {
         fileUploads[index] = element;

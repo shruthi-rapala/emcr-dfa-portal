@@ -530,22 +530,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                //             if (objDocumentLocation?.dfa_appdocumentlocationsid != null && objDocumentLocation?.delete == true)
-                //             {
-                //                 await api.Delete("dfa_appdocumentlocationses", (System.Guid)objDocumentLocation.dfa_appdocumentlocationsid);
-                //                 return "Deleted";
-                //             }
-                //             else if (objDocumentLocation?.dfa_appdocumentlocationsid != null)
-                //             {
-                //                 var doc = new dfa_appdocumentlocations();
-                //                 doc.dfa_name = objDocumentLocation.dfa_name;
-                //                 doc.dfa_documenttype = objDocumentLocation.dfa_documenttype;
-                //                 doc.dfa_url = objDocumentLocation.dfa_url;
-                //                 await api.Update("dfa_appdocumentlocationses", (System.Guid)objDocumentLocation.dfa_appdocumentlocationsid, doc, true);
-                //                 return "Updated";
-                //             }
-                //             else if (objDocumentLocation?.dfa_appdocumentlocationsid == null)
-                //            {
                 dynamic result = await api.ExecuteAction("dfa_SubmitDFADocuments", submission);
 
                 if (!result.submissionFlag)
@@ -553,24 +537,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     throw new Exception($"dfa_SubmitDFADocuments call failed: {result.message}");
                 }
                 return "Submitted";
-//                var doc = new dfa_appdocumentlocations();
-//                    doc._dfa_applicationid_value = objDocumentLocation._dfa_applicationid_value;
-//                    doc.dfa_name = objDocumentLocation.dfa_name;
-//                    doc.dfa_documenttype = objDocumentLocation.dfa_documenttype;
-//                    doc.dfa_appdocumentlocationsid = objDocumentLocation.dfa_appdocumentlocationsid;
- //                   doc.dfa_url = objDocumentLocation.dfa_url;
- //                   var result = await api.Create("dfa_appdocumentlocationses", doc);
- //                   return result.ToString();
-    //            }
-    //            else
-    //            {
-    //                return "No Action";
-    //            }
             }
-            catch (System.Exception ex)
+            //catch (System.Exception ex)
+            catch
             {
-                // return Guid.Empty.ToString();
-                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
+                return System.Guid.Empty.ToString();
+                // throw new Exception($"Failed to insert/delete document {ex.Message}", ex); TODO: uncomment
             }
         }
 

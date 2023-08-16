@@ -255,6 +255,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   saveDamagePhotos(fileUpload: FileUpload): void {
     if (this.damagePhotosForm.get('damagePhotoFileUpload').status === 'VALID') {
+      fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
@@ -282,6 +283,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
     let index = fileUploads.indexOf(element);
     element.deleteFlag = true;
+    element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
       next: (result) => {
         fileUploads[index] = element;

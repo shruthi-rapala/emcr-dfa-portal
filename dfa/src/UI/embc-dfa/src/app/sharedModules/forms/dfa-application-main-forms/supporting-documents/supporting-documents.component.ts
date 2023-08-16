@@ -283,20 +283,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     if (this.supportingFilesForm.get('supportingFilesFileUpload').status === 'VALID') {
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-      // this.submitForm(fileUpload).subscribe({
-      //   next: (fileUploadId) => {
-      //     console.log(fileUploadId);
-      //     // fileUpload.id = fileUploadId;
-      //     // fileUploads.push(fileUpload);
-      //     // this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-      //     // this.showSupportingFileForm = !this.showSupportingFileForm;
-      //     // if (fileUpload.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
-      //     //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
-      //   },
-      //   error: (error) => {
-      //     console.error(error);
-      //   }
-      // });
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
@@ -315,31 +301,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitForm(fileUpload: FileUpload) {
-    return this.http
-      .post(`/api/Attachments`, fileUpload, { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) })
-      .pipe(
-        catchError((error) => {
-          return this.handleError(error);
-        })
-      );
-  }
-
-  protected handleError(err): Observable<never> {
-    let errorMessage = '';
-    if (err.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      errorMessage = err.error.message;
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      errorMessage = err.error;
-    }
-    return throwError(errorMessage);
-  }
-
   saveRequiredForm(fileUpload: FileUpload): void {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     if (fileUploads?.filter(x => x.fileType === fileUpload.fileType).length > 0) {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (result) => {
@@ -381,6 +345,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       let foundIndex = fileUploads.findIndex(x => x.fileType === element.fileType);
       element.deleteFlag = true;
+      element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
         next: (result) => {
           fileUploads[foundIndex] = element;
@@ -398,6 +363,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       let index = fileUploads.indexOf(element);
       element.deleteFlag = true;
+      element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
         next: (result) => {
           fileUploads[index] = element;

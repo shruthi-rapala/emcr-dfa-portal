@@ -311,7 +311,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
     public class SubmissionEntity
     {
-        public Guid dfa_appapplicationid { get; set; }
+        // public Guid dfa_appapplicationid { get; set; } TODO: add this back
         public IEnumerable<AttachmentEntity> documentCollection { get; set; }
     }
 
