@@ -307,7 +307,7 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class SupportingDocuments
     {
-        public bool hasCopyOfARentalAgreementOrLease { get; set; }
+        public bool? hasCopyOfARentalAgreementOrLease { get; set; }
     }
 
     /// <summary>
