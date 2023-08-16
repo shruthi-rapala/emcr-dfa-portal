@@ -132,7 +132,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
     // initialize insurance template
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-    if (fileUploads.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]).length > 0) {
+    if (fileUploads?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]).length > 0) {
       let insuranceFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
       this.insuranceTemplateForm.get('insuranceTemplateFileUpload').setValue(fileUploads[insuranceFoundIndex]);
     } else {
@@ -167,7 +167,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
     // initialize file upload form
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-    if (fileUploads.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]).length > 0) {
+    if (fileUploads?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]).length > 0) {
       let rentalAgreementFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
       this.rentalAgreementForm.get('rentalAgreementFileUpload').setValue(fileUploads[rentalAgreementFoundIndex]);
       this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
@@ -202,7 +202,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
     // initialize file upload form
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-    if (fileUploads.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]).length > 0) {
+    if (fileUploads?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]).length > 0) {
       let identificationFoundIndex = fileUploads.findIndex(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]);
       this.identificationForm.get('identificationFileUpload').setValue(fileUploads[identificationFoundIndex]);
     } else {
@@ -283,7 +283,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
-          fileUploads.push(fileUpload);
+          if (fileUploads) fileUploads.push(fileUpload);
+          else fileUploads = [ fileUpload ];
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.showSupportingFileForm = !this.showSupportingFileForm;
           if (fileUpload.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
@@ -356,13 +357,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.dfaApplicationMainService.deleteCleanupLog.emit(element);
     } else {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-      let index = fileUploads.indexOf(element);
+      let index = fileUploads?.indexOf(element);
       element.deleteFlag = true;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
         next: (result) => {
           fileUploads[index] = element;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          if (fileUploads.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])?.length == 0)
+          if (fileUploads?.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])?.length == 0)
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
           if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
             this.supportingFilesForm
