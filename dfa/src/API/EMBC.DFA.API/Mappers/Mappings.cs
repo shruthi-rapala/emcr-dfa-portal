@@ -166,7 +166,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
             CreateMap<dfa_appapplicationmain_retrieve, CleanUpLog>()
-                .ForMember(d => d.haveInvoicesOrReceiptsForCleanupOrRepairs, opts => opts.MapFrom(s => s.dfa_haveinvoicesreceiptsforcleanuporrepairs == (int)YesNoOptionSet.Yes ? true : (s.dfa_haveinvoicesreceiptsforcleanuporrepairs == (int)YesNoOptionSet.No ? false : (bool?)null)));
+                .ForMember(d => d.haveInvoicesOrReceiptsForCleanupOrRepairs, opts => opts.MapFrom(s => s.dfa_haveinvoicesreceiptsforcleanuporrepairs2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_haveinvoicesreceiptsforcleanuporrepairs2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
 
             CreateMap<dfa_appapplicationmain_retrieve, SupportingDocuments>()
                 .ForMember(d => d.hasCopyOfARentalAgreementOrLease, opts => opts.MapFrom(s => s.dfa_acopyofarentalagreementorlease2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_acopyofarentalagreementorlease2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
