@@ -539,11 +539,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 }
                 return "Submitted";
             }
-            //catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return System.Guid.Empty.ToString();
-                // throw new Exception($"Failed to insert/delete document {ex.Message}", ex); TODO: uncomment
+                // return System.Guid.Empty.ToString();
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
             }
         }
 

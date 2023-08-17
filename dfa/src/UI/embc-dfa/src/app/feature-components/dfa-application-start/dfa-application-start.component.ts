@@ -81,6 +81,10 @@ export class DFAApplicationStartComponent
     this.dfaApplicationStartDataService.profileVerified = true;
   }
 
+  showForm() {
+    console.log(this.formCreationService.appTypeInsuranceForm.value);
+  }
+
   ngAfterViewChecked(): void {
     this.cd.detectChanges();
   }
@@ -127,18 +131,9 @@ export class DFAApplicationStartComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
-    
     if (isLast) {
       this.alertMessage(component);
-      //this.setFormData(component);
-      //this.submitFile();
     } else if (this.form.status === 'VALID') {
-      if (isLast) {
-        if (this.currentFlow === 'non-verified-registration') {
-          // const navigationPath = '/' + this.currentFlow + '/needs-assessment';
-          // this.router.navigate([navigationPath]);
-        }
-      }
       this.setFormData(component);
       this.form$.unsubscribe();
       stepper.selected.completed = true;

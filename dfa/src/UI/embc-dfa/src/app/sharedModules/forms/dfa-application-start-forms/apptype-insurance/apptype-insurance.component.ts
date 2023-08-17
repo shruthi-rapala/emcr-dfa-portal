@@ -94,12 +94,21 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '') {
           this.appTypeInsuranceForm.get('insuranceOption').reset();
+          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators([null]);
+          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators([null]);
+          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators([null]);
           this.notInsured = false;
         } else if (value === fullyInsuredEnumKey) {
           this.yesFullyInsured();
+          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators([null]);
+          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators([null]);
+          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators([null]);
           this.notInsured = false;
         } else if (value === notInsuredEnumKey) {
           this.notInsured = true;
+          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators([Validators.required]);
+          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators([Validators.required]);
+          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators([Validators.required]);
         } else this.notInsured = false;
         this.formCreationService.insuranceOptionChanged.emit(value);
         this.appTypeInsuranceForm.updateValueAndValidity();
@@ -154,6 +163,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
           }
         else if (result === 'confirm') {
           this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.radioInsuranceOptions.Yes);
+          this.appTypeInsuranceForm.updateValueAndValidity();
         }
         else this.appTypeInsuranceForm.controls.insuranceOption.setValue(null);
       });

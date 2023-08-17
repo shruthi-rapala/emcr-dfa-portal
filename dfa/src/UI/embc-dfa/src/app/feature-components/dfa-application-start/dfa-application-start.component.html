@@ -3,22 +3,6 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationStartHeading }}</span>
     </div>
-    <div class="col-4" *ngIf="showSaveButton === true">
-      <button
-        class="button-p save-button col-4"
-        [disabled]="isSubmitted"
-        (click)="saveAndBackToDashboard()"
-        mat-stroked-button
-        type="button"
-        >
-         Save & Back to Dashboard
-         <app-loader
-          [strokeWidth]="3"
-          [diameter]="25"
-          [showLoader]="showLoader"
-        ></app-loader>
-      </button>
-    </div>
   </div>
 
   <mat-horizontal-stepper
@@ -51,11 +35,13 @@
           <button
             class="button-p"
             mat-stroked-button
+            [disabled]="step.isLast && !((formCreationService.appTypeInsuranceForm$ | async)?.status === 'VALID')"
             type="button"
             (click)="goForward(dfaApplicationStartStepper, step.isLast, step.component)"
           >
             {{ step.nextButtonLabel }}
           </button>
+          <button (click)="showForm()">Show Form</button>
         </div>
       </div>
     </mat-step>

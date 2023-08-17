@@ -49,7 +49,7 @@ namespace EMBC.DFA.API.Controllers
             if (fileUpload == null) return BadRequest("FileUpload details cannot be empty.");
             var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
             var submissionEntity = new SubmissionEntity();
-            // submissionEntity.dfa_appapplicationid = fileUpload.applicationId; TODO: add back
+            submissionEntity.dfa_appapplicationid = fileUpload.applicationId.ToString();
             submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
             submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
 

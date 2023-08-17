@@ -313,6 +313,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         // public Guid dfa_appapplicationid { get; set; } TODO: add this back
         public IEnumerable<AttachmentEntity> documentCollection { get; set; }
+        public string dfa_appapplicationid { get; set; }
     }
 
     public class dfa_appdocumentlocations
