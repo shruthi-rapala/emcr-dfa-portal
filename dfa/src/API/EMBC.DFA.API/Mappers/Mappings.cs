@@ -195,10 +195,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageother2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.floodDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
-                .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => s.dfa_dateofdamage))
-                .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => s.dfa_dateofdamageto))
+                .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamage) ? DateTime.Parse(s.dfa_dateofdamage).ToString("o") + "Z" : s.dfa_dateofdamage))
+                .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto))
                 .ForMember(d => d.residingInResidence, opts => opts.MapFrom(s => s.dfa_areyounowresidingintheresidence2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_areyounowresidingintheresidence2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
-                .ForMember(d => d.dateReturned, opts => opts.MapFrom(s => s.dfa_datereturntotheresidence))
+                .ForMember(d => d.dateReturned, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_datereturntotheresidence) ? DateTime.Parse(s.dfa_datereturntotheresidence).ToString("o") + "Z" : s.dfa_datereturntotheresidence))
                 .ForMember(d => d.briefDescription, opts => opts.MapFrom(s => s.dfa_description))
                 .ForMember(d => d.lossesExceed1000, opts => opts.MapFrom(s => s.dfa_doyourlossestotalmorethan10002 == (int)YesNoOptionSet.Yes ? true : (s.dfa_doyourlossestotalmorethan10002 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.wereYouEvacuated, opts => opts.MapFrom(s => s.dfa_wereyouevacuatedduringtheevent2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_wereyouevacuatedduringtheevent2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
