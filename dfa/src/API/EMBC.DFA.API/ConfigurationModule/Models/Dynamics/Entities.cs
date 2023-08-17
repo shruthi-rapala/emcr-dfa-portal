@@ -138,7 +138,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_datereturntoresidence { get; set; } // optional date only
         public string? dfa_description { get; set; } // optional string
         public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean
-        public int? dfa_havereceiptsforcleanupsorrepairs { get; set; } // required boolean
+        public int? dfa_havereceiptsforcleanupsorrepairs2 { get; set; } // required boolean
         public string? dfa_primaryapplicantprintname { get; set; } // optional string
         public int dfa_primaryapplicantsigned { get; set; } // required Two Options
         public string? dfa_primaryapplicantsigneddate { get; set; } // optional string
@@ -396,6 +396,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_event { get; set; }
         public string dfa_casenumber { get; set; }
         public string dfa_primaryapplicantsigneddate { get; set; }
+        public string createdon { get; set; }
     }
 
     public class dfa_event
