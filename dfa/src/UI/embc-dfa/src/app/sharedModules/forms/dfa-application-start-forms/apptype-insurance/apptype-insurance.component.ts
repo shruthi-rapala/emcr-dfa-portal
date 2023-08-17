@@ -63,6 +63,10 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         this.appTypeInsuranceForm.addValidators([ValidateInsuranceOption.notFullInsurance('insuranceOption', InsuranceOption.Yes)]);
       });
 
+    this.appTypeInsuranceForm.statusChanges.subscribe((value)=> {
+      this.formCreationService.appTypeInsuranceFormValidityChange.emit(value);
+    })
+
     this.appTypeInsuranceForm
       .get('applicantOption')
       .valueChanges.pipe(distinctUntilChanged())
@@ -83,37 +87,43 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
           this.appTypeInsuranceForm.get('farmOption').setValidators(null);
           this.appTypeInsuranceForm.updateValueAndValidity();
         }
+        this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
       });
 
     let fullyInsuredEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
     let notInsuredEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
+    let unsureEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Unsure)];
 
     this.appTypeInsuranceForm
       .get('insuranceOption')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
-        console.log(value, fullyInsuredEnumKey, notInsuredEnumKey);
         if (value === '') {
           this.appTypeInsuranceForm.get('insuranceOption').reset();
+          this.appTypeInsuranceForm.get('applicantSignature')?.setValidators([null]);
           this.appTypeInsuranceForm.get('applicantSignature')?.get('dateSigned').setValidators([null]);
           this.appTypeInsuranceForm.get('applicantSignature')?.get('signedName').setValidators([null]);
           this.appTypeInsuranceForm.get('applicantSignature')?.get('signature').setValidators([null]);
           this.notInsured = false;
         } else if (value === fullyInsuredEnumKey) {
           this.yesFullyInsured();
-          this.appTypeInsuranceForm.get('applicantSignature')?.get('dateSigned').setValidators([null]);
-          this.appTypeInsuranceForm.get('applicantSignature')?.get('signedName').setValidators([null]);
-          this.appTypeInsuranceForm.get('applicantSignature')?.get('signature').setValidators([null]);
           this.notInsured = false;
         } else if (value === notInsuredEnumKey) {
+          this.appTypeInsuranceForm.get('applicantSignature')?.setValidators([Validators.required]);
           this.appTypeInsuranceForm.get('applicantSignature')?.get('dateSigned').setValidators([Validators.required]);
           this.appTypeInsuranceForm.get('applicantSignature')?.get('signedName').setValidators([Validators.required]);
           this.appTypeInsuranceForm.get('applicantSignature')?.get('signature').setValidators([Validators.required]);
-          console.log("appTypeInsuranceForm no Insurance", this.appTypeInsuranceForm);
           this.notInsured = true;
-        } else this.notInsured = false;
+        } else if (value === unsureEnumKey) {
+          this.notInsured = false;
+        }
         this.formCreationService.insuranceOptionChanged.emit(value);
+        this.appTypeInsuranceForm.get('applicantSignature')?.get('dateSigned').updateValueAndValidity();
+        this.appTypeInsuranceForm.get('applicantSignature')?.get('signedName').updateValueAndValidity();
+        this.appTypeInsuranceForm.get('applicantSignature')?.get('signature').updateValueAndValidity();
+        this.appTypeInsuranceForm.get('applicantSignature')?.updateValueAndValidity();
         this.appTypeInsuranceForm.updateValueAndValidity();
+        this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
       });
 
     this.appTypeInsuranceForm
@@ -123,6 +133,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.appTypeInsuranceForm.get('smallBusinessOption').reset();
         }
+        this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
       });
 
     this.appTypeInsuranceForm
@@ -132,6 +143,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.appTypeInsuranceForm.get('farmOption').reset();
         }
+        this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
       });
 
   }
@@ -140,12 +152,16 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
     this.appTypeInsuranceForm.get('applicantSignature').get('signedName').setValue(event.signedName);
     this.appTypeInsuranceForm.get('applicantSignature').get('dateSigned').setValue(event.dateSigned);
     this.appTypeInsuranceForm.get('applicantSignature').get('signature').setValue(event.signature);
+    this.appTypeInsuranceForm.updateValueAndValidity();
+    this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
   }
 
   updateSecondaryApplicantSignature(event: SignatureBlock) {
     this.appTypeInsuranceForm.get('secondaryApplicantSignature').get('signedName').setValue(event.signedName);
     this.appTypeInsuranceForm.get('secondaryApplicantSignature').get('dateSigned').setValue(event.dateSigned);
     this.appTypeInsuranceForm.get('secondaryApplicantSignature').get('signature').setValue(event.signature);
+    this.appTypeInsuranceForm.updateValueAndValidity();
+    this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
   }
 
   yesFullyInsured(): void {

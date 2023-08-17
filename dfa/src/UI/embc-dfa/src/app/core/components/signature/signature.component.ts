@@ -34,7 +34,6 @@ export class SignatureComponent implements AfterViewInit {
     this.context.strokeStyle = 'black';
     this.context.lineWidth = 1;
     this.captureEvents(canvasEl);
-    console.log(this.whoseSignature, this.isRequired);
   }
 
   // store in signature block to emit

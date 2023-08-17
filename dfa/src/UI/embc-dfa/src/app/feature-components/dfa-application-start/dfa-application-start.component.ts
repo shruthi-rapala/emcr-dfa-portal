@@ -48,6 +48,7 @@ export class DFAApplicationStartComponent
   parentPageName = 'dfa-application-start';
   showLoader = false;
   isSubmitted = false;
+  submitAllowed: boolean = false;
 
   constructor(
     private router: Router,
@@ -72,6 +73,11 @@ export class DFAApplicationStartComponent
       let enumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
       if (value === enumKey) this.fullInsurance = true; else this.fullInsurance = false;
     });
+
+    this.formCreationService.appTypeInsuranceFormValidityChange.subscribe((value)=> {
+      if (value === 'VALID') this.submitAllowed = true;
+      else this.submitAllowed = false;
+    });
   }
 
   ngOnInit(): void {
@@ -86,10 +92,6 @@ export class DFAApplicationStartComponent
   }
 
   ngAfterViewInit(): void {
-  }
-
-  showForm() {
-    console.log(this.stepToDisplay, this.formCreationService.getAppTypeInsuranceForm());
   }
 
   /**
@@ -222,23 +224,10 @@ export class DFAApplicationStartComponent
     }
   }
 
-  saveAndBackToDashboard(): void {
+  backToDashboard(): void {
     this.showLoader = !this.showLoader;
-    this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    this.dfaApplicationStartService
-      .upsertApplication(this.dfaApplicationStartDataService.createDFAApplicationStartDTO())
-      .subscribe({
-        next: (applicationId) => {
-          this.dfaApplicationStartDataService.setApplicationId(applicationId);
-          this.router.navigate(['/verified-registration/dashboard']);
-        },
-        error: (error) => {
-          this.showLoader = !this.showLoader;
-          this.isSubmitted = !this.isSubmitted;
-          this.alertService.setAlert('danger', globalConst.saveApplicationError);
-        }
-      });
+    this.router.navigate(['/verified-registration/dashboard']);
   }
 
   submitFile(): void {
