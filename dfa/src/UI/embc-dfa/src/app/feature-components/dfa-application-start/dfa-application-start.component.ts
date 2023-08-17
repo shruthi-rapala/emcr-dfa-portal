@@ -88,6 +88,10 @@ export class DFAApplicationStartComponent
   ngAfterViewInit(): void {
   }
 
+  showForm() {
+    console.log(this.stepToDisplay, this.formCreationService.getAppTypeInsuranceForm());
+  }
+
   /**
    * Loads form for every step based on index
    *
@@ -127,7 +131,7 @@ export class DFAApplicationStartComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
-    
+
     if (isLast) {
       this.alertMessage(component);
       //this.setFormData(component);

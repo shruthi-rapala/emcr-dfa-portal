@@ -92,13 +92,24 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
       .get('insuranceOption')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
+        console.log(value, fullyInsuredEnumKey, notInsuredEnumKey);
         if (value === '') {
           this.appTypeInsuranceForm.get('insuranceOption').reset();
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('dateSigned').setValidators([null]);
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('signedName').setValidators([null]);
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('signature').setValidators([null]);
           this.notInsured = false;
         } else if (value === fullyInsuredEnumKey) {
           this.yesFullyInsured();
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('dateSigned').setValidators([null]);
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('signedName').setValidators([null]);
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('signature').setValidators([null]);
           this.notInsured = false;
         } else if (value === notInsuredEnumKey) {
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('dateSigned').setValidators([Validators.required]);
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('signedName').setValidators([Validators.required]);
+          this.appTypeInsuranceForm.get('applicantSignature')?.get('signature').setValidators([Validators.required]);
+          console.log("appTypeInsuranceForm no Insurance", this.appTypeInsuranceForm);
           this.notInsured = true;
         } else this.notInsured = false;
         this.formCreationService.insuranceOptionChanged.emit(value);
