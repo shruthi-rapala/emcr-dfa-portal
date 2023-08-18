@@ -115,7 +115,8 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     this.damagedRoomsForm
       .get('addNewDamagedRoomIndicator')
       .valueChanges.subscribe((value) => this.updateDamagedRoomOnVisibility());
-    this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
+
+    this.damagedRoomsForm.get('damagedRoom.otherRoomType').removeValidators([Validators.required]);
     this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
     this.damagePhotosForm
@@ -154,7 +155,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   addDamagedRoom(): void {
     this.damagedRoomsForm.get('damagedRoom').reset();
-    this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
+    this.damagedRoomsForm.get('damagedRoom.otherRoomType').removeValidators([Validators.required]);
     this.damagedRoomsForm.get('addNewDamagedRoomIndicator').setValue(true);
     this.damagedRoomsForm.get('damagedRoom.deleteFlag').setValue(false);
     this.damagedRoomsForm.get('damagedRoom.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
@@ -237,9 +238,9 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   onSelectRoomType(roomType: RoomType) {
     if (roomType === this.RoomTypes.Other) {
-      this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.required]);
+      this.damagedRoomsForm.get('damagedRoom.otherRoomType').addValidators([Validators.required]);
     } else {
-      this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators(null);
+      this.damagedRoomsForm.get('damagedRoom.otherRoomType').removeValidators([Validators.required]);
     }
   }
 

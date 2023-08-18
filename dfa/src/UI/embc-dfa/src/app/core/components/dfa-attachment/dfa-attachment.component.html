@@ -47,6 +47,15 @@
                 >
                   File description is required</mat-error
                 >
+                <mat-error
+                  *ngIf="
+                    fileUpload.get('fileDescription').invalid &&
+                    fileUpload.get('fileDescription').hasError('maxLength') &&
+                    fileUpload.get('fileDescription').touched
+                  "
+                >
+                  Maximum length is 100 characters</mat-error
+                >
               </mat-form-field>
               <label class="sub-heading" style="font-size: 15px" [hidden]="!fileUpload.get('fileName').value" *ngIf="!fileType">Category: please select a category that describes the file you are attaching to your application.</label>
               <mat-form-field appearance="outline" [hidden]="!fileUpload.get('fileName').value" *ngIf="!fileType">

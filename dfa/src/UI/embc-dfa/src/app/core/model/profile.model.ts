@@ -53,7 +53,7 @@ export class PersonDetailsForm {
     personDetail: PersonDetails,
     customValidator: CustomValidationService
   ) {
-    
+
     if (personDetail.firstName) {
       this.firstName.setValue(personDetail.firstName);
     }
@@ -105,28 +105,28 @@ export class ContactDetailsForm {
     this.email.setValidators([
       Validators.email,
       customValidator
-        .maxLengthValidator()
+        .maxLengthValidator(100)
         .bind(customValidator)
     ]);
 
     this.cellPhoneNumber.setValidators([
       customValidator.maskedNumberLengthValidator().bind(customValidator),
       customValidator
-        .maxLengthValidator()
+        .maxLengthValidator(100)
         .bind(customValidator)
     ]);
 
     this.residencePhone.setValidators([
       customValidator.maskedNumberLengthValidator().bind(customValidator),
       customValidator
-        .maxLengthValidator()
+        .maxLengthValidator(100)
         .bind(customValidator)
     ]);
 
     this.alternatePhone.setValidators([
       customValidator.maskedNumberLengthValidator().bind(customValidator),
       customValidator
-        .maxLengthValidator()
+        .maxLengthValidator(100)
         .bind(customValidator)
     ]);
 
@@ -187,29 +187,29 @@ export class AddressForm {
     this.address = builder.group({
       addressLine1: ['',
         customValidator
-          .maxLengthValidator()
+          .maxLengthValidator(100)
           .bind(customValidator)
       ],
       addressLine2: ['',
         customValidator
-          .maxLengthValidator()
+          .maxLengthValidator(100)
           .bind(customValidator)
       ],
       community: ['',
         customValidator
-          .maxLengthValidator()
+          .maxLengthValidator(100)
           .bind(customValidator)
       ],
       stateProvince: ['British Columbia',
         customValidator
-          .maxLengthValidator()
+          .maxLengthValidator(100)
           .bind(customValidator)
       ],
       postalCode: [
         '',
         [customValidator.postalValidation().bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
             .bind(customValidator)]
       ],
       country: ''
@@ -218,29 +218,29 @@ export class AddressForm {
     this.mailingAddress = builder.group({
       addressLine1: ['',
       customValidator
-        .maxLengthValidator()
+        .maxLengthValidator(100)
         .bind(customValidator)
       ],
       addressLine2: ['',
         customValidator
-          .maxLengthValidator()
+          .maxLengthValidator(100)
           .bind(customValidator)
       ],
       community: ['',
         customValidator
-          .maxLengthValidator()
+          .maxLengthValidator(100)
           .bind(customValidator)
       ],
       stateProvince: ['',
         customValidator
-          .maxLengthValidator()
+          .maxLengthValidator(100)
           .bind(customValidator)
       ],
       postalCode: [
         '',
         [customValidator.postalValidation().bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
             .bind(customValidator)
         ]
       ],

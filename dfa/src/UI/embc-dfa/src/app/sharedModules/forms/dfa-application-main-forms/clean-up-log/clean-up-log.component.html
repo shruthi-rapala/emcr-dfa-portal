@@ -141,37 +141,37 @@
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
               <mat-datepicker #fromPicker></mat-datepicker>
-                      <!--<mat-error
+                      <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                          cleanUpLogWorkForm.get('date').invalid &&
+                          cleanUpLogWorkForm.get('date').hasError('required') &&
+                          cleanUpLogWorkForm.get('date').touched
                         "
                       >
                         Date is required</mat-error
-                      >-->
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Name of family member/volunteer</mat-label>
                       <input formControlName="name" matInput placeholder="Name of family member/volunteer" required/>
-                      <!--<mat-error
+                      <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                          cleanUpLogWorkForm.get('name').invalid &&
+                          cleanUpLogWorkForm.get('name').hasError('required') &&
+                          cleanUpLogWorkForm.get('name').touched
                         "
                       >
                         First Name is required</mat-error
-                      >-->
+                      >
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.name').invalid &&
                           cleanUpLogWorkForm.get('cleanuplog.name').hasError('maxLength')
                         "
                       >
-                        Maximum length reached</mat-error
+                        Maximum length of 100 characters reached</mat-error
                       >
                     </mat-form-field>
                   </div>

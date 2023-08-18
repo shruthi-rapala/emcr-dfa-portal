@@ -106,9 +106,9 @@ export class AppTypeInsuranceForm {
     this.applicantSignature?.controls.dateSigned.setValue(appTypeInsurance?.applicantSignature?.dateSigned);
     this.applicantSignature?.controls.signedName.setValue(appTypeInsurance?.applicantSignature?.signedName);
 
-    this.applicantSignature?.controls.signedName.setValidators([
+    this.applicantSignature?.controls.signedName.addValidators([
       customValidator
-        .maxLengthValidator()
+        .maxLengthValidator(100)
         .bind(customValidator)
     ]);
 
