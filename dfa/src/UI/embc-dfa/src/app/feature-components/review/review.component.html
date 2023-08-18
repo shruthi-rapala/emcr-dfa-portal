@@ -1216,8 +1216,8 @@
               (formCreationService.propertyDamageForm$ | async)?.value
                 .wereYouEvacuated === 'true' ?
                 ((formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned ? ('Yes, returned ' + (formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned) : 'Yes')
+                .dateReturned | date: "MM/dd/yyyy" ? ('Yes, returned ' + ((formCreationService.propertyDamageForm$ | async)?.value
+                .dateReturned | date: "MM/dd/yyyy")) : 'Yes')
                 : 'No'
             }}
           </div>

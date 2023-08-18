@@ -18,6 +18,7 @@ import { DFAApplicationMainDataService } from './dfa-application-main-data.servi
 import { DFAApplicationMainService } from './dfa-application-main.service';
 import { ApplicantOption } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
+//import { debug } from 'console';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -226,7 +227,17 @@ export class DFAApplicationMainComponent
   setFormData(component: string): void {
     switch (component) {
       case 'damaged-property-address':
-        this.dfaApplicationMainDataService.damagedPropertyAddress = this.form.value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.addressLine1 = this.form.get('addressLine1').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.addressLine2 = this.form.get('addressLine2').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.community = this.form.get('community').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.firstNationsReserve = this.form.get('firstNationsReserve').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordEmail = this.form.get('landlordEmail').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordGivenNames = this.form.get('landlordGivenNames').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordPhone = this.form.get('landlordPhone').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordSurname = this.form.get('landlordSurname').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.postalCode = this.form.get('postalCode').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.stateProvince = this.form.get('stateProvince').value;
+        //this.dfaApplicationMainDataService.damagedPropertyAddress = this.form.value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.eligibleForHomeOwnerGrant = this.form.get('eligibleForHomeOwnerGrant').value == 'true' ? true : false;
         this.dfaApplicationMainDataService.damagedPropertyAddress.isPrimaryAndDamagedAddressSame = this.form.get('isPrimaryAndDamagedAddressSame').value == 'true' ? true : false;
         this.dfaApplicationMainDataService.damagedPropertyAddress.manufacturedHome = this.form.get('manufacturedHome').value == 'true' ? true : false;
@@ -234,7 +245,17 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.damagedPropertyAddress.onAFirstNationsReserve = this.form.get('onAFirstNationsReserve').value == 'true' ? true : false;
         break;
       case 'property-damage':
-        this.dfaApplicationMainDataService.propertyDamage = this.form.value;
+        //this.dfaApplicationMainDataService.propertyDamage = this.form.value;
+        this.dfaApplicationMainDataService.propertyDamage.briefDescription = this.form.get('briefDescription').value;
+        this.dfaApplicationMainDataService.propertyDamage.damageFromDate = this.form.get('damageFromDate').value;
+        this.dfaApplicationMainDataService.propertyDamage.damageToDate = this.form.get('damageToDate').value;
+        this.dfaApplicationMainDataService.propertyDamage.dateReturned = this.form.get('dateReturned').value;
+        this.dfaApplicationMainDataService.propertyDamage.floodDamage = this.form.get('floodDamage').value;
+        this.dfaApplicationMainDataService.propertyDamage.landslideDamage = this.form.get('landslideDamage').value;
+        this.dfaApplicationMainDataService.propertyDamage.otherDamage = this.form.get('otherDamage').value;
+        this.dfaApplicationMainDataService.propertyDamage.otherDamageText = this.form.get('otherDamageText').value;
+        this.dfaApplicationMainDataService.propertyDamage.stormDamage = this.form.get('stormDamage').value;
+        this.dfaApplicationMainDataService.propertyDamage.wildfireDamage = this.form.get('wildfireDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.lossesExceed1000 = this.form.get('lossesExceed1000').value == 'true' ? true : false;
         this.dfaApplicationMainDataService.propertyDamage.residingInResidence = this.form.get('residingInResidence').value == 'true' ? true : false;
         this.dfaApplicationMainDataService.propertyDamage.wereYouEvacuated = this.form.get('wereYouEvacuated').value == 'true' ? true : false;
