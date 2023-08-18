@@ -180,7 +180,8 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
           this.cancelApplication();
           }
         else if (result === 'confirm') {
-          this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.radioInsuranceOptions.Yes);
+          this.appTypeInsuranceForm.controls.insuranceOption.setValue(Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)]);
+          this.appTypeInsuranceForm.updateValueAndValidity();
         }
         else this.appTypeInsuranceForm.controls.insuranceOption.setValue(null);
       });
