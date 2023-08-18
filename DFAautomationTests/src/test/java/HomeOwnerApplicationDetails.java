@@ -39,9 +39,14 @@ public class HomeOwnerApplicationDetails {
 
         CreateNewApplicationHomeowner applDetails = new CreateNewApplicationHomeowner();
         applDetails.test();
-        Thread.sleep(1000);
+
+        //Dsiclaimer
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Yes, I have selected the correct')]")));
+        element.click();
+
+        Thread.sleep(4000);
         JavascriptExecutor js100 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-13-input")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[1]/div/mat-radio-group/mat-radio-button[2]/label/span[1]/span[1]")));
         js100.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
         JavascriptExecutor js5 = (JavascriptExecutor) driver;
@@ -49,9 +54,10 @@ public class HomeOwnerApplicationDetails {
         js5.executeScript("arguments[0].scrollIntoView(true);", element);
         element.sendKeys("3220 Test");
         Thread.sleep(1000);
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-6")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[1]/div/mat-radio-group/div[2]/app-bc-address/div/div[3]/div/mat-form-field/div/div[1]/div[3]/input")));
         element.sendKeys("Victoria");
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-8")));
+        Thread.sleep(1000);
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[1]/div/mat-radio-group/div[2]/app-bc-address/div/div[5]/div/mat-form-field/div/div[1]/div[3]/input")));
         element.sendKeys("V8X1G3");
         Thread.sleep(1000);
         //Questions
@@ -104,6 +110,7 @@ public class HomeOwnerApplicationDetails {
     public void questionsOnDamaga(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
 
         //Questions
+        Thread.sleep(3000);
         JavascriptExecutor js2 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-15-input")));
         js2.executeScript("arguments[0].click();", element);
@@ -111,13 +118,13 @@ public class HomeOwnerApplicationDetails {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-18-input")));
         js.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-19")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[4]/div/mat-form-field/div/div[1]/div[3]/input")));
         element.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m");
         Thread.sleep(1000);
         //Is your home a manufactured home?
-//        JavascriptExecutor js21 = (JavascriptExecutor) driver;
-//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-22 .mat-radio-outer-circle")));
-//        js21.executeScript("arguments[0].click();", element);
+        JavascriptExecutor js21 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-21 .mat-radio-outer-circle")));
+        js21.executeScript("arguments[0].click();", element);
 //        //As the Home Owner, are you eligible for a BC Home Owner Grant for this property?
         JavascriptExecutor js3 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-24 .mat-radio-outer-circle")));
@@ -125,7 +132,7 @@ public class HomeOwnerApplicationDetails {
     }
 
     public void damage(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
-
+        Thread.sleep(1000);
         JavascriptExecutor js311 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-1 .mat-checkbox-inner-container")));
         js311.executeScript("arguments[0].click();", element);
@@ -139,60 +146,59 @@ public class HomeOwnerApplicationDetails {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-4 .mat-checkbox-inner-container")));
         js314.executeScript("arguments[0].click();", element);
         JavascriptExecutor js315 = (JavascriptExecutor) driver;
-        Thread.sleep(1000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-5 .mat-checkbox-inner-container")));
         js315.executeScript("arguments[0].click();", element);
 
         Thread.sleep(1000);
         JavascriptExecutor js316 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-9")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-property-damage/mat-card/mat-card-content/form/div[1]/div/mat-form-field/div/div[1]/div[3]/input")));
         js316.executeScript("arguments[0].click();", element);
-        element.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu");
+        element.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m");
 
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-10")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-property-damage/mat-card/mat-card-content/form/div[2]/div[1]/mat-form-field/div/div[1]/div[3]/input")));
         element.sendKeys("7/5/2023");
 
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-11")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-property-damage/mat-card/mat-card-content/form/div[2]/div[2]/mat-form-field/div/div[1]/div[3]/input")));
         element.sendKeys("7/27/2023");
 
         element = driverWait
-                .until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-12")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-property-damage/mat-card/mat-card-content/form/div[3]/mat-form-field/div/div[1]/div[3]/textarea")));
         element.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestib");
         Thread.sleep(1000);
         //Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?
-//        JavascriptExecutor js22 = (JavascriptExecutor) driver;
-//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-27-input")));
-//        js22.executeScript("arguments[0].click();", element);
-//
-//        //Were you evacuated during the event?
-//        JavascriptExecutor js23 = (JavascriptExecutor) driver;
-//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-30-input")));
-//        js23.executeScript("arguments[0].click();", element);
+        JavascriptExecutor js22 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-27-input")));
+        js22.executeScript("arguments[0].click();", element);
+
+        //Were you evacuated during the event?
+        JavascriptExecutor js23 = (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-30-input")));
+        js23.executeScript("arguments[0].click();", element);
         //date return
-//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-17")));
-//        element.sendKeys("7/28/2023");
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-16")));
+        element.sendKeys("7/28/2023");
     }
     public void ocupants(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
 
         JavascriptExecutor js61= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add full-time occupant ')]")));
         js61.executeScript("arguments[0].click();", element);
-
+        Thread.sleep(1000);
         JavascriptExecutor js8= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-18")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-17")));
         js8.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-18")).sendKeys("Lorem ipsum dolor si");
-
+        driver.findElement(By.id("mat-input-17")).sendKeys("Lorem ipsum dolor si");
+        Thread.sleep(1000);
         JavascriptExecutor js9= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-19")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-18")));
         js9.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-19")).sendKeys("Lorem ipsum dolor si");
-
+        driver.findElement(By.id("mat-input-18")).sendKeys("Lorem ipsum dolor si");
+        Thread.sleep(1000);
         JavascriptExecutor js10= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-20")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-19")));
         js10.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-20")).sendKeys("Lorem ipsum dolor si");
-
+        driver.findElement(By.id("mat-input-19")).sendKeys("Lorem ipsum dolor si");
+        Thread.sleep(1000);
         JavascriptExecutor js11= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-2\"]/app-component-wrapper/app-occupants/mat-card/mat-card-content/form[1]/div/div/div/mat-card/div[2]/div[2]/button/span[1]")));
         js11.executeScript("arguments[0].click();", element);
@@ -204,24 +210,24 @@ public class HomeOwnerApplicationDetails {
         js41.executeScript("arguments[0].click();", element);
 
         JavascriptExecutor js12= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-21")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-20")));
         js12.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-21")).sendKeys("Lorem ipsum dolor si");
+        driver.findElement(By.id("mat-input-20")).sendKeys("Lorem ipsum dolor si");
 
         JavascriptExecutor js13= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-22")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-21")));
         js13.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-22")).sendKeys("Lorem ipsum dolor si");
+        driver.findElement(By.id("mat-input-21")).sendKeys("Lorem ipsum dolor si");
 
         JavascriptExecutor js14= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-23")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-22")));
         js14.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-23")).sendKeys("999-999-9999");
+        driver.findElement(By.id("mat-input-22")).sendKeys("999-999-9999");
 
         JavascriptExecutor js15= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-24")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-23")));
         js15.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-24")).sendKeys("test@test.com");
+        driver.findElement(By.id("mat-input-23")).sendKeys("test@test.com");
 
         //Save
         JavascriptExecutor js40= (JavascriptExecutor) driver;
@@ -230,35 +236,40 @@ public class HomeOwnerApplicationDetails {
         Thread.sleep(1000);
     }
     public void cleanLogs(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
-
+        Thread.sleep(1000);
         JavascriptExecutor js16= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add to clean up log ')]")));
         js16.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
         JavascriptExecutor js17= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-25")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-24")));
         js17.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-25")).sendKeys("7/5/2023");
-
+        driver.findElement(By.id("mat-input-24")).sendKeys("7/5/2023");
+        Thread.sleep(1000);
         JavascriptExecutor js18= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-26")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-25")));
         js18.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-26")).sendKeys("Lorem ipsum dolor si");
-
+        driver.findElement(By.id("mat-input-25")).sendKeys("Lorem ipsum dolor si");
+        Thread.sleep(1000);
         JavascriptExecutor js19= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-27")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-26")));
         js19.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-27")).sendKeys("20");
-
+        driver.findElement(By.id("mat-input-26")).sendKeys("20");
+        Thread.sleep(1000);
+        JavascriptExecutor js191= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-27")));
+        js191.executeScript("arguments[0].click();", element);
+        driver.findElement(By.id("mat-input-27")).sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m");
+        Thread.sleep(1000);
         JavascriptExecutor js20= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".addcleanup-button:nth-child(1) > .mat-button-wrapper")));
         js20.executeScript("arguments[0].click();", element);
-        Thread.sleep(1000);
+        Thread.sleep(4000);
 
         JavascriptExecutor js30= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Damaged Items By Room ')]")));
         js30.executeScript("arguments[0].click();", element);
-
+        Thread.sleep(1000);
         //Damaged Items by Room
         JavascriptExecutor js32= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add Room & Items ')]")));
@@ -274,16 +285,16 @@ public class HomeOwnerApplicationDetails {
         Thread.sleep(1000);
 
         JavascriptExecutor js33= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-29")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-input-28")));
         js33.executeScript("arguments[0].click();", element);
-        driver.findElement(By.id("mat-input-29")).sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu");
+        driver.findElement(By.id("mat-input-28")).sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu");
 
         JavascriptExecutor js34= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-4\"]/app-component-wrapper/app-damaged-items-by-room/mat-card/mat-card-content/form[1]/div/div/div/mat-card/div[2]/div[2]/button")));
         js34.executeScript("arguments[0].click();", element);
 
         //add photo
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add Photos ')]")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add Damage photo ')]")));
         element.click();
 
         Thread.sleep(1000);
@@ -292,12 +303,18 @@ public class HomeOwnerApplicationDetails {
 
         //Save
         JavascriptExecutor js36= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-4\"]/app-component-wrapper/app-damaged-items-by-room/mat-card/mat-card-content/form[2]/div/div/div/mat-card/div[2]/div[2]/button")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[5]/app-component-wrapper/app-damaged-items-by-room/mat-card/mat-card-content/div[1]/div/app-dfa-attachment/form/div/mat-card/div[2]/div[2]/button")));
         js36.executeScript("arguments[0].click();", element);
+        Thread.sleep(1000);
 
     }
 
     public void docs(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
+
+        //Add insurance template
+        Thread.sleep(2000);
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add Insurance Template ')]")));
+        element.click();
 
         Thread.sleep(1000);
         WebElement uploadInsur = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("fileDrop")));
@@ -305,9 +322,9 @@ public class HomeOwnerApplicationDetails {
 
         //Save
         JavascriptExecutor js38= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-5\"]/app-component-wrapper/app-supporting-documents/mat-card/mat-card-content/form[1]/div/mat-card/div[2]/div/button")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[6]/app-component-wrapper/app-supporting-documents/mat-card/mat-card-content/div[3]/div/app-dfa-attachment/form/div/mat-card/div[2]/div[2]/button")));
         js38.executeScript("arguments[0].click();", element);
-
+        Thread.sleep(4000);
         JavascriptExecutor js39= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Review Submission ')]")));
         js39.executeScript("arguments[0].click();", element);

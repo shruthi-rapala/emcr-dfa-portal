@@ -1,6 +1,4 @@
 import dfa.WebDriverManager;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,7 +11,7 @@ import java.time.Duration;
 
 import static dfa.WebDriverManager.getDriver;
 
-public class ResidentialTenantYInsurance {
+public class ResidentialTenantNInsurance {
 
     private WebDriver driver;
 
@@ -54,13 +52,18 @@ public class ResidentialTenantYInsurance {
         Thread.sleep(1000);
         JavascriptExecutor js2 = (JavascriptExecutor) driver;
         element = driverWait
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='radio' and @value='Unsure']")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='radio' and @value='No']")));
         js2.executeScript("arguments[0].click();", element);
 
-
-
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'You must provide insurance payout documentation from your insurance broker showing what was')]")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'I/We declare that we carry no insurance (no fire, theft or liability) on the property listed on this')]")));
+
+       element = driverWait.until(ExpectedConditions
+                .presenceOfElementLocated(By.id("mat-input-0")));
+        element.sendKeys("Test Test");
+        element = driverWait.until(ExpectedConditions
+                .presenceOfElementLocated(By.id("mat-input-1")));
+        element.sendKeys("12/12/2024");
 
         Thread.sleep(2000);
         JavascriptExecutor js3 = (JavascriptExecutor) driver;
