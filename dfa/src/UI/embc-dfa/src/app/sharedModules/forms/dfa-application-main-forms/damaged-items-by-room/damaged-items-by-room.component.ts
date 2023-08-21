@@ -99,24 +99,31 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     .subscribe((value) => {
       if (value === '') {
         this.damagedRoomsForm.get('damagedRoom.roomType').reset();
+        this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.maxLength(100)]);
+        this.showGarageHint = false;
       }
       if (value === RoomType.Other) {
         this.showOtherRoomType = true;
+        this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.required, Validators.maxLength(100)]);
         this.showGarageHint = false;
       } else if (value === RoomType.Garage) {
+        this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.maxLength(100)]);
         this.showGarageHint = true;
         this.showOtherRoomType = false;
       } else {
+        this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.maxLength(100)]);
         this.showGarageHint = false;
         this.showOtherRoomType = false;
       }
+      this.damagedRoomsForm.get('damagedRoom').updateValueAndValidity();
     });
 
     this.damagedRoomsForm
       .get('addNewDamagedRoomIndicator')
       .valueChanges.subscribe((value) => this.updateDamagedRoomOnVisibility());
 
-    this.damagedRoomsForm.get('damagedRoom.otherRoomType').removeValidators([Validators.required]);
+    this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.maxLength(100)]);
+    this.damagedRoomsForm.get('damagedRoom').updateValueAndValidity();
     this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
     this.damagePhotosForm
@@ -155,10 +162,11 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   addDamagedRoom(): void {
     this.damagedRoomsForm.get('damagedRoom').reset();
-    this.damagedRoomsForm.get('damagedRoom.otherRoomType').removeValidators([Validators.required]);
+    this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.maxLength(100)]);
     this.damagedRoomsForm.get('addNewDamagedRoomIndicator').setValue(true);
     this.damagedRoomsForm.get('damagedRoom.deleteFlag').setValue(false);
     this.damagedRoomsForm.get('damagedRoom.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    this.damagedRoomsForm.get('damagedRoom').updateValueAndValidity();
     this.showOtherRoomType = false;
     this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
     this.showDamagedRoomForm = !this.showDamagedRoomForm;
@@ -237,11 +245,13 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   onSelectRoomType(roomType: RoomType) {
+    this.damagedRoomsForm.get('damagedRoom').updateValueAndValidity();
     if (roomType === this.RoomTypes.Other) {
-      this.damagedRoomsForm.get('damagedRoom.otherRoomType').addValidators([Validators.required]);
+      this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.required, Validators.maxLength(100)]);
     } else {
-      this.damagedRoomsForm.get('damagedRoom.otherRoomType').removeValidators([Validators.required]);
+      this.damagedRoomsForm.get('damagedRoom.otherRoomType').setValidators([Validators.maxLength(100)]);
     }
+    this.damagedRoomsForm.get('damagedRoom').updateValueAndValidity();
   }
 
   initDamagePhoto(): void {

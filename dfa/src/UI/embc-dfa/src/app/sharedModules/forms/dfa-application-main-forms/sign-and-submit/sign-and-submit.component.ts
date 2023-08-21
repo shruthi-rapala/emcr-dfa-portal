@@ -69,14 +69,14 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
       this.formCreationService.secondaryApplicantsChanged.subscribe((secondaryApplicants) => {
         if (secondaryApplicants?.length > 0) {
           this.isSecondaryApplicant = true;
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signature').addValidators([Validators.required]);
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('dateSigned').addValidators([Validators.required]);
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signedName').addValidators([Validators.required]);
+          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signature').setValidators([Validators.required]);
+          this.signAndSubmitForm.get('secondaryApplicantSignature').get('dateSigned').setValidators([Validators.required]);
+          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signedName').setValidators([Validators.required, Validators.maxLength(100)]);
         }
         else {
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signature').removeValidators([Validators.required]);
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('dateSigned').removeValidators([Validators.required]);
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signedName').removeValidators([Validators.required]);
+          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signature').setValidators(null);
+          this.signAndSubmitForm.get('secondaryApplicantSignature').get('dateSigned').setValidators(null);
+          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signedName').setValidators(Validators.maxLength(100));
           this.isSecondaryApplicant = false;
         }
         this.signAndSubmitForm.get('secondaryApplicantSignature').updateValueAndValidity();

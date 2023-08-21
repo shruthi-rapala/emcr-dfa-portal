@@ -37,7 +37,8 @@
               >
               <mat-form-field appearance="outline" [hidden]="!fileUpload.get('fileName').value">
                 <mat-label>File description</mat-label>
-                <input formControlName="fileDescription" matInput placeholder="File description" required/>
+                <input formControlName="fileDescription" matInput placeholder="File description" required maxlength="100"/>
+                <mat-hint>Maximum length is 100 characters</mat-hint>
                 <mat-error
                   *ngIf="
                     fileUpload.get('fileDescription').invalid &&

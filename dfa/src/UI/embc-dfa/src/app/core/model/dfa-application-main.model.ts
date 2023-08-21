@@ -445,7 +445,7 @@ export class OtherContactsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator(49)  // have to fit firstname and lastname and one space into dfa_name
+            .maxLengthValidator(49)  // have to fit firstname and lastname and one space and comma into dfa_name
             .bind(customValidator)
         ]
       ],
@@ -459,7 +459,7 @@ export class OtherContactsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator(50)
+            .maxLengthValidator(49)
             .bind(customValidator)
         ]
       ],

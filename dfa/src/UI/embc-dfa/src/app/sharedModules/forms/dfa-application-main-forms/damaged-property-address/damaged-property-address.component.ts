@@ -110,16 +110,16 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         if (application) {
           this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
           if (!this.isResidentialTenant) {
-            this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.addValidators([Validators.required]);
-            this.damagedPropertyAddressForm.controls.landlordGivenNames.removeValidators([Validators.required]);
-            this.damagedPropertyAddressForm.controls.landlordSurname.removeValidators([Validators.required]);
-            this.damagedPropertyAddressForm.controls.landlordPhone.removeValidators([Validators.required]);
+            this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
+            this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.maxLength(100)]);
           } else if (this.isResidentialTenant) {
-            this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.removeValidators([Validators.required]);
+            this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValue('false');
-            this.damagedPropertyAddressForm.controls.landlordGivenNames.addValidators([Validators.required]);
-            this.damagedPropertyAddressForm.controls.landlordSurname.addValidators([Validators.required]);
-            this.damagedPropertyAddressForm.controls.landlordPhone.addValidators([Validators.required]);
+            this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required, Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required, Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.required, Validators.maxLength(100)]);
           }
         this.damagedPropertyAddressForm.updateValueAndValidity();
         }
@@ -189,12 +189,12 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         if (value === '') {
           this.damagedPropertyAddressForm.get('onAFirstNationsReserve').reset();
         } else if (value == 'true') {
-          this.damagedPropertyAddressForm.get('firstNationsReserve').addValidators([Validators.required]);
-          this.damagedPropertyAddressForm.get('firstNationsReserve').updateValueAndValidity();
+          this.damagedPropertyAddressForm.get('firstNationsReserve').setValidators([Validators.required, Validators.maxLength(100)]);
         } else if (value == 'false') {
-          this.damagedPropertyAddressForm.get('firstNationsReserve').removeValidators([Validators.required]);
-          this.damagedPropertyAddressForm.get('firstNationsReserve').updateValueAndValidity();
+          this.damagedPropertyAddressForm.get('firstNationsReserve').setValidators([Validators.maxLength(100)]);
         }
+        this.damagedPropertyAddressForm.get('firstNationsReserve').updateValueAndValidity();
+        this.damagedPropertyAddressForm.updateValueAndValidity();
       });
 
     this.damagedPropertyAddressForm

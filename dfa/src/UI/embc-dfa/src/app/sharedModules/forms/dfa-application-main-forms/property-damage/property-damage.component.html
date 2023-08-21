@@ -44,7 +44,9 @@
                 type="text"
                 formControlName="otherDamageText"
                 placeholder="Cause of damage*"
+                maxlength="100"
               />
+              <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
                 *ngIf="
                 propertyDamageForm.get('otherDamageText').invalid &&
@@ -59,7 +61,7 @@
                 propertyDamageForm.get('otherDamageText').hasError('maxLength')
                 "
               >
-                Maximum length reached</mat-error
+                Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
             <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage')">
@@ -130,6 +132,7 @@
               [rows]="5"
               style="resize:none"
               required
+              maxlength="2000"
               (keyup)="calcRemainingChars()"></textarea>
             <mat-hint>{{ remainingLength }} characters remaining.</mat-hint>
             <mat-error
@@ -138,7 +141,7 @@
                 propertyDamageForm.get('briefDescription').hasError('maxLength')
                 "
               >
-                Maximum length reached</mat-error
+                Maximum length is 2000 characters</mat-error
               >
           </mat-form-field>
         </div><br/>
