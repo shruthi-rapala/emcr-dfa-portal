@@ -78,7 +78,7 @@ export class DamagedPropertyAddressForm {
     if (damagedPropertyAddress.addressLine2) {
       this.addressLine2.setValue(damagedPropertyAddress.addressLine2);
     }
-    this.addressLine2.setValidators([Validators.required,
+    this.addressLine2.setValidators([
       customValidator
         .maxLengthValidator(100)
         .bind(customValidator)

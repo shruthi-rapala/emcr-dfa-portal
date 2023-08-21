@@ -17,6 +17,7 @@
           (change)="updateSignatureBlock()"
           [(ngModel)]="signatureBlock.signedName"
           placeholder="Print Name*"
+          maxlength="100"
         />
         <mat-error
                 *ngIf="

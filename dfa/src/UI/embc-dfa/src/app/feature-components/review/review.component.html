@@ -936,7 +936,7 @@
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">Damaged property address same as the primary address?:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">{{
+            <span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .isPrimaryAndDamagedAddressSame == 'true'
                 ? 'Yes'
