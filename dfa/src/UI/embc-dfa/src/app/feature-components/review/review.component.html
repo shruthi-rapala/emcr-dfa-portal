@@ -934,6 +934,18 @@
         </div>
         <hr />
         <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">Damaged property address same as the primary address?:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .isPrimaryAndDamagedAddressSame == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .isPrimaryAndDamagedAddressSame == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1}">Address Line One:</span></div>
           <div class="col-md-3">
             <p class="no-bottom-margin">
@@ -1044,7 +1056,7 @@
             }}
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.HomeOwner">
+        <div class="row info-detail" *ngIf="!isResidentialTenant">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}"></span>Eligible for a BC Home Owner Grant for this Property:</div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">{{
@@ -1056,7 +1068,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
+        <div class="row info-detail" *ngIf="isResidentialTenant">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames}">Landlord First Name:</span></div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames}">{{
@@ -1066,7 +1078,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
+        <div class="row info-detail" *ngIf="isResidentialTenant">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname}">Landlord Last Name:</span></div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname}">{{
@@ -1076,7 +1088,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
+        <div class="row info-detail" *ngIf="isResidentialTenant">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone}">Landlord Phone:</span></div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone}">{{
@@ -1086,7 +1098,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
+        <div class="row info-detail" *ngIf="isResidentialTenant">
           <div class="col-md-3">Landlord Email:</div>
           <div class="col-md-3">
             {{
@@ -1216,8 +1228,8 @@
               (formCreationService.propertyDamageForm$ | async)?.value
                 .wereYouEvacuated === 'true' ?
                 ((formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned ? ('Yes, returned ' + (formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned) : 'Yes')
+                .dateReturned ? ('Yes, returned ' + (((formCreationService.propertyDamageForm$ | async)?.value
+                .dateReturned) | date: "MM/dd/yyyy")) : 'Yes')
                 : 'No'
             }}
           </div>

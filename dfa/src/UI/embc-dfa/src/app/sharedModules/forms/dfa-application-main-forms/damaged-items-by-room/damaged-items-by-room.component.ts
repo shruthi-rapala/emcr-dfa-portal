@@ -259,7 +259,8 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
-          fileUploads.push(fileUpload);
+          if (fileUploads) fileUploads.push(fileUpload);
+          else fileUploads = [ fileUpload ];
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.showDamagePhotoForm = !this.showDamagePhotoForm;
           this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(false);

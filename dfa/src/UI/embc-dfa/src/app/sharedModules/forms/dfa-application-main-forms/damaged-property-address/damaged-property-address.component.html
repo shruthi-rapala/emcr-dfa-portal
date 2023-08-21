@@ -25,7 +25,7 @@
                 {{ profileAddress?.city }}&nbsp;{{profileAddress?.stateProvince}}&nbsp;{{ profileAddress?.postalCode }}<br /><br/>
               </div>
               <mat-radio-button value=false>No</mat-radio-button>
-              <div class="row radio-extra-label" *ngIf="damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').value != 'true'">
+              <div class="row radio-extra-label" *ngIf="damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').value == 'false'">
                 <app-bc-address
                   [addressForm]="damagedPropertyAddressForm"
                   [primaryAddressWarning]="false"
