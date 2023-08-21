@@ -32,7 +32,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
-  public insuranceOptionChanged: EventEmitter<InsuranceOption>;
+  public insuranceOptionChanged: EventEmitter<any>;
   public appTypeInsuranceFormValidityChange: EventEmitter<string>;
   public secondaryApplicantsChanged: EventEmitter<Array<SecondaryApplicant>>;
   public signaturesChanged: EventEmitter<UntypedFormGroup>;
@@ -313,7 +313,7 @@ export class FormCreationService {
     private formBuilder: UntypedFormBuilder,
     private customValidator: CustomValidationService
   ) {
-    this.insuranceOptionChanged = new EventEmitter<InsuranceOption>();
+    this.insuranceOptionChanged = new EventEmitter<any>();
     this.secondaryApplicantsChanged = new EventEmitter<Array<SecondaryApplicant>>();
     this.appTypeInsuranceFormValidityChange = new EventEmitter<string>();
     this.signaturesChanged = new EventEmitter<UntypedFormGroup>;

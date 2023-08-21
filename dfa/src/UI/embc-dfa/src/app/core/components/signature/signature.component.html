@@ -10,9 +10,8 @@
   <div class="row p1-3 pr-0">
     <div class="col-md-10 pr-0">
       <mat-form-field appearance="outline">
-        <mat-label>Print Name</mat-label>
+        <mat-label>Print Name<span style="color:red" *ngIf="isRequired == true" >*</span></mat-label>
         <input matInput
-          [required] = "isRequired == true"
           type="text"
           (change)="updateSignatureBlock()"
           [(ngModel)]="signatureBlock.signedName"
@@ -32,13 +31,12 @@
   <div class="row p1-3 pr-0">
     <div class="col-md-10 pr-0">
       <mat-form-field appearance="outline" >
-        <mat-label>Date</mat-label>
+        <mat-label>Date<span style="color:red" *ngIf="isRequired == true" >*</span></mat-label>
         <input matInput
           [matDatepicker]="datePicker"
           [(ngModel)]="signatureBlock.dateSigned"
           (dateChange)="updateSignatureBlock()"
-          style="width:100%"
-          [required] = "isRequired == true">
+          style="width:100%">
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
         <mat-datepicker #datePicker></mat-datepicker>

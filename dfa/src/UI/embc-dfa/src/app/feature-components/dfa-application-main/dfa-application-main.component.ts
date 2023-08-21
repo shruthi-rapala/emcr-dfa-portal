@@ -210,8 +210,8 @@ export class DFAApplicationMainComponent
       this.setFormData(component);
       let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
       this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+        if (this.form.valid) stepper.selected.completed = true;
         this.form$.unsubscribe();
-        stepper.selected.completed = true;
         stepper.next();
         this.form.markAllAsTouched();
       },
