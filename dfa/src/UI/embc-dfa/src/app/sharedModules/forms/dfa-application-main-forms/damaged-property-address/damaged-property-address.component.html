@@ -142,7 +142,7 @@
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <mat-label>First name</mat-label>
-              <input formControlName="landlordGivenNames" matInput placeholder="First name" required maxlength="100"/>
+              <input formControlName="landlordGivenNames" matInput placeholder="First name" required maxlength="49"/>
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordGivenNames').invalid &&
@@ -158,14 +158,14 @@
                 damagedPropertyAddressForm.get('landlordGivenNames').hasError('maxLength')
               "
             >
-              Maximum length is 100 characters</mat-error
+              Maximum length is 49 characters</mat-error
             >
             </mat-form-field>
           </div>
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <mat-label>Last name</mat-label>
-              <input formControlName="landlordSurname" matInput placeholder="Last name" required maxlength="100"/>
+              <input formControlName="landlordSurname" matInput placeholder="Last name" required maxlength="49"/>
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordSurname').invalid &&
@@ -181,7 +181,7 @@
                   damagedPropertyAddressForm.get('landlordSurname').hasError('maxLength')
                 "
               >
-                Maximum length is 100 characters</mat-error
+                Maximum length is 49 characters</mat-error
               >
             </mat-form-field>
           </div>
