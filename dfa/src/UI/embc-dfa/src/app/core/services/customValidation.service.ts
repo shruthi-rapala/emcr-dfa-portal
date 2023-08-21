@@ -207,10 +207,15 @@ export class CustomValidationService {
   /**
    * Checks max length of input fields
    */
-  maxLengthValidator(): ValidatorFn {
+  maxLengthValidator(maxLength?: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== null && control.value !== undefined) {
-        if (control.value.length > 2000) {
+        if (maxLength > 0) {
+          if (control.value.length > maxLength) {
+            return { maxLength: true}
+          }
+        }
+        else if (control.value.length > 2000) {
           return { maxLength: true };
         }
       }

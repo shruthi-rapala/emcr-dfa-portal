@@ -48,6 +48,7 @@ export class DFAApplicationStartComponent
   parentPageName = 'dfa-application-start';
   showLoader = false;
   isSubmitted = false;
+  submitAllowed: boolean = false;
 
   constructor(
     private router: Router,
@@ -68,9 +69,19 @@ export class DFAApplicationStartComponent
         this.stepToDisplay = state.stepIndex;
       }
     }
-    this.formCreationService.insuranceOptionChanged.subscribe((value) => {
-      let enumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
-      if (value === enumKey) this.fullInsurance = true; else this.fullInsurance = false;
+    this.formCreationService.insuranceOptionChanged.subscribe((any) => {
+      let yesEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
+      if (this.form?.controls?.insuranceOption?.value === yesEnumKey) this.fullInsurance = true; else this.fullInsurance = false;
+
+      let noEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
+      if (this.form?.controls?.applicantOption?.value && this.form?.controls?.insuranceOption?.value) {
+        if (this.form?.controls?.insuranceOption?.value == noEnumKey ) {
+          if (this.form?.get('applicantSignature')?.value && this.form?.get('applicantSignature.dateSigned')?.value &&
+            this.form?.get('applicantSignature.signature')?.value && this.form?.get('applicantSignature.signedName')?.value) {
+              this.submitAllowed = true;
+            } else this.submitAllowed = false;
+        } else this.submitAllowed = true;
+      } else this.submitAllowed = false;
     });
   }
 
@@ -127,7 +138,7 @@ export class DFAApplicationStartComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
-    
+
     if (isLast) {
       this.alertMessage(component);
       //this.setFormData(component);
@@ -167,13 +178,13 @@ export class DFAApplicationStartComponent
         this.dfaApplicationStartDataService.insuranceOption = this.form.controls.insuranceOption.value;
         this.dfaApplicationStartDataService.smallBusinessOption = this.form.controls.smallBusinessOption.value;
         this.dfaApplicationStartDataService.farmOption = this.form.controls.farmOption.value;
-        if (this.form.get('applicantSignature').get('signature').value) {
+        if (this.form.get('applicantSignature').get('signature')?.value) {
           this.dfaApplicationStartDataService.applicantSignature =
           { signature: this.form.get('applicantSignature').get('signature').value,
           dateSigned: this.form.get('applicantSignature').get('dateSigned').value,
           signedName: this.form.get('applicantSignature').get('signedName').value} as SignatureBlock;
         } else this.dfaApplicationStartDataService.applicantSignature = null;
-        if (this.form.get('secondaryApplicantSignature').get('signature').value) {
+        if (this.form.get('secondaryApplicantSignature')?.get('signature')?.value) {
           this.dfaApplicationStartDataService.secondaryApplicantSignature =
           { signature: this.form.get('secondaryApplicantSignature').get('signature').value,
           dateSigned: this.form.get('secondaryApplicantSignature').get('dateSigned').value,
@@ -218,23 +229,10 @@ export class DFAApplicationStartComponent
     }
   }
 
-  saveAndBackToDashboard(): void {
+  backToDashboard(): void {
     this.showLoader = !this.showLoader;
-    this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    this.dfaApplicationStartService
-      .upsertApplication(this.dfaApplicationStartDataService.createDFAApplicationStartDTO())
-      .subscribe({
-        next: (applicationId) => {
-          this.dfaApplicationStartDataService.setApplicationId(applicationId);
-          this.router.navigate(['/verified-registration/dashboard']);
-        },
-        error: (error) => {
-          this.showLoader = !this.showLoader;
-          this.isSubmitted = !this.isSubmitted;
-          this.alertService.setAlert('danger', globalConst.saveApplicationError);
-        }
-      });
+    this.router.navigate(['/verified-registration/dashboard']);
   }
 
   submitFile(): void {

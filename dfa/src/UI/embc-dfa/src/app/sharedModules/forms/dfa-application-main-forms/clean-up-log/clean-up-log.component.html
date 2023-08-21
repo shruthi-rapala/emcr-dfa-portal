@@ -141,58 +141,59 @@
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
               <mat-datepicker #fromPicker></mat-datepicker>
-                      <!--<mat-error
+                      <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                          cleanUpLogWorkForm.get('date').invalid &&
+                          cleanUpLogWorkForm.get('date').hasError('required') &&
+                          cleanUpLogWorkForm.get('date').touched
                         "
                       >
                         Date is required</mat-error
-                      >-->
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Name of family member/volunteer</mat-label>
-                      <input formControlName="name" matInput placeholder="Name of family member/volunteer" required/>
-                      <!--<mat-error
+                      <input formControlName="name" matInput placeholder="Name of family member/volunteer" required maxlength="100"/>
+                      <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                          cleanUpLogWorkForm.get('name').invalid &&
+                          cleanUpLogWorkForm.get('name').hasError('required') &&
+                          cleanUpLogWorkForm.get('name').touched
                         "
                       >
                         First Name is required</mat-error
-                      >-->
+                      >
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.name').invalid &&
                           cleanUpLogWorkForm.get('cleanuplog.name').hasError('maxLength')
                         "
                       >
-                        Maximum length reached</mat-error
+                        Maximum length is 100 characters</mat-error
                       >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Hours</mat-label>
-                      <input formControlName="hours" matInput placeholder="Hours" required type="number"/>
+                      <input formControlName="hours" matInput placeholder="Hours" required type="number" max="100000000000" min="0"/>
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.hours').invalid &&
-                          cleanUpLogWorkForm.get('cleanuplog.hours').hasError('maxLength')
+                          (cleanUpLogWorkForm.get('cleanuplog.hours').hasError('max') || cleanUpLogWorkForm.get('cleanuplog.hours').hasError('min'))
                         "
                       >
-                        Maximum length reached</mat-error
+                        Hourse worked must be > 0 and less than 100 000 000 000</mat-error
                       >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Description</mat-label>
-                      <input formControlName="description" matInput placeholder="Description" required />
+                      <input formControlName="description" matInput placeholder="Description" required maxlength="200" />
+                      <mat-hint>Maximum length is 200 characters</mat-hint>
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.description').invalid &&
@@ -208,7 +209,7 @@
                           cleanUpLogWorkForm.get('cleanuplog.description').hasError('maxLength')
                         "
                       >
-                        Maximum length reached</mat-error
+                        Maximum length is 200 characters</mat-error
                       >
                     </mat-form-field>
                   </div>
