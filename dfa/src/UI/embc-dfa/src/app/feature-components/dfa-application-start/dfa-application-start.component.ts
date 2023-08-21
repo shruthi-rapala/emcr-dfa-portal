@@ -140,7 +140,6 @@ export class DFAApplicationStartComponent
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
 
     if (isLast) {
-      this.setFormData(component);
       this.alertMessage(component);
       //this.setFormData(component);
       //this.submitFile();
