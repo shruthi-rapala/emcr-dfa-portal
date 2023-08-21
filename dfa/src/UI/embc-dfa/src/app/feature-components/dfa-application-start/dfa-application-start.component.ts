@@ -140,6 +140,7 @@ export class DFAApplicationStartComponent
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
 
     if (isLast) {
+      this.setFormData(component);
       this.alertMessage(component);
       //this.setFormData(component);
       //this.submitFile();
@@ -270,7 +271,6 @@ export class DFAApplicationStartComponent
           //this.cancelApplication();
         }
         else if (result === 'confirm') {
-          this.setFormData(component);
           this.submitFile();
         }
         //else this.appTypeInsuranceForm.controls.insuranceOption.setValue(null);
