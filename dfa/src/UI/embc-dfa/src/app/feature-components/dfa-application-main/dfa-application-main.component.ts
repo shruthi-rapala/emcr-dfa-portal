@@ -18,7 +18,6 @@ import { DFAApplicationMainDataService } from './dfa-application-main-data.servi
 import { DFAApplicationMainService } from './dfa-application-main.service';
 import { ApplicantOption } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -63,9 +62,7 @@ export class DFAApplicationMainComponent
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dfaApplicationMainService: DFAApplicationMainService,
     private applicationService: ApplicationService,
-    private fileUploadsService: AttachmentService,
-    public dialog: MatDialog,
-
+    private fileUploadsService: AttachmentService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {

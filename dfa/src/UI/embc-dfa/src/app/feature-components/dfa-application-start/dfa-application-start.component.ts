@@ -270,6 +270,7 @@ export class DFAApplicationStartComponent
           //this.cancelApplication();
         }
         else if (result === 'confirm') {
+          this.setFormData(component);
           this.submitFile();
         }
         //else this.appTypeInsuranceForm.controls.insuranceOption.setValue(null);
