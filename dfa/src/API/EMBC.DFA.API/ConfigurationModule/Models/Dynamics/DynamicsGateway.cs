@@ -203,6 +203,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     application.dfa_contactphone1 = buildingOwnerlist.List.Last().dfa_contactphone1;
                     application.dfa_contactemail = buildingOwnerlist.List.Last().dfa_contactemail;
                 }
+
+                var annotationList = await api.GetList<annotation>("annotations", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "annotationid", "documentBody", "notetext"
+                    },
+                    Filter = $"objectid eq {application.dfa_appapplicationid}"
+                });
             }
 
             return list.List.FirstOrDefault();

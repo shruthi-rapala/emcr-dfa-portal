@@ -68,6 +68,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_appapplicationid { get; set; }
     }
 
+    public class annotation
+    {
+        public Guid annotationid { get; set; }
+        public string documentbody { get; set; }
+        public string notetext { get; set; }
+    }
+
     public class JsonHelper
     {
         internal static string JsonSerializer<T>(T t)
