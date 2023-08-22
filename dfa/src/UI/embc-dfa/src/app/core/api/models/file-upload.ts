@@ -16,5 +16,5 @@ export interface FileUpload {
   fileType?: FileCategory;
   id?: null | string;
   modifiedBy?: string;
-  uploadedDate?: string;
+  uploadedDate?: null | string;
 }

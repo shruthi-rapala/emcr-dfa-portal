@@ -527,6 +527,35 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
+        public async Task<string> InsertDeleteDocumentLocationAsync(sharepointdocumentlocation objDocumentLocation)
+        {
+            try
+            {
+                if (objDocumentLocation?.sharepointdocumentlocationid != null)
+                {
+                    await api.Delete("sharepointdocumentlocations", (System.Guid)objDocumentLocation.sharepointdocumentlocationid);
+                    return "Deleted successfully";
+                }
+                else
+                {
+                    var toAdd = new sharepointdocumentlocation_foradd();
+                    toAdd.dfa_description = objDocumentLocation.dfa_description;
+                    toAdd.dfa_filetype = objDocumentLocation.dfa_filetype;
+                    toAdd.dfa_appapplicationid = (System.Guid)objDocumentLocation.dfa_appapplicationid;
+                    toAdd.name = objDocumentLocation.name;
+                    toAdd.dfa_modifiedby = objDocumentLocation.dfa_modifiedby;
+                    toAdd.relativeurl = objDocumentLocation.dfa_appapplicationid.ToString() + "_" + objDocumentLocation.name;
+
+                    var result = await api.Create("sharepointdocumentlocations", toAdd);
+                    return result.ToString();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
+            }
+        }
+
         public async Task<string> UpsertDeleteDocumentLocationAsync(SubmissionEntity submission)
         {
             try
@@ -539,25 +568,24 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 }
                 return "Submitted";
             }
-            catch (System.Exception ex)
+            catch
             {
-                // return System.Guid.Empty.ToString();
-                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
+                return System.Guid.Empty.ToString();
+                // throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
             }
         }
 
-        // TODO : fails
         public async Task<IEnumerable<sharepointdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId)
         {
             try
             {
+                var applicationIdString = applicationId.ToString();
                 var list = await api.GetList<sharepointdocumentlocation>("sharepointdocumentlocations", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "name", "description", "createdon", "sharepointdocumentlocationid"
-                    }
-                    //Filter = $"_dfa_applicationid_value eq {applicationId}"
+                        "name", "dfa_description", "createdon", "sharepointdocumentlocationid, dfa_appapplicationid, dfa_filetype, dfa_modifiedby"
+                    }, Filter = $"dfa_appapplicationid eq '{applicationIdString}'"
                 });
 
                 return list.List;

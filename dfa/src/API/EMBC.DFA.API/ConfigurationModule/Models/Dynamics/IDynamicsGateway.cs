@@ -29,6 +29,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> UpsertDeleteCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLog);
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsListAsync(Guid applicationId);
         Task<string> UpsertDeleteDocumentLocationAsync(SubmissionEntity submission);
+        Task<string> InsertDeleteDocumentLocationAsync(sharepointdocumentlocation objDocumentLocation);
         Task<IEnumerable<sharepointdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
 

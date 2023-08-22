@@ -288,16 +288,25 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool delete { get; set; } // required enum
     }
 
-    // TODO add dfa_documentdescription, dfa_uploadeddate, dfa_modifiedby, dfa_contenttype fields
     public class sharepointdocumentlocation
     {
-        public string? sharepointdocumentlocationid { get; set; } // optional string
-        // public Guid? dfa_appapplicationid { get; set; } // application id
-        public string name { get; set; } // file name TODO: could be wrong field
-        public string description { get; set; } // file description TODO: could be wrong field
-        public string createdon { get; set; } // uploaded date TODO: check if correct field
-        // TODO: need a field for file category
-        // TODO: need a field for modifiedby e.g. Applicant
+        public Guid? sharepointdocumentlocationid { get; set; } // optional string
+        public Guid dfa_appapplicationid { get; set; } // application id
+        public string name { get; set; } // file name
+        public string dfa_description { get; set; } // file description
+        public string createdon { get; set; } // uploaded date
+        public string dfa_filetype { get; set; }
+        public string dfa_modifiedby { get; set; }
+    }
+
+    public class sharepointdocumentlocation_foradd
+    {
+        public Guid dfa_appapplicationid { get; set; } // application id
+        public string name { get; set; } // file name
+        public string dfa_description { get; set; } // file description
+        public string dfa_filetype { get; set; }
+        public string dfa_modifiedby { get; set; }
+        public string relativeurl { get; set; }
     }
     public class AttachmentEntity
     {
