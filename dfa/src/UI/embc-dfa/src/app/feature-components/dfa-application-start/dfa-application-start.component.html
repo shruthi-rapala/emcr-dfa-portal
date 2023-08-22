@@ -3,6 +3,16 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationStartHeading }}</span>
     </div>
+    <div class="col-4" *ngIf="showSaveButton === true">
+      <button
+        class="button-p save-button col-4"
+        (click)="backToDashboard()"
+        mat-stroked-button
+        type="button"
+        >
+         Back to Dashboard
+      </button>
+    </div>
   </div>
 
   <mat-horizontal-stepper
@@ -41,7 +51,6 @@
           >
             {{ step.nextButtonLabel }}
           </button>
-          <button (click)="showForm()">Show Form</button>
         </div>
       </div>
     </mat-step>

@@ -92,10 +92,6 @@ export class DFAApplicationStartComponent
     this.dfaApplicationStartDataService.profileVerified = true;
   }
 
-  showForm() {
-    console.log(this.formCreationService.appTypeInsuranceForm.value);
-  }
-
   ngAfterViewChecked(): void {
     this.cd.detectChanges();
   }

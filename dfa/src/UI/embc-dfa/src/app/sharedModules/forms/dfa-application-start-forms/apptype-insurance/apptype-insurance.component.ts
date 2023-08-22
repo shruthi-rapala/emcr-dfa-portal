@@ -94,15 +94,9 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '') {
           this.appTypeInsuranceForm.get('insuranceOption').reset();
-          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators([null]);
-          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators([null]);
-          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators([null]);
           this.notInsured = false;
         } else if (value === fullyInsuredEnumKey) {
           this.yesFullyInsured();
-          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators([null]);
-          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators([null]);
-          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators([null]);
           this.notInsured = false;
         } else if (value === notInsuredEnumKey) {
           this.notInsured = true;
@@ -165,7 +159,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
           this.cancelApplication();
           }
         else if (result === 'confirm') {
-          this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.radioInsuranceOptions.Yes);
+          this.appTypeInsuranceForm.controls.insuranceOption.setValue(Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)]);
           this.appTypeInsuranceForm.updateValueAndValidity();
         }
         else this.appTypeInsuranceForm.controls.insuranceOption.setValue(null);
