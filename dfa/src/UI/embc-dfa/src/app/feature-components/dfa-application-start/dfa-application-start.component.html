@@ -35,7 +35,7 @@
           <button
             class="button-p"
             mat-stroked-button
-            [disabled]="step.isLast && !((formCreationService.appTypeInsuranceForm$ | async)?.status === 'VALID')"
+            [disabled]="step.isLast == true && submitAllowed == false"
             type="button"
             (click)="goForward(dfaApplicationStartStepper, step.isLast, step.component)"
           >

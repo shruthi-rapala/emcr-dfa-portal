@@ -38,6 +38,7 @@ export class DFAApplicationMainMappingService {
           occupyAsPrimaryResidence: dfaApplicationMain.damagedPropertyAddress.occupyAsPrimaryResidence === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.occupyAsPrimaryResidence === false ? 'false' : null),
           onAFirstNationsReserve: dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === false ? 'false' : null),
           manufacturedHome: dfaApplicationMain.damagedPropertyAddress.manufacturedHome === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.manufacturedHome === false ? 'false' : null),
+          eligibleForHomeOwnerGrant: dfaApplicationMain.damagedPropertyAddress.eligibleForHomeOwnerGrant === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.eligibleForHomeOwnerGrant === false ? 'false' : null),
         });
         formGroup = damagedPropertyAddress;
       });
@@ -105,9 +106,9 @@ export class DFAApplicationMainMappingService {
           lossesExceed1000: dfaApplicationMain.propertyDamage.lossesExceed1000 === true ? 'true' : (dfaApplicationMain.propertyDamage.lossesExceed1000 === false ? 'false' : null),
           wereYouEvacuated: dfaApplicationMain.propertyDamage.wereYouEvacuated === true ? 'true' : (dfaApplicationMain.propertyDamage.wereYouEvacuated === false ? 'false' : null),
           residingInResidence: dfaApplicationMain.propertyDamage.residingInResidence === true ? 'true' : (dfaApplicationMain.propertyDamage.residingInResidence === false ? 'false' : null),
-          damageFromDate: dfaApplicationMain.propertyDamage.damageFromDate ? new Date(dfaApplicationMain.propertyDamage.damageFromDate) : null,
-          damageToDate: dfaApplicationMain.propertyDamage.damageToDate ? new Date(dfaApplicationMain.propertyDamage.damageToDate) : null,
-          dateReturned: dfaApplicationMain.propertyDamage.dateReturned ? new Date(dfaApplicationMain.propertyDamage.dateReturned) : null,
+          //damageFromDate: dfaApplicationMain.propertyDamage.damageFromDate ? new Date(dfaApplicationMain.propertyDamage.damageFromDate) : null,
+          //damageToDate: dfaApplicationMain.propertyDamage.damageToDate ? new Date(dfaApplicationMain.propertyDamage.damageToDate) : null,
+          //dateReturned: dfaApplicationMain.propertyDamage.dateReturned ? new Date(dfaApplicationMain.propertyDamage.dateReturned) : null,
         });
         formGroup = propertyDamage;
       });

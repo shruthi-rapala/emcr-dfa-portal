@@ -268,7 +268,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       _supportingFilesFormArray.valueChanges
         .pipe(
           mapTo(_supportingFilesFormArray.getRawValue())
-          ).subscribe(data => this.supportingFilesDataSource.data = data.filter(x => [this.FileCategories.Financial, this.FileCategories.Identification, Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)], Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.ThirdPartyConsent)]].indexOf(x.fileType) >= 0 && x.deleteFlag == false));
+          ).subscribe(data => this.supportingFilesDataSource.data = _supportingFilesFormArray.getRawValue()?.filter(x => [this.FileCategories.Financial, this.FileCategories.Identification, Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)], Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.ThirdPartyConsent)]].indexOf(x.fileType) >= 0 && x.deleteFlag == false));
 
     this.supportingFilesForm.get('supportingFilesFileUpload').reset();
     this.supportingFilesForm.get('supportingFilesFileUpload.modifiedBy').setValue("Applicant");

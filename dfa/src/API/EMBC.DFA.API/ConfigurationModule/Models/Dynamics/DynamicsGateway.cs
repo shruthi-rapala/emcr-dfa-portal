@@ -173,7 +173,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_appapplicationid", "dfa_isprimaryanddamagedaddresssame2", "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2",
                     "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince", "dfa_damagedpropertypostalcode", "dfa_isthispropertyyourp2",
                     "dfa_indigenousreserve2", "dfa_nameoffirstnationsr", "dfa_manufacturedhom2", "dfa_eligibleforbchomegrantonthisproperty2",
-                    "_dfa_confirmedbuildinglandlord_value",
+                    "_dfa_buildingownerlandlord_value",
                     "dfa_acopyofarentalagreementorlease2", "dfa_areyounowresidingintheresidence2",
                     "dfa_causeofdamageflood2", "dfa_causeofdamagestorm2", "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageother2",
                     "dfa_causeofdamageloss", "dfa_dateofdamage", "dfa_dateofdamageto", "dfa_datereturntotheresidence",
@@ -187,15 +187,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
             foreach (dfa_appapplicationmain_retrieve application in list.List)
             {
-                if (application._dfa_confirmedbuildinglandlord_value != null)
+                if (application._dfa_buildingownerlandlord_value != null)
                 {
-                    var buildingOwnerlist = await api.GetList<dfa_appbuildingownerlandlord>("dfa_appbuildingownerlandlord", new CRMGetListOptions
+                    var buildingOwnerlist = await api.GetList<dfa_appbuildingownerlandlord>("dfa_appbuildingownerlandlords", new CRMGetListOptions
                     {
                         Select = new[]
                         {
                             "dfa_contactlastname", "dfa_contactphone1", "dfa_contactemail", "dfa_contactfirstname"
                         },
-                        Filter = $"dfa_appbuildingownerlandlordid eq {application._dfa_confirmedbuildinglandlord_value}"
+                        Filter = $"dfa_appbuildingownerlandlordid eq {application._dfa_buildingownerlandlord_value}"
                     });
 
                     application.dfa_contactfirstname = buildingOwnerlist.List.Last().dfa_contactfirstname;

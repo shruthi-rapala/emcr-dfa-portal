@@ -56,7 +56,11 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       .subscribe((propertyDamage) => {
         this.propertyDamageForm = propertyDamage;
         this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
-        this.propertyDamageForm.get('otherDamageText').setValidators(null);
+        if (this.propertyDamageForm.get('otherDamage').value === 'true') {
+          this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required, Validators.maxLength(100)]);
+        } else {
+          this.propertyDamageForm.get('otherDamageText').setValidators([Validators.maxLength(100)]);
+        }
         this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
         this.propertyDamageForm.updateValueAndValidity();
       });

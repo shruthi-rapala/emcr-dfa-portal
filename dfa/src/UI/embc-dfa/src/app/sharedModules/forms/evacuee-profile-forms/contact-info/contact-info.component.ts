@@ -86,6 +86,9 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
         this.contactInfoForm.setValidators([
           this.customValidator
             .confirmEmailValidator()
+            .bind(this.customValidator),
+          this.customValidator
+            .maxLengthValidator(100)
             .bind(this.customValidator)
         ]);
         this.contactInfoForm.updateValueAndValidity();
