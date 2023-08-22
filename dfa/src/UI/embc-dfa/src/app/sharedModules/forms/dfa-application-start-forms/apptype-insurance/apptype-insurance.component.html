@@ -284,10 +284,10 @@
         </div>
         <div class="row">
           <div class="col-md-6 bottomspace">
-            <app-signature *ngIf="notInsured == true" [isRequired]="true" whoseSignature="Applicant" (signature)="updateApplicantSignature($event)"></app-signature>
+            <app-signature [hidden]="notInsured != true" [isRequired]="notInsured" whoseSignature="Applicant" (signature)="updateApplicantSignature($event)"></app-signature>
           </div>
           <div class="col-md-6 bottomspace">
-            <app-signature *ngIf="notInsured == true" [isRequired]="false" whoseSignature="Secondary Applicant" (signature)="updateSecondaryApplicantSignature($event)"></app-signature>
+            <app-signature [hidden]="notInsured != true" [isRequired]="false" whoseSignature="Secondary Applicant" (signature)="updateSecondaryApplicantSignature($event)"></app-signature>
           </div>
         </div>
       </ng-container>
