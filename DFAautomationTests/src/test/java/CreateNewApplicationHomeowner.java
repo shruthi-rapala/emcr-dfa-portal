@@ -64,27 +64,17 @@ public class CreateNewApplicationHomeowner {
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'I/We declare that we carry no insurance (no fire, theft or liability) on the property listed on this')]")));
 
         Thread.sleep(1000);
-    /*    Actions action = new Actions(driver);
-        WebElement ele = driverWait
-                .until(ExpectedConditions.presenceOfElementLocated(By.id("canvas")));
-
-        //Used points class to get x and y coordinates of element.
-        Point point = ele.getLocation();
-        int xcord = point.getX();
-        System.out.println("Position of the webelement from left side is "+xcord +" pixels");
-        int ycord = point.getY();
-        System.out.println("Position of the webelement from top side is "+ycord +" pixels");
-
-        js.executeScript("arguments[0].scrollIntoView();", ele);
-        Thread.sleep(1000);
-        action.moveToElement(ele).clickAndHold().moveByOffset(xcord, ycord).build().perform();*/
-
         element = driverWait.until(ExpectedConditions
                 .presenceOfElementLocated(By.id("mat-input-0")));
         element.sendKeys("Test Test");
         element = driverWait.until(ExpectedConditions
                 .presenceOfElementLocated(By.id("mat-input-1")));
         element.sendKeys("12/12/2024");
+        Thread.sleep(1000);
+
+        element = driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("canvas")));
+        element.click();
 
         Thread.sleep(2000);
         JavascriptExecutor js3 = (JavascriptExecutor) driver;
