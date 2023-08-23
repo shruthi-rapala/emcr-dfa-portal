@@ -9,7 +9,7 @@ import { SignatureBlock } from 'src/app/core/api/models';
   styleUrls: ['./signature.component.scss']
 })
 
-export class SignatureComponent implements AfterViewInit {
+export class SignatureComponent implements AfterViewInit, OnChanges {
 
   @ViewChild('canvas', {static: false}) public canvas: ElementRef;
 
@@ -35,9 +35,9 @@ export class SignatureComponent implements AfterViewInit {
     this.context.strokeStyle = 'black';
     this.context.lineWidth = 1;
     this.captureEvents(canvasEl);
-  // }
+  }
 
-  // ngOnChanges(event: SimpleChanges): void {
+  ngOnChanges(event: SimpleChanges): void {
     console.log(event);
     // reformat date from mm/dd/yyyy to yyyy-mm-dd cant use date pipe since it messes up time zone
     if (this.signatureBlock) {

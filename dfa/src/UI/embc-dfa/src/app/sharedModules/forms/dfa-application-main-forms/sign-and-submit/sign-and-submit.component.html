@@ -16,10 +16,10 @@
         </div><br/><br/>
         <div class="row">
           <div class="col-md-6 bottomspace">
-            <app-signature [isRequired]="true" whoseSignature="Applicant" (signature)="updateApplicantSignature($event)" [initialSignature]="signAndSubmitForm.get('applicantSignature').getRawValue()"></app-signature>
+            <app-signature [isRequired]="true" whoseSignature="Applicant" (signature)="updateApplicantSignature($event)" [initialSignature]="initialApplicantSignature"></app-signature>
           </div>
           <div class="col-md-6 bottomspace">
-            <app-signature *ngIf="isSecondaryApplicant === true" [isRequired]="true" whoseSignature="Secondary Applicant" (signature)="updateSecondaryApplicantSignature($event)" [initialSignature]="signAndSubmitForm.get('secondaryApplicantSignature').getRawValue()"></app-signature>
+            <app-signature *ngIf="isSecondaryApplicant === true" [isRequired]="true" whoseSignature="Secondary Applicant" (signature)="updateSecondaryApplicantSignature($event)" [initialSignature]="initialSecondaryApplicantSignature"></app-signature>
           </div>
         </div>
 
