@@ -527,65 +527,72 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteDocumentLocationAsync(dfa_appdocumentlocation_params objDocumentLocation)
+        public async Task<string> InsertDeleteDocumentLocationAsync(sharepointdocumentlocation objDocumentLocation)
         {
             try
             {
-                /* if (objDocumentLocation?.dfa_appdocumentlocationid != null && objDocumentLocation?.delete == true)
+                if (objDocumentLocation?.sharepointdocumentlocationid != null)
                 {
-                    await api.Delete("dfa_appdocumentlocations", (System.Guid)objDocumentLocation.dfa_appdocumentlocationid);
+                    await api.Delete("sharepointdocumentlocations", (System.Guid)objDocumentLocation.sharepointdocumentlocationid);
                     return "Deleted successfully";
                 }
-                else if (objDocumentLocation?.dfa_appdocumentlocationid != null)
+                else
                 {
-                    var result = api.Update("dfa_appdocumentlocations", (System.Guid)objDocumentLocation.dfa_appdocumentlocationid, objDocumentLocation);
-                    return "Updated successfully";
-                }
-                else if (objDocumentLocation?.dfa_appdocumentlocationid == null)
-                {
-                    var result = await api.Create("dfa_appdocumentlocations", objDocumentLocation);
+                    var toAdd = new sharepointdocumentlocation_foradd();
+                    toAdd.dfa_description = objDocumentLocation.dfa_description;
+                    toAdd.dfa_filetype = objDocumentLocation.dfa_filetype;
+                    toAdd.dfa_appapplicationid = (System.Guid)objDocumentLocation.dfa_appapplicationid;
+                    toAdd.name = objDocumentLocation.name;
+                    toAdd.dfa_modifiedby = objDocumentLocation.dfa_modifiedby;
+                    toAdd.relativeurl = objDocumentLocation.dfa_appapplicationid.ToString() + "_" + objDocumentLocation.name;
+
+                    var result = await api.Create("sharepointdocumentlocations", toAdd);
                     return result.ToString();
-                } */
-
-                var result = await api.ExecuteAction("dfa_DFAPortalAppDocumentLocation", objDocumentLocation);
-
-                if (result != null)
-                {
-                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
                 }
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return Guid.Empty.ToString();
-                // throw new Exception($"Failed to update document location {ex.Message}", ex);
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
             }
-
-            return string.Empty;
         }
 
-        // TODO : fails
-        public async Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetDocumentLocationsListAsync(Guid applicationId)
+        public async Task<string> UpsertDeleteDocumentLocationAsync(SubmissionEntity submission)
         {
             try
             {
-                var list = await api.GetList<dfa_appdocumentlocation_retrieve>("dfa_appdocumentlocations", new CRMGetListOptions
+                dynamic result = await api.ExecuteAction("dfa_SubmitDFADocuments", submission);
+
+                if (!result.submissionFlag)
+                {
+                    throw new Exception($"dfa_SubmitDFADocuments call failed: {result.message}");
+                }
+                return "Submitted";
+            }
+            catch (Exception ex)
+            {
+                // return System.Guid.Empty.ToString();
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
+            }
+        }
+
+        public async Task<IEnumerable<sharepointdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId)
+        {
+            try
+            {
+                var applicationIdString = applicationId.ToString();
+                var list = await api.GetList<sharepointdocumentlocation>("sharepointdocumentlocations", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "_dfa_applicationid_value", "dfa_appdocumentlocationid", "dfa_name", "dfa_documenttype", "dfa_documentdescription",
-                        "dfa_uploadeddate", "dfa_modifiedby", "dfa_filedata", "dfa_contenttype", "dfa_filesize"
-                    },
-                    Filter = $"_dfa_applicationid_value eq {applicationId}"
+                        "name", "dfa_description", "createdon", "sharepointdocumentlocationid, dfa_appapplicationid, dfa_filetype, dfa_modifiedby"
+                    }, Filter = $"dfa_appapplicationid eq '{applicationIdString}'"
                 });
 
                 return list.List;
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return null;
-                // throw new Exception($"Failed to get document locations {ex.Message}", ex);
+                throw new Exception($"Failed to get documents {ex.Message}", ex);
             }
         }
     }

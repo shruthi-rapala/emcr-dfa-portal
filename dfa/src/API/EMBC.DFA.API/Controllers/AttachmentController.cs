@@ -47,8 +47,14 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteAttachment(FileUpload fileUpload)
         {
             if (fileUpload == null) return BadRequest("FileUpload details cannot be empty.");
-            var mappedFileUpload = mapper.Map<dfa_appdocumentlocation_params>(fileUpload);
+            //var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
+            //var submissionEntity = new SubmissionEntity();
+            //submissionEntity.dfa_appapplicationid = fileUpload.applicationId.ToString();
+            //submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
+            //submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
+            //var result = await handler.HandleFileUploadAsync(submissionEntity);
 
+            var mappedFileUpload = mapper.Map<sharepointdocumentlocation>(fileUpload);
             var result = await handler.HandleFileUploadAsync(mappedFileUpload);
             return Ok(result);
         }
@@ -66,11 +72,11 @@ namespace EMBC.DFA.API.Controllers
             [Required]
             Guid applicationId)
         {
-            IEnumerable<dfa_appdocumentlocation_retrieve> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(applicationId);
+            IEnumerable<sharepointdocumentlocation> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(applicationId);
             IEnumerable<FileUpload> fileUploads = new FileUpload[] { };
             if (dfa_appdocumentlocations != null)
             {
-                foreach (dfa_appdocumentlocation_retrieve dfa_appdocumentlocation in dfa_appdocumentlocations)
+                foreach (sharepointdocumentlocation dfa_appdocumentlocation in dfa_appdocumentlocations)
                 {
                     FileUpload fileUpload = mapper.Map<FileUpload>(dfa_appdocumentlocation);
                     fileUploads = fileUploads.Append<FileUpload>(fileUpload);
@@ -94,9 +100,9 @@ namespace EMBC.DFA.API.Controllers
         public string fileName { get; set; }
         public string fileDescription { get; set; }
         public FileCategory fileType { get; set; }
-        public string uploadedDate { get; set; }
+        public string? uploadedDate { get; set; }
         public string modifiedBy { get; set; }
-        public string? fileData { get; set; }
+        public byte[] fileData { get; set; }
         public string contentType { get; set; }
         public int fileSize { get; set; }
         public bool deleteFlag { get; set; }

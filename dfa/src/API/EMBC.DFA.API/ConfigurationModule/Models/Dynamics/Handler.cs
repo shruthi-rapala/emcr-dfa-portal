@@ -37,8 +37,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsAsync(Guid applicationId);
         Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLogItem);
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId);
-        Task<string> HandleFileUploadAsync(dfa_appdocumentlocation_params objFileUpload);
-        Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetFileUploadsAsync(Guid applicationId);
+        // Task<string> HandleFileUploadAsync(SubmissionEntity submission);
+        Task<string> HandleFileUploadAsync(sharepointdocumentlocation objDocumentLocation);
+        Task<IEnumerable<sharepointdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
     }
 
@@ -195,13 +196,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return await listsGateway.GetCleanUpLogItemsListAsync(applicationId);
         }
 
-        public async Task<string> HandleFileUploadAsync(dfa_appdocumentlocation_params objFileUpload)
+        public async Task<string> HandleFileUploadAsync(sharepointdocumentlocation objDocumentLocation)
         {
-            var result = await listsGateway.UpsertDeleteDocumentLocationAsync(objFileUpload);
+            var result = await listsGateway.InsertDeleteDocumentLocationAsync(objDocumentLocation); //TODO : Change to Upsert to use dynamics endpoint
             return result;
         }
 
-        public async Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetFileUploadsAsync(Guid applicationId)
+        public async Task<IEnumerable<sharepointdocumentlocation>> GetFileUploadsAsync(Guid applicationId)
         {
             return await listsGateway.GetDocumentLocationsListAsync(applicationId);
         }
