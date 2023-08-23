@@ -72,7 +72,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public Guid annotationid { get; set; }
         public string documentbody { get; set; }
-        public string notetext { get; set; }
+        public string subject { get; set; }
     }
 
     public class JsonHelper

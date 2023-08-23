@@ -208,7 +208,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "annotationid", "documentBody", "notetext"
+                        "annotationid", "documentBody", "subject"
                     },
                     Filter = $"objectid eq {application.dfa_appapplicationid}"
                 });
