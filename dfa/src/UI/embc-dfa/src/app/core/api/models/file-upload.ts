@@ -7,14 +7,14 @@ import { FileCategory } from './file-category';
  */
 export interface FileUpload {
   applicationId?: string;
-  contentType?: string;
+  contentType?: null | string;
   deleteFlag?: boolean;
-  fileData?: string;
-  fileDescription?: string;
-  fileName?: string;
-  fileSize?: number;
-  fileType?: FileCategory;
+  fileData?: null | string;
+  fileDescription?: null | string;
+  fileName?: null | string;
+  fileSize?: null | number;
+  fileType?: null | FileCategory;
   id?: null | string;
-  modifiedBy?: string;
+  modifiedBy?: null | string;
   uploadedDate?: null | string;
 }
