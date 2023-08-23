@@ -196,6 +196,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
         public int? dfa_wereyouevacuatedduringtheevent2 { get; set; } // optional Two Options
         public string? _dfa_buildingownerlandlord_value { get; set; } // optional string
+        public string? dfa_primaryapplicantsignature { get; set; } // optional string
+        public string? dfa_secondaryapplicantsignature { get; set; } // optional string
     }
 
     public class dfa_appbuildingownerlandlord

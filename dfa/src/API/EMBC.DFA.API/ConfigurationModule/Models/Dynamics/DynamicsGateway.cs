@@ -9,6 +9,7 @@ using System.Xml;
 using EMBC.ESS.Shared.Contracts.Metadata;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using MailKit;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Mozilla;
@@ -208,10 +209,22 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "annotationid", "documentBody", "subject"
+                        "annotationid", "documentbody", "subject"
                     },
-                    Filter = $"objectid eq {application.dfa_appapplicationid}"
+                    Filter = $"_objectid_value eq {application.dfa_appapplicationid}"
                 });
+
+                foreach (annotation annotation in annotationList.List)
+                {
+                    if (annotation.subject == "primaryApplicantSignature")
+                    {
+                        application.dfa_primaryapplicantsignature = annotation.documentbody;
+                    }
+                    else if (annotation.subject == "secondaryApplicantSignature")
+                    {
+                        application.dfa_secondaryapplicantsignature = annotation.documentbody;
+                    }
+                }
             }
 
             return list.List.FirstOrDefault();
