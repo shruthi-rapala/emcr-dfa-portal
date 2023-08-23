@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 
@@ -293,33 +295,50 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool delete { get; set; } // required enum
     }
 
-    // TODO add dfa_documentdescription, dfa_uploadeddate, dfa_modifiedby, dfa_contenttype fields
-    public class dfa_appdocumentlocation_retrieve
+    public class sharepointdocumentlocation
     {
-        public string? dfa_appdocumentlocationid { get; set; } // optional string
-        public string dfa_name { get; set; } // required string
-        public string dfa_documenttype { get; set; } // required string
-        public string? dfa_documentdescription { get; set; } // optional string  *** NEW FIELD
-        public string dfa_uploadeddate { get; set; } // required string ** NEW FIELD timestamp
-        public string dfa_modifiedby { get; set; } // required string *** NEW FIELD string
-        public string dfa_filedata { get; set; } // required string
-        public string dfa_contenttype { get; set; } // required string ** NEW FIELD
-        public int dfa_filesize { get; set; } // required int ** NEW FIELD
-        public string? _dfa_applicationid_value { get; set; } // optional string
+        public Guid? sharepointdocumentlocationid { get; set; } // optional string
+        public Guid dfa_appapplicationid { get; set; } // application id
+        public string name { get; set; } // file name
+        public string dfa_description { get; set; } // file description
+        public string createdon { get; set; } // uploaded date
+        public string dfa_filetype { get; set; }
+        public string dfa_modifiedby { get; set; }
     }
-    public class dfa_appdocumentlocation_params
+
+    public class sharepointdocumentlocation_foradd
     {
-        public Guid dfa_applicationid { get; set; } // required string
-        public Guid? dfa_appdocumentlocationid { get; set; } // optional string
+        public Guid dfa_appapplicationid { get; set; } // application id
+        public string name { get; set; } // file name
+        public string dfa_description { get; set; } // file description
+        public string dfa_filetype { get; set; }
+        public string dfa_modifiedby { get; set; }
+        public string relativeurl { get; set; }
+    }
+    public class AttachmentEntity
+    {
+        [JsonProperty("@odata.type")]
+        public string Type { get; set; } = "Microsoft.Dynamics.CRM.activitymimeattachment";
+        public string filename { get; set; } // pass in description
+        public string subject { get; set; } // pass in modified by
+        public string activitysubject { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
+        public byte[] body { get; set; }
+    }
+
+    public class SubmissionEntity
+    {
+        // public Guid dfa_appapplicationid { get; set; } TODO: add this back
+        public IEnumerable<AttachmentEntity> documentCollection { get; set; }
+        public string dfa_appapplicationid { get; set; }
+    }
+
+    public class dfa_appdocumentlocations
+    {
+        public Guid _dfa_applicationid_value { get; set; } // required string
+        public Guid? dfa_appdocumentlocationsid { get; set; } // optional string
         public string dfa_name { get; set; } // required string
         public string dfa_documenttype { get; set; } // required string
-        public string? dfa_documentdescription { get; set; } // optional string  *** NEW FIELD
-        public string dfa_uploadeddate { get; set; } // required string ** NEW FIELD timestamp
-        public string dfa_modifiedby { get; set; } // required string *** NEW FIELD string
-        public string dfa_contenttype { get; set; } // required string ** NEW FIELD
-        public int dfa_filesize { get; set; } // required int ** NEW FIELD
-        public byte[]? dfa_filecontent { get; set; } // required byte array
-        public bool delete { get; set; } // required bool
+        public string? dfa_url { get; set; } // optional string
     }
 
     public class dfa_appdamageditems_retrieve

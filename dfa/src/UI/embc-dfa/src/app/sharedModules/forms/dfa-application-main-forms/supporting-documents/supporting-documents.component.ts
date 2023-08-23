@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
-import { BehaviorSubject, Subscription, mapTo } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, catchError, mapTo, throwError } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { ApplicantOption, FileCategory, FileUpload, SupportStatus } from 'src/app/core/api/models';
@@ -27,6 +27,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { AttachmentService } from 'src/app/core/api/services';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { MatTab } from '@angular/material/tabs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -78,6 +79,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     private dfaApplicationMainService: DFAApplicationMainService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private attachmentsService: AttachmentService,
+    private http: HttpClient,
     private cd: ChangeDetectorRef
   ) {
     this.formBuilder = formBuilder;
@@ -279,6 +281,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
   saveSupportingFiles(fileUpload: FileUpload): void {
     if (this.supportingFilesForm.get('supportingFilesFileUpload').status === 'VALID') {
+      fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
@@ -301,6 +304,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
   saveRequiredForm(fileUpload: FileUpload): void {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     if (fileUploads?.filter(x => x.fileType === fileUpload.fileType).length > 0) {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (result) => {
@@ -342,6 +346,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       let foundIndex = fileUploads.findIndex(x => x.fileType === element.fileType);
       element.deleteFlag = true;
+      element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
         next: (result) => {
           fileUploads[foundIndex] = element;
@@ -359,6 +364,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       let index = fileUploads?.indexOf(element);
       element.deleteFlag = true;
+      element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
         next: (result) => {
           fileUploads[index] = element;
