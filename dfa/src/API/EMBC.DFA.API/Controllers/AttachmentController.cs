@@ -46,7 +46,7 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> UpsertDeleteAttachment(FileUpload fileUpload)
         {
-            if (fileUpload == null) return BadRequest("FileUpload details cannot be empty.");
+            if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
             var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
             var submissionEntity = new SubmissionEntity();
             submissionEntity.dfa_appapplicationid = fileUpload.applicationId.ToString();
@@ -97,14 +97,14 @@ namespace EMBC.DFA.API.Controllers
     {
         public Guid applicationId { get; set; }
         public Guid? id { get; set; }
-        public string fileName { get; set; }
-        public string fileDescription { get; set; }
-        public FileCategory fileType { get; set; }
+        public string? fileName { get; set; }
+        public string? fileDescription { get; set; }
+        public FileCategory? fileType { get; set; }
         public string? uploadedDate { get; set; }
-        public string modifiedBy { get; set; }
-        public byte[] fileData { get; set; }
-        public string contentType { get; set; }
-        public int fileSize { get; set; }
+        public string? modifiedBy { get; set; }
+        public byte[]? fileData { get; set; }
+        public string? contentType { get; set; }
+        public int? fileSize { get; set; }
         public bool deleteFlag { get; set; }
     }
 }
