@@ -47,15 +47,15 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteAttachment(FileUpload fileUpload)
         {
             if (fileUpload == null) return BadRequest("FileUpload details cannot be empty.");
-            //var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
-            //var submissionEntity = new SubmissionEntity();
-            //submissionEntity.dfa_appapplicationid = fileUpload.applicationId.ToString();
-            //submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
-            //submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
-            //var result = await handler.HandleFileUploadAsync(submissionEntity);
+            var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
+            var submissionEntity = new SubmissionEntity();
+            submissionEntity.dfa_appapplicationid = fileUpload.applicationId.ToString();
+            submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
+            submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
+            var result = await handler.HandleFileUploadAsync(submissionEntity);
 
-            var mappedFileUpload = mapper.Map<sharepointdocumentlocation>(fileUpload);
-            var result = await handler.HandleFileUploadAsync(mappedFileUpload);
+            // var mappedFileUpload = mapper.Map<sharepointdocumentlocation>(fileUpload);
+            // var result = await handler.HandleFileUploadAsync(mappedFileUpload);
             return Ok(result);
         }
 
