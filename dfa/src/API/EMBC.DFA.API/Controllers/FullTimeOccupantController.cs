@@ -49,8 +49,8 @@ namespace EMBC.DFA.API.Controllers
             if (fullTimeOccupant == null) return BadRequest("FullTimeOccupant details cannot be empty.");
             var mappedFullTimeOccupant = mapper.Map<dfa_appoccupant_params>(fullTimeOccupant);
 
-            var fullTimeOccupantId = await handler.HandleFullTimeOccupantAsync(mappedFullTimeOccupant);
-            return Ok(fullTimeOccupantId);
+            var result = await handler.HandleFullTimeOccupantAsync(mappedFullTimeOccupant);
+            return Ok(result);
         }
 
         /// <summary>

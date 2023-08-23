@@ -10,7 +10,8 @@ import {
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
-  AbstractControl
+  AbstractControl,
+  Validators
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -196,6 +197,9 @@ export default class AddressComponent
 
   updateOnVisibilityMailingAddress(): void {
     this.primaryAddressForm
+      .get('mailingAddress')
+      .updateValueAndValidity();
+    this.primaryAddressForm
       .get('mailingAddress.addressLine1')
       .updateValueAndValidity();
     this.primaryAddressForm.get('mailingAddress.community').updateValueAndValidity();
@@ -211,10 +215,25 @@ export default class AddressComponent
     if (event.value === 'Yes') {
       const primaryAddress = this.primaryAddressForm.getRawValue().address;
       this.primaryAddressForm.get('mailingAddress').setValue(primaryAddress);
-    } else {
+      this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.community').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators(null);
+    } else if (event.value === 'No') {
       this.primaryAddressForm.get('mailingAddress').reset();
       this.primaryAddressForm.get('isBcMailingAddress').reset();
+      this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators([Validators.required]);
+      this.primaryAddressForm.get('mailingAddress.community').setValidators([Validators.required]);
+      this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators([Validators.required]);
     }
+    else {
+      this.primaryAddressForm.get('mailingAddress').reset();
+      this.primaryAddressForm.get('isBcMailingAddress').reset();
+      this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.community').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators(null);
+    }
+
+    this.updateOnVisibilityMailingAddress();
   }
 
   countryDisplayFn(country: Country): string {

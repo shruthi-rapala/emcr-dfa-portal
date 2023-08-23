@@ -10,6 +10,7 @@ using EMBC.ESS.Shared.Contracts.Metadata;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Xrm.Tools.WebAPI;
 using Xrm.Tools.WebAPI.Requests;
@@ -113,27 +114,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
-        // TODO: Fails with resource not found for the segment
-        public async Task<System.Dynamic.ExpandoObject> AddApplicationSignatures(IEnumerable<dfa_signature> dfa_signatures)
+        public async Task<string> AddApplicationSignature(dfa_signature dfa_signature)
         {
             try
             {
-                return await api.ExecuteAction("dfa_DFAPortalCreateApplicationAnnotation", dfa_signatures);
+               await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", dfa_signature);
+               return "signatureadded";
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return new System.Dynamic.ExpandoObject();
-                // throw new Exception($"Failed to add application signatures {ex.Message}", ex);
+                throw new Exception($"Failed to add application signature {ex.Message}", ex);
             }
         }
 
-        // TODO: missing parameters dfa_acopyofarentalagreementorlease (existing field), dfa_areyounowresidingintheresidence (existing),
-        // dfa_causeofdamageflood (new field), dfa_causeofdamagewildfire (new field), dfa_causeofdamagelandslide (new field), dfa_causeofdamagestorm (new field), dfa_causeofdamageother (new field)
-        // dfa_causeofdamageloss (existing field), dfa_dateofdamage (existing field), dfa_dateofdamageto (existing field), dfa_datereturntoresidence (existing field)
-        // dfa_description (existing field), dfa_doyourlossestotalmorethan1000 (existing field), dfa_havereceiptsforcleanupsorrepairs (existing field)
-        // dfa_wereyouevacuatedduringtheevent (existing field), dfa_primaryapplicantprintname, dfa_primaryapplicantsigned, dfa_primaryapplicantsigneddate,
-        // dfa_secondaryapplicantsigned, dfa_secondaryapplicantprintname, dfa_secondaryapplicantsigneddate
         public async Task<string> UpdateApplication(dfa_appapplicationmain_params application)
         {
             try
@@ -153,17 +146,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
-        // TODO: missing fields for no ins signatures
         public async Task<dfa_appapplicationstart_retrieve> GetApplicationStartById(Guid applicationId)
         {
             var list = await api.GetList<dfa_appapplicationstart_retrieve>("dfa_appapplications", new CRMGetListOptions
             {
                 Select = new[]
                 {
-                    "dfa_appapplicationid", "dfa_applicanttype", "dfa_doyouhaveinsurancecoverage2", "_dfa_applicant_value"
-                    // "dfa_primaryapplicantsignednoins"
-                    // "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "dfa_secondaryapplicantsignednoins",
-                    // "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins"
+                    "dfa_appapplicationid", "dfa_applicanttype", "dfa_doyouhaveinsurancecoverage2", "_dfa_applicant_value",
+                    "dfa_primaryapplicantsignednoins",
+                    "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "dfa_secondaryapplicantsignednoins",
+                    "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -171,7 +163,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return list.List.FirstOrDefault();
         }
 
-        // TODO: missing fields "dfa_causeofdamageflood", "dfa_causeofdamagestorm", "dfa_causeofdamagewildfire", "dfa_causeofdamagelandslide", "dfa_causeofdamageother",
         public async Task<dfa_appapplicationmain_retrieve> GetApplicationMainById(Guid applicationId)
         {
             var list = await api.GetList<dfa_appapplicationmain_retrieve>("dfa_appapplications", new CRMGetListOptions
@@ -179,31 +170,32 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 // TODO Update list of fields
                 Select = new[]
                 {
-                    "dfa_appapplicationid", "dfa_isprimaryanddamagedaddresssame", "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2",
-                    "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince", "dfa_damagedpropertypostalcode", "dfa_isthispropertyyourp",
-                    "dfa_indigenousreserve", "dfa_nameoffirstnationsr", "dfa_manufacturedhom", "dfa_eligibleforbchomegrantonthisproperty",
-                    "_dfa_confirmedbuildinglandlord_value",
-                    "dfa_acopyofarentalagreementorlease", "dfa_areyounowresidingintheresidence",
-                    // "dfa_causeofdamageflood", "dfa_causeofdamagestorm", "dfa_causeofdamagewildfire", "dfa_causeofdamagelandslide", "dfa_causeofdamageother",
+                    "dfa_appapplicationid", "dfa_isprimaryanddamagedaddresssame2", "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2",
+                    "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince", "dfa_damagedpropertypostalcode", "dfa_isthispropertyyourp2",
+                    "dfa_indigenousreserve2", "dfa_nameoffirstnationsr", "dfa_manufacturedhom2", "dfa_eligibleforbchomegrantonthisproperty2",
+                    "_dfa_buildingownerlandlord_value",
+                    "dfa_acopyofarentalagreementorlease2", "dfa_areyounowresidingintheresidence2",
+                    "dfa_causeofdamageflood2", "dfa_causeofdamagestorm2", "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageother2",
                     "dfa_causeofdamageloss", "dfa_dateofdamage", "dfa_dateofdamageto", "dfa_datereturntotheresidence",
-                    "dfa_description", "dfa_doyourlossestotalmorethan1000", "dfa_haveinvoicesreceiptsforcleanuporrepairs",
+                    "dfa_description", "dfa_doyourlossestotalmorethan10002", "dfa_haveinvoicesreceiptsforcleanuporrepairs2",
                     "dfa_primaryapplicantprintname", "dfa_primaryapplicantsigned", "dfa_primaryapplicantsigneddate",
-                    "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate"
+                    "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
+                    "dfa_wereyouevacuatedduringtheevent2"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
 
             foreach (dfa_appapplicationmain_retrieve application in list.List)
             {
-                if (application._dfa_confirmedbuildinglandlord_value != null)
+                if (application._dfa_buildingownerlandlord_value != null)
                 {
-                    var buildingOwnerlist = await api.GetList<dfa_appbuildingownerlandlord>("dfa_appbuildingownerlandlord", new CRMGetListOptions
+                    var buildingOwnerlist = await api.GetList<dfa_appbuildingownerlandlord>("dfa_appbuildingownerlandlords", new CRMGetListOptions
                     {
                         Select = new[]
                         {
                             "dfa_contactlastname", "dfa_contactphone1", "dfa_contactemail", "dfa_contactfirstname"
                         },
-                        Filter = $"dfa_appbuildingownerlandlordid eq {application._dfa_confirmedbuildinglandlord_value}"
+                        Filter = $"dfa_appbuildingownerlandlordid eq {application._dfa_buildingownerlandlord_value}"
                     });
 
                     application.dfa_contactfirstname = buildingOwnerlist.List.Last().dfa_contactfirstname;
@@ -241,7 +233,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_appapplicationid", "dfa_applicanttype",
-                        "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext", "_dfa_eventid_value", "_dfa_casecreatedid_value"
+                        "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext",
+                        "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon"
                     },
                     Filter = $"_dfa_applicant_value eq {profileId}"
                     //Expand = new CRMExpandOptions[]
@@ -255,20 +248,38 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 });
 
                 var lstApps = (from objApp in list.List
-                            from objEvent in lstEvents.List
-                            where objEvent.dfa_eventid == objApp._dfa_eventid_value
-                            from objCase in lstCases.List
-                            where objCase.incidentid == objApp._dfa_casecreatedid_value
-                            select new dfa_appapplication
-                            {
-                                dfa_appapplicationid = objApp.dfa_appapplicationid,
-                                dfa_applicanttype = objApp.dfa_applicanttype,
-                                dfa_dateofdamage = objApp.dfa_dateofdamage,
-                                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
-                                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                                dfa_event = objEvent.dfa_id,
-                                dfa_casenumber = objCase.ticketnumber
-                            }).AsEnumerable();
+                               join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
+                               from objAppEvent in appEvent.DefaultIfEmpty()
+                               join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
+                               from objCaseEvent in appCase.DefaultIfEmpty()
+                               select new dfa_appapplication
+                               {
+                                   dfa_appapplicationid = objApp.dfa_appapplicationid,
+                                   dfa_applicanttype = objApp.dfa_applicanttype,
+                                   dfa_dateofdamage = objApp.dfa_dateofdamage,
+                                   dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                                   dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                                   dfa_event = objAppEvent != null ? objAppEvent.dfa_id : null,
+                                   dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
+                                   dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
+                                   createdon = objApp.createdon
+                               }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
+
+                //from objEvent in lstEvents.List
+                //            where objEvent.dfa_eventid == objApp._dfa_eventid_value
+                //            from objCase in lstCases.List
+                //            where objCase.incidentid == objApp._dfa_casecreatedid_value into reslist
+                //            from p in ps_jointable.DefaultIfEmpty()
+                //            select new dfa_appapplication
+                //            {
+                //                dfa_appapplicationid = objApp.dfa_appapplicationid,
+                //                dfa_applicanttype = objApp.dfa_applicanttype,
+                //                dfa_dateofdamage = objApp.dfa_dateofdamage,
+                //                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                //                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                //                dfa_event = objEvent.dfa_id,
+                //                dfa_casenumber = objCase.ticketnumber
+                //            }).AsEnumerable();
 
                 return lstApps;
             }
@@ -516,65 +527,72 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpsertDeleteDocumentLocationAsync(dfa_appdocumentlocation_params objDocumentLocation)
+        public async Task<string> InsertDeleteDocumentLocationAsync(sharepointdocumentlocation objDocumentLocation)
         {
             try
             {
-                /* if (objDocumentLocation?.dfa_appdocumentlocationid != null && objDocumentLocation?.delete == true)
+                if (objDocumentLocation?.sharepointdocumentlocationid != null)
                 {
-                    await api.Delete("dfa_appdocumentlocations", (System.Guid)objDocumentLocation.dfa_appdocumentlocationid);
+                    await api.Delete("sharepointdocumentlocations", (System.Guid)objDocumentLocation.sharepointdocumentlocationid);
                     return "Deleted successfully";
                 }
-                else if (objDocumentLocation?.dfa_appdocumentlocationid != null)
+                else
                 {
-                    var result = api.Update("dfa_appdocumentlocations", (System.Guid)objDocumentLocation.dfa_appdocumentlocationid, objDocumentLocation);
-                    return "Updated successfully";
-                }
-                else if (objDocumentLocation?.dfa_appdocumentlocationid == null)
-                {
-                    var result = await api.Create("dfa_appdocumentlocations", objDocumentLocation);
+                    var toAdd = new sharepointdocumentlocation_foradd();
+                    toAdd.dfa_description = objDocumentLocation.dfa_description;
+                    toAdd.dfa_filetype = objDocumentLocation.dfa_filetype;
+                    toAdd.dfa_appapplicationid = (System.Guid)objDocumentLocation.dfa_appapplicationid;
+                    toAdd.name = objDocumentLocation.name;
+                    toAdd.dfa_modifiedby = objDocumentLocation.dfa_modifiedby;
+                    toAdd.relativeurl = objDocumentLocation.dfa_appapplicationid.ToString() + "_" + objDocumentLocation.name;
+
+                    var result = await api.Create("sharepointdocumentlocations", toAdd);
                     return result.ToString();
-                } */
-
-                var result = await api.ExecuteAction("dfa_DFAPortalAppDocumentLocation", objDocumentLocation);
-
-                if (result != null)
-                {
-                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
                 }
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return Guid.Empty.ToString();
-                // throw new Exception($"Failed to update document location {ex.Message}", ex);
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
             }
-
-            return string.Empty;
         }
 
-        // TODO : fails
-        public async Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetDocumentLocationsListAsync(Guid applicationId)
+        public async Task<string> UpsertDeleteDocumentLocationAsync(SubmissionEntity submission)
         {
             try
             {
-                var list = await api.GetList<dfa_appdocumentlocation_retrieve>("dfa_appdocumentlocations", new CRMGetListOptions
+                dynamic result = await api.ExecuteAction("dfa_SubmitDFADocuments", submission);
+
+                if (!result.submissionFlag)
+                {
+                    throw new Exception($"dfa_SubmitDFADocuments call failed: {result.message}");
+                }
+                return "Submitted";
+            }
+            catch (Exception ex)
+            {
+                // return System.Guid.Empty.ToString();
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
+            }
+        }
+
+        public async Task<IEnumerable<sharepointdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId)
+        {
+            try
+            {
+                var applicationIdString = applicationId.ToString();
+                var list = await api.GetList<sharepointdocumentlocation>("sharepointdocumentlocations", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "_dfa_applicationid_value", "dfa_appdocumentlocationid", "dfa_name", "dfa_documenttype", "dfa_documentdescription",
-                        "dfa_uploadeddate", "dfa_modifiedby", "dfa_filedata", "dfa_contenttype", "dfa_filesize"
-                    },
-                    Filter = $"_dfa_applicationid_value eq {applicationId}"
+                        "name", "dfa_description", "createdon", "sharepointdocumentlocationid, dfa_appapplicationid, dfa_filetype, dfa_modifiedby"
+                    }, Filter = $"dfa_appapplicationid eq '{applicationIdString}'"
                 });
 
                 return list.List;
             }
-            // catch (System.Exception ex)
-            catch
+            catch (System.Exception ex)
             {
-                return null;
-                // throw new Exception($"Failed to get document locations {ex.Message}", ex);
+                throw new Exception($"Failed to get documents {ex.Message}", ex);
             }
         }
     }

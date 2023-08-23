@@ -24,15 +24,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component';
 import { SignatureComponent } from './components/signature/signature.component';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { DfaAttachmentComponent } from './components/dfa-attachment/dfa-attachment.component';
 import { DFAEligibilityDialogComponent } from './components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import { FileUploadWarningDialogComponent } from './components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
+import { DirectivesModule } from './directives/directives.module';
+import { MatSelectModule } from '@angular/material/select';
+import { DFAApplicationAlertDialogComponent } from './components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    MatCardModule,
+    MatSelectModule,
     MatProgressSpinnerModule,
     MatNativeDateModule,
     MatDatepickerModule,
@@ -44,6 +51,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatButtonModule,
     MatInputModule,
     MatToolbarModule,
+    DirectivesModule,
     MarkdownModule.forRoot({ loader: HttpClient })
   ],
   declarations: [
@@ -54,13 +62,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     DialogComponent,
     SignatureComponent,
     FileUploadComponent,
+    DfaAttachmentComponent,
     EssFileDialogComponent,
     InformationDialogComponent,
     DFAEligibilityDialogComponent,
     FileUploadWarningDialogComponent,
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
-    TimeOutDialogComponent
+    TimeOutDialogComponent,
+    DFAApplicationAlertDialogComponent
   ],
   exports: [
     AppLoaderComponent,
@@ -70,12 +80,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     DialogComponent,
     SignatureComponent,
     FileUploadComponent,
+    DfaAttachmentComponent,
     EnvironmentBannerComponent,
     DFAEligibilityDialogComponent,
     FileUploadWarningDialogComponent,
     TimeOutDialogComponent,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    DFAApplicationAlertDialogComponent
   ]
 })
 export class CoreModule {}

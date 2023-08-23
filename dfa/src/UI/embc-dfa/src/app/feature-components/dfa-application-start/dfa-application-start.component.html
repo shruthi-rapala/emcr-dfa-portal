@@ -6,17 +6,11 @@
     <div class="col-4" *ngIf="showSaveButton === true">
       <button
         class="button-p save-button col-4"
-        [disabled]="isSubmitted"
-        (click)="saveAndBackToDashboard()"
+        (click)="backToDashboard()"
         mat-stroked-button
         type="button"
         >
-         Save & Back to Dashboard
-         <app-loader
-          [strokeWidth]="3"
-          [diameter]="25"
-          [showLoader]="showLoader"
-        ></app-loader>
+         Back to Dashboard
       </button>
     </div>
   </div>
@@ -51,6 +45,7 @@
           <button
             class="button-p"
             mat-stroked-button
+            [disabled]="step.isLast == true && submitAllowed == false"
             type="button"
             (click)="goForward(dfaApplicationStartStepper, step.isLast, step.component)"
           >

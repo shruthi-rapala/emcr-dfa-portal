@@ -3,16 +3,30 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationMainHeading }}</span>
     </div>
-    <div class="col-4">
+    <div class="col-4" *ngIf="vieworedit !== 'view'" >
       <button
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"
-        *ngIf="!dfaApplicationMainDataService.isSubmitted"
-        (click)="submitFile()"
+        (click)="saveAndBackToDashboard()"
         mat-stroked-button
         type="button"
         >
          Save & Back to Dashboard
+         <app-loader
+          [strokeWidth]="3"
+          [diameter]="25"
+        ></app-loader>
+      </button>
+    </div>
+    <div class="col-4" *ngIf="vieworedit === 'view'" >
+      <button
+        class="button-p save-button col-4"
+        style="height:40px !important; vertical-align: middle; width:220px;"
+        (click)="BackToDashboard()"
+        mat-stroked-button
+        type="button"
+        >
+         Back to Dashboard
          <app-loader
           [strokeWidth]="3"
           [diameter]="25"
@@ -38,7 +52,7 @@
       ></app-component-wrapper>
       <br />
       <div class="row justify-content-between resp-style">
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'">
           <button
             class="button-s"
             mat-button
@@ -48,7 +62,7 @@
             {{ step.backButtonLabel }}
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'">
           <button
             *ngIf="
               currentFlow === 'verified-registration' &&
@@ -73,7 +87,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step *ngIf="currentFlow === 'verified-registration'">
+    <mat-step *ngIf="currentFlow === 'verified-registration' && vieworedit !== 'view' && vieworedit !== 'edit'">
       <ng-template matStepLabel>Review</ng-template>
       <app-review
         [type]="type"
@@ -114,7 +128,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step *ngIf="currentFlow === 'verified-registration'">
+    <mat-step *ngIf="currentFlow === 'verified-registration' && vieworedit !== 'view' && vieworedit !== 'edit'">
       <ng-template matStepLabel>Sign & Submit</ng-template>
       <app-component-wrapper
         componentName="sign-and-submit"
@@ -140,17 +154,17 @@
             Return to Dashboard
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid">
+        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid && (formCreationService.otherContactsForm$ | async)?.valid">
           <button
             class="button-p save-button"
             mat-stroked-button
             type="button"
-            (click)="submitFile()"
+            (click)="setFormData('sign-and-submit');submitFile()"
           >
             Submit
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid)">
+        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid || !(formCreationService.otherContactsForm$ | async)?.valid)">
           <span style="color:red">Enter all required information and sign before submitting.</span>
         </div>
       </div>

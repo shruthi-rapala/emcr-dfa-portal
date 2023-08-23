@@ -1,4 +1,5 @@
-<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" [ngStyle]="{'pointer-events': vieworedit === 'view' ? 'none' : ''}" style="border: none;"
+          [class.mat-elevation-z0]="true">
   <mat-card-content>
 
   <p class="sub-heading" style="font-size: 20px">Clean Up Log</p>
@@ -140,88 +141,79 @@
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
               <mat-datepicker #fromPicker></mat-datepicker>
-                      <!--<mat-error
+                      <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                          cleanUpLogWorkForm.get('date').invalid &&
+                          cleanUpLogWorkForm.get('date').hasError('required') &&
+                          cleanUpLogWorkForm.get('date').touched
                         "
                       >
                         Date is required</mat-error
-                      >-->
+                      >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Name of family member/volunteer</mat-label>
-                      <input formControlName="name" matInput placeholder="Name of family member/volunteer" required/>
-                      <!--<mat-error
+                      <input formControlName="name" matInput placeholder="Name of family member/volunteer" required maxlength="100"/>
+                      <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.firstName.touched
+                          cleanUpLogWorkForm.get('name').invalid &&
+                          cleanUpLogWorkForm.get('name').hasError('required') &&
+                          cleanUpLogWorkForm.get('name').touched
                         "
                       >
                         First Name is required</mat-error
-                      >-->
+                      >
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.name').invalid &&
                           cleanUpLogWorkForm.get('cleanuplog.name').hasError('maxLength')
                         "
                       >
-                        Maximum length reached</mat-error
+                        Maximum length is 100 characters</mat-error
                       >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Hours</mat-label>
-                      <input formControlName="hours" matInput placeholder="Hours" required type="number"/>
-                      <!--<mat-error
-                        *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.lastName.touched
-                        "
-                      >
-                        Last Name is required</mat-error
-                      >-->
+                      <input formControlName="hours" matInput placeholder="Hours" required type="number" max="100000000000" min="0"/>
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.hours').invalid &&
-                          cleanUpLogWorkForm.get('cleanuplog.hours').hasError('maxLength')
+                          (cleanUpLogWorkForm.get('cleanuplog.hours').hasError('max') || cleanUpLogWorkForm.get('cleanuplog.hours').hasError('min'))
                         "
                       >
-                        Maximum length reached</mat-error
+                        Hourse worked must be > 0 and less than 100 000 000 000</mat-error
                       >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Description</mat-label>
-                      <input formControlName="description" matInput placeholder="Description" />
-                      <!--<mat-error
+                      <input formControlName="description" matInput placeholder="Description" required maxlength="200" />
+                      <mat-hint>Maximum length is 200 characters</mat-hint>
+                      <mat-error
                         *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.touched
+                          cleanUpLogWorkForm.get('cleanuplog.description').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.description').hasError('required') &&
+                          cleanUpLogWorkForm.get('cleanuplog.description').touched
                         "
                       >
-                      Relationship is required</mat-error
-                      >-->
+                      Description is required</mat-error
+                      >
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.description').invalid &&
                           cleanUpLogWorkForm.get('cleanuplog.description').hasError('maxLength')
                         "
                       >
-                        Maximum length reached</mat-error
+                        Maximum length is 200 characters</mat-error
                       >
                     </mat-form-field>
                   </div>
                 </div>
-                <!-- <button type="button" (click)="showFullTimeOccupantsForm()">Show Form</button> -->
 
                 <div class="row">
                   <div class="col-md-3">
@@ -260,219 +252,100 @@
       </div>
   </form>
 
-  <form [formGroup]="cleanUpWorkFilesForm">
-
-      <div formGroupName="fileUpload">
-        <ng-container>
-          <div class="row">
-            <div class="col-md-12">
-              <p class="sub-heading">
-                <b>
-                  If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs.
-                  <br />You may also attach them to this application
-                </b>
-              </p>
-
-              <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.data.length > 0">
-
-
-                <!-- File Name Column -->
-                <ng-container matColumnDef="fileName" style="width:40%">
-                  <th mat-header-cell *matHeaderCellDef >
-                    <b>File Name</b>
-                  </th>
-                  <td *matCellDef="let elementFile" mat-cell>
-                    {{ elementFile.fileName }}
-                  </td>
-                </ng-container>
-
-                <!-- File Description Column -->
-                <ng-container matColumnDef="fileDescription" style="width:40%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <b>File Description</b>
-                  </th>
-                  <td *matCellDef="let elementFile" mat-cell>
-                    {{ elementFile.fileDescription}}
-                  </td>
-                </ng-container>
-
-                 <!-- Date Column -->
-                <ng-container matColumnDef="uploadedDate" style="width:40%">
-                  <th mat-header-cell *matHeaderCellDef >
-                    <b>Date</b>
-                  </th>
-                  <td *matCellDef="let elementFile" mat-cell>
-                    {{ elementFile.uploadedDate | date : "yyyy/MM/dd" }}
-                  </td>
-                </ng-container>
-
-                <!-- Delete Icon Column -->
-                <ng-container matColumnDef="deleteIcon" style="width:20%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    &nbsp;
-                  </th>
-                  <td *matCellDef="let elementFile" mat-cell>
-                    <button
-                    class="delete-image"
-                    mat-icon-button
-                    aria-label="Remove"
-                    (click)="deleteCleanupLogFileRow(elementFile)"
-                  >
-                    <img src="/assets/images/delete.svg" height="35" width="35" />
-                    <img
-                      src="/assets/images/delete_onhover.svg"
-                      height="35"
-                      width="35"
-                    />
-                    </button>
-                  </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="cleanUpWorkFileColumnsToDisplay"></tr>
-                <tr
-                  mat-row
-                  *matRowDef="let elementFile; columns: cleanUpWorkFileColumnsToDisplay"
-                  class="example-element-row"
-                ></tr>
-
-              </table>
-
-              <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
-                <br /><br/>
-              </div>
-
-              <button
-                *ngIf="!showCleanUpWorkFileForm"
-                class="addcleanup-button"
-                mat-button
-                type="button"
-                (click)="addCleanupLogFile()"
-              >
-                + Add receipt or invoice
-              </button>
-
-              <mat-card *ngIf="showCleanUpWorkFileForm">
-                <p class="sub-heading" style="font-size: 15px">
-                  Attach a photo/scanned copy of receipts or invoices
-                </p>
-                <div class="row">
-
-                  <div class="col-md-4">
-                    <app-file-upload
-                    [noOfAttachments]="1"
-                    (attachedFile)="setCleanUpWorkFileFormControl($event)"
-                    [allowedFileTypes]="allowedFileTypes"
-                    allowedFileExtensionsList=".pdf,.jpg,.jpeg,.png"
-                  >
-                  </app-file-upload>
-                    <!-- <div>
-                      <div
-                        class="dropzone"
-                        fileDragDrop
-                        (filesChangeEmiter)="onFileChange($event)"
-                      >
-                        <div class="text-wrapper">
-                          <div class="centered">
-                            <input
-                              type="file"
-                              name="file"
-                              id="file"
-                              (change)="onFileChange($event.target.files)"
-                              accept=".pdf,.jpg,.jpeg,.png"
-                            />
-                            <label for="file"
-                              >Drag and drop or <span class="textLink">browse</span> your files
-                            <br />
-                            <span style="font-size:14px;">
-                              Allowed file types - pdf, jpg, jpeg, png<br />
-                              Restricted characters in file name:<br />
-                              <b>~"#%&*:.<>?/{{ '{' }}|{{ '}' }}.</b> Leading and trailing<br />
-                              spaces in file name aren't allowed
-                            </span>
-                              </label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div> -->
-                    <br />
-                  </div>
-                  <div class="col-md-6">
-                    <mat-form-field appearance="outline">
-                      <mat-label>File Name</mat-label>
-                      <input formControlName="fileName" readonly value="{{fileName}}" matInput placeholder="File Name" required/>
-                      <!--<mat-error
-                        *ngIf="
-                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.invalid &&
-                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.hasError('required') &&
-                          cleanUpLogForm.get('cleanuplogFile').controls.fileName.touched
-                        "
-                      >
-                        Incorrect file type</mat-error
-                      >-->
-                    </mat-form-field>
-                      <p class="sub-heading" style="font-size: 15px">
-                        You may update the file description to something more descriptive:
-                      </p>
-                    <mat-form-field appearance="outline">
-
-                      <mat-label>File Description</mat-label>
-                      <input formControlName="fileDescription" matInput placeholder="File Description" />
-                      <!--<mat-error
-                        *ngIf="
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.invalid &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.hasError('required') &&
-                          occupantsForm.get('fullTimeOccupant').controls.relationship.touched
-                        "
-                      >
-                      Relationship is required</mat-error
-                      >-->
-                      <mat-error
-                        *ngIf="
-                          cleanUpWorkFilesForm.get('fileUpload.fileDescription').invalid &&
-                          cleanUpWorkFilesForm.get('fileUpload.fileDescription').hasError('maxLength')
-                        "
-                      >
-                        Maximum length reached</mat-error
-                      >
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-
-                  </div>
-                </div>
-                <!-- <button type="button" (click)="showFullTimeOccupantsForm()">Show Form</button> -->
-
-                <div class="row">
-                  <div class="col-md-3">
-                    <button
-                      class="button-s details-button"
-                      mat-button
-                      type="button"
-                      (click)="cancelNewCleanupLogFile()"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <div class="col-md-3">
-                    <button
-                      class="addcleanup-button details-button save-button"
-                      mat-button
-                      type="button"
-                      (click)="saveNewCleanupLogFile()"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-
-              </mat-card>
-            </div>
-          </div>
-        </ng-container>
+  <ng-container>
+    <div class="row">
+      <div class="col-md-8">
+        <app-dfa-attachment
+          title="Cleanup Invoices/Receipts"
+          description=" If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs. <br />You may also attach them to this application"
+          requiredFile="no"
+          [allowedFileTypes]="allowedFileTypes"
+          allowedFileExtensionsList=".pdf,.jpg,.jpeg,.png"
+          fileType="Cleanup"
+          excludeFileTypes="[]"
+          (saveFileUpload)="saveNewCleanupLogFile($event)"
+          (cencelFileUpload)="cancelNewCleanupLogFile()"
+          [fileUpload]="formCreationService.fileUploadsForm.value.get('cleanupFileUpload')"
+        ></app-dfa-attachment>
       </div>
+    </div>
+  </ng-container>
+  <br/><br/>
 
-    </form>
+  <ng-container>
+    <div class="row">
+      <div class="col-md-12">
+
+        <table mat-table [dataSource]="cleanUpWorkFileDataSource" *ngIf="cleanUpWorkFileDataSource.data.length > 0">
+
+
+          <!-- File Name Column -->
+          <ng-container matColumnDef="fileName" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef >
+              <b>File Name</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.fileName }}
+            </td>
+          </ng-container>
+
+          <!-- File Description Column -->
+          <ng-container matColumnDef="fileDescription" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef>
+              <b>File Description</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.fileDescription}}
+            </td>
+          </ng-container>
+
+            <!-- Date Column -->
+          <ng-container matColumnDef="uploadedDate" style="width:40%">
+            <th mat-header-cell *matHeaderCellDef >
+              <b>Date</b>
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              {{ elementFile.uploadedDate | date : "yyyy/MM/dd" }}
+            </td>
+          </ng-container>
+
+          <!-- Delete Icon Column -->
+          <ng-container matColumnDef="deleteIcon" style="width:20%">
+            <th mat-header-cell *matHeaderCellDef>
+              &nbsp;
+            </th>
+            <td *matCellDef="let elementFile" mat-cell>
+              <button
+              class="delete-image"
+              mat-icon-button
+              aria-label="Remove"
+              (click)="deleteCleanupLogFileRow(elementFile)"
+            >
+              <img src="/assets/images/delete.svg" height="35" width="35" />
+              <img
+                src="/assets/images/delete_onhover.svg"
+                height="35"
+                width="35"
+              />
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="cleanUpWorkFileColumnsToDisplay"></tr>
+          <tr
+            mat-row
+            *matRowDef="let elementFile; columns: cleanUpWorkFileColumnsToDisplay"
+            class="example-element-row"
+          ></tr>
+
+        </table>
+
+        <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
+          <br /><br/>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 
   </mat-card-content>
 </mat-card>

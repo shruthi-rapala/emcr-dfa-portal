@@ -1,4 +1,4 @@
-<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" [ngStyle]="{'pointer-events': vieworedit === 'view' || vieworedit === 'edit' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <form [formGroup]="damagedPropertyAddressForm">
@@ -22,10 +22,10 @@
               <div class="row radio-extra-label">
                 {{ profileAddress?.addressLine1}}<br/>
                 <div *ngIf="profileAddress?.addressLine2">{{ profileAddress?.addressLine2}}<br/></div>
-                {{ profileAddress?.community }}&nbsp;{{ profileAddress?.postalCode }}<br /><br/>
+                {{ profileAddress?.city }}&nbsp;{{profileAddress?.stateProvince}}&nbsp;{{ profileAddress?.postalCode }}<br /><br/>
               </div>
               <mat-radio-button value=false>No</mat-radio-button>
-              <div class="row radio-extra-label" *ngIf="damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').value != 'true'">
+              <div class="row radio-extra-label" *ngIf="damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').value == 'false'">
                 <app-bc-address
                   [addressForm]="damagedPropertyAddressForm"
                   [primaryAddressWarning]="false"
@@ -77,7 +77,8 @@
           <div class="col-md-6 bottomspace">
             <mat-form-field appearance="outline">
               <mat-label>Name of First Nations Reserve</mat-label>
-              <input formControlName="firstNationsReserve" matInput placeholder="Name of First Nations Reserve" [required]="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'"/>
+              <input formControlName="firstNationsReserve" matInput placeholder="Name of First Nations Reserve" [required]="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'" maxlength="100"/>
+              <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('firstNationsReserve').invalid &&
@@ -93,7 +94,7 @@
                   damagedPropertyAddressForm.get('firstNationsReserve').hasError('maxLength')
                 "
               >
-                Maximum length reached</mat-error
+                Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
             <br/><br/><br/>
@@ -119,7 +120,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="ApplicantOptions[dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOptions.Homeowner">
+        <div class="row" *ngIf="!isResidentialTenant">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               As the Home Owner, are you eligible for a BC Home Owner Grant for this property?<span style="color:red" >*</span>
@@ -134,14 +135,14 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="ApplicantOptions[dfaApplicationMainDataService.dfaApplicationStart.appTypeInsurance.applicantOption] === ApplicantOptions.ResidentialTenant">
+        <div class="row" *ngIf="isResidentialTenant">
           <p class="sub-heading" style="font-size: 15px">
            Provide the registered building owner(s) and/or landlord(s) name(s) and/or phone number(s).<span style="color:red" >*</span>
           </p>
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <mat-label>First name</mat-label>
-              <input formControlName="landlordGivenNames" matInput placeholder="First name" required/>
+              <input formControlName="landlordGivenNames" matInput placeholder="First name" required maxlength="49"/>
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordGivenNames').invalid &&
@@ -151,12 +152,20 @@
               >
                 First Name is required</mat-error
               >
+              <mat-error
+              *ngIf="
+                damagedPropertyAddressForm.get('landlordGivenNames').invalid &&
+                damagedPropertyAddressForm.get('landlordGivenNames').hasError('maxLength')
+              "
+            >
+              Maximum length is 49 characters</mat-error
+            >
             </mat-form-field>
           </div>
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <mat-label>Last name</mat-label>
-              <input formControlName="landlordSurname" matInput placeholder="Last name" required/>
+              <input formControlName="landlordSurname" matInput placeholder="Last name" required maxlength="49"/>
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordSurname').invalid &&
@@ -165,6 +174,14 @@
                 "
               >
                 Last Name is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordSurname').invalid &&
+                  damagedPropertyAddressForm.get('landlordSurname').hasError('maxLength')
+                "
+              >
+                Maximum length is 49 characters</mat-error
               >
             </mat-form-field>
           </div>
@@ -200,6 +217,8 @@
               <input formControlName="landlordEmail"
                 matInput
                 placeholder="Contact Email"
+                type="email"
+                maxlength="100"
                 />
               <mat-error
                 *ngIf="
@@ -208,6 +227,14 @@
                 "
               >
                 Invalid email address</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordEmail').invalid &&
+                  damagedPropertyAddressForm.get('landlordEmail').hasError('maxLength')
+                "
+              >
+                Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
           </div>

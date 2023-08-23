@@ -22,6 +22,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
+import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+
 
 @Component({
   selector: 'app-property-damage',
@@ -34,23 +36,31 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   propertyDamageForm$: Subscription;
   formCreationService: FormCreationService;
   remainingLength: number = 2000;
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
-    public customValidator: CustomValidationService
+    public customValidator: CustomValidationService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.propertyDamageForm$ = this.formCreationService
       .getPropertyDamageForm()
       .subscribe((propertyDamage) => {
         this.propertyDamageForm = propertyDamage;
         this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
-        this.propertyDamageForm.get('otherDamageText').setValidators(null);
+        if (this.propertyDamageForm.get('otherDamage').value === 'true') {
+          this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required, Validators.maxLength(100)]);
+        } else {
+          this.propertyDamageForm.get('otherDamageText').setValidators([Validators.maxLength(100)]);
+        }
         this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
         this.propertyDamageForm.updateValueAndValidity();
       });

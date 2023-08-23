@@ -14,7 +14,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<dfa_appcontact> GetUserProfileAsync(string userId);
         Task<string> AddContact(dfa_appcontact contact);
         Task<string> AddApplication(dfa_appapplicationstart_params application);
-        Task<System.Dynamic.ExpandoObject> AddApplicationSignatures(IEnumerable<dfa_signature> dfa_signatures);
+        Task<string> AddApplicationSignature(dfa_signature dfa_signature);
         Task<string> UpdateApplication(dfa_appapplicationmain_params application);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartById(Guid applicationId);
         Task<dfa_appapplicationmain_retrieve> GetApplicationMainById(Guid applicationId);
@@ -28,8 +28,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsListAsync(Guid applicationId);
         Task<string> UpsertDeleteCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLog);
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsListAsync(Guid applicationId);
-        Task<string> UpsertDeleteDocumentLocationAsync(dfa_appdocumentlocation_params objDocumentLocation);
-        Task<IEnumerable<dfa_appdocumentlocation_retrieve>> GetDocumentLocationsListAsync(Guid applicationId);
+        Task<string> UpsertDeleteDocumentLocationAsync(SubmissionEntity submission);
+        Task<string> InsertDeleteDocumentLocationAsync(sharepointdocumentlocation objDocumentLocation);
+        Task<IEnumerable<sharepointdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
 
         //Task<IEnumerable> GetDistrictsAsync();

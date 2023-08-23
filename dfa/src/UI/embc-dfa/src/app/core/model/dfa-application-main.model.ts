@@ -71,19 +71,27 @@ export class DamagedPropertyAddressForm {
     }
     this.addressLine1.setValidators([Validators.required,
       customValidator
-        .maxLengthValidator()
+        .maxLengthValidator(100)
         .bind(customValidator)
       ]);
 
     if (damagedPropertyAddress.addressLine2) {
       this.addressLine2.setValue(damagedPropertyAddress.addressLine2);
     }
-    this.addressLine2.setValidators(null);
+    this.addressLine2.setValidators([
+      customValidator
+        .maxLengthValidator(100)
+        .bind(customValidator)
+      ]);
 
     if (damagedPropertyAddress.community) {
       this.community.setValue(damagedPropertyAddress.community);
     }
-    this.community.setValidators([Validators.required]);
+    this.community.setValidators([Validators.required,
+      customValidator
+        .maxLengthValidator(100)
+        .bind(customValidator)
+    ]);
 
     if (damagedPropertyAddress.postalCode) {
       this.postalCode.setValue(damagedPropertyAddress.postalCode);
@@ -93,7 +101,11 @@ export class DamagedPropertyAddressForm {
     if (damagedPropertyAddress.stateProvince) {
       this.stateProvince.setValue(damagedPropertyAddress.stateProvince);
     }
-    this.stateProvince.setValidators([Validators.required]);
+    this.stateProvince.setValidators([Validators.required,
+      customValidator
+      .maxLengthValidator(100)
+      .bind(customValidator)
+    ]);
 
     if (damagedPropertyAddress.occupyAsPrimaryResidence) {
       this.occupyAsPrimaryResidence.setValue(damagedPropertyAddress.occupyAsPrimaryResidence);
@@ -109,7 +121,7 @@ export class DamagedPropertyAddressForm {
       this.firstNationsReserve.setValue(damagedPropertyAddress.firstNationsReserve);
     }
     this.firstNationsReserve.setValidators([customValidator
-      .maxLengthValidator()
+      .maxLengthValidator(100)
       .bind(customValidator)]);
 
     if (damagedPropertyAddress.isPrimaryAndDamagedAddressSame) {
@@ -229,7 +241,7 @@ export class PropertyDamageForm {
       this.otherDamageText.setValue(propertyDamage.otherDamageText);
     }
     this.otherDamageText.setValidators([customValidator
-      .maxLengthValidator()
+      .maxLengthValidator(100)
       .bind(customValidator)]);
 
     if (propertyDamage.damageFromDate) {
@@ -246,7 +258,7 @@ export class PropertyDamageForm {
       this.briefDescription.setValue(propertyDamage.briefDescription);
     }
     this.briefDescription.setValidators([customValidator
-      .maxLengthValidator()
+      .maxLengthValidator(2000)
       .bind(customValidator)]);
 
     if (propertyDamage.lossesExceed1000) {
@@ -334,7 +346,7 @@ export class FullTimeOccupantsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(49) // first name last name and ', ' have to add up to no more than 100
             .bind(customValidator)
         ]
       ],
@@ -348,7 +360,7 @@ export class FullTimeOccupantsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(49)
             .bind(customValidator)
         ]
       ],
@@ -362,7 +374,7 @@ export class FullTimeOccupantsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
             .bind(customValidator)
         ]
       ]
@@ -433,7 +445,7 @@ export class OtherContactsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(49)  // have to fit firstname and lastname and one space and comma into dfa_name
             .bind(customValidator)
         ]
       ],
@@ -447,7 +459,7 @@ export class OtherContactsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(49)
             .bind(customValidator)
         ]
       ],
@@ -474,7 +486,7 @@ export class OtherContactsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
             .bind(customValidator)
         ]
       ]
@@ -558,7 +570,7 @@ export class SecondaryApplicantsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(49) // must squish lastname, firstname into organizationname
             .bind(customValidator)
         ]
       ],
@@ -572,7 +584,7 @@ export class SecondaryApplicantsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(49)
             .bind(customValidator)
         ]
       ],
@@ -587,7 +599,7 @@ export class SecondaryApplicantsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
             .bind(customValidator)
         ]
       ],
@@ -602,7 +614,7 @@ export class SecondaryApplicantsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
             .bind(customValidator)
         ]
       ]
@@ -684,7 +696,7 @@ export class CleanUpLogItemsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
             .bind(customValidator)
         ]
       ],
@@ -697,16 +709,15 @@ export class CleanUpLogItemsForm {
               Validators.required
             )
             .bind(customValidator),
-          customValidator
-            .maxLengthValidator()
-            .bind(customValidator)
+          Validators.max(100000000000),
+          Validators.min(0)
         ]
       ],
       description: [
         '',
         [
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(200)
             .bind(customValidator)
         ]
       ]
@@ -757,7 +768,12 @@ export class FileUploadsForm {
   fileData = new UntypedFormControl();
   contentType = new UntypedFormControl();
   fileSize = new UntypedFormControl();
-  fileUpload: UntypedFormGroup;
+  cleanupFileUpload: UntypedFormGroup;
+  insuranceTemplateFileUpload: UntypedFormGroup;
+  rentalAgreementFileUpload: UntypedFormGroup;
+  identificationFileUpload: UntypedFormGroup;
+  damagePhotoFileUpload: UntypedFormGroup;
+  supportingFilesFileUpload: UntypedFormGroup;
   fileUploads = new UntypedFormControl([]);
   addNewFileUploadIndicator = new UntypedFormControl(false);
 
@@ -766,7 +782,7 @@ export class FileUploadsForm {
     customValidator: CustomValidationService,
     builder: UntypedFormBuilder
   ) {
-    this.fileUpload = builder.group({
+    this.insuranceTemplateFileUpload = builder.group({
       deleteFlag: [
         false,
         [
@@ -814,7 +830,600 @@ export class FileUploadsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.rentalAgreementFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.identificationFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.supportingFilesFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.damagePhotoFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.cleanupFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
             .bind(customValidator)
         ]
       ],
@@ -960,7 +1569,7 @@ export class DamagedRoomsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(100)
             .bind(customValidator)
         ]
       ],
@@ -974,7 +1583,7 @@ export class DamagedRoomsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator()
+            .maxLengthValidator(200)
             .bind(customValidator)
         ]
       ],

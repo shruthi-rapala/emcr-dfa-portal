@@ -57,6 +57,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     'image/jpeg',
     'image/png'
   ];
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -72,6 +73,8 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+
     this.cleanUpLogForm$ = this.formCreationService
       .getCleanUpLogForm()
       .subscribe((cleanUpLog) => {
@@ -92,7 +95,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.cleanUpLogWorkForm
       .get('addNewCleanUpLogIndicator')
       .valueChanges.subscribe((value) => this.updateCleanupLogOnVisibility());
-    this.getCleanUpLogsForApplication(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.getCleanUpLogsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
     this.cleanUpWorkFilesForm$ = this.formCreationService
       .getFileUploadsForm()
@@ -109,10 +112,18 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
      _cleanUpWorkFileFormArray.valueChanges
        .pipe(
          mapTo(_cleanUpWorkFileFormArray.getRawValue())
-         ).subscribe(data => this.cleanUpWorkFileDataSource.data = data.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false));
+         ).subscribe(data => this.cleanUpWorkFileDataSource.data = _cleanUpWorkFileFormArray.getRawValue()?.filter(x => x.fileType === "Cleanup" && x.deleteFlag === false));
+
+    this.initCleanUpWorkFiles();
   }
 
   getCleanUpLogsForApplication(applicationId: string) {
+
+    if (applicationId === undefined) {
+      applicationId = this.dfaApplicationMainDataService.getApplicationId();
+      //alert("applicationId: " + applicationId)
+    }
+
     this.cleanUpLogsService.cleanUpLogItemGetCleanUpLogItems({applicationId: applicationId}).subscribe({
       next: (cleanUpLogs) => {
         this.cleanUpWorkData = cleanUpLogs;
@@ -135,45 +146,6 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     return this.cleanUpWorkFilesForm.controls;
   }
 
-  onFileChange(event) {
-    const file: File = event[0];
-    if (file) {
-      var extension = file.name.substr(file.name.lastIndexOf('.'));
-      if ((extension.toLowerCase() != ".pdf") &&
-        (extension.toLowerCase() != ".png") &&
-        (extension.toLowerCase() != ".jpg") &&
-        (extension.toLowerCase() != ".jpeg")) {
-        alert("Not allowed to upload " + extension + " file");
-        return false;
-      }
-
-      this.cleanUpWorkFilesForm
-        .get('fileUpload.fileName').
-        setValue(file.name);
-      this.cleanUpWorkFilesForm
-        .get('fileUpload.fileDescription').
-        setValue(file.name);
-      this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(file.text);
-      this.cleanUpWorkFilesForm.get('fileUpload.contentType').setValue(file.type);
-      this.cleanUpWorkFilesForm.get('fileUpload.fileSize').setValue(file.size);
-      this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
-        //.updateValueAndValidity();
-    }
-  }
-
-  setCleanUpWorkFileFormControl(event: any) {
-    const reader = new FileReader();
-    reader.readAsDataURL(event);
-    reader.onload = () => {
-      this.cleanUpWorkFilesForm.get('fileUpload.fileName').setValue(event.name);
-      this.cleanUpWorkFilesForm.get('fileUpload.fileDescription').setValue(event.name);
-      this.cleanUpWorkFilesForm.get('fileUpload.fileData').setValue(reader.result);
-      this.cleanUpWorkFilesForm.get('fileUpload.contentType').setValue(event.type);
-      this.cleanUpWorkFilesForm.get('fileUpload.fileSize').setValue(event.size);
-      this.cleanUpWorkFilesForm.get('fileUpload.uploadedDate').setValue(new Date());
-    };
-  }
-
   updateCleanupLogOnVisibility(): void {
     this.cleanUpLogWorkForm
       .get('cleanuplog.date')
@@ -191,13 +163,13 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   updateCleanupLogFileOnVisibility(): void {
     this.cleanUpWorkFilesForm
-      .get('fileUpload.uploadedDate')
+      .get('cleanupFileUpload.uploadedDate')
       .updateValueAndValidity();
     this.cleanUpWorkFilesForm
-      .get('fileUpload.fileName')
+      .get('cleanupFileUpload.fileName')
       .updateValueAndValidity();
     this.cleanUpWorkFilesForm
-      .get('fileUpload.fileDescription')
+      .get('cleanupFileUpload.fileDescription')
       .updateValueAndValidity();
   }
 
@@ -212,16 +184,16 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.showCleanUpWorkForm = !this.showCleanUpWorkForm;
     this.cleanUpLogWorkForm.get('addNewCleanUpLogIndicator').setValue(true);
     this.cleanUpLogWorkForm.get('cleanuplog.deleteFlag').setValue(false);
-    this.cleanUpLogWorkForm.get('cleanuplog.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+    this.cleanUpLogWorkForm.get('cleanuplog.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
   }
 
-  addCleanupLogFile(): void {
-    this.cleanUpWorkFilesForm.get('fileUpload').reset();
-    this.cleanUpWorkFilesForm.get('fileUpload.fileType').setValue(this.FileCategories.Cleanup);
-    this.cleanUpWorkFilesForm.get('fileUpload.applicationId').setValue(this.dfaApplicationMainDataService.dfaApplicationStart.id);
+  initCleanUpWorkFiles(): void {
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload').reset();
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
-    this.cleanUpWorkFilesForm.get('fileUpload.modifiedBy').setValue("Applicant");
-    this.cleanUpWorkFilesForm.get('fileUpload.deleteFlag').setValue(false);
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.modifiedBy').setValue("Applicant");
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.deleteFlag').setValue(false);
     this.cleanUpWorkFilesForm.get('addNewFileUploadIndicator').setValue(true);
   }
 
@@ -254,18 +226,15 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     }
   }
 
-  saveNewCleanupLogFile(): void {
-    this.cleanUpWorkFilesForm
-      .get('fileUpload.uploadedDate').
-      setValue(new Date());
-    this.cleanUpWorkFilesForm
-      .get('fileUpload.fileType').
-      setValue(this.FileCategories.Cleanup);
-    if (this.cleanUpWorkFilesForm.get('fileUpload').status === 'VALID') {
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: this.cleanUpWorkFilesForm.get('fileUpload').getRawValue() }).subscribe({
+  saveNewCleanupLogFile(fileUpload: FileUpload): void {
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.uploadedDate').setValue(new Date());
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
+    if (this.cleanUpWorkFilesForm.get('cleanupFileUpload').status === 'VALID') {
+      fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
+      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
-          this.cleanUpWorkFilesForm.get('fileUpload').get('id').setValue(fileUploadId);
-          this.dfaApplicationMainDataService.fileUploads.push(this.cleanUpWorkFilesForm.get('fileUpload').getRawValue());
+          fileUpload.id = fileUploadId;
+          this.dfaApplicationMainDataService.fileUploads.push(fileUpload);
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(this.dfaApplicationMainDataService.fileUploads);
           this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('true');
           this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
@@ -275,14 +244,14 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.cleanUpWorkFilesForm.get('fileUpload').markAllAsTouched();
+      this.cleanUpWorkFilesForm.get('cleanupFileUpload').markAllAsTouched();
     }
   }
 
   deleteCleanupLogRow(index: number): void {
     this.cleanUpWorkData[index].deleteFlag = true;
     this.cleanUpLogsService.cleanUpLogItemUpsertDeleteCleanUpLogItem({body: this.cleanUpWorkData[index]}).subscribe({
-      next: (cleanUpLogId) => {
+      next: (result) => {
           this.cleanUpWorkData.splice(index, 1);
           this.cleanUpWorkDataSource.next(this.cleanUpWorkData);
           this.cleanUpLogWorkForm.get('cleanuplogs').setValue(this.cleanUpWorkData);
@@ -302,8 +271,9 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
     let index = fileUploads.indexOf(element);
     element.deleteFlag = true;
+    element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
-      next: (fileUploadId) => {
+      next: (result) => {
         fileUploads[index] = element;
         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
         if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value?.filter(x => x.fileType == FileCategory.Cleanup).length === 0) {

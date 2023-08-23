@@ -19,6 +19,9 @@ import { DFAApplicationStartDataService } from './dfa-application-start-data.ser
 import { DFAApplicationStartService } from './dfa-application-start.service';
 import { InsuranceOption, SignatureBlock } from 'src/app/core/api/models';
 import { ProfileDataService } from '../profile/profile-data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DFAApplicationAlertDialogComponent } from 'src/app/core/components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
+
 
 @Component({
   selector: 'app-dfa-application-start',
@@ -45,6 +48,7 @@ export class DFAApplicationStartComponent
   parentPageName = 'dfa-application-start';
   showLoader = false;
   isSubmitted = false;
+  submitAllowed: boolean = false;
 
   constructor(
     private router: Router,
@@ -55,7 +59,8 @@ export class DFAApplicationStartComponent
     private alertService: AlertService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private dfaApplicationStartService: DFAApplicationStartService,
-    private profileDataService: ProfileDataService
+    private profileDataService: ProfileDataService,
+    public dialog: MatDialog,
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -64,9 +69,19 @@ export class DFAApplicationStartComponent
         this.stepToDisplay = state.stepIndex;
       }
     }
-    this.formCreationService.insuranceOptionChanged.subscribe((value) => {
-      let enumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
-      if (value === enumKey) this.fullInsurance = true; else this.fullInsurance = false;
+    this.formCreationService.insuranceOptionChanged.subscribe((any) => {
+      let yesEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
+      if (this.form?.controls?.insuranceOption?.value === yesEnumKey) this.fullInsurance = true; else this.fullInsurance = false;
+
+      let noEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
+      if (this.form?.controls?.applicantOption?.value && this.form?.controls?.insuranceOption?.value) {
+        if (this.form?.controls?.insuranceOption?.value == noEnumKey ) {
+          if (this.form?.get('applicantSignature')?.value && this.form?.get('applicantSignature.dateSigned')?.value &&
+            this.form?.get('applicantSignature.signature')?.value && this.form?.get('applicantSignature.signedName')?.value) {
+              this.submitAllowed = true;
+            } else this.submitAllowed = false;
+        } else this.submitAllowed = true;
+      } else this.submitAllowed = false;
     });
   }
 
@@ -75,7 +90,6 @@ export class DFAApplicationStartComponent
     this.dfaApplicationStartHeading = 'Create Your Application';
     this.steps = this.componentService.createDFAApplicationStartSteps();
     this.dfaApplicationStartDataService.profileVerified = true;
-    this.dfaApplicationStartDataService.profileId = this.profileDataService.getProfileId();
   }
 
   ngAfterViewChecked(): void {
@@ -125,15 +139,8 @@ export class DFAApplicationStartComponent
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
     if (isLast) {
-      this.setFormData(component);
-      this.submitFile();
+      this.alertMessage(component);
     } else if (this.form.status === 'VALID') {
-      if (isLast) {
-        if (this.currentFlow === 'non-verified-registration') {
-          // const navigationPath = '/' + this.currentFlow + '/needs-assessment';
-          // this.router.navigate([navigationPath]);
-        }
-      }
       this.setFormData(component);
       this.form$.unsubscribe();
       stepper.selected.completed = true;
@@ -162,13 +169,13 @@ export class DFAApplicationStartComponent
         this.dfaApplicationStartDataService.insuranceOption = this.form.controls.insuranceOption.value;
         this.dfaApplicationStartDataService.smallBusinessOption = this.form.controls.smallBusinessOption.value;
         this.dfaApplicationStartDataService.farmOption = this.form.controls.farmOption.value;
-        if (this.form.get('applicantSignature').get('signature').value) {
+        if (this.form.get('applicantSignature').get('signature')?.value) {
           this.dfaApplicationStartDataService.applicantSignature =
           { signature: this.form.get('applicantSignature').get('signature').value,
           dateSigned: this.form.get('applicantSignature').get('dateSigned').value,
           signedName: this.form.get('applicantSignature').get('signedName').value} as SignatureBlock;
         } else this.dfaApplicationStartDataService.applicantSignature = null;
-        if (this.form.get('secondaryApplicantSignature').get('signature').value) {
+        if (this.form.get('secondaryApplicantSignature')?.get('signature')?.value) {
           this.dfaApplicationStartDataService.secondaryApplicantSignature =
           { signature: this.form.get('secondaryApplicantSignature').get('signature').value,
           dateSigned: this.form.get('secondaryApplicantSignature').get('dateSigned').value,
@@ -213,23 +220,10 @@ export class DFAApplicationStartComponent
     }
   }
 
-  saveAndBackToDashboard(): void {
+  backToDashboard(): void {
     this.showLoader = !this.showLoader;
-    this.isSubmitted = !this.isSubmitted;
     this.alertService.clearAlert();
-    this.dfaApplicationStartService
-      .upsertApplication(this.dfaApplicationStartDataService.createDFAApplicationStartDTO())
-      .subscribe({
-        next: (applicationId) => {
-          this.dfaApplicationStartDataService.setApplicationId(applicationId);
-          this.router.navigate(['/verified-registration/dashboard']);
-        },
-        error: (error) => {
-          this.showLoader = !this.showLoader;
-          this.isSubmitted = !this.isSubmitted;
-          this.alertService.setAlert('danger', globalConst.saveApplicationError);
-        }
-      });
+    this.router.navigate(['/verified-registration/dashboard']);
   }
 
   submitFile(): void {
@@ -241,7 +235,7 @@ export class DFAApplicationStartComponent
      .subscribe({
       next: (applicationId) => {
        this.dfaApplicationStartDataService.setApplicationId(applicationId);
-        this.router.navigate(['/dfa-application-main']);
+        this.router.navigate(['/dfa-application-main/'+applicationId]);
       },
       error: (error) => {
         this.showLoader = !this.showLoader;
@@ -249,5 +243,28 @@ export class DFAApplicationStartComponent
         this.alertService.setAlert('danger', globalConst.saveApplicationError);
       }
      });
+  }
+
+  alertMessage(component: string): void {
+    this.dialog
+      .open(DFAApplicationAlertDialogComponent, {
+        data: {
+          content: globalConst.uneditableApplicationTypeAlert
+        },
+        height: '300px',
+        width: '600px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'cancel') {
+          //this.cancelApplication();
+        }
+        else if (result === 'confirm') {
+          this.setFormData(component);
+          this.submitFile();
+        }
+        //else this.appTypeInsuranceForm.controls.insuranceOption.setValue(null);
+      });
   }
 }

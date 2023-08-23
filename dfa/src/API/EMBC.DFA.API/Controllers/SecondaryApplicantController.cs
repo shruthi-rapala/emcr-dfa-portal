@@ -49,8 +49,8 @@ namespace EMBC.DFA.API.Controllers
             if (secondaryApplicant == null) return BadRequest("SecondaryApplicant details cannot be empty.");
             var mappedSecondaryApplicant = mapper.Map<dfa_appsecondaryapplicant_params>(secondaryApplicant);
 
-            var secondaryApplicationId = await handler.HandleSecondaryApplicantAsync(mappedSecondaryApplicant);
-            return Ok(secondaryApplicationId);
+            var result = await handler.HandleSecondaryApplicantAsync(mappedSecondaryApplicant);
+            return Ok(result);
         }
 
         /// <summary>

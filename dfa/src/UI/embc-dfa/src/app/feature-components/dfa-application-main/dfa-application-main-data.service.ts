@@ -3,7 +3,9 @@ import { CacheService } from 'src/app/core/services/cache.service';
 import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
 import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, PropertyDamage, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, FileUpload, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
-import { AttachmentService } from 'src/app/core/api/services';
+import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
+import { DFAApplicationStartService } from '../dfa-application-start/dfa-application-start.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainDataService {
@@ -19,27 +21,19 @@ export class DFAApplicationMainDataService {
   private _damagedRooms: Array<DamagedRoom>;
   private _fileUploads = [];
   private _dfaApplicationMain: DfaApplicationMain;
-  private _dfaApplicationStart: DfaApplicationStart;
+  private _dfaApplicationStart: BehaviorSubject<DfaApplicationStart> = new BehaviorSubject<DfaApplicationStart>(null);
+  private _dfaApplicationStart$: Observable<DfaApplicationStart> = this._dfaApplicationStart.asObservable();
   private _isSubmitted: boolean = false;
+  private _applicationId: string;
+  private _vieworedit: string;
+  private _editstep: string;
 
   constructor(
     private cacheService: CacheService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private fileUploadsService: AttachmentService
+    private fileUploadsService: AttachmentService,
+    private applicationService: ApplicationService
   ) {
-      this._dfaApplicationStart = this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
-      this.getFileUploadsForApplication(this.dfaApplicationStart.id);
-  }
-
-  public getFileUploadsForApplication(applicationId: string) {
-    this.fileUploadsService.attachmentGetAttachments({applicationId: applicationId}).subscribe({
-      next: (attachments) => {
-        if (attachments) this.fileUploads = attachments;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
   }
 
   public get fullTimeOccupants(): Array<FullTimeOccupant> {
@@ -98,8 +92,12 @@ export class DFAApplicationMainDataService {
     this._isSubmitted = value;
   }
 
-  public get dfaApplicationStart(): DfaApplicationStart {
-    return this._dfaApplicationStart;
+  public getDfaApplicationStart(): Observable<DfaApplicationStart> {
+    return this._dfaApplicationStart$;
+  }
+
+  public setDfaApplicationStart(application: DfaApplicationStart) {
+    this._dfaApplicationStart.next(application);
   }
 
   public setDFAApplicationMain(dfaApplicationMain: DfaApplicationMain): void {
@@ -146,9 +144,36 @@ export class DFAApplicationMainDataService {
   public set cleanUpLog(value: CleanUpLog) {
     this._cleanUpLog = value;
   }
+
+  public setApplicationId(applicationId: string): void {
+    this._applicationId = applicationId;
+    this.applicationService.applicationGetApplicationStart({applicationId: applicationId})
+      .subscribe(application => {
+        this.setDfaApplicationStart(application);
+      })
+  }
+
+  public getApplicationId(): string {
+    return this._applicationId;
+  }
+
+  public setViewOrEdit(vieworedit: string): void {
+    this._vieworedit = vieworedit;
+  }
+  public getViewOrEdit(): string {
+    return this._vieworedit;
+  }
+
+  public setEditStep(editstep: string): void {
+    this._editstep = editstep;
+  }
+  public getEditStep(): string {
+    return this._editstep;
+  }
+
    public createDFAApplicationMainDTO(): DfaApplicationMain {
     return {
-      id: this.dfaApplicationStart.id,
+      id: this._applicationId,
       cleanUpLog: this.cleanUpLog,
       damagedPropertyAddress: this._damagedPropertyAddress,
       propertyDamage: this._propertyDamage,

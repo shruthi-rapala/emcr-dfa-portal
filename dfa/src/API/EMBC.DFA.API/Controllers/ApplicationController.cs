@@ -54,6 +54,10 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> AddApplication(DFAApplicationStart application)
         {
+            // fill in current user
+            var dfa_appcontact = await handler.HandleGetUser(currentUserId);
+            application.ProfileVerification.profileId = dfa_appcontact.Id;
+
             if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationstart_params>(application);
 
@@ -66,25 +70,20 @@ namespace EMBC.DFA.API.Controllers
                 if (application.AppTypeInsurance.applicantSignature != null && application.AppTypeInsurance.applicantSignature.signature != null)
                 {
                     var primarySignature = new dfa_signature();
-                    primarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.applicantSignature.signature);
-                    primarySignature.FileName = "primaryApplicantSignatureNoIns";
-                    primarySignature.ContentType = "image/png";
-                    primarySignature.Regarding = "dfa_appapplication";
-                    primarySignature.id = applicationId;
-                    insuranceSignatures = insuranceSignatures.Append(primarySignature);
+                    primarySignature.signature = application.AppTypeInsurance.applicantSignature.signature.Substring(application.AppTypeInsurance.applicantSignature.signature.IndexOf(',') + 1);
+                    primarySignature.filename = "primaryApplicantSignatureNoIns";
+                    primarySignature.dfa_appapplicationid = applicationId;
+                    await handler.HandleSignature(primarySignature);
                 }
 
                 if (application.AppTypeInsurance.secondaryApplicantSignature != null && application.AppTypeInsurance.secondaryApplicantSignature.signature != null)
                 {
                     var secondarySignature = new dfa_signature();
-                    secondarySignature.Content = Encoding.ASCII.GetBytes(application.AppTypeInsurance.secondaryApplicantSignature.signature);
-                    secondarySignature.FileName = "secondaryApplicantSignatureNoIns";
-                    secondarySignature.ContentType = "image/png";
-                    secondarySignature.Regarding = "dfa_appapplication";
-                    secondarySignature.id = applicationId;
-                    insuranceSignatures = insuranceSignatures.Append(secondarySignature);
+                    secondarySignature.signature = application.AppTypeInsurance.secondaryApplicantSignature.signature.Substring(application.AppTypeInsurance.secondaryApplicantSignature.signature.IndexOf(',') + 1);
+                    secondarySignature.filename = "secondaryApplicantSignatureNoIns";
+                    secondarySignature.dfa_appapplicationid = applicationId;
+                    await handler.HandleSignature(secondarySignature);
                 }
-                var result = await handler.HandleSignatures(insuranceSignatures);
             }
             return Ok(applicationId);
         }
@@ -103,39 +102,30 @@ namespace EMBC.DFA.API.Controllers
             if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
 
-            var applicationId = await handler.HandleApplicationUpdate(mappedApplication);
-            IEnumerable<dfa_signature> appSignatures = Enumerable.Empty<dfa_signature>();
+            var result = await handler.HandleApplicationUpdate(mappedApplication);
 
             // Add signatures
             if (application.signAndSubmit?.applicantSignature?.signature != null &&
                 application.deleteFlag == false)
             {
                 var primarySignature = new dfa_signature();
-                primarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.applicantSignature.signature);
-                primarySignature.FileName = "primaryApplicantSignature";
-                primarySignature.ContentType = "image/png";
-                primarySignature.Regarding = "dfa_appapplication";
-                primarySignature.id = applicationId;
-                appSignatures = appSignatures.Append(primarySignature);
+                primarySignature.signature = application.signAndSubmit.applicantSignature.signature.Substring(application.signAndSubmit.applicantSignature.signature.IndexOf(',') + 1);
+                primarySignature.filename = "primaryApplicantSignature";
+                primarySignature.dfa_appapplicationid = application.Id.ToString();
+                await handler.HandleSignature(primarySignature);
             }
 
             if (application.signAndSubmit?.secondaryApplicantSignature?.signature != null &&
                 application.deleteFlag == false)
             {
                 var secondarySignature = new dfa_signature();
-                secondarySignature.Content = Encoding.ASCII.GetBytes(application.signAndSubmit.secondaryApplicantSignature.signature);
-                secondarySignature.FileName = "secondaryApplicantSignature";
-                secondarySignature.ContentType = "image/png";
-                secondarySignature.Regarding = applicationId;
-                secondarySignature.id = applicationId;
-                appSignatures = appSignatures.Append(secondarySignature);
+                secondarySignature.signature = application.signAndSubmit.secondaryApplicantSignature.signature.Substring(application.signAndSubmit.secondaryApplicantSignature.signature.IndexOf(',') + 1);
+                secondarySignature.filename = "secondaryApplicantSignature";
+                secondarySignature.dfa_appapplicationid = application.Id.ToString();
+                await handler.HandleSignature(secondarySignature);
             }
 
-            if (appSignatures != null)
-            {
-                var result = await handler.HandleSignatures(appSignatures);
-            }
-            return Ok(applicationId);
+            return Ok(result);
         }
 
         /// <summary>
@@ -196,7 +186,7 @@ namespace EMBC.DFA.API.Controllers
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             var profileId = profile.Id;
-            //var profileId = "d4e3d345-d106-4f32-85d8-4ee301683b5f";
+            //var profileId = "d245240e-99f0-46d1-8d82-78e1196f4e09";
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }
@@ -240,5 +230,6 @@ namespace EMBC.DFA.API.Controllers
         public string DamagedAddress { get; set; }
         public string CaseNumber { get; set; }
         public string DateOfDamage { get; set; }
+        public string PrimaryApplicantSignedDate { get; set; }
     }
 }

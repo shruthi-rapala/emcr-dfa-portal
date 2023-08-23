@@ -37,7 +37,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'dfa-application-main',
+    path: 'dfa-application-main/:id',
     loadChildren: () =>
       import(
         './feature-components/dfa-application-main/dfa-application-main.module'

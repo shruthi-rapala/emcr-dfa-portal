@@ -1,4 +1,4 @@
-<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" [ngStyle]="{'pointer-events': vieworedit === 'view' || vieworedit === 'edit' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <form [formGroup]="propertyDamageForm">
@@ -40,11 +40,13 @@
             <mat-form-field appearance="outline" [hidden]="propertyDamageForm.get('otherDamage').value !== true" class="col-md-4">
               <mat-label>Cause of Damage</mat-label>
               <input matInput
-                [required]="propertyDamageForm.get('otherDamage').value === true"
+                [required]="propertyDamageForm.get('otherDamage').value === true || propertyDamageForm.get('otherDamage').value === 'true'"
                 type="text"
                 formControlName="otherDamageText"
                 placeholder="Cause of damage*"
+                maxlength="100"
               />
+              <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
                 *ngIf="
                 propertyDamageForm.get('otherDamageText').invalid &&
@@ -59,7 +61,7 @@
                 propertyDamageForm.get('otherDamageText').hasError('maxLength')
                 "
               >
-                Maximum length reached</mat-error
+                Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
             <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage')">
@@ -130,6 +132,7 @@
               [rows]="5"
               style="resize:none"
               required
+              maxlength="2000"
               (keyup)="calcRemainingChars()"></textarea>
             <mat-hint>{{ remainingLength }} characters remaining.</mat-hint>
             <mat-error
@@ -138,7 +141,7 @@
                 propertyDamageForm.get('briefDescription').hasError('maxLength')
                 "
               >
-                Maximum length reached</mat-error
+                Maximum length is 2000 characters</mat-error
               >
           </mat-form-field>
         </div><br/>

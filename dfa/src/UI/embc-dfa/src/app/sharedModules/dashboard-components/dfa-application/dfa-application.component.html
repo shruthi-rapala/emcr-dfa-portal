@@ -23,7 +23,7 @@
             
             <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px;">
               <span>Event ID</span><br />
-              <span style="font-size: 20px;"><b>{{applItem.eventId}}</b></span>
+              <span style="font-size: 20px;"><b>{{applItem.eventId == null ? "To Be Assigned" : applItem.eventId }}</b></span>
             </div>
            <div class="row" style="padding-top: 20px;">
              <div class="col-md-3">
@@ -36,7 +36,7 @@
               </div>
              <div class="col-md-3">
                 <span><b>Case Number</b></span><br />
-                <span>{{applItem.caseNumber}}</span>
+                <span>{{applItem.caseNumber == null ? "To Be Assigned" : applItem.caseNumber }}</span>
               </div>
              <div class="col-md-3">
                 <span><b>Date of Damage</b></span><br />
@@ -47,6 +47,7 @@
                <button
                       class="application-button"
                       type="button"
+                       (click)="ViewApplication(applItem.applicationId, applItem.primaryApplicantSignedDate)"
                     >
                       View Application
                 </button>
@@ -54,6 +55,7 @@
                <button
                       class="application-button whitebutton"
                       type="button"
+                       (click)="EditCleanUpLog(applItem.applicationId)"
                     >
                       Add to Clean Up Log
                 </button>
@@ -61,6 +63,7 @@
                <button
                       class="application-button whitebutton"
                       type="button"
+                       (click)="EditDamagedItems(applItem.applicationId)"
                     >
                       Add to Damaged Items
                 </button>
@@ -68,16 +71,17 @@
                <button
                       class="application-button whitebutton"
                       type="button"
+                       (click)="EditSupportingDocs(applItem.applicationId)"
                     >
                       Add Supporting Docs
                 </button>
               
-               <button
+               <!--<button
                       class="application-button redbutton"
                       type="button"
                     >
                       Delete Application
-                </button>
+                </button>-->
             </div>
 
           </mat-card>

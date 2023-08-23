@@ -8,6 +8,7 @@ import {
 } from 'src/app/core/components/captcha-v2/captcha-v2.component';
 import { ApplicantOption, FileCategory, RoomType } from 'src/app/core/api/models';
 import { MatTableDataSource } from '@angular/material/table';
+import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
 
 @Component({
   selector: 'app-review',
@@ -47,11 +48,18 @@ export class ReviewComponent implements OnInit {
   supportingDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
   RoomTypes = RoomType;
   FileCategories = FileCategory;
+  isResidentialTenant: boolean = false;
 
   constructor(
     private router: Router,
-    public formCreationService: FormCreationService
+    public formCreationService: FormCreationService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
+    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application =>{
+      if (application) {
+        this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -95,7 +103,7 @@ export class ReviewComponent implements OnInit {
     _cleanUpWorkFileFormArray.valueChanges
       .pipe(
         mapTo(_cleanUpWorkFileFormArray.getRawValue())
-        ).subscribe(data => { this.cleanUpWorkFileDataSource.data = data.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag == false) });
+        ).subscribe(data => { this.cleanUpWorkFileDataSource.data = _cleanUpWorkFileFormArray?.getRawValue()?.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag == false) });
 
     // subscribe to changes in damaged rooms
     const _damagedRoomsFormArray = this.formCreationService.damagedRoomsForm.value.get('damagedRooms');
@@ -109,14 +117,14 @@ export class ReviewComponent implements OnInit {
     _damagePhotosFormArray.valueChanges
       .pipe(
         mapTo(_damagePhotosFormArray.getRawValue())
-        ).subscribe(data => this.damagePhotosDataSource.data = data.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag == false));
+        ).subscribe(data => this.damagePhotosDataSource.data = _damagePhotosFormArray.getRawValue()?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag == false));
 
     // subscribe to changes in supporting documents
     const _supportingDocumentsFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
     _supportingDocumentsFormArray.valueChanges
       .pipe(
         mapTo(_supportingDocumentsFormArray.getRawValue())
-        ).subscribe(data => { this.supportingDocumentsDataSource.data = data.filter(x => x.fileType !== Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.fileType !== this.FileCategories.Cleanup && x.deleteFlag == false) } );
+        ).subscribe(data => { this.supportingDocumentsDataSource.data = _supportingDocumentsFormArray.getRawValue()?.filter(x => x.fileType !== Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.fileType !== this.FileCategories.Cleanup && x.deleteFlag == false) } );
   }
 
   // callParentMoveStep(index: number) {

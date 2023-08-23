@@ -1,4 +1,4 @@
-<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" [ngStyle]="{'pointer-events': vieworedit === 'view' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <form [formGroup]="damagedRoomsForm">
@@ -116,9 +116,10 @@
                       >
                       <mat-hint *ngIf="showGarageHint"> Attached garages only; detached garages can`t be included</mat-hint>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" *ngIf="showOtherRoomType === true">
+                    <mat-form-field appearance="outline" [hidden]="showOtherRoomType !== true">
                       <mat-label>Please specify Other room</mat-label>
-                      <input formControlName="otherRoomType" matInput placeholder="Please specify Other room" required/>
+                      <input formControlName="otherRoomType" matInput placeholder="Please specify Other room" [required]="showOtherRoomType === true" maxlength="100"/>
+                      <mat-hint>Maximum length is 100 characters</mat-hint>
                       <mat-error
                         *ngIf="
                           damagedRoomsForm.get('damagedRoom').controls.otherRoomType.invalid &&
@@ -134,7 +135,7 @@
                           damagedRoomsForm.get('damagedRoom').controls.otherRoomType.hasError('maxLength')
                         "
                       >
-                        Maximum length reached</mat-error
+                        Maximum length is 100 characters</mat-error
                       >
                     </mat-form-field>
                   </div>
@@ -146,8 +147,10 @@
                         placeholder="Damaged Items"
                         [rows]="5"
                         style="resize:none"
+                        maxlength="200"
                         required
                         (keyup)="calcRemainingChars()"></textarea>
+                      <mat-hint>Maximum length is 200 characters</mat-hint>
                       <mat-error
                         *ngIf="
                           damagedRoomsForm.get('damagedRoom').controls.description.invalid &&
@@ -163,7 +166,7 @@
                           damagedRoomsForm.get('damagedRoom').controls.description.hasError('maxLength')
                         "
                       >
-                        Maximum length reached</mat-error
+                        Maximum length is 200 characters</mat-error
                       >
                     </mat-form-field>
                   </div>
@@ -201,184 +204,97 @@
       <br/><br/>
     </form>
 
-    <form [formGroup]="damagePhotosForm">
+    <ng-container>
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Damage photo"
+            description="Attach a photo/scanned copy of damaged items"
+            requiredFile="no"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList="pdf, jpg, jpeg, png"
+            fileType="DamagePhoto"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveDamagePhotos($event)"
+            (cencelFileUpload)="cancelDamagePhotos()"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('damagePhotoFileUpload')"
+          ></app-dfa-attachment>
+        </div>
+      </div>
+    </ng-container>
+    <br/><br/>
 
-      <div formGroupName="fileUpload">
-        <ng-container>
-          <div clas="row">
-            <div class="col-md-12">
-              <p class="sub-heading" style="font-size: 15px">
-                If you have photos of damaged items, please have them available during the site meeting to help the evaluator identify eligible costs. You may also attach them to this application.
-              </p>
-              <table mat-table [dataSource]="damagePhotosDataSource" *ngIf="damagePhotosDataSource.data.length > 0" style="width:100%">
-                <!-- File Name Column -->
-                <ng-container matColumnDef="fileName" style="width:25%">
-                  <th mat-header-cell *matHeaderCellDef >
-                    <b>File Name</b>
-                  </th>
-                  <td *matCellDef="let element" mat-cell>
-                    {{ element.fileName }}
-                  </td>
-                </ng-container>
+    <ng-container>
+      <div clas="row">
+        <div class="col-md-12">
+          <table mat-table [dataSource]="damagePhotosDataSource" *ngIf="damagePhotosDataSource.data.length > 0" style="width:100%">
+            <!-- File Name Column -->
+            <ng-container matColumnDef="fileName" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef >
+                <b>File Name</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.fileName }}
+              </td>
+            </ng-container>
 
-                <!-- Description Column -->
-                <ng-container matColumnDef="fileDescription" style="width:25%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <b>File Description</b>
-                  </th>
-                  <td *matCellDef="let element" mat-cell>
-                    {{ element.fileDescription}}
-                  </td>
-                </ng-container>
+            <!-- Description Column -->
+            <ng-container matColumnDef="fileDescription" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>File Description</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.fileDescription}}
+              </td>
+            </ng-container>
 
-                <!-- UploadedDate Column -->
-                <ng-container matColumnDef="uploadedDate" style="width:25%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <b>Date Uploaded</b>
-                  </th>
-                  <td *matCellDef="let element" mat-cell>
-                    {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
-                  </td>
-                </ng-container>
+            <!-- UploadedDate Column -->
+            <ng-container matColumnDef="uploadedDate" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Date Uploaded</b>
+              </th>
+              <td *matCellDef="let element" mat-cell>
+                {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
+              </td>
+            </ng-container>
 
-                <!-- Delete & Edit Icons Column -->
-                <ng-container matColumnDef="icons" style="width:25%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    &nbsp;
-                  </th>
-                  <td *matCellDef="let element; let index = index" mat-cell>
-                    <button
-                      class="delete-image"
-                      mat-icon-button
-                      aria-label="Edit"
-                      (click)="editDamagePhotoRow(element, index)"
-                    >
-                      <img src="/assets/images/edit.svg" height="35" width="35" />
-                      <img
-                        src="/assets/images/edit_onhover.svg"
-                        height="35"
-                        width="35"
-                      />
-                    </button>&nbsp;
-                    <button
-                      class="delete-image"
-                      mat-icon-button
-                      aria-label="Remove"
-                      (click)="deleteDamagePhotoRow(element)"
-                    >
-                      <img src="/assets/images/delete.svg" height="35" width="35" />
-                      <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
-                    </button>
-                  </td>
-                </ng-container>
+            <!-- DeleteIcon Column -->
+            <ng-container matColumnDef="icons" style="width:25%">
+              <th mat-header-cell *matHeaderCellDef>
+                &nbsp;
+              </th>
+              <td *matCellDef="let element; let index = index" mat-cell>
+                <button
+                  class="delete-image"
+                  mat-icon-button
+                  aria-label="Remove"
+                  (click)="deleteDamagePhotoRow(element)"
+                >
+                  <img src="/assets/images/delete.svg" height="35" width="35" />
+                  <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
+                </button>
+              </td>
+            </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="damagePhotosColumnsToDisplay"></tr>
-                <tr
-                  mat-row
-                  *matRowDef="let element; columns: damagePhotosColumnsToDisplay"
-                  class="example-element-row"
-                  [style.height]="'auto'"
-                ></tr>
+            <tr mat-header-row *matHeaderRowDef="damagePhotosColumnsToDisplay"></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: damagePhotosColumnsToDisplay"
+              class="example-element-row"
+              [style.height]="'auto'"
+            ></tr>
 
-              </table>
+          </table>
 
-              <div  *ngIf="damagePhotosDataSource.data.length > 0">
-                <br /><br/>
-              </div>
-
-              <button
-                *ngIf="!showDamagePhotoForm"
-                class="family-button"
-                mat-button
-                type="button"
-                (click)="addDamagePhoto()"
-              >
-                + Add Photos
-              </button>
-
-              <mat-card *ngIf="showDamagePhotoForm">
-                <div class="row">
-                  <div class="col-md-6">
-                    <label class="sub-heading" style="font-size: 15px"
-                    >Attach a photo/scanned copy of damaged items</label
-                  >
-                    <app-file-upload
-                      [noOfAttachments]="1"
-                      (attachedFile)="setFileFormControl($event)"
-                      [allowedFileTypes]="allowedFileTypes"
-                      allowedFileExtensionsList="pdf, jpg, jpeg, png"
-                    >
-                    </app-file-upload>
-                  </div>
-                  <div class="col-md-6">
-                    <br/><br/>
-                    <div [hidden]="!damagePhotosForm.get('fileUpload.fileName').value">
-                      <mat-label>File name<span style="color:red" >*</span></mat-label>
-                      <br/>
-                      {{ damagePhotosForm.get('fileUpload.fileName').value }}
-                      <br/><br/>
-                    </div>
-                    <label class="sub-heading" style="font-size: 15px" [hidden]="!damagePhotosForm.get('fileUpload.fileName').value"
-                      >You may update the file description to something more descriptive:</label
-                    >
-                    <mat-form-field appearance="outline" [hidden]="!damagePhotosForm.get('fileUpload.fileName').value">
-                      <mat-label>File description</mat-label>
-                      <input formControlName="fileDescription" matInput placeholder="File description" required/>
-                      <mat-error
-                        *ngIf="
-                          damagePhotosForm.get('fileUpload').controls.fileDescription.invalid &&
-                          damagePhotosForm.get('fileUpload').controls.fileDescription.hasError('required') &&
-                          damagePhotosForm.get('fileUpload').controls.fileDescription.touched
-                        "
-                      >
-                        File description is required</mat-error
-                      >
-                      <mat-error
-                        *ngIf="
-                          damagePhotosForm.get('fileUpload').controls.fileDescription.invalid &&
-                          damagePhotosForm.get('fileUpload').controls.fileDescription.hasError('maxLength')
-                        "
-                      >
-                        Maximum length reached</mat-error
-                      >
-                    </mat-form-field>
-                  </div>
-                </div>
-
-                <br/><br/>
-                <div class="row">
-                  <div class="col-md-6">
-                    <button
-                      class="button-s details-button"
-                      mat-button
-                      type="button"
-                      (click)="cancelDamagePhotos()"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <div class="col-md-6">
-                    <button
-                      class="family-button details-button save-button"
-                      mat-button
-                      type="button"
-                      (click)="saveDamagePhotos()"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-
-              </mat-card>
-
-            </div>
+          <div  *ngIf="damagePhotosDataSource.data.length > 0">
+            <br /><br/>
           </div>
+        </div>
+      </div>
 
-        </ng-container>
+    </ng-container>
 
-      </div><br/><br/>
-
-    </form>
+    <br/><br/>
 
   </mat-card-content>
 </mat-card>

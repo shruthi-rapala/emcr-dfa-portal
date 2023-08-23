@@ -17,7 +17,7 @@ information and to verify that the information provided by you is accurate.
     </p>-->
 
     <form [formGroup]="contactInfoForm">
-      
+
       <ng-container>
         <div class="row">
           <div class="col-md-12">
@@ -58,7 +58,7 @@ information and to verify that the information provided by you is accurate.
                   contactFormControl.cellPhoneNumber.invalid &&
                   contactFormControl.cellPhoneNumber.hasError('maxLength')
                 "
-                >Maximum length reached</mat-error
+                >Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -75,7 +75,7 @@ information and to verify that the information provided by you is accurate.
                   contactFormControl.residencePhone.invalid &&
                   contactFormControl.residencePhone.hasError('maxLength')
                 "
-                >Maximum length reached</mat-error
+                >Maximum length is 100 characters</mat-error
               >
               <!--<mat-error
                 *ngIf="
@@ -100,9 +100,9 @@ information and to verify that the information provided by you is accurate.
                   contactFormControl.alternatePhone.invalid &&
                   contactFormControl.alternatePhone.hasError('maxLength')
                 "
-                >Maximum length reached</mat-error
+                >Maximum length is 100 characters</mat-error
               >
-              
+
               <!--<mat-error
                 *ngIf="
                   contactFormControl.phone.invalid &&
@@ -161,7 +161,7 @@ information and to verify that the information provided by you is accurate.
                   contactFormControl.email.invalid &&
                   contactFormControl.email.hasError('maxLength')
                 "
-                >Maximum length reached</mat-error
+                >Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
           </div>

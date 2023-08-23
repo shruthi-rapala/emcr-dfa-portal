@@ -934,10 +934,22 @@
         </div>
         <hr />
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1}">Address Line One:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">Damaged property address same as the primary address?:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .isPrimaryAndDamagedAddressSame == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .isPrimaryAndDamagedAddressSame == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1} || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.addressLine1.invalid">Address Line One:</span></div>
           <div class="col-md-3">
             <p class="no-bottom-margin">
-              <span  [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1}"
+              <span  [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1 || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.addressLine1.invalid}"
                 >{{
                   (formCreationService.damagedPropertyAddressForm$ | async)?.value
                     ?.addressLine1 ?  (formCreationService.damagedPropertyAddressForm$ | async)?.value
@@ -948,10 +960,10 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3">Address Line Two:</div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info' :  (formCreationService.damagedPropertyAddressForm$ | async)?.controls.addressLine2.invalid}">Address Line Two:</span></div>
           <div class="col-md-3">
             <p class="no-bottom-margin">
-              <span
+              <span [ngClass]="{'missing-info' :  (formCreationService.damagedPropertyAddressForm$ | async)?.controls.addressLine2.invalid}"
                 >{{
                   (formCreationService.damagedPropertyAddressForm$ | async)?.value
                     ?.addressLine2
@@ -961,10 +973,10 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.community}">City:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.community || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.community.invalid}">City:</span></div>
           <div class="col-md-3">
             <p>
-              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.community}">{{
+              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.community || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.community.invalid}">{{
                   (formCreationService.damagedPropertyAddressForm$ | async)?.value
                     ?.community ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
                     ?.community : "Enter required information"
@@ -974,10 +986,10 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.stateProvince}">Province:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.stateProvince || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.stateProvince.invalid}">Province:</span></div>
           <div class="col-md-3">
             <p>
-              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.stateProvince}">{{
+              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.stateProvince || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.stateProvince.invalid}">{{
                 (formCreationService.damagedPropertyAddressForm$ | async)?.value
                   ?.stateProvince
               }}</span>
@@ -985,10 +997,10 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.postalCode}">Postal Code:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.postalCode || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.postalCode.invalid}">Postal Code:</span></div>
           <div class="col-md-3">
             <p>
-              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.postalCode}">{{
+              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.postalCode || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.postalCode.invalid}">{{
                 (formCreationService.damagedPropertyAddressForm$ | async).value
                   ?.postalCode ? formatPostalCode((formCreationService.damagedPropertyAddressForm$ | async).value
                   ?.postalCode) : "Enter required information"
@@ -1021,9 +1033,9 @@
           </div>
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.firstNationsReserve}">First Nations Reserve:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.firstNationsReserve || (formCreationService.damagedPropertyAddressForm$ | async)?.controls?.firstNationsReserve.invalid}">First Nations Reserve:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.firstNationsReserve}">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.firstNationsReserve || (formCreationService.damagedPropertyAddressForm$ | async)?.controls?.firstNationsReserve.invalid}">
               {{
                 (formCreationService.damagedPropertyAddressForm$ | async)?.value
                   .firstNationsReserve ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
@@ -1044,7 +1056,7 @@
             }}
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.HomeOwner">
+        <div class="row info-detail" *ngIf="!isResidentialTenant">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}"></span>Eligible for a BC Home Owner Grant for this Property:</div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">{{
@@ -1056,43 +1068,43 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames}">Landlord First Name:</span></div>
+        <div class="row info-detail" *ngIf="isResidentialTenant">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordGivenNames.invalid}">Landlord First Name:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames}">{{
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordGivenNames.invalid}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .landlordGivenNames ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .landlordGivenNames : "Enter required information"
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname}">Landlord Last Name:</span></div>
+        <div class="row info-detail" *ngIf="isResidentialTenant">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordSurname.invalid}">Landlord Last Name:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname}">{{
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordSurname.invalid}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .landlordSurname ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .landlordSurname : "Enter required information"
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone}">Landlord Phone:</span></div>
+        <div class="row info-detail" *ngIf="isResidentialTenant">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordPhone.invalid}">Landlord Phone:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone}">{{
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordPhone.invalid}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .landlordPhone ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .landlordPhone : "Enter required information"
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.appTypeInsuranceForm$ | async)?.value.applicantOption === ApplicantOptions.ResidentialTenant">
-          <div class="col-md-3">Landlord Email:</div>
-          <div class="col-md-3">
+        <div class="row info-detail" *ngIf="isResidentialTenant">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordEmail.invalid}">Landlord Email:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordEmail.invalid}">
             {{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .landlordEmail
-            }}
+            }}</span>
           </div>
         </div>
       </mat-card-content>
@@ -1189,9 +1201,9 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.briefDescription}">Brief Description:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.briefDescription || (formCreationService.propertyDamageForm$ | async)?.controls.briefDescription.invalid}">Brief Description:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.briefDescription}">{{
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.briefDescription || (formCreationService.propertyDamageForm$ | async)?.controls.briefDescription.invalid}">{{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .briefDescription ? (formCreationService.propertyDamageForm$ | async)?.value
                 .briefDescription : 'Enter required information'
@@ -1216,8 +1228,8 @@
               (formCreationService.propertyDamageForm$ | async)?.value
                 .wereYouEvacuated === 'true' ?
                 ((formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned ? ('Yes, returned ' + (formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned) : 'Yes')
+                .dateReturned ? ('Yes, returned ' + (((formCreationService.propertyDamageForm$ | async)?.value
+                .dateReturned) | date: "MM/dd/yyyy")) : 'Yes')
                 : 'No'
             }}
           </div>
@@ -1681,8 +1693,14 @@
         <div class="row info-detail" *ngIf="supportingDocumentsDataSource?.data?.length == 0">
           <span>No supporting documents.</span>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.supportingDocumentsForm$ | async)?.hasError('noInsuranceTemplate')">
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noInsuranceTemplate')">
           <span style="color:red">Insurance template is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noRentalAgreement') && isResidentialTenant">
+          <span style="color:red">Rental Agreement is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noIdentification') && isResidentialTenant">
+          <span style="color:red">Identification is required.</span>
         </div>
       </mat-card-content>
     </div>

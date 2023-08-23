@@ -5,7 +5,7 @@
  * Signature Block
  */
 export interface SignatureBlock {
-  dateSigned?: string;
-  signature?: string;
-  signedName?: string;
+  dateSigned?: null | string;
+  signature?: null | string;
+  signedName?: null | string;
 }
