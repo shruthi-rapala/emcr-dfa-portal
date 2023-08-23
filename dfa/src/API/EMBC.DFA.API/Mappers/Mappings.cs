@@ -267,7 +267,7 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<dfa_appcleanuplogs_retrieve, CleanUpLogItem>()
                 .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appcleanuplogid))
-                .ForMember(d => d.date, opts => opts.MapFrom(s => s.dfa_date))
+                .ForMember(d => d.date, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_date) ? DateTime.Parse(s.dfa_date).ToString("o") + "Z" : s.dfa_date))
                 .ForMember(d => d.name, opts => opts.MapFrom(s => s.dfa_name))
                 .ForMember(d => d.hours, opts => opts.MapFrom(s => s.dfa_hoursworked))
                 .ForMember(d => d.description, opts => opts.MapFrom(s => s.dfa_description))
