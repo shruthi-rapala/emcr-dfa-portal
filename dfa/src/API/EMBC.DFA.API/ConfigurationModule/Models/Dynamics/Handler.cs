@@ -37,7 +37,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsAsync(Guid applicationId);
         Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLogItem);
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId);
-        // Task<string> HandleFileUploadAsync(SubmissionEntity submission); TODO use this one
+        // Task<string> HandleFileUploadAsync(SubmissionEntity submission);
         Task<string> HandleFileUploadAsync(sharepointdocumentlocation objDocumentLocation);
         Task<IEnumerable<sharepointdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);

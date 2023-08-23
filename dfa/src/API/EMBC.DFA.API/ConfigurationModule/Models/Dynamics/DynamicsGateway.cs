@@ -568,10 +568,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 }
                 return "Submitted";
             }
-            catch
+            catch (Exception ex)
             {
-                return System.Guid.Empty.ToString();
-                // throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
+                // return System.Guid.Empty.ToString();
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
             }
         }
 
