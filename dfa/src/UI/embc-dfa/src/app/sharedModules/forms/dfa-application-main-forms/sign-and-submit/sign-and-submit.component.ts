@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, NgModule, Inject, OnDestroy, OnChanges } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -29,6 +29,7 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   signAndSubmitForm$: Subscription;
   formCreationService: FormCreationService;
   isSecondaryApplicant: boolean = false;
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -41,6 +42,7 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.signAndSubmitForm$ = this.formCreationService
       .getSignAndSubmitForm()
       .subscribe((signAndSubmit) => {
@@ -55,6 +57,7 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.signAndSubmitForm.get('applicantSignature').reset();
         }
+        console.log("applicant signature changes", value);
       });
 
       this.signAndSubmitForm

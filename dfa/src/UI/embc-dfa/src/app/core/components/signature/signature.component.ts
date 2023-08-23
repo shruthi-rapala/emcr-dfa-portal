@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { switchMap, takeUntil, pairwise } from 'rxjs/operators'
 import { SignatureBlock } from 'src/app/core/api/models';
@@ -9,12 +9,13 @@ import { SignatureBlock } from 'src/app/core/api/models';
   styleUrls: ['./signature.component.scss']
 })
 
-export class SignatureComponent implements AfterViewInit {
+export class SignatureComponent implements AfterViewInit, OnChanges {
 
   @ViewChild('canvas', {static: false}) public canvas: ElementRef;
 
   @Input() isRequired: boolean;
   @Input() whoseSignature: string;
+  @Input() initialSignature: SignatureBlock;
   @Output() public signature: EventEmitter<SignatureBlock> = new EventEmitter<SignatureBlock>();
 
   private canvasEl: HTMLCanvasElement;
@@ -22,7 +23,6 @@ export class SignatureComponent implements AfterViewInit {
   public signatureBlock: SignatureBlock;
 
   constructor() {
-    this.signatureBlock = { signedName: "", dateSigned: null, signature: null};
   }
 
   ngAfterViewInit(): void {
@@ -34,6 +34,11 @@ export class SignatureComponent implements AfterViewInit {
     this.context.strokeStyle = 'black';
     this.context.lineWidth = 1;
     this.captureEvents(canvasEl);
+  }
+
+  ngOnChanges(): void {
+    this.signatureBlock = { signedName: this.initialSignature?.signedName, dateSigned: this.initialSignature?.dateSigned?.substring(0,10), signature: this.initialSignature?.signature};
+    this.signatureBlock.dateSigned = "08-19-2023";
   }
 
   // store in signature block to emit

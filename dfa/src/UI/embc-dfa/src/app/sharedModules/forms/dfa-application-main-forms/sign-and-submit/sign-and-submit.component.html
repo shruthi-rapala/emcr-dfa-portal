@@ -1,7 +1,7 @@
-<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" [ngStyle]="{'pointer-events': vieworedit === 'view' || vieworedit === 'edit' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="signAndSubmitForm" *ngIf="dfaApplicationMainDataService.isSubmitted != true">
+    <form [formGroup]="signAndSubmitForm">
 
       <p class="sub-heading" style="font-size: 20px">Declaration</p>
       <br />
@@ -16,10 +16,10 @@
         </div><br/><br/>
         <div class="row">
           <div class="col-md-6 bottomspace">
-            <app-signature [isRequired]="true" whoseSignature="Applicant" (signature)="updateApplicantSignature($event)"></app-signature>
+            <app-signature [isRequired]="true" whoseSignature="Applicant" (signature)="updateApplicantSignature($event)" [initialSignature]="signAndSubmitForm.get('applicantSignature').getRawValue()"></app-signature>
           </div>
           <div class="col-md-6 bottomspace">
-            <app-signature *ngIf="isSecondaryApplicant === true" [isRequired]="true" whoseSignature="Secondary Applicant" (signature)="updateSecondaryApplicantSignature($event)"></app-signature>
+            <app-signature *ngIf="isSecondaryApplicant === true" [isRequired]="true" whoseSignature="Secondary Applicant" (signature)="updateSecondaryApplicantSignature($event)" [initialSignature]="signAndSubmitForm.get('secondaryApplicantSignature').getRawValue()"></app-signature>
           </div>
         </div>
 

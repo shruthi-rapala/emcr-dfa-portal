@@ -108,7 +108,7 @@
             type="button"
             (click)="dfaApplicationMainStepper.previous()"
           >
-            Go Back & Edit
+            Go Back<span *ngIf="vieworedit !== 'view'"> & Edit</span>
           </button>
         </div>
         <div class="col-md-6">
@@ -128,7 +128,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step *ngIf="currentFlow === 'verified-registration' && vieworedit !== 'view' && vieworedit !== 'edit'">
+    <mat-step *ngIf="currentFlow === 'verified-registration'">
       <ng-template matStepLabel>Sign & Submit</ng-template>
       <app-component-wrapper
         componentName="sign-and-submit"
@@ -143,7 +143,7 @@
             type="button"
             (click)="dfaApplicationMainStepper.previous()"
           >
-            Go Back & Edit
+            Go Back<span *ngIf="vieworedit !== 'view'"> & Edit</span>
           </button>
           <button *ngIf="isSubmitted === true"
             class="button-s"
@@ -154,7 +154,7 @@
             Return to Dashboard
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid && (formCreationService.otherContactsForm$ | async)?.valid">
+        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid && (formCreationService.otherContactsForm$ | async)?.valid && vieworedit !== 'view'">
           <button
             class="button-p save-button"
             mat-stroked-button
@@ -164,7 +164,7 @@
             Submit
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid || !(formCreationService.otherContactsForm$ | async)?.valid)">
+        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid || !(formCreationService.otherContactsForm$ | async)?.valid) && vieworedit !== 'view'">
           <span style="color:red">Enter all required information and sign before submitting.</span>
         </div>
       </div>

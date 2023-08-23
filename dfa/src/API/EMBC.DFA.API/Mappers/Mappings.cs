@@ -206,8 +206,10 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<dfa_appapplicationmain_retrieve, SignAndSubmit>()
                 .ForPath(d => d.applicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_primaryapplicantprintname))
                 .ForPath(d => d.applicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_primaryapplicantsigneddate))
+                .ForPath(d => d.applicantSignature.signature, opts => opts.MapFrom(s => s.dfa_primaryapplicantsignature != null ? "data:image/png;base64," + s.dfa_primaryapplicantsignature : null))
                 .ForPath(d => d.secondaryApplicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_secondaryapplicantprintname))
-                .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddate));
+                .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddate))
+                .ForPath(d => d.secondaryApplicantSignature.signature, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsignature != null ? "data:image/png;base64," + s.dfa_secondaryapplicantsignature : null));
 
             CreateMap<dfa_appsecondaryapplicant_retrieve, SecondaryApplicant>()
                 .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_appapplicationid_value))
