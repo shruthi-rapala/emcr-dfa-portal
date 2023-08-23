@@ -2,8 +2,24 @@
 <div style="width:90%">
   <div class="row pl-3 pr-0">
     <div class="col-md-10 pr-0">
-      <mat-label><span *ngIf="whoseSignature">{{ whoseSignature }}&nbsp;</span>Signature<span style="color:red" *ngIf="isRequired == true" >*</span><span *ngIf="isRequired != true">&nbsp;(optional)</span>&nbsp;<mat-icon style="vertical-align:text-bottom;" (click)="clearCanvas()">refresh</mat-icon></mat-label>
-      <canvas id="canvas" ref="canvas" #canvas (touchstart)="preventDefault($event)" (touchmove)="preventDefault($event)" (touchend)="preventDefault($event); updateCanvas()" (touchcancel)="preventDefault($event); updateCanvas()" (mouseup)="updateCanvas()" (mouseleave)="updateCanvas()"></canvas>
+      <mat-label>
+        <span *ngIf="whoseSignature">{{ whoseSignature }}&nbsp;</span>
+        Signature
+        <span style="color:red" *ngIf="isRequired == true" >*</span>
+        <span *ngIf="isRequired != true">&nbsp;(optional)</span>&nbsp;
+        <mat-icon style="vertical-align:text-bottom;" (click)="clearCanvas()">refresh</mat-icon>
+      </mat-label>
+      <canvas
+        id="canvas"
+        ref="canvas"
+        #canvas
+        (touchstart)="preventDefault($event)"
+        (touchmove)="preventDefault($event)"
+        (touchend)="preventDefault($event); updateCanvas()"
+        (touchcancel)="preventDefault($event); updateCanvas()"
+        (mouseup)="updateCanvas()"
+        (mouseleave)="updateCanvas()">
+      </canvas>
     </div>
   </div>
 

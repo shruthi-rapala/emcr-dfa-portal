@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { switchMap, takeUntil, pairwise } from 'rxjs/operators'
 import { SignatureBlock } from 'src/app/core/api/models';
@@ -9,7 +9,7 @@ import { SignatureBlock } from 'src/app/core/api/models';
   styleUrls: ['./signature.component.scss']
 })
 
-export class SignatureComponent implements AfterViewInit, OnChanges {
+export class SignatureComponent implements AfterViewInit {
 
   @ViewChild('canvas', {static: false}) public canvas: ElementRef;
 
@@ -23,6 +23,7 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   public signatureBlock: SignatureBlock;
 
   constructor() {
+    this.signatureBlock = { signedName: "", dateSigned: "", signature: ""};
   }
 
   ngAfterViewInit(): void {
@@ -34,11 +35,27 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
     this.context.strokeStyle = 'black';
     this.context.lineWidth = 1;
     this.captureEvents(canvasEl);
-  }
+  // }
 
-  ngOnChanges(): void {
-    this.signatureBlock = { signedName: this.initialSignature?.signedName, dateSigned: this.initialSignature?.dateSigned?.substring(0,10), signature: this.initialSignature?.signature};
-    this.signatureBlock.dateSigned = "08-19-2023";
+  // ngOnChanges(event: SimpleChanges): void {
+    console.log(event);
+    // reformat date from mm/dd/yyyy to yyyy-mm-dd cant use date pipe since it messes up time zone
+    if (this.signatureBlock) {
+      if (this.initialSignature?.dateSigned && !this.signatureBlock?.dateSigned) this.signatureBlock.dateSigned  = this.initialSignature?.dateSigned?.substring(6,4) + "-" + this.initialSignature?.dateSigned?.substring(0,2) + "-" + this.initialSignature?.dateSigned?.substring(3,2);
+      this.signatureBlock.signedName = this.initialSignature?.signedName;
+      this.signatureBlock.signature = this.initialSignature?.signature;
+    }
+
+    // Draw signature
+    if (this.signatureBlock?.signature) {
+      const canvasEl: HTMLCanvasElement = this.canvas?.nativeElement;
+      var ctxt = canvasEl?.getContext("2d");
+      var background = new Image();
+        background.src = this.signatureBlock?.signature;
+        background.onload = function() {
+          ctxt.drawImage(background, 0, 0, canvasEl?.width, canvasEl?.height);
+        };
+    }
   }
 
   // store in signature block to emit
