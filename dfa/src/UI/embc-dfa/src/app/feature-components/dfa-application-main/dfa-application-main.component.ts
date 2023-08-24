@@ -51,6 +51,11 @@ export class DFAApplicationMainComponent
   appTypeInsuranceForm$: Subscription;
   vieworedit: string;
   editstep: string;
+  isInsuranceTemplateUploaded = false;
+  isTenancyProofUploaded = false;
+  isIdentificationUploaded = false;
+  isResidentialTenant: boolean = false;
+  AppOptions = ApplicantOption;
 
   constructor(
     private router: Router,
@@ -71,6 +76,12 @@ export class DFAApplicationMainComponent
         this.stepToDisplay = state.stepIndex;
       }
     }
+
+    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+      if (application) {
+        this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -111,6 +122,7 @@ export class DFAApplicationMainComponent
       this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
       this.checkSignaturesValid();
     });
+    
   }
 
 
@@ -326,7 +338,11 @@ export class DFAApplicationMainComponent
           this.form = signAndSubmit;
         });
         break;
-      }
+    }
+    
+    this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
   }
 
   saveAndBackToDashboard() {
