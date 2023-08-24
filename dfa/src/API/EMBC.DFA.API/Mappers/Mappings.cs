@@ -295,7 +295,8 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<FileUpload, AttachmentEntity>()
                 .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.subject, opts => opts.MapFrom(s => s.modifiedBy))
-                .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => s.fileType.ToString()))
+                //.ForMember(d => d.activitysubject, opts => opts.MapFrom(s => s.fileType.ToString()))
+                .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_appapplication"))
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
             CreateMap<FileUpload, sharepointdocumentlocation>()
