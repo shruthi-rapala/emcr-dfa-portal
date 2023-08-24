@@ -349,7 +349,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
         next: (result) => {
-          fileUploads[foundIndex] = element;
+          fileUploads.splice(foundIndex, 1);
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
         },
         error: (error) => {
