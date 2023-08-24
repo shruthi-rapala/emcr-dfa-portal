@@ -95,8 +95,6 @@ public class HmeownerUnsureInsurance {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[1]/div/mat-radio-group/div[2]/app-bc-address/div/div[5]/div/mat-form-field/div/div[1]/div[3]/input")));
         element.sendKeys("V8X1G3");
         Thread.sleep(1000);
-//        HomeOwnerApplicationDetails questions = new HomeOwnerApplicationDetails();
-//        questions.questionsOnDamaga(element, driverWait, driver);
 
         //Questions
         Thread.sleep(2000);
@@ -150,9 +148,6 @@ public class HmeownerUnsureInsurance {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Supporting Documents ')]")));
         js37.executeScript("arguments[0].click();", element);
 
-        //Supporting docs
-//        HomeOwnerApplicationDetails supDocs = new HomeOwnerApplicationDetails();
-//        supDocs.docs(element, driverWait, driver);
         //Add insurance template
         Thread.sleep(2000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add Insurance Template ')]")));
