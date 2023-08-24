@@ -23,7 +23,7 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   public signatureBlock: SignatureBlock;
 
   constructor() {
-    this.signatureBlock = { signedName: "", dateSigned: "", signature: ""};
+    this.signatureBlock = { signedName: null, dateSigned: null, signature: null};
   }
 
   ngAfterViewInit(): void {
@@ -38,16 +38,23 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(event: SimpleChanges): void {
-    console.log(event);
+    let initialSignature = event["initialSignature"].currentValue;
+    console.log(event, event["initialSignature"], event["initialSignature"].currentValue, "ngOnChanges");
     // reformat date from mm/dd/yyyy to yyyy-mm-dd cant use date pipe since it messes up time zone
-    if (this.signatureBlock) {
-      if (this.initialSignature?.dateSigned && !this.signatureBlock?.dateSigned) this.signatureBlock.dateSigned  = this.initialSignature?.dateSigned?.substring(6,4) + "-" + this.initialSignature?.dateSigned?.substring(0,2) + "-" + this.initialSignature?.dateSigned?.substring(3,2);
-      this.signatureBlock.signedName = this.initialSignature?.signedName;
-      this.signatureBlock.signature = this.initialSignature?.signature;
+    if (initialSignature?.dateSigned && !this.signatureBlock.dateSigned) {
+      console.log("set date", initialSignature.signedName, this.initialSignature.dateSigned);
+      this.signatureBlock.dateSigned  = initialSignature?.dateSigned.substring(6,4) + "-" + initialSignature?.dateSigned.substring(0,2) + "-" + initialSignature?.dateSigned.substring(3,2);
+    }
+
+    if (initialSignature?.signedName && !this.signatureBlock.signedName) {
+      console.log("set signed name", initialSignature.signedName);
+      this.signatureBlock.signedName = initialSignature?.signedName;
     }
 
     // Draw signature
-    if (this.signatureBlock?.signature) {
+    if (initialSignature?.signature && !this.signatureBlock.signature) {
+      console.log("draw signature", initialSignature.signature);
+      this.signatureBlock.signature = initialSignature?.signature;
       const canvasEl: HTMLCanvasElement = this.canvas?.nativeElement;
       var ctxt = canvasEl?.getContext("2d");
       var background = new Image();
@@ -61,7 +68,6 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   // store in signature block to emit
   updateCanvas() {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    //this.signatureBlock.signature = canvasEl.toDataURL("image/jpeg").replace(/^data:image\/(png|jpeg);base64,/, "");
     this.signatureBlock.signature = canvasEl.toDataURL();
     this.updateSignatureBlock();
   }

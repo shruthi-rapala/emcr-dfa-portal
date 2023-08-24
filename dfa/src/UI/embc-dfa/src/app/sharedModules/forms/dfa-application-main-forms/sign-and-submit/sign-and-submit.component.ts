@@ -50,14 +50,14 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
       .getSignAndSubmitForm()
       .subscribe((signAndSubmit) => {
         this.signAndSubmitForm = signAndSubmit;
+        if (this.signAndSubmitForm.get('applicantSignature').get('signature').value) this.dfaApplicationMainDataService.isSubmitted = true;
         this.initialApplicantSignature.dateSigned = this.signAndSubmitForm?.get('applicantSignature')?.get('dateSigned').value;
         this.initialApplicantSignature.signedName = this.signAndSubmitForm?.get('applicantSignature')?.get('signedName').value;
         this.initialApplicantSignature.signature = this.signAndSubmitForm?.get('applicantSignature')?.get('signature').value;
         this.initialSecondaryApplicantSignature.dateSigned = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('dateSigned').value;
         this.initialSecondaryApplicantSignature.signedName = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signedName').value;
         this.initialSecondaryApplicantSignature.signature = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signature').value;
-        if (this.signAndSubmitForm.get('applicantSignature').get('signature').value) this.dfaApplicationMainDataService.isSubmitted = true;
-      });
+    });
 
     this.signAndSubmitForm
       .get('applicantSignature')
@@ -66,7 +66,10 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.signAndSubmitForm.get('applicantSignature').reset();
         }
-        console.log("applicant signature changes", value);
+        this.initialApplicantSignature.dateSigned = this.signAndSubmitForm?.get('applicantSignature')?.get('dateSigned').value;
+        this.initialApplicantSignature.signedName = this.signAndSubmitForm?.get('applicantSignature')?.get('signedName').value;
+        this.initialApplicantSignature.signature = this.signAndSubmitForm?.get('applicantSignature')?.get('signature').value;
+        console.log("applicant signature changes", this.initialApplicantSignature);
       });
 
       this.signAndSubmitForm
@@ -76,6 +79,10 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.signAndSubmitForm.get('secondaryApplicantSignature').reset();
         }
+        this.initialSecondaryApplicantSignature.dateSigned = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('dateSigned').value;
+        this.initialSecondaryApplicantSignature.signedName = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signedName').value;
+        this.initialSecondaryApplicantSignature.signature = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signature').value;
+        console.log("secondary applicant signature changes", this.initialSecondaryApplicantSignature);
       });
 
       this.formCreationService.secondaryApplicantsChanged.subscribe((secondaryApplicants) => {
