@@ -15,7 +15,9 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
 
   @Input() isRequired: boolean;
   @Input() whoseSignature: string;
-  @Input() initialSignature: SignatureBlock;
+  @Input() initialSignedName: string;
+  @Input() initialDateSigned: string;
+  @Input() initialSignature: string;
   @Output() public signature: EventEmitter<SignatureBlock> = new EventEmitter<SignatureBlock>();
 
   private canvasEl: HTMLCanvasElement;
@@ -38,23 +40,24 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(event: SimpleChanges): void {
-    let initialSignature = event["initialSignature"].currentValue;
-    console.log(event, event["initialSignature"], event["initialSignature"].currentValue, "ngOnChanges");
     // reformat date from mm/dd/yyyy to yyyy-mm-dd cant use date pipe since it messes up time zone
-    if (initialSignature?.dateSigned && !this.signatureBlock.dateSigned) {
-      console.log("set date", initialSignature.signedName, this.initialSignature.dateSigned);
-      this.signatureBlock.dateSigned  = initialSignature?.dateSigned.substring(6,4) + "-" + initialSignature?.dateSigned.substring(0,2) + "-" + initialSignature?.dateSigned.substring(3,2);
+    const initialDateSigned = new Date(event["initialDateSigned"].currentValue);
+    if (initialDateSigned !== undefined) {
+      console.log("set date", this.initialDateSigned,  initialDateSigned.getFullYear(), initialDateSigned.getMonth(), initialDateSigned.getDate());
+      this.signatureBlock.dateSigned  = initialDateSigned.getFullYear() + "-" + initialDateSigned.getMonth() + "-" + initialDateSigned.getDate();
     }
 
-    if (initialSignature?.signedName && !this.signatureBlock.signedName) {
-      console.log("set signed name", initialSignature.signedName);
-      this.signatureBlock.signedName = initialSignature?.signedName;
+    const initialSignedName = event["initialSignedName"].currentValue;
+    if (initialSignedName && !this.signatureBlock.signedName) {
+      console.log("set signed name", initialSignedName);
+      this.signatureBlock.signedName = initialSignedName;
     }
 
     // Draw signature
-    if (initialSignature?.signature && !this.signatureBlock.signature) {
-      console.log("draw signature", initialSignature.signature);
-      this.signatureBlock.signature = initialSignature?.signature;
+    const initialSignature = event["initialSignature"].currentValue;
+    if (initialSignature && !this.signatureBlock.signature) {
+      console.log("draw signature", initialSignature);
+      this.signatureBlock.signature = initialSignature;
       const canvasEl: HTMLCanvasElement = this.canvas?.nativeElement;
       var ctxt = canvasEl?.getContext("2d");
       var background = new Image();
@@ -63,6 +66,8 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
           ctxt.drawImage(background, 0, 0, canvasEl?.width, canvasEl?.height);
         };
     }
+
+    console.log(this.whoseSignature, this.signatureBlock, event, initialDateSigned, initialSignedName, initialSignature, "ngOnChanges");
   }
 
   // store in signature block to emit
