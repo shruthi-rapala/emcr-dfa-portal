@@ -41,22 +41,22 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(event: SimpleChanges): void {
     // reformat date from mm/dd/yyyy to yyyy-mm-dd cant use date pipe since it messes up time zone
-    const initialDateSigned = new Date(event["initialDateSigned"].currentValue);
-    if (initialDateSigned !== undefined) {
-      console.log("set date", this.initialDateSigned,  initialDateSigned.getFullYear(), initialDateSigned.getMonth(), initialDateSigned.getDate());
-      this.signatureBlock.dateSigned  = initialDateSigned.getFullYear() + "-" + initialDateSigned.getMonth() + "-" + initialDateSigned.getDate();
+    if (event["initialDateSigned"]?.currentValue) {
+      const initialDateSigned = new Date(event["initialDateSigned"].currentValue);
+      console.log(this.whoseSignature, "set date", this.initialDateSigned,  initialDateSigned.getFullYear(), initialDateSigned.getMonth()+1, initialDateSigned.getDate());
+      this.signatureBlock.dateSigned  = initialDateSigned.toDateString();
     }
 
-    const initialSignedName = event["initialSignedName"].currentValue;
+    const initialSignedName = event["initialSignedName"]?.currentValue;
     if (initialSignedName && !this.signatureBlock.signedName) {
-      console.log("set signed name", initialSignedName);
+      console.log(this.whoseSignature, "set signed name", initialSignedName);
       this.signatureBlock.signedName = initialSignedName;
     }
 
     // Draw signature
-    const initialSignature = event["initialSignature"].currentValue;
+    const initialSignature = event["initialSignature"]?.currentValue;
     if (initialSignature && !this.signatureBlock.signature) {
-      console.log("draw signature", initialSignature);
+      console.log(this.whoseSignature, "draw signature", initialSignature);
       this.signatureBlock.signature = initialSignature;
       const canvasEl: HTMLCanvasElement = this.canvas?.nativeElement;
       var ctxt = canvasEl?.getContext("2d");
@@ -66,8 +66,6 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
           ctxt.drawImage(background, 0, 0, canvasEl?.width, canvasEl?.height);
         };
     }
-
-    console.log(this.whoseSignature, this.signatureBlock, event, initialDateSigned, initialSignedName, initialSignature, "ngOnChanges");
   }
 
   // store in signature block to emit
