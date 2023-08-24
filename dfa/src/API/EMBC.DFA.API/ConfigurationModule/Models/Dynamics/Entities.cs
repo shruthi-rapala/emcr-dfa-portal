@@ -304,6 +304,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         [JsonProperty("@odata.type")]
         public string Type { get; set; } = "Microsoft.Dynamics.CRM.activitymimeattachment";
         public string filename { get; set; } // pass in filename
+        public string subject { get; set; } // pass in dfa_description
         public string activitysubject { get; set; } // pass dfa_appapplication
         public byte[] body { get; set; }
     }

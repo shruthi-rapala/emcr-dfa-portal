@@ -10,6 +10,8 @@ using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.VisualBasic;
+using static StackExchange.Redis.Role;
 
 namespace EMBC.DFA.API.Mappers
 {
@@ -295,6 +297,7 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<FileUpload, AttachmentEntity>()
                 .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileName))
                 .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_appapplication"))
+                .ForMember(d => d.subject, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.fileDescription) ? s.fileName : s.fileDescription))
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
             CreateMap<FileUpload, SubmissionEntity>()
@@ -509,10 +512,45 @@ namespace EMBC.DFA.API.Mappers
 
         public FileCategory ConvertStringToFileCategory(string documenttype)
         {
-            FileCategory fileCategory = FileCategory.Unknown;
-
-            if (System.Enum.TryParse(documenttype, out fileCategory)) return fileCategory;
-            else return FileCategory.Unknown;
+            switch (documenttype)
+            {
+                case "Cleanup":
+                    {
+                        return FileCategory.Cleanup;
+                    }
+                case "Appeal":
+                    {
+                        return FileCategory.Appeal;
+                    }
+                case "Identification":
+                    {
+                        return FileCategory.Identification;
+                    }
+                case "Financial":
+                    {
+                        return FileCategory.Financial;
+                    }
+                case "Insurance":
+                    {
+                        return FileCategory.Insurance;
+                    }
+                case "Third party consent":
+                    {
+                        return FileCategory.ThirdPartyConsent;
+                    }
+                case "Tenancy proof":
+                    {
+                        return FileCategory.TenancyProof;
+                    }
+                case "Damage photo":
+                    {
+                        return FileCategory.DamagePhoto;
+                    }
+                default:
+                    {
+                        return FileCategory.Unknown;
+                    }
+            }
         }
 
         public RoomType ConvertStringToRoomType(string roomname)

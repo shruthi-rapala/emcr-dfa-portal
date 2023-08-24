@@ -531,24 +531,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                //if (objDocumentLocation?.sharepointdocumentlocationid != null)
-               // {
-                    await api.Delete("sharepointdocumentlocations", dfa_appdocumentlocationsid);
-                    return "Deleted successfully";
-                //}
-                //else
-               // {
-                //    var toAdd = new sharepointdocumentlocation_foradd();
-                 //   toAdd.dfa_description = objDocumentLocation.dfa_description;
-                  //  toAdd.dfa_filetype = objDocumentLocation.dfa_filetype;
-                   // toAdd.dfa_appapplicationid = (System.Guid)objDocumentLocation.dfa_appapplicationid;
-                   // toAdd.name = objDocumentLocation.name;
-                   // toAdd.dfa_modifiedby = objDocumentLocation.dfa_modifiedby;
-                   // toAdd.relativeurl = objDocumentLocation.dfa_appapplicationid.ToString() + "_" + objDocumentLocation.name;
-
-//                    var result = await api.Create("sharepointdocumentlocations", toAdd);
-  //                  return result.ToString();
-    //            }
+                await api.Delete("dfa_appdocumentlocationses", dfa_appdocumentlocationsid);
+                return "Deleted successfully";
             }
             catch (System.Exception ex)
             {
