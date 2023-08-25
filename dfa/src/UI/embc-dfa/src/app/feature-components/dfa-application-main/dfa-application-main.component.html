@@ -154,7 +154,7 @@
             Return to Dashboard
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid && (formCreationService.otherContactsForm$ | async)?.valid && vieworedit !== 'view' && vieworedit !== 'edit'
+        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid && (formCreationService.otherContactsForm$ | async)?.valid && vieworedit !== 'view'
              && isInsuranceTemplateUploaded
              && (isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
 
@@ -171,7 +171,7 @@
         <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid || !(formCreationService.otherContactsForm$ | async)?.valid
              || !isInsuranceTemplateUploaded
              || !(isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
-             ) && vieworedit !== 'view' && vieworedit !== 'edit'">
+             ) && vieworedit !== 'view'">
           <span style="color:red">Enter all required information and sign before submitting.</span>
         </div>
       </div>
