@@ -37,9 +37,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsAsync(Guid applicationId);
         Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLogItem);
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId);
-        // Task<string> HandleFileUploadAsync(SubmissionEntity submission);
-        Task<string> HandleFileUploadAsync(sharepointdocumentlocation objDocumentLocation);
-        Task<IEnumerable<sharepointdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
+        Task<string> HandleFileUploadAsync(SubmissionEntity submission);
+        Task<string> DeleteFileUploadAsync(Guid dfa_appdocumentlocationsid);
+        Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
     }
 
@@ -196,13 +196,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return await listsGateway.GetCleanUpLogItemsListAsync(applicationId);
         }
 
-        public async Task<string> HandleFileUploadAsync(sharepointdocumentlocation objDocumentLocation)
+        public async Task<string> HandleFileUploadAsync(SubmissionEntity objDocumentLocation)
         {
-            var result = await listsGateway.InsertDeleteDocumentLocationAsync(objDocumentLocation); //TODO : Change to Upsert to use dynamics endpoint
+            var result = await listsGateway.InsertDocumentLocationAsync(objDocumentLocation);
             return result;
         }
 
-        public async Task<IEnumerable<sharepointdocumentlocation>> GetFileUploadsAsync(Guid applicationId)
+        public async Task<string> DeleteFileUploadAsync(Guid dfa_appdocumentlocationsid)
+        {
+            var result = await listsGateway.DeleteDocumentLocationAsync(dfa_appdocumentlocationsid);
+            return result;
+        }
+
+        public async Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId)
         {
             return await listsGateway.GetDocumentLocationsListAsync(applicationId);
         }

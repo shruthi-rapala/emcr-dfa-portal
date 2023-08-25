@@ -47,16 +47,22 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpsertDeleteAttachment(FileUpload fileUpload)
         {
             if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
-            //var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
-            //var submissionEntity = new SubmissionEntity();
-            //submissionEntity.dfa_appapplicationid = fileUpload.applicationId.ToString();
-            //submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
-            //submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
-            //var result = await handler.HandleFileUploadAsync(submissionEntity);
+            if (fileUpload.id == null && fileUpload.deleteFlag == true) return BadRequest("FileUpload id cannot be empty on delete");
 
-            var mappedFileUpload = mapper.Map<sharepointdocumentlocation>(fileUpload);
-            var result = await handler.HandleFileUploadAsync(mappedFileUpload);
-            return Ok(result);
+            if (fileUpload.deleteFlag == true)
+            {
+                var result = await handler.DeleteFileUploadAsync((System.Guid)fileUpload.id);
+                return Ok(result);
+            }
+            else
+            {
+                var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
+                var submissionEntity = mapper.Map<SubmissionEntity>(fileUpload);
+                submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
+                submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
+                var result = await handler.HandleFileUploadAsync(submissionEntity);
+                return Ok(result);
+            }
         }
 
         /// <summary>
@@ -72,11 +78,11 @@ namespace EMBC.DFA.API.Controllers
             [Required]
             Guid applicationId)
         {
-            IEnumerable<sharepointdocumentlocation> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(applicationId);
+            IEnumerable<dfa_appdocumentlocation> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(applicationId);
             IEnumerable<FileUpload> fileUploads = new FileUpload[] { };
             if (dfa_appdocumentlocations != null)
             {
-                foreach (sharepointdocumentlocation dfa_appdocumentlocation in dfa_appdocumentlocations)
+                foreach (dfa_appdocumentlocation dfa_appdocumentlocation in dfa_appdocumentlocations)
                 {
                     FileUpload fileUpload = mapper.Map<FileUpload>(dfa_appdocumentlocation);
                     fileUploads = fileUploads.Append<FileUpload>(fileUpload);
