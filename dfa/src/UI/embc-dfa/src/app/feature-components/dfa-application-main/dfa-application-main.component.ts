@@ -88,7 +88,33 @@ export class DFAApplicationMainComponent
 
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     let applicationId = this.route.snapshot.paramMap.get('id');
+
+    // clear old data
     this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    this.dfaApplicationMainDataService.cleanUpLog = null;
+    this.dfaApplicationMainDataService.cleanUpLogItems = null;
+    this.dfaApplicationMainDataService.damagedPropertyAddress = null;
+    this.dfaApplicationMainDataService.damagedRooms = null;
+    this.dfaApplicationMainDataService.fileUploads = null;
+    this.dfaApplicationMainDataService.fullTimeOccupants = null;
+    this.dfaApplicationMainDataService.isSubmitted = false;
+    this.dfaApplicationMainDataService.otherContacts = null;
+    this.dfaApplicationMainDataService.propertyDamage = null;
+    this.dfaApplicationMainDataService.secondaryApplicants = null;
+    this.dfaApplicationMainDataService.signAndSubmit = null;
+    this.dfaApplicationMainDataService.supportingDocuments = null;
+    this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+    this.formCreationService.clearCleanUpLogData();
+    this.formCreationService.clearCleanUpLogItemsData();
+    this.formCreationService.clearDamagedPropertyAddressData();
+    this.formCreationService.clearDamagedRoomsData();
+    this.formCreationService.clearFileUploadsData();
+    this.formCreationService.clearFullTimeOccupantsData();
+    this.formCreationService.clearOtherContactsData();
+    this.formCreationService.clearPropertyDamageData();
+    this.formCreationService.clearSecondaryApplicantsData();
+    this.formCreationService.clearSignAndSubmitData();
+    this.formCreationService.clearSupportingDocumentsData();
 
     this.appTypeInsuranceForm$ = this.formCreationService
       .getAppTypeInsuranceForm()
@@ -98,7 +124,7 @@ export class DFAApplicationMainComponent
 
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
-        this.getFileUploadsForApplication(applicationId);
+        if (application.id == applicationId) this.getFileUploadsForApplication(applicationId);
         this.dfaApplicationMainHeading = ApplicantOption[application.appTypeInsurance.applicantOption] + ' Application';
         this.appTypeInsuranceForm.controls.applicantOption.setValue(application.appTypeInsurance.applicantOption);
         this.appTypeInsuranceForm.controls.insuranceOption.setValue(application.appTypeInsurance.insuranceOption);
@@ -122,7 +148,7 @@ export class DFAApplicationMainComponent
       this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
       this.checkSignaturesValid();
     });
-    
+
   }
 
 
@@ -339,7 +365,7 @@ export class DFAApplicationMainComponent
         });
         break;
     }
-    
+
     this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length == 1 ? true : false;
     this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length == 1 ? true : false;
     this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
