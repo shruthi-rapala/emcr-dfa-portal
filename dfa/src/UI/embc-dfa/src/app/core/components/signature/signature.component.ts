@@ -43,20 +43,20 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
     // reformat date from mm/dd/yyyy to yyyy-mm-dd cant use date pipe since it messes up time zone
     if (event["initialDateSigned"]?.currentValue) {
       const initialDateSigned = new Date(event["initialDateSigned"].currentValue);
-      console.log(this.whoseSignature, "set date", this.initialDateSigned,  initialDateSigned.getFullYear(), initialDateSigned.getMonth()+1, initialDateSigned.getDate());
-      this.signatureBlock.dateSigned  = initialDateSigned.toDateString();
+      this.signatureBlock.dateSigned  = initialDateSigned.getFullYear().toString() + "-" +
+      ((initialDateSigned.getMonth()+1)<10 ? "0" + (initialDateSigned.getMonth()+1).toString() : (initialDateSigned.getMonth()+1).toString()) + "-" +
+      ((initialDateSigned.getDate())<10 ? "0" + (initialDateSigned.getDate()).toString() : (initialDateSigned.getDate()).toString());
+      console.log(this.whoseSignature, "set date", this.initialDateSigned,  initialDateSigned.getFullYear(), initialDateSigned.getMonth()+1, initialDateSigned.getDate(), this.signatureBlock.dateSigned);
     }
 
     const initialSignedName = event["initialSignedName"]?.currentValue;
     if (initialSignedName && !this.signatureBlock.signedName) {
-      console.log(this.whoseSignature, "set signed name", initialSignedName);
       this.signatureBlock.signedName = initialSignedName;
     }
 
     // Draw signature
     const initialSignature = event["initialSignature"]?.currentValue;
     if (initialSignature && !this.signatureBlock.signature) {
-      console.log(this.whoseSignature, "draw signature", initialSignature);
       this.signatureBlock.signature = initialSignature;
       const canvasEl: HTMLCanvasElement = this.canvas?.nativeElement;
       var ctxt = canvasEl?.getContext("2d");
