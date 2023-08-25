@@ -1057,7 +1057,7 @@
           </div>
         </div>
         <div class="row info-detail" *ngIf="!isResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}"></span>Eligible for a BC Home Owner Grant for this Property:</div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">Eligible for a BC Home Owner Grant for this Property:</span></div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
@@ -1211,39 +1211,42 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3">Losses Total More Than $1000?:</div>
-          <div class="col-md-3">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.lossesExceed1000 == 'false'))}">Losses Total More Than $1000?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.lossesExceed1000 == 'false'))}">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .lossesExceed1000 === 'true'
                 ? 'Yes'
-                : 'No'
+                :  ((formCreationService.propertyDamageForm$ | async)?.value
+                .lossesExceed1000 == 'false' ? 'No' : 'Make a selection')
             }}
-          </div>
+          </span></div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3">Were You Evacuated?:</div>
-          <div class="col-md-3">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'false'))}">Were You Evacuated?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'false'))}">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .wereYouEvacuated === 'true' ?
                 ((formCreationService.propertyDamageForm$ | async)?.value
                 .dateReturned ? ('Yes, returned ' + (((formCreationService.propertyDamageForm$ | async)?.value
                 .dateReturned) | date: "MM/dd/yyyy")) : 'Yes')
-                : 'No'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .wereYouEvacuated == 'false' ? 'No' : 'Make a selection')
             }}
-          </div>
+          </span></div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3">Residing In Residence?:</div>
-          <div class="col-md-3">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'false'))}">Residing In Residence?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'false'))}">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .residingInResidence === 'true'
                 ? 'Yes'
-                : 'No'
+                : ((formCreationService.propertyDamageForm$ | async)?.value
+                .residingInResidence == 'false' ? 'No' : 'Make a selection')
             }}
-          </div>
+          </span></div>
         </div>
       </mat-card-content>
 
