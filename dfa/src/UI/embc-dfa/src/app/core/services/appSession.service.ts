@@ -19,12 +19,12 @@ export class AppSessionService {
   }
 
   public get appNumber(): string {
-    return this.appNumberVal
-      ? this.appNumberVal
-      : this.cacheService.get('appNumber');
+    return this.appNumberVal;
+      //? this.appNumberVal
+      //: this.cacheService.get('appNumber');
   }
   public set appNumber(value: string) {
     this.appNumberVal = value;
-    this.cacheService.set('appNumber', value);
+    //this.cacheService.set('appNumber', value);
   }
 }

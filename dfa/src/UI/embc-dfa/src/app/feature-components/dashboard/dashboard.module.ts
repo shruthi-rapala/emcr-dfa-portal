@@ -9,6 +9,7 @@ import { ReviewModule } from '../review/review.module';
 import { DashboardComponent } from './dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CoreModule } from '../../core/core.module';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -17,7 +18,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     DashboardRoutingModule,
     MatTabsModule,
-    ReviewModule
+    ReviewModule,
+    CoreModule
   ]
 })
 export class DashboardModule { }
