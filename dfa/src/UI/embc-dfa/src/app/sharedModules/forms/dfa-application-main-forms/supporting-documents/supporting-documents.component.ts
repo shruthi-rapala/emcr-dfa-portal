@@ -131,7 +131,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         .pipe(
           mapTo(_insuranceTemplateFormArray.getRawValue())
           ).subscribe(data => this.insuranceTemplateDataSource.data = _insuranceTemplateFormArray.getRawValue()?.filter(x => x.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)] && x.deleteFlag == false));
-
     // initialize insurance template
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
     if (fileUploads?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]).length > 0) {
@@ -144,6 +143,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
       this.insuranceTemplateForm.get('insuranceTemplateFileUpload.deleteFlag').setValue(false);
       this.insuranceTemplateForm.get('insuranceTemplateFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+      this.insuranceTemplateForm.get('insuranceTemplateFileUpload.id').setValue(null);
     }
     this.insuranceTemplateForm.updateValueAndValidity();
   }
@@ -180,6 +180,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.rentalAgreementForm.get('addNewFileUploadIndicator').setValue(true);
       this.rentalAgreementForm.get('rentalAgreementFileUpload.deleteFlag').setValue(false);
       this.rentalAgreementForm.get('rentalAgreementFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+      this.rentalAgreementForm.get('rentalAgreementFileUpload.id').setValue(null);
     }
     this.rentalAgreementForm.updateValueAndValidity();
   }
@@ -214,6 +215,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       this.identificationForm.get('addNewFileUploadIndicator').setValue(true);
       this.identificationForm.get('identificationFileUpload.deleteFlag').setValue(false);
       this.identificationForm.get('identificationFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+      this.identificationForm.get('identificationFileUpload.id').setValue(null);
     }
     this.identificationForm.updateValueAndValidity();
   }
@@ -349,8 +351,38 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
         next: (result) => {
-          fileUploads[foundIndex] = element;
+          fileUploads.splice(foundIndex, 1);
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+
+          if (element.fileType == "Insurance") {
+            this.insuranceTemplateForm.get('insuranceTemplateFileUpload').reset();
+            this.insuranceTemplateForm.get('insuranceTemplateFileUpload.modifiedBy').setValue("Applicant");
+            this.insuranceTemplateForm.get('insuranceTemplateFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
+            this.insuranceTemplateForm.get('addNewFileUploadIndicator').setValue(true);
+            this.insuranceTemplateForm.get('insuranceTemplateFileUpload.deleteFlag').setValue(false);
+            this.insuranceTemplateForm.get('insuranceTemplateFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+            this.insuranceTemplateForm.get('insuranceTemplateFileUpload.id').setValue(null);
+            this.insuranceTemplateForm.updateValueAndValidity();
+          } else if (element.fileType == "Identification") {
+            this.identificationForm.get('identificationFileUpload').reset();
+            this.identificationForm.get('identificationFileUpload.modifiedBy').setValue("Applicant");
+            this.identificationForm.get('identificationFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Identification)]);
+            this.identificationForm.get('addNewFileUploadIndicator').setValue(true);
+            this.identificationForm.get('identificationFileUpload.deleteFlag').setValue(false);
+            this.identificationForm.get('identificationFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+            this.identificationForm.get('identificationFileUpload.id').setValue(null);
+            this.identificationForm.updateValueAndValidity();
+
+          } else if (element.fileType == "TenancyProof") {
+            this.rentalAgreementForm.get('rentalAgreementFileUpload').reset();
+            this.rentalAgreementForm.get('rentalAgreementFileUpload.modifiedBy').setValue("Applicant");
+            this.rentalAgreementForm.get('rentalAgreementFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)]);
+            this.rentalAgreementForm.get('addNewFileUploadIndicator').setValue(true);
+            this.rentalAgreementForm.get('rentalAgreementFileUpload.deleteFlag').setValue(false);
+            this.rentalAgreementForm.get('rentalAgreementFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+            this.rentalAgreementForm.get('rentalAgreementFileUpload.id').setValue(null);
+            this.rentalAgreementForm.updateValueAndValidity();
+          }
         },
         error: (error) => {
           console.error(error);

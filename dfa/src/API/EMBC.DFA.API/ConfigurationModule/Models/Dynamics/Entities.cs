@@ -297,41 +297,34 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool delete { get; set; } // required enum
     }
 
-    public class sharepointdocumentlocation
+    public class dfa_appdocumentlocation
     {
-        public Guid? sharepointdocumentlocationid { get; set; } // optional string
-        public Guid dfa_appapplicationid { get; set; } // application id
-        public string name { get; set; } // file name
+        public Guid? dfa_appdocumentlocationsid { get; set; } // optional string
+        public Guid _dfa_applicationid_value { get; set; } // application id
+        public string dfa_name { get; set; } // file name
         public string dfa_description { get; set; } // file description
         public string createdon { get; set; } // uploaded date
-        public string dfa_filetype { get; set; }
+        public string dfa_documenttype { get; set; }
         public string dfa_modifiedby { get; set; }
     }
 
-    public class sharepointdocumentlocation_foradd
-    {
-        public Guid dfa_appapplicationid { get; set; } // application id
-        public string name { get; set; } // file name
-        public string dfa_description { get; set; } // file description
-        public string dfa_filetype { get; set; }
-        public string dfa_modifiedby { get; set; }
-        public string relativeurl { get; set; }
-    }
     public class AttachmentEntity
     {
         [JsonProperty("@odata.type")]
         public string Type { get; set; } = "Microsoft.Dynamics.CRM.activitymimeattachment";
-        public string filename { get; set; } // pass in description
-        public string subject { get; set; } // pass in modified by
-        public string activitysubject { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
+        public string filename { get; set; } // pass in filename
+        public string subject { get; set; } // pass in dfa_description
+        public string activitysubject { get; set; } // pass dfa_appapplication
         public byte[] body { get; set; }
     }
 
     public class SubmissionEntity
     {
-        // public Guid dfa_appapplicationid { get; set; } TODO: add this back
         public IEnumerable<AttachmentEntity> documentCollection { get; set; }
         public string dfa_appapplicationid { get; set; }
+        public string dfa_description { get; set; } // pass in description
+        public string dfa_modifiedby { get; set; } // pass in modified by
+        public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
     }
 
     public class dfa_appdocumentlocations

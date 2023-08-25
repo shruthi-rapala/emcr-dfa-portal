@@ -46,7 +46,6 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
       this.signatureBlock.dateSigned  = initialDateSigned.getFullYear().toString() + "-" +
       ((initialDateSigned.getMonth()+1)<10 ? "0" + (initialDateSigned.getMonth()+1).toString() : (initialDateSigned.getMonth()+1).toString()) + "-" +
       ((initialDateSigned.getDate())<10 ? "0" + (initialDateSigned.getDate()).toString() : (initialDateSigned.getDate()).toString());
-      console.log(this.whoseSignature, "set date", this.initialDateSigned,  initialDateSigned.getFullYear(), initialDateSigned.getMonth()+1, initialDateSigned.getDate(), this.signatureBlock.dateSigned);
     }
 
     const initialSignedName = event["initialSignedName"]?.currentValue;

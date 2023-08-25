@@ -10,6 +10,8 @@ using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.VisualBasic;
+using static StackExchange.Redis.Role;
 
 namespace EMBC.DFA.API.Mappers
 {
@@ -97,10 +99,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_primaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_primaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.signedName))
-                .ForMember(d => d.dfa_primaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.dateSigned))
+                .ForMember(d => d.dfa_primaryapplicantsigneddatenoins, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.AppTypeInsurance.applicantSignature.dateSigned) ? null : s.AppTypeInsurance.applicantSignature.dateSigned.Substring(0, 10)))
                 .ForMember(d => d.dfa_secondaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_secondaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.signedName))
-                .ForMember(d => d.dfa_secondaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.dateSigned));
+                .ForMember(d => d.dfa_secondaryapplicantsigneddatenoins, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.AppTypeInsurance.secondaryApplicantSignature.dateSigned) ? null : s.AppTypeInsurance.secondaryApplicantSignature.dateSigned.Substring(0, 10)));
 
             CreateMap<dfa_appapplicationstart_retrieve, ProfileVerification>()
                .ForMember(d => d.profileVerified, opts => opts.Ignore())
@@ -128,10 +130,10 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<DFAApplicationMain, dfa_appapplicationmain_params>()
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.Id))
                 .ForMember(d => d.dfa_primaryapplicantprintname, opts => opts.MapFrom(s => s.signAndSubmit.applicantSignature.signedName))
-                .ForMember(d => d.dfa_primaryapplicantsigneddate, opts => opts.MapFrom(s => s.signAndSubmit.applicantSignature.dateSigned))
+                .ForMember(d => d.dfa_primaryapplicantsigneddate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.signAndSubmit.applicantSignature.dateSigned) ? null : s.signAndSubmit.applicantSignature.dateSigned.Substring(0, 10)))
                 .ForMember(d => d.dfa_primaryapplicantsigned, opts => opts.MapFrom(s => s.signAndSubmit != null && string.IsNullOrEmpty(s.signAndSubmit.applicantSignature.signature) ? YesNoOptionSet.No : YesNoOptionSet.Yes))
                 .ForMember(d => d.dfa_secondaryapplicantprintname, opts => opts.MapFrom(s => s.signAndSubmit.secondaryApplicantSignature.signedName))
-                .ForMember(d => d.dfa_secondaryapplicantsigneddate, opts => opts.MapFrom(s => s.signAndSubmit.secondaryApplicantSignature.dateSigned))
+                .ForMember(d => d.dfa_secondaryapplicantsigneddate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.signAndSubmit.secondaryApplicantSignature.dateSigned) ? null : s.signAndSubmit.secondaryApplicantSignature.dateSigned.Substring(0, 10)))
                 .ForMember(d => d.dfa_secondaryapplicantsigned, opts => opts.MapFrom(s => s.signAndSubmit != null && string.IsNullOrEmpty(s.signAndSubmit.secondaryApplicantSignature.signature) ? YesNoOptionSet.No : YesNoOptionSet.Yes))
                 .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.propertyDamage.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.propertyDamage.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
@@ -284,29 +286,27 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_appcontactname, opts => opts.MapFrom(s => s.name))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
-            CreateMap<sharepointdocumentlocation, FileUpload>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
-                .ForMember(d => d.id, opts => opts.MapFrom(s => s.sharepointdocumentlocationid))
-                .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.name))
-                .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_filetype)))
+            CreateMap<dfa_appdocumentlocation, FileUpload>()
+                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdocumentlocationsid))
+                .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_name))
+                .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
                 .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.dfa_description))
                 .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.modifiedBy, opts => opts.MapFrom(s => s.dfa_modifiedby))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
             CreateMap<FileUpload, AttachmentEntity>()
-                .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileDescription))
-                .ForMember(d => d.subject, opts => opts.MapFrom(s => s.modifiedBy))
-                .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => s.fileType.ToString()))
+                .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileName))
+                .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_appapplication"))
+                .ForMember(d => d.subject, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.fileDescription) ? s.fileName : s.fileDescription))
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
-            CreateMap<FileUpload, sharepointdocumentlocation>()
-                .ForMember(s => s.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
-                .ForMember(s => s.sharepointdocumentlocationid, opts => opts.MapFrom(s => s.id))
-                .ForMember(s => s.name, opts => opts.MapFrom(s => s.fileName))
-                .ForMember(s => s.dfa_filetype, opts => opts.MapFrom(s => s.fileType.ToString()))
-                .ForMember(s => s.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
-                .ForMember(s => s.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy));
+            CreateMap<FileUpload, SubmissionEntity>()
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
+                .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
+                .ForMember(d => d.fileType, opts => opts.MapFrom(s => s.fileType));
 
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
@@ -514,10 +514,45 @@ namespace EMBC.DFA.API.Mappers
 
         public FileCategory ConvertStringToFileCategory(string documenttype)
         {
-            FileCategory fileCategory = FileCategory.Unknown;
-
-            if (System.Enum.TryParse(documenttype, out fileCategory)) return fileCategory;
-            else return FileCategory.Unknown;
+            switch (documenttype)
+            {
+                case "Cleanup":
+                    {
+                        return FileCategory.Cleanup;
+                    }
+                case "Appeal":
+                    {
+                        return FileCategory.Appeal;
+                    }
+                case "Identification":
+                    {
+                        return FileCategory.Identification;
+                    }
+                case "Financial":
+                    {
+                        return FileCategory.Financial;
+                    }
+                case "Insurance":
+                    {
+                        return FileCategory.Insurance;
+                    }
+                case "Third party consent":
+                    {
+                        return FileCategory.ThirdPartyConsent;
+                    }
+                case "Tenancy proof":
+                    {
+                        return FileCategory.TenancyProof;
+                    }
+                case "Damage photo":
+                    {
+                        return FileCategory.DamagePhoto;
+                    }
+                default:
+                    {
+                        return FileCategory.Unknown;
+                    }
+            }
         }
 
         public RoomType ConvertStringToRoomType(string roomname)

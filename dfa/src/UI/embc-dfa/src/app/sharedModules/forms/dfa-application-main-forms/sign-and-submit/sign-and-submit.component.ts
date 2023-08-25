@@ -57,7 +57,6 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         this.initialSecondaryApplicantSignature.dateSigned = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('dateSigned').value;
         this.initialSecondaryApplicantSignature.signedName = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signedName').value;
         this.initialSecondaryApplicantSignature.signature = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signature').value;
-        console.log("init form", this.initialApplicantSignature, this.initialSecondaryApplicantSignature);
     });
 
     this.signAndSubmitForm
@@ -70,7 +69,6 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         this.initialApplicantSignature.dateSigned = this.signAndSubmitForm?.get('applicantSignature')?.get('dateSigned').value;
         this.initialApplicantSignature.signedName = this.signAndSubmitForm?.get('applicantSignature')?.get('signedName').value;
         this.initialApplicantSignature.signature = this.signAndSubmitForm?.get('applicantSignature')?.get('signature').value;
-        console.log("applicant signature changes", this.initialApplicantSignature, this.signAndSubmitForm.get('applicantSignature').value);
       });
 
       this.signAndSubmitForm
@@ -83,7 +81,6 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         this.initialSecondaryApplicantSignature.dateSigned = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('dateSigned').value;
         this.initialSecondaryApplicantSignature.signedName = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signedName').value;
         this.initialSecondaryApplicantSignature.signature = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signature').value;
-        console.log("secondary applicant signature changes", this.initialSecondaryApplicantSignature);
       });
 
       this.formCreationService.secondaryApplicantsChanged.subscribe((secondaryApplicants) => {
