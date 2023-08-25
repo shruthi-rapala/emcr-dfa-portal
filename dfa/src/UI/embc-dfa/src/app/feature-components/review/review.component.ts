@@ -6,7 +6,7 @@ import {
   CaptchaResponse,
   CaptchaResponseType
 } from 'src/app/core/components/captcha-v2/captcha-v2.component';
-import { ApplicantOption, FileCategory, RoomType } from 'src/app/core/api/models';
+import { ApplicantOption, FileCategory, InsuranceOption, RoomType } from 'src/app/core/api/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
 
@@ -28,6 +28,7 @@ export class ReviewComponent implements OnInit {
   cs: any;
   siteKey: string;
   ApplicantOptions = ApplicantOption;
+  InsuranceOptions = InsuranceOption;
   hideCard = false;
   navigationExtras: NavigationExtras;
   fullTimeOccupantsDataSource = new MatTableDataSource();
@@ -49,6 +50,7 @@ export class ReviewComponent implements OnInit {
   RoomTypes = RoomType;
   FileCategories = FileCategory;
   isResidentialTenant: boolean = false;
+  insuranceOptionName: string = "";
 
   constructor(
     private router: Router,
@@ -58,6 +60,20 @@ export class ReviewComponent implements OnInit {
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application =>{
       if (application) {
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+        switch (application.appTypeInsurance.insuranceOption) {
+          case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.Unsure)]:
+            this.insuranceOptionName = this.InsuranceOptions.Unsure.toString();
+            break;
+          case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.Yes)]:
+            this.insuranceOptionName = this.InsuranceOptions.Yes.toString();
+            break;
+          case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.No)]:
+            this.insuranceOptionName = this.InsuranceOptions.No.toString();
+            break;
+          default:
+            this.insuranceOptionName = application.appTypeInsurance.insuranceOption;
+            break;
+        }
       }
     });
   }
