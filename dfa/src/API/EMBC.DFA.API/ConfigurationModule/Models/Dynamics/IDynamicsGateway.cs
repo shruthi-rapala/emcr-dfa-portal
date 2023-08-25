@@ -28,9 +28,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appoccupant_retrieve>> GetFullTimeOccupantsListAsync(Guid applicationId);
         Task<string> UpsertDeleteCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLog);
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsListAsync(Guid applicationId);
-        Task<string> UpsertDeleteDocumentLocationAsync(SubmissionEntity submission);
-        Task<string> InsertDeleteDocumentLocationAsync(sharepointdocumentlocation objDocumentLocation);
-        Task<IEnumerable<sharepointdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
+        Task<string> InsertDocumentLocationAsync(SubmissionEntity submission);
+        Task<string> DeleteDocumentLocationAsync(Guid dfa_appdocumentlocationsid);
+        Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
 
         //Task<IEnumerable> GetDistrictsAsync();

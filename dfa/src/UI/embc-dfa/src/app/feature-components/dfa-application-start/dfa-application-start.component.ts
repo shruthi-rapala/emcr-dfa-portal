@@ -89,7 +89,16 @@ export class DFAApplicationStartComponent
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     this.dfaApplicationStartHeading = 'Create Your Application';
     this.steps = this.componentService.createDFAApplicationStartSteps();
+    this.formCreationService.clearAppTypeInsuranceData();
     this.dfaApplicationStartDataService.profileVerified = true;
+    this.dfaApplicationStartDataService.consent = true;
+    this.dfaApplicationStartDataService.applicantSignature = { dateSigned: null, signedName: null, signature: null};
+    this.dfaApplicationStartDataService.secondaryApplicantSignature = { dateSigned: null, signedName: null, signature: null };
+    this.dfaApplicationStartDataService.applicantOption = null;
+    this.dfaApplicationStartDataService.farmOption = null;
+    this.dfaApplicationStartDataService.insuranceOption = null;
+    this.dfaApplicationStartDataService.smallBusinessOption = null;
+    this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
   }
 
   ngAfterViewChecked(): void {

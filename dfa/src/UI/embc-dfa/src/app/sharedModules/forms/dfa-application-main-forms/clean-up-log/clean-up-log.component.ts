@@ -231,11 +231,13 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
     if (this.cleanUpWorkFilesForm.get('cleanupFileUpload').status === 'VALID') {
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
+      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
-          this.dfaApplicationMainDataService.fileUploads.push(fileUpload);
-          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(this.dfaApplicationMainDataService.fileUploads);
+          if (fileUploads) fileUploads.push(fileUpload);
+          else fileUploads = [ fileUpload ];
+          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('true');
           this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
         },
