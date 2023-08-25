@@ -14,7 +14,7 @@
       </div>
     </div>
   </div>
-  <div class="col-12 content-container">
+  <div class="col-12 content-container" >
     <div class="row">
         <div class="col-md-6">
           <span class="page-subheadbold">This page is for homeowners and residential tenants.</span><br />
@@ -61,6 +61,13 @@ If you're an Indigenous community or local government your process is different:
         </a>
       </nav>
       <router-outlet></router-outlet>
+      <app-loader
+        class="spinner"
+        [showLoader]="isLoading"
+        strokeWidth="10"
+        diameter="50"
+      >
+      </app-loader>
 </div>
   </div>
 

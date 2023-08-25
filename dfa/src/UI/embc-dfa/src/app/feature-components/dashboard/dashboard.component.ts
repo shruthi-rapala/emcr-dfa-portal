@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TabModel } from 'src/app/core/model/tab.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
@@ -8,6 +8,7 @@ import { ProfileDataService } from 'src/app/feature-components/profile/profile-d
 import { tap } from 'rxjs/internal/operators/tap';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { Observable, Subject } from 'rxjs';
 //import {
 //  DfaAppapplication
 //} from 'src/app/core/api/models';
@@ -22,7 +23,9 @@ export class DashboardComponent implements OnInit {
   currentApplicationsCount = "0";
   pastApplicationsCount = "0";
   eventsCount = "0";
-
+  isLoading = false;
+  bgColor = 'transparent';
+  intervalId;
 
   tabs: DashTabModel[];
 
@@ -42,36 +45,55 @@ export class DashboardComponent implements OnInit {
     this.profService.getProfile();
     //alert(this.appSessionService.appNumber);
     this.currentApplicationsCount = this.appSessionService.appNumber;
-    this.tabs = [
-      {
-        label: 'Current Applications',
-        route: 'current',
-        activeImage: '/assets/images/past-evac-active.svg',
-        inactiveImage: '/assets/images/past-evac.svg',
-        count: this.currentApplicationsCount
-      },
-      //{
-      //  label: 'DFA Events',
-      //  route: 'eventlist',
-      //  activeImage: '/assets/images/curr-evac-active.svg',
-      //  inactiveImage: '/assets/images/curr-evac.svg',
-      //  count: this.eventsCount
-      //},
-      //{
-      //  label: 'Past Applications',
-      //  route: 'past',
-      //  activeImage: '/assets/images/past-evac-active.svg',
-      //  inactiveImage: '/assets/images/past-evac.svg',
-      //  count: this.pastApplicationsCount
-      //},
-      {
-        label: 'Profile',
-        route: 'profile',
-        activeImage: '/assets/images/profile-active.svg',
-        inactiveImage: '/assets/images/profile.svg',
-        count: ""
+
+    this.isLoading = true;
+
+    this.intervalId = setInterval(() => {
+      this.currentApplicationsCount = this.appSessionService.appNumber;
+      if (this.appSessionService.appNumber != null && this.appSessionService.appNumber != 'null') {
+        clearInterval(this.intervalId);
+        this.appSessionService.appNumber = null;
       }
-    ];
+    }, 100);
+    
+    setTimeout(
+      function () {
+
+        this.tabs = [
+          {
+            label: 'Current Applications',
+            route: 'current',
+            activeImage: '/assets/images/past-evac-active.svg',
+            inactiveImage: '/assets/images/past-evac.svg',
+            count: this.currentApplicationsCount
+          },
+          //{
+          //  label: 'DFA Events',
+          //  route: 'eventlist',
+          //  activeImage: '/assets/images/curr-evac-active.svg',
+          //  inactiveImage: '/assets/images/curr-evac.svg',
+          //  count: this.eventsCount
+          //},
+          //{
+          //  label: 'Past Applications',
+          //  route: 'past',
+          //  activeImage: '/assets/images/past-evac-active.svg',
+          //  inactiveImage: '/assets/images/past-evac.svg',
+          //  count: this.pastApplicationsCount
+          //},
+          {
+            label: 'Profile',
+            route: 'profile',
+            activeImage: '/assets/images/profile-active.svg',
+            inactiveImage: '/assets/images/profile.svg',
+            count: ""
+          }
+        ];
+
+        this.isLoading = false;
+      }.bind(this),
+      2000
+    );
   }
 
   navigateToDFAApplicationStart(): void {
