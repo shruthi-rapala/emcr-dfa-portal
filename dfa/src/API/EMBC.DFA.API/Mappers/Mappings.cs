@@ -99,10 +99,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_primaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_primaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.signedName))
-                .ForMember(d => d.dfa_primaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.dateSigned))
+                .ForMember(d => d.dfa_primaryapplicantsigneddatenoins, opts => opts.MapFrom(s => (s.AppTypeInsurance.applicantSignature == null || string.IsNullOrEmpty(s.AppTypeInsurance.applicantSignature.dateSigned)) ? null : s.AppTypeInsurance.applicantSignature.dateSigned.Substring(0, 10)))
                 .ForMember(d => d.dfa_secondaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_secondaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.signedName))
-                .ForMember(d => d.dfa_secondaryapplicantsigneddatenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.secondaryApplicantSignature.dateSigned));
+                .ForMember(d => d.dfa_secondaryapplicantsigneddatenoins, opts => opts.MapFrom(s => (s.AppTypeInsurance.secondaryApplicantSignature == null || string.IsNullOrEmpty(s.AppTypeInsurance.secondaryApplicantSignature.dateSigned)) ? null : s.AppTypeInsurance.secondaryApplicantSignature.dateSigned.Substring(0, 10)));
 
             CreateMap<dfa_appapplicationstart_retrieve, ProfileVerification>()
                .ForMember(d => d.profileVerified, opts => opts.Ignore())
@@ -130,10 +130,10 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<DFAApplicationMain, dfa_appapplicationmain_params>()
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.Id))
                 .ForMember(d => d.dfa_primaryapplicantprintname, opts => opts.MapFrom(s => s.signAndSubmit.applicantSignature.signedName))
-                .ForMember(d => d.dfa_primaryapplicantsigneddate, opts => opts.MapFrom(s => s.signAndSubmit.applicantSignature.dateSigned))
+                .ForMember(d => d.dfa_primaryapplicantsigneddate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.signAndSubmit.applicantSignature.dateSigned) ? null : s.signAndSubmit.applicantSignature.dateSigned.Substring(0, 10)))
                 .ForMember(d => d.dfa_primaryapplicantsigned, opts => opts.MapFrom(s => s.signAndSubmit != null && string.IsNullOrEmpty(s.signAndSubmit.applicantSignature.signature) ? YesNoOptionSet.No : YesNoOptionSet.Yes))
                 .ForMember(d => d.dfa_secondaryapplicantprintname, opts => opts.MapFrom(s => s.signAndSubmit.secondaryApplicantSignature.signedName))
-                .ForMember(d => d.dfa_secondaryapplicantsigneddate, opts => opts.MapFrom(s => s.signAndSubmit.secondaryApplicantSignature.dateSigned))
+                .ForMember(d => d.dfa_secondaryapplicantsigneddate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.signAndSubmit.secondaryApplicantSignature.dateSigned) ? null : s.signAndSubmit.secondaryApplicantSignature.dateSigned.Substring(0, 10)))
                 .ForMember(d => d.dfa_secondaryapplicantsigned, opts => opts.MapFrom(s => s.signAndSubmit != null && string.IsNullOrEmpty(s.signAndSubmit.secondaryApplicantSignature.signature) ? YesNoOptionSet.No : YesNoOptionSet.Yes))
                 .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.propertyDamage.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.propertyDamage.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
@@ -208,8 +208,10 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<dfa_appapplicationmain_retrieve, SignAndSubmit>()
                 .ForPath(d => d.applicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_primaryapplicantprintname))
                 .ForPath(d => d.applicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_primaryapplicantsigneddate))
+                .ForPath(d => d.applicantSignature.signature, opts => opts.MapFrom(s => s.dfa_primaryapplicantsignature != null ? "data:image/png;base64," + s.dfa_primaryapplicantsignature : null))
                 .ForPath(d => d.secondaryApplicantSignature.signedName, opts => opts.MapFrom(s => s.dfa_secondaryapplicantprintname))
-                .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddate));
+                .ForPath(d => d.secondaryApplicantSignature.dateSigned, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsigneddate))
+                .ForPath(d => d.secondaryApplicantSignature.signature, opts => opts.MapFrom(s => s.dfa_secondaryapplicantsignature != null ? "data:image/png;base64," + s.dfa_secondaryapplicantsignature : null));
 
             CreateMap<dfa_appsecondaryapplicant_retrieve, SecondaryApplicant>()
                 .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_appapplicationid_value))

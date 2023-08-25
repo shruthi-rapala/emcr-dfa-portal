@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, NgModule, Inject, OnDestroy, OnChanges } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -17,6 +17,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { SignatureBlock } from 'src/app/core/api/models';
 import { CoreModule } from 'src/app/core/core.module';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { Signature } from 'typescript';
 
 @Component({
   selector: 'app-sign-and-submit',
@@ -29,6 +30,9 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   signAndSubmitForm$: Subscription;
   formCreationService: FormCreationService;
   isSecondaryApplicant: boolean = false;
+  initialApplicantSignature: SignatureBlock = {dateSigned: null, signedName: null, signature: null};
+  initialSecondaryApplicantSignature: SignatureBlock = {dateSigned: null, signedName: null, signature: null};
+  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -41,12 +45,19 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.signAndSubmitForm$ = this.formCreationService
       .getSignAndSubmitForm()
       .subscribe((signAndSubmit) => {
         this.signAndSubmitForm = signAndSubmit;
         if (this.signAndSubmitForm.get('applicantSignature').get('signature').value) this.dfaApplicationMainDataService.isSubmitted = true;
-      });
+        this.initialApplicantSignature.dateSigned = this.signAndSubmitForm?.get('applicantSignature')?.get('dateSigned').value;
+        this.initialApplicantSignature.signedName = this.signAndSubmitForm?.get('applicantSignature')?.get('signedName').value;
+        this.initialApplicantSignature.signature = this.signAndSubmitForm?.get('applicantSignature')?.get('signature').value;
+        this.initialSecondaryApplicantSignature.dateSigned = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('dateSigned').value;
+        this.initialSecondaryApplicantSignature.signedName = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signedName').value;
+        this.initialSecondaryApplicantSignature.signature = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signature').value;
+    });
 
     this.signAndSubmitForm
       .get('applicantSignature')
@@ -55,6 +66,9 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.signAndSubmitForm.get('applicantSignature').reset();
         }
+        this.initialApplicantSignature.dateSigned = this.signAndSubmitForm?.get('applicantSignature')?.get('dateSigned').value;
+        this.initialApplicantSignature.signedName = this.signAndSubmitForm?.get('applicantSignature')?.get('signedName').value;
+        this.initialApplicantSignature.signature = this.signAndSubmitForm?.get('applicantSignature')?.get('signature').value;
       });
 
       this.signAndSubmitForm
@@ -64,6 +78,9 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.signAndSubmitForm.get('secondaryApplicantSignature').reset();
         }
+        this.initialSecondaryApplicantSignature.dateSigned = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('dateSigned').value;
+        this.initialSecondaryApplicantSignature.signedName = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signedName').value;
+        this.initialSecondaryApplicantSignature.signature = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signature').value;
       });
 
       this.formCreationService.secondaryApplicantsChanged.subscribe((secondaryApplicants) => {

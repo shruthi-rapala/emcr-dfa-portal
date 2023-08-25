@@ -70,6 +70,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_appapplicationid { get; set; }
     }
 
+    public class annotation
+    {
+        public Guid annotationid { get; set; }
+        public string documentbody { get; set; }
+        public string subject { get; set; }
+    }
+
     public class JsonHelper
     {
         internal static string JsonSerializer<T>(T t)
@@ -189,6 +196,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
         public int? dfa_wereyouevacuatedduringtheevent2 { get; set; } // optional Two Options
         public string? _dfa_buildingownerlandlord_value { get; set; } // optional string
+        public string? dfa_primaryapplicantsignature { get; set; } // optional string
+        public string? dfa_secondaryapplicantsignature { get; set; } // optional string
     }
 
     public class dfa_appbuildingownerlandlord

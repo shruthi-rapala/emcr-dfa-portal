@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { switchMap, takeUntil, pairwise } from 'rxjs/operators'
 import { SignatureBlock } from 'src/app/core/api/models';
@@ -9,12 +9,15 @@ import { SignatureBlock } from 'src/app/core/api/models';
   styleUrls: ['./signature.component.scss']
 })
 
-export class SignatureComponent implements AfterViewInit {
+export class SignatureComponent implements AfterViewInit, OnChanges {
 
   @ViewChild('canvas', {static: false}) public canvas: ElementRef;
 
   @Input() isRequired: boolean;
   @Input() whoseSignature: string;
+  @Input() initialSignedName: string;
+  @Input() initialDateSigned: string;
+  @Input() initialSignature: string;
   @Output() public signature: EventEmitter<SignatureBlock> = new EventEmitter<SignatureBlock>();
 
   private canvasEl: HTMLCanvasElement;
@@ -22,7 +25,7 @@ export class SignatureComponent implements AfterViewInit {
   public signatureBlock: SignatureBlock;
 
   constructor() {
-    this.signatureBlock = { signedName: "", dateSigned: null, signature: null};
+    this.signatureBlock = { signedName: null, dateSigned: null, signature: null};
   }
 
   ngAfterViewInit(): void {
@@ -36,10 +39,37 @@ export class SignatureComponent implements AfterViewInit {
     this.captureEvents(canvasEl);
   }
 
+  ngOnChanges(event: SimpleChanges): void {
+    // reformat date from mm/dd/yyyy to yyyy-mm-dd cant use date pipe since it messes up time zone
+    if (event["initialDateSigned"]?.currentValue) {
+      const initialDateSigned = new Date(event["initialDateSigned"].currentValue);
+      this.signatureBlock.dateSigned  = initialDateSigned.getFullYear().toString() + "-" +
+      ((initialDateSigned.getMonth()+1)<10 ? "0" + (initialDateSigned.getMonth()+1).toString() : (initialDateSigned.getMonth()+1).toString()) + "-" +
+      ((initialDateSigned.getDate())<10 ? "0" + (initialDateSigned.getDate()).toString() : (initialDateSigned.getDate()).toString());
+    }
+
+    const initialSignedName = event["initialSignedName"]?.currentValue;
+    if (initialSignedName && !this.signatureBlock.signedName) {
+      this.signatureBlock.signedName = initialSignedName;
+    }
+
+    // Draw signature
+    const initialSignature = event["initialSignature"]?.currentValue;
+    if (initialSignature && !this.signatureBlock.signature) {
+      this.signatureBlock.signature = initialSignature;
+      const canvasEl: HTMLCanvasElement = this.canvas?.nativeElement;
+      var ctxt = canvasEl?.getContext("2d");
+      var background = new Image();
+        background.src = this.signatureBlock?.signature;
+        background.onload = function() {
+          ctxt.drawImage(background, 0, 0, canvasEl?.width, canvasEl?.height);
+        };
+    }
+  }
+
   // store in signature block to emit
   updateCanvas() {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    //this.signatureBlock.signature = canvasEl.toDataURL("image/jpeg").replace(/^data:image\/(png|jpeg);base64,/, "");
     this.signatureBlock.signature = canvasEl.toDataURL();
     this.updateSignatureBlock();
   }
