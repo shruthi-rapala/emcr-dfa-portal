@@ -281,7 +281,6 @@ namespace EMBC.DFA.API.Controllers
     {
         public bool? floodDamage { get; set; }
         public bool? landslideDamage { get; set; }
-        public bool? wildfireDamage { get; set; }
         public bool? stormDamage { get; set; }
         public bool? otherDamage { get; set; }
         public string? otherDamageText { get; set; }

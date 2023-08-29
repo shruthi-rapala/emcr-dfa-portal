@@ -136,7 +136,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_areyounowresidingintheresidence2 { get; set; } // optional boolean
         public int? dfa_causeofdamageflood2 { get; set; } // optional boolean
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal boolean
-        public int? dfa_causeofdamagewildfire2 { get; set; } // optional boolean
         public int? dfa_causeofdamagelandslide2 { get; set; } // optional boolean
         public int? dfa_causeofdamageother2 { get; set; } // optional boolean
         public string? dfa_causeofdamageloss { get; set; } // optional string
@@ -178,7 +177,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_areyounowresidingintheresidence2 { get; set; } // optional Two Options
         public int? dfa_causeofdamageflood2 { get; set; } // optional Two Options
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal Two Options
-        public int? dfa_causeofdamagewildfire2 { get; set; } // optional Two Options
         public int? dfa_causeofdamagelandslide2 { get; set; } // optional Two Options
         public int? dfa_causeofdamageother2 { get; set; } // optional Two Options
         public string? dfa_causeofdamageloss { get; set; } // optional string

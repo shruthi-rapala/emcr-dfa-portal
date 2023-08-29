@@ -17,5 +17,4 @@ export interface PropertyDamage {
   residingInResidence?: null | boolean;
   stormDamage?: null | boolean;
   wereYouEvacuated?: null | boolean;
-  wildfireDamage?: null | boolean;
 }

@@ -98,17 +98,9 @@ export class DFAApplicationMainMappingService {
       .subscribe((propertyDamage) => {
         propertyDamage.setValue({
           ...dfaApplicationMain.propertyDamage,
-          //floodDamage: dfaApplicationMain.propertyDamage.floodDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.floodDamage === false ? 'false' : null),
-          //landslideDamage: dfaApplicationMain.propertyDamage.landslideDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.landslideDamage === false ? 'false' : null),
-          //wildfireDamage: dfaApplicationMain.propertyDamage.wildfireDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.wildfireDamage === false ? 'false' : null),
-          //stormDamage: dfaApplicationMain.propertyDamage.stormDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.stormDamage === false ? 'false' : null),
-          //otherDamage: dfaApplicationMain.propertyDamage.otherDamage === true ? 'true' : (dfaApplicationMain.propertyDamage.otherDamage === false ? 'false' : null),
           lossesExceed1000: dfaApplicationMain.propertyDamage.lossesExceed1000 === true ? 'true' : (dfaApplicationMain.propertyDamage.lossesExceed1000 === false ? 'false' : null),
           wereYouEvacuated: dfaApplicationMain.propertyDamage.wereYouEvacuated === true ? 'true' : (dfaApplicationMain.propertyDamage.wereYouEvacuated === false ? 'false' : null),
           residingInResidence: dfaApplicationMain.propertyDamage.residingInResidence === true ? 'true' : (dfaApplicationMain.propertyDamage.residingInResidence === false ? 'false' : null),
-          //damageFromDate: dfaApplicationMain.propertyDamage.damageFromDate ? new Date(dfaApplicationMain.propertyDamage.damageFromDate) : null,
-          //damageToDate: dfaApplicationMain.propertyDamage.damageToDate ? new Date(dfaApplicationMain.propertyDamage.damageToDate) : null,
-          //dateReturned: dfaApplicationMain.propertyDamage.dateReturned ? new Date(dfaApplicationMain.propertyDamage.dateReturned) : null,
         });
         formGroup = propertyDamage;
       });
