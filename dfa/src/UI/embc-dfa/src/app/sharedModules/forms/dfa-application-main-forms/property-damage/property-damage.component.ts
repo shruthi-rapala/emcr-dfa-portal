@@ -84,15 +84,6 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       });
 
     this.propertyDamageForm
-      .get('wildfireDamage')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.propertyDamageForm.get('wildfireDamage').reset();
-        }
-      })
-
-    this.propertyDamageForm
       .get('stormDamage')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
@@ -184,8 +175,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   }
 
   validateFormCauseOfDamage(form: FormGroup) {
-    if (form.controls.wildfireDamage.value !== true &&
-      form.controls.stormDamage.value !== true &&
+    if (form.controls.stormDamage.value !== true &&
       form.controls.landslideDamage.value !== true &&
       form.controls.otherDamage.value !== true &&
       form.controls.floodDamage.value !== true) {

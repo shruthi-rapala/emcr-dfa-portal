@@ -135,7 +135,6 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_secondaryapplicantprintname, opts => opts.MapFrom(s => s.signAndSubmit.secondaryApplicantSignature.signedName))
                 .ForMember(d => d.dfa_secondaryapplicantsigneddate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.signAndSubmit.secondaryApplicantSignature.dateSigned) ? null : s.signAndSubmit.secondaryApplicantSignature.dateSigned.Substring(0, 10)))
                 .ForMember(d => d.dfa_secondaryapplicantsigned, opts => opts.MapFrom(s => s.signAndSubmit != null && string.IsNullOrEmpty(s.signAndSubmit.secondaryApplicantSignature.signature) ? YesNoOptionSet.No : YesNoOptionSet.Yes))
-                .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.propertyDamage.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.propertyDamage.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageflood2, opts => opts.MapFrom(s => s.propertyDamage.floodDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagelandslide2, opts => opts.MapFrom(s => s.propertyDamage.landslideDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
@@ -191,7 +190,6 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.isPrimaryAndDamagedAddressSame, opts => opts.MapFrom(s => s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
 
             CreateMap<dfa_appapplicationmain_retrieve, PropertyDamage>()
-                .ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.stormDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageother2 == (int)YesNoOptionSet.No ? false : (bool?)null)))

@@ -1151,17 +1151,6 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3">Wildfire Damage?:</div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.propertyDamageForm$ | async)?.value
-                .wildfireDamage === true
-                ? 'Yes'
-                : 'No'
-            }}
-          </div>
-        </div>
-        <div class="row info-detail">
           <div class="col-md-3">Storm Damage?:</div>
           <div class="col-md-3">
             {{

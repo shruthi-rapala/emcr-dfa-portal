@@ -174,12 +174,10 @@ export class PropertyDamage {
   residingInResidence?: null | boolean;
   stormDamage?: null | boolean;
   wereYouEvacuated?: null | boolean;
-  wildfireDamage?: null | boolean;
 
   constructor(
     floodDamage?: null | boolean,
     landslideDamage?: null | boolean,
-    wildfireDamage? : null | boolean,
     stormDamage?: null | boolean,
     otherDamage?: null | boolean,
     otherDamageText?: null | string,
@@ -196,7 +194,6 @@ export class PropertyDamage {
 export class PropertyDamageForm {
   floodDamage = new UntypedFormControl();
   landslideDamage = new UntypedFormControl();
-  wildfireDamage = new UntypedFormControl();
   stormDamage = new UntypedFormControl();
   otherDamage = new UntypedFormControl();
   otherDamageText = new UntypedFormControl();
@@ -221,11 +218,6 @@ export class PropertyDamageForm {
       this.landslideDamage.setValue(propertyDamage.landslideDamage);
     }
     this.landslideDamage.setValidators(null);
-
-    if (propertyDamage.wildfireDamage) {
-      this.wildfireDamage.setValue(propertyDamage.wildfireDamage)
-    }
-    this.wildfireDamage.setValidators(null);
 
     if (propertyDamage.stormDamage) {
       this.stormDamage.setValue(propertyDamage.stormDamage);
