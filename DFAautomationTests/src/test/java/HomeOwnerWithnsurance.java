@@ -39,7 +39,7 @@ public class HomeOwnerWithnsurance {
 
         Login login = new Login();
         login.test();
-
+        Thread.sleep(4000);
         CreateNewApplicationHomeowner createAp = new CreateNewApplicationHomeowner();
         createAp.createAppl(element, driverWait, driver);
 

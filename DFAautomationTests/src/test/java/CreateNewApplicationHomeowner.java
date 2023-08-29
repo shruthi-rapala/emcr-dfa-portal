@@ -43,7 +43,7 @@ public class CreateNewApplicationHomeowner {
         Login login = new Login();
         login.test();
 
-
+        Thread.sleep(4000);
         CreateNewApplicationHomeowner createAp = new CreateNewApplicationHomeowner();
         createAp.createAppl(element, driverWait, driver);
 
@@ -88,7 +88,7 @@ public class CreateNewApplicationHomeowner {
     public void createAppl(WebElement element, WebDriverWait driverWait, WebDriver driver) throws Exception{
 
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Create New Application ')]"))).click();
+                ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(text(), ' Create New Application ')]"))).click();
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Notice of Collection')]")));
         JavascriptExecutor js = (JavascriptExecutor) driver;

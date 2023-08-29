@@ -112,10 +112,10 @@ public class HomeOwnerApplicationDetails {
         //Questions
         Thread.sleep(3000);
         JavascriptExecutor js2 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-15-input")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[2]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js2.executeScript("arguments[0].click();", element);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-18-input")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[3]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[4]/div/mat-form-field/div/div[1]/div[3]/input")));
@@ -146,8 +146,8 @@ public class HomeOwnerApplicationDetails {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-4 .mat-checkbox-inner-container")));
         js314.executeScript("arguments[0].click();", element);
         JavascriptExecutor js315 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-5 .mat-checkbox-inner-container")));
-        js315.executeScript("arguments[0].click();", element);
+//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-checkbox-5 .mat-checkbox-inner-container")));
+//        js315.executeScript("arguments[0].click();", element);
 
         Thread.sleep(1000);
         JavascriptExecutor js316 = (JavascriptExecutor) driver;
@@ -167,12 +167,12 @@ public class HomeOwnerApplicationDetails {
         Thread.sleep(1000);
         //Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?
         JavascriptExecutor js22 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-27-input")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-property-damage/mat-card/mat-card-content/form/div[4]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js22.executeScript("arguments[0].click();", element);
 
         //Were you evacuated during the event?
         JavascriptExecutor js23 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-30-input")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-property-damage/mat-card/mat-card-content/form/div[5]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js23.executeScript("arguments[0].click();", element);
         //date return
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-property-damage/mat-card/mat-card-content/form/div[6]/div/mat-form-field/div/div[1]/div[3]/input")));
@@ -361,5 +361,8 @@ public class HomeOwnerApplicationDetails {
         JavascriptExecutor js52= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-7\"]/div/div[2]/button/span[1]")));
         js52.executeScript("arguments[0].click();", element);
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Your application has been submitted.')]")));
+
     }
 }

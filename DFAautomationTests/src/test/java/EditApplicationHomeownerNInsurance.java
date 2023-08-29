@@ -18,16 +18,16 @@ public class EditApplicationHomeownerNInsurance {
     private WebDriver driver;
 
 
-//    @After
-//    public void tearDown() {
-//        driver.close();
-//        driver.quit();
-//    }
-//
-//    @AfterClass
-//    public static void afterClass() {
-//        WebDriverManager.instance = null;
-//    }
+    @After
+    public void tearDown() {
+        driver.close();
+        driver.quit();
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        WebDriverManager.instance = null;
+    }
 
 
     @Test
@@ -40,7 +40,7 @@ public class EditApplicationHomeownerNInsurance {
         Login login = new Login();
         login.test();
 
-
+        Thread.sleep(4000);
         CreateNewApplicationHomeowner createAp = new CreateNewApplicationHomeowner();
         createAp.createAppl(element, driverWait, driver);
 
@@ -215,17 +215,15 @@ public class EditApplicationHomeownerNInsurance {
 
         //Damage
         JavascriptExecutor js312 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-checkbox-7")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-checkbox-5")));
         js312.executeScript("arguments[0].click();", element);
         JavascriptExecutor js313 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-checkbox-8")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-checkbox-6")));
         js313.executeScript("arguments[0].click();", element);
         JavascriptExecutor js314 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-checkbox-9")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-checkbox-7")));
         js314.executeScript("arguments[0].click();", element);
         JavascriptExecutor js315 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-checkbox-10")));
-        js315.executeScript("arguments[0].click();", element);
 
         element = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[2]/app-component-wrapper/app-property-damage/mat-card/mat-card-content/form/div[3]/mat-form-field/div/div[1]/div[3]/textarea")));
@@ -402,10 +400,11 @@ public class EditApplicationHomeownerNInsurance {
         js371.executeScript("arguments[0].click();", element);
 
         //Delete supporting doc
-
+        Thread.sleep(1000);
         JavascriptExecutor js341= (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[6]/app-component-wrapper/app-supporting-documents/mat-card/mat-card-content/table/tbody/tr/td[5]/button/span[1]/img[1]")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[6]/app-component-wrapper/app-supporting-documents/mat-card/mat-card-content/table/tbody/tr[1]/td[5]/button/span[1]/img[1]")));
         js341.executeScript("arguments[0].click();", element);
+        Thread.sleep(1000);
 
         //Add insurance template
         Thread.sleep(2000);
@@ -426,8 +425,33 @@ public class EditApplicationHomeownerNInsurance {
         js391.executeScript("arguments[0].click();", element);
 
         //Sign and Submit
-        HomeOwnerApplicationDetails signSubmit = new HomeOwnerApplicationDetails();
-        signSubmit.submit(element, driverWait, driver);
+        JavascriptExecutor js42= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Sign & Submit ')]")));
+        js42.executeScript("arguments[0].click();", element);
+
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Declaration')]")));
+        Thread.sleep(1000);
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.id("canvas"))).click();
+        JavascriptExecutor js50= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/app-component-wrapper/app-sign-and-submit/mat-card/mat-card-content/form/div[2]/div[1]/app-signature/div/div[2]/div/mat-form-field/div/div[1]/div[3]/input")));
+        js50.executeScript("arguments[0].click();", element);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/app-component-wrapper/app-sign-and-submit/mat-card/mat-card-content/form/div[2]/div[1]/app-signature/div/div[2]/div/mat-form-field/div/div[1]/div[3]/input")).sendKeys("Lorem ipsum dolor si");
+        JavascriptExecutor js52= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/app-component-wrapper/app-sign-and-submit/mat-card/mat-card-content/form/div[2]/div[1]/app-signature/div/div[3]/div/mat-form-field/div/div[1]/div[3]/input")));
+        js52.executeScript("arguments[0].click();", element);
+        driver.findElement(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/app-component-wrapper/app-sign-and-submit/mat-card/mat-card-content/form/div[2]/div[1]/app-signature/div/div[3]/div/mat-form-field/div/div[1]/div[3]/input")).sendKeys("7/31/2023");
+        Thread.sleep(1000);
+        JavascriptExecutor js90= (JavascriptExecutor) driver;
+        js90.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        Thread.sleep(1000);
+        JavascriptExecutor js521= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/div/div[2]/button")));
+        js521.executeScript("arguments[0].click();", element);
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Your application has been submitted.')]")));
 
     }
 
