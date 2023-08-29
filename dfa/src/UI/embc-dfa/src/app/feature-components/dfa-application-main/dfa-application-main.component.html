@@ -116,7 +116,7 @@
             class="button-p"
             mat-stroked-button
             type="button"
-            (click)="dfaApplicationMainStepper.next()"
+            (click)="goForward(dfaApplicationMainStepper, false, 'review')"
           >
             Next - Sign & Submit
             <app-loader
@@ -154,7 +154,7 @@
             Return to Dashboard
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid && (formCreationService.otherContactsForm$ | async)?.valid && vieworedit !== 'view'
+        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid && (formCreationService.otherContactsForm$ | async)?.valid && (formCreationService.fullTimeOccupantsForm$ | async)?.valid && vieworedit !== 'view'
              && isInsuranceTemplateUploaded
              && (isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
 
@@ -168,7 +168,7 @@
             Submit
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid || !(formCreationService.otherContactsForm$ | async)?.valid
+        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid || !(formCreationService.otherContactsForm$ | async)?.valid || !(formCreationService.fullTimeOccupantsForm$ | async)?.valid
              || !isInsuranceTemplateUploaded
              || !(isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
              ) && vieworedit !== 'view'">
