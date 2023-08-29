@@ -35,6 +35,6 @@ export class OutageComponent implements OnInit {
   }
 
   goHomePage(): void {
-    window.location.href = 'https://ess.gov.bc.ca/';
+    window.location.href = 'https://dfa.gov.bc.ca/';
   }
 }
