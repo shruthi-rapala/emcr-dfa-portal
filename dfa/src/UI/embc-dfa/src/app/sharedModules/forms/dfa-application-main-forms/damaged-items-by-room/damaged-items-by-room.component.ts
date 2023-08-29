@@ -180,6 +180,10 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
             this.damagedRoomsData[this.damagedRoomEditIndex] = this.damagedRoomsForm.get('damagedRoom').value;
             this.damagedRoomRowEdit = !this.damagedRoomRowEdit;
             this.damagedRoomEditIndex = undefined;
+            this.damagedRoomsDataSource.next(this.damagedRoomsData);
+            this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
+            this.showDamagedRoomForm = !this.showDamagedRoomForm;
+            this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
              },
          error: (error) => {
            console.error(error);
@@ -190,16 +194,17 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
          next: (damagedRoomId) => {
            this.damagedRoomsForm.get('damagedRoom').get('id').setValue(damagedRoomId);
            this.damagedRoomsData.push(this.damagedRoomsForm.get('damagedRoom').value);
+           this.damagedRoomsDataSource.next(this.damagedRoomsData);
+           this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
+           this.showDamagedRoomForm = !this.showDamagedRoomForm;
+           this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
          },
          error: (error) => {
            console.error(error);
          }
        });
       }
-      this.damagedRoomsDataSource.next(this.damagedRoomsData);
-      this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
-      this.showDamagedRoomForm = !this.showDamagedRoomForm;
-      this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
+      
     } else {
       this.damagedRoomsForm.get('damagedRoom').markAllAsTouched();
     }
