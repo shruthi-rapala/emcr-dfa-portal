@@ -19,9 +19,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('header comp');
-    //this.loginService.isLoggedIn$.subscribe((val) => {
-    //  this.showLoginMatMenu = val;
-    //});
+    this.loginService.isLoggedIn$.subscribe((val) => {
+     this.showLoginMatMenu = val;
+    });
   }
 
   homeButton(): void {}
