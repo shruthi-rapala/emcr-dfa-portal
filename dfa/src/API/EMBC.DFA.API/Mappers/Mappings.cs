@@ -53,7 +53,8 @@ namespace EMBC.DFA.API.Mappers
                 {
                     FirstName = s.dfa_firstname,
                     LastName = s.dfa_lastname,
-                    Initials = s.dfa_initial
+                    Initials = s.dfa_initial,
+                    IndigenousStatus = s.dfa_isindigenous == true ? "Yes" : (s.dfa_isindigenous == false ? "No" : null)
                 }))
                 ;
 
