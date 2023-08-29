@@ -178,7 +178,7 @@ export class DFAApplicationMainComponent
 
   ngAfterViewInit(): void {
     if (this.vieworedit == 'view' || this.vieworedit == 'edit') {
-      for (var i = 0; i <= 5; i++) {
+      for (var i = 0; i <= 7; i++) {
         this.dfaApplicationMainStepper.selected.completed = true;
         this.dfaApplicationMainStepper.next();
       }
@@ -240,12 +240,52 @@ export class DFAApplicationMainComponent
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
     if (isLast && component === 'review') {
+      this.dfaApplicationMainStepper.selected.completed = true;
       this.submitFile();
     } else {
       this.setFormData(component);
       let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
       this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
-        if (this.form.valid) stepper.selected.completed = true;
+
+        // determine if step is complete
+        switch (component) {
+          case 'damaged-property-address':
+            if (this.form.valid) stepper.selected.completed = true;
+            else stepper.selected.completed = false;
+            break;
+          case 'property-damage':
+            if (this.form.valid) stepper.selected.completed = true;
+            else stepper.selected.completed = false;
+            break;
+          case 'occupants':
+            if (this.formCreationService.otherContactsForm.value.valid && this.formCreationService.fullTimeOccupantsForm.value.valid) stepper.selected.completed = true;
+            else stepper.selected.completed = false;
+            break;
+          case 'clean-up-log':
+            stepper.selected.completed = true;
+            break;
+          case 'damaged-items-by-room':
+            stepper.selected.completed = true;
+            break;
+          case 'supporting-documents':
+            this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
+            if (this.isInsuranceTemplateUploaded == true &&
+              (this.isResidentialTenant == true ? (this.isIdentificationUploaded == true && this.isTenancyProofUploaded == true) : true))
+              stepper.selected.completed = true;
+            else stepper.selected.completed = false;
+              break;
+          case 'sign-and-submit':
+            if (this.form.valid) stepper.selected.completed = true;
+            else stepper.selected.completed = false;
+            break;
+          case 'review':
+            stepper.selected.completed = true;
+            break;
+          default:
+            break;
+        }
         this.form$.unsubscribe();
         stepper.next();
         this.form.markAllAsTouched();
