@@ -356,7 +356,7 @@
           </div>
         </div>
         <hr />
-        <div class="row info-detail">
+        <!--<div class="row info-detail">-->
 
           <!--<div class="col-md-9">
             <p>
@@ -365,7 +365,7 @@
               by email or phone regarding your emergency situation.
             </p>
           </div>-->
-        </div>
+        <!--</div>-->
         <div class="row info-detail">
           <div class="col-md-3">Cellular Telephone Number:</div>
           <div class="col-md-3">
@@ -382,7 +382,14 @@
             }}
           </div>
         </div>
-
+        <div class="row info-detail">
+          <div class="col-md-3">Alternate Telephone Number:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.contactDetailsForm$ | async)?.value?.alternatePhone
+            }}
+          </div>
+        </div>
       </mat-card-content>
 
       <mat-card-content class="contentStyle mat-elevation-z8">
