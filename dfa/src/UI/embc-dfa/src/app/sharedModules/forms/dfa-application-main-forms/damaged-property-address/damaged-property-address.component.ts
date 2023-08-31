@@ -269,9 +269,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   getDamagedPropertyForApplication(applicationId: string) {
     this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
       next: (dfaApplicationMain) => {
-        //this.damagedRoomsData = damagedRooms;
-        //this.damagedRoomsDataSource.next(this.damagedRoomsData);
-        //this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
         this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);
       },
       error: (error) => {
@@ -286,13 +283,28 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         data: {
           content: globalConst.dontOccupyDamagedPropertyBody
         },
-        height: '260px',
+        height: '350px',
         width: '700px',
         disableClose: true
       })
       .afterClosed()
       .subscribe((result) => {
         if (result === 'cancel') {
+          this.dfaApplicationMainDataService.damagedPropertyAddress.addressLine1 = this.damagedPropertyAddressForm.get('addressLine1').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.addressLine2 = this.damagedPropertyAddressForm.get('addressLine2').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.community = this.damagedPropertyAddressForm.get('community').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.firstNationsReserve = this.damagedPropertyAddressForm.get('firstNationsReserve').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.landlordEmail = this.damagedPropertyAddressForm.get('landlordEmail').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.landlordGivenNames = this.damagedPropertyAddressForm.get('landlordGivenNames').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.landlordPhone = this.damagedPropertyAddressForm.get('landlordPhone').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.landlordSurname = this.damagedPropertyAddressForm.get('landlordSurname').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.postalCode = this.damagedPropertyAddressForm.get('postalCode').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.stateProvince = this.damagedPropertyAddressForm.get('stateProvince').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.eligibleForHomeOwnerGrant = this.damagedPropertyAddressForm.get('eligibleForHomeOwnerGrant').value == 'true' ? true : (this.damagedPropertyAddressForm.get('eligibleForHomeOwnerGrant').value == 'false' ? false : null);
+          this.dfaApplicationMainDataService.damagedPropertyAddress.isPrimaryAndDamagedAddressSame = this.damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').value == 'true' ? true : (this.damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').value == 'false' ? false : null);
+          this.dfaApplicationMainDataService.damagedPropertyAddress.manufacturedHome = this.damagedPropertyAddressForm.get('manufacturedHome').value == 'true' ? true : (this.damagedPropertyAddressForm.get('manufacturedHome').value == 'false' ? false : null);
+          this.dfaApplicationMainDataService.damagedPropertyAddress.occupyAsPrimaryResidence = this.damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value == 'true' ? true : (this.damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value == 'false' ? false : null);
+          this.dfaApplicationMainDataService.damagedPropertyAddress.onAFirstNationsReserve = this.damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true' ? true : (this.damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'false' ? false : null);
           this.submitFile();
           }
         else if (result === 'confirm') {
