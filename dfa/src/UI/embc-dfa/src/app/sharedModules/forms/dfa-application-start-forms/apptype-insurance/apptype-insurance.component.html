@@ -20,6 +20,7 @@
                   <mat-radio-button
                     class="primary-radio-button row"
                     [value]="option.key"
+                    *ngIf="option.value === radioApplicantOptions.Homeowner || option.value === radioApplicantOptions.ResidentialTenant"
                   >
                     {{ option.value }}
                   </mat-radio-button><br />
@@ -53,7 +54,7 @@
                         <li>a piece of mail showing you lived in the residence at the time of the event, such as BC Hydro bill, utility bill, bank statement, or vehicle insurance.</li>
                       </ul>
                     </div>
-                    <div class="radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.SmallBusinessOwner">
+                    <!-- <div class="radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.SmallBusinessOwner">
                       <br/>
                       <mat-label class="sub-heading">What type of small business?<span style="color:red" >*</span></mat-label>
                       <br />
@@ -133,8 +134,8 @@
                           </div>
                         </div>
                       </mat-radio-group>
-                    </div>
-                    <div class="radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.FarmOwner">
+                    </div> -->
+                    <!-- <div class="radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.FarmOwner">
                       <br/>
                       <mat-label class="sub-heading">What type of farm?<span style="color:red" >*</span></mat-label>
                       <br />
@@ -191,8 +192,8 @@
                           </div>
                         </div>
                     </mat-radio-group>
-                    </div>
-                    <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.CharitableOrganization">
+                    </div> -->
+                    <!-- <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.CharitableOrganization>
                       <br/>
                       Your charitable organization:
                       <ul>
@@ -208,7 +209,11 @@
                       You <i>may</i> be required to provide the following, if applicable:
                       <ul>
                       <li>Lease Agreements</li>
-                    </ul>
+                      </ul>
+                    </div> -->
+                    <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value !== radioApplicantOptions.Homeowner && option.value !== radioApplicantOptions.ResidentialTenant">
+                      Unknown Application Type
+                      <br/>
                     </div>
                   </div>
                 </div>
