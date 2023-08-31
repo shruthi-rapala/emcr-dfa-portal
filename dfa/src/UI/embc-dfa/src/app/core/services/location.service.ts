@@ -184,14 +184,14 @@ export class LocationService {
     const addressStateProvince = '';
       //stateProvinces.find((sp) => sp.code === addressObject.stateProvince) ??
       //stateProvinces.find((sp) => sp.code === 'BC');
-    
+
     return {
       addressLine1: addressObject.addressLine1,
       addressLine2: addressObject.addressLine2,
       //community: addressCommunity || addressObject.city || '',
       //stateProvince: addressStateProvince,
       community: addressObject.city,
-      stateProvince: addressObject.stateProvince,
+      stateProvince: addressObject.stateProvince ? addressObject.stateProvince : "BC",
       postalCode: addressObject.postalCode,
       country: { code: 'CAN', name: 'Canada' }
     };
