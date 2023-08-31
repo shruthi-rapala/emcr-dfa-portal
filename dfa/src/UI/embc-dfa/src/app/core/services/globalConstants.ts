@@ -109,7 +109,7 @@ export const supportStatusListError =
   'Unable to save application at this time. Please try again later';
 
 export const zeroFileMessage = 'Attachment file size must be greater than 0Kb';
-export const fileTooLargeMessage = 'Attachment file size must not be more than 5.12Mb';
+export const fileTooLargeMessage = 'Attachment file size must not be more than 50Mb';
 export const fileTypeMessage = 'Invalid file type.';
 export const fileNameFormat = /^[\w,\s-_()]+\.[A-Za-z]{3,4}$/;
 export const invalidFileNameMessage =
