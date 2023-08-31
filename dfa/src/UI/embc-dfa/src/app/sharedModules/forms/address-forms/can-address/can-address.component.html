@@ -92,10 +92,11 @@
           [formControlName]="'postalCode'"
           matInput
           placeholder="Postal Code"
+          required
         />
-        <!-- <mat-error
+         <mat-error
                     *ngIf="addressFormControl?.postalCode.invalid && addressFormControl?.postalCode.hasError('required')">
-                    Postal Code is required</mat-error>-->
+                    Postal Code is required</mat-error>
         <mat-error
           *ngIf="
             addressFormControl?.postalCode.invalid &&
