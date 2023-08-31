@@ -134,6 +134,15 @@ export class CustomValidationService {
   }
 
   /**
+   * Checks the postal address pattern for Canada and USA
+   */
+  postalCodeSpaceValidation(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+        return Validators.pattern(globalConst.postalPattern)(control);
+    };
+  }
+
+  /**
    * Checks length of masked fields
    */
   maskedNumberLengthValidator(): ValidatorFn {
