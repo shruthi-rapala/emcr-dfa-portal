@@ -55,6 +55,7 @@
         <div class="col-md-6" *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'">
           <button
             class="button-s"
+            [hidden]="step.component === 'damaged-property-address'"
             mat-button
             type="button"
             (click)="goBack(dfaApplicationMainStepper, step.lastStep)"
