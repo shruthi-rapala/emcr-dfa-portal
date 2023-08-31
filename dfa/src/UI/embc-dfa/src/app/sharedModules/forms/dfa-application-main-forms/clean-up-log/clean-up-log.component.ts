@@ -73,10 +73,6 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     this.formCreationService = formCreationService;
   }
 
-  showForm() {
-    console.log(this.cleanUpLogWorkForm);
-  }
-
   ngOnInit(): void {
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
 
