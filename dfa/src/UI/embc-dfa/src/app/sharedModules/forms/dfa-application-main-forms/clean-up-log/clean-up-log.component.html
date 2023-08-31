@@ -135,22 +135,32 @@
                     <mat-form-field appearance="outline">
                       <mat-label>Date</mat-label>
                       <input matInput
-                [matDatepicker]="fromPicker"
-                formControlName="date"
-                required >
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-              <mat-datepicker #fromPicker></mat-datepicker>
+                        [matDatepicker]="fromPicker"
+                        formControlName="date"
+                        [max]="todayDate"
+                        required >
+                      <mat-hint>MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #fromPicker></mat-datepicker>
                       <mat-error
                         *ngIf="
-                          cleanUpLogWorkForm.get('date').invalid &&
-                          cleanUpLogWorkForm.get('date').hasError('required') &&
-                          cleanUpLogWorkForm.get('date').touched
+                          cleanUpLogWorkForm.get('cleanuplog.date').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.date').hasError('required') &&
+                          cleanUpLogWorkForm.get('cleanuplog.date').touched
                         "
                       >
                         Date is required</mat-error
                       >
+                      <mat-error
+                        *ngIf="
+                          cleanUpLogWorkForm.get('cleanuplog.date').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.date').hasError('matDatepickerMax') &&
+                          cleanUpLogWorkForm.get('cleanuplog.date').touched
+                        ">
+                        Date cannot be in the future
+                      </mat-error>
                     </mat-form-field>
+                    <button (click)="showForm()">Show Form</button>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field appearance="outline">
@@ -158,9 +168,9 @@
                       <input formControlName="name" matInput placeholder="Name of family member/volunteer" required maxlength="100"/>
                       <mat-error
                         *ngIf="
-                          cleanUpLogWorkForm.get('name').invalid &&
-                          cleanUpLogWorkForm.get('name').hasError('required') &&
-                          cleanUpLogWorkForm.get('name').touched
+                          cleanUpLogWorkForm.get('cleanuplog.name').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.name').hasError('required') &&
+                          cleanUpLogWorkForm.get('cleanuplog.name').touched
                         "
                       >
                         First Name is required</mat-error
@@ -182,10 +192,19 @@
                       <mat-error
                         *ngIf="
                           cleanUpLogWorkForm.get('cleanuplog.hours').invalid &&
+                          cleanUpLogWorkForm.get('cleanuplog.hours').hasError('required') &&
+                          cleanUpLogWorkForm.get('cleanuplog.hours').touched
+                        "
+                      >
+                        Hours worked are required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          cleanUpLogWorkForm.get('cleanuplog.hours').invalid &&
                           (cleanUpLogWorkForm.get('cleanuplog.hours').hasError('max') || cleanUpLogWorkForm.get('cleanuplog.hours').hasError('min'))
                         "
                       >
-                        Hourse worked must be > 0 and less than 100 000 000 000</mat-error
+                        Hours worked must be > 0 and less than 100 000 000 000</mat-error
                       >
                     </mat-form-field>
                   </div>

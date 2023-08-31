@@ -51,6 +51,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'deleteIcon'];
   cleanUpWorkFileDataSource = new MatTableDataSource();
   FileCategories = FileCategory;
+  todayDate = new Date().toISOString();
   allowedFileTypes = [
     'application/pdf',
     'image/jpg',
@@ -70,6 +71,10 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+  }
+
+  showForm() {
+    console.log(this.cleanUpLogWorkForm);
   }
 
   ngOnInit(): void {
