@@ -238,7 +238,7 @@ export class AddressForm {
       ],
       postalCode: [
         '',
-        [customValidator.postalValidation().bind(customValidator),
+        [customValidator.postalCodeSpaceValidation().bind(customValidator),
           customValidator
             .maxLengthValidator(100)
             .bind(customValidator)
