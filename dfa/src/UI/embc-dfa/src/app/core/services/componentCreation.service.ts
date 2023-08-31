@@ -85,7 +85,7 @@ export class ComponentCreationService {
     {
       component: 'damaged-property-address',
       nextButtonLabel: 'Next - Cause of Damage',
-      backButtonLabel: 'Go Back & Edit',
+      backButtonLabel: 'Return to Dashboard',
       isLast: false,
       loadWrapperButton: false,
       lastStep: -2,

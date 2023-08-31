@@ -1015,7 +1015,7 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">Occupy as Primary Residence:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">Occupied as Primary Residence during event:</span></div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
@@ -1174,9 +1174,21 @@
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .otherDamage === true
-                ? ((formCreationService.propertyDamageForm$ | async)?.value.otherDamageText ? (formCreationService.propertyDamageForm$ | async)?.value.otherDamageText : 'Enter required information')
+                ? 'Yes'
                 : 'No'
             }}
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.propertyDamageForm$ | async)?.value.otherDamage === true">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.otherDamageText || (formCreationService.propertyDamageForm$ | async)?.controls?.otherDamageText.invalid}">Cause of Damage:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.otherDamageText || (formCreationService.propertyDamageForm$ | async)?.controls?.otherDamageText.invalid}">
+              {{
+                (formCreationService.propertyDamageForm$ | async)?.value
+                  .otherDamageText ? (formCreationService.propertyDamageForm$ | async)?.value
+                  .otherDamageText : "Enter required information"
+              }}
+            </span>
           </div>
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.propertyDamageForm$ | async).hasError('noCauseOfDamage')">

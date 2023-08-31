@@ -40,12 +40,11 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(event: SimpleChanges): void {
-    // reformat date from mm/dd/yyyy to yyyy-mm-dd cant use date pipe since it messes up time zone
+    // reformat date from mm/dd/yyyy to yyyy-mm-dd
     if (event["initialDateSigned"]?.currentValue) {
-      const initialDateSigned = new Date(event["initialDateSigned"].currentValue);
-      this.signatureBlock.dateSigned  = initialDateSigned.getFullYear().toString() + "-" +
-      ((initialDateSigned.getMonth()+1)<10 ? "0" + (initialDateSigned.getMonth()+1).toString() : (initialDateSigned.getMonth()+1).toString()) + "-" +
-      ((initialDateSigned.getDate())<10 ? "0" + (initialDateSigned.getDate()).toString() : (initialDateSigned.getDate()).toString());
+      this.signatureBlock.dateSigned = new Date(event["initialDateSigned"].currentValue)?.toISOString();
+    } else { // default to today date
+      this.signatureBlock.dateSigned = new Date().toISOString();
     }
 
     const initialSignedName = event["initialSignedName"]?.currentValue;
