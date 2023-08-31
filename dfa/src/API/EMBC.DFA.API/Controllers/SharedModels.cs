@@ -110,14 +110,14 @@ namespace EMBC.DFA.API.Controllers
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum InsuranceOption
     {
-        [EnumMember(Value = "No")]
-        No,
-
         [EnumMember(Value = "Yes, my insurance will cover all my losses.")]
         Yes,
 
         [EnumMember(Value = "Yes but I don\'t know if my insurance will cover all damages or for this event.")]
-        Unsure
+        Unsure,
+
+        [EnumMember(Value = "No")]
+        No
     }
 
     /// <summary>
