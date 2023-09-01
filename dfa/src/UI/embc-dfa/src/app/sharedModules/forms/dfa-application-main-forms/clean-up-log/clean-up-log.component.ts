@@ -30,6 +30,7 @@ import { CoreModule } from 'src/app/core/core.module';
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
+import { DFACleanuplogDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-cleanuplog-delete-dialog/dfa-cleanuplog-delete.component';
 
 @Component({
   selector: 'app-clean-up-log',
@@ -258,6 +259,23 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     } else {
       this.cleanUpWorkFilesForm.get('cleanupFileUpload').markAllAsTouched();
     }
+  }
+
+  confirmDeleteCleanuplogRow(index: number): void {
+    this.dialog
+      .open(DFACleanuplogDeleteDialogComponent, {
+        data: {
+          content: "Are you sure you want to delete the clean up log for:<br/>" + this.cleanUpWorkData[index].name + "?"
+        },
+        width: '350px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          this.deleteCleanupLogRow(index);
+        }
+      });
   }
 
   deleteCleanupLogRow(index: number): void {
