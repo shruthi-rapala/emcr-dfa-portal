@@ -7,7 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 
         Login.class, CreateNewApplicationHomeowner.class, HomeOwnerApplicationDetails.class, HomeOwnerWithnsurance.class,
-        ResidentialTenantYInsurance.class, HmeownerUnsureInsurance.class, ResidentialTenantNInsurance.class, EditApplicationHomeownerNInsurance.class,
+        ResidentialTenantUInsurance.class, HmeownerUnsureInsurance.class, ResidentialTenantNInsurance.class, EditApplicationHomeownerNInsurance.class,
         Logout.class,
 })
 

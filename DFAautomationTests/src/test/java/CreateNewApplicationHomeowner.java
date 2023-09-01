@@ -67,9 +67,9 @@ public class CreateNewApplicationHomeowner {
         element = driverWait.until(ExpectedConditions
                 .presenceOfElementLocated(By.id("mat-input-0")));
         element.sendKeys("Test Test");
-        element = driverWait.until(ExpectedConditions
+/*        element = driverWait.until(ExpectedConditions
                 .presenceOfElementLocated(By.id("mat-input-1")));
-        element.sendKeys("12/12/2024");
+        element.sendKeys("12/12/2024");*/
         Thread.sleep(1000);
 
         element = driverWait

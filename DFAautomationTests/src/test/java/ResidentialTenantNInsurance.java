@@ -63,9 +63,9 @@ public class ResidentialTenantNInsurance {
        element = driverWait.until(ExpectedConditions
                 .presenceOfElementLocated(By.id("mat-input-0")));
         element.sendKeys("Test Test");
-        element = driverWait.until(ExpectedConditions
+/*        element = driverWait.until(ExpectedConditions
                 .presenceOfElementLocated(By.id("mat-input-1")));
-        element.sendKeys("12/12/2024");
+        element.sendKeys("12/12/2024");*/
 
         Thread.sleep(1000);
         element = driverWait
@@ -119,7 +119,7 @@ public class ResidentialTenantNInsurance {
         Thread.sleep(1000);
         //Is your home a manufactured home?
         JavascriptExecutor js21 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-21 .mat-radio-outer-circle")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[5]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js21.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
         JavascriptExecutor js41 = (JavascriptExecutor) driver;

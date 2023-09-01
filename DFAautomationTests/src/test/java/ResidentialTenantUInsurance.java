@@ -13,7 +13,7 @@ import java.time.Duration;
 
 import static dfa.WebDriverManager.getDriver;
 
-public class ResidentialTenantYInsurance {
+public class ResidentialTenantUInsurance {
 
     private WebDriver driver;
 
@@ -95,16 +95,14 @@ public class ResidentialTenantYInsurance {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[1]/div/mat-radio-group/div[2]/app-bc-address/div/div[5]/div/mat-form-field/div/div[1]/div[3]/input")));
         element.sendKeys("V8X1G3");
         Thread.sleep(1000);
-//        HomeOwnerApplicationDetails questions = new HomeOwnerApplicationDetails();
-//        questions.questionsOnDamaga(element, driverWait, driver);
 
         //Questions
         Thread.sleep(2000);
         JavascriptExecutor js22 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-15-input")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[2]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js22.executeScript("arguments[0].click();", element);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-18-input")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[3]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[4]/div/mat-form-field/div/div[1]/div[3]/input")));
@@ -112,7 +110,7 @@ public class ResidentialTenantYInsurance {
         Thread.sleep(1000);
         //Is your home a manufactured home?
         JavascriptExecutor js21 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-21 .mat-radio-outer-circle")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[5]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js21.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
         JavascriptExecutor js41 = (JavascriptExecutor) driver;

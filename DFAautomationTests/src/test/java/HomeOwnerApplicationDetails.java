@@ -58,7 +58,7 @@ public class HomeOwnerApplicationDetails {
         element.sendKeys("Victoria");
         Thread.sleep(1000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[1]/div/mat-radio-group/div[2]/app-bc-address/div/div[5]/div/mat-form-field/div/div[1]/div[3]/input")));
-        element.sendKeys("V8X1G3");
+        element.sendKeys("V8X 1G3");
         Thread.sleep(1000);
         //Questions
         HomeOwnerApplicationDetails questions = new HomeOwnerApplicationDetails();
@@ -71,11 +71,6 @@ public class HomeOwnerApplicationDetails {
 
         HomeOwnerApplicationDetails damageAppl = new HomeOwnerApplicationDetails();
         damageAppl.damage(element, driverWait, driver);
-
-        //reside in
-        JavascriptExecutor js4 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mat-radio-33-input")));
-        js4.executeScript("arguments[0].click();", element);
 
         JavascriptExecutor js6= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Next - Occupants ')]")));
@@ -353,7 +348,7 @@ public class HomeOwnerApplicationDetails {
         JavascriptExecutor js51= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/app-component-wrapper/app-sign-and-submit/mat-card/mat-card-content/form/div[2]/div[1]/app-signature/div/div[3]/div/mat-form-field/div/div[1]/div[3]/input")));
         js51.executeScript("arguments[0].click();", element);
-        driver.findElement(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/app-component-wrapper/app-sign-and-submit/mat-card/mat-card-content/form/div[2]/div[1]/app-signature/div/div[3]/div/mat-form-field/div/div[1]/div[3]/input")).sendKeys("7/31/2023");
+      //  driver.findElement(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/app-component-wrapper/app-sign-and-submit/mat-card/mat-card-content/form/div[2]/div[1]/app-signature/div/div[3]/div/mat-form-field/div/div[1]/div[3]/input")).sendKeys("7/31/2023");
         Thread.sleep(1000);
         JavascriptExecutor js= (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
