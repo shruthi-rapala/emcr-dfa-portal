@@ -57,7 +57,13 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     'application/pdf',
     'image/jpg',
     'image/jpeg',
-    'image/png'
+    'image/png',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   ];
   FileCategories = FileCategory;
   vieworedit: string;
@@ -204,7 +210,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
          }
        });
       }
-      
+
     } else {
       this.damagedRoomsForm.get('damagedRoom').markAllAsTouched();
     }

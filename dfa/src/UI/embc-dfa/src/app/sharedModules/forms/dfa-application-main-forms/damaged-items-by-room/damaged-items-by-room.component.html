@@ -212,7 +212,7 @@
             description="Attach a photo/scanned copy of damaged items"
             requiredFile="no"
             [allowedFileTypes]="allowedFileTypes"
-            allowedFileExtensionsList="pdf, jpg, jpeg, png"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="DamagePhoto"
             excludeFileTypes="[]"
             (saveFileUpload)="saveDamagePhotos($event)"
