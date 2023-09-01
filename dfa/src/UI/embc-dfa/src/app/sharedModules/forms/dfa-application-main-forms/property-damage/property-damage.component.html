@@ -32,7 +32,7 @@
             >
               Other Damage
             </mat-checkbox>
-            <mat-form-field appearance="outline" [hidden]="propertyDamageForm.get('otherDamage').value !== true" class="col-md-4">
+            <mat-form-field appearance="outline" [hidden]="propertyDamageForm.get('otherDamage').value !== true" class="col-md-4 topSpace">
               <mat-label>Cause of Damage</mat-label>
               <input matInput
                 [required]="propertyDamageForm.get('otherDamage').value === true || propertyDamageForm.get('otherDamage').value === 'true'"
