@@ -27,6 +27,7 @@ export class DFAApplicationMainDataService {
   private _applicationId: string;
   private _vieworedit: string;
   private _editstep: string;
+  private _requiredDocuments = [];
 
   constructor(
     private cacheService: CacheService,
@@ -34,6 +35,14 @@ export class DFAApplicationMainDataService {
     private fileUploadsService: AttachmentService,
     private applicationService: ApplicationService
   ) {
+  }
+
+  public get requiredDocuments(): Array<string> {
+    return this._requiredDocuments;
+  }
+
+  public set requiredDocuments(value: Array<string>) {
+    this._requiredDocuments = value;
   }
 
   public get fullTimeOccupants(): Array<FullTimeOccupant> {

@@ -80,6 +80,11 @@ export class DFAApplicationMainComponent
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
+        if (this.isResidentialTenant) {
+          this.dfaApplicationMainDataService.requiredDocuments = ["Insurance", "TenancyProof", "Identification"];
+        } else {
+          this.dfaApplicationMainDataService.requiredDocuments = ["Insurance" ];
+        }
       }
     });
   }
