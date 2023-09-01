@@ -27,6 +27,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { DfaAttachmentComponent } from './components/dfa-attachment/dfa-attachment.component';
 import { DFAEligibilityDialogComponent } from './components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import { FileUploadWarningDialogComponent } from './components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
+import { DFAFileDeleteDialogComponent } from './components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
@@ -67,6 +68,7 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     InformationDialogComponent,
     DFAEligibilityDialogComponent,
     FileUploadWarningDialogComponent,
+    DFAFileDeleteDialogComponent,
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
     TimeOutDialogComponent,
@@ -84,6 +86,7 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     EnvironmentBannerComponent,
     DFAEligibilityDialogComponent,
     FileUploadWarningDialogComponent,
+    DFAFileDeleteDialogComponent,
     TimeOutDialogComponent,
     MatToolbarModule,
     MatButtonModule,
