@@ -26,6 +26,8 @@ import { DFAApplicationMainService } from 'src/app/feature-components/dfa-applic
 import * as constant from 'src/app/core/services/globalConstants'; // referenced in html
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { AttachmentService, DamagedRoomService } from 'src/app/core/api/services';
+import { MatDialog } from '@angular/material/dialog';
+import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 
 @Component({
   selector: 'app-damaged-items-by-room',
@@ -46,7 +48,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   damagedRoomsColumnsToDisplay = ['roomType', 'description', 'icons'];
   damagedRoomsDataSource = new BehaviorSubject([]);
   damagedRoomsData = [];
-  remainingLength: number = 2000;
+  remainingLength: number = 200;
   damagedRoomEditIndex: number;
   damagedRoomRowEdit = false;
   damagedRoomEditFlag = false;
@@ -75,7 +77,8 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     private dfaApplicationMainService: DFAApplicationMainService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private damagedRoomService: DamagedRoomService,
-    private attachmentsService: AttachmentService
+    private attachmentsService: AttachmentService,
+    public dialog: MatDialog
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -163,7 +166,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   calcRemainingChars() {
-    this.remainingLength = 2000 - this.damagedRoomsForm.get('description').value?.length;
+    this.remainingLength = 200 - this.damagedRoomsForm.get('damagedRoom.description').value?.length;
   }
 
   addDamagedRoom(): void {
@@ -300,6 +303,23 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   cancelDamagePhotos(): void {
     this.showDamagePhotoForm = !this.showDamagePhotoForm;
     this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(false);
+  }
+
+  confirmDeleteDamagePhotoRow(element): void {
+    this.dialog
+      .open(DFAFileDeleteDialogComponent, {
+        data: {
+          content: "Are you sure you want to delete the damage photo:<br/>" + element.fileName + "?"
+        },
+        width: '350px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          this.deleteDamagePhotoRow(element);
+        }
+      });
   }
 
   deleteDamagePhotoRow(element): void {
