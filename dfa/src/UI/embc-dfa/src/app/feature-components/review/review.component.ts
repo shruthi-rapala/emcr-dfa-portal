@@ -47,6 +47,8 @@ export class ReviewComponent implements OnInit {
   damagePhotosColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
   supportingDocumentsDataSource = new MatTableDataSource();
   supportingDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
+  requiredDocumentsDataSource = new MatTableDataSource();
+  requiredDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
   RoomTypes = RoomType;
   FileCategories = FileCategory;
   isResidentialTenant: boolean = false;
@@ -140,7 +142,22 @@ export class ReviewComponent implements OnInit {
     _supportingDocumentsFormArray.valueChanges
       .pipe(
         mapTo(_supportingDocumentsFormArray.getRawValue())
-        ).subscribe(data => { this.supportingDocumentsDataSource.data = _supportingDocumentsFormArray.getRawValue()?.filter(x => x.fileType !== Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.fileType !== this.FileCategories.Cleanup && x.deleteFlag == false) } );
+        ).subscribe(data => {
+          this.supportingDocumentsDataSource.data =
+            _supportingDocumentsFormArray.getRawValue()?.filter(x => x.fileType !== Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]
+              && x.fileType !== this.FileCategories.Cleanup
+              && this.dfaApplicationMainDataService.requiredDocuments.indexOf(x.fileType) < 0
+              && x.deleteFlag == false) } );
+
+    // subscribe to changes in required documents
+    const _requiredDocumentsFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+    _requiredDocumentsFormArray.valueChanges
+      .pipe(
+        mapTo(_requiredDocumentsFormArray.getRawValue())
+        ).subscribe(data => { this.requiredDocumentsDataSource.data =
+          _requiredDocumentsFormArray.getRawValue()?.filter(x =>
+            this.dfaApplicationMainDataService.requiredDocuments.indexOf(x.fileType) >= 0
+            && x.deleteFlag == false) } );
   }
 
   // callParentMoveStep(index: number) {
