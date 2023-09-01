@@ -60,6 +60,20 @@ export class ProfileMappingService {
         });
       });
 
+    this.formCreationService
+      .getContactDetailsForm()
+      .pipe(first())
+      .subscribe((details) => {
+        details.setValue({
+          email: profile.contactDetails.email,
+          confirmEmail: profile.contactDetails.email,
+          showContacts: true,
+          cellPhoneNumber: profile.contactDetails.cellPhoneNumber,
+          residencePhone: profile.contactDetails.residencePhone,
+          alternatePhone: profile.contactDetails.alternatePhone
+        });
+      });
+
     this.profileDataService.primaryAddressDetails =
       this.locationService.getAddressRegFromAddress(profile.primaryAddress);
     this.formCreationService

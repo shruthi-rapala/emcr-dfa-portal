@@ -98,7 +98,7 @@ export class ComponentCreationService {
       isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
-      stepName: 'Damage'
+      stepName: 'Cause of Damage'
     },
     {
       component: 'occupants',
