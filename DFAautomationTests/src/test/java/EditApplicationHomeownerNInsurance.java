@@ -373,6 +373,11 @@ public class EditApplicationHomeownerNInsurance {
         js202.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
 
+        //Delete
+        JavascriptExecutor js301= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Yes, delete file ')]")));
+        js301.executeScript("arguments[0].click();", element);
+
         JavascriptExecutor js32= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add Room & Items ')]")));
         js32.executeScript("arguments[0].click();", element);
@@ -405,6 +410,11 @@ public class EditApplicationHomeownerNInsurance {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[6]/app-component-wrapper/app-supporting-documents/mat-card/mat-card-content/table/tbody/tr[1]/td[5]/button/span[1]/img[1]")));
         js341.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
+
+        //Delete
+        JavascriptExecutor js302= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Yes, delete file ')]")));
+        js302.executeScript("arguments[0].click();", element);
 
         //Add insurance template
         Thread.sleep(2000);
