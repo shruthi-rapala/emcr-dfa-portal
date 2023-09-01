@@ -113,7 +113,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Yes, my insurance will cover all my losses.")]
         Yes,
 
-        [EnumMember(Value = "Yes but I don\'t know if my insurance will cover all damages or for this event.")]
+        [EnumMember(Value = "Yes, but I don\'t know if my insurance will cover all damages or for this event.")]
         Unsure,
 
         [EnumMember(Value = "No")]
