@@ -23,11 +23,14 @@ import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
 import { FileCategory, SecondaryApplicantTypeOption } from 'src/app/core/api/models';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialog } from '@angular/material/dialog';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { AttachmentService, CleanUpLogItemService } from 'src/app/core/api/services';
 import { CoreModule } from 'src/app/core/core.module';
+import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
+import { DFACleanuplogDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-cleanuplog-delete-dialog/dfa-cleanuplog-delete.component';
 
 @Component({
   selector: 'app-clean-up-log',
@@ -56,7 +59,13 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     'application/pdf',
     'image/jpg',
     'image/jpeg',
-    'image/png'
+    'image/png',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   ];
   vieworedit: string;
 
@@ -67,7 +76,8 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     private dfaApplicationMainService: DFAApplicationMainService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private cleanUpLogsService: CleanUpLogItemService,
-    private attachmentsService: AttachmentService
+    private attachmentsService: AttachmentService,
+    public dialog: MatDialog
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -251,6 +261,23 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     }
   }
 
+  confirmDeleteCleanuplogRow(index: number): void {
+    this.dialog
+      .open(DFACleanuplogDeleteDialogComponent, {
+        data: {
+          content: "Are you sure you want to delete the clean up log for:<br/>" + this.cleanUpWorkData[index].name + "?"
+        },
+        width: '350px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          this.deleteCleanupLogRow(index);
+        }
+      });
+  }
+
   deleteCleanupLogRow(index: number): void {
     this.cleanUpWorkData[index].deleteFlag = true;
     this.cleanUpLogsService.cleanUpLogItemUpsertDeleteCleanUpLogItem({body: this.cleanUpWorkData[index]}).subscribe({
@@ -268,6 +295,24 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
         console.error(error);
       }
     });
+  }
+
+  confirmDeleteCleanupLogFileRow(element): void {
+    this.dialog
+      .open(DFAFileDeleteDialogComponent, {
+        data: {
+          content: "Are you sure you want to delete the cleanup invoice/receipt:<br/>" + element.fileName + "?"
+        },
+        // height: '250px',
+        width: '350px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          this.deleteCleanupLogFileRow(element);
+        }
+      });
   }
 
   deleteCleanupLogFileRow(element): void {

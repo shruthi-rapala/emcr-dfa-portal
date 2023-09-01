@@ -28,6 +28,8 @@ import { AttachmentService } from 'src/app/core/api/services';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { MatTab } from '@angular/material/tabs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -80,7 +82,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private attachmentsService: AttachmentService,
     private http: HttpClient,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private dialog: MatDialog,
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -338,6 +341,23 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   cancelSupportingFiles(): void {
     this.showSupportingFileForm = !this.showSupportingFileForm;
     this.supportingFilesForm.get('addNewFileUploadIndicator').setValue(false);
+  }
+
+  confirmDeleteDocumentSummaryRow(element): void {
+    this.dialog
+      .open(DFAFileDeleteDialogComponent, {
+        data: {
+          content: "Are you sure you want to delete the supporting document:<br/>" + element.fileName + "?"
+        },
+        width: '350px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          this.deleteDocumentSummaryRow(element);
+        }
+      });
   }
 
   deleteDocumentSummaryRow(element): void {

@@ -150,7 +150,7 @@
                         maxlength="200"
                         required
                         (keyup)="calcRemainingChars()"></textarea>
-                      <mat-hint>Maximum length is 200 characters</mat-hint>
+                      <mat-hint>{{ remainingLength }} characters remaining.</mat-hint>
                       <mat-error
                         *ngIf="
                           damagedRoomsForm.get('damagedRoom').controls.description.invalid &&
@@ -212,7 +212,7 @@
             description="Attach a photo/scanned copy of damaged items"
             requiredFile="no"
             [allowedFileTypes]="allowedFileTypes"
-            allowedFileExtensionsList="pdf, jpg, jpeg, png"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="DamagePhoto"
             excludeFileTypes="[]"
             (saveFileUpload)="saveDamagePhotos($event)"
@@ -268,7 +268,7 @@
                   class="delete-image"
                   mat-icon-button
                   aria-label="Remove"
-                  (click)="deleteDamagePhotoRow(element)"
+                  (click)="confirmDeleteDamagePhotoRow(element)"
                 >
                   <img src="/assets/images/delete.svg" height="35" width="35" />
                   <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
