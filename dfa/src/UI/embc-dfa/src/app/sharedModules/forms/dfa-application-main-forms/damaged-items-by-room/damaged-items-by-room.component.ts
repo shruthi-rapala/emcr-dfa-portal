@@ -28,6 +28,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { AttachmentService, DamagedRoomService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
+import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 
 @Component({
   selector: 'app-damaged-items-by-room',
@@ -279,9 +280,15 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   saveDamagePhotos(fileUpload: FileUpload): void {
+    // dont allow same filename twice
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
+      this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
+      return;
+    }
+
     if (this.damagePhotosForm.get('damagePhotoFileUpload').status === 'VALID') {
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
@@ -298,6 +305,18 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     } else {
       this.damagePhotosForm.get('damagePhotoFileUpload').markAllAsTouched();
     }
+  }
+
+  warningDialog(message: string) {
+    this.dialog
+      .open(FileUploadWarningDialogComponent, {
+        data: {
+          content: message
+        },
+        // height: '250px',
+        width: '350px',
+        disableClose: true
+      });
   }
 
   cancelDamagePhotos(): void {
