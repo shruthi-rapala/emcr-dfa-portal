@@ -30,6 +30,7 @@ import { MatTab } from '@angular/material/tabs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
+import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -285,9 +286,15 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   }
 
   saveSupportingFiles(fileUpload: FileUpload): void {
+      // dont allow same filename twice
+      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+      if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
+        this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
+        return;
+      }
+
     if (this.supportingFilesForm.get('supportingFilesFileUpload').status === 'VALID') {
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
@@ -308,7 +315,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   }
 
   saveRequiredForm(fileUpload: FileUpload): void {
+    // dont allow same filename twice
     let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
+      this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
+      return;
+    }
+
     fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     if (fileUploads?.filter(x => x.fileType === fileUpload.fileType).length > 0) {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
@@ -357,6 +370,18 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         if (result === 'confirm') {
           this.deleteDocumentSummaryRow(element);
         }
+      });
+  }
+
+  warningDialog(message: string) {
+    this.dialog
+      .open(FileUploadWarningDialogComponent, {
+        data: {
+          content: message
+        },
+        // height: '250px',
+        width: '350px',
+        disableClose: true
       });
   }
 

@@ -238,11 +238,17 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   }
 
   saveNewCleanupLogFile(fileUpload: FileUpload): void {
+    // dont allow same filename twice
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
+      this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
+      return;
+    }
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.uploadedDate').setValue(new Date());
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
     if (this.cleanUpWorkFilesForm.get('cleanupFileUpload').status === 'VALID') {
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
@@ -312,6 +318,18 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
         if (result === 'confirm') {
           this.deleteCleanupLogFileRow(element);
         }
+      });
+  }
+
+  warningDialog(message: string) {
+    this.dialog
+      .open(FileUploadWarningDialogComponent, {
+        data: {
+          content: message
+        },
+        // height: '250px',
+        width: '350px',
+        disableClose: true
       });
   }
 
