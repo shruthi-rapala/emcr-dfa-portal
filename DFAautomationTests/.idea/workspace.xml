@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/EditApplicationHomeownerNInsurance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/EditApplicationHomeownerNInsurance.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/EditApplicationHomeownerNInsurance.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/EditApplicationHomeownerNInsurance.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/HmeownerUnsureInsurance.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/HmeownerUnsureInsurance.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,11 +70,11 @@
       <recent name="C:\workspace4\emcr-dfa-portal\DFAautomationTests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.EditApplicationHomeownerNInsurance.test">
-    <configuration name="EditApplicationHomeownerNInsurance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.HmeownerUnsureInsurance">
+    <configuration name="HmeownerUnsureInsurance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="EditApplicationHomeownerNInsurance" />
+      <option name="MAIN_CLASS_NAME" value="HmeownerUnsureInsurance" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <envs>
@@ -84,12 +85,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EditApplicationHomeownerNInsurance.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HomeOwnerApplicationDetails" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="EditApplicationHomeownerNInsurance" />
-      <option name="METHOD_NAME" value="test" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="HomeOwnerApplicationDetails" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
       <envs>
         <env name="USERNAME_BCEID" value="DFA00004" />
         <env name="PASSWORD_BCEID" value="98900004" />
@@ -98,12 +99,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HomeOwnerApplicationDetails.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="Login" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="HomeOwnerApplicationDetails" />
-      <option name="METHOD_NAME" value="test" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="Login" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
       <envs>
         <env name="USERNAME_BCEID" value="DFA00004" />
         <env name="PASSWORD_BCEID" value="98900004" />
@@ -141,19 +142,19 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.EditApplicationHomeownerNInsurance" />
-      <item itemvalue="JUnit.ResidentialTenantNInsurance" />
       <item itemvalue="JUnit.TestSuiteAllTests" />
-      <item itemvalue="JUnit.HomeOwnerApplicationDetails.test" />
-      <item itemvalue="JUnit.EditApplicationHomeownerNInsurance.test" />
+      <item itemvalue="JUnit.Login" />
+      <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
+      <item itemvalue="JUnit.ResidentialTenantNInsurance" />
+      <item itemvalue="JUnit.HmeownerUnsureInsurance" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EditApplicationHomeownerNInsurance.test" />
-        <item itemvalue="JUnit.EditApplicationHomeownerNInsurance" />
-        <item itemvalue="JUnit.HomeOwnerApplicationDetails.test" />
-        <item itemvalue="JUnit.TestSuiteAllTests" />
+        <item itemvalue="JUnit.HmeownerUnsureInsurance" />
         <item itemvalue="JUnit.ResidentialTenantNInsurance" />
+        <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
+        <item itemvalue="JUnit.TestSuiteAllTests" />
+        <item itemvalue="JUnit.Login" />
       </list>
     </recent_temporary>
   </component>
@@ -178,16 +179,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/EditApplicationHomeownerNInsurance.java</url>
-          <line>101</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

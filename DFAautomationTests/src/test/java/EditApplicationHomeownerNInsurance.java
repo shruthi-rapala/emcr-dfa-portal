@@ -326,7 +326,10 @@ public class EditApplicationHomeownerNInsurance {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[4]/app-component-wrapper/app-clean-up-log/mat-card/mat-card-content/form/div/div/div/table/tbody/tr/td[5]/button/span[1]/img[1]")));
         js404.executeScript("arguments[0].click();", element);
 
-        Thread.sleep(1000);
+        JavascriptExecutor js3001= (JavascriptExecutor) driver;
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Yes, delete record ')]")));
+        js3001.executeScript("arguments[0].click();", element);
+
         JavascriptExecutor js16= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add to clean up log ')]")));
         js16.executeScript("arguments[0].click();", element);
