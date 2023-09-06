@@ -140,6 +140,7 @@ information and to verify that the information provided by you is accurate.
                 matInput
                 placeholder="Email Address"
                 required
+                [readonly]="contactFormControl.confirmEmail.value"
               />
               <mat-error
                 *ngIf="
@@ -164,6 +165,12 @@ information and to verify that the information provided by you is accurate.
                 >Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
+          </div>
+          <div class="col-md-5 addressMessage" *ngIf="contactFormControl.confirmEmail.value">
+            This is your email address from your BC Services Card and can't be changed.
+            If you need to update your email address, visit
+            <br />
+            <a target="_blank" href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information">BC Service Card, Change your personal information</a>
           </div>
         </div>
 
