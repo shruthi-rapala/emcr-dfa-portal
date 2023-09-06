@@ -181,7 +181,7 @@ public class ResidentialTenantUInsurance {
 
         Thread.sleep(1000);
         WebElement uploadRent = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("fileDrop")));
-        uploadRent.sendKeys(System.getProperty("user.dir") + '/' + "dummy.pdf");
+        uploadRent.sendKeys(System.getProperty("user.dir") + '/' + "testDFA.xlsx");
 
         //Save
         JavascriptExecutor js381= (JavascriptExecutor) driver;
@@ -194,7 +194,7 @@ public class ResidentialTenantUInsurance {
 
         Thread.sleep(1000);
         WebElement uploadIdentif = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("fileDrop")));
-        uploadIdentif.sendKeys(System.getProperty("user.dir") + '/' + "dummy.pdf");
+        uploadIdentif.sendKeys(System.getProperty("user.dir") + '/' + "testPPXDFA.pptx");
 
         //Save
         Thread.sleep(1000);
