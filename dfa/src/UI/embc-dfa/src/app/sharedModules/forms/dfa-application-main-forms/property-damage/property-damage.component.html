@@ -75,7 +75,7 @@
               <input matInput
                 [matDatepicker]="fromPicker"
                 formControlName="damageFromDate"
-                [max]="propertyDamageForm.get('damageToDate').value ? propertyDamageForm.get('damageToDate').value : '2040-01-01'"
+                [max]="propertyDamageForm.get('damageToDate').value ? propertyDamageForm.get('damageToDate').value : todayDate"
                 required >
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
@@ -88,6 +88,14 @@
               >
                 From date is required</mat-error
               >
+              <mat-error
+              *ngIf="
+              propertyDamageForm.get('damageFromDate').invalid &&
+              propertyDamageForm.get('damageFromDate').hasError('matDatepickerMax')
+            "
+            >
+              From date cannot be in the future or after to date</mat-error
+            >
             </mat-form-field>
           </div>
           <div class="col-md-4">
@@ -97,6 +105,7 @@
                 [matDatepicker]="toPicker"
                 formControlName="damageToDate"
                 [min]="propertyDamageForm.get('damageFromDate').value ? propertyDamageForm.get('damageFromDate').value : '2000-01-01'"
+                [max]="todayDate"
                 required>
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
@@ -108,6 +117,22 @@
               "
               >
                 To date is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                propertyDamageForm.get('damageToDate').invalid &&
+                propertyDamageForm.get('damageToDate').hasError('matDatepickerMin')
+              "
+              >
+                To date cannot be before from date</mat-error
+              >
+              <mat-error
+                *ngIf="
+                propertyDamageForm.get('damageToDate').invalid &&
+                propertyDamageForm.get('damageToDate').hasError('matDatepickerMax')
+              "
+              >
+                To date cannot be a future date</mat-error
               >
             </mat-form-field>
           </div>

@@ -36,6 +36,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   propertyDamageForm$: Subscription;
   formCreationService: FormCreationService;
   remainingLength: number = 2000;
+  todayDate = new Date().toISOString();
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
