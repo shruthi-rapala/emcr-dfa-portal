@@ -67,14 +67,13 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   ];
-  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private cleanUpLogsService: CleanUpLogItemService,
     private attachmentsService: AttachmentService,
     public dialog: MatDialog
@@ -84,7 +83,6 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
 
     this.cleanUpLogForm$ = this.formCreationService
       .getCleanUpLogForm()

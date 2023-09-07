@@ -57,7 +57,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     /\d/,
     /\d/
   ];
-  vieworedit: string;
   isResidentialTenant: boolean = false;
 
   constructor(
@@ -85,7 +84,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   }
 
   ngOnInit(): void {
-    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
         if (!this.profileAddress) {

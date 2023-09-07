@@ -69,14 +69,13 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   ];
   FileCategories = FileCategory;
-  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private damagedRoomService: DamagedRoomService,
     private attachmentsService: AttachmentService,
     public dialog: MatDialog
@@ -86,7 +85,6 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.damagedRoomsForm$ = this.formCreationService
       .getDamagedRoomsForm()
       .subscribe((damagedRooms) => {
