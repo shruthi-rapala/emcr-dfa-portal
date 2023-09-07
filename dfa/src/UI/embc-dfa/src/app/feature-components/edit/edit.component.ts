@@ -4,8 +4,6 @@ import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
-import { EvacuationFileDataService } from '../../sharedModules/components/evacuation-file/evacuation-file-data.service';
-import { EvacuationFileService } from '../../sharedModules/components/evacuation-file/evacuation-file.service';
 import { ProfileDataService } from '../profile/profile-data.service';
 import { ProfileService } from '../profile/profile.service';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
@@ -23,9 +21,6 @@ export class EditComponent implements OnInit, OnDestroy {
   componentToLoad: string;
   profileFolderPath: string;
   dfaApplicationStartFolderPath: string;
-  needsAssessmentNavigationExtras: NavigationExtras = {
-    state: { stepIndex: 5 }
-  };
   profileNavigationExtras: NavigationExtras = { state: { stepIndex: 3 } };
   form$: Subscription;
   form: UntypedFormGroup;
@@ -33,9 +28,7 @@ export class EditComponent implements OnInit, OnDestroy {
   currentFlow: string;
   parentPageName: string;
   showLoader = false;
-  nonVerfiedRoute = '/non-verified-registration/needs-assessment';
   verifiedRoute = '/verified-registration/create-profile';
-  verifiedNeedsAssessments = '/verified-registration/needs-assessment';
 
   constructor(
     private router: Router,
@@ -45,10 +38,8 @@ export class EditComponent implements OnInit, OnDestroy {
     private profileDataService: ProfileDataService,
     private dfaApplicationStartService: DFAApplicationStartService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private evacuationFileDataService: EvacuationFileDataService,
     private alertService: AlertService,
     private editService: EditService,
-    private evacuationFileService: EvacuationFileService,
     private appSessionService: AppSessionService,
     private cd: ChangeDetectorRef
   ) {
@@ -83,12 +74,7 @@ export class EditComponent implements OnInit, OnDestroy {
       this.form,
       this.currentFlow
     );
-    if (this.currentFlow === 'non-verified-registration') {
-      this.router.navigate(
-        [this.nonVerfiedRoute],
-        this.needsAssessmentNavigationExtras
-      );
-    } else {
+    if (this.currentFlow !== 'non-verified-registration') {
       if (this.appSessionService.editParentPage === 'create-profile') {
         this.router.navigate(
           [this.verifiedRoute],
@@ -113,27 +99,6 @@ export class EditComponent implements OnInit, OnDestroy {
               );
             }
           });
-      } else if (this.appSessionService.editParentPage === 'needs-assessment') {
-        //if (this.evacuationFileDataService.essFileId === undefined) {
-        //  this.router.navigate(
-        //    [this.verifiedNeedsAssessments],
-        //    this.needsAssessmentNavigationExtras
-        //  );
-        //} else {
-        //  this.showLoader = !this.showLoader;
-        //  this.evacuationFileService.updateEvacuationFile().subscribe({
-        //    next: (essFileId) => {
-        //      this.showLoader = !this.showLoader;
-        //      this.router.navigate([
-        //        '/verified-registration/dashboard/current/' + essFileId
-        //      ]);
-        //    },
-        //    error: (error) => {
-        //      this.showLoader = !this.showLoader;
-        //      this.alertService.setAlert('danger', globalConst.editNeedsError);
-        //    }
-        //  });
-        //}
       } else if (this.appSessionService.editParentPage === 'dfa-application-start') {
         this.router.navigate(
           [this.verifiedRoute]
@@ -152,12 +117,7 @@ export class EditComponent implements OnInit, OnDestroy {
       this.form,
       this.currentFlow
     );
-    if (this.currentFlow === 'non-verified-registration') {
-      this.router.navigate(
-        [this.nonVerfiedRoute],
-        this.needsAssessmentNavigationExtras
-      );
-    } else {
+    if (this.currentFlow !== 'non-verified-registration') {
       if (this.appSessionService.editParentPage === 'create-profile') {
         this.router.navigate(
           [this.verifiedRoute],
@@ -167,18 +127,6 @@ export class EditComponent implements OnInit, OnDestroy {
         this.router.navigate(['/verified-registration/dashboard/profile']);
       } else if (this.appSessionService.editParentPage === 'dfa-dashboard') {
         this.router.navigate(['/dfa-dashboard/profile']);
-      } else if (this.appSessionService.editParentPage === 'needs-assessment') {
-        if (this.evacuationFileDataService.essFileId !== undefined) {
-          this.router.navigate([
-            '/verified-registration/dashboard/current/' +
-              this.evacuationFileDataService.essFileId
-          ]);
-        } else {
-          this.router.navigate(
-            [this.verifiedNeedsAssessments],
-            this.needsAssessmentNavigationExtras
-          );
-        }
       }
     }
   }
@@ -190,14 +138,6 @@ export class EditComponent implements OnInit, OnDestroy {
    */
   loadForm(component: string): void {
     switch (component) {
-      case 'restriction':
-        this.form$ = this.formCreationService
-          .getRestrictionForm()
-          .subscribe((restriction) => {
-            this.form = restriction;
-          });
-        this.editHeading = 'Edit Restriction';
-        break;
       case 'personal-details':
         this.form$ = this.formCreationService
           .getPersonalDetailsForm()
@@ -229,51 +169,6 @@ export class EditComponent implements OnInit, OnDestroy {
 
         this.editHeading = 'Edit Profile';
         this.profileFolderPath = 'evacuee-profile-forms';
-        break;
-      case 'evac-address':
-        this.form$ = this.formCreationService
-          .getEvacuatedForm()
-          .subscribe((evacuatedForm) => {
-            this.form = evacuatedForm;
-          });
-        this.editHeading = 'Edit Evacuation File';
-        this.profileFolderPath = 'needs-assessment-forms';
-        break;
-      case 'family-information':
-        this.form$ = this.formCreationService
-          .getHouseholdMembersForm()
-          .subscribe((householdMemberForm) => {
-            this.form = householdMemberForm;
-          });
-        this.editHeading = 'Edit Evacuation File';
-        this.profileFolderPath = 'needs-assessment-forms';
-        break;
-      case 'pets':
-        this.form$ = this.formCreationService
-          .getPetsForm()
-          .subscribe((petsForm) => {
-            this.form = petsForm;
-          });
-        this.editHeading = 'Edit Evacuation File';
-        this.profileFolderPath = 'needs-assessment-forms';
-        break;
-      case 'identify-needs':
-        this.form$ = this.formCreationService
-          .getIndentifyNeedsForm()
-          .subscribe((identifyNeedsForm) => {
-            this.form = identifyNeedsForm;
-          });
-        this.editHeading = 'Edit Evacuation File';
-        this.profileFolderPath = 'needs-assessment-forms';
-        break;
-      case 'secret':
-        this.form$ = this.formCreationService
-          .getSecretForm()
-          .subscribe((secret) => {
-            this.form = secret;
-          });
-        this.editHeading = 'Edit Evacuation File';
-        this.profileFolderPath = 'needs-assessment-forms';
         break;
       case 'apptype-insurance':
         this.form$ = this.formCreationService

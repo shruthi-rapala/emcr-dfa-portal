@@ -147,18 +147,12 @@ namespace EMBC.DFA.API
                 document.GenerateAbstractProperties = true;
             });
 
-            services.AddTransient<IEvacuationSearchService, EvacuationSearchService>();
             services.AddTransient<IProfileInviteService, ProfileInviteService>();
             services.AddTransient<IConfigurationHandler, Handler>();
             services.AddTransient<IDynamicsGateway, DynamicsGateway>();
             services.Configure<ADFSTokenProviderOptions>(configuration.GetSection("Dynamics:ADFS"));
             services.AddADFSTokenProvider();
             services.AddHttpClient("captcha");
-            services.Configure<CaptchaVerificationServiceOptions>(options =>
-            {
-                configuration.GetSection("captcha").Bind(options);
-            });
-            services.AddTransient<ICaptchaVerificationService, CaptchaVerificationService>();
             services.AddScoped(sp =>
             {
                 var dynamicsApiEndpoint = configuration.GetValue<string>("Dynamics:DynamicsApiEndpoint");

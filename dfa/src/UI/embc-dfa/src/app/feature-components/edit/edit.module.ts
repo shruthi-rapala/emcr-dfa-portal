@@ -7,7 +7,6 @@ import { ComponentWrapperModule } from '../../sharedModules/components/component
 import { EditComponent } from './edit.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { RestrictionFormModule } from '../../sharedModules/forms/restriction-form/restriction-form.module';
 import { CoreModule } from '../../core/core.module';
 
 @NgModule({
@@ -20,7 +19,6 @@ import { CoreModule } from '../../core/core.module';
     MatSelectModule,
     MatAutocompleteModule,
     MatButtonModule,
-    RestrictionFormModule,
     CoreModule
   ]
 })

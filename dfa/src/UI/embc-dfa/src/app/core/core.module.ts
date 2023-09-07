@@ -10,7 +10,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { EssFileDialogComponent } from './components/dialog-components/ess-file-dialog/ess-file-dialog.component';
 import { InformationDialogComponent } from './components/dialog-components/information-dialog/information-dialog.component';
 import { BcscInviteDialogComponent } from './components/dialog-components/bcsc-invite-dialog/bcsc-invite-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -65,7 +64,6 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     SignatureComponent,
     FileUploadComponent,
     DfaAttachmentComponent,
-    EssFileDialogComponent,
     InformationDialogComponent,
     DFAEligibilityDialogComponent,
     FileUploadWarningDialogComponent,

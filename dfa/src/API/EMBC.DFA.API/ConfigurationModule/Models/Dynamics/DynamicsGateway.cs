@@ -455,7 +455,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "_dfa_applicationid_value", "dfa_appoccupantid", "_dfa_contactid_value", "dfa_name"
+                        "_dfa_applicationid_value", "dfa_appoccupantid", "_dfa_contactid_value", "dfa_name", "dfa_relationshiptoapplicant"
                     },
                     Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
@@ -473,7 +473,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
                     if (contactList != null)
                     {
-                        item.dfa_title = contactList.List.Last().dfa_title;
                         item.dfa_firstname = contactList.List.Last().dfa_firstname;
                         item.dfa_lastname = contactList.List.Last().dfa_lastname;
                     }

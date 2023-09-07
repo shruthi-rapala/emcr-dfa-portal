@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { TimeoutService } from 'src/app/core/services/timeout.service';
-import { NeedsAssessmentService } from '../needs-assessment/needs-assessment.service';
 import { ProfileService } from '../profile/profile.service';
 import * as globalConst from '../../core/services/globalConstants';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +16,6 @@ import { EmailInviteService } from '../../core/services/emailInvite.service';
 })
 export class VerifiedRegistrationComponent implements OnInit {
   constructor(
-    private needsAssessmentService: NeedsAssessmentService,
     private timeOutService: TimeoutService,
     private profileService: ProfileService,
     private alertService: AlertService,
@@ -27,7 +25,6 @@ export class VerifiedRegistrationComponent implements OnInit {
     private route: ActivatedRoute,
     private emailService: EmailInviteService
   ) {
-    this.needsAssessmentService.clearEvacuationFileNo();
   }
 
   ngOnInit(): void {

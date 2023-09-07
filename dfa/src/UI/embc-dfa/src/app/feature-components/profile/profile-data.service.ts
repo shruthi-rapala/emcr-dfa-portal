@@ -8,7 +8,6 @@ import {
 import { RegAddress } from 'src/app/core/model/address';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { LocationService } from 'src/app/core/services/location.service';
-import { RestrictionService } from '../restriction/restriction.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileDataService {
@@ -59,7 +58,6 @@ export class ProfileDataService {
 
   constructor(
     private cacheService: CacheService,
-    private restrictionService: RestrictionService,
     private locationService: LocationService
   ) {}
 

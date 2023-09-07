@@ -34,14 +34,6 @@ const routes: Routes = [
         data: { flow: 'verified-registration' }
       },
       {
-        path: 'restriction',
-        loadChildren: () =>
-          import('../restriction/restriction.module').then(
-            (m) => m.RestrictionModule
-          ),
-        data: { flow: 'verified-registration' }
-      },
-      {
         path: 'create-profile',
         loadChildren: () =>
           import('../profile/profile.module').then((m) => m.ProfileModule),
@@ -67,30 +59,6 @@ const routes: Routes = [
           import('../edit/edit.module').then((m) => m.EditModule),
         data: { flow: 'verified-registration' }
       },
-      {
-        path: 'confirm-restriction',
-        loadChildren: () =>
-          import(
-            '../../sharedModules/components/confirm-restriction/confirm-restriction.module'
-          ).then((m) => m.ConfirmRestrictionModule),
-        data: { flow: 'verified-registration' }
-      },
-      {
-        path: 'needs-assessment',
-        loadChildren: () =>
-          import('../needs-assessment/needs-assessment.module').then(
-            (m) => m.NeedsAssessmentModule
-          ),
-        data: { flow: 'verified-registration' }
-      },
-      {
-        path: 'fileSubmission',
-        loadChildren: () =>
-          import('../file-submission/file-submission.module').then(
-            (m) => m.FileSubmissionModule
-          ),
-        data: { flow: 'verified-registration' }
-      }
     ]
   }
 ];

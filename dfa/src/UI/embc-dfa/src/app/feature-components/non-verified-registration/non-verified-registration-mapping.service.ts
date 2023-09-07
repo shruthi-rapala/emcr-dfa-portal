@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CaptchaResponse } from 'src/app/core/components/captcha-v2/captcha-v2.component';
 import { AnonymousRegistration, Profile } from '../../core/api/models';
-import { EvacuationFileDataService } from '../../sharedModules/components/evacuation-file/evacuation-file-data.service';
 import { ProfileDataService } from '../profile/profile-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class NonVerifiedRegistrationMappingService {
   constructor(
     private profileDataService: ProfileDataService,
-    private evacuationFileDataService: EvacuationFileDataService
   ) {}
 
   mapAnonymousRegistration(
@@ -16,8 +14,7 @@ export class NonVerifiedRegistrationMappingService {
   ): AnonymousRegistration {
     return {
       informationCollectionConsent: true,
-      preliminaryNeedsAssessment:
-        this.evacuationFileDataService.createEvacuationFileDTO(),
+      preliminaryNeedsAssessment: null,
       registrationDetails: this.mergeData(
         this.createRegistration(),
         this.profileDataService.createProfileDTO()
