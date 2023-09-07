@@ -17,18 +17,6 @@ import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress,
   FullTimeOccupantsForm, SecondaryApplicantsForm, OtherContactsForm,
   CleanUpLogForm, SignAndSubmitForm, SupportingDocumentsForm, CleanUpLog, CleanUpLogItemsForm, SecondaryApplicant, FileUploadsForm, FullTimeOccupant, OtherContact, CleanUpLogItem, FileUpload, DamagedRoom  } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
-import {
-  Evacuated,
-  EvacuatedForm,
-  HouseholdMembers,
-  HouseholdMembersForm,
-  IdentifyNeeds,
-  IdentifyNeedsForm,
-  Pet,
-  PetForm,
-  Secret,
-  SecretForm
-} from '../model/needs.model';
 
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
@@ -259,17 +247,6 @@ export class FormCreationService {
 
   signAndSubmitForm$: Observable<UntypedFormGroup | undefined> =
     this.signAndSubmitForm.asObservable();
-
-  evacuatedForm: BehaviorSubject<UntypedFormGroup | undefined> =
-    new BehaviorSubject(
-      this.formBuilder.group(
-        new EvacuatedForm(
-          new Evacuated(),
-          this.formBuilder,
-          this.customValidator
-        )
-      )
-    );
 
   constructor(
     private formBuilder: UntypedFormBuilder,

@@ -15,7 +15,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Observable, Subscription, catchError, mapTo, throwError } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { ApplicantOption, FileCategory, FileUpload, SupportStatus } from 'src/app/core/api/models';
+import { ApplicantOption, FileCategory, FileUpload } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
