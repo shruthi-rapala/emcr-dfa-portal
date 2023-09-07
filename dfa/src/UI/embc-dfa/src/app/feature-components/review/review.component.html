@@ -372,6 +372,21 @@
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Email Address</div>
+          <div class="col-md-2">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="editDetails('contact-info')"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
         </div>
         <hr />
         <div class="row info-detail">
