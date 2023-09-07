@@ -15,7 +15,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Observable, Subscription, catchError, mapTo, throwError } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { ApplicantOption, FileCategory, FileUpload, SupportStatus } from 'src/app/core/api/models';
+import { ApplicantOption, FileCategory, FileUpload } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -73,14 +73,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   showOtherDocuments: boolean = false;
   isResidentialTenant: boolean = false;
   AppOptions = ApplicantOption;
-  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     private dfaApplicationMainService: DFAApplicationMainService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private attachmentsService: AttachmentService,
     private http: HttpClient,
     private cd: ChangeDetectorRef,
@@ -96,7 +95,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.supportingDocumentsForm$ = this.formCreationService
       .getSupportingDocumentsForm()
       .subscribe((supportingDocuments) => {

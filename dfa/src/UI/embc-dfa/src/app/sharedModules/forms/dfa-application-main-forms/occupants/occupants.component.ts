@@ -64,13 +64,12 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     /\d/,
     /\d/
   ];
-  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private secondaryApplicantsService: SecondaryApplicantService,
     private otherContactsService: OtherContactService,
     private fullTimeOccupantsService: FullTimeOccupantService
@@ -80,7 +79,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.fullTimeOccupantsForm$ = this.formCreationService
       .getFullTimeOccupantsForm()
       .subscribe((fullTimeOccupants) => {

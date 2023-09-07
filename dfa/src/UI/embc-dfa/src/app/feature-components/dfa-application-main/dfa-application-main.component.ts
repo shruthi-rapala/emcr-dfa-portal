@@ -434,10 +434,11 @@ export class DFAApplicationMainComponent
   submitFile(): void {
     let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
     this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
-      this.showLoader = !this.showLoader;
       this.isSubmitted = !this.isSubmitted;
       this.alertService.clearAlert();
       this.dfaApplicationMainDataService.isSubmitted = true;
+      this.dfaApplicationMainDataService.setViewOrEdit('view');
+      this.vieworedit = 'view';
     },
     error => {
       console.error(error);

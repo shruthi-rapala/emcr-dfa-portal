@@ -144,12 +144,6 @@ export class ProfileComponent
       //const navigationPath = '/' + this.currentFlow + '/nextstep-profile';
       //this.router.navigate([navigationPath]);
     } else if (this.form.status === 'VALID') {
-      if (isLast) {
-        if (this.currentFlow === 'non-verified-registration') {
-          const navigationPath = '/' + this.currentFlow + '/needs-assessment';
-          this.router.navigate([navigationPath]);
-        }
-      }
       this.setFormData(component);
       this.form$.unsubscribe();
       stepper.selected.completed = true;

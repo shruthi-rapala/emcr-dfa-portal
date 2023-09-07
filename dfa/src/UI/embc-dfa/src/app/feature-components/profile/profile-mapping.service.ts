@@ -6,7 +6,6 @@ import { ProfileDataService } from './profile-data.service';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { ConflictManagementService } from '../../sharedModules/components/conflict-management/conflict-management.service';
 import { LocationService } from 'src/app/core/services/location.service';
-import { RestrictionService } from '../restriction/restriction.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileMappingService {
@@ -15,7 +14,6 @@ export class ProfileMappingService {
     private profileDataService: ProfileDataService,
     private conflictService: ConflictManagementService,
     private locationService: LocationService,
-    private restrictionService: RestrictionService
   ) {}
 
   mapProfile(profile: Profile): void {
@@ -105,16 +103,6 @@ export class ProfileMappingService {
           }
         });
       });
-  }
-
-  private setRestrictionDetails(profile: Profile): void {
-    //this.formCreationService
-    //  .getRestrictionForm()
-    //  .pipe(first())
-    //  .subscribe((details) => {
-    //    details.setValue({ restrictedAccess: profile.restrictedAccess });
-    //  });
-    //this.restrictionService.restrictedAccess = profile.restrictedAccess;
   }
 
   private setPersonalDetails(profile: Profile): void {

@@ -36,13 +36,12 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   propertyDamageForm$: Subscription;
   formCreationService: FormCreationService;
   remainingLength: number = 2000;
-  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    public dfaApplicationMainDataService: DFAApplicationMainDataService,
 
   ) {
     this.formBuilder = formBuilder;
@@ -50,7 +49,6 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.propertyDamageForm$ = this.formCreationService
       .getPropertyDamageForm()
       .subscribe((propertyDamage) => {

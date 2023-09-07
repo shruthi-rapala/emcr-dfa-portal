@@ -14,13 +14,6 @@ const routes: Routes = [
       import('./login-page/login-page.module').then((m) => m.LoginPageModule)
   },
   {
-    path: 'non-verified-registration',
-    loadChildren: () =>
-      import(
-        './feature-components/non-verified-registration/non-verified-registration.module'
-      ).then((m) => m.NonVerifiedRegistrationModule)
-  },
-  {
     path: 'verified-registration',
     loadChildren: () =>
       import(
@@ -51,13 +44,6 @@ const routes: Routes = [
         './feature-components/dashboard/dashboard.module'
       ).then((m) => m.DashboardModule),
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'error',
-    loadChildren: () =>
-      import('./feature-components/error-screen/error-screen.module').then(
-        (m) => m.ErrorScreenModule
-      )
   },
   {
     path: 'invite-error',

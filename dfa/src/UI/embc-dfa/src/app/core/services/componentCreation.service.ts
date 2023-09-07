@@ -139,55 +139,7 @@ export class ComponentCreationService {
 
   ];
 
-  needsAssessmentComponents: Array<any> = [
-    {
-      component: 'evac-address',
-      nextButtonLabel: 'Next - Household Information',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: -1,
-      stepName: 'Location'
-    },
-    {
-      component: 'family-information',
-      nextButtonLabel: 'Next - Pets',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Household Members'
-    },
-    {
-      component: 'pets',
-      nextButtonLabel: 'Next - Identify Needs',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Pets'
-    },
-    {
-      component: 'identify-needs',
-      nextButtonLabel: 'Next - Security Phrase',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Needs'
-    },
-    {
-      component: 'secret',
-      nextButtonLabel: 'Next - Review Submission',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Security Phrase'
-    }
-  ];
-
-  getProfileComponents(): Observable<any> {
+    getProfileComponents(): Observable<any> {
     const profile = new Observable((observer) => {
       observer.next(this.dynamicComponents);
       observer.complete();
@@ -217,15 +169,6 @@ export class ComponentCreationService {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
     for (const comp of this.dfaApplicationMainComponents) {
-      componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
-    }
-    return componentArr;
-  }
-
-  createEvacSteps(): Array<ComponentMetaDataModel> {
-    const componentArr: Array<ComponentMetaDataModel> =
-      new Array<ComponentMetaDataModel>();
-    for (const comp of this.needsAssessmentComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;

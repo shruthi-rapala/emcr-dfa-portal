@@ -17,23 +17,15 @@
       <ng-template matStepLabel>{{ step.stepName }}</ng-template>
       <div
         *ngIf="
-          step.stepName === 'Personal Details' &&
-            currentFlow === 'verified-registration';
-          else altText
+            currentFlow === 'verified-registration'
         "
       >
         <p>
           Please review and complete the form below. As this account is linked
           to your BC Services Card, certain fields are not editable.
         </p>
-        <p>Required fields are marked with a red asterisk.</p>
+        <p>Required fields are marked with a red asterisk <span style="color:red;"><b>*</b></span>.</p>
       </div>
-      <ng-template #altText>
-        <p>
-          Please review and complete the form below. Required fields are marked
-          with a red asterisk.
-        </p>
-      </ng-template>
       <br />
       <app-component-wrapper
         [componentName]="step.component"
@@ -80,7 +72,7 @@
     </mat-step>
     <mat-step *ngIf="currentFlow === 'verified-registration'">
       <ng-template matStepLabel>Review and Submit</ng-template>
-     
+
       <app-review
         [type]="type"
         [showHeading]="true"

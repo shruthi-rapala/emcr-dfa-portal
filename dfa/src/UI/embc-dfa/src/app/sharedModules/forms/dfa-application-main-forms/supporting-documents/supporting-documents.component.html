@@ -1,4 +1,4 @@
-<mat-card class="card-align" [ngStyle]="{'pointer-events': vieworedit === 'view' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <ng-container>

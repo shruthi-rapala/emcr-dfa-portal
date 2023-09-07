@@ -255,7 +255,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string? dfa_appoccupantid { get; set; } // optional string
         public string dfa_name { get; set; } // required string
-        public string dfa_title { get; set; } // required string
+        public string dfa_relationshiptoapplicant { get; set; } // required string
         public string dfa_firstname { get; set; } // required string
         public string dfa_lastname { get; set; } // required string
         public string? _dfa_applicationid_value { get; set; } // for retrieving from entity

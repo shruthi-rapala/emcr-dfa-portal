@@ -154,11 +154,6 @@ namespace EMBC.DFA.API
             services.Configure<ADFSTokenProviderOptions>(configuration.GetSection("Dynamics:ADFS"));
             services.AddADFSTokenProvider();
             services.AddHttpClient("captcha");
-            services.Configure<CaptchaVerificationServiceOptions>(options =>
-            {
-                configuration.GetSection("captcha").Bind(options);
-            });
-            services.AddTransient<ICaptchaVerificationService, CaptchaVerificationService>();
             services.AddScoped(sp =>
             {
                 var dynamicsApiEndpoint = configuration.GetValue<string>("Dynamics:DynamicsApiEndpoint");

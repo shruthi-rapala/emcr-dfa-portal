@@ -32,7 +32,6 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   isSecondaryApplicant: boolean = false;
   initialApplicantSignature: SignatureBlock = {dateSigned: null, signedName: null, signature: null};
   initialSecondaryApplicantSignature: SignatureBlock = {dateSigned: null, signedName: null, signature: null};
-  vieworedit: string;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -45,7 +44,6 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.signAndSubmitForm$ = this.formCreationService
       .getSignAndSubmitForm()
       .subscribe((signAndSubmit) => {
