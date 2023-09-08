@@ -48,6 +48,14 @@ export const yesFullyInsuredBody: DialogContent = {
   confirmButton: 'No, Go Back & Edit'
 }
 
+export const bcscMissingEmail: DialogContent = {
+  text: 'You must provide your BC Services Card email address to online services to create a DFA application.<br/><br/>' +
+  'In your BC Services Card account, select <b>Account Details</b>, under <b>Preferences</b>, select <b>Manage Preferences</b>, and then select <b>Edit</b>. For the question, <b>When should your ' +
+  'email address be provided to an online service that requires it?</b> select <b>Every time I log in</b>.<br/><br/>' +
+  '<a href="https://id.gov.bc.ca/account/" target="_blank">Go to BC Services Card Account</a>',
+  confirmButton: 'Ok'
+}
+
 export const dontOccupyDamagedPropertyBody: DialogContent = {
   text: '<p>You must have occupied the property as your principal residence at the time of the event to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Did you occupy the damaged property as your principal residence at the time of the event? If you are a landlord, you must apply and qualify as a small business owner.</b></p>',
   cancelButton: 'No, Save & Close my Application',

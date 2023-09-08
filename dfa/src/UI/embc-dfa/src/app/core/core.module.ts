@@ -25,6 +25,7 @@ import { SignatureComponent } from './components/signature/signature.component';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { DfaAttachmentComponent } from './components/dfa-attachment/dfa-attachment.component';
 import { DFAEligibilityDialogComponent } from './components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
+import { BCSCEmailErrorDialogComponent } from './components/dialog-components/bcsc-email-error-dialog/bcsc-email-error-dialog.component';
 import { FileUploadWarningDialogComponent } from './components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 import { DFAFileDeleteDialogComponent } from './components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 import { DFACleanuplogDeleteDialogComponent } from './components/dialog-components/dfa-cleanuplog-delete-dialog/dfa-cleanuplog-delete.component';
@@ -66,6 +67,7 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     DfaAttachmentComponent,
     InformationDialogComponent,
     DFAEligibilityDialogComponent,
+    BCSCEmailErrorDialogComponent,
     FileUploadWarningDialogComponent,
     DFAFileDeleteDialogComponent,
     DFACleanuplogDeleteDialogComponent,
@@ -85,6 +87,7 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     DfaAttachmentComponent,
     EnvironmentBannerComponent,
     DFAEligibilityDialogComponent,
+    BCSCEmailErrorDialogComponent,
     FileUploadWarningDialogComponent,
     DFAFileDeleteDialogComponent,
     DFACleanuplogDeleteDialogComponent,
