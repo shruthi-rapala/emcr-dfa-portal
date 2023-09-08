@@ -18,7 +18,6 @@ public class CreateProfile {
 
     private WebDriver driver;
 
-
     @After
     public void tearDown() {
         driver.close();

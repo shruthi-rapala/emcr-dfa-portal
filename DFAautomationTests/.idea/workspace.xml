@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2e2c1a18-e64c-44c1-869d-cdbed49dcc8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dfa/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dfa/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ResidentialTenantNInsurance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ResidentialTenantNInsurance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ResidentialTenantUInsurance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ResidentialTenantUInsurance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/HmeownerUnsureInsurance.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/HmeownerUnsureInsurance.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ResidentialTenantNInsurance.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/ResidentialTenantNInsurance.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ResidentialTenantUInsurance.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/ResidentialTenantUInsurance.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/CreateProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CreateProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/CreateProfile.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/CreateProfile.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,38 +85,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="EditApplicationHomeownerNInsurance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DFAautomationTests" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="EditApplicationHomeownerNInsurance" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="USERNAME_BCEID" value="DFA00004" />
+        <env name="PASSWORD_BCEID" value="98900004" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HomeOwnerApplicationDetails" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DFAautomationTests" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="HomeOwnerApplicationDetails" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="USERNAME_BCEID" value="DFA00004" />
+        <env name="PASSWORD_BCEID" value="98900004" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="HomeOwnerApplicationDetails.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="HomeOwnerApplicationDetails" />
-      <option name="METHOD_NAME" value="test" />
-      <option name="TEST_OBJECT" value="method" />
-      <envs>
-        <env name="USERNAME_BCEID" value="DFA00004" />
-        <env name="PASSWORD_BCEID" value="98900004" />
-      </envs>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ResidentialTenantNInsurance.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="DFAautomationTests" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="ResidentialTenantNInsurance" />
-      <option name="METHOD_NAME" value="test" />
-      <option name="TEST_OBJECT" value="method" />
-      <envs>
-        <env name="USERNAME_BCEID" value="DFA00004" />
-        <env name="PASSWORD_BCEID" value="98900004" />
-      </envs>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ResidentialTenantUInsurance.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="DFAautomationTests" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="ResidentialTenantUInsurance" />
       <option name="METHOD_NAME" value="test" />
       <option name="TEST_OBJECT" value="method" />
       <envs>
@@ -147,18 +143,18 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.TestSuiteAllTests" />
-      <item itemvalue="JUnit.ResidentialTenantNInsurance.test" />
-      <item itemvalue="JUnit.ResidentialTenantUInsurance.test" />
       <item itemvalue="JUnit.CreateProfile" />
       <item itemvalue="JUnit.HomeOwnerApplicationDetails.test" />
+      <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
+      <item itemvalue="JUnit.EditApplicationHomeownerNInsurance" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.TestSuiteAllTests" />
         <item itemvalue="JUnit.CreateProfile" />
+        <item itemvalue="JUnit.EditApplicationHomeownerNInsurance" />
+        <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
         <item itemvalue="JUnit.HomeOwnerApplicationDetails.test" />
-        <item itemvalue="JUnit.ResidentialTenantUInsurance.test" />
-        <item itemvalue="JUnit.ResidentialTenantNInsurance.test" />
       </list>
     </recent_temporary>
   </component>
