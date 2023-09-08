@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import * as globalConst from '../../../../core/services/globalConstants';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
@@ -26,6 +27,9 @@ import { CustomValidationService } from 'src/app/core/services/customValidation.
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { BCSCEmailErrorDialogComponent } from 'src/app/core/components/dialog-components/bcsc-email-error-dialog/bcsc-email-error-dialog.component';
+import { LoginService } from 'src/app/core/services/login.service';
 
 export class CustomErrorMailMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -72,6 +76,8 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
+    public dialog: MatDialog,
+    private loginService: LoginService,
     public customValidator: CustomValidationService
   ) {
     this.formBuilder = formBuilder;
@@ -92,6 +98,7 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
             .bind(this.customValidator)
         ]);
         this.contactInfoForm.updateValueAndValidity();
+        if (!this.contactInfoForm.value.confirmEmail) this.bcscEmailError(); // must have bcsc email address
       });
 
     this.contactInfoForm
@@ -129,6 +136,22 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
         }
         this.contactInfoForm.get('email').updateValueAndValidity();
         this.contactInfoForm.get('cellPhoneNumber').updateValueAndValidity();
+      });
+  }
+
+  bcscEmailError(): void {
+    this.dialog
+      .open(BCSCEmailErrorDialogComponent, {
+        data: {
+          content: globalConst.bcscMissingEmail
+        },
+        height: '375px',
+        width: '750px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        this.loginService.logout();
       });
   }
 
