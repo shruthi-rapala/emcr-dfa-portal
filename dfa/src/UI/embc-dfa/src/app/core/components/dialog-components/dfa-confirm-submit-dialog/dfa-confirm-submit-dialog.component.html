@@ -7,12 +7,12 @@
 <mat-dialog-actions>
   <div class="col-md-6">
     <button class="button-s button-width" mat-button (click)="cancel()">
-      No, I don't want to submit my application yet
+     {{content.cancelButton}}
     </button>
   </div>
   <div class="col-md-6">
     <button class="button-p button-width" mat-button (click)="confirm()">
-      Yes, I want to submit my application
+      {{content.confirmButton}}
     </button>
   </div>
 </mat-dialog-actions>
