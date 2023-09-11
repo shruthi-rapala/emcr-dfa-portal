@@ -48,6 +48,14 @@ export const yesFullyInsuredBody: DialogContent = {
   confirmButton: 'No, Go Back & Edit'
 }
 
+export const confirmSubmitApplicationBody: DialogContent = {
+  text: 'Are you sure you want to submit your application?<br/><br/>' +
+  'You can\'t change your application or delete uploaded files once your application has been submitted.<br/><br/>' +
+  'After submitting, you may continue to update the Clean Up Log, add items to the Damaged Items by Room list, and add additional documents. ',
+  confirmButton: 'Yes, I want to submit my application.',
+  cancelButton: 'No, I don\'t want to submit my application yet'
+}
+
 export const bcscMissingEmail: DialogContent = {
   text: 'You must provide your BC Services Card email address to online services to create a DFA application.<br/><br/>' +
   'In your BC Services Card account, select <b>Account Details</b>, under <b>Preferences</b>, select <b>Manage Preferences</b>, and then select <b>Edit</b>. For the question, <b>When should your ' +

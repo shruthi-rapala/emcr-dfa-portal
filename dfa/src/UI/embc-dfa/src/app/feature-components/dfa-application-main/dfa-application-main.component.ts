@@ -9,6 +9,7 @@ import {
 import { UntypedFormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCreationService } from '../../core/services/componentCreation.service';
+import * as globalConst from '../../core/services/globalConstants';
 import { ComponentMetaDataModel } from '../../core/model/componentMetaData.model';
 import { MatStepper } from '@angular/material/stepper';
 import { Subscription } from 'rxjs';
@@ -18,6 +19,8 @@ import { DFAApplicationMainDataService } from './dfa-application-main-data.servi
 import { DFAApplicationMainService } from './dfa-application-main.service';
 import { ApplicantOption } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
+import { MatDialog } from '@angular/material/dialog';
+import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -67,6 +70,7 @@ export class DFAApplicationMainComponent
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dfaApplicationMainService: DFAApplicationMainService,
     private applicationService: ApplicationService,
+    public dialog: MatDialog,
     private fileUploadsService: AttachmentService
   ) {
     const navigation = this.router.getCurrentNavigation();
@@ -432,17 +436,31 @@ export class DFAApplicationMainComponent
   }
 
   submitFile(): void {
-    let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-    this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
-      this.isSubmitted = !this.isSubmitted;
-      this.alertService.clearAlert();
-      this.dfaApplicationMainDataService.isSubmitted = true;
-      this.dfaApplicationMainDataService.setViewOrEdit('view');
-      this.vieworedit = 'view';
-    },
-    error => {
-      console.error(error);
-    });
+    this.dialog
+      .open(DFAConfirmSubmitDialogComponent, {
+        data: {
+          content: globalConst.confirmSubmitApplicationBody
+        },
+        height: '350px',
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+          this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+            this.isSubmitted = !this.isSubmitted;
+            this.alertService.clearAlert();
+            this.dfaApplicationMainDataService.isSubmitted = true;
+            this.dfaApplicationMainDataService.setViewOrEdit('view');
+            this.vieworedit = 'view';
+          },
+          error => {
+            console.error(error);
+          });
+        }
+      });
   }
 
   BackToDashboard(): void {
