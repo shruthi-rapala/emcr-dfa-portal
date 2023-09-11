@@ -8,7 +8,7 @@ import org.junit.runners.Suite;
 
         Login.class, CreateNewApplicationHomeowner.class, HomeOwnerApplicationDetails.class, HomeOwnerWithnsurance.class,
         ResidentialTenantUInsurance.class, HmeownerUnsureInsurance.class, ResidentialTenantNInsurance.class, EditApplicationHomeownerNInsurance.class,
-        Logout.class,
+        Logout.class, AddCleanLogAndDamageAfterSubmit.class,
 })
 
 

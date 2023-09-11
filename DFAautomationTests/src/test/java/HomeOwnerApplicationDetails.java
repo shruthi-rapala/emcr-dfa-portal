@@ -122,7 +122,7 @@ public class HomeOwnerApplicationDetails {
         js21.executeScript("arguments[0].click();", element);
 //        //As the Home Owner, are you eligible for a BC Home Owner Grant for this property?
         JavascriptExecutor js3 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#mat-radio-24 .mat-radio-outer-circle")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[6]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/input")));
         js3.executeScript("arguments[0].click();", element);
     }
 
@@ -356,6 +356,8 @@ public class HomeOwnerApplicationDetails {
         JavascriptExecutor js52= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-7\"]/div/div[2]/button/span[1]")));
         js52.executeScript("arguments[0].click();", element);
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Yes, I want to submit my application. ')]"))).click();
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Your application has been submitted.')]")));
 

@@ -464,6 +464,8 @@ public class EditApplicationHomeownerNInsurance {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[8]/div/div[2]/button")));
         js521.executeScript("arguments[0].click();", element);
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Yes, I want to submit my application. ')]"))).click();
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Your application has been submitted.')]")));
 
     }
