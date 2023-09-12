@@ -23,6 +23,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { ApplicantOption } from 'src/app/core/api/models';
 
 
 @Component({
@@ -37,6 +38,12 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   formCreationService: FormCreationService;
   remainingLength: number = 2000;
   todayDate = new Date().toISOString();
+  public ApplicantOptions = ApplicantOption;
+  isResidentialTenant: boolean = false;
+  isHomeowner: boolean = false;
+  isSmallBusinessOwner: boolean = false;
+  isFarmOwner: boolean = false;
+  isCharitableOrganization: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -54,6 +61,29 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       .getPropertyDamageForm()
       .subscribe((propertyDamage) => {
         this.propertyDamageForm = propertyDamage;
+        this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+          if (application) {
+            this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+            this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
+            this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
+            this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
+            this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
+            if (this.isHomeowner || this.isResidentialTenant) {
+              this.propertyDamageForm.controls.lossesExceed1000.setValidators([Validators.required]);
+              this.propertyDamageForm.controls.wereYouEvacuated.setValidators([Validators.required]);
+              this.propertyDamageForm.controls.residingInResidence.setValidators([Validators.required]);
+            } else if (this.isSmallBusinessOwner || this.isFarmOwner || this.isCharitableOrganization) {
+              this.propertyDamageForm.controls.lossesExceed1000.setValidators(null);
+              this.propertyDamageForm.controls.lossesExceed1000.setValue(null);
+              this.propertyDamageForm.controls.wereYouEvacuated.setValidators(null);
+              this.propertyDamageForm.controls.wereYouEvacuated.setValue(null);
+              this.propertyDamageForm.controls.dateReturned.setValue(null);
+              this.propertyDamageForm.controls.residingInResidence.setValidators(null);
+              this.propertyDamageForm.controls.residingInResidence.setValue(null);
+            }
+          this.propertyDamageForm.updateValueAndValidity();
+          }
+        });
         this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
         if (this.propertyDamageForm.get('otherDamage').value === 'true') {
           this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required, Validators.maxLength(100)]);
@@ -188,7 +218,6 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-
 
   calcRemainingChars() {
     this.remainingLength = 2000 - this.propertyDamageForm.get('briefDescription').value?.length;
