@@ -56,7 +56,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_firstname", "dfa_lastname", "dfa_initial",
-                        "dfa_isindigenous", "dfa_emailaddress", "dfa_cellphonenumber",
+                        "dfa_isindigenous2", "dfa_emailaddress", "dfa_cellphonenumber",
                         "dfa_residencetelephonenumber", "dfa_alternatephonenumber", "dfa_primaryaddressline1",
                         "dfa_primaryaddressline2", "dfa_primarycity", "dfa_primarypostalcode",
                         "dfa_primarystateprovince", "dfa_secondaryaddressline1", "dfa_secondaryaddressline2",
