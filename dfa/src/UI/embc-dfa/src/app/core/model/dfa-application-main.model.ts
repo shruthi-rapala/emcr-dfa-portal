@@ -326,7 +326,7 @@ export class FullTimeOccupantsForm {
   lastName = new UntypedFormControl();
   relationship = new UntypedFormControl();
   fullTimeOccupant: UntypedFormGroup;
-  fullTimeOccupants = new UntypedFormControl([], Validators.required);
+  fullTimeOccupants = new UntypedFormControl([]);
   addNewFullTimeOccupantIndicator = new UntypedFormControl(false);
 
   constructor(

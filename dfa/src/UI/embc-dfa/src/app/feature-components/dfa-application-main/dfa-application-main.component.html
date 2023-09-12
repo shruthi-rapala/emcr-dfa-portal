@@ -158,7 +158,14 @@
             Return to Dashboard
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid && (formCreationService.damagedPropertyAddressForm$ | async)?.valid && (formCreationService.propertyDamageForm$ | async)?.valid && (formCreationService.cleanUpLogForm$ | async)?.valid && (formCreationService.supportingDocumentsForm$ | async)?.valid && (formCreationService.otherContactsForm$ | async)?.valid && (formCreationService.fullTimeOccupantsForm$ | async)?.valid && vieworedit !== 'view'
+        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid
+             && (formCreationService.damagedPropertyAddressForm$ | async)?.valid
+             && (formCreationService.propertyDamageForm$ | async)?.valid
+             && (formCreationService.cleanUpLogForm$ | async)?.valid
+             && (formCreationService.supportingDocumentsForm$ | async)?.valid
+             && (formCreationService.otherContactsForm$ | async)?.valid
+             && (formCreationService.fullTimeOccupantsForm$ | async)?.valid
+             && vieworedit !== 'view'
              && isInsuranceTemplateUploaded
              && (isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
 
@@ -172,10 +179,18 @@
             Submit
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && (!isSignaturesValid || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid || !(formCreationService.propertyDamageForm$ | async)?.valid || !(formCreationService.cleanUpLogForm$ | async)?.valid || !(formCreationService.supportingDocumentsForm$ | async)?.valid || !(formCreationService.otherContactsForm$ | async)?.valid || !(formCreationService.fullTimeOccupantsForm$ | async)?.valid
-             || !isInsuranceTemplateUploaded
-             || !(isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
-             ) && vieworedit !== 'view'">
+        <div class="col-md-6" *ngIf="!isSubmitted
+            && (!isSignaturesValid
+                || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid
+                || !(formCreationService.propertyDamageForm$ | async)?.valid
+                || !(formCreationService.cleanUpLogForm$ | async)?.valid
+                || !(formCreationService.supportingDocumentsForm$ | async)?.valid
+                || !(formCreationService.otherContactsForm$ | async)?.valid
+                || !(formCreationService.fullTimeOccupantsForm$ | async)?.valid
+                || !isInsuranceTemplateUploaded
+                || !(isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
+              )
+            && vieworedit !== 'view'">
           <span style="color:red">Enter all required information and sign before submitting.</span>
         </div>
       </div>
