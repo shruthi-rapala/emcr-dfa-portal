@@ -39,7 +39,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondarycity { get; set; }
         public string? dfa_secondarystateprovince { get; set; }
         public string? dfa_secondarypostalcode { get; set; }
-        public bool? dfa_isindigenous { get; set; }
+        public int? dfa_isindigenous2 { get; set; }
         public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
         public string dfa_appcontactid { get; set; }
     }
@@ -385,6 +385,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         Yes = 222710000,
         No = 222710001
+    }
+
+    public enum YesNoNullOptionSet
+    {
+        Yes = 222710000,
+        No = 222710001,
+        Null = 222710002
     }
 
     public enum InsuranceTypeOptionSet
