@@ -39,6 +39,9 @@ export class DFAApplicationMainMappingService {
           onAFirstNationsReserve: dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === false ? 'false' : null),
           manufacturedHome: dfaApplicationMain.damagedPropertyAddress.manufacturedHome === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.manufacturedHome === false ? 'false' : null),
           eligibleForHomeOwnerGrant: dfaApplicationMain.damagedPropertyAddress.eligibleForHomeOwnerGrant === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.eligibleForHomeOwnerGrant === false ? 'false' : null),
+          businessManagedByAllOwnersOnDayToDayBasis: dfaApplicationMain.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis === false ? 'false' : null),
+          employLessThan50EmployeesAtAnyOneTime: dfaApplicationMain.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime === false ? 'false' : null),
+          grossRevenues100002000000BeforeDisaster: dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === false ? 'false' : null)
         });
         formGroup = damagedPropertyAddress;
       });

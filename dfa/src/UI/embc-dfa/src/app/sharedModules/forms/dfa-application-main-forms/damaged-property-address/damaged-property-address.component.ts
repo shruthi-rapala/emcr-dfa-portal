@@ -111,6 +111,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
           this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
           this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
+          this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100)]);
           if (this.isHomeowner) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.maxLength(100)]);
@@ -120,12 +121,30 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
             this.damagedPropertyAddressForm.controls.landlordSurname.setValue(null);
             this.damagedPropertyAddressForm.controls.landlordEmail.setValue(null);
             this.damagedPropertyAddressForm.controls.landlordPhone.setValue(null);
+            this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators(null);
+            this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators(null);
+            this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators(null);
+            this.damagedPropertyAddressForm.controls.businessLegalName.setValue(null);
+            this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValue(null);
+            this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValue(null);
+            this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValue(null);
+            this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators([Validators.required]);
           } else if (this.isResidentialTenant) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValue(null);
             this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required, Validators.maxLength(100)]);
             this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required, Validators.maxLength(100)]);
             this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.required, Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators(null);
+            this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators(null);
+            this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators(null);
+            this.damagedPropertyAddressForm.controls.businessLegalName.setValue(null);
+            this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValue(null);
+            this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValue(null);
+            this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValue(null);
+            this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators([Validators.required]);
           } else if (this.isSmallBusinessOwner) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValue(null);
@@ -136,6 +155,12 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
             this.damagedPropertyAddressForm.controls.landlordSurname.setValue(null);
             this.damagedPropertyAddressForm.controls.landlordEmail.setValue(null);
             this.damagedPropertyAddressForm.controls.landlordPhone.setValue(null);
+            this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators([Validators.required]);
+            this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators([Validators.required]);
+            this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators([Validators.required]);
+            this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators(null);
+            this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValue(null);
           }
         this.damagedPropertyAddressForm.updateValueAndValidity();
         }
@@ -276,6 +301,42 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         }
       });
 
+      this.damagedPropertyAddressForm
+      .get('employLessThan50EmployeesAtAnyOneTime')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.damagedPropertyAddressForm.get('employLessThan50EmployeesAtAnyOneTime').reset();
+        }
+      });
+
+      this.damagedPropertyAddressForm
+      .get('businessLegalName')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.damagedPropertyAddressForm.get('businessLegalName').reset();
+        }
+      });
+
+      this.damagedPropertyAddressForm
+      .get('grossRevenues100002000000BeforeDisaster')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.damagedPropertyAddressForm.get('grossRevenues100002000000BeforeDisaster').reset();
+        }
+      });
+
+      this.damagedPropertyAddressForm
+      .get('businessManagedByAllOwnersOnDayToDayBasis')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.damagedPropertyAddressForm.get('businessManagedByAllOwnersOnDayToDayBasis').reset();
+        }
+      });
+
     this.damagedPropertyAddressForm.get('isPrimaryAndDamagedAddressSame').setValue(false);
     this.onUseProfileAddressChoice(false);
 
@@ -321,6 +382,10 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.dfaApplicationMainDataService.damagedPropertyAddress.manufacturedHome = this.damagedPropertyAddressForm.get('manufacturedHome').value == 'true' ? true : (this.damagedPropertyAddressForm.get('manufacturedHome').value == 'false' ? false : null);
           this.dfaApplicationMainDataService.damagedPropertyAddress.occupyAsPrimaryResidence = this.damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value == 'true' ? true : (this.damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value == 'false' ? false : null);
           this.dfaApplicationMainDataService.damagedPropertyAddress.onAFirstNationsReserve = this.damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true' ? true : (this.damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'false' ? false : null);
+          this.dfaApplicationMainDataService.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime = this.damagedPropertyAddressForm.get('employLessThan50EmployeesAtAnyOneTime').value == 'true' ? true : (this.damagedPropertyAddressForm.get('employLessThan50EmployeesAtAnyOneTime').value == 'false' ? false : null);
+          this.dfaApplicationMainDataService.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster = this.damagedPropertyAddressForm.get('grossRevenues100002000000BeforeDisaster').value == 'true' ? true : (this.damagedPropertyAddressForm.get('grossRevenues100002000000BeforeDisaster').value == 'false' ? false : null);
+          this.dfaApplicationMainDataService.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis = this.damagedPropertyAddressForm.get('businessManagedByAllOwnersOnDayToDayBasis').value == 'true' ? true : (this.damagedPropertyAddressForm.get('businessManagedByAllOwnersOnDayToDayBasis').value == 'false' ? false : null);
+          this.dfaApplicationMainDataService.damagedPropertyAddress.businessLegalName = this.damagedPropertyAddressForm.get('businessLegalName').value;
           this.submitFile();
           }
         else if (result === 'confirm') {
