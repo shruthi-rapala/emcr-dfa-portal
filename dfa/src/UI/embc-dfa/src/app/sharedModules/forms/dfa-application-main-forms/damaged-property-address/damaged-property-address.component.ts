@@ -30,6 +30,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { MatInputModule } from '@angular/material/input';
 import { ApplicationService, ProfileService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
+import { DialogContent } from 'src/app/core/model/dialog-content.model';
 
 @Component({
   selector: 'app-damaged-property-address',
@@ -111,7 +112,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
           this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
           this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
-          this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100)]);
           if (this.isHomeowner) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.maxLength(100)]);
@@ -219,7 +219,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         if (value === '') {
           this.damagedPropertyAddressForm.get('occupyAsPrimaryResidence').reset();
         } else if (value === 'false') {
-          this.dontOccupyDamagedProperty();
+          this.dontContinueApplication(globalConst.dontOccupyDamagedPropertyBody, "occupyAsPrimaryResidence");
         }
       });
 
@@ -307,6 +307,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('employLessThan50EmployeesAtAnyOneTime').reset();
+        } else if (value === 'false') {
+          this.dontContinueApplication(globalConst.dontEmployLessThan50EmployeesAtAnyOneTime, "employLessThan50EmployeesAtAnyOneTime");
         }
       });
 
@@ -325,6 +327,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('grossRevenues100002000000BeforeDisaster').reset();
+        } else if (value === 'false') {
+          this.dontContinueApplication(globalConst.wrongGrossRevenues, "grossRevenues100002000000BeforeDisaster");
         }
       });
 
@@ -334,6 +338,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('businessManagedByAllOwnersOnDayToDayBasis').reset();
+        } else if (value === 'false') {
+          this.dontContinueApplication(globalConst.businessNotManagedByAllOwnersOnDayToDayBasis, "businessManagedByAllOwnersOnDayToDayBasis");
         }
       });
 
@@ -354,11 +360,11 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     });
   }
 
-  dontOccupyDamagedProperty(): void {
+  dontContinueApplication(content: DialogContent, controlName: string) {
     this.dialog
       .open(DFAEligibilityDialogComponent, {
         data: {
-          content: globalConst.dontOccupyDamagedPropertyBody
+          content: content
         },
         height: '350px',
         width: '700px',
@@ -389,9 +395,9 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.submitFile();
           }
         else if (result === 'confirm') {
-          this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValue("true");
+          this.damagedPropertyAddressForm.get(controlName).setValue("true");
         }
-        else this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValue(null);
+        else this.damagedPropertyAddressForm.get(controlName).setValue(null);
       });
   }
 
