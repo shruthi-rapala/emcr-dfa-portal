@@ -272,6 +272,10 @@ namespace EMBC.DFA.API.Controllers
         public string? landlordPhone { get; set; }
         public string? landlordEmail { get; set; }
         public bool? isPrimaryAndDamagedAddressSame { get; set; }
+        public string? businessLegalName { get; set; }
+        public bool? businessManagedByAllOwnersOnDayToDayBasis { get; set; }
+        public bool? grossRevenues100002000000BeforeDisaster { get; set; }
+        public bool? employLessThan50EmployeesAtAnyOneTime { get; set; }
     }
 
     /// <summary>
