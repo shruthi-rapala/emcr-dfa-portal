@@ -58,6 +58,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     /\d/
   ];
   isResidentialTenant: boolean = false;
+  isHomeowner: boolean = false;
+  isSmallBusinessOwner: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -107,17 +109,33 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
         if (application) {
           this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
-          if (!this.isResidentialTenant) {
+          this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
+          this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
+          if (this.isHomeowner) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.maxLength(100)]);
             this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.maxLength(100)]);
             this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.landlordGivenNames.setValue(null);
+            this.damagedPropertyAddressForm.controls.landlordSurname.setValue(null);
+            this.damagedPropertyAddressForm.controls.landlordEmail.setValue(null);
+            this.damagedPropertyAddressForm.controls.landlordPhone.setValue(null);
           } else if (this.isResidentialTenant) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
-            this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValue('false');
+            this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValue(null);
             this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.required, Validators.maxLength(100)]);
             this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.required, Validators.maxLength(100)]);
             this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.required, Validators.maxLength(100)]);
+          } else if (this.isSmallBusinessOwner) {
+            this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
+            this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValue(null);
+            this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.landlordGivenNames.setValue(null);
+            this.damagedPropertyAddressForm.controls.landlordSurname.setValue(null);
+            this.damagedPropertyAddressForm.controls.landlordEmail.setValue(null);
+            this.damagedPropertyAddressForm.controls.landlordPhone.setValue(null);
           }
         this.damagedPropertyAddressForm.updateValueAndValidity();
         }

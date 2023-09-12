@@ -132,7 +132,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Residential Tenant")]
         ResidentialTenant,
 
-        [EnumMember(Value = "Small Business Owner (including landlords)")]
+        [EnumMember(Value = "Small Business Owner")]
         SmallBusinessOwner,
 
         [EnumMember(Value = "Farm Owner)")]
@@ -164,7 +164,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "General or Sole Proprietorship or DBA name")]
         General,
 
-        [EnumMember(Value = "Corporate (Ltd./Inc.) Company")]
+        [EnumMember(Value = "Corporate Company (Ltd./Inc.)")]
         Corporate,
 
         [EnumMember(Value = "Landlord")]
