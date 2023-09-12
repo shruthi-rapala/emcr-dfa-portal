@@ -72,6 +72,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   FileCategories = FileCategory;
   showOtherDocuments: boolean = false;
   isResidentialTenant: boolean = false;
+  isHomeowner: boolean = false;
+  isSmallBusinessOwner: boolean = false;
   AppOptions = ApplicantOption;
 
   constructor(
@@ -90,6 +92,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
+        this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
+        this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
       }
     });
   }

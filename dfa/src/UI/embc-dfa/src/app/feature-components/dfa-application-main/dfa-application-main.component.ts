@@ -58,6 +58,8 @@ export class DFAApplicationMainComponent
   isTenancyProofUploaded = false;
   isIdentificationUploaded = false;
   isResidentialTenant: boolean = false;
+  isHomeowner: boolean = false;
+  isSmallBusinessOwner: boolean = false;
   AppOptions = ApplicantOption;
 
   constructor(
@@ -84,6 +86,8 @@ export class DFAApplicationMainComponent
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
+        this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
+        this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
         if (this.isResidentialTenant) {
           this.dfaApplicationMainDataService.requiredDocuments = ["Insurance", "TenancyProof", "Identification"];
         } else {
