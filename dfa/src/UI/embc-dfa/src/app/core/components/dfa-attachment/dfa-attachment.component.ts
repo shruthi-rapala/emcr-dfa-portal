@@ -92,10 +92,6 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
     this.initFileUploadForm();
   }
 
-  showForm() {
-    console.log(this.fileUpload);
-  }
-
   updateFileUploadFormOnVisibility(): void {
     this.fileUpload.get('fileName').updateValueAndValidity();
     this.fileUpload.get('fileDescription').updateValueAndValidity();
