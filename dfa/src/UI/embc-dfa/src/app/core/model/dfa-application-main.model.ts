@@ -751,6 +751,7 @@ export class FileUpload {
 
 export class FileUploadsForm {
   applicationId = new UntypedFormControl();
+  applicantType = new UntypedFormControl();
   deleteFlag = new UntypedFormControl();
   id = new UntypedFormControl();
   fileName = new UntypedFormControl();
