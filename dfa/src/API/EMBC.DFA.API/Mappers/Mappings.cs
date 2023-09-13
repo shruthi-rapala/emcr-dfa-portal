@@ -290,6 +290,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdocumentlocationsid))
                 .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_name))
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
+                //.ForMember(d => d.RequiredDocumentType, opts => opts.MapFrom(s => ConvertStringToRequiredDocumentType(s.dfa_documenttype))) //TODO: map require file type
                 .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.dfa_description))
                 .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.modifiedBy, opts => opts.MapFrom(s => s.dfa_modifiedby))
@@ -305,6 +306,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
+                //.ForMember(d => d.dfa_RequiredDocumentType, opts => opts.MapFrom(s => s.RequiredDocumentType)) // TODO map required file type
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => s.fileType));
 
             CreateMap<dfa_appapplication, CurrentApplication>()
@@ -378,10 +380,6 @@ namespace EMBC.DFA.API.Mappers
                     {
                         return FileCategory.Appeal;
                     }
-                case "Identification":
-                    {
-                        return FileCategory.Identification;
-                    }
                 case "Financial":
                     {
                         return FileCategory.Financial;
@@ -405,6 +403,64 @@ namespace EMBC.DFA.API.Mappers
                 default:
                     {
                         return FileCategory.Unknown;
+                    }
+            }
+        }
+        public RequiredDocumentType ConvertStringToRequiredDocumentType(string requireddocumenttype)
+        {
+            switch (requireddocumenttype)
+            {
+                case "Identification":
+                    {
+                        return RequiredDocumentType.Identification;
+                    }
+                case "Insurance Template":
+                    {
+                        return RequiredDocumentType.InsuranceTemplate;
+                    }
+                case "Tenancy Agreement":
+                    {
+                        return RequiredDocumentType.TenancyAgreement;
+                    }
+                case "Residential Tenancy Agreement":
+                    {
+                        return RequiredDocumentType.ResidentialTenancyAgreement;
+                    }
+                case "T1 General Income Tax Return":
+                    {
+                        return RequiredDocumentType.T1GeneralIncomeTaxReturn;
+                    }
+                case "T2 Corporate Income Tax Return":
+                    {
+                        return RequiredDocumentType.T2CorporateIncomeTaxReturn;
+                    }
+                case "Financial Statements":
+                    {
+                        return RequiredDocumentType.FinancialStatements;
+                    }
+                case "Proof of Ownership":
+                    {
+                        return RequiredDocumentType.ProofOfOwnership;
+                    }
+                case "T776 Statement of Real Estate Rentals":
+                    {
+                        return RequiredDocumentType.T776;
+                    }
+                case "Dirctors Listing":
+                    {
+                        return RequiredDocumentType.DirectorsListing;
+                    }
+                case "Registration Proof":
+                    {
+                        return RequiredDocumentType.RegistrationProof;
+                    }
+                case "Structure and Purpose":
+                    {
+                        return RequiredDocumentType.StructureAndPurpose;
+                    }
+                default:
+                    {
+                        return RequiredDocumentType.Unknown;
                     }
             }
         }

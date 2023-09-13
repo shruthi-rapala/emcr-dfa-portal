@@ -146,7 +146,7 @@ export class ReviewComponent implements OnInit {
           this.supportingDocumentsDataSource.data =
             _supportingDocumentsFormArray.getRawValue()?.filter(x => x.fileType !== Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]
               && x.fileType !== this.FileCategories.Cleanup
-              && this.dfaApplicationMainDataService.requiredDocuments.indexOf(x.fileType) < 0
+              && x.requiredDocumemtType === null
               && x.deleteFlag == false) } );
 
     // subscribe to changes in required documents
@@ -156,7 +156,7 @@ export class ReviewComponent implements OnInit {
         mapTo(_requiredDocumentsFormArray.getRawValue())
         ).subscribe(data => { this.requiredDocumentsDataSource.data =
           _requiredDocumentsFormArray.getRawValue()?.filter(x =>
-            this.dfaApplicationMainDataService.requiredDocuments.indexOf(x.fileType) >= 0
+            x.requiredDocumemtType !== null
             && x.deleteFlag == false) } );
   }
 

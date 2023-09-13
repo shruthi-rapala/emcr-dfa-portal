@@ -17,7 +17,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
   styleUrls: ['./dfa-attachment.component.scss']
 })
 export class DfaAttachmentComponent implements OnInit, OnDestroy {
-  @Input() requiredFile: string;
+  @Input() requiredDocumentType: string;
   @Input() title: string;
   @Input() description: string;
   @Input() allowedFileTypes: string[];
@@ -64,7 +64,8 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   initFileUploadForm() {
     this.fileUpload.reset();
     this.fileUpload.get('modifiedBy').setValue("Applicant");
-    if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType);
+    if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType); else this.fileUpload.get('fileType').setValue(null);
+    if (this.requiredDocumentType) this.fileUpload.get('requiredDocumentType').setValue(this.requiredDocumentType); else this.fileUpload.get('requiredDocumentType').setValue(null);
     this.fileUpload.get('deleteFlag').setValue(false);
     this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
   }
@@ -91,6 +92,10 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
     this.initFileUploadForm();
   }
 
+  showForm() {
+    console.log(this.fileUpload);
+  }
+
   updateFileUploadFormOnVisibility(): void {
     this.fileUpload.get('fileName').updateValueAndValidity();
     this.fileUpload.get('fileDescription').updateValueAndValidity();
@@ -98,6 +103,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
     this.fileUpload.get('uploadedDate').updateValueAndValidity();
     this.fileUpload.get('modifiedBy').updateValueAndValidity();
     this.fileUpload.get('fileData').updateValueAndValidity();
+    this.fileUpload.get('requiredDocumentType').updateValueAndValidity();
   }
 
   /**

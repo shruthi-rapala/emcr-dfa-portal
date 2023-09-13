@@ -271,6 +271,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     this.damagePhotosForm.get('damagePhotoFileUpload').reset();
     this.damagePhotosForm.get('damagePhotoFileUpload.modifiedBy').setValue("Applicant");
     this.damagePhotosForm.get('damagePhotoFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]);
+    this.damagePhotosForm.get('damagePhotoFileUpload.requiredDocumentType').setValue(null);
     this.showDamagePhotoForm = !this.showDamagePhotoForm;
     this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(true);
     this.damagePhotosForm.get('damagePhotoFileUpload.deleteFlag').setValue(false);
@@ -381,6 +382,9 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       .updateValueAndValidity();
     this.damagePhotosForm
       .get('damagePhotoFileUpload.fileType')
+      .updateValueAndValidity();
+    this.damagePhotosForm
+      .get('damagePhotoFileUpload.requiredDocumentType')
       .updateValueAndValidity();
     this.damagePhotosForm
       .get('damagePhotoFileUpload.uploadedDate')

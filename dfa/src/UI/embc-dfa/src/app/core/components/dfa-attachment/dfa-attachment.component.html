@@ -14,7 +14,7 @@
         <mat-card *ngIf="showFileUpload">
           <div class="row">
             <div class="col-md-6">
-              <b>{{title}}<span style="color:red;" *ngIf="requiredFile === 'yes'">*</span></b><br/>
+              <b>{{title}}<span style="color:red;" *ngIf="requiredDocumentType !== null">*</span></b><br/>
               <div [innerHTML]="description" (click)="onToggleSideNote()"></div>
               <app-file-upload
                 [noOfAttachments]="1"
@@ -93,6 +93,7 @@
               >
                 Cancel
               </button>
+              <button (click)="showForm()">Show Form</button>
             </div>
             <div class="col-md-6" *ngIf="fileUpload.valid">
               <button
