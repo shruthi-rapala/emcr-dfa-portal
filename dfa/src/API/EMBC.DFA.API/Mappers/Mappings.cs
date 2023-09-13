@@ -24,7 +24,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.PersonalDetails.FirstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.PersonalDetails.LastName))
                 .ForMember(d => d.dfa_initial, opts => opts.MapFrom(s => s.PersonalDetails.Initials))
-                .ForMember(d => d.dfa_isindigenous, opts => opts.MapFrom(s => (!string.IsNullOrEmpty(s.PersonalDetails.IndigenousStatus) ? (s.PersonalDetails.IndigenousStatus.ToLower() == "yes" ? true : false) : (bool?)null)))
+                .ForMember(d => d.dfa_isindigenous2, opts => opts.MapFrom(s => s.PersonalDetails.IndigenousStatus == null ? (int?)YesNoNullOptionSet.Null : (s.PersonalDetails.IndigenousStatus.ToLower() == "yes" ? (int?)YesNoNullOptionSet.Yes : (int?)YesNoNullOptionSet.No)))
                 .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.ContactDetails.Email))
                 .ForMember(d => d.dfa_cellphonenumber, opts => opts.MapFrom(s => s.ContactDetails.CellPhoneNumber))
                 .ForMember(d => d.dfa_residencetelephonenumber, opts => opts.MapFrom(s => s.ContactDetails.ResidencePhone))
@@ -54,7 +54,7 @@ namespace EMBC.DFA.API.Mappers
                     FirstName = s.dfa_firstname,
                     LastName = s.dfa_lastname,
                     Initials = s.dfa_initial,
-                    IndigenousStatus = s.dfa_isindigenous == true ? "Yes" : (s.dfa_isindigenous == false ? "No" : null)
+                    IndigenousStatus = s.dfa_isindigenous2 == Convert.ToInt32(YesNoNullOptionSet.Yes) ? "Yes" : (s.dfa_isindigenous2 == Convert.ToInt32(YesNoNullOptionSet.No) ? "No" : null)
                 }))
                 ;
 
