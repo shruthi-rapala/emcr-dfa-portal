@@ -588,7 +588,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_appdocumentlocationsid", "_dfa_applicationid_value", "dfa_name", "dfa_description", "createdon", "dfa_documenttype", "dfa_modifiedby"
-                        // TODO add dfa_requireddocumenttype
                     }, Filter = $"_dfa_applicationid_value eq {applicationIdString}"
                 });
 
