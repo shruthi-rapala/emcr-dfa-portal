@@ -8,7 +8,7 @@ import { KeyValue } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { FileCategory, FileUpload } from 'src/app/core/api/models';
+import { FileCategory, FileUpload, RequiredDocumentType } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 
 @Component({
@@ -17,7 +17,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
   styleUrls: ['./dfa-attachment.component.scss']
 })
 export class DfaAttachmentComponent implements OnInit, OnDestroy {
-  @Input() requiredFile: string;
+  @Input() requiredDocumentType: string;
   @Input() title: string;
   @Input() description: string;
   @Input() allowedFileTypes: string[];
@@ -34,6 +34,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   formCreationService: FormCreationService;
   showFileUpload: boolean = false;
   FileCategories = FileCategory;
+  RequiredDocumentTypes = RequiredDocumentType;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -54,6 +55,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
       .getFileUploadsForm()
       .subscribe((fileUploads) => {
         this.fileUploadsForm = fileUploads;
+        this.initFileUploadForm();
       });
 
     this.fileUploadsForm
@@ -62,11 +64,21 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   }
 
   initFileUploadForm() {
-    this.fileUpload.reset();
-    this.fileUpload.get('modifiedBy').setValue("Applicant");
-    if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType);
-    this.fileUpload.get('deleteFlag').setValue(false);
-    this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    if (this.requiredDocumentType && fileUploads?.filter(x => x.requiredDocumentType === this.requiredDocumentType).length > 0) {
+      let foundIndex = fileUploads.findIndex(x => x.requiredDocumentType === this.requiredDocumentType);
+      this.fileUpload.setValue(fileUploads[foundIndex]);
+      console.log(fileUploads[foundIndex], this.requiredDocumentType, Object.keys(this.RequiredDocumentTypes)[this.requiredDocumentType]);
+    } else {
+      this.fileUpload.reset();
+      this.fileUpload.get('modifiedBy').setValue("Applicant");
+      if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType); else this.fileUpload.get('fileType').setValue(null);
+      if (this.requiredDocumentType) this.fileUpload.get('requiredDocumentType').setValue(this.requiredDocumentType); else this.fileUpload.get('requiredDocumentType').setValue(null);
+      this.fileUpload.get('deleteFlag').setValue(false);
+      this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+      this.fileUpload.get('id').setValue(null);
+      this.fileUpload.updateValueAndValidity();
+    }
   }
 
   // Preserve original property order
@@ -98,6 +110,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
     this.fileUpload.get('uploadedDate').updateValueAndValidity();
     this.fileUpload.get('modifiedBy').updateValueAndValidity();
     this.fileUpload.get('fileData').updateValueAndValidity();
+    this.fileUpload.get('requiredDocumentType').updateValueAndValidity();
   }
 
   /**

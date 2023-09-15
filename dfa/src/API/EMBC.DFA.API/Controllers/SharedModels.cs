@@ -211,10 +211,53 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Appeal")]
         Appeal,
 
-        [EnumMember(Value = "Identification")]
+        [EnumMember(Value = "Unknown")]
+        Unknown
+    }
+
+    /// <summary>
+    /// File Category Options
+    /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum RequiredDocumentType
+    {
+        [EnumMember(Value = "Identification")] // Tenancy Proof for Residential Tenant
         Identification,
 
-        [EnumMember(Value = "Unknown")]
+        [EnumMember(Value = "Insurance Template")] // Insurance Category for Homeowner, Residential Tenant, Small Business General or Sole or Corporate Company or Landlord, Farm General or Sole or Corporate, Charity
+        InsuranceTemplate,
+
+        [EnumMember(Value = "Tenancy Agreement")] // Tenancy proof for Residential Tenant
+        TenancyAgreement,
+
+        [EnumMember(Value = "Residential Tenancy Agreement")] // Tenancy proof for Small Business Landlord
+        ResidentialTenancyAgreement,
+
+        [EnumMember(Value = "T1 General Income Tax Return")] // Financial for Small Business General or Sole or Landlord, Farm General or Sole
+        T1GeneralIncomeTaxReturn,
+
+        [EnumMember(Value = "T2 Corporate Income Tax Return")] // Financial for Small Business Corporate Company, Farm Corporate
+        T2CorporateIncomeTaxReturn,
+
+        [EnumMember(Value = "Financial Statements")] // Financial for Small Business General or Sole or Corporate Company, Farm General or Sole or Corporate
+        FinancialStatements,
+
+        [EnumMember(Value = "Proof of Ownership")] // Financial for Small Business Corporate Company, Farm Corporate
+        ProofOfOwnership,
+
+        [EnumMember(Value = "T776 Statement of Real Estate Rentals")] // Financial for Small Business Landlord
+        T776,
+
+        [EnumMember(Value = "Directors Listing")] // Financial for Charity
+        DirectorsListing,
+
+        [EnumMember(Value = "Registration Proof")] // Financial for Charity
+        RegistrationProof,
+
+        [EnumMember(Value = "Structure and Purpose")] // Financial for Charity
+        StructureAndPurpose,
+
+        [EnumMember(Value = "Unknown")] // Unknown
         Unknown
     }
 

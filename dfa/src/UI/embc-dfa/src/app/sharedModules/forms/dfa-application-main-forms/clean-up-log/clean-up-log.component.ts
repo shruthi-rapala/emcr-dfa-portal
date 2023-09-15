@@ -199,6 +199,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   initCleanUpWorkFiles(): void {
     this.cleanUpWorkFilesForm.get('cleanupFileUpload').reset();
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.requiredDocumentType').setValue(null);
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.modifiedBy').setValue("Applicant");

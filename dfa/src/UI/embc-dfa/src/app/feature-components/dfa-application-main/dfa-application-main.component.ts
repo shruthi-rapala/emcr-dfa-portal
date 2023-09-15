@@ -89,9 +89,9 @@ export class DFAApplicationMainComponent
         this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
         this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
         if (this.isResidentialTenant) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["Insurance", "TenancyProof", "Identification"];
+          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "TenancyAgreement", "Identification"];
         } else {
-          this.dfaApplicationMainDataService.requiredDocuments = ["Insurance" ];
+          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate" ];
         }
       }
     });
@@ -281,9 +281,9 @@ export class DFAApplicationMainComponent
             stepper.selected.completed = true;
             break;
           case 'supporting-documents':
-            this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length >= 1 ? true : false;
-            this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length >= 1 ? true : false;
-            this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length >= 1 ? true : false;
+            this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
             if (this.isInsuranceTemplateUploaded == true &&
               (this.isResidentialTenant == true ? (this.isIdentificationUploaded == true && this.isTenancyProofUploaded == true) : true))
               stepper.selected.completed = true;
@@ -422,9 +422,9 @@ export class DFAApplicationMainComponent
         break;
     }
 
-    this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length == 1 ? true : false;
-    this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length == 1 ? true : false;
-    this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
   }
 
   saveAndBackToDashboard() {

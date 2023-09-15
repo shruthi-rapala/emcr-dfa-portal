@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType } from 'src/app/core/api/models';
+import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType } from 'src/app/core/api/models';
 
 export class DamagedPropertyAddress {
   addressLine1?: null | string;
@@ -775,6 +775,7 @@ export class FileUpload {
   fileName?: string;
   fileSize?: number;
   fileType?: FileCategory;
+  requiredDocumentType?: RequiredDocumentType;
   id?: null | string;
   modifiedBy?: string;
   uploadedDate?: string;
@@ -782,11 +783,13 @@ export class FileUpload {
 
 export class FileUploadsForm {
   applicationId = new UntypedFormControl();
+  applicantType = new UntypedFormControl();
   deleteFlag = new UntypedFormControl();
   id = new UntypedFormControl();
   fileName = new UntypedFormControl();
   fileDescription = new UntypedFormControl();
   fileType = new UntypedFormControl();
+  requiredDocumentType = new UntypedFormControl();
   uploadedDate = new UntypedFormControl();
   modifiedBy = new UntypedFormControl();
   fileData = new UntypedFormControl();
@@ -868,6 +871,9 @@ export class FileUploadsForm {
             )
             .bind(customValidator)
         ]
+      ],
+      requiredDocumentType: [
+        ''
       ],
       uploadedDate: [
         '',
@@ -988,7 +994,9 @@ export class FileUploadsForm {
             .bind(customValidator)
         ]
       ],
-      uploadedDate: [
+      requiredDocumentType: [
+        ''
+      ],uploadedDate: [
         '',
         [
           customValidator
@@ -1107,7 +1115,9 @@ export class FileUploadsForm {
             .bind(customValidator)
         ]
       ],
-      uploadedDate: [
+      requiredDocumentType: [
+        ''
+      ],uploadedDate: [
         '',
         [
           customValidator
@@ -1224,6 +1234,9 @@ export class FileUploadsForm {
             )
             .bind(customValidator)
         ]
+      ],
+      requiredDocumentType: [
+        ''
       ],
       uploadedDate: [
         '',
@@ -1343,6 +1356,9 @@ export class FileUploadsForm {
             .bind(customValidator)
         ]
       ],
+      requiredDocumentType: [
+        ''
+      ],
       uploadedDate: [
         '',
         [
@@ -1461,6 +1477,9 @@ export class FileUploadsForm {
             )
             .bind(customValidator)
         ]
+      ],
+      requiredDocumentType: [
+        ''
       ],
       uploadedDate: [
         '',

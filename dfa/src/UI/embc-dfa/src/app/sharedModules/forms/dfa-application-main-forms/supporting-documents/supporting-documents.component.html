@@ -32,16 +32,16 @@
           <app-dfa-attachment
             title="Insurance Template"
             description="Attach the insurance template completed by your insurance broker.<br/><a target='_blank' href='https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf'>Download a copy of the home owners, residential tenants, and landlord insurance template (PDF, 164 kb)</a>"
-            requiredFile="yes"
+            requiredDocumentType="InsuranceTemplate"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="Insurance"
             excludeFileTypes="[]"
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('insuranceTemplateFileUpload')"
-            *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')"
+            *ngIf="fileUploadForm.hasError('noInsuranceTemplate')"
           ></app-dfa-attachment>
-          <mat-card class="row" *ngIf="!insuranceTemplateForm.hasError('noInsuranceTemplate')">
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noInsuranceTemplate')">
             <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
           </mat-card>
         </div>
@@ -55,8 +55,8 @@
           <app-dfa-attachment
             title="Rental Agreement"
             description="Attach your rental agreement, lease, or <u>other documentation</u> to show that you are/were legally occupying the damaged property at the time of the event."
-            *ngIf="rentalAgreementForm.hasError('noRentalAgreement')"
-            requiredFile="yes"
+            *ngIf="fileUploadForm.hasError('noRentalAgreement')"
+            requiredDocumentType="TenancyAgreement"
             (showSideNote)="onToggleOtherDocuments()"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
@@ -66,7 +66,7 @@
             [fileUpload]="formCreationService.fileUploadsForm.value.get('rentalAgreementFileUpload')"
 
           ></app-dfa-attachment>
-          <mat-card class="row" *ngIf="!rentalAgreementForm.hasError('noRentalAgreement')">
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noRentalAgreement')">
             <p class="sub-heading" style="font-size: 15px">Required rental agreement form has been uploaded.</p>
           </mat-card>
         </div>
@@ -89,16 +89,16 @@
           <app-dfa-attachment
             title="Identification"
             description=" Attach a copy of government issued identification such as Driver's License, Service Card, or BC ID."
-            *ngIf="identificationForm.hasError('noIdentification')"
-            requiredFile="yes"
+            *ngIf="fileUploadForm.hasError('noIdentification')"
+            requiredDocumentType="Identification"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
-            fileType="Identification"
+            fileType="TenancyProof"
             excludeFileTypes="[]"
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('identificationFileUpload')"
           ></app-dfa-attachment>
-          <mat-card class="row" *ngIf="!identificationForm.hasError('noIdentification')">
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noIdentification')">
             <p class="sub-heading" style="font-size: 15px">Required identification form has been uploaded.</p>
           </mat-card>
         </div>
@@ -112,10 +112,9 @@
           <app-dfa-attachment
             title="OtherSuporting Documents (Optional)"
             description="If applicable, you may include additional documents related to your application."
-            requiredFile="no"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
-            excludeFileTypes="['Insurance', 'Cleanup', 'Damage photo', 'Identification', 'Tenancy proof']"
+            excludeFileTypes="['Cleanup', 'Damage photo']"
             (saveFileUpload)="saveSupportingFiles($event)"
             (cancelFileUpload)="cancelSupportingFiles()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
@@ -130,10 +129,9 @@
           <app-dfa-attachment
             title="OtherSuporting Documents (Optional)"
             description="If applicable, you may include additional documents related to your application."
-            requiredFile="no"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
-            excludeFileTypes="['Insurance', 'Cleanup', 'Damage photo']"
+            excludeFileTypes="['Cleanup', 'Damage photo']"
             (saveFileUpload)="saveSupportingFiles($event)"
             (cancelFileUpload)="cancelSupportingFiles()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
@@ -218,13 +216,13 @@
 
     </table>
 
-    <mat-error *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')">
+    <mat-error *ngIf="fileUploadForm.hasError('noInsuranceTemplate')">
       <br/>Insurance template is required.
     </mat-error>
-    <mat-error *ngIf="rentalAgreementForm?.hasError('noRentalAgreement') && isResidentialTenant">
+    <mat-error *ngIf="fileUploadForm?.hasError('noRentalAgreement') && isResidentialTenant">
       <br/>Proof of tenancy is required.
     </mat-error>
-    <mat-error *ngIf="identificationForm?.hasError('noIdentification') && isResidentialTenant">
+    <mat-error *ngIf="fileUploadForm?.hasError('noIdentification') && isResidentialTenant">
       <br/>Identification is required.
     </mat-error>
 
