@@ -281,9 +281,9 @@ export class DFAApplicationMainComponent
             stepper.selected.completed = true;
             break;
           case 'supporting-documents':
-            this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length == 1 ? true : false;
-            this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length == 1 ? true : false;
-            this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Insurance" && x.deleteFlag == false).length >= 1 ? true : false;
+            this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "TenancyProof" && x.deleteFlag == false).length >= 1 ? true : false;
+            this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.fileType === "Identification" && x.deleteFlag == false).length >= 1 ? true : false;
             if (this.isInsuranceTemplateUploaded == true &&
               (this.isResidentialTenant == true ? (this.isIdentificationUploaded == true && this.isTenancyProofUploaded == true) : true))
               stepper.selected.completed = true;

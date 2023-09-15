@@ -1607,7 +1607,7 @@ export class DamagedRoomsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator(200)
+            .maxLengthValidator(2000)
             .bind(customValidator)
         ]
       ],
