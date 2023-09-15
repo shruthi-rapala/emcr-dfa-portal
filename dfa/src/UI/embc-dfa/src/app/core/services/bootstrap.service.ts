@@ -29,7 +29,7 @@ export class BootstrapService {
     try {
       //load server config
       const config = await this.configService.loadConfig();
-      //this.timeoutService.timeOutInfo = config.timeoutInfo;
+      this.timeoutService.timeOutInfo = config.timeoutInfo;
       //this.outageService.outageInfo = config.outageInfo;
       //this.outageService.setOutageInformation(config.outageInfo);
     } catch (error) {
