@@ -6,6 +6,8 @@ import {
   Validators,
   FormsModule,
   FormGroup,
+  ValidatorFn,
+  ValidationErrors,
 } from '@angular/forms';
 import { CommonModule, KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -101,10 +103,15 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       .getFileUploadsForm()
       .subscribe((fileUploads) => {
         this.fileUploadForm = fileUploads;
-        if (this.isResidentialTenant) this.fileUploadForm.get('applicantType').setValue("ResidentialTenant");
-        else this.fileUploadForm.get('applicantType').setValue("Homeowner");
-        this.fileUploadForm.addValidators([this.validateFormRequiredDocumentTypes]);
+        this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+          if (application) {
+            if (this.isResidentialTenant) this.fileUploadForm.get('applicantType').setValue("ResidentialTenant");
+            else this.fileUploadForm.get('applicantType').setValue("Homeowner");
+           }
+        });
       });
+
+    this.fileUploadForm.addValidators([this.validateFormRequiredDocumentTypes]);
 
     // subscribe to changes for document summary
     const _documentSummaryFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
@@ -119,51 +126,31 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     return 0;
   }
 
-  // validateFormInsuranceTemplate(form: FormGroup) {
-  //   let supportingFiles = form.get('fileUploads')?.getRawValue();
-  //   if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-  //     return { noInsuranceTemplate: true };
-  //   }
-  //   return null;
-  // }
-
-  validateFormRequiredDocumentTypes(form: FormGroup) {
+  validateFormRequiredDocumentTypes: ValidatorFn = (form: FormGroup): ValidationErrors | null => {
+    let invalid=false
     let supportingFiles = form.get('fileUploads')?.getRawValue();
-    let invalid = false;
-    const error = {noInsuranceTemplate: false, noRentalAgreement: false, noIdentification: false };
+    const error={};
     if (form.get('applicantType')?.value === "Homeowner") {
       if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-        error.noInsuranceTemplate = true;
+        invalid = true;
+        error["noInsuranceTemplate"] = true;
       }
     } else if (form.get('applicantType')?.value === "ResidentialTenant") {
       if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-        error.noInsuranceTemplate = true;
+        invalid = true;
+        error["noInsuranceTemplate"] = true;
       }
       if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
-        error.noRentalAgreement = true;
+        invalid = true;
+        error["noRentalAgreement"] = true;
       }
       if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length <= 0) {
-        error.noIdentification = true;
+        invalid = true;
+        error["noIdentification"] = true;
       }
     }
     return invalid?error:null;
   }
-
-  // validateFormRentalAgreement(form: FormGroup) {
-  //   let supportingFiles = form.get('fileUploads')?.getRawValue();
-  //   if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
-  //     return { noRentalAgreement: true };
-  //   }
-  //   return null;
-  // }
-
-  // validateFormIdentification(form: FormGroup) {
-  //   let supportingFiles = form.get('fileUploads')?.getRawValue();
-  //   if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length <= 0) {
-  //     return { noIdentification: true };
-  //   }
-  //   return null;
-  // }
 
   saveSupportingFiles(fileUpload: FileUpload): void {
       // dont allow same filename twice
