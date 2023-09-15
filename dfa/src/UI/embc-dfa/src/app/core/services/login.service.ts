@@ -19,10 +19,12 @@ export class LoginService {
 
   public async login(targetUrl: string = undefined): Promise<boolean> {
     return await this.oauthService.tryLoginImplicitFlow().then(() => {
+      debugger;
       if (!this.oauthService.hasValidAccessToken()) {
         this.oauthService.initImplicitFlow(targetUrl);
         this.isLoggedIn$.next(false);
-        return Promise.resolve(false);
+        //this.router.navigate(['/verified-registration']);
+        return Promise.resolve(true);
       }
       this.isLoggedIn$.next(true);
       return Promise.resolve(true);
@@ -50,6 +52,7 @@ export class LoginService {
   }
   public async tryLogin(): Promise<void> {
     await this.oauthService.tryLogin().then(() => {
+      debugger
       if (this.oauthService.hasValidAccessToken()) {
         this.oauthService.setupAutomaticSilentRefresh();
         this.isLoggedIn$.next(true);
@@ -58,6 +61,9 @@ export class LoginService {
           return this.router.navigateByUrl(decodeURIComponent(targetUrl));
         }
       }
+      //else {
+      //  this.router.navigate(['/verified-registration']);
+      //}
     });
   }
 }
