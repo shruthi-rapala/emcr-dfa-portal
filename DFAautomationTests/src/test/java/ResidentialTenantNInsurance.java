@@ -63,9 +63,6 @@ public class ResidentialTenantNInsurance {
        element = driverWait.until(ExpectedConditions
                 .presenceOfElementLocated(By.id("mat-input-0")));
         element.sendKeys("Test Test");
-/*        element = driverWait.until(ExpectedConditions
-                .presenceOfElementLocated(By.id("mat-input-1")));
-        element.sendKeys("12/12/2024");*/
 
         Thread.sleep(1000);
         element = driverWait
@@ -87,6 +84,11 @@ public class ResidentialTenantNInsurance {
 //        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[1]/div/mat-radio-group/mat-radio-button[1]/label/span[1]/span[1]")));
 //        js4.executeScript("arguments[0].click();", element);
 //        Thread.sleep(1000);
+
+        //wait for address to be popolated
+
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' 123 FIRST STREET')]")));
 
         //Select No
         Thread.sleep(4000);

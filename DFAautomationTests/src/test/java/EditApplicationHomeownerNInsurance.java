@@ -78,6 +78,11 @@ public class EditApplicationHomeownerNInsurance {
 //        js4.executeScript("arguments[0].click();", element);
 //        Thread.sleep(1000);
 
+        //wait for address to be popolated
+
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' 123 FIRST STREET')]")));
+
         //Select No
         Thread.sleep(4000);
         JavascriptExecutor js100 = (JavascriptExecutor) driver;
