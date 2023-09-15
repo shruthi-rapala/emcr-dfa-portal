@@ -779,11 +779,14 @@ export class FileUpload {
   id?: null | string;
   modifiedBy?: string;
   uploadedDate?: string;
+  applicantType?: string;
+  smallBusinessOption?: string;
 }
 
 export class FileUploadsForm {
   applicationId = new UntypedFormControl();
   applicantType = new UntypedFormControl();
+  smallBusinessOption = new UntypedFormControl();
   deleteFlag = new UntypedFormControl();
   id = new UntypedFormControl();
   fileName = new UntypedFormControl();
@@ -797,6 +800,11 @@ export class FileUploadsForm {
   fileSize = new UntypedFormControl();
   cleanupFileUpload: UntypedFormGroup;
   insuranceTemplateFileUpload: UntypedFormGroup;
+  T1IncomeTaxReturnFileUpload: UntypedFormGroup;
+  T2IncomeTaxReturnFileUpload: UntypedFormGroup;
+  proofOfOwnershipFileUpload: UntypedFormGroup;
+  financialStatementsFileUpload: UntypedFormGroup;
+  tenancyAgreementFileUpload: UntypedFormGroup;
   rentalAgreementFileUpload: UntypedFormGroup;
   identificationFileUpload: UntypedFormGroup;
   damagePhotoFileUpload: UntypedFormGroup;
@@ -810,6 +818,616 @@ export class FileUploadsForm {
     builder: UntypedFormBuilder
   ) {
     this.insuranceTemplateFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      requiredDocumentType: [
+        ''
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.T1IncomeTaxReturnFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      requiredDocumentType: [
+        ''
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.T2IncomeTaxReturnFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      requiredDocumentType: [
+        ''
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.proofOfOwnershipFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      requiredDocumentType: [
+        ''
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.financialStatementsFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      requiredDocumentType: [
+        ''
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.tenancyAgreementFileUpload = builder.group({
       deleteFlag: [
         false,
         [

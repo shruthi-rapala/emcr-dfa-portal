@@ -20,13 +20,22 @@
             <li>Insurance template completed by your insurance broker</li>
             <li *ngIf="isResidentialTenant">Rental agreement: a copy of your rental agreement, lease, or other documentation to show that you are/were legally occupying the damaged property at the time of the event, and</li>
             <li *ngIf="isResidentialTenant">Identification: a copy of government issued identification such as Driver's License, Service Card, or BC ID.</li>
+            <li *ngIf="isSmallBusinessOwner && isGeneral">Income tax return: completed T1 general income tax return with supporting schedules for all owners.</li>
+            <li *ngIf="isSmallBusinessOwner && isLandlord">Income tax return: complete T1 general income tax returns for all owners of rented property.</li>
+            <li *ngIf="isSmallBusinessOwner && isCorporate">Income tax return: completed T2 corporate income tax return for the company.</li>
+            <li *ngIf="isSmallBusinessOwner && isLandlord">T776: statement of real estate rentals.</li>
+            <li *ngIf="isSmallBusinessOwner && isLandlord">Residential tenancy agreement.</li>
+            <li *ngIf="isSmallBusinessOwner && isCorporate">Proof of ownership: Central Securities Register listing all shareholders or Partnership Agreement.</li>
+            <li *ngIf="isSmallBusinessOwner && isGeneral">Financial statements: most recently filed financial statements (income statement and balance sheet) used for income tax purposes.</li>
+            <li *ngIf="isSmallBusinessOwner && isCorporate">Financial statements: most recently filed company income statement and balance sheet used for income tax purposes.</li>
+            <li *ngIf="isSmallBusinessOwner && (isGeneral || isCorporate)">Lease agreement: if applicable.</li>
           </ul>
           <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
         </div>
       </div>
     </ng-container>
 
-    <ng-container>
+    <ng-container *ngIf="isHomeowner || isResidentialTenant || (isSmallBusinessOwner && isLandlord)"> <!-- Insurance Template for Homeowner, residential tenant -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -49,7 +58,30 @@
     </ng-container>
     <br/><br/>
 
-    <ng-container *ngIf="isResidentialTenant">
+    <ng-container *ngIf="isSmallBusinessOwner && (isGeneral || isCorporate)"> <!-- Insurance Template for Small Business: General, Corporate -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Insurance Template"
+            description="Attach the insurance template completed by your insurance broker.<br/><a target='_blank' href='https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_farm_small_business_charitable_organization-insurance_template.pdf'>Download a copy of the Small business, farm owners, and charitable organizations insurance template (PDF, 216 kb)</a>"
+            requiredDocumentType="InsuranceTemplate"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="Insurance"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('insuranceTemplateFileUpload')"
+            *ngIf="fileUploadForm.hasError('noInsuranceTemplate')"
+          ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noInsuranceTemplate')">
+            <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
+          </mat-card>
+        </div>
+      </div>
+    </ng-container>
+    <br/><br/>
+
+    <ng-container *ngIf="isResidentialTenant"> <!-- Rental Agreement for Residential Tenant-->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -83,7 +115,7 @@
     </ng-container>
     <br/><br/>
 
-    <ng-container *ngIf="isResidentialTenant">
+    <ng-container *ngIf="isResidentialTenant"> <!-- Identification for Residential Tenant -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -106,40 +138,137 @@
     </ng-container>
     <br/><br/>
 
-    <ng-container *ngIf="isResidentialTenant">
+    <ng-container *ngIf="isSmallBusinessOwner && isGeneral"> <!-- T1 Income tax return for Small Business Owner: General -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
-            title="OtherSuporting Documents (Optional)"
-            description="If applicable, you may include additional documents related to your application."
+            title="Income Tax Return"
+            description="Attach your completed T1 general income tax return with supporting schedules for all owners."
+            *ngIf="fileUploadForm.hasError('noT1IncomeTaxReturn')"
+            requiredDocumentType="T1IncomeTaxReturn"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
-            excludeFileTypes="['Cleanup', 'Damage photo']"
-            (saveFileUpload)="saveSupportingFiles($event)"
-            (cancelFileUpload)="cancelSupportingFiles()"
-            [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
+            fileType="Financial"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('T1IncomeTaxReturnFileUpload')"
           ></app-dfa-attachment>
-        </div>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="isHomeowner || isSmallBusinessOwner">
-      <div class="row">
-        <div class="col-md-8">
-          <app-dfa-attachment
-            title="OtherSuporting Documents (Optional)"
-            description="If applicable, you may include additional documents related to your application."
-            [allowedFileTypes]="allowedFileTypes"
-            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
-            excludeFileTypes="['Cleanup', 'Damage photo']"
-            (saveFileUpload)="saveSupportingFiles($event)"
-            (cancelFileUpload)="cancelSupportingFiles()"
-            [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
-          ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noT1IncomeTaxReturn')">
+            <p class="sub-heading" style="font-size: 15px">Required T1 Income Tax Return has been uploaded.</p>
+          </mat-card>
         </div>
       </div>
     </ng-container>
     <br/><br/>
+
+    <ng-container *ngIf="isSmallBusinessOwner && isCorporate"> <!-- T2 Income tax return for Small Business Owner: Corporate -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Income Tax Return"
+            description="Attach your completed T2 corporate income tax return for the company."
+            *ngIf="fileUploadForm.hasError('noT2IncomeTaxReturn')"
+            requiredDocumentType="T2IncomeTaxReturn"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="Financial"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('T2IncomeTaxReturnFileUpload')"
+          ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noT2IncomeTaxReturn')">
+            <p class="sub-heading" style="font-size: 15px">Required T2 Income Tax Return has been uploaded.</p>
+          </mat-card>
+        </div>
+      </div>
+    </ng-container>
+    <br/><br/>
+
+    <ng-container *ngIf="isSmallBusinessOwner && isCorporate"> <!-- Proof of ownership for Small Business Owner: Corporate -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Proof of Ownership"
+            description="Attach the Central Securities Register listing all shareholders or Partnership Agreement."
+            *ngIf="fileUploadForm.hasError('noProofOfOwnership')"
+            requiredDocumentType="ProofOfOwnership"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="Financial"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('proofOfOwnershipFileUpload')"
+          ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noProofOfOwnership')">
+            <p class="sub-heading" style="font-size: 15px">Required Proof of Ownership has been uploaded.</p>
+          </mat-card>
+        </div>
+      </div>
+    </ng-container>
+    <br/><br/>
+
+    <ng-container *ngIf="isSmallBusinessOwner && (isGeneral || isCorporate)"> <!-- Financial Statements for Small Business Owner: General, Corporate -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Financial Statements"
+            [description]="isGeneral ? 'Attach your most recently filed financial statements (income statement and balance sheet) used for income tax purposes.': (isCorporate ? 'Attach your most recently filed company income statement and balance sheet used for income tax purposes.' : '')"
+            *ngIf="fileUploadForm.hasError('noFinancialStatements')"
+            requiredDocumentType="FinancialStatements"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="Financial"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('financialStatementsFileUpload')"
+          ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noFinancialStatements')">
+            <p class="sub-heading" style="font-size: 15px">Required financial statements have been uploaded.</p>
+          </mat-card>
+        </div>
+      </div>
+    </ng-container>
+    <br/><br/>
+
+    <ng-container *ngIf="isSmallBusinessOwner && (isGeneral || isCorporate)"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Lease Agreement (if applicable)"
+            description="Attach any lease agreements, if applicable."
+            *ngIf="fileUploadForm.hasError('noTenancyAgreement')"
+            requiredDocumentType="TenancyAgreement"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="TenancyProof"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('tenancyAgreementFileUpload')"
+          ></app-dfa-attachment>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noTenancyAgreement')">
+            <p class="sub-heading" style="font-size: 15px">Lease agreement has been uploaded.</p>
+          </mat-card>
+        </div>
+      </div>
+    </ng-container>
+    <br/><br/>
+
+    <ng-container> <!-- Supporting Documents -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="OtherSuporting Documents (Optional)"
+            description="If applicable, you may include additional documents related to your application."
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            excludeFileTypes="['Cleanup', 'Damage photo']"
+            (saveFileUpload)="saveSupportingFiles($event)"
+            (cancelFileUpload)="cancelSupportingFiles()"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
+          ></app-dfa-attachment>
+        </div>
+      </div>
+    </ng-container>
 
     <div *ngIf="documentSummaryDataSource.data.length > 0">
       <br />
@@ -219,12 +348,32 @@
     <mat-error *ngIf="fileUploadForm.hasError('noInsuranceTemplate')">
       <br/>Insurance template is required.
     </mat-error>
-    <mat-error *ngIf="fileUploadForm?.hasError('noRentalAgreement') && isResidentialTenant">
+    <mat-error *ngIf="fileUploadForm?.hasError('noRentalAgreement')">
       <br/>Proof of tenancy is required.
     </mat-error>
-    <mat-error *ngIf="fileUploadForm?.hasError('noIdentification') && isResidentialTenant">
+    <mat-error *ngIf="fileUploadForm?.hasError('noIdentification')">
       <br/>Identification is required.
     </mat-error>
-
+    <mat-error *ngIf="fileUploadForm?.hasError('noT1GeneralIncomeTaxReturn')">
+      <br/>A T1 general income tax return is required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noFinancialStatements')">
+      <br/>Financial statements required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noT2CorporateIncomeTaxReturn')">
+      <br/>A T2 corporate income tax return is required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noProofOfOwnership')">
+      <br/>Proof of ownership is required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noT776')">
+      <br/>A T776 statement of real estate rentals is required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noResidentialTenancyAgreement')">
+      <br/>A residential tenancy agreement is required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noTenancyAgreement')">
+      <br/>Tenancy agreement is required if applicable.
+    </mat-error>
   </mat-card-content>
 </mat-card>

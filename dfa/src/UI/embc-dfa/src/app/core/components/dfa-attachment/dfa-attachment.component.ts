@@ -68,7 +68,6 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
     if (this.requiredDocumentType && fileUploads?.filter(x => x.requiredDocumentType === this.requiredDocumentType).length > 0) {
       let foundIndex = fileUploads.findIndex(x => x.requiredDocumentType === this.requiredDocumentType);
       this.fileUpload.setValue(fileUploads[foundIndex]);
-      console.log(fileUploads[foundIndex], this.requiredDocumentType, Object.keys(this.RequiredDocumentTypes)[this.requiredDocumentType]);
     } else {
       this.fileUpload.reset();
       this.fileUpload.get('modifiedBy').setValue("Applicant");
