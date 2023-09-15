@@ -304,6 +304,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string createdon { get; set; } // uploaded date
         public string dfa_documenttype { get; set; }
         public string dfa_modifiedby { get; set; }
+        // public string? dfa_requireddocumenttype { get; set; } // required document type or null
     }
 
     public class AttachmentEntity
@@ -323,15 +324,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_description { get; set; } // pass in description
         public string dfa_modifiedby { get; set; } // pass in modified by
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
-    }
-
-    public class dfa_appdocumentlocations
-    {
-        public Guid _dfa_applicationid_value { get; set; } // required string
-        public Guid? dfa_appdocumentlocationsid { get; set; } // optional string
-        public string dfa_name { get; set; } // required string
-        public string dfa_documenttype { get; set; } // required string
-        public string? dfa_url { get; set; } // optional string
     }
 
     public class dfa_appdamageditems_retrieve
