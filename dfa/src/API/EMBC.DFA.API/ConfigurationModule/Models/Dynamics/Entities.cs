@@ -152,6 +152,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int dfa_secondaryapplicantsigned { get; set; } // required Two Options
         public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
         public int? dfa_wereyouevacuatedduringtheevent2 { get; set; } // optional boolean
+        // public string? dfa_accountlegalname { get; set; } // optional string // TODO: uncomment these 4 for small business
+        // public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } //optional Option set
+        // public int? dfa_grossrevenues100002000000beforedisaster { get; set; } // optional Option set
+        // public int? dfa_employlessthan50employeesatanyonetime { get; set; } // optional Option set
+
         public bool delete { get; set; } // delete or not
     }
 
@@ -196,6 +201,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? _dfa_buildingownerlandlord_value { get; set; } // optional string
         public string? dfa_primaryapplicantsignature { get; set; } // optional string
         public string? dfa_secondaryapplicantsignature { get; set; } // optional string
+        public string? dfa_accountlegalname { get; set; } // optional string
+        public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } // optional Option Set
+        public int? dfa_grossrevenues100002000000beforedisaster { get; set; } //optional Option Set
+        public int? dfa_employlessthan50employeesatanyonetime { get; set; } // optional Option Set
     }
 
     public class dfa_appbuildingownerlandlord

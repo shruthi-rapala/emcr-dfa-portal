@@ -24,6 +24,10 @@ export class DamagedPropertyAddress {
   onAFirstNationsReserve?: null | boolean;
   postalCode?: null | string;
   stateProvince?: null | string;
+  businessLegalName?: null | string;
+  businessManagedByAllOwnersOnDayToDayBasis?: null | boolean;
+  employLessThan50EmployeesAtAnyOneTime?: null | boolean;
+  grossRevenues100002000000BeforeDisaster?: null | boolean;
 
   constructor(
     addressLine1?: string,
@@ -41,7 +45,11 @@ export class DamagedPropertyAddress {
     landlordGivenNames?: null | string,
     landlordSurname?: null | string,
     landlordPhone?: null | string,
-    landlordEmail?: null | string
+    landlordEmail?: null | string,
+    businessLegalName?: null | string,
+    businessManagedByAllOwnersOnDayToDayBasis?: null | boolean,
+    employLessThan50EmployeesAtAnyOneTime?: null | boolean,
+    grossRevenues100002000000BeforeDisaster?: null | boolean
   ) {}
 }
 
@@ -61,6 +69,10 @@ export class DamagedPropertyAddressForm {
   landlordSurname = new UntypedFormControl();
   landlordPhone = new UntypedFormControl();
   landlordEmail = new UntypedFormControl();
+  businessLegalName = new UntypedFormControl();
+  businessManagedByAllOwnersOnDayToDayBasis = new UntypedFormControl();
+  employLessThan50EmployeesAtAnyOneTime = new UntypedFormControl();
+  grossRevenues100002000000BeforeDisaster = new UntypedFormControl();
 
   constructor(
     damagedPropertyAddress: DamagedPropertyAddress,
@@ -158,6 +170,26 @@ export class DamagedPropertyAddressForm {
       this.landlordEmail.setValue(damagedPropertyAddress.landlordEmail);
     }
     this.landlordEmail.setValidators([Validators.email]);
+
+    if (damagedPropertyAddress.businessLegalName) {
+      this.businessLegalName.setValue(damagedPropertyAddress.businessLegalName);
+    }
+    this.businessLegalName.setValidators(null);
+
+    if (damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime) {
+      this.employLessThan50EmployeesAtAnyOneTime.setValue(damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime);
+    }
+    this.employLessThan50EmployeesAtAnyOneTime.setValidators(null);
+
+    if (damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis) {
+      this.businessManagedByAllOwnersOnDayToDayBasis.setValue(damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis);
+    }
+    this.businessManagedByAllOwnersOnDayToDayBasis.setValidators(null);
+
+    if (damagedPropertyAddress.grossRevenues100002000000BeforeDisaster) {
+      this.grossRevenues100002000000BeforeDisaster.setValue(damagedPropertyAddress.grossRevenues100002000000BeforeDisaster);
+    }
+    this.grossRevenues100002000000BeforeDisaster.setValidators(null);
   }
 }
 
@@ -294,7 +326,7 @@ export class FullTimeOccupantsForm {
   lastName = new UntypedFormControl();
   relationship = new UntypedFormControl();
   fullTimeOccupant: UntypedFormGroup;
-  fullTimeOccupants = new UntypedFormControl([], Validators.required);
+  fullTimeOccupants = new UntypedFormControl([]);
   addNewFullTimeOccupantIndicator = new UntypedFormControl(false);
 
   constructor(
@@ -1594,7 +1626,7 @@ export class DamagedRoomsForm {
             )
             .bind(customValidator),
           customValidator
-            .maxLengthValidator(200)
+            .maxLengthValidator(2000)
             .bind(customValidator)
         ]
       ],

@@ -49,7 +49,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   damagedRoomsColumnsToDisplay = ['roomType', 'description', 'icons'];
   damagedRoomsDataSource = new BehaviorSubject([]);
   damagedRoomsData = [];
-  remainingLength: number = 200;
+  remainingLength: number = 2000;
   damagedRoomEditIndex: number;
   damagedRoomRowEdit = false;
   damagedRoomEditFlag = false;
@@ -165,7 +165,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   }
 
   calcRemainingChars() {
-    this.remainingLength = 200 - this.damagedRoomsForm.get('damagedRoom.description').value?.length;
+    this.remainingLength = 2000 - this.damagedRoomsForm.get('damagedRoom.description').value?.length;
   }
 
   addDamagedRoom(): void {

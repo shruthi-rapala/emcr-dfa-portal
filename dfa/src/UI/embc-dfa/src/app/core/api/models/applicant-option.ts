@@ -7,7 +7,7 @@
 export enum ApplicantOption {
   Homeowner = 'Homeowner',
   ResidentialTenant = 'Residential Tenant',
-  SmallBusinessOwner = 'Small Business Owner (including landlords)',
+  SmallBusinessOwner = 'Small Business Owner',
   FarmOwner = 'Farm Owner)',
   CharitableOrganization = 'Charitable Organization (including non-profilts)'
 }

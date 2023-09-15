@@ -4,7 +4,7 @@
     <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts</p>
     <br />
 
-    <form [formGroup]="fullTimeOccupantsForm">
+    <form [formGroup]="fullTimeOccupantsForm" *ngIf="isHomeowner || isResidentialTenant">
       <div formGroupName="fullTimeOccupant">
         <ng-container>
           <div class="row">

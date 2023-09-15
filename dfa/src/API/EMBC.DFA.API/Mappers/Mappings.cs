@@ -188,6 +188,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.landlordSurname, opts => opts.MapFrom(s => s.dfa_contactlastname))
                 .ForMember(d => d.landlordPhone, opts => opts.MapFrom(s => s.dfa_contactphone1))
                 .ForMember(d => d.landlordEmail, opts => opts.MapFrom(s => s.dfa_contactemail))
+                .ForMember(d => d.businessLegalName, opts => opts.MapFrom(s => s.dfa_accountlegalname))
+                .ForMember(d => d.businessManagedByAllOwnersOnDayToDayBasis, opts => opts.MapFrom(s => s.dfa_businessmanagedbyallownersondaytodaybasis == (int)YesNoOptionSet.Yes ? true : (s.dfa_businessmanagedbyallownersondaytodaybasis == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.employLessThan50EmployeesAtAnyOneTime, opts => opts.MapFrom(s => s.dfa_employlessthan50employeesatanyonetime == (int)YesNoOptionSet.Yes ? true : (s.dfa_employlessthan50employeesatanyonetime == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.grossRevenues100002000000BeforeDisaster, opts => opts.MapFrom(s => s.dfa_grossrevenues100002000000beforedisaster == (int)YesNoOptionSet.Yes ? true : (s.dfa_grossrevenues100002000000beforedisaster == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.isPrimaryAndDamagedAddressSame, opts => opts.MapFrom(s => s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
 
             CreateMap<dfa_appapplicationmain_retrieve, PropertyDamage>()

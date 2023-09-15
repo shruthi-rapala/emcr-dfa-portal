@@ -52,6 +52,8 @@ export class ReviewComponent implements OnInit {
   RoomTypes = RoomType;
   FileCategories = FileCategory;
   isResidentialTenant: boolean = false;
+  isHomeowner: boolean = false;
+  isSmallBusinessOwner: boolean = false;
   insuranceOptionName: string = "";
 
   constructor(
@@ -62,6 +64,8 @@ export class ReviewComponent implements OnInit {
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application =>{
       if (application) {
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+        this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
+        this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
         switch (application.appTypeInsurance.insuranceOption) {
           case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.Unsure)]:
             this.insuranceOptionName = this.InsuranceOptions.Unsure.toString();

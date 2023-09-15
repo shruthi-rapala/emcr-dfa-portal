@@ -83,7 +83,7 @@ namespace EMBC.DFA.API.Controllers
                 OutageInfo = null,
                 TimeoutInfo = new TimeoutConfiguration
                 {
-                    SessionTimeoutInMinutes = configuration.GetValue<int>("timeout:minutes", 2),
+                    SessionTimeoutInMinutes = configuration.GetValue<int>("timeout:minutes", 20),
                     WarningMessageDuration = configuration.GetValue<int>("timeout:warningDuration", 1)
                 },
                 Captcha = new CaptchaConfiguration

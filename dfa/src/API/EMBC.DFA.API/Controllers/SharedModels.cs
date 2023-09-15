@@ -132,7 +132,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Residential Tenant")]
         ResidentialTenant,
 
-        [EnumMember(Value = "Small Business Owner (including landlords)")]
+        [EnumMember(Value = "Small Business Owner")]
         SmallBusinessOwner,
 
         [EnumMember(Value = "Farm Owner)")]
@@ -164,7 +164,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "General or Sole Proprietorship or DBA name")]
         General,
 
-        [EnumMember(Value = "Corporate (Ltd./Inc.) Company")]
+        [EnumMember(Value = "Corporate Company (Ltd./Inc.)")]
         Corporate,
 
         [EnumMember(Value = "Landlord")]
@@ -315,6 +315,10 @@ namespace EMBC.DFA.API.Controllers
         public string? landlordPhone { get; set; }
         public string? landlordEmail { get; set; }
         public bool? isPrimaryAndDamagedAddressSame { get; set; }
+        public string? businessLegalName { get; set; }
+        public bool? businessManagedByAllOwnersOnDayToDayBasis { get; set; }
+        public bool? grossRevenues100002000000BeforeDisaster { get; set; }
+        public bool? employLessThan50EmployeesAtAnyOneTime { get; set; }
     }
 
     /// <summary>

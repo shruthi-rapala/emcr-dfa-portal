@@ -166,7 +166,7 @@
           </mat-form-field>
         </div><br/>
 
-        <div class="row">
+        <div class="row" *ngIf="isResidentialTenant === true || isHomeowner === true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?<span style="color:red" >*</span>
@@ -181,7 +181,7 @@
           </div>
         </div><br/><br/>
 
-        <div class="row">
+        <div class="row" *ngIf="isResidentialTenant === true || isHomeowner === true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Were you evacuated during the event?<span style="color:red" >*</span>
@@ -196,7 +196,7 @@
           </div>
         </div><br/><br/>
 
-        <div class="row" *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true'">
+        <div class="row" *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true' && (isResidentialTenant === true || isHomeowner === true)">
           <p class="sub-heading" style="font-size: 15px">
             If yes, when did you return to the residence?
           </p>
@@ -214,7 +214,7 @@
           <br/><br/>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="isResidentialTenant === true || isHomeowner === true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Are you now residing in the residence?<span style="color:red" >*</span>
@@ -228,6 +228,7 @@
             </mat-radio-group>
           </div>
         </div><br/><br/>
+
       </ng-container>
     </form>
 
