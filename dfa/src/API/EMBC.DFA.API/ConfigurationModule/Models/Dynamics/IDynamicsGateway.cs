@@ -32,6 +32,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> DeleteDocumentLocationAsync(Guid dfa_appdocumentlocationsid);
         Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
+        Task<bool> GetEventList();
 
         //Task<IEnumerable> GetDistrictsAsync();
 

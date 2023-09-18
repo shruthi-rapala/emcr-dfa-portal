@@ -41,6 +41,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> DeleteFileUploadAsync(Guid dfa_appdocumentlocationsid);
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
+        Task<bool> HandleEvents();
     }
 
     public class Handler : IConfigurationHandler
@@ -211,6 +212,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public async Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId)
         {
             return await listsGateway.GetDocumentLocationsListAsync(applicationId);
+        }
+
+        public async Task<bool> HandleEvents()
+        {
+            return await listsGateway.GetEventList();
         }
     }
 }
