@@ -17,7 +17,7 @@ import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 import { DFAApplicationMainService } from './dfa-application-main.service';
-import { ApplicantOption } from 'src/app/core/api/models';
+import { ApplicantOption, SmallBusinessOption } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
@@ -57,10 +57,20 @@ export class DFAApplicationMainComponent
   isInsuranceTemplateUploaded = false;
   isTenancyProofUploaded = false;
   isIdentificationUploaded = false;
+  isFinancialStatementsUploaded = false;
+  isT776Uploaded = false;
+  isResidentialTenancyAgreementUploaded = false;
+  isT2CorporateIncomeTaxReturnUploaded = false;
+  isProofOfOwnershipUploaded = false;
+  isT1GeneralIncomeTaxReturnUploaded = false;
   isResidentialTenant: boolean = false;
+  isGeneral: boolean = false;
+  isCorporate: boolean = false;
+  isLandlord: boolean = false;
   isHomeowner: boolean = false;
   isSmallBusinessOwner: boolean = false;
   AppOptions = ApplicantOption;
+  SmallBusinessOptions = SmallBusinessOption;
 
   constructor(
     private router: Router,
@@ -88,10 +98,19 @@ export class DFAApplicationMainComponent
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
         this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
         this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
+        this.isGeneral = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.General)]);
+        this.isCorporate = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Corporate)]);
+        this.isLandlord = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Landlord)]);
         if (this.isResidentialTenant) {
           this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "TenancyAgreement", "Identification"];
-        } else {
+        } else if (this.isHomeowner) {
           this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate" ];
+        } else if (this.isSmallBusinessOwner && this.isGeneral) {
+          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T1GeneralIncomeTaxReturn", "FinancialStatements"];
+        } else if (this.isSmallBusinessOwner && this.isCorporate) {
+          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T2CorporateIncomeTaxReturn", "ProofOfOwnership", "FinancialStatements"];
+        } else if (this.isSmallBusinessOwner && this.isLandlord) {
+          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T1GeneralIncomeTaxReturn", "T776", "FinancialStatements"];
         }
       }
     });
@@ -284,11 +303,14 @@ export class DFAApplicationMainComponent
             this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length == 1 ? true : false;
             this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length == 1 ? true : false;
             this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
-            if (this.isInsuranceTemplateUploaded == true &&
-              (this.isResidentialTenant == true ? (this.isIdentificationUploaded == true && this.isTenancyProofUploaded == true) : true))
-              stepper.selected.completed = true;
-            else stepper.selected.completed = false;
-              break;
+            this.isT1GeneralIncomeTaxReturnUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T1GeneralIncomeTaxReturn" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isFinancialStatementsUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "FinancialStatements" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isT776Uploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T776" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isResidentialTenancyAgreementUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "ResidentialTenancyAgreement" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isT2CorporateIncomeTaxReturnUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T2CorporateIncomeTaxReturn" && x.deleteFlag == false).length == 1 ? true : false;
+            this.isProofOfOwnershipUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "ProofOfOwnership" && x.deleteFlag == false).length == 1 ? true : false;
+            stepper.selected.completed = this.requiredDocumentsSupplied();
+            break;
           case 'sign-and-submit':
             if (this.form.valid) stepper.selected.completed = true;
             else stepper.selected.completed = false;
@@ -307,6 +329,16 @@ export class DFAApplicationMainComponent
         console.error(error);
       });
     }
+  }
+
+  requiredDocumentsSupplied(): boolean {
+    if (this.isInsuranceTemplateUploaded == true
+      && (this.isResidentialTenant == true ? (this.isIdentificationUploaded == true && this.isTenancyProofUploaded == true) : true)
+      && ((this.isSmallBusinessOwner == true  && this.isGeneral == true) ? (this.isT1GeneralIncomeTaxReturnUploaded == true && this.isFinancialStatementsUploaded == true) : true )
+      && ((this.isSmallBusinessOwner == true  && this.isCorporate == true) ? (this.isT2CorporateIncomeTaxReturnUploaded == true && this.isFinancialStatementsUploaded == true && this.isProofOfOwnershipUploaded) : true )
+      && ((this.isSmallBusinessOwner == true  && this.isLandlord == true) ? (this.isT1GeneralIncomeTaxReturnUploaded == true && this.isT776Uploaded == true && this.isResidentialTenancyAgreementUploaded == true) : true )
+      ) return true;
+    else return false;
   }
 
   /**
@@ -425,6 +457,12 @@ export class DFAApplicationMainComponent
     this.isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length == 1 ? true : false;
     this.isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length == 1 ? true : false;
     this.isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isT1GeneralIncomeTaxReturnUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T1GeneralIncomeTaxReturn" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isFinancialStatementsUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "FinancialStatements" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isT776Uploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T776" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isResidentialTenancyAgreementUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "ResidentialTenancyAgreement" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isT2CorporateIncomeTaxReturnUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T2CorporateIncomeTaxReturn" && x.deleteFlag == false).length == 1 ? true : false;
+    this.isProofOfOwnershipUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "ProofOfOwnership" && x.deleteFlag == false).length == 1 ? true : false;
   }
 
   saveAndBackToDashboard() {
