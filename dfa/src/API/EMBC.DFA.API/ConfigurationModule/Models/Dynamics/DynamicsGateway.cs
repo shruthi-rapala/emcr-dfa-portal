@@ -598,5 +598,25 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 throw new Exception($"Failed to get documents {ex.Message}", ex);
             }
         }
+
+        public async Task<bool> GetEventList()
+        {
+            try
+            {
+                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_eventid", "dfa_id"
+                    }
+                });
+
+                return lstEvents.List.Count() > 0 ? true : false;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
     }
 }
