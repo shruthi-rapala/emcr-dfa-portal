@@ -166,9 +166,7 @@
              && (formCreationService.otherContactsForm$ | async)?.valid
              && (formCreationService.fullTimeOccupantsForm$ | async)?.valid
              && vieworedit !== 'view'
-             && isInsuranceTemplateUploaded
-             && (isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
-
+             && requiredDocumentsSupplied()
              ">
           <button
             class="button-p save-button"
@@ -187,9 +185,8 @@
                 || !(formCreationService.supportingDocumentsForm$ | async)?.valid
                 || !(formCreationService.otherContactsForm$ | async)?.valid
                 || !(formCreationService.fullTimeOccupantsForm$ | async)?.valid
-                || !isInsuranceTemplateUploaded
-                || !(isResidentialTenant ? (isIdentificationUploaded && isTenancyProofUploaded) : true)
-              )
+                || !(this.requiredDocumentsSupplied())
+                 )
             && vieworedit !== 'view'">
           <span style="color:red">Enter all required information and sign before submitting.</span>
         </div>
