@@ -99,7 +99,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           this.isGeneral = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.General)]);
           this.isCorporate = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Corporate)]);
           this.isLandlord = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Landlord)]);
-          this.isGeneral = true;
         }
       }
     });
@@ -150,7 +149,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let invalid=false
     let supportingFiles = form.get('fileUploads')?.getRawValue();
     let applicantType = form.get('applicantType').value;
-    console.log(form);
     const error={};
     switch (applicantType) {
       case "Homeowner":
@@ -173,7 +171,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           error["noIdentification"] = true;
         }
         break;
-      case "SmallBusinessOnwer":
+      case "SmallBusinessOwner":
         let smallBusinessOption = form.get('smallBusinessOption').value;
         switch (smallBusinessOption) {
           case "General":
@@ -188,6 +186,10 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "FinancialStatements" && x.deleteFlag == false).length <= 0) {
               invalid = true;
               error["noFinancialStatements"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noTenancyAgreement"] = true;
             }
             break;
           case "Corporate":
@@ -206,6 +208,10 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "FinancialStatements" && x.deleteFlag == false).length <= 0) {
               invalid = true;
               error["noFinancialStatements"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noTenancyAgreement"] = true;
             }
             break;
           case "Landlord":
@@ -227,12 +233,10 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             }
             break;
           default:
-            console.log("unknown small business option", smallBusinessOption);
             break;
         }
         break;
       default:
-        console.log("unknown applicant type", applicantType);
         break;
     }
     return invalid?error:null;
