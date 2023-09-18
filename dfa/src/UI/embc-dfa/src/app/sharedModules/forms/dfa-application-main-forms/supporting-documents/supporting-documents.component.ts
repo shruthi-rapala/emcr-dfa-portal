@@ -17,7 +17,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Observable, Subscription, catchError, mapTo, throwError } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { ApplicantOption, FileCategory, FileUpload, RequiredDocumentType } from 'src/app/core/api/models';
+import { ApplicantOption, FileCategory, FileUpload, RequiredDocumentType, SmallBusinessOption } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -71,7 +71,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   isResidentialTenant: boolean = false;
   isHomeowner: boolean = false;
   isSmallBusinessOwner: boolean = false;
+  isGeneral: boolean = false;
+  isCorporate: boolean = false;
+  isLandlord: boolean = false;
   AppOptions = ApplicantOption;
+  SmallBusinessOptions = SmallBusinessOption;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -91,6 +95,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
         this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
         this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
+        if (this.isSmallBusinessOwner) {
+          this.isGeneral = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.General)]);
+          this.isCorporate = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Corporate)]);
+          this.isLandlord = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Landlord)]);
+        }
       }
     });
   }
@@ -107,10 +116,16 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       .getFileUploadsForm()
       .subscribe((fileUploads) => {
         this.fileUploadForm = fileUploads;
-        this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+        this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => { // setting these fields in fileUploadForm for validation checking
           if (application) {
             if (this.isResidentialTenant) this.fileUploadForm.get('applicantType').setValue("ResidentialTenant");
-            else this.fileUploadForm.get('applicantType').setValue("Homeowner");
+            else if (this.isHomeowner) this.fileUploadForm.get('applicantType').setValue("Homeowner");
+            else if (this.isSmallBusinessOwner) {
+             this.fileUploadForm.get('applicantType').setValue("SmallBusinessOwner");
+             if (this.isGeneral) this.fileUploadForm.get('smallBusinessOption').setValue("General");
+             if (this.isCorporate) this.fileUploadForm.get('smallBusinessOption').setValue("Corporate");
+             if (this.isLandlord) this.fileUploadForm.get('smallBusinessOption').setValue("Landlord");
+            }
            }
         });
       });
@@ -133,25 +148,96 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   validateFormRequiredDocumentTypes: ValidatorFn = (form: FormGroup): ValidationErrors | null => {
     let invalid=false
     let supportingFiles = form.get('fileUploads')?.getRawValue();
+    let applicantType = form.get('applicantType').value;
     const error={};
-    if (form.get('applicantType')?.value === "Homeowner") {
-      if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-        invalid = true;
-        error["noInsuranceTemplate"] = true;
-      }
-    } else if (form.get('applicantType')?.value === "ResidentialTenant") {
-      if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-        invalid = true;
-        error["noInsuranceTemplate"] = true;
-      }
-      if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
-        invalid = true;
-        error["noRentalAgreement"] = true;
-      }
-      if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length <= 0) {
-        invalid = true;
-        error["noIdentification"] = true;
-      }
+    switch (applicantType) {
+      case "Homeowner":
+        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
+          invalid = true;
+          error["noInsuranceTemplate"] = true;
+        }
+        break;
+      case "ResidentialTenant":
+        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
+          invalid = true;
+          error["noInsuranceTemplate"] = true;
+        }
+        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
+          invalid = true;
+          error["noRentalAgreement"] = true;
+        }
+        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length <= 0) {
+          invalid = true;
+          error["noIdentification"] = true;
+        }
+        break;
+      case "SmallBusinessOwner":
+        let smallBusinessOption = form.get('smallBusinessOption').value;
+        switch (smallBusinessOption) {
+          case "General":
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noInsuranceTemplate"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T1GeneralIncomeTaxReturn" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noT1GeneralIncomeTaxReturn"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "FinancialStatements" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noFinancialStatements"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noTenancyAgreement"] = true;
+            }
+            break;
+          case "Corporate":
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noInsuranceTemplate"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T2CorporateIncomeTaxReturn" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noT2CorporateIncomeTaxReturn"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "ProofOfOwnership" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noProofOfOwnership"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "FinancialStatements" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noFinancialStatements"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noTenancyAgreement"] = true;
+            }
+            break;
+          case "Landlord":
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noInsuranceTemplate"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T1GeneralIncomeTaxReturn" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noT1GeneralIncomeTaxReturn"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T776" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noT776"] = true;
+            }
+            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "ResidentialTenancyAgreement" && x.deleteFlag == false).length <= 0) {
+              invalid = true;
+              error["noResidentialTenancyAgreement"] = true;
+            }
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
     }
     return invalid?error:null;
   }
