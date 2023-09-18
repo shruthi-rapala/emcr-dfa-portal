@@ -119,7 +119,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => { // setting these fields in fileUploadForm for validation checking
           if (application) {
             if (this.isResidentialTenant) this.fileUploadForm.get('applicantType').setValue("ResidentialTenant");
-            else if (this.isHomeowner) this.fileUploadForm.get('applicanType').setValue("Homeowner");
+            else if (this.isHomeowner) this.fileUploadForm.get('applicantType').setValue("Homeowner");
             else if (this.isSmallBusinessOwner) {
              this.fileUploadForm.get('applicantType').setValue("SmallBusinessOwner");
              if (this.isGeneral) this.fileUploadForm.get('smallBusinessOption').setValue("General");
