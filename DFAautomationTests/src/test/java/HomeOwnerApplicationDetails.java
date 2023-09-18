@@ -342,7 +342,7 @@ public class HomeOwnerApplicationDetails {
 
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Declaration')]")));
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.id("canvas"))).click();
         Thread.sleep(1500);
