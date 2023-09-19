@@ -110,6 +110,10 @@ export class DFAApplicationMainComponent
           this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T2CorporateIncomeTaxReturn", "ProofOfOwnership", "FinancialStatements"];
         } else if (this.isSmallBusinessOwner && this.isLandlord) {
           this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T1GeneralIncomeTaxReturn", "T776", "FinancialStatements"];
+        } else if (this.isFarmOwner && this.isGeneral) {
+          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T1GeneralIncomeTaxReturn", "FinancialStatements"];
+        } else if (this.isFarmOwner && this.isCorporate) {
+          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T2CorporateIncomeTaxReturn", "ProofOfOwnership", "FinancialStatements"];
         }
       }
     });
