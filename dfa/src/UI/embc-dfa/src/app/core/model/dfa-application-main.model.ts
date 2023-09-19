@@ -28,6 +28,9 @@ export class DamagedPropertyAddress {
   businessManagedByAllOwnersOnDayToDayBasis?: null | boolean;
   employLessThan50EmployeesAtAnyOneTime?: null | boolean;
   grossRevenues100002000000BeforeDisaster?: null | boolean;
+  farmoperation?: null | boolean;
+  ownedandoperatedbya?: null | boolean;
+  farmoperationderivesthatpersonsmajorincom?: null | boolean;
 
   constructor(
     addressLine1?: string,
@@ -49,8 +52,11 @@ export class DamagedPropertyAddress {
     businessLegalName?: null | string,
     businessManagedByAllOwnersOnDayToDayBasis?: null | boolean,
     employLessThan50EmployeesAtAnyOneTime?: null | boolean,
-    grossRevenues100002000000BeforeDisaster?: null | boolean
-  ) {}
+    grossRevenues100002000000BeforeDisaster?: null | boolean,
+    farmoperation?: null | boolean,
+    ownedandoperatedbya?: null | boolean,
+    farmoperationderivesthatpersonsmajorincom?: null | boolean,
+    ) {}
 }
 
 export class DamagedPropertyAddressForm {
@@ -73,6 +79,9 @@ export class DamagedPropertyAddressForm {
   businessManagedByAllOwnersOnDayToDayBasis = new UntypedFormControl();
   employLessThan50EmployeesAtAnyOneTime = new UntypedFormControl();
   grossRevenues100002000000BeforeDisaster = new UntypedFormControl();
+  farmoperation = new UntypedFormControl();
+  ownedandoperatedbya = new UntypedFormControl();
+  farmoperationderivesthatpersonsmajorincom = new UntypedFormControl();
 
   constructor(
     damagedPropertyAddress: DamagedPropertyAddress,
@@ -190,6 +199,21 @@ export class DamagedPropertyAddressForm {
       this.grossRevenues100002000000BeforeDisaster.setValue(damagedPropertyAddress.grossRevenues100002000000BeforeDisaster);
     }
     this.grossRevenues100002000000BeforeDisaster.setValidators(null);
+
+    if (damagedPropertyAddress.farmoperation) {
+      this.farmoperation.setValue(damagedPropertyAddress.farmoperation);
+    }
+    this.farmoperation.setValidators(null);
+
+    if (damagedPropertyAddress.ownedandoperatedbya) {
+      this.ownedandoperatedbya.setValue(damagedPropertyAddress.ownedandoperatedbya);
+    }
+    this.ownedandoperatedbya.setValidators(null);
+
+    if (damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom) {
+      this.farmoperationderivesthatpersonsmajorincom.setValue(damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom);
+    }
+    this.farmoperationderivesthatpersonsmajorincom.setValidators(null);
   }
 }
 

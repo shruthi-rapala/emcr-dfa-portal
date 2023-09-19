@@ -12,6 +12,8 @@ export interface DamagedPropertyAddress {
   community?: null | string;
   eligibleForHomeOwnerGrant?: null | boolean;
   employLessThan50EmployeesAtAnyOneTime?: null | boolean;
+  farmoperation?: null | boolean;
+  farmoperationderivesthatpersonsmajorincom?: null | boolean;
   firstNationsReserve?: null | string;
   grossRevenues100002000000BeforeDisaster?: null | boolean;
   isPrimaryAndDamagedAddressSame?: null | boolean;
@@ -22,6 +24,7 @@ export interface DamagedPropertyAddress {
   manufacturedHome?: null | boolean;
   occupyAsPrimaryResidence?: null | boolean;
   onAFirstNationsReserve?: null | boolean;
+  ownedandoperatedbya?: null | boolean;
   postalCode?: null | string;
   stateProvince?: null | string;
 }
