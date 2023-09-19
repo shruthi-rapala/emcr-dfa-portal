@@ -475,6 +475,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         item.dfa_firstname = contactList.List.Last().dfa_firstname;
                         item.dfa_lastname = contactList.List.Last().dfa_lastname;
+                        if (item.dfa_relationshiptoapplicant == null)
+                        {
+                            item.dfa_relationshiptoapplicant = contactList.List.Last().dfa_title;
+                        }
                     }
                 }
 
