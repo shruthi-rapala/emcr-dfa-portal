@@ -1,10 +1,10 @@
-<mat-card class="card-align" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts</p>
     <br />
 
-    <form [formGroup]="fullTimeOccupantsForm" *ngIf="isHomeowner || isResidentialTenant">
+    <form [formGroup]="fullTimeOccupantsForm" *ngIf="isHomeowner || isResidentialTenant" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}">
       <div formGroupName="fullTimeOccupant">
         <ng-container>
           <div class="row">
@@ -30,7 +30,7 @@
                 <!-- Relationship Column -->
                 <ng-container matColumnDef="relationship" style="width:40%">
                   <th mat-header-cell *matHeaderCellDef>
-                    <b>Relationship</b>
+                    <b>Relationship to Applicant</b>
                   </th>
                   <td *matCellDef="let element" mat-cell>
                     {{ element.relationship}}
@@ -195,7 +195,7 @@
       </div><br/><br/>
     </form>
 
-    <form [formGroup]="secondaryApplicantsForm">
+    <form [formGroup]="secondaryApplicantsForm" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}">
       <div formGroupName="secondaryApplicant">
         <ng-container>
           <div class="row">

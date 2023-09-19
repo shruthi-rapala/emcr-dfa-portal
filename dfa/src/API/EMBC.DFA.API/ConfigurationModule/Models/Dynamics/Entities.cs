@@ -334,13 +334,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
     }
 
-    public class dfa_appdocumentlocations
+    public class dfa_DFAActionDeleteDocuments_parms
     {
-        public Guid _dfa_applicationid_value { get; set; } // required string
-        public Guid? dfa_appdocumentlocationsid { get; set; } // optional string
-        public string dfa_name { get; set; } // required string
-        public string dfa_documenttype { get; set; } // required string
-        public string? dfa_url { get; set; } // optional string
+        public Guid AppDocID { get; set; } // required string
     }
 
     public class dfa_appdamageditems_retrieve

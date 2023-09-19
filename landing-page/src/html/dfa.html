@@ -549,6 +549,30 @@ a:hover {
 }
 
 </style>
+<script type="text/javascript">
+	//var apiUrl = 'https://pokeapi.co/api/v2/pokemon/ditto/';
+	var apiUrl = 'https://dfa-portal-dev.apps.silver.devops.gov.bc.ca/api/eligibility/checkEventsAvailable';
+
+	fetch(apiUrl).then(response => {
+		//alert(response.json());
+		return response.json();
+	}).then(data => {
+		//debugger
+		console.log(JSON.stringify(data));
+		alert(data);
+		//var dataLen = data.abilities.length;
+		if (data == true) {
+			document.getElementById('divCheckEligibilityButton').style.display = 'block';
+		}
+		else {
+			document.getElementById('divCheckEligibilityButton').style.display = 'none';
+		}
+		//// Work with JSON data here
+		//console.log(JSON.stringify(data));
+	}).catch(err => {
+		// Do something for an error here
+	});
+</script>
 </head>
 
 <body>
@@ -580,7 +604,7 @@ a:hover {
 					<h1>Are you Eligible?</h1>
 					<p>If you've recently experienced a disaster and your event is not on the eligible events list, contact your Indigenous or local government first.</p>
 				</div>
-				<div class="are-evacuated-registration center">
+				<div id="divCheckEligibilityButton" class="are-evacuated-registration center" style="display:none;">
 					<!--<a class="btn btn--dark-blue btn--strong" href="">Check Eligible Events</a>-->
 					<a class="btn btn--regular btn--dark-blue" target="_blank" href="https://urldefense.com/v3/__https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance__;!!AKgNyAfk550h-spHnEo!a2hu9GOWT3s7Q_ZmaQEO2RpzsOueQMAcoa7ddRKy6hwVXXOlo7rXLY_pkJ2RzyqvTaYpldYuiiWwLX3q4LggVJpiT_LwHPwb$">
 						Check Eligiblity
