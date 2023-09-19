@@ -19,80 +19,88 @@
             </div>
           </div>
         </div>-->
-         <mat-card class="mat-elevation-z4 content">
-            
-            <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px;">
-              <span>Event ID</span><br />
-              <span style="font-size: 20px;"><b>{{applItem.eventId == null ? "To Be Assigned" : applItem.eventId }}</b></span>
+        <mat-card class="mat-elevation-z4 content">
+
+          <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px;">
+            <span>Event ID</span><br />
+            <span style="font-size: 20px;"><b>{{applItem.eventId == null ? "To Be Assigned" : applItem.eventId }}</b></span>
+          </div>
+          <div class="row" style="padding-top: 20px;">
+            <div class="col-md-3">
+              <span><b>Application Type</b></span><br />
+              <span>{{applItem.applicationType}}</span>
             </div>
-           <div class="row" style="padding-top: 20px;">
-             <div class="col-md-3">
-                <span><b>Application Type</b></span><br />
-                <span>{{applItem.applicationType}}</span>
-              </div>
-             <div class="col-md-3">
-                <span><b>Damaged Property Address</b></span><br />
-                <span>{{applItem.damagedAddress}}</span>
-              </div>
-             <div class="col-md-3">
-                <span><b>Case Number</b></span><br />
-                <span>{{applItem.caseNumber == null ? "To Be Assigned" : applItem.caseNumber }}</span>
-              </div>
-             <div class="col-md-3">
-                <span><b>Date of Damage</b></span><br />
-                <span>{{applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
-              </div>
+            <div class="col-md-3">
+              <span><b>Damaged Property Address</b></span><br />
+              <span>{{applItem.damagedAddress}}</span>
             </div>
-           <div style="padding-top: 35px;">
-               <button
-                      class="application-button"
-                      type="button"
-                       (click)="ViewApplication(applItem.applicationId, applItem.primaryApplicantSignedDate)"
-                    >
-                      View Application
-                </button>
-              
-               <button
-                      class="application-button whitebutton"
-                      type="button"
-                       (click)="EditCleanUpLog(applItem.applicationId)"
-                    >
-                      Add to Clean Up Log
-                </button>
-              
-               <button
-                      class="application-button whitebutton"
-                      type="button"
-                       (click)="EditDamagedItems(applItem.applicationId)"
-                    >
-                      Add to Damaged Items
-                </button>
-             
-               <button
-                      class="application-button whitebutton"
-                      type="button"
-                       (click)="EditSupportingDocs(applItem.applicationId)"
-                    >
-                      Add Supporting Docs
-                </button>
-              
-               <!--<button
-                      class="application-button redbutton"
-                      type="button"
-                    >
-                      Delete Application
-                </button>-->
+            <div class="col-md-3">
+              <span><b>Case Number</b></span><br />
+              <span>{{applItem.caseNumber == null ? "To Be Assigned" : applItem.caseNumber }}</span>
             </div>
+            <div class="col-md-3">
+              <span><b>Date of Damage</b></span><br />
+              <span>{{applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
+            </div>
+          </div>
+          <div class="row" style="padding-top: 35px;">
+            <button
+              class="col-md-2 application-button"
+              type="button"
+              (click)="ViewApplication(applItem.applicationId, applItem.primaryApplicantSignedDate)"
+            >
+              View Application
+            </button>
+
+            <button
+              class="col-md-2 application-button whitebutton"
+              type="button"
+              (click)="EditApplication(applItem.applicationId, '3')"
+            >
+              Add to Clean Up Log
+            </button>
+
+            <button
+              class="col-md-2 application-button whitebutton"
+              type="button"
+              (click)="EditApplication(applItem.applicationId, '4')"
+            >
+              Add to Damaged Items
+            </button>
+
+            <button
+              class="col-md-2 application-button whitebutton"
+              type="button"
+              (click)="EditApplication(applItem.applicationId, '5')"
+            >
+              Add Supporting Docs
+            </button>
+
+            <button
+              class="col-md-2 application-button whitebutton"
+              type="button"
+              (click)="EditApplication(applItem.applicationId, '2')"
+            >
+              Add Other Contacts
+            </button>
+
+            <!--<button
+              class="application-button redbutton"
+              type="button"
+            >
+              Delete Application
+            </button>-->
+          </div>
 
           </mat-card>
       </div>
-      
+
 </div>
 <div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstApplications.length == 0">
  <div class="heading-container">
     <div class="row">
       <div class="col-md-12">
-        <span class="page-heading" style=""> No Active Applications</span> <br />
+        <span class="page-heading"> No Active Applications</span> <br />
       </div>
     </div>
   </div>

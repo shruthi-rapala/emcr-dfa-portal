@@ -1,10 +1,10 @@
-<mat-card class="card-align" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts</p>
     <br />
 
-    <form [formGroup]="fullTimeOccupantsForm">
+    <form [formGroup]="fullTimeOccupantsForm" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}">
       <div formGroupName="fullTimeOccupant">
         <ng-container>
           <div class="row">
@@ -195,7 +195,7 @@
       </div><br/><br/>
     </form>
 
-    <form [formGroup]="secondaryApplicantsForm">
+    <form [formGroup]="secondaryApplicantsForm" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}">
       <div formGroupName="secondaryApplicant">
         <ng-container>
           <div class="row">
