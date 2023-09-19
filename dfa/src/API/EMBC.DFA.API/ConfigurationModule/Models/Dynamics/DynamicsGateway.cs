@@ -476,6 +476,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         item.dfa_firstname = contactList.List.Last().dfa_firstname;
                         item.dfa_lastname = contactList.List.Last().dfa_lastname;
+                        if (item.dfa_relationshiptoapplicant == null)
+                        {
+                            item.dfa_relationshiptoapplicant = contactList.List.Last().dfa_title;
+                        }
                     }
                 }
 
@@ -548,12 +552,17 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> DeleteDocumentLocationAsync(Guid dfa_appdocumentlocationsid)
+        public async Task<string> DeleteDocumentLocationAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms)
         {
             try
             {
-                await api.Delete("dfa_appdocumentlocationses", dfa_appdocumentlocationsid);
-                return "Deleted successfully";
+                var result = await api.ExecuteAction("dfa_DFAActionDeleteDocuments", dfa_DFAActionDeleteDocuments_parms);
+
+                if (result != null)
+                {
+                    return result.Where(m => m.Key == "RetCode") != null ? result.Where(m => m.Key == "RetCode").ToList()[0].Value.ToString() : string.Empty;
+                }
+                return "Deleted";
             }
             catch (System.Exception ex)
             {
@@ -597,6 +606,26 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             catch (System.Exception ex)
             {
                 throw new Exception($"Failed to get documents {ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> GetEventList()
+        {
+            try
+            {
+                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_eventid", "dfa_id"
+                    }
+                });
+
+                return lstEvents.List.Count() > 0 ? true : false;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
             }
         }
     }

@@ -38,9 +38,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleCleanUpLogItemAsync(dfa_appcleanuplogs_params objCleanUpLogItem);
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId);
         Task<string> HandleFileUploadAsync(SubmissionEntity submission);
-        Task<string> DeleteFileUploadAsync(Guid dfa_appdocumentlocationsid);
+        Task<string> DeleteFileUploadAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms);
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
+        Task<bool> HandleEvents();
     }
 
     public class Handler : IConfigurationHandler
@@ -202,15 +203,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return result;
         }
 
-        public async Task<string> DeleteFileUploadAsync(Guid dfa_appdocumentlocationsid)
+        public async Task<string> DeleteFileUploadAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms)
         {
-            var result = await listsGateway.DeleteDocumentLocationAsync(dfa_appdocumentlocationsid);
+            var result = await listsGateway.DeleteDocumentLocationAsync(dfa_DFAActionDeleteDocuments_parms);
             return result;
         }
 
         public async Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId)
         {
             return await listsGateway.GetDocumentLocationsListAsync(applicationId);
+        }
+
+        public async Task<bool> HandleEvents()
+        {
+            return await listsGateway.GetEventList();
         }
     }
 }
