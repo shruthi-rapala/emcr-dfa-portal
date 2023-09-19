@@ -30,11 +30,6 @@ export class DfaApplicationComponent implements OnInit {
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
   ) {
     const navigation = this.router.getCurrentNavigation();
-    //if (navigation?.extras?.state !== undefined) {
-    //  const state = navigation.extras.state as { parentPageName: string };
-    //  this.parentPageName = state.parentPageName;
-    //  this.appSessionService.editParentPage = state.parentPageName;
-    //}
   }
 
   ngOnInit(): void {
@@ -67,31 +62,15 @@ export class DfaApplicationComponent implements OnInit {
     else {
       this.dfaApplicationMainDataService.setViewOrEdit('view');
     }
-    
+
     this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
-  EditCleanUpLog(applicationId: string): void {
+  EditApplication(applicationId: string, tabId: string): void {
     this.dfaApplicationMainDataService.setApplicationId(applicationId);
     this.dfaApplicationStartDataService.setApplicationId(applicationId);
     this.dfaApplicationMainDataService.setViewOrEdit('edit');
-    this.dfaApplicationMainDataService.setEditStep('3');
-    this.router.navigate(['/dfa-application-main/'+applicationId]);
-  }
-
-  EditDamagedItems(applicationId: string): void {
-    this.dfaApplicationMainDataService.setApplicationId(applicationId);
-    this.dfaApplicationStartDataService.setApplicationId(applicationId);
-    this.dfaApplicationMainDataService.setViewOrEdit('edit');
-    this.dfaApplicationMainDataService.setEditStep('4');
-    this.router.navigate(['/dfa-application-main/'+applicationId]);
-  }
-
-  EditSupportingDocs(applicationId: string): void {
-    this.dfaApplicationMainDataService.setApplicationId(applicationId);
-    this.dfaApplicationStartDataService.setApplicationId(applicationId);
-    this.dfaApplicationMainDataService.setViewOrEdit('edit');
-    this.dfaApplicationMainDataService.setEditStep('5');
+    this.dfaApplicationMainDataService.setEditStep(tabId);
     this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
