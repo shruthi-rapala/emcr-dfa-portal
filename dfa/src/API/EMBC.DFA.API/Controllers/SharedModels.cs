@@ -135,7 +135,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Small Business Owner")]
         SmallBusinessOwner,
 
-        [EnumMember(Value = "Farm Owner)")]
+        [EnumMember(Value = "Farm Owner")]
         FarmOwner,
 
         [EnumMember(Value = "Charitable Organization (including non-profilts)")]
@@ -148,10 +148,10 @@ namespace EMBC.DFA.API.Controllers
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum FarmOption
     {
-        [EnumMember(Value = "General or Sole Proprietorship or DBA name")]
+        [EnumMember(Value = "General Partnership, Sole Proprietorship, Unregistered, or DBA Name")]
         General,
 
-        [EnumMember(Value = "Corporate (Ltd./Inc.) Company")]
+        [EnumMember(Value = "Corporate Company (Ltd./Inc.)")]
         Corporate,
     }
 
