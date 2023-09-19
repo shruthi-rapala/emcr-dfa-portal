@@ -181,7 +181,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_primaryapplicantprintname", "dfa_primaryapplicantsigned", "dfa_primaryapplicantsigneddate",
                     "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
                     "dfa_wereyouevacuatedduringtheevent2", "dfa_accountlegalname", "dfa_businessmanagedbyallownersondaytodaybasis",
-                    "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime"
+                    "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
+                    "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });

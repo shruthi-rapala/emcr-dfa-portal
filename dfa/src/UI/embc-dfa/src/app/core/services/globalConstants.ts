@@ -76,6 +76,24 @@ export const businessNotManagedByAllOwnersOnDayToDayBasis: DialogContent = {
   confirmButton: 'Yes, Continue my Application'
 }
 
+export const farmoperation: DialogContent = {
+  text: '<p>To be eligible for DFA, your farm operation must be identified in the current assessment of the British Columbia Assessment Authority as a developing or established agricultural operation.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Is the farm operation identified in the current assessment of the British Columbia Assessment Authority as a developing or established agricultural operation?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const ownedandoperatedbya: DialogContent = {
+  text: '<p>To be eligible for DFA, your farm operation must be owned and operated by a person(s) who full-time employment is as a farmer?.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Is the farm operation owned and operated by a person(s) who full-time employment is as a farmer?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const farmoperationderivesthatpersonsmajorincom: DialogContent = {
+  text: '<p>To be eligible for DFA, your farm operation must be the means by which the owner(s) derives the majority of that person\’s income?.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Is the farm operation the means by which the owner(s) derives the majority of that person\’s income?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
 export const wrongGrossRevenues: DialogContent = {
   text: '<p>To be eligible for DFA, the gross revenue of your business must be more than $10,000 but less than $2 million in the year before the disaster.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Are the gross revenues of the business more than $10,000 but less than $2 million in the year before the disaster?</b></p>',
   cancelButton: 'No, Save & Close my Application',

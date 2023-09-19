@@ -103,21 +103,58 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="isSmallBusinessOwner === true">
+        <div class="row" *ngIf="isFarmOwner == true">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Is the farm operation identified in the current assessment of the British Columbia Assessment Authority as a developing or established agricultural operation?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="farmoperation"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group><br/><br/>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isFarmOwner == true">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Is the farm operation owned and operated by a person(s) who full-time employment is as a farmer?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="ownedandoperatedbya"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group><br/><br/>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isFarmOwner == true">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Is the farm operation the means by which the owner(s) derives the majority of that person’s income?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="farmoperationderivesthatpersonsmajorincom"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group><br/><br/>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isSmallBusinessOwner === true || isFarmOwner === true">
           <div class="col-md-6 bottomspace">
             <mat-form-field appearance="outline">
-              <mat-label>Provide the business legal name, if applicable.</mat-label>
+              <mat-label *ngIf="isSmallBusinessOwner === true">Provide the business legal name, if applicable.</mat-label>
+              <mat-label *ngIf="isFarmOwner === true">Provide the farm's legal name, if applicable.</mat-label>
               <input formControlName="businessLegalName" matInput placeholder="Provide the business legal name, if applicable." [required]="damagedPropertyAddressForm.get('businessLegalName').value == 'true'" maxlength="100"/>
               <mat-hint>Maximum length is 100 characters</mat-hint>
-              <mat-error
-                *ngIf="
-                  damagedPropertyAddressForm.get('businessLegalName').invalid &&
-                  damagedPropertyAddressForm.get('businessLegalName').hasError('required') &&
-                  damagedPropertyAddressForm.get('businessLegalName').touched
-                "
-              >
-                Business Legal Name is required</mat-error
-              >
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('businessLegalName').invalid &&

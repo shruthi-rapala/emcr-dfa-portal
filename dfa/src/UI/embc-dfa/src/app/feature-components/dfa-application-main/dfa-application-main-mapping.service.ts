@@ -41,7 +41,10 @@ export class DFAApplicationMainMappingService {
           eligibleForHomeOwnerGrant: dfaApplicationMain.damagedPropertyAddress.eligibleForHomeOwnerGrant === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.eligibleForHomeOwnerGrant === false ? 'false' : null),
           businessManagedByAllOwnersOnDayToDayBasis: dfaApplicationMain.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis === false ? 'false' : null),
           employLessThan50EmployeesAtAnyOneTime: dfaApplicationMain.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime === false ? 'false' : null),
-          grossRevenues100002000000BeforeDisaster: dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === false ? 'false' : null)
+          grossRevenues100002000000BeforeDisaster: dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === false ? 'false' : null),
+          farmoperation: dfaApplicationMain.damagedPropertyAddress.farmoperation === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.farmoperation === false ? 'false' : null),
+          farmoperationderivesthatpersonsmajorincom: dfaApplicationMain.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom === false ? 'false' : null),
+          ownedandoperatedbya: dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === false ? 'false' : null)
         });
         formGroup = damagedPropertyAddress;
       });

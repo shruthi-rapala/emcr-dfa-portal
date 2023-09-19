@@ -319,6 +319,9 @@ namespace EMBC.DFA.API.Controllers
         public bool? businessManagedByAllOwnersOnDayToDayBasis { get; set; }
         public bool? grossRevenues100002000000BeforeDisaster { get; set; }
         public bool? employLessThan50EmployeesAtAnyOneTime { get; set; }
+        public bool? farmoperation { get; set; }
+        public bool? ownedandoperatedbya { get; set; }
+        public bool? farmoperationderivesthatpersonsmajorincom { get; set; }
     }
 
     /// <summary>
