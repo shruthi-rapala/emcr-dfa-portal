@@ -805,12 +805,14 @@ export class FileUpload {
   uploadedDate?: string;
   applicantType?: string;
   smallBusinessOption?: string;
+  farmOption?: string;
 }
 
 export class FileUploadsForm {
   applicationId = new UntypedFormControl();
   applicantType = new UntypedFormControl();
   smallBusinessOption = new UntypedFormControl();
+  farmOption = new UntypedFormControl();
   deleteFlag = new UntypedFormControl();
   id = new UntypedFormControl();
   fileName = new UntypedFormControl();

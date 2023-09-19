@@ -58,7 +58,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isSmallBusinessOwner && (isGeneral || isCorporate)"> <!-- Insurance Template for Small Business: General, Corporate -->
+    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner"> <!-- Insurance Template for Small Business: General, Corporate, Farm: General, Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -138,7 +138,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isSmallBusinessOwner && (isGeneral || isLandlord)"> <!-- T1 Income tax return for Small Business Owner: General -->
+    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isLandlord)) || (isFarmOwner && isGeneral)"> <!-- T1 Income tax return for Small Business Owner: General, Farm Owner: General -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -161,7 +161,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isSmallBusinessOwner && isCorporate"> <!-- T2 Income tax return for Small Business Owner: Corporate -->
+    <ng-container *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)"> <!-- T2 Income tax return for Small Business Owner: Corporate, Farm Owner: Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -230,7 +230,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isSmallBusinessOwner && (isGeneral || isCorporate)"> <!-- Financial Statements for Small Business Owner: General, Corporate -->
+    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || (isFarmOwner && isGeneral)"> <!-- Financial Statements for Small Business Owner: General, Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -253,7 +253,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isSmallBusinessOwner && (isGeneral || isCorporate)"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
+    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || (isFarmOwner && isGeneral)"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
