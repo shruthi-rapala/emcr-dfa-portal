@@ -51,7 +51,9 @@ namespace EMBC.DFA.API.Controllers
 
             if (fileUpload.deleteFlag == true)
             {
-                var result = await handler.DeleteFileUploadAsync((System.Guid)fileUpload.id);
+                var parms = new dfa_DFAActionDeleteDocuments_parms();
+                if (fileUpload.id != null) parms.AppDocID = (Guid)fileUpload.id;
+                var result = await handler.DeleteFileUploadAsync(parms);
                 return Ok(result);
             }
             else

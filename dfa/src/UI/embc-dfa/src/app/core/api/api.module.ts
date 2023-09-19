@@ -9,6 +9,7 @@ import { AttachmentService } from './services/attachment.service';
 import { CleanUpLogItemService } from './services/clean-up-log-item.service';
 import { ConfigurationService } from './services/configuration.service';
 import { DamagedRoomService } from './services/damaged-room.service';
+import { EligibilityService } from './services/eligibility.service';
 import { FullTimeOccupantService } from './services/full-time-occupant.service';
 import { OtherContactService } from './services/other-contact.service';
 import { ProfileService } from './services/profile.service';
@@ -27,6 +28,7 @@ import { SecondaryApplicantService } from './services/secondary-applicant.servic
     CleanUpLogItemService,
     ConfigurationService,
     DamagedRoomService,
+    EligibilityService,
     FullTimeOccupantService,
     OtherContactService,
     ProfileService,
