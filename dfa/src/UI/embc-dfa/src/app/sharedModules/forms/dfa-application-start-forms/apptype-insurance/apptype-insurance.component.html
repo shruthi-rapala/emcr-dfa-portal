@@ -20,7 +20,7 @@
                   <mat-radio-button
                     class="primary-radio-button row"
                     [value]="option.key"
-                    *ngIf="option.value === radioApplicantOptions.Homeowner || option.value === radioApplicantOptions.ResidentialTenant || option.value === radioApplicantOptions.SmallBusinessOwner"
+                    *ngIf="option.value === radioApplicantOptions.Homeowner || option.value === radioApplicantOptions.ResidentialTenant || option.value === radioApplicantOptions.SmallBusinessOwner || option.value === radioApplicantOptions.FarmOwner"
                   ><span *ngIf="option.value === radioApplicantOptions.SmallBusinessOwner">{{ option.value }} (landlords included)</span>
                    <span *ngIf="option.value !== radioApplicantOptions.SmallBusinessOwner"> {{ option.value }}</span>
                   </mat-radio-button><br />
@@ -136,7 +136,7 @@
                         </div>
                       </mat-radio-group>
                     </div>
-                    <!-- <div class="radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.FarmOwner">
+                    <div class="radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.FarmOwner">
                       <br/>
                       <mat-label class="sub-heading">What type of farm?<span style="color:red" >*</span></mat-label>
                       <br />
@@ -151,49 +151,56 @@
                           >
                             {{ frmOption.value }}
                           </mat-radio-button>
-                          <div class="sub-heading radio-extra-label" *ngIf="appTypeInsuranceForm.get('farmOption').value === frmOption.key && frmOption.value === radioSmallBusinessOptions.General">
+                          <div class="sub-heading radio-extra-label" *ngIf="appTypeInsuranceForm.get('farmOption').value === frmOption.key && frmOption.value === radioFarmOptions.General">
                             <br/>
                             Your farm must:
                             <ul>
-                              <li>Be identified as a developing or established agricultural operation</li>
-                              <li>Be owned and operated by a person whose full-time employment is a farmer</li>
-                              <li>Be the means by which the owner derives the majority of their income</li>
-                              <li>If a farm operation is incorporated, the small business eligibility criteria applies.</li>
+                              <li>be identified as a developing or established agricultural operation,</li>
+                              <li>be owned and operated by a person whose full-time employment is a farmer,</li>
+                              <li>be the means by which the owner derives the majority of their income, and</li>
+                              <li>demonstrate that, without the claimed assistance, the future of the farm operation could be placed in financial jeopardy. Financial jeopardy is defined as when the assistance payment to repair the damage would be greater than 10 percent of the net income of the farm operation. </li>
                             </ul><br/>
-                            As a General or Sole Proprietorship or DBA name, you must to provide the following with your application:
+                            As a General Partnership, Sole Proprietorship, Unregistered or DBA Name, you must provide the following with your application:
                             <ul>
-                              <li>Completed <a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_farm_small_business_charitable_organization-insurance_template.pdf" target="_blank">Small Business Insurance Template</a> (by insurance broker).</li>
+                              <li><a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_farm_small_business_charitable_organization-insurance_template.pdf" target="_blank">Small Business Insurance Template</a> completed by insurance broker, and</li>
                               <li>completed T1 general tax return with supporting schedules for all owners.</li>
                             </ul><br/>
                             You <i>may</i> be required to provide the following, if applicable:
                             <ul>
-                              <li>Lease Agreements</li>
+                              <li>lease agreements, and/or</li>
+                              <li>the most recently filed financial statements (income statement and balance sheet) used for income tax purposes.</li>
                             </ul>
                           </div>
-                          <div class="sub-heading radio-extra-label" *ngIf="appTypeInsuranceForm.get('farmOption').value === frmOption.key && frmOption.value === radioSmallBusinessOptions.Corporate">
+                          <div class="sub-heading radio-extra-label" *ngIf="appTypeInsuranceForm.get('farmOption').value === frmOption.key && frmOption.value === radioFarmOptions.Corporate">
                             <br/>
                             Your farm must:
                             <ul>
-                              <li>Be identified as a developing or established agricultural operation</li>
-                              <li>Be owned and operated by a person whose full-time employment is a farmer</li>
-                              <li>Be the means by which the owner derives the majority of their income</li>
-                              <li>If a farm operation is incorporated, the small business eligibility criteria applies.</li>
+                              <li>be identified as a developing or established agricultural operation,</li>
+                              <li>be owned and operated by a person whose full-time employment is a farmer,</li>
+                              <li>be the means by which the owner derives the majority of their income, and</li>
+                              <li>demonstrate that, without the claimed assistance, the future of the farm operation could be placed in financial jeopardy. Financial jeopardy is defined as when the assistance payment to repair the damage would be greater than 10 percent of the net income of the farm operation.</li>
                             </ul><br/>
-                            As a Corporate (Ltd./Inc.) Company, you must provide the following with your application:
+                            If your farm operation is incorporated, the small business eligibility criteria applies which means your farm also must:
                             <ul>
-                              <li>Completed <a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_farm_small_business_charitable_organization-insurance_template.pdf" target="_blank">Small Business Insurance Template</a> (by insurance broker).</li>
-                              <li>Central security register</li>
-                              <li>Completed T2 return for the company.</li>
-                              <li>Company income statement and balance sheet used for income tax purposes.</li>
+                              <li>be managed by the owner on a day-to-day basis,</li>
+                              <li>have grossed at least $10,000 but less than $2 million in revenue in the year immediately preceding the disaster, and</li>
+                              <li>employ fewer than 50 employees at one time.</li>
+                            </ul><br/>
+                            As a Corporate Company (Ltd./Inc.), you must provide the following with your application:
+                            <ul>
+                              <li><a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_farm_small_business_charitable_organization-insurance_template.pdf" target="_blank">Small Business Insurance Template</a> completed by the insurance broker,</li>
+                              <li>completed T2 corporate income tax return for the company,</li>
+                              <li>proof of ownership (Central Securities Register listing all shareholders or Partnership Agreement), and</li>
+                              <li>company income statement and balance sheet used for income tax purposes.</li>
                             </ul><br/>
                             You <i>may</i> be required to provide the following, if applicable:
                             <ul>
-                              <li>Lease Agreements</li>
+                              <li>lease agreements.</li>
                             </ul>
                           </div>
                         </div>
                     </mat-radio-group>
-                    </div> -->
+                    </div>
                     <!-- <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.CharitableOrganization">
                       <br/>
                       Your charitable organization:
