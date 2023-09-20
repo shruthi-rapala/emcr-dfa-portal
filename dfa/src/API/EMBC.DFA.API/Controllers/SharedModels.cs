@@ -138,7 +138,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Farm Owner")]
         FarmOwner,
 
-        [EnumMember(Value = "Charitable Organization (including non-profilts)")]
+        [EnumMember(Value = "Charitable Organization")]
         CharitableOrganization
     }
 
