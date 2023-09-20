@@ -67,6 +67,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   ];
+  isLoading: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -242,6 +243,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
       return;
     }
+    this.isLoading = true;
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.uploadedDate').setValue(new Date());
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
     if (this.cleanUpWorkFilesForm.get('cleanupFileUpload').status === 'VALID') {
@@ -255,13 +257,16 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('true');
           this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
+          this.isLoading = false;
         },
         error: (error) => {
           console.error(error);
+          this.isLoading = false;
         }
       });
     } else {
       this.cleanUpWorkFilesForm.get('cleanupFileUpload').markAllAsTouched();
+      this.isLoading = false;
     }
   }
 

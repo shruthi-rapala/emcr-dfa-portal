@@ -57,6 +57,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   supportingFilesDataSource = new MatTableDataSource();
   documentSummaryColumnsToDisplay = [ 'fileName', 'fileDescription', 'fileType', 'uploadedDate', 'icons']
   documentSummaryDataSource = new MatTableDataSource();
+  isLoading: boolean = false;
   allowedFileTypes = [
     'application/pdf',
     'image/jpg',
@@ -292,6 +293,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       }
 
     if (this.supportingFilesForm.get('supportingFilesFileUpload').status === 'VALID') {
+      this.isLoading = true;
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
@@ -302,9 +304,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           this.showSupportingFileForm = !this.showSupportingFileForm;
           if (fileUpload.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+          this.isLoading = false;
         },
         error: (error) => {
           console.error(error);
+          this.isLoading = false;
         }
       });
     } else {
@@ -320,6 +324,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.isLoading = true;
     fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     if (fileUploads?.filter(x => x.fileType === fileUpload.fileType).length > 0) {
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
@@ -327,9 +332,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           let typeFoundIndex = fileUploads.findIndex(x => x.fileType === fileUpload.fileType);
           fileUploads[typeFoundIndex] = fileUpload;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+          this.isLoading = false;
         },
         error: (error) => {
           console.error(error);
+          this.isLoading = false;
         }
       });
     } else {
@@ -341,9 +348,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           if (fileUpload.fileType == Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.TenancyProof)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+          this.isLoading = false;
         },
         error: (error) => {
           console.error(error);
+          this.isLoading = false;
         }
       });
     }

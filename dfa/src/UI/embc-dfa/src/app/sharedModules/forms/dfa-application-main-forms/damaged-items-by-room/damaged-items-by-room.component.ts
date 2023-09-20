@@ -56,6 +56,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   showDamagePhotoForm: boolean = false;
   damagePhotosColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
   damagePhotosDataSource = new MatTableDataSource();
+  isLoading: boolean = false;
   allowedFileTypes = [
     'application/pdf',
     'image/jpg',
@@ -182,6 +183,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
 
   saveDamagedRooms(): void {
     if (this.damagedRoomsForm.get('damagedRoom').status === 'VALID') {
+      this.isLoading = true;
       if (this.damagedRoomEditIndex !== undefined && this.damagedRoomRowEdit) {
         this.damagedRoomService.damagedRoomUpsertDeleteDamagedRoom({body: this.damagedRoomsForm.get('damagedRoom').getRawValue() }).subscribe({
          next: (result) => {
@@ -192,9 +194,11 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
             this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
             this.showDamagedRoomForm = !this.showDamagedRoomForm;
             this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
+            this.isLoading = false;
              },
          error: (error) => {
            console.error(error);
+           this.isLoading = false;
          }
        });
       } else {
@@ -206,9 +210,11 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
            this.damagedRoomsForm.get('damagedRooms').setValue(this.damagedRoomsData);
            this.showDamagedRoomForm = !this.showDamagedRoomForm;
            this.damagedRoomEditFlag = !this.damagedRoomEditFlag;
+           this.isLoading = false;
          },
          error: (error) => {
            console.error(error);
+           this.isLoading = false;
          }
        });
       }
@@ -284,7 +290,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
       this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
       return;
     }
-
+    this.isLoading = true;
     if (this.damagePhotosForm.get('damagePhotoFileUpload').status === 'VALID') {
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
       this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
@@ -295,9 +301,11 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.showDamagePhotoForm = !this.showDamagePhotoForm;
           this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(false);
+          this.isLoading = false;
         },
         error: (error) => {
           console.error(error);
+          this.isLoading = false;
         }
       });
     } else {
