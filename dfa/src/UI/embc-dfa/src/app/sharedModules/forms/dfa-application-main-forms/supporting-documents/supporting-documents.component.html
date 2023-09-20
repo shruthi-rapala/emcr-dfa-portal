@@ -57,7 +57,7 @@
             diameter="50"
             >
           </app-loader>
-          <mat-card class="row" *ngIf="!insuranceTemplateForm.hasError('noInsuranceTemplate')">
+          <mat-card class="row" *ngIf="fileUploadForm.hasError('noInsuranceTemplate')">
             <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
           </mat-card>
         </div>
@@ -119,7 +119,7 @@
             diameter="50"
             >
           </app-loader>
-          <mat-card class="row" *ngIf="!rentalAgreementForm.hasError('noRentalAgreement')">
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noRentalAgreement')">
             <p class="sub-heading" style="font-size: 15px">Required rental agreement form has been uploaded.</p>
           </mat-card>
         </div>
@@ -158,7 +158,7 @@
             diameter="50"
           >
           </app-loader>
-          <mat-card class="row" *ngIf="!identificationForm.hasError('noIdentification')">
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noIdentification')">
             <p class="sub-heading" style="font-size: 15px">Required identification form has been uploaded.</p>
           </mat-card>
         </div>
