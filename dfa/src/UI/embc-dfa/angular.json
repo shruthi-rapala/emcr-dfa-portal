@@ -24,7 +24,13 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/dfa/dfa.html",
+              {
+                "glob": "dfa.html",
+                "input": "src/dfa/",
+                "output": "/dfa-dashboard/"
+              }
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",

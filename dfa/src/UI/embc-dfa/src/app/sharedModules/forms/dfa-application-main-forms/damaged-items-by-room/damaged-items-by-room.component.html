@@ -218,6 +218,13 @@
             (cencelFileUpload)="cancelDamagePhotos()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('damagePhotoFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+           >
+          </app-loader>
         </div>
       </div>
     </ng-container>
