@@ -41,6 +41,13 @@
             [fileUpload]="formCreationService.fileUploadsForm.value.get('insuranceTemplateFileUpload')"
             *ngIf="insuranceTemplateForm.hasError('noInsuranceTemplate')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+            >
+          </app-loader>
           <mat-card class="row" *ngIf="!insuranceTemplateForm.hasError('noInsuranceTemplate')">
             <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
           </mat-card>
@@ -66,6 +73,13 @@
             [fileUpload]="formCreationService.fileUploadsForm.value.get('rentalAgreementFileUpload')"
 
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+            >
+          </app-loader>
           <mat-card class="row" *ngIf="!rentalAgreementForm.hasError('noRentalAgreement')">
             <p class="sub-heading" style="font-size: 15px">Required rental agreement form has been uploaded.</p>
           </mat-card>
@@ -98,6 +112,13 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('identificationFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!identificationForm.hasError('noIdentification')">
             <p class="sub-heading" style="font-size: 15px">Required identification form has been uploaded.</p>
           </mat-card>
@@ -120,6 +141,13 @@
             (cancelFileUpload)="cancelSupportingFiles()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
         </div>
       </div>
     </ng-container>
@@ -138,6 +166,13 @@
             (cancelFileUpload)="cancelSupportingFiles()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
         </div>
       </div>
     </ng-container>
