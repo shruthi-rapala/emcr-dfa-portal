@@ -550,12 +550,18 @@ a:hover {
 
 </style>
 <script type="text/javascript">
+	//var apiUrl = 'https://pokeapi.co/api/v2/pokemon/ditto/';
+	//var apiUrl = 'http://localhost:5020/api/eligibility/checkEventsAvailable';
 	var apiUrl = 'https://dfa-portal-dev.apps.silver.devops.gov.bc.ca/api/eligibility/checkEventsAvailable';
 
 	fetch(apiUrl).then(response => {
+		//alert(response.json());
 		return response.json();
 	}).then(data => {
-
+		//debugger
+		console.log(JSON.stringify(data));
+		alert(data);
+		//var dataLen = data.abilities.length;
 		if (data == true) {
 			document.getElementById('divCheckEligibilityButton').style.display = 'block';
 		}
