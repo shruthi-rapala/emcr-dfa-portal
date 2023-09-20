@@ -50,7 +50,14 @@
             [fileUpload]="formCreationService.fileUploadsForm.value.get('insuranceTemplateFileUpload')"
             *ngIf="fileUploadForm.hasError('noInsuranceTemplate')"
           ></app-dfa-attachment>
-          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noInsuranceTemplate')">
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+            >
+          </app-loader>
+          <mat-card class="row" *ngIf="!insuranceTemplateForm.hasError('noInsuranceTemplate')">
             <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
           </mat-card>
         </div>
@@ -73,6 +80,13 @@
             [fileUpload]="formCreationService.fileUploadsForm.value.get('insuranceTemplateFileUpload')"
             *ngIf="fileUploadForm.hasError('noInsuranceTemplate')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!fileUploadForm.hasError('noInsuranceTemplate')">
             <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
           </mat-card>
@@ -98,7 +112,14 @@
             [fileUpload]="formCreationService.fileUploadsForm.value.get('rentalAgreementFileUpload')"
 
           ></app-dfa-attachment>
-          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noRentalAgreement')">
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+            >
+          </app-loader>
+          <mat-card class="row" *ngIf="!rentalAgreementForm.hasError('noRentalAgreement')">
             <p class="sub-heading" style="font-size: 15px">Required rental agreement form has been uploaded.</p>
           </mat-card>
         </div>
@@ -130,7 +151,14 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('identificationFileUpload')"
           ></app-dfa-attachment>
-          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noIdentification')">
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
+          <mat-card class="row" *ngIf="!identificationForm.hasError('noIdentification')">
             <p class="sub-heading" style="font-size: 15px">Required identification form has been uploaded.</p>
           </mat-card>
         </div>
@@ -153,6 +181,13 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('T1IncomeTaxReturnFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!fileUploadForm.hasError('noT1GeneralIncomeTaxReturn')">
             <p class="sub-heading" style="font-size: 15px">Required T1 Income Tax Return has been uploaded.</p>
           </mat-card>
@@ -176,6 +211,13 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('T2IncomeTaxReturnFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!fileUploadForm.hasError('noT2CorporateIncomeTaxReturn')">
             <p class="sub-heading" style="font-size: 15px">Required T2 Income Tax Return has been uploaded.</p>
           </mat-card>
@@ -199,6 +241,13 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('proofOfOwnershipFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!fileUploadForm.hasError('noProofOfOwnership')">
             <p class="sub-heading" style="font-size: 15px">Required Proof of Ownership has been uploaded.</p>
           </mat-card>
@@ -222,6 +271,13 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('T776FileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!fileUploadForm.hasError('noT776')">
             <p class="sub-heading" style="font-size: 15px">Required T776 has been uploaded.</p>
           </mat-card>
@@ -245,6 +301,13 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('financialStatementsFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!fileUploadForm.hasError('noFinancialStatements')">
             <p class="sub-heading" style="font-size: 15px">Required financial statements have been uploaded.</p>
           </mat-card>
@@ -268,6 +331,13 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('tenancyAgreementFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!fileUploadForm.hasError('noTenancyAgreement')">
             <p class="sub-heading" style="font-size: 15px">Lease agreement has been uploaded.</p>
           </mat-card>
@@ -291,6 +361,13 @@
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('tenancyAgreementFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
           <mat-card class="row" *ngIf="!fileUploadForm.hasError('noResidentialTenancyAgreement')">
             <p class="sub-heading" style="font-size: 15px">Required residential tenancy agreement has been uploaded.</p>
           </mat-card>
@@ -312,10 +389,18 @@
             (cancelFileUpload)="cancelSupportingFiles()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
           ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
         </div>
       </div>
       <br/><br/>
     </ng-container>
+    <br/><br/>
 
     <div *ngIf="documentSummaryDataSource.data.length > 0">
       <br />
