@@ -76,6 +76,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   isCorporate: boolean = false;
   isLandlord: boolean = false;
   isFarmOwner: boolean = false;
+  isCharitableOrganization: boolean = false;
   AppOptions = ApplicantOption;
   SmallBusinessOptions = SmallBusinessOption;
   FarmOptions = FarmOption;
@@ -99,6 +100,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
         this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
         this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.FarmOwner)]);
+        this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.CharitableOrganization)]);
         if (this.isSmallBusinessOwner) {
           this.isGeneral = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.General)]);
           this.isCorporate = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Corporate)]);
@@ -137,8 +139,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
               this.fileUploadForm.get('applicantType').setValue("FarmOwner");
               if (this.isGeneral) this.fileUploadForm.get('farmOption').setValue("General");
               if (this.isCorporate) this.fileUploadForm.get('farmOption').setValue("Corporate");
-             }
-            }
+            } else if (this.isCharitableOrganization) this.fileUploadForm.get('applicantType').setValue("CharitableOrganization");
+          }
         });
       });
 
@@ -162,18 +164,12 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let supportingFiles = form.get('fileUploads')?.getRawValue();
     let applicantType = form.get('applicantType').value;
     const error={};
+    if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
+      invalid = true;
+      error["noInsuranceTemplate"] = true;
+    }
     switch (applicantType) {
-      case "Homeowner":
-        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-          invalid = true;
-          error["noInsuranceTemplate"] = true;
-        }
-        break;
       case "ResidentialTenant":
-        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-          invalid = true;
-          error["noInsuranceTemplate"] = true;
-        }
         if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
           invalid = true;
           error["noRentalAgreement"] = true;
@@ -187,10 +183,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         let smallBusinessOption = form.get('smallBusinessOption').value;
         switch (smallBusinessOption) {
           case "General":
-            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-              invalid = true;
-              error["noInsuranceTemplate"] = true;
-            }
             if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T1GeneralIncomeTaxReturn" && x.deleteFlag == false).length <= 0) {
               invalid = true;
               error["noT1GeneralIncomeTaxReturn"] = true;
@@ -205,10 +197,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             }
             break;
           case "Corporate":
-            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-              invalid = true;
-              error["noInsuranceTemplate"] = true;
-            }
             if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T2CorporateIncomeTaxReturn" && x.deleteFlag == false).length <= 0) {
               invalid = true;
               error["noT2CorporateIncomeTaxReturn"] = true;
@@ -227,10 +215,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             }
             break;
           case "Landlord":
-            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-              invalid = true;
-              error["noInsuranceTemplate"] = true;
-            }
             if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T1GeneralIncomeTaxReturn" && x.deleteFlag == false).length <= 0) {
               invalid = true;
               error["noT1GeneralIncomeTaxReturn"] = true;
@@ -252,10 +236,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         let farmOption = form.get('farmOption').value;
         switch (farmOption) {
           case "General":
-            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-              invalid = true;
-              error["noInsuranceTemplate"] = true;
-            }
             if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T1GeneralIncomeTaxReturn" && x.deleteFlag == false).length <= 0) {
               invalid = true;
               error["noT1GeneralIncomeTaxReturn"] = true;
@@ -270,10 +250,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             }
             break;
           case "Corporate":
-            if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
-              invalid = true;
-              error["noInsuranceTemplate"] = true;
-            }
             if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "T2CorporateIncomeTaxReturn" && x.deleteFlag == false).length <= 0) {
               invalid = true;
               error["noT2CorporateIncomeTaxReturn"] = true;
@@ -293,6 +269,24 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             break;
           default:
             break;
+        }
+        break;
+      case "CharitableOrganization":
+        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "DirectorsListing" && x.deleteFlag == false).length <= 0) {
+          invalid = true;
+          error["noDirectorsListing"] = true;
+        }
+        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "RegistrationProof" && x.deleteFlag == false).length <= 0) {
+          invalid = true;
+          error["noRegistrationProof"] = true;
+        }
+        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "StructureAndPurpose" && x.deleteFlag == false).length <= 0) {
+          invalid = true;
+          error["noStructureAndPurpose"] = true;
+        }
+        if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length <= 0) {
+          invalid = true;
+          error["noTenancyAgreement"] = true;
         }
         break;
       default:
@@ -422,14 +416,47 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         next: (result) => {
           fileUploads.splice(foundIndex, 1);
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          if (element.requiredDocumentType == "InsuranceTemplate") {
-            this.initRequiredFileForm("insuranceTemplateFileUpload");
-          } else if (element.requiredDocumentType == "Identification") {
-            this.initRequiredFileForm("identificationFileUpload");
-            this.fileUploadForm.updateValueAndValidity();
-          } else if (element.requiredDocumemtType == "TenancyAgreement") {
-            this.initRequiredFileForm("rentalAgreementFileUpload");
-          }
+          switch (element.requiredDocumentType) {
+            case "InsuranceTemplate":
+              this.initRequiredFileForm("insuranceTemplateFileUpload");
+              break;
+            case "Identification":
+              this.initRequiredFileForm("identificationFileUpload");
+              break;
+            case "TenancyAgreement":
+              this.initRequiredFileForm("rentalAgreementFileUpload");
+              break;
+            case "ResidentialTenancyAgreement":
+              this.initRequiredFileForm("tenancyAgreementFileUpload");
+              break;
+            case "T1GeneralIncomeTaxReturn":
+              this.initRequiredFileForm("T1IncomeTaxReturnFileUpload");
+              break;
+            case "T2CorporateIncomeTaxReturm":
+              this.initRequiredFileForm("T2IncomeTaxReturnFileUpload");
+              break;
+            case "FinancialStatements":
+              this.initRequiredFileForm("financialStatementsFileUpload");
+              break;
+            case "ProofOfOwnership":
+              this.initRequiredFileForm("proofOfOwnershipFileUpload");
+              break;
+            case "T776":
+              this.initRequiredFileForm("T776FileUpload");
+              break;
+            case "DirectorsListing":
+              this.initRequiredFileForm("directorsListingFileUpload");
+              break;
+            case "RegistrationProof":
+              this.initRequiredFileForm("registrationProofFileUpload");
+              break;
+            case "StructureAndPurpose":
+              this.initRequiredFileForm("structureAndPurposeFileUpload");
+              break;
+            default:
+              break;
+            }
+          this.fileUploadForm.updateValueAndValidity();
         },
         error: (error) => {
           console.error(error);
