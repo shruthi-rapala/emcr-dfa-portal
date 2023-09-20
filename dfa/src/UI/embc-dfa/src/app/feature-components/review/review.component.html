@@ -408,6 +408,7 @@
         Please check that your application information is correct before submitting. Missing required fields marked in red.
       </p>
 
+      <!--- Application Type & Insurance -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Application & Insurance</div>
@@ -428,6 +429,11 @@
                 (formCreationService.appTypeInsuranceForm$ | async)?.value
                 ?.smallBusinessOption
               }}</span>
+              <span *ngIf="isFarmOwner"
+              > -- {{
+                (formCreationService.appTypeInsuranceForm$ | async)?.value
+                ?.farmOption
+              }}</span>
             </p>
           </div>
         </div>
@@ -444,6 +450,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Damaged Property Address -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Damaged Property</div>
@@ -575,14 +582,53 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="isSmallBusinessOwner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}">Business legal name:</span></div>
+        <div class="row info-detail" *ngIf="isFarmOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperation}">Developing or established agricultural operation:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperation}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .farmoperation == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .farmoperation == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isFarmOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.ownedandoperatedbya}">Owned and operated by a farmer:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.ownedandoperatedbya}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .ownedandoperatedbya == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .ownedandoperatedbya == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isFarmOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperationderivesthatpersonsmajorincom}">Farm operation is the means by which the owner(s) derives majority of income:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperationderivesthatpersonsmajorincom}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .farmoperationderivesthatpersonsmajorincom == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .farmoperationderivesthatpersonsmajorincom == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isSmallBusinessOwner || isFarmOwner">
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isSmallBusinessOwner">Business legal name:</span>
+            <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isFarmOwner">Farm legal name:</span>
+          </div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls?.businessLegalName.invalid}">
               {{
                 (formCreationService.damagedPropertyAddressForm$ | async)?.value
                   .businessLegalName ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                  .businessLegalName : "Enter required information"
+                  .businessLegalName : ""
               }}
             </span>
           </div>
@@ -688,6 +734,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Cause of Damage -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Cause of Damage</div>
@@ -830,6 +877,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Occupants -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Occupants, Secondary Applicants and Contacts</div>
@@ -984,6 +1032,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Clean up Log -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">&nbsp;Clean Up Log</div>
@@ -1102,6 +1151,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Damaged Items By Room -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Damaged Items By Room</div>
@@ -1202,6 +1252,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Required Documents -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Required Documents</div>
@@ -1302,6 +1353,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Supporting Documents -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Supporting Documents</div>
