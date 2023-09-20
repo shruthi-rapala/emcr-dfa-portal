@@ -148,12 +148,11 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="isSmallBusinessOwner === true || isFarmOwner === true">
+        <div class="row" *ngIf="isSmallBusinessOwner === true || isFarmOwner === true || isCharitableOrganization === true">
           <div class="col-md-6 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">Provide the {{ accountLegalNameLabel }}, if applicable</p>
             <mat-form-field appearance="outline">
-              <mat-label *ngIf="isSmallBusinessOwner === true">Provide the business legal name, if applicable.</mat-label>
-              <mat-label *ngIf="isFarmOwner === true">Provide the farm's legal name, if applicable.</mat-label>
-              <input formControlName="businessLegalName" matInput placeholder="Provide the business legal name, if applicable." [required]="damagedPropertyAddressForm.get('businessLegalName').value == 'true'" maxlength="100"/>
+              <input formControlName="businessLegalName" matInput [placeholder]="accountLegalNameLabel" maxlength="100"/>
               <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
                 *ngIf="

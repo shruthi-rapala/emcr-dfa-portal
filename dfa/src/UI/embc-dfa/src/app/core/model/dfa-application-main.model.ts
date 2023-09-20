@@ -131,7 +131,7 @@ export class DamagedPropertyAddressForm {
     if (damagedPropertyAddress.occupyAsPrimaryResidence) {
       this.occupyAsPrimaryResidence.setValue(damagedPropertyAddress.occupyAsPrimaryResidence);
     }
-    this.occupyAsPrimaryResidence.setValidators([Validators.required]);
+    this.occupyAsPrimaryResidence.setValidators(null);
 
     if (damagedPropertyAddress.onAFirstNationsReserve) {
       this.onAFirstNationsReserve.setValue(damagedPropertyAddress.onAFirstNationsReserve);

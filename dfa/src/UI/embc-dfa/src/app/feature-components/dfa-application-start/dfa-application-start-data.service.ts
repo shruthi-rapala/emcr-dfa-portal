@@ -14,9 +14,15 @@ export class DFAApplicationStartDataService {
   private _secondaryApplicantSignature: SignatureBlock;
   private _applicationId: string;
   private _profileId: string;
+  private ApplicantOptions = ApplicantOption;
+
 
   constructor(
   ) {}
+
+  public get isFarmOwner(): boolean {
+    return (this._applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)])
+  }
 
   public get consent(): boolean {
     return this._consent;
