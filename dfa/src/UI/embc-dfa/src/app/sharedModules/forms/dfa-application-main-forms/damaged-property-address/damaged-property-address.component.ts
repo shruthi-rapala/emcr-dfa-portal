@@ -61,7 +61,9 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   isResidentialTenant: boolean = false;
   isHomeowner: boolean = false;
   isSmallBusinessOwner: boolean = false;
+  isCharitableOrganization: boolean = false;
   isFarmOwner: boolean = false;
+  accountLegalNameLabel: string = "";
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -113,30 +115,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
           this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
           this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
-          this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
-          this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators(null);
-          this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValue(null);
-          this.damagedPropertyAddressForm.controls.landlordGivenNames.setValidators([Validators.maxLength(100)]);
-          this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.maxLength(100)]);
-          this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.maxLength(100)]);
-          this.damagedPropertyAddressForm.controls.landlordGivenNames.setValue(null);
-          this.damagedPropertyAddressForm.controls.landlordSurname.setValue(null);
-          this.damagedPropertyAddressForm.controls.landlordEmail.setValue(null);
-          this.damagedPropertyAddressForm.controls.landlordPhone.setValue(null);
-          this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100)]);
-          this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators(null);
-          this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators(null);
-          this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators(null);
-          this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators(null);
-          this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValue(null);
-          this.damagedPropertyAddressForm.controls.farmoperation.setValue(null);
-          this.damagedPropertyAddressForm.controls.ownedandoperatedbya.setValue(null);
-          this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.setValue(null);
-          this.damagedPropertyAddressForm.controls.farmoperation.setValidators(null);
-          this.damagedPropertyAddressForm.controls.ownedandoperatedbya.setValidators(null);
-          this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.setValidators(null);
-          this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators(null);
-          this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValue(null);
+          this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
         if (this.isHomeowner) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators([Validators.required]);
@@ -150,10 +129,14 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
             this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators([Validators.required]);
+            this.accountLegalNameLabel = "Small Business's legal name"
           } else if (this.isFarmOwner) {
             this.damagedPropertyAddressForm.controls.farmoperation.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.ownedandoperatedbya.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.setValidators([Validators.required]);
+            this.accountLegalNameLabel = "Farm's legal name"
+          } else if (this.isCharitableOrganization) {
+            this.accountLegalNameLabel = "Charitable Organization's legal name"
           }
         this.damagedPropertyAddressForm.updateValueAndValidity();
         }
