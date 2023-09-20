@@ -20,9 +20,9 @@
                   <mat-radio-button
                     class="primary-radio-button row"
                     [value]="option.key"
-                    *ngIf="option.value === radioApplicantOptions.Homeowner || option.value === radioApplicantOptions.ResidentialTenant || option.value === radioApplicantOptions.SmallBusinessOwner || option.value === radioApplicantOptions.FarmOwner"
                   ><span *ngIf="option.value === radioApplicantOptions.SmallBusinessOwner">{{ option.value }} (landlords included)</span>
-                   <span *ngIf="option.value !== radioApplicantOptions.SmallBusinessOwner"> {{ option.value }}</span>
+                   <span *ngIf="option.value === radioApplicantOptions.CharitableOrganization">{{ option.value }} (including non-profits)</span>
+                   <span *ngIf="option.value === radioApplicantOptions.Homeowner || option.value === radioApplicantOptions.ResidentialTenant || option.value === radioApplicantOptions.FarmOwner"> {{ option.value }}</span>
                   </mat-radio-button><br />
                   <div class="row">
                     <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.Homeowner">
@@ -201,24 +201,26 @@
                         </div>
                     </mat-radio-group>
                     </div>
-                    <!-- <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.CharitableOrganization">
+                    <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.CharitableOrganization">
                       <br/>
-                      Your charitable organization:
+                      Your charitable organization must:
                       <ul>
-                        <li>Must provide a benefit or service to the community</li>
-                        <li>Must be registered under the provincial Societies Act</li>
+                        <li>provide a benefit or service to the community,</li>
+                        <li>have been in existence for at least 12 months, and</li>
+                        <li>be registered under the BC <i>Societies Act</i>.</li>
                       </ul><br/>
                       As a charitable organization or non-profit you must provide the following with your application:
                       <ul>
-                        <li>Incorporation Documents, Annual Fillings & List of Directors including contact information</li>
-                        <li>Proof of benefit to community & organizational structure: a description in a word document will be considered if no additional proof is available. </li>
-                        <li>completed <a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_homeowners_insurance_template.pdf" target="_blank">insurance template</a> by your insurance broker.</li>
+                        <li><a href="https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/embc/dfa/dfa_farm_small_business_charitable_organization-insurance_template.pdf" target="_blank">Insurance template</a> completed by an insurance broker,</li>
+                        <li>a listing of the Directors, including their contact and address information,</li>
+                        <li>proof of the organization's registration (must include registration date) under the BC <i>Societies Act</i> and annual fillings, and</li>
+                        <li>a statement outlining the organization’s structure and purpose, and any other documentation supporting how the organization meets the eligibility criteria for DFA.</li>
                       </ul><br/>
                       You <i>may</i> be required to provide the following, if applicable:
                       <ul>
-                      <li>Lease Agreements</li>
+                      <li>lease agreements</li>
                       </ul>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
                <mat-error
