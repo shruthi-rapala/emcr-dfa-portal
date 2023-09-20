@@ -6,7 +6,7 @@ import {
   CaptchaResponse,
   CaptchaResponseType
 } from 'src/app/core/components/captcha-v2/captcha-v2.component';
-import { ApplicantOption, FileCategory, FileUpload, InsuranceOption, RoomType, SmallBusinessOption } from 'src/app/core/api/models';
+import { ApplicantOption, FarmOption, FileCategory, FileUpload, InsuranceOption, RoomType, SmallBusinessOption } from 'src/app/core/api/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
 import { UntypedFormGroup } from '@angular/forms';
@@ -53,9 +53,11 @@ export class ReviewComponent implements OnInit {
   RoomTypes = RoomType;
   FileCategories = FileCategory;
   SmallBusinessOptions = SmallBusinessOption;
-isResidentialTenant: boolean = false;
+  FarmOptions = FarmOption;
+  isResidentialTenant: boolean = false;
   isHomeowner: boolean = false;
   isSmallBusinessOwner: boolean = false;
+  isFarmOwner: boolean = false;
   isGeneral: boolean = false;
   isCorporate: boolean = false;
   isLandlord: boolean = false;
@@ -79,10 +81,14 @@ isResidentialTenant: boolean = false;
             this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
             this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
             this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
+            this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
             if (this.isSmallBusinessOwner) {
               this.isGeneral = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.General)]);
               this.isCorporate = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Corporate)]);
               this.isLandlord = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Landlord)]);
+            } else if (this.isFarmOwner) {
+              this.isGeneral = (application.appTypeInsurance.farmOption == Object.keys(this.FarmOptions)[Object.values(this.FarmOptions).indexOf(this.FarmOptions.General)]);
+              this.isCorporate = (application.appTypeInsurance.farmOption == Object.keys(this.FarmOptions)[Object.values(this.FarmOptions).indexOf(this.FarmOptions.Corporate)]);
             }
             switch (application.appTypeInsurance.insuranceOption) {
               case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.Unsure)]:
