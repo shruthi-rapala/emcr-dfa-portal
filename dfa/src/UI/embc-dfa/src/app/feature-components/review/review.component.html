@@ -618,10 +618,11 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="isSmallBusinessOwner || isFarmOwner">
+        <div class="row info-detail" *ngIf="isSmallBusinessOwner || isFarmOwner || isCharitableOrganization">
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isSmallBusinessOwner">Business legal name:</span>
             <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isFarmOwner">Farm legal name:</span>
+            <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isCharitableOrganization">Charitable organization legal name:</span>
           </div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls?.businessLegalName.invalid}">
@@ -1350,6 +1351,15 @@
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noResidentialTenancyAgreement')">
           <span style="color:red">A residential tenancy agreement is required.</span>
+        </div>
+        <div class="row info-detail"  *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noDirectorsListing')">
+          <span style="color:red">A listing of directors is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noRegistrationProof')">
+          <span style="color:red">Proof of the organization's registration is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noStructureAndPurpose')">
+          <span style="color:red">A statement outlining structure and purpose is required.</span>
         </div>
       </mat-card-content>
 
