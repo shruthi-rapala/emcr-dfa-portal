@@ -20,15 +20,15 @@
             <li>Insurance template completed by your insurance broker</li>
             <li *ngIf="isResidentialTenant">Rental agreement: a copy of your rental agreement, lease, or other documentation to show that you are/were legally occupying the damaged property at the time of the event, and</li>
             <li *ngIf="isResidentialTenant">Identification: a copy of government issued identification such as Driver's License, Service Card, or BC ID.</li>
-            <li *ngIf="isSmallBusinessOwner && isGeneral">Income tax return: completed T1 general income tax return with supporting schedules for all owners.</li>
+            <li *ngIf="(isSmallBusinessOwner && isGeneral) || (isFarmOwner && isGeneral)">Income tax return: completed T1 general income tax return with supporting schedules for all owners.</li>
             <li *ngIf="isSmallBusinessOwner && isLandlord">Income tax return: complete T1 general income tax returns for all owners of rented property.</li>
-            <li *ngIf="isSmallBusinessOwner && isCorporate">Income tax return: completed T2 corporate income tax return for the company.</li>
+            <li *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)">Income tax return: completed T2 corporate income tax return for the company.</li>
             <li *ngIf="isSmallBusinessOwner && isLandlord">T776: statement of real estate rentals.</li>
             <li *ngIf="isSmallBusinessOwner && isLandlord">Residential tenancy agreement.</li>
-            <li *ngIf="isSmallBusinessOwner && isCorporate">Proof of ownership: Central Securities Register listing all shareholders or Partnership Agreement.</li>
-            <li *ngIf="isSmallBusinessOwner && isGeneral">Financial statements: most recently filed financial statements (income statement and balance sheet) used for income tax purposes.</li>
-            <li *ngIf="isSmallBusinessOwner && isCorporate">Financial statements: most recently filed company income statement and balance sheet used for income tax purposes.</li>
-            <li *ngIf="isSmallBusinessOwner && (isGeneral || isCorporate)">Lease agreement: if applicable.</li>
+            <li *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)">Proof of ownership: Central Securities Register listing all shareholders or Partnership Agreement.</li>
+            <li *ngIf="(isSmallBusinessOwner && isGeneral) || (isFarmOwner && isGeneral)">Financial statements: most recently filed financial statements (income statement and balance sheet) used for income tax purposes.</li>
+            <li *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)">Financial statements: most recently filed company income statement and balance sheet used for income tax purposes.</li>
+            <li *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner">Lease agreement: if applicable.</li>
           </ul>
           <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
         </div>
@@ -184,7 +184,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isSmallBusinessOwner && isCorporate"> <!-- Proof of ownership for Small Business Owner: Corporate -->
+    <ng-container *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)"> <!-- Proof of ownership for Small Business Owner: Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -230,7 +230,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || (isFarmOwner && isGeneral)"> <!-- Financial Statements for Small Business Owner: General, Corporate -->
+    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner"> <!-- Financial Statements for Small Business Owner: General, Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -253,7 +253,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || (isFarmOwner && isGeneral)"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
+    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment

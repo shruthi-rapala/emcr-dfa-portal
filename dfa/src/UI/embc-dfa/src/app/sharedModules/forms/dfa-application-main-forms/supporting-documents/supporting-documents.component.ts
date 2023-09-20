@@ -105,7 +105,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         } else if (this.isFarmOwner) {
           this.isGeneral = (application.appTypeInsurance.farmOption == Object.keys(this.FarmOptions)[Object.values(this.FarmOptions).indexOf(this.FarmOptions.General)]);
           this.isCorporate = (application.appTypeInsurance.farmOption == Object.keys(this.FarmOptions)[Object.values(this.FarmOptions).indexOf(this.FarmOptions.Corporate)]);
-          this.isGeneral = true;
         }
       }
     });
