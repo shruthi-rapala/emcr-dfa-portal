@@ -28,7 +28,10 @@
             <li *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)">Proof of ownership: Central Securities Register listing all shareholders or Partnership Agreement.</li>
             <li *ngIf="(isSmallBusinessOwner && isGeneral) || (isFarmOwner && isGeneral)">Financial statements: most recently filed financial statements (income statement and balance sheet) used for income tax purposes.</li>
             <li *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)">Financial statements: most recently filed company income statement and balance sheet used for income tax purposes.</li>
-            <li *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner">Lease agreement: if applicable.</li>
+            <li *ngIf="isCharitableOrganization">Directors listing: a listing of the directors, including their contact and address information.</li>
+            <li *ngIf="isCharitableOrganization">Registration proof: proof of the organization's registration.</li>
+            <li *ngIf="isCharitableOrganization">Structure and purpose: a statement of the organization's structure and purpose.</li>
+            <li *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner || isCharitableOrganization">Lease agreement: if applicable.</li>
           </ul>
           <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
         </div>
@@ -65,7 +68,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner"> <!-- Insurance Template for Small Business: General, Corporate, Farm: General, Corporate -->
+    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner || isCharitableOrganization"> <!-- Insurance Template for Small Business: General, Corporate, Farm: General, Corporate, Charitable Organization -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -316,7 +319,97 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
+    <ng-container *ngIf="isCharitableOrganization"> <!-- Directors Listing for Charitable Organization -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Directors Listing"
+            description="Attach a listing of the Directors, including their contact and address information."
+            *ngIf="fileUploadForm.hasError('noDirectorsListing')"
+            requiredDocumentType="DirectorsListing"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="Financial"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('directorsListingFileUpload')"
+          ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noDirectorsListing')">
+            <p class="sub-heading" style="font-size: 15px">Required directors' listing has been uploaded.</p>
+          </mat-card>
+        </div>
+      </div>
+      <br/><br/>
+    </ng-container>
+
+    <ng-container *ngIf="isCharitableOrganization"> <!-- Registration Proof for Charitable Organization -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Registration Proof"
+            description="Attach proof of the organization’s registration (must include registration date) under the BC <i>Societies</i> Act and annual fillings."
+            *ngIf="fileUploadForm.hasError('noRegistrationProof')"
+            requiredDocumentType="RegistrationProof"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="Financial"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('registrationProofFileUpload')"
+          ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noRegistrationProof')">
+            <p class="sub-heading" style="font-size: 15px">Required registration proof has been uploaded.</p>
+          </mat-card>
+        </div>
+      </div>
+      <br/><br/>
+    </ng-container>
+
+    <ng-container *ngIf="isCharitableOrganization"> <!--Structure and Purpose for Charitable Organization -->
+      <div class="row">
+        <div class="col-md-8">
+          <app-dfa-attachment
+            title="Structure and Purpose"
+            description="Attach a statement outlining the organization’s structure and purpose, and any other documentation supporting how the organization meets the eligibility criteria for Disaster Financial Assistance (DFA)."
+            *ngIf="fileUploadForm.hasError('noStructureAndPurpose')"
+            requiredDocumentType="StructureAndPurpose"
+            [allowedFileTypes]="allowedFileTypes"
+            allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+            fileType="Financial"
+            excludeFileTypes="[]"
+            (saveFileUpload)="saveRequiredForm($event)"
+            [fileUpload]="formCreationService.fileUploadsForm.value.get('structureAndPurposeFileUpload')"
+          ></app-dfa-attachment>
+          <app-loader
+            class="spinner"
+            [showLoader]="isLoading"
+            strokeWidth="10"
+            diameter="50"
+          >
+          </app-loader>
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noStructureAndPurpose')">
+            <p class="sub-heading" style="font-size: 15px">Required structure and purpose document has been uploaded.</p>
+          </mat-card>
+        </div>
+      </div>
+      <br/><br/>
+    </ng-container>
+
+    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner || isCharitableOrganization"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -500,6 +593,15 @@
     </mat-error>
     <mat-error *ngIf="fileUploadForm?.hasError('noT776')">
       <br/>A T776 statement of real estate rentals is required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noDirectorsListing')">
+      <br/>A listing of directors is required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noRegistrationProof')">
+      <br/>Proof of the organization's registration is required.
+    </mat-error>
+    <mat-error *ngIf="fileUploadForm?.hasError('noStructureAndPurpose')">
+      <br/>A statement outlining structure and purpose is required.
     </mat-error>
     <mat-error *ngIf="fileUploadForm?.hasError('noResidentialTenancyAgreement')">
       <br/>A residential tenancy agreement is required.

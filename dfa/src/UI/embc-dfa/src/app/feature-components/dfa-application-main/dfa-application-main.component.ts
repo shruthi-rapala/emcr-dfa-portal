@@ -61,6 +61,7 @@ export class DFAApplicationMainComponent
   isHomeowner: boolean = false;
   isSmallBusinessOwner: boolean = false;
   isFarmOwner: boolean = false;
+  isCharitableOrganization: boolean = false;
   AppOptions = ApplicantOption;
   SmallBusinessOptions = SmallBusinessOption;
   FarmOptions = FarmOption;
@@ -92,6 +93,7 @@ export class DFAApplicationMainComponent
         this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
         this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
         this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.FarmOwner)]);
+        this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.CharitableOrganization)]);
         if (this.isSmallBusinessOwner) {
           this.isGeneral = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.General)]);
           this.isCorporate = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Corporate)]);
@@ -114,6 +116,8 @@ export class DFAApplicationMainComponent
           this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T1GeneralIncomeTaxReturn", "FinancialStatements"];
         } else if (this.isFarmOwner && this.isCorporate) {
           this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T2CorporateIncomeTaxReturn", "ProofOfOwnership", "FinancialStatements"];
+        } else if (this.isCharitableOrganization) {
+          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "DirectorsListing", "RegistrationProof", "StructureAndPurpose"]
         }
       }
     });

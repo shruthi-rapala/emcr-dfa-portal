@@ -834,6 +834,9 @@ export class FileUploadsForm {
   tenancyAgreementFileUpload: UntypedFormGroup;
   rentalAgreementFileUpload: UntypedFormGroup;
   identificationFileUpload: UntypedFormGroup;
+  directorsListingFileUpload: UntypedFormGroup;
+  registrationProofFileUpload: UntypedFormGroup;
+  structureAndPurposeFileUpload: UntypedFormGroup;
   damagePhotoFileUpload: UntypedFormGroup;
   supportingFilesFileUpload: UntypedFormGroup;
   fileUploads = new UntypedFormControl([]);
@@ -2183,6 +2186,372 @@ export class FileUploadsForm {
       ]
     });
     this.cleanupFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      requiredDocumentType: [
+        ''
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.directorsListingFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      requiredDocumentType: [
+        ''
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.registrationProofFileUpload = builder.group({
+      deleteFlag: [
+        false,
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      applicationId: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      id: [
+        '',
+      ],
+
+      fileName: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileDescription: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
+      ],
+      fileType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      requiredDocumentType: [
+        ''
+      ],
+      uploadedDate: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      modifiedBy: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileData: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      contentType: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ],
+      fileSize: [
+        '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewFileUploadIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator)
+        ]
+      ]
+    });
+    this.structureAndPurposeFileUpload = builder.group({
       deleteFlag: [
         false,
         [
