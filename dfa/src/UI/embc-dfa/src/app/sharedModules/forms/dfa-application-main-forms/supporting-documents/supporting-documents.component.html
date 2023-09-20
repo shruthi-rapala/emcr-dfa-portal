@@ -57,7 +57,7 @@
             diameter="50"
             >
           </app-loader>
-          <mat-card class="row" *ngIf="fileUploadForm.hasError('noInsuranceTemplate')">
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noInsuranceTemplate')">
             <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
           </mat-card>
         </div>
