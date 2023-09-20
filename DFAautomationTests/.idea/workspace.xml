@@ -71,13 +71,13 @@
       <recent name="C:\workspace4\emcr-dfa-portal\DFAautomationTests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.TestSuiteAllTests">
-    <configuration name="HmeownerUnsureInsurance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.AddCleanLogAndDamageAfterSubmit.test">
+    <configuration name="AddCleanLogAndDamageAfterSubmit.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="HmeownerUnsureInsurance" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="AddCleanLogAndDamageAfterSubmit" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
       <envs>
         <env name="USERNAME_BCEID" value="DFA00004" />
         <env name="PASSWORD_BCEID" value="98900004" />
@@ -86,10 +86,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HomeOwnerApplicationDetails" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="EditApplicationHomeownerNInsurance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="HomeOwnerApplicationDetails" />
+      <option name="MAIN_CLASS_NAME" value="EditApplicationHomeownerNInsurance" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <envs>
@@ -144,18 +144,18 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.TestSuiteAllTests" />
-      <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
-      <item itemvalue="JUnit.ResidentialTenantUInsurance" />
       <item itemvalue="JUnit.ResidentialTenantUInsurance.test" />
-      <item itemvalue="JUnit.HmeownerUnsureInsurance" />
+      <item itemvalue="JUnit.ResidentialTenantUInsurance" />
+      <item itemvalue="JUnit.EditApplicationHomeownerNInsurance" />
+      <item itemvalue="JUnit.AddCleanLogAndDamageAfterSubmit.test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AddCleanLogAndDamageAfterSubmit.test" />
         <item itemvalue="JUnit.TestSuiteAllTests" />
-        <item itemvalue="JUnit.HmeownerUnsureInsurance" />
-        <item itemvalue="JUnit.ResidentialTenantUInsurance" />
+        <item itemvalue="JUnit.EditApplicationHomeownerNInsurance" />
         <item itemvalue="JUnit.ResidentialTenantUInsurance.test" />
-        <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
+        <item itemvalue="JUnit.ResidentialTenantUInsurance" />
       </list>
     </recent_temporary>
   </component>

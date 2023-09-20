@@ -49,7 +49,7 @@ public class HomeOwnerApplicationDetails {
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' 123 FIRST STREET')]")));
 
-        Thread.sleep(5000);
+        Thread.sleep(1000);
         JavascriptExecutor js100 = (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-application-main/div/mat-horizontal-stepper/div/div[2]/div[1]/app-component-wrapper/app-damaged-property-address/mat-card/mat-card-content/form/div[1]/div/mat-radio-group/mat-radio-button[2]/label/span[1]/span[1]")));
         js100.executeScript("arguments[0].click();", element);
@@ -298,10 +298,11 @@ public class HomeOwnerApplicationDetails {
         JavascriptExecutor js34= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"cdk-step-content-1-4\"]/app-component-wrapper/app-damaged-items-by-room/mat-card/mat-card-content/form[1]/div/div/div/mat-card/div[2]/div[2]/button")));
         js34.executeScript("arguments[0].click();", element);
-
+        Thread.sleep(2500);
         //add photo
+        JavascriptExecutor js344= (JavascriptExecutor) driver;
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' + Add Damage photo ')]")));
-        element.click();
+        js344.executeScript("arguments[0].click();", element);
 
         Thread.sleep(1000);
         WebElement upload = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("fileDrop")));
