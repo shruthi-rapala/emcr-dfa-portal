@@ -473,11 +473,11 @@
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
-            title="OtherSuporting Documents (Optional)"
+            title="Other Supporting Documents (Optional)"
             description="If applicable, you may include additional documents related to your application."
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
-            excludeFileTypes="['Cleanup', 'Damage photo']"
+            excludeFileTypes="['Identification', 'Unknown']"
             (saveFileUpload)="saveSupportingFiles($event)"
             (cancelFileUpload)="cancelSupportingFiles()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
@@ -491,9 +491,7 @@
           </app-loader>
         </div>
       </div>
-      <br/><br/>
     </ng-container>
-    <br/><br/>
 
     <div *ngIf="documentSummaryDataSource.data.length > 0">
       <br />
