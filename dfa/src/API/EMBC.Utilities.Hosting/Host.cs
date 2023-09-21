@@ -119,7 +119,7 @@ namespace EMBC.Utilities.Hosting
                         Configure(app, ctx.Configuration, ctx.HostingEnvironment, assemblies);
                     }).ConfigureLogging(logging =>
                     {
-                        //logging.AddOpenTelemetry(opts => opts.AddConsoleExporter());
+                        // logging.AddOpenTelemetry(opts => opts.AddConsoleExporter());
                     });
                 });
 

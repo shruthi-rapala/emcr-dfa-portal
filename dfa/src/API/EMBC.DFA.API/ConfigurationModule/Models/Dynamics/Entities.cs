@@ -53,8 +53,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class dfa_appapplicationstart_params
     {
         public int dfa_applicanttype { get; set; } // required (already existing)
-        // public int dfa_smallbusinessoption { get; set; } // TODO: uncomment
-        // public int dfa_farmoption { get; set; } // TODO: uncomment
+        // public int? dfa_smallbusinesstype { get; set; } // optional OptionSet TODO: uncomment
+        // public int? dfa_farmtype { get; set; } // optional OptionSet TODO: uncomment
         public int dfa_doyouhaveinsurancecoverage2 { get; set; } // required
         public string dfa_appcontactid { get; set; } // required string passed in to PROC, PROC looks up appcontact to fill in application fields
         public int dfa_primaryapplicantsignednoins { get; set; } // required Yes or No option set
@@ -106,8 +106,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string? dfa_appapplicationid { get; set; } // optional string
         public int? dfa_applicanttype { get; set; } // required (already existing)
-        // public int? dfa_smallbusinessoption { get; set; } // TODO: uncomment
-        // public int? dfa_farmoption { get; set; } // TODO: uncomment
+        public int? dfa_smallbusinesstype { get; set; } // optional OptionSet
+        public int? dfa_farmtype { get; set; } // optional OptionSet
         public int? dfa_doyouhaveinsurancecoverage2 { get; set; } // required
         public int? dfa_primaryapplicantsignednoins { get; set; } // required Yes or No option set
         public string? dfa_primaryapplicantprintnamenoins { get; set; } // optional string
@@ -323,6 +323,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string createdon { get; set; } // uploaded date
         public string dfa_documenttype { get; set; }
         public string dfa_modifiedby { get; set; }
+        public string dfa_requireddocumenttype { get; set; }
     }
 
     public class AttachmentEntity
@@ -342,6 +343,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_description { get; set; } // pass in description
         public string dfa_modifiedby { get; set; } // pass in modified by
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
+        // public string? dfa_requireddocumenttype { get; set; } // for required documents TODO: uncomment
     }
 
     public class dfa_DFAActionDeleteDocuments_parms
@@ -388,6 +390,27 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Incorporated")]
         Incorporated = 222710006
+    }
+
+    public enum SmallBusinessOptionSet
+    {
+        [Description("General")]
+        General = 222710000,
+
+        [Description("Corporate")]
+        Corporate = 222710001,
+
+        [Description("Landlord")]
+        Landlord = 222710002
+    }
+
+    public enum FarmOptionSet
+    {
+        [Description("General")]
+        General = 222710000,
+
+        [Description("Corporate")]
+        Corporate = 222710001
     }
 
     public enum SecondaryApplicantTypeOptionSet
