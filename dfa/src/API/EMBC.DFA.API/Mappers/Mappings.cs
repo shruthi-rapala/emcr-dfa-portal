@@ -156,7 +156,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_areyounowresidingintheresidence2, opts => opts.MapFrom(s => s.propertyDamage.residingInResidence == null ? (int?)null : (s.propertyDamage.residingInResidence == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_datereturntoresidence, opts => opts.MapFrom(s => s.propertyDamage.dateReturned))
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.propertyDamage.briefDescription))
-                .ForMember(d => d.dfa_doyourlossestotalmorethan10002, opts => opts.MapFrom(s => s.propertyDamage.lossesExceed1000 == null ? (int?)null : (s.propertyDamage.lossesExceed1000 == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_doyourlossestotalmorethan10002, opts => opts.MapFrom(s => s.damagedPropertyAddress.lossesExceed1000 == null ? (int?)null : (s.damagedPropertyAddress.lossesExceed1000 == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_wereyouevacuatedduringtheevent2, opts => opts.MapFrom(s => s.propertyDamage.wereYouEvacuated == null ? (int?)null : (s.propertyDamage.wereYouEvacuated == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_damagedpropertystreet1, opts => opts.MapFrom(s => s.damagedPropertyAddress.addressLine1))
                 .ForMember(d => d.dfa_damagedpropertystreet2, opts => opts.MapFrom(s => s.damagedPropertyAddress.addressLine2))
@@ -209,6 +209,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.businessManagedByAllOwnersOnDayToDayBasis, opts => opts.MapFrom(s => s.dfa_businessmanagedbyallownersondaytodaybasis == (int)YesNoOptionSet.Yes ? true : (s.dfa_businessmanagedbyallownersondaytodaybasis == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.employLessThan50EmployeesAtAnyOneTime, opts => opts.MapFrom(s => s.dfa_employlessthan50employeesatanyonetime == (int)YesNoOptionSet.Yes ? true : (s.dfa_employlessthan50employeesatanyonetime == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.grossRevenues100002000000BeforeDisaster, opts => opts.MapFrom(s => s.dfa_grossrevenues100002000000beforedisaster == (int)YesNoOptionSet.Yes ? true : (s.dfa_grossrevenues100002000000beforedisaster == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.lossesExceed1000, opts => opts.MapFrom(s => s.dfa_doyourlossestotalmorethan10002 == (int)YesNoOptionSet.Yes ? true : (s.dfa_doyourlossestotalmorethan10002 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.farmoperation, opts => opts.MapFrom(s => s.dfa_farmoperation == (int)YesNoOptionSet.Yes ? true : (s.dfa_farmoperation == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.ownedandoperatedbya, opts => opts.MapFrom(s => s.dfa_ownedandoperatedbya == (int)YesNoOptionSet.Yes ? true : (s.dfa_ownedandoperatedbya == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.farmoperationderivesthatpersonsmajorincom, opts => opts.MapFrom(s => s.dfa_farmoperationderivesthatpersonsmajorincom == (int)YesNoOptionSet.Yes ? true : (s.dfa_farmoperationderivesthatpersonsmajorincom == (int)YesNoOptionSet.No ? false : (bool?)null)))
@@ -225,7 +226,6 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.residingInResidence, opts => opts.MapFrom(s => s.dfa_areyounowresidingintheresidence2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_areyounowresidingintheresidence2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.dateReturned, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_datereturntotheresidence) ? DateTime.Parse(s.dfa_datereturntotheresidence).ToString("o") + "Z" : s.dfa_datereturntotheresidence))
                 .ForMember(d => d.briefDescription, opts => opts.MapFrom(s => s.dfa_description))
-                .ForMember(d => d.lossesExceed1000, opts => opts.MapFrom(s => s.dfa_doyourlossestotalmorethan10002 == (int)YesNoOptionSet.Yes ? true : (s.dfa_doyourlossestotalmorethan10002 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.wereYouEvacuated, opts => opts.MapFrom(s => s.dfa_wereyouevacuatedduringtheevent2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_wereyouevacuatedduringtheevent2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
 
             CreateMap<dfa_appapplicationmain_retrieve, SignAndSubmit>()

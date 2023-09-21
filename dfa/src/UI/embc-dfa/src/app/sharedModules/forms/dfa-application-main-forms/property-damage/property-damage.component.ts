@@ -69,12 +69,9 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
             this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
             this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
             if (this.isHomeowner || this.isResidentialTenant) {
-              this.propertyDamageForm.controls.lossesExceed1000.setValidators([Validators.required]);
               this.propertyDamageForm.controls.wereYouEvacuated.setValidators([Validators.required]);
               this.propertyDamageForm.controls.residingInResidence.setValidators([Validators.required]);
             } else if (this.isSmallBusinessOwner || this.isFarmOwner || this.isCharitableOrganization) {
-              this.propertyDamageForm.controls.lossesExceed1000.setValidators(null);
-              this.propertyDamageForm.controls.lossesExceed1000.setValue(null);
               this.propertyDamageForm.controls.wereYouEvacuated.setValidators(null);
               this.propertyDamageForm.controls.wereYouEvacuated.setValue(null);
               this.propertyDamageForm.controls.dateReturned.setValue(null);
@@ -169,15 +166,6 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '') {
           this.propertyDamageForm.get('briefDescription').reset();
-        }
-      });
-
-    this.propertyDamageForm
-      .get('lossesExceed1000')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.propertyDamageForm.get('lossesExceed1000').reset();
         }
       });
 

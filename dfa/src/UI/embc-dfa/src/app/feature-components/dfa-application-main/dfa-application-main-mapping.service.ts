@@ -44,7 +44,8 @@ export class DFAApplicationMainMappingService {
           grossRevenues100002000000BeforeDisaster: dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === false ? 'false' : null),
           farmoperation: dfaApplicationMain.damagedPropertyAddress.farmoperation === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.farmoperation === false ? 'false' : null),
           farmoperationderivesthatpersonsmajorincom: dfaApplicationMain.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom === false ? 'false' : null),
-          ownedandoperatedbya: dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === false ? 'false' : null)
+          ownedandoperatedbya: dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === false ? 'false' : null),
+          lossesExceed1000: dfaApplicationMain.damagedPropertyAddress.lossesExceed1000 === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.lossesExceed1000 === false ? 'false' : null),
         });
         formGroup = damagedPropertyAddress;
       });
@@ -104,7 +105,6 @@ export class DFAApplicationMainMappingService {
       .subscribe((propertyDamage) => {
         propertyDamage.setValue({
           ...dfaApplicationMain.propertyDamage,
-          lossesExceed1000: dfaApplicationMain.propertyDamage.lossesExceed1000 === true ? 'true' : (dfaApplicationMain.propertyDamage.lossesExceed1000 === false ? 'false' : null),
           wereYouEvacuated: dfaApplicationMain.propertyDamage.wereYouEvacuated === true ? 'true' : (dfaApplicationMain.propertyDamage.wereYouEvacuated === false ? 'false' : null),
           residingInResidence: dfaApplicationMain.propertyDamage.residingInResidence === true ? 'true' : (dfaApplicationMain.propertyDamage.residingInResidence === false ? 'false' : null),
         });

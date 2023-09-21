@@ -322,6 +322,7 @@ namespace EMBC.DFA.API.Controllers
         public bool? farmoperation { get; set; }
         public bool? ownedandoperatedbya { get; set; }
         public bool? farmoperationderivesthatpersonsmajorincom { get; set; }
+        public bool? lossesExceed1000 { get; set; }
     }
 
     /// <summary>
@@ -337,7 +338,6 @@ namespace EMBC.DFA.API.Controllers
         public string? damageFromDate { get; set; }
         public string? damageToDate { get; set; }
         public string? briefDescription { get; set; }
-        public bool? lossesExceed1000 { get; set; }
         public bool? wereYouEvacuated { get; set; }
         public string? dateReturned { get; set; }
         public bool? residingInResidence { get; set; }
