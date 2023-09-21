@@ -97,6 +97,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_doyouhaveinsurancecoverage2, opts => opts.MapFrom(s => s.AppTypeInsurance.insuranceOption == InsuranceOption.Yes ? InsuranceTypeOptionSet.Yes :
                     (s.AppTypeInsurance.insuranceOption == InsuranceOption.No ? InsuranceTypeOptionSet.No :
                     (s.AppTypeInsurance.insuranceOption == InsuranceOption.Unsure ? InsuranceTypeOptionSet.YesBut : InsuranceTypeOptionSet.Yes))))
+                //.ForMember(d => d.dfa_smallbusinesstype, opts => opts.MapFrom(s => s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.General ? SmallBusinessOptionSet.General :
+                //    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Corporate ? SmallBusinessOptionSet.Corporate :
+                //    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Landlord ? SmallBusinessOptionSet.Landlord : SmallBusinessOptionSet.General))))
+                //.ForMember(d => d.dfa_farmtype, opts => opts.MapFrom(s => s.AppTypeInsurance.farmOption == FarmOption.General ? FarmOptionSet.General :
+                //    (s.AppTypeInsurance.farmOption == FarmOption.Corporate ? FarmOptionSet.Corporate : FarmOptionSet.General)))
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_primaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_primaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.signedName))
@@ -124,6 +129,11 @@ namespace EMBC.DFA.API.Mappers
                     (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.SmallBusinessOwner ? ApplicantOption.SmallBusinessOwner :
                     (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.FarmOwner ? ApplicantOption.FarmOwner :
                     (s.dfa_applicanttype == (int)ApplicantTypeOptionSet.CharitableOrganization ? ApplicantOption.CharitableOrganization : ApplicantOption.Homeowner))))))
+                .ForMember(d => d.farmOption, opts => opts.MapFrom(s => s.dfa_farmtype == (int)FarmOptionSet.General ? FarmOption.General :
+                    (s.dfa_farmtype == (int)FarmOptionSet.Corporate ? FarmOption.Corporate : FarmOption.General)))
+                .ForMember(d => d.smallBusinessOption, opts => opts.MapFrom(s => s.dfa_smallbusinesstype == (int)SmallBusinessOptionSet.General ? SmallBusinessOption.General :
+                    (s.dfa_smallbusinesstype == (int)SmallBusinessOptionSet.Corporate ? SmallBusinessOption.Corporate :
+                    (s.dfa_smallbusinesstype == (int)SmallBusinessOptionSet.Landlord ? SmallBusinessOption.Landlord : SmallBusinessOption.General))))
                 .ForMember(d => d.insuranceOption, opts => opts.MapFrom(s => s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.Yes ? InsuranceOption.Yes :
                     (s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.No ? InsuranceOption.No :
                     (s.dfa_doyouhaveinsurancecoverage2 == (int)InsuranceTypeOptionSet.YesBut ? InsuranceOption.Unsure : InsuranceOption.Yes))));
@@ -304,7 +314,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdocumentlocationsid))
                 .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_name))
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
-                //.ForMember(d => d.RequiredDocumentType, opts => opts.MapFrom(s => ConvertStringToRequiredDocumentType(s.dfa_documenttype))) //TODO: map require file type
+                .ForMember(d => d.requiredDocumentType, opts => opts.MapFrom(s => ConvertStringToRequiredDocumentType(s.dfa_requireddocumenttype)))
                 .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.dfa_description))
                 .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.modifiedBy, opts => opts.MapFrom(s => s.dfa_modifiedby))

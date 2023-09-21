@@ -160,6 +160,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
 
+            list.List.FirstOrDefault().dfa_farmtype = (int)FarmOptionSet.General; // TODO: replace this with actual retrieve
+            list.List.FirstOrDefault().dfa_smallbusinesstype = (int)SmallBusinessOptionSet.General; // TODO: replace this with actual retrieve
+
             return list.List.FirstOrDefault();
         }
 
@@ -227,6 +230,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     }
                 }
             }
+
+            list.List.FirstOrDefault().dfa_accountlegalname = "Lorraine's Company"; // TODO: delete these 7 lines when values available in dynamics
+            list.List.FirstOrDefault().dfa_businessmanagedbyallownersondaytodaybasis = (int)YesNoNullOptionSet.Yes;
+            list.List.FirstOrDefault().dfa_grossrevenues100002000000beforedisaster = (int)YesNoNullOptionSet.Yes;
+            list.List.FirstOrDefault().dfa_employlessthan50employeesatanyonetime = (int)YesNoNullOptionSet.Yes;
+            list.List.FirstOrDefault().dfa_farmoperation = (int)YesNoNullOptionSet.Yes;
+            list.List.FirstOrDefault().dfa_farmoperationderivesthatpersonsmajorincom = (int)YesNoNullOptionSet.Yes;
+            list.List.FirstOrDefault().dfa_ownedandoperatedbya = (int)YesNoNullOptionSet.Yes;
 
             return list.List.FirstOrDefault();
         }
@@ -602,6 +613,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     }, Filter = $"_dfa_applicationid_value eq {applicationIdString}"
                 });
 
+                // TODO: delete this loop and replace with actual retrieval of required document type above
+                list.List.ForEach(item =>
+                {
+                    if (item.dfa_documenttype == "Insurance") item.dfa_requireddocumenttype = "Insurance Template";
+                });
                 return list.List;
             }
             catch (System.Exception ex)
