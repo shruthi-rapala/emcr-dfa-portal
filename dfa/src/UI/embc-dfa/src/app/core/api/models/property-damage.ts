@@ -11,7 +11,6 @@ export interface PropertyDamage {
   dateReturned?: null | string;
   floodDamage?: null | boolean;
   landslideDamage?: null | boolean;
-  lossesExceed1000?: null | boolean;
   otherDamage?: null | boolean;
   otherDamageText?: null | string;
   residingInResidence?: null | boolean;

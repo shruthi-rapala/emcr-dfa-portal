@@ -323,7 +323,6 @@ namespace EMBC.DFA.API.Controllers
         public bool? ownedandoperatedbya { get; set; }
         public bool? farmoperationderivesthatpersonsmajorincom { get; set; }
         public bool? lossesExceed1000 { get; set; }
-
     }
 
     /// <summary>
