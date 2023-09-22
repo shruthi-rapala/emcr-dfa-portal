@@ -63,6 +63,11 @@ namespace EMBC.DFA.API.Controllers
 
             var applicationId = await handler.HandleApplication(mappedApplication);
 
+            // Verify Profile
+            application.ProfileVerification.profile.BCServiceCardId = currentUserId;
+            var mappedProfile = mapper.Map<dfa_appcontact>(application.ProfileVerification.profile);
+            var msg = await handler.HandleContact(mappedProfile);
+
             // If no insurance, add signatures
             if (application.AppTypeInsurance.insuranceOption == InsuranceOption.No)
             {
@@ -186,7 +191,6 @@ namespace EMBC.DFA.API.Controllers
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             var profileId = profile.Id;
-            //var profileId = "d245240e-99f0-46d1-8d82-78e1196f4e09";
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }

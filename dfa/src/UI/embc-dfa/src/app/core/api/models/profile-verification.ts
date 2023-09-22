@@ -6,7 +6,7 @@ import { Profile } from './profile';
  * Profile Verification
  */
 export interface ProfileVerification {
-  profile?: Profile;
+  profile?: null | Profile;
   profileId?: null | string;
   profileVerified?: boolean;
 }
