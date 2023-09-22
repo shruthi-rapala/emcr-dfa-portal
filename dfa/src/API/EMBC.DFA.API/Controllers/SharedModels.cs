@@ -79,6 +79,7 @@ namespace EMBC.DFA.API.Controllers
     {
         public bool profileVerified { get; set; }
         public string? profileId { get; set; }
+        public Profile profile { get; set; }
     }
 
     /// <summary>

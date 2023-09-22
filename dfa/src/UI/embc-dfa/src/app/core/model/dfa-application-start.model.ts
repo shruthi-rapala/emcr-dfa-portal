@@ -4,7 +4,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { SignatureBlock } from 'src/app/core/api/models';
+import { Profile, SignatureBlock } from 'src/app/core/api/models';
 import { ApplicantOption, SmallBusinessOption, FarmOption, InsuranceOption, DfaApplicationStart } from '../api/models';
 import { CustomValidationService } from '../services/customValidation.service';
 
@@ -33,27 +33,31 @@ export class ConsentForm {
 export class ProfileVerification {
   profileVerified: boolean;
   profileId: string;
+  profile: Profile;
 
   constructor(
     profileVerified?: boolean,
-    profileId?: string
+    profileId?: string,
+    profile?: Profile
   ) {}
 }
 
-// export class ProfileVerificationForm {
-//   profileVerified = new UntypedFormControl();
-//   profileId = new UntypedFormControl();
+export class ProfileVerificationForm {
+  profileVerified = new UntypedFormControl();
+  profileId = new UntypedFormControl();
+  indigenousStatus = new UntypedFormControl();
+  initials = new UntypedFormControl();
 
-//   constructor(
-//     profileVerification: ProfileVerification
-//   ) {
-//     this.profileVerified.setValidators([Validators.required]);
-//     this.profileVerified.setValue(profileVerification.profileVerified);
+  constructor(
+    profileVerification: ProfileVerification
+  ) {
+    this.profileVerified.setValidators([Validators.required]);
+    this.profileVerified.setValue(profileVerification.profileVerified);
 
-//     this.profileId.setValue(profileVerification.profileId);
-//     this.profileId.setValidators([Validators.required]);
-//   }
-// }
+    this.profileId.setValue(profileVerification.profileId);
+    this.profileId.setValidators([Validators.required]);
+  }
+}
 
 export class AppTypeInsurance {
   applicantOption: ApplicantOption;
