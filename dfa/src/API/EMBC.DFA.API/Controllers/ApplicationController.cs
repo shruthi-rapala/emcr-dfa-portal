@@ -152,6 +152,12 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationStart.ProfileVerification = mapper.Map<ProfileVerification>(dfa_appapplication);
             dfaApplicationStart.Consent = mapper.Map<Consent>(dfa_appapplication);
             dfaApplicationStart.AppTypeInsurance = mapper.Map<AppTypeInsurance>(dfa_appapplication);
+            dfaApplicationStart.OtherPreScreeningQuestions = mapper.Map<OtherPreScreeningQuestions>(dfa_appapplication);
+
+            // Fill in profile
+            var userId = currentUserId;
+            var profile = await handler.HandleGetUser(userId);
+            dfaApplicationStart.ProfileVerification.profile = profile;
             return Ok(dfaApplicationStart);
         }
 
@@ -208,6 +214,8 @@ namespace EMBC.DFA.API.Controllers
         public ProfileVerification ProfileVerification { get; set; }
 
         public AppTypeInsurance AppTypeInsurance { get; set; }
+
+        public OtherPreScreeningQuestions OtherPreScreeningQuestions { get; set; }
     }
 
     public class DFAApplicationMain

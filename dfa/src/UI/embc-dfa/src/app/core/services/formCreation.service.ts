@@ -12,6 +12,7 @@ import {
   Restriction,
 } from '../model/profile.model';
 import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm } from '../model/dfa-application-start.model';
+import { DfaPrescreening, DfaPrescreeningForm } from '../model/dfa-prescreening.model';
 import { InsuranceOption } from 'src/app/core/api/models';
 import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress, PropertyDamage, SignAndSubmit, SupportingDocuments, DamagedRoomsForm,
   FullTimeOccupantsForm, SecondaryApplicantsForm, OtherContactsForm,
@@ -101,6 +102,19 @@ export class FormCreationService {
 
   profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
     this.profileVerificationForm.asObservable();
+
+  dfaPrescreeningForm: BehaviorSubject<UntypedFormGroup | undefined> =
+   new BehaviorSubject(
+     this.formBuilder.group(
+       new DfaPrescreeningForm(
+         new DfaPrescreening(),
+         this.customValidator
+       )
+     )
+   );
+
+  dfaPrescreeningForm$: Observable<UntypedFormGroup | undefined> =
+    this.dfaPrescreeningForm.asObservable();
 
   // DFA Applciation Main Forms
   damagedPropertyAddressForm: BehaviorSubject<UntypedFormGroup | undefined> =

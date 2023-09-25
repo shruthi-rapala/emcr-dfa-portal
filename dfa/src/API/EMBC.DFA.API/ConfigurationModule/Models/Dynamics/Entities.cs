@@ -63,6 +63,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int dfa_secondaryapplicantsignednoins { get; set; } // required OptionSet existing Yes or No option set
         public string? dfa_secondaryapplicantprintnamenoins { get; set; } // optional string
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
+        public int? dfa_isprimaryanddamagedaddresssame2 { get; set; } // optional Two Options
+        public string? dfa_damagedpropertystreet1 { get; set; } // optional string
+        public string? dfa_damagedpropertystreet2 { get; set; } // optional string
+        public string? dfa_damagedpropertycitytext { get; set; } // optional string
+        public string? dfa_damagedpropertyprovince { get; set; } // optional string
+        public string? dfa_damagedpropertypostalcode { get; set; } // optional string
+        public string? dfa_dateofdamage { get; set; } // optoinal date only
+        public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean
     }
 
     public class dfa_signature
@@ -116,6 +124,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantprintnamenoins { get; set; } // optional string
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
         public string? _dfa_applicant_value { get; set; }
+        public int? dfa_isprimaryanddamagedaddresssame2 { get; set; } // optional Two Options
+        public string? dfa_damagedpropertystreet1 { get; set; } // optional string
+        public string? dfa_damagedpropertystreet2 { get; set; } // optional string
+        public string? dfa_damagedpropertycitytext { get; set; } // optional string
+        public string? dfa_damagedpropertyprovince { get; set; } // optional string
+        public string? dfa_damagedpropertypostalcode { get; set; } // optional string
+        public string? dfa_dateofdamage { get; set; } // optoinal date only
+        public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean
     }
 
     public class dfa_appapplicationmain_params

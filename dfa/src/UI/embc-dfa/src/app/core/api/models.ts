@@ -12,6 +12,7 @@ export { InsuranceOption } from './models/insurance-option';
 export { SmallBusinessOption } from './models/small-business-option';
 export { FarmOption } from './models/farm-option';
 export { SignatureBlock } from './models/signature-block';
+export { OtherPreScreeningQuestions } from './models/other-pre-screening-questions';
 export { DfaApplicationMain } from './models/dfa-application-main';
 export { DamagedPropertyAddress } from './models/damaged-property-address';
 export { PropertyDamage } from './models/property-damage';
