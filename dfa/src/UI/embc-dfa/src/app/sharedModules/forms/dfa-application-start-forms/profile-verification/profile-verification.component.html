@@ -153,14 +153,60 @@
         <!-- Mailing Address -->
         <mat-card-content class="contentStyle mat-elevation-z8">
           <div class="row justify-content-between">
-            <div class="col-md-6 card-heading">Current Contact Address</div>
+            <div class="col-md-6 card-heading">Mailing Address <span style="color:red">*</span></div>
+            <span>You must be able to receive mail at this address.  Please keep this address up to date during the process.</span>
           </div>
           <hr />
-          <div formGroupName="mailingAddress">
+          <div class="col-md-12">
+            <span
+              id="isNewMailingAddress-radio-group-label"
 
-            <div class="row info-detail">
+              >&nbsp;&nbsp;&nbsp;Is your mailing address different from your profile address above?<br/></span
+            >
+            <mat-radio-group
+              formControlName="isMailingAddressSameAsPrimaryAddress"
+              style="margin-right: 5px; padding-right: 5px;"
+              (change)="sameAsPrimary($event)"
+              required
+            >
+              <mat-radio-button
+                class="primary-radio-button"
+                value="Yes"
+              >
+                No
+              </mat-radio-button>
+              <mat-radio-button
+                class="primary-radio-button"
+                value="No"
+              >
+                Yes
+              </mat-radio-button>
+              <mat-radio-button
+                class="primary-radio-button"
+                value="I don't have a permanent address right now"
+              >
+                I don't have a permanent address right now
+              </mat-radio-button>
+              <mat-error
+                class="custom-mat-error"
+                *ngIf="
+                  profileVerificationForm.get('profile.isMailingAddressSameAsPrimaryAddress').touched &&
+                  profileVerificationForm.get('profile.isMailingAddressSameAsPrimaryAddress').invalid &&
+                  profileVerificationForm.get('profile.isMailingAddressSameAsPrimaryAddress').hasError(
+                    'required'
+                  )
+                "
+              >
+                Required</mat-error
+              >
+            </mat-radio-group>
+          </div>
+
+          <div formGroupName="mailingAddress" *ngIf="profileVerificationForm.get('profile.isMailingAddressSameAsPrimaryAddress').value === 'No'">
+            <br/><br/>Please enter your mailing address:
+            <div class="row info-detail" >
               <div class="col-md-3">
-                <span>Address line 1:</span>
+                <span>Address line 1</span>
               </div>
               <div class="col-md-3">
                 <mat-form-field appearance="outline">
@@ -192,7 +238,7 @@
 
             <div class="row info-detail">
               <div class="col-md-3">
-                <span>Address line 2:</span>
+                <span>Address line 2</span>
               </div>
               <div class="col-md-3">
                 <mat-form-field appearance="outline">
@@ -216,7 +262,7 @@
 
             <div class="row info-detail">
               <div class="col-md-3">
-                <span>City:</span>
+                <span>City</span>
               </div>
               <div class="col-md-3">
                 <mat-form-field appearance="outline">
@@ -247,7 +293,7 @@
 
             <div class="row info-detail">
               <div class="col-md-3">
-                <span>Postal Code:</span>
+                <span>Postal Code</span>
               </div>
               <div class="col-md-3">
                 <mat-form-field appearance="outline">
@@ -287,15 +333,35 @@
 
             <div class="row info-detail">
               <div class="col-md-3">
-                <span>Province:</span>
+                <span>Province</span>
               </div>
               <div class="col-md-3">
-                <div class="col-md-3">
-                  <span>{{ profileVerificationForm.get('profile.mailingAddress.stateProvince').value}}</span>
-                </div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Province</mat-label>
+                  <input
+                    maxlength="100"
+                    required
+                    formControlName="stateProvince"
+                    matInput
+                    placeholder="Province"
+                  />
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.mailingAddress.stateProvince').invalid &&
+                      profileVerificationForm.get('profile.mailingAddress.stateProvince').hasError('maxLength')
+                    "
+                    >Maximum length is 100</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.mailingAddress.stateProvince').invalid &&
+                      profileVerificationForm.get('profile.mailingAddress.stateProvince').hasError('required')
+                    "
+                    >Province is required</mat-error
+                  >
+                </mat-form-field>
               </div>
             </div>
-
           </div>
         </mat-card-content>
 
@@ -316,6 +382,7 @@
                   <mat-label>Cellular Telephone Number</mat-label>
                   <input
                     maxlength="100"
+                    required
                     formControlName="cellPhoneNumber"
                     [textMask]="{ mask: phoneMask, keepCharPositions: true }"
                     matInput
