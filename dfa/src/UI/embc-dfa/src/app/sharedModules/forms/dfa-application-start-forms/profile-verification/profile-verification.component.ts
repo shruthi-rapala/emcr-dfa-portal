@@ -4,6 +4,7 @@ import {
   UntypedFormGroup,
   AbstractControl,
   FormsModule,
+  Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -19,7 +20,7 @@ import { ProfileService } from 'src/app/core/api/services';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
+import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { TextMaskModule } from 'angular2-text-mask';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 
@@ -31,6 +32,7 @@ import { AddressFormsModule } from '../../address-forms/address-forms.module';
 export default class ProfileVerificationComponent implements OnInit, OnDestroy {
   profileVerificationForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
+  mailingAddressRadioOption: string[] = ['Yes', 'No', 'I don\'t have a permanent address right now'];
   profileVerificationForm$: Subscription;
   formCreationService: FormCreationService;
   radioOption: string[] = ['Yes', 'No'];
@@ -90,6 +92,15 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
     this.profileVerificationForm.get('profileVerified').setValue(true);
 
     this.profileVerificationForm
+      .get('profile.isMailingAddressSameAsPrimaryAddress')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.profileVerificationForm.get('profile.isMailingAddressSameAsPrimaryAddress').reset();
+        }
+      });
+
+    this.profileVerificationForm
       .get('profile.personalDetails.indigenousStatus')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
@@ -144,6 +155,15 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
       });
 
     this.profileVerificationForm
+      .get('profile.mailingAddress.stateProvince')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.profileVerificationForm.get('profile.mailingAddress.stateProvince').reset();
+        }
+      });
+
+    this.profileVerificationForm
       .get('profile.contactDetails.cellPhoneNumber')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
@@ -171,6 +191,29 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
       });
   }
 
+  sameAsPrimary(event: MatRadioChange): void {
+    const primaryAddress = this.profileVerificationForm.getRawValue().address;
+    if (event.value === 'Yes') {
+      this.profileVerificationForm.get('profile.mailingAddress').patchValue(primaryAddress);
+      this.profileVerificationForm.get('profile.mailingAddress.addressLine1').setValidators(null);
+      this.profileVerificationForm.get('profile.mailingAddress.city').setValidators(null);
+      this.profileVerificationForm.get('profile.mailingAddress.stateProvince').setValidators(null);
+    } else if (event.value === 'No') {
+      this.profileVerificationForm.get('profile.mailingAddress').reset();
+      this.profileVerificationForm.get('profile.mailingAddress.addressLine1').setValidators([Validators.required]);
+      this.profileVerificationForm.get('profile.mailingAddress.city').setValidators([Validators.required]);
+      this.profileVerificationForm.get('profile.mailingAddress.stateProvince').setValidators(null);
+    }
+    else {
+      this.profileVerificationForm.get('profile.mailingAddress').reset();
+      this.profileVerificationForm.get('profile.mailingAddress.addressLine1').setValidators(null);
+      this.profileVerificationForm.get('profile.mailingAddress.city').setValidators(null);
+      this.profileVerificationForm.get('profile.mailingAddress.stateProvince').setValidators(null);
+    }
+
+    this.updateOnVisibility();
+  }
+
   /**
    * Returns the control of the form
    */
@@ -179,7 +222,22 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
   }
 
   updateOnVisibility(): void {
+    this.profileVerificationForm.get('profile.isMailingAddressSameAsPrimaryAddress').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.personalDetails.initials').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.personalDetails.indigenousStatus').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.personalDetails').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.mailingAddress.addressLine1').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.mailingAddress.addressLine2').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.mailingAddress.city').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.mailingAddress.postalCode').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.mailingAddress.stateProvince').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.mailingAddress').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.contactDetails.cellPhoneNumber').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.contactDetails.residencePhone').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.contactDetails.alternatePhone').updateValueAndValidity();
+    this.profileVerificationForm.get('profile.contactDetails').updateValueAndValidity();
     this.profileVerificationForm.get('profileVerified').updateValueAndValidity();
+    this.profileVerificationForm.updateValueAndValidity();
   }
 
   ngOnDestroy(): void {
