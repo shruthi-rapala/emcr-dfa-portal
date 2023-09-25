@@ -21,6 +21,7 @@ import { InsuranceOption, SignatureBlock } from 'src/app/core/api/models';
 import { ProfileDataService } from '../profile/profile-data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAApplicationAlertDialogComponent } from 'src/app/core/components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
+import { ProfileService } from 'src/app/core/api/services';
 
 
 @Component({
@@ -59,7 +60,7 @@ export class DFAApplicationStartComponent
     private alertService: AlertService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private dfaApplicationStartService: DFAApplicationStartService,
-    private profileDataService: ProfileDataService,
+    private profileService: ProfileService,
     public dialog: MatDialog,
   ) {
     const navigation = this.router.getCurrentNavigation();
@@ -129,15 +130,28 @@ export class DFAApplicationStartComponent
   }
 
   /**
+   * Dashboard
+   */
+  returnToDashboard(): void {
+    const navigationPath = '/' + this.currentFlow + '/dashboard';
+    this.router.navigate([navigationPath]);
+  }
+
+  /**
    * Custom back stepper function
    *
    * @param stepper stepper instance
    * @param lastStep stepIndex
    */
-  goBack(stepper: MatStepper, lastStep): void {
-    const navigationPath = '/' + this.currentFlow + '/dashboard';
-    this.router.navigate([navigationPath]);
-  }
+    goBack(stepper: MatStepper, lastStep): void {
+      if (lastStep === 0) {
+        stepper.previous();
+      } else if (lastStep === -1) {
+        this.showStep = !this.showStep;
+      } else if (lastStep === -2) {
+        this.returnToDashboard();
+      }
+    }
 
   /**
    * Custom next stepper function
@@ -151,9 +165,14 @@ export class DFAApplicationStartComponent
       this.alertMessage(component);
     } else if (this.form.status === 'VALID') {
       this.setFormData(component);
-      this.form$.unsubscribe();
-      stepper.selected.completed = true;
-      stepper.next();
+      if (stepper.selectedIndex == 1) {
+        this.updateProfile(stepper);
+      }
+      else {
+        this.form$.unsubscribe();
+        stepper.selected.completed = true;
+        stepper.next();
+      }
     } else {
       this.form.markAllAsTouched();
     }
@@ -169,10 +188,21 @@ export class DFAApplicationStartComponent
       case 'consent':
         this.dfaApplicationStartDataService.consent = this.form.get('consent').value;
         break;
-      // case 'profile-verification':
-      //   this.dfaApplicationStartDataService.profileVerified = this.form.get('profileVerified').value;
-      //   this.dfaApplicationStartDataService.profileId = this.form.get('profileId').value;
-      //   break;
+      case 'profile-verification':  // only udpateable fields
+        this.dfaApplicationStartDataService.profileVerified = this.form.get('profileVerified').value;
+        this.dfaApplicationStartDataService.profile.bcServiceCardId = this.form.get('profile.bcServiceCardId').value;
+        this.dfaApplicationStartDataService.profile.id = this.form.get('profile.id').value;
+        this.dfaApplicationStartDataService.profile.personalDetails.indigenousStatus = this.form.get('profile.personalDetails.indigenousStatus').value;
+        this.dfaApplicationStartDataService.profile.personalDetails.initials = this.form.get('profile.personalDetails.initials').value;
+        this.dfaApplicationStartDataService.profile.mailingAddress.addressLine1 = this.form.get('profile.mailingAddress.addressLine1').value;
+        this.dfaApplicationStartDataService.profile.mailingAddress.addressLine2 = this.form.get('profile.mailingAddress.addressLine2').value;
+        this.dfaApplicationStartDataService.profile.mailingAddress.city = this.form.get('profile.mailingAddress.city').value;
+        this.dfaApplicationStartDataService.profile.mailingAddress.postalCode = this.form.get('profile.mailingAddress.postalCode').value;
+        this.dfaApplicationStartDataService.profile.mailingAddress.stateProvince = this.form.get('profile.mailingAddress.stateProvince').value;
+        this.dfaApplicationStartDataService.profile.contactDetails.alternatePhone = this.form.get('profile.contactDetails.alternatePhone').value;
+        this.dfaApplicationStartDataService.profile.contactDetails.cellPhoneNumber = this.form.get('profile.contactDetails.cellPhoneNumber').value;
+        this.dfaApplicationStartDataService.profile.contactDetails.residencePhone = this.form.get('profile.contactDetails.residencePhone').value;
+        break;
       case 'apptype-insurance':
         this.dfaApplicationStartDataService.applicantOption = this.form.controls.applicantOption.value;
         this.dfaApplicationStartDataService.insuranceOption = this.form.controls.insuranceOption.value;
@@ -210,15 +240,15 @@ export class DFAApplicationStartComponent
           });
         this.showSaveButton = false;
         break;
-      // case 1:
-        // this.form$ = this.formCreationService
-        //   .getProfileVerificationForm()
-        //   .subscribe((profileVerification) => {
-        //     this.form = profileVerification;
-        //   });
-        // this.showSaveButton = false;
-        // break;
       case 1:
+        this.form$ = this.formCreationService
+          .getProfileVerificationForm()
+          .subscribe((profileVerification) => {
+            this.form = profileVerification;
+          });
+        this.showSaveButton = false;
+        break;
+      case 2:
         this.form$ = this.formCreationService
           .getAppTypeInsuranceForm()
           .subscribe((appTypeInsurance) => {
@@ -250,6 +280,24 @@ export class DFAApplicationStartComponent
         this.showLoader = !this.showLoader;
         this.isSubmitted = !this.isSubmitted;
         this.alertService.setAlert('danger', globalConst.saveApplicationError);
+      }
+     });
+  }
+
+  updateProfile(stepper: MatStepper): void {
+    this.showLoader = !this.showLoader;
+    this.profileService
+    .profileAddContact({ body: this.dfaApplicationStartDataService.profile })
+     .subscribe({
+      next: (msg) => {
+        this.showLoader = !this.showLoader;
+        this.form$.unsubscribe();
+        stepper.selected.completed = true;
+        stepper.next();
+       return
+      },
+      error: (error) => {
+        this.showLoader = !this.showLoader;
       }
      });
   }

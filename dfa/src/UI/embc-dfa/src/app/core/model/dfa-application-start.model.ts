@@ -4,7 +4,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { SignatureBlock } from 'src/app/core/api/models';
+import { Profile, SignatureBlock } from 'src/app/core/api/models';
 import { ApplicantOption, SmallBusinessOption, FarmOption, InsuranceOption, DfaApplicationStart } from '../api/models';
 import { CustomValidationService } from '../services/customValidation.service';
 
@@ -33,27 +33,177 @@ export class ConsentForm {
 export class ProfileVerification {
   profileVerified: boolean;
   profileId: string;
+  profile: Profile;
 
   constructor(
     profileVerified?: boolean,
-    profileId?: string
+    profileId?: string,
+    profile?: Profile
   ) {}
 }
 
-// export class ProfileVerificationForm {
-//   profileVerified = new UntypedFormControl();
-//   profileId = new UntypedFormControl();
+export class ProfileVerificationForm {
+  profileVerified = new UntypedFormControl();
+  profileId = new UntypedFormControl();
+  profile: UntypedFormGroup;
+  personalDetails: UntypedFormGroup;
+  primaryAddress: UntypedFormGroup;
+  mailingAddress: UntypedFormGroup;
+  contactDetails: UntypedFormGroup;
+  email = new UntypedFormControl();
+  cellPhoneNumber = new UntypedFormControl();
+  id = new UntypedFormControl();
+  bcServiceCardId = new UntypedFormControl();
+  residencePhone = new UntypedFormControl();
+  alternatePhone = new UntypedFormControl();
+  addressLine1 = new UntypedFormControl();
+  addressLine2 = new UntypedFormControl();
+  city = new UntypedFormControl();
+  stateProvince = new UntypedFormControl();
+  postalCode = new UntypedFormControl();
+  firstName = new UntypedFormControl();
+  lastName = new UntypedFormControl();
+  initials = new UntypedFormControl();
+  indigenousStatus = new UntypedFormControl();
+  isMailingAddressSameAsPrimaryAddress = new UntypedFormControl();
 
-//   constructor(
-//     profileVerification: ProfileVerification
-//   ) {
-//     this.profileVerified.setValidators([Validators.required]);
-//     this.profileVerified.setValue(profileVerification.profileVerified);
+  constructor(
+    profileVerification: ProfileVerification,
+    builder: UntypedFormBuilder,
+    customValidator: CustomValidationService
+  ) {
+    this.profileVerified.setValidators([Validators.required]);
+    this.profileVerified.setValue(profileVerification.profileVerified);
 
-//     this.profileId.setValue(profileVerification.profileId);
-//     this.profileId.setValidators([Validators.required]);
-//   }
-// }
+    this.profileId.setValue(profileVerification.profileId);
+    this.profileId.setValidators([Validators.required]);
+
+    this.profile = builder.group({
+      id: ['', Validators.required],
+      bcServiceCardId: ['', Validators.required],
+      isMailingAddressSameAsPrimaryAddress: ['', Validators.required],
+      personalDetails: builder.group({
+        lastName: [
+          profileVerification.profile?.personalDetails.lastName,
+          [Validators.required, customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        firstName: [
+          profileVerification.profile?.personalDetails.firstName,
+          [Validators.required, customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        indigenousStatus: [
+          profileVerification.profile?.personalDetails.indigenousStatus
+        ],
+        initials: [
+          profileVerification.profile?.personalDetails.initials,
+          [customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+      }),
+      primaryAddress: builder.group({
+        addressLine1: [
+          profileVerification.profile?.primaryAddress.addressLine1,
+          [Validators.required, customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        addressLine2: [
+          profileVerification.profile?.primaryAddress.addressLine2,
+          [customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        city: [
+          profileVerification.profile?.primaryAddress.city,
+          [Validators.required, customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        postalCode: [
+          profileVerification.profile?.primaryAddress.postalCode,
+          [Validators.required, customValidator.postalValidation().bind(customValidator), customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        stateProvince: [
+          profileVerification.profile?.primaryAddress.stateProvince ? profileVerification.profile?.primaryAddress.stateProvince : 'British Columbia',
+          [Validators.required, customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ]
+      }),
+      mailingAddress: builder.group({
+        addressLine1: [
+          profileVerification.profile?.mailingAddress.addressLine1,
+          [Validators.required, customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        addressLine2: [
+          profileVerification.profile?.mailingAddress.addressLine2,
+          [customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        city: [
+          profileVerification.profile?.mailingAddress.city,
+          [Validators.required, customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        postalCode: [
+          profileVerification.profile?.mailingAddress.postalCode,
+          [Validators.required,
+            Validators.pattern(/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/),
+            customValidator.postalValidation().bind(customValidator),
+            customValidator.maxLengthValidator(100).bind(customValidator)]
+        ],
+        stateProvince: [
+          profileVerification.profile?.mailingAddress.stateProvince ? profileVerification.profile.mailingAddress.stateProvince : 'British Columbia',
+          [Validators.required, customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ]
+      }),
+      contactDetails: builder.group({
+        email: [
+          profileVerification.profile?.contactDetails.email,
+          [Validators.required,
+            Validators.email,
+            customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)]
+        ],
+        cellPhoneNumber: [
+          profileVerification.profile?.contactDetails.cellPhoneNumber,
+          [customValidator.maskedNumberLengthValidator().bind(customValidator),
+            customValidator
+              .maxLengthValidator(100)
+              .bind(customValidator)]
+        ],
+        residencePhone: [
+          profileVerification.profile?.contactDetails.residencePhone,
+          [customValidator.maskedNumberLengthValidator().bind(customValidator),
+            customValidator
+              .maxLengthValidator(100)
+              .bind(customValidator)]
+        ],
+        alternatePhone: [
+          profileVerification.profile?.contactDetails.alternatePhone,
+          [customValidator.maskedNumberLengthValidator().bind(customValidator),
+            customValidator
+              .maxLengthValidator(100)
+              .bind(customValidator)]
+        ]
+      }),
+    });
+  }
+}
 
 export class AppTypeInsurance {
   applicantOption: ApplicantOption;

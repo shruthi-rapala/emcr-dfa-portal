@@ -81,6 +81,30 @@ namespace EMBC.DFA.API.Controllers
         }
 
         /// <summary>
+        /// Get the current logged in user's profile, with first name, last name, primary address and email from BCSC
+        /// </summary>
+        /// <returns>Currently logged in user's profile with BCSC Updates</returns>
+        [HttpGet("currentWithBCSCUpdates")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Profile>> GetProfileWithUpdatedBCSC()
+        {
+            var userId = currentUserId;
+            var appContactProfile = await handler.HandleGetUser(userId);
+
+            // get BCSC profile
+            var bcscProfile = GetUserFromPrincipal();
+
+            // update appContact details from BCSC login
+            appContactProfile.ContactDetails.Email = bcscProfile.ContactDetails.Email;
+            appContactProfile.PersonalDetails.FirstName = bcscProfile.PersonalDetails.FirstName;
+            appContactProfile.PersonalDetails.LastName = bcscProfile.PersonalDetails.LastName;
+            appContactProfile.PrimaryAddress = bcscProfile.PrimaryAddress;
+
+            return Ok(appContactProfile);
+        }
+
+        /// <summary>
         /// check if user exists or not
         /// </summary>
         /// <returns>true if existing user, false if a new user</returns>
