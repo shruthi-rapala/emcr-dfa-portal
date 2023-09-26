@@ -21,6 +21,7 @@ export interface DamagedPropertyAddress {
   landlordGivenNames?: null | string;
   landlordPhone?: null | string;
   landlordSurname?: null | string;
+  lossesExceed1000?: null | boolean;
   manufacturedHome?: null | boolean;
   occupyAsPrimaryResidence?: null | boolean;
   onAFirstNationsReserve?: null | boolean;

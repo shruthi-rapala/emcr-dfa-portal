@@ -21,6 +21,7 @@ export class DamagedPropertyAddress {
   landlordSurname?: null | string;
   manufacturedHome?: null | boolean;
   occupyAsPrimaryResidence?: null | boolean;
+  lossesExceed1000?: null | boolean;
   onAFirstNationsReserve?: null | boolean;
   postalCode?: null | string;
   stateProvince?: null | string;
@@ -40,6 +41,7 @@ export class DamagedPropertyAddress {
     stateProvince?: null | StateProvince,
     country?: Country,
     occupyAsPrimaryResidence?: null | boolean,
+    lossesExceed1000?: null | boolean,
     onAFirstNationsReserve?: null | boolean,
     firstNationsReserve?: string,
     manufacturedHome?: null | boolean,
@@ -71,6 +73,7 @@ export class DamagedPropertyAddressForm {
   manufacturedHome = new UntypedFormControl();
   eligibleForHomeOwnerGrant = new UntypedFormControl();
   isPrimaryAndDamagedAddressSame = new UntypedFormControl();
+  lossesExceed1000 = new UntypedFormControl();
   landlordGivenNames = new UntypedFormControl();
   landlordSurname = new UntypedFormControl();
   landlordPhone = new UntypedFormControl();
@@ -214,6 +217,12 @@ export class DamagedPropertyAddressForm {
       this.farmoperationderivesthatpersonsmajorincom.setValue(damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom);
     }
     this.farmoperationderivesthatpersonsmajorincom.setValidators(null);
+
+    if (damagedPropertyAddress.lossesExceed1000) {
+      this.lossesExceed1000.setValue(damagedPropertyAddress.lossesExceed1000);
+    }
+    this.lossesExceed1000.setValidators(null);
+
   }
 }
 
@@ -224,7 +233,6 @@ export class PropertyDamage {
   dateReturned?: null | string;
   floodDamage?: null | boolean;
   landslideDamage?: null | boolean;
-  lossesExceed1000?: null | boolean;
   otherDamage?: null | boolean;
   otherDamageText?: null | string;
   residingInResidence?: null | boolean;
@@ -240,7 +248,6 @@ export class PropertyDamage {
     damageFromDate?: null | Date,
     damageToDate?: null | Date,
     briefDescription?: null | string,
-    lossesExceed1000?: null | boolean,
     wereYouEvacuated?: null | boolean,
     dateReturned?: null | Date,
     residingInResidence?: null | boolean,
@@ -256,7 +263,6 @@ export class PropertyDamageForm {
   damageFromDate = new UntypedFormControl();
   damageToDate = new UntypedFormControl();
   briefDescription = new UntypedFormControl();
-  lossesExceed1000 = new UntypedFormControl();
   wereYouEvacuated = new UntypedFormControl();
   dateReturned = new UntypedFormControl();
   residingInResidence = new UntypedFormControl();
@@ -308,11 +314,6 @@ export class PropertyDamageForm {
     this.briefDescription.setValidators([customValidator
       .maxLengthValidator(2000)
       .bind(customValidator)]);
-
-    if (propertyDamage.lossesExceed1000) {
-      this.lossesExceed1000.setValue(propertyDamage.lossesExceed1000);
-    }
-    this.lossesExceed1000.setValidators(null);
 
     if (propertyDamage.wereYouEvacuated) {
       this.wereYouEvacuated.setValue(propertyDamage.wereYouEvacuated);

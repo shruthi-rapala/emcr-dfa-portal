@@ -1,6 +1,9 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
+    <p class="sub-heading" style="font-size: 20px">Application Type & Insurance</p>
+    <br/>
+
     <form [formGroup]="appTypeInsuranceForm">
 
       <ng-container>
@@ -61,6 +64,7 @@
                       <mat-radio-group
                         formControlName="smallBusinessOption"
                         class="primary-radio-group"
+                        [required]="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.SmallBusinessOwner"
                         aria-label="Select an option">
                         <div *ngFor="let sbOption of radioSmallBusinessOptions | keyvalue: originalOrder">
                           <mat-radio-button
@@ -143,6 +147,7 @@
                       <mat-radio-group
                         formControlName="farmOption"
                         class="primary-radio-group"
+                        [required]="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.FarmOwner"
                         aria-label="Select an option">
                         <div *ngFor="let frmOption of radioFarmOptions | keyvalue: originalOrder">
                           <mat-radio-button

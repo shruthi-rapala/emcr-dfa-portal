@@ -11,7 +11,7 @@ import {
   RestrictionForm,
   Restriction,
 } from '../model/profile.model';
-import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm } from '../model/dfa-application-start.model';
+import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm } from '../model/dfa-application-start.model';
 import { InsuranceOption } from 'src/app/core/api/models';
 import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress, PropertyDamage, SignAndSubmit, SupportingDocuments, DamagedRoomsForm,
   FullTimeOccupantsForm, SecondaryApplicantsForm, OtherContactsForm,
@@ -21,6 +21,9 @@ import { CustomValidationService } from './customValidation.service';
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
   public insuranceOptionChanged: EventEmitter<any>;
+  public applicantOptionChanged: EventEmitter<any>;
+  public farmOptionChanged: EventEmitter<any>;
+  public smallBusinessOptionChanged: EventEmitter<any>;
   public appTypeInsuranceFormValidityChange: EventEmitter<string>;
   public secondaryApplicantsChanged: EventEmitter<Array<SecondaryApplicant>>;
   public signaturesChanged: EventEmitter<UntypedFormGroup>;
@@ -88,17 +91,19 @@ export class FormCreationService {
   consentForm$: Observable<UntypedFormGroup | undefined> =
    this.consentForm.asObservable();
 
-  // profileVerificationForm: BehaviorSubject<UntypedFormGroup | undefined> =
-  //  new BehaviorSubject(
-  //    this.formBuilder.group(
-  //      new ProfileVerificationForm(
-  //        new ProfileVerification()
-  //      )
-  //    )
-  //  );
+  profileVerificationForm: BehaviorSubject<UntypedFormGroup | undefined> =
+   new BehaviorSubject(
+     this.formBuilder.group(
+       new ProfileVerificationForm(
+         new ProfileVerification(),
+         this.formBuilder,
+         this.customValidator
+       )
+     )
+   );
 
-  // profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
-  //   this.profileVerificationForm.asObservable();
+  profileVerificationForm$: Observable<UntypedFormGroup | undefined> =
+    this.profileVerificationForm.asObservable();
 
   // DFA Applciation Main Forms
   damagedPropertyAddressForm: BehaviorSubject<UntypedFormGroup | undefined> =
@@ -253,6 +258,9 @@ export class FormCreationService {
     private customValidator: CustomValidationService
   ) {
     this.insuranceOptionChanged = new EventEmitter<any>();
+    this.applicantOptionChanged = new EventEmitter<any>();
+    this.farmOptionChanged = new EventEmitter<any>();
+    this.smallBusinessOptionChanged = new EventEmitter<any>();
     this.secondaryApplicantsChanged = new EventEmitter<Array<SecondaryApplicant>>();
     this.appTypeInsuranceFormValidityChange = new EventEmitter<string>();
     this.signaturesChanged = new EventEmitter<UntypedFormGroup>;
@@ -340,23 +348,25 @@ export class FormCreationService {
     );
   }
 
-  // getProfileVerificationForm(): Observable<UntypedFormGroup> {
-  //   return this.profileVerificationForm$;
-  // }
+  getProfileVerificationForm(): Observable<UntypedFormGroup> {
+    return this.profileVerificationForm$;
+  }
 
-  // setProfileVerificationForm(profileVerificationForm: UntypedFormGroup): void {
-  //   this.profileVerificationForm.next(profileVerificationForm);
-  // }
+  setProfileVerificationForm(profileVerificationForm: UntypedFormGroup): void {
+    this.profileVerificationForm.next(profileVerificationForm);
+  }
 
-  // clearProfileVerificationData(): void {
-  //   this.profileVerificationForm.next(
-  //     this.formBuilder.group(
-  //       new ProfileVerificationForm(
-  //         new ProfileVerification()
-  //       )
-  //     )
-  //   );
-  // }
+  clearProfileVerificationData(): void {
+    this.profileVerificationForm.next(
+      this.formBuilder.group(
+        new ProfileVerificationForm(
+          new ProfileVerification(),
+          this.formBuilder,
+          this.customValidator
+        )
+      )
+    );
+  }
 
   getDamagedPropertyAddressForm(): Observable<UntypedFormGroup> {
     return this.damagedPropertyAddressForm$;

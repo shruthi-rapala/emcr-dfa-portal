@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DfaApplicationStart } from 'src/app/core/api/models';
+import { DfaApplicationStart, Profile } from 'src/app/core/api/models';
 import { SmallBusinessOption, ApplicantOption, SignatureBlock, InsuranceOption, FarmOption } from 'src/app/core/api/models';
 
 @Injectable({ providedIn: 'root' })
@@ -14,6 +14,7 @@ export class DFAApplicationStartDataService {
   private _secondaryApplicantSignature: SignatureBlock;
   private _applicationId: string;
   private _profileId: string;
+  private _profile: Profile;
 
   constructor(
   ) {}
@@ -23,6 +24,14 @@ export class DFAApplicationStartDataService {
   }
   public set consent(value: boolean) {
     this._consent = value;
+  }
+
+  public get profile(): Profile {
+    return this._profile;
+  }
+
+  public set profile(value: Profile) {
+    this._profile = value;
   }
 
   public get profileVerified(): boolean {
@@ -92,7 +101,7 @@ export class DFAApplicationStartDataService {
     return {
       consent: { consent: this.consent },
       id: this._applicationId,
-      profileVerification: { profileVerified: this.profileVerified, profileId: this.profileId },
+      profileVerification: { profileVerified: this.profileVerified, profileId: this.profileId, profile: this._profile },
       appTypeInsurance: {
         applicantOption: this.applicantOption,
         insuranceOption: this.insuranceOption,
