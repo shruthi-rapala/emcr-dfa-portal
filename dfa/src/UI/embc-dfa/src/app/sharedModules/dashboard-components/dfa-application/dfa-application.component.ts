@@ -6,6 +6,13 @@ import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
+import {
+  bookIcon,
+  eyeIcon,
+  fileAddIcon,
+  paperclipIcon,
+  userIcon,
+} from "@progress/kendo-svg-icons";
 
 @Component({
   selector: 'app-dfadashboard-application',
@@ -19,7 +26,19 @@ export class DfaApplicationComponent implements OnInit {
     this.currentApplicationsCount.emit(value);
   }
 
+  items = [
+    { label: "Draft Application", isCompleted : true, currentStep : false },
+    { label: "Submitted Application", isCompleted: true, currentStep: false },
+    { label: "Reviewing Application", isCompleted: true, currentStep: false },
+    { label: "Creating Case File", isCompleted: true, currentStep: false },
+    { label: "Confirming Eligibility", isCompleted: false, currentStep: true },
+    { label: "Assessing Damage", isCompleted: false, currentStep: false },
+    { label: "Reviewing Damage Report", isCompleted: false, currentStep: false },
+    { label: "DFA Decision made", isCompleted: false, currentStep: false },
+  ];
   lstApplications = [];
+  isLinear = true;
+  current = 1;
 
   constructor(
     private profileDataService: ProfileDataService,
