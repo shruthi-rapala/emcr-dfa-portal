@@ -73,17 +73,46 @@ export class DFAApplicationStartComponent
     this.formCreationService.insuranceOptionChanged.subscribe((any) => {
       let yesEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
       if (this.form?.controls?.insuranceOption?.value === yesEnumKey) this.fullInsurance = true; else this.fullInsurance = false;
+      this.checkSubmitAllowed();
 
-      let noEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
-      if (this.form?.controls?.applicantOption?.value && this.form?.controls?.insuranceOption?.value) {
-        if (this.form?.controls?.insuranceOption?.value == noEnumKey ) {
-          if (this.form?.get('applicantSignature')?.value && this.form?.get('applicantSignature.dateSigned')?.value &&
-            this.form?.get('applicantSignature.signature')?.value && this.form?.get('applicantSignature.signedName')?.value) {
-              this.submitAllowed = true;
-            } else this.submitAllowed = false;
-        } else this.submitAllowed = true;
-      } else this.submitAllowed = false;
+      });
+
+    this.formCreationService.applicantOptionChanged.subscribe((any) => {
+      this.checkSubmitAllowed();
     });
+
+    this.formCreationService.smallBusinessOptionChanged.subscribe((any) => {
+      this.checkSubmitAllowed();
+    })
+
+    this.formCreationService.farmOptionChanged.subscribe((any) => {
+      this.checkSubmitAllowed();
+    })
+
+  }
+
+  checkSubmitAllowed() {
+    // debugger;
+    console.log(this.form);
+    this.submitAllowed = false;
+    this.form.updateValueAndValidity();
+
+    // must have a value for both applicant option and insurance option
+    if (!this.form?.get('applicantOption')?.value || !this.form?.get('insuranceOption')?.value) return;
+
+    // if insurance option is no check for signatures
+    let noEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
+    if (this.form?.get('insuranceOption')?.value == noEnumKey ) {
+      if (!this.form?.get('applicantSignature')?.value || !this.form?.get('applicantSignature.dateSigned')?.value ||
+        !this.form?.get('applicantSignature.signature')?.value || !this.form?.get('applicantSignature.signedName')?.value) {
+        return;
+      }
+    }
+
+    // check for valid form
+    if (!this.form.valid) return;
+
+    this.submitAllowed = true;
   }
 
   ngOnInit(): void {
@@ -161,12 +190,13 @@ export class DFAApplicationStartComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
-    if (isLast) {
-      this.alertMessage(component);
-    } else if (this.form.status === 'VALID') {
+    if (this.form.status === 'VALID') {
       this.setFormData(component);
       if (stepper.selectedIndex == 1) {
         this.updateProfile(stepper);
+      }
+      else if (isLast) {
+        this.alertMessage(component);
       }
       else {
         this.form$.unsubscribe();
@@ -297,6 +327,7 @@ export class DFAApplicationStartComponent
        return
       },
       error: (error) => {
+        console.error(error);
         this.showLoader = !this.showLoader;
       }
      });

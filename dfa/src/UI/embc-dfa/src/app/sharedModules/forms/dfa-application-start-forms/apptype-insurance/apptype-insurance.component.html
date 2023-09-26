@@ -64,6 +64,7 @@
                       <mat-radio-group
                         formControlName="smallBusinessOption"
                         class="primary-radio-group"
+                        [required]="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.SmallBusinessOwner"
                         aria-label="Select an option">
                         <div *ngFor="let sbOption of radioSmallBusinessOptions | keyvalue: originalOrder">
                           <mat-radio-button
@@ -146,6 +147,7 @@
                       <mat-radio-group
                         formControlName="farmOption"
                         class="primary-radio-group"
+                        [required]="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.FarmOwner"
                         aria-label="Select an option">
                         <div *ngFor="let frmOption of radioFarmOptions | keyvalue: originalOrder">
                           <mat-radio-button

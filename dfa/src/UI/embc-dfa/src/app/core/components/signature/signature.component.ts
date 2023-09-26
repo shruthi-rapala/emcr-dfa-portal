@@ -182,6 +182,8 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   public clearCanvas() {
       this.context
           .clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+      this.signatureBlock.signature = null;
+      this.updateSignatureBlock();
   }
 }
 

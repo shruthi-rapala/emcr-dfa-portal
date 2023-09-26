@@ -22,6 +22,9 @@ import { CustomValidationService } from './customValidation.service';
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
   public insuranceOptionChanged: EventEmitter<any>;
+  public applicantOptionChanged: EventEmitter<any>;
+  public farmOptionChanged: EventEmitter<any>;
+  public smallBusinessOptionChanged: EventEmitter<any>;
   public appTypeInsuranceFormValidityChange: EventEmitter<string>;
   public secondaryApplicantsChanged: EventEmitter<Array<SecondaryApplicant>>;
   public signaturesChanged: EventEmitter<UntypedFormGroup>;
@@ -269,6 +272,9 @@ export class FormCreationService {
     private customValidator: CustomValidationService
   ) {
     this.insuranceOptionChanged = new EventEmitter<any>();
+    this.applicantOptionChanged = new EventEmitter<any>();
+    this.farmOptionChanged = new EventEmitter<any>();
+    this.smallBusinessOptionChanged = new EventEmitter<any>();
     this.secondaryApplicantsChanged = new EventEmitter<Array<SecondaryApplicant>>();
     this.appTypeInsuranceFormValidityChange = new EventEmitter<string>();
     this.signaturesChanged = new EventEmitter<UntypedFormGroup>;

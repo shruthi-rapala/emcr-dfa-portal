@@ -70,7 +70,11 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
         this.profileVerificationForm = profileVerification;
         this.profileVerificationForm.updateValueAndValidity();
         this.profileService.profileGetProfileWithUpdatedBcsc().subscribe(profile => {
-          this.profileVerificationForm.get('profile').setValue(profile);
+          this.profileVerificationForm.get('profile').patchValue(profile);
+          // trim phone numbers
+          this.profileVerificationForm.get('profile.contactDetails.cellPhoneNumber').setValue(profile.contactDetails.cellPhoneNumber.substring(0,12));
+          this.profileVerificationForm.get('profile.contactDetails.alternatePhone').setValue(profile.contactDetails.alternatePhone.substring(0,12));
+          this.profileVerificationForm.get('profile.contactDetails.residencePhone').setValue(profile.contactDetails.residencePhone.substring(0,12));
           if (!this.profileVerificationForm.get('profile.primaryAddress.stateProvince').value) this.profileVerificationForm.get('profile.primaryAddress.stateProvince')?.setValue("BC");
           this.profileVerificationForm.get('profileId').setValue(profile.id);
           this.dfaApplicationStartDataService.profile = profile;
