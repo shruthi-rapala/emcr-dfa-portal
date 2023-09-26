@@ -53,19 +53,12 @@ export class DFAPrescreeningComponent
     private formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
-    public dfaPrescreeningDataService: DfaPrescreeningDataService,
-    private dfaApplicationMainService: DFAApplicationMainService,
+    public dfaPrescreeningDataService: DFAPrescreeningDataService,
+    private dfaPrescreeningService: DFAPrescreeningService,
     private applicationService: ApplicationService,
     public dialog: MatDialog,
-    private fileUploadsService: AttachmentService
   ) {
     const navigation = this.router.getCurrentNavigation();
-    if (navigation !== null) {
-      if (navigation.extras.state !== undefined) {
-        const state = navigation.extras.state as { stepIndex: number };
-        this.stepToDisplay = state.stepIndex;
-      }
-    }
 
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {

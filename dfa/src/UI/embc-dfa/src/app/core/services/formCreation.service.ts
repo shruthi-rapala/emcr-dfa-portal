@@ -376,6 +376,26 @@ export class FormCreationService {
     );
   }
 
+  getDfaPrescreeningForm(): Observable<UntypedFormGroup> {
+    return this.dfaPrescreeningForm$;
+  }
+
+  setProfileVerificationForm(profileVerificationForm: UntypedFormGroup): void {
+    this.profileVerificationForm.next(profileVerificationForm);
+  }
+
+  clearProfileVerificationData(): void {
+    this.profileVerificationForm.next(
+      this.formBuilder.group(
+        new ProfileVerificationForm(
+          new ProfileVerification(),
+          this.formBuilder,
+          this.customValidator
+        )
+      )
+    );
+  }
+
   getDamagedPropertyAddressForm(): Observable<UntypedFormGroup> {
     return this.damagedPropertyAddressForm$;
   }
