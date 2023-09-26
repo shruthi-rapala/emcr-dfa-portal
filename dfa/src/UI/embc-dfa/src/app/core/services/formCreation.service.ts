@@ -386,16 +386,15 @@ export class FormCreationService {
     return this.dfaPrescreeningForm$;
   }
 
-  setProfileVerificationForm(profileVerificationForm: UntypedFormGroup): void {
-    this.profileVerificationForm.next(profileVerificationForm);
+  seDfaPrescreeningForm(dfaPrescreeningForm: UntypedFormGroup): void {
+    this.dfaPrescreeningForm.next(dfaPrescreeningForm);
   }
 
-  clearProfileVerificationData(): void {
-    this.profileVerificationForm.next(
+  clearDfaPrescreeningData(): void {
+    this.dfaPrescreeningForm.next(
       this.formBuilder.group(
-        new ProfileVerificationForm(
-          new ProfileVerification(),
-          this.formBuilder,
+        new DfaPrescreeningForm(
+          new DfaPrescreening(),
           this.customValidator
         )
       )

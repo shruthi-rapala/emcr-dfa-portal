@@ -38,7 +38,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'dfa-prescreening/:id',
+    path: 'dfa-prescreening',
     loadChildren: () =>
       import(
         './feature-components/dfa-prescreening/dfa-prescreening.module'

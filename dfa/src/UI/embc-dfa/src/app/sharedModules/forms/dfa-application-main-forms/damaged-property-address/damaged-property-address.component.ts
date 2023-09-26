@@ -389,7 +389,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         data: {
           content: content
         },
-        height: '350px',
         width: '700px',
         disableClose: true
       })

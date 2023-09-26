@@ -20,8 +20,8 @@ export class NextstepsprofileComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  navigateToDFAApplicationStart(): void {
-    this.router.navigate(['/dfa-application-start']);
+  navigateToDFAPrescreening(): void {
+    this.router.navigate(['/dfa-prescreening']);
   }
 
   navigateToDashboard(): void {
