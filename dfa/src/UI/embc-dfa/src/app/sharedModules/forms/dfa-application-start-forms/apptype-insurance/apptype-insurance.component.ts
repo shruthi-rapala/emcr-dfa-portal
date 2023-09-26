@@ -81,6 +81,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
           this.appTypeInsuranceForm.get('farmOption').setValidators(null);
         }
         this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
+        this.formCreationService.applicantOptionChanged.emit();
         this.appTypeInsuranceForm.updateValueAndValidity();
       });
 
@@ -114,6 +115,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.appTypeInsuranceForm.get('smallBusinessOption').reset();
         }
+        this.formCreationService.smallBusinessOptionChanged.emit();
       });
 
     this.appTypeInsuranceForm
@@ -123,6 +125,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.appTypeInsuranceForm.get('farmOption').reset();
         }
+        this.formCreationService.farmOptionChanged.emit();
       });
 
   }
