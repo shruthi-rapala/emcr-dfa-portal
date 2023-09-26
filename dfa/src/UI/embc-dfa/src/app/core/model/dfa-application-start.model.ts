@@ -183,21 +183,21 @@ export class ProfileVerificationForm {
           profileVerification.profile?.contactDetails.cellPhoneNumber,
           [customValidator.maskedNumberLengthValidator().bind(customValidator),
             customValidator
-              .maxLengthValidator(100)
+              .maxLengthValidator(12)
               .bind(customValidator)]
         ],
         residencePhone: [
           profileVerification.profile?.contactDetails.residencePhone,
           [customValidator.maskedNumberLengthValidator().bind(customValidator),
             customValidator
-              .maxLengthValidator(100)
+              .maxLengthValidator(12)
               .bind(customValidator)]
         ],
         alternatePhone: [
           profileVerification.profile?.contactDetails.alternatePhone,
           [customValidator.maskedNumberLengthValidator().bind(customValidator),
             customValidator
-              .maxLengthValidator(100)
+              .maxLengthValidator(12)
               .bind(customValidator)]
         ]
       }),
