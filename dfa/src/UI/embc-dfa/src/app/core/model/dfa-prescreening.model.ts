@@ -51,6 +51,7 @@ export class DfaPrescreeningForm {
   lossesExceed1000 = new UntypedFormControl();
   damageCausedByDisaster = new UntypedFormControl();
   damageFromDate = new UntypedFormControl();
+  community = new UntypedFormControl();
 
   constructor(
     prescreening: DfaPrescreening,
@@ -86,6 +87,15 @@ export class DfaPrescreeningForm {
         .maxLengthValidator(100)
         .bind(customValidator)
     ]);
+
+    if (prescreening.city) {
+      this.community.setValue(prescreening.city);
+    }
+    this.community.setValidators([
+      customValidator
+        .maxLengthValidator(100)
+        .bind(customValidator)
+    ])
 
     if (prescreening.postalCode) {
       this.postalCode.setValue(prescreening.postalCode);

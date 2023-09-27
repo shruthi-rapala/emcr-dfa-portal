@@ -24,7 +24,11 @@ mat-form-field {
 
 .horizontal-radio-group {
   display: flex; flex-direction: row;
-  /* display: inline-grid; */
-  /* display: grid; */
   margin: 15px 0;
+}
+
+.button-width {
+  width: 100%;
+  margin-bottom: 10px;
+  height: 80px;
 }

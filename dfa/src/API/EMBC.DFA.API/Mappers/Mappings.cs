@@ -391,7 +391,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_roomname, opts => opts.MapFrom(s => s.roomType == RoomType.Family ? "Family" :
                         (s.roomType == RoomType.Laundry ? "Laundry" :
                         (s.roomType == RoomType.Garage ? "Garage" :
-                        (s.roomType == RoomType.Other ? "Other" :
+                        (s.roomType == RoomType.Other ? s.otherRoomType :
                         (s.roomType == RoomType.Kitchen ? "Kitchen" :
                         (s.roomType == RoomType.Bathroom ? "Bathroom" :
                         (s.roomType == RoomType.Bedroom ? "Bedroom" :
