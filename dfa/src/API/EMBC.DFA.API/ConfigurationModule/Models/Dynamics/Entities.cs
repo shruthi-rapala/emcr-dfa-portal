@@ -458,6 +458,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string dfa_eventid { get; set; }
         public string dfa_id { get; set; }
+        public string dfa_dateofevent { get; set; }
+        public string dfa_dateofeventdeclaredrevised { get; set; }
+        public string dfa_dateofeventdeclaredrevised2 { get; set; }
     }
 
     public class dfa_incident
