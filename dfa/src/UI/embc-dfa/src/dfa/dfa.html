@@ -1,4 +1,4 @@
-﻿
+
 
 <!DOCTYPE html>
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -555,8 +555,7 @@ a:hover {
 	fetch(apiUrl).then(response => {
 		return response.json();
 	}).then(data => {
-		console.log(JSON.stringify(data));
-		alert(data);
+
 		if (data == true) {
 			document.getElementById('secAreEvacuated').style.display = 'block';
 		}
