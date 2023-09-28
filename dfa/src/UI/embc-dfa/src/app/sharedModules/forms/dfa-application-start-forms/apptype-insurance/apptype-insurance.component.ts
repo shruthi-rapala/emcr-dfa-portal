@@ -5,6 +5,7 @@ import {
   AbstractControl,
   Validators,
   ValidatorFn,
+  FormGroup,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule, KeyValue } from '@angular/common';
@@ -23,6 +24,7 @@ import * as globalConst from '../../../../core/services/globalConstants';
 import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { CoreModule } from 'src/app/core/core.module';
+import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 
 @Component({
   selector: 'apptype-insurance',
@@ -47,7 +49,7 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
     public customValidator: CustomValidationService,
     public dialog: MatDialog,
     private router: Router,
-
+    private dfaApplicationStartDataService: DFAApplicationStartDataService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -58,9 +60,14 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
       .getAppTypeInsuranceForm()
       .subscribe((appTypeInsurance) => {
         this.appTypeInsuranceForm = appTypeInsurance;
+        // pre-set from prescreening choices
+        this.appTypeInsuranceForm.controls.applicantOption.setValue(this.dfaApplicationStartDataService.applicantOption);
+        this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.dfaApplicationStartDataService.insuranceOption);
         this.appTypeInsuranceForm.updateValueAndValidity();
         // add form level validator to check that insurance option is not set to yes
         this.appTypeInsuranceForm.addValidators([ValidateInsuranceOption.notFullInsurance('insuranceOption', InsuranceOption.Yes)]);
+        // another form level validator to check that if insurance option is no, signature data is provided
+        this.appTypeInsuranceForm.addValidators([this.validateNoInsuranceHasSignatures]);
       });
 
     this.appTypeInsuranceForm
@@ -95,15 +102,31 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '') {
           this.appTypeInsuranceForm.get('insuranceOption').reset();
+          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators(null);
+          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators(null);
+          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators(null);
           this.notInsured = false;
         } else if (value === fullyInsuredEnumKey) {
+          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators(null);
+          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators(null);
+          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators(null);
           this.yesFullyInsured();
           this.notInsured = false;
         } else if (value === notInsuredEnumKey) {
+          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators([Validators.required]);
+          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators([Validators.required]);
+          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators([Validators.required]);
           this.notInsured = true;
         } else if (value === unsureEnumKey) {
+          this.appTypeInsuranceForm.get('applicantSignature.signature').setValidators(null);
+          this.appTypeInsuranceForm.get('applicantSignature.dateSigned').setValidators(null);
+          this.appTypeInsuranceForm.get('applicantSignature.signedName').setValidators(null);
           this.notInsured = false;
         }
+        this.appTypeInsuranceForm.get('applicantSignature.signature').updateValueAndValidity();
+        this.appTypeInsuranceForm.get('applicantSignature.dateSigned').updateValueAndValidity();
+        this.appTypeInsuranceForm.get('applicantSignature.signedName').updateValueAndValidity();
+        this.appTypeInsuranceForm.get('applicantSignature').updateValueAndValidity();
         this.appTypeInsuranceForm.updateValueAndValidity();
         this.formCreationService.insuranceOptionChanged.emit();
       });
@@ -197,6 +220,20 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.appTypeInsuranceForm$.unsubscribe();
+  }
+
+  // check for No Ins & valid signature information
+  validateNoInsuranceHasSignatures(form: FormGroup) {
+
+    let enumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
+    if (form.controls.insuranceOption.value !== enumKey) return null; // Yes or Yes, but
+
+    if (!form.get('applicantSignature.signature').value ||
+      !form.get('applicantSignature.dateSigned').value ||
+      !form.get('applicantSignature.signedName').value)
+      return { invalidSignature: true };
+
+    return null;
   }
 }
 

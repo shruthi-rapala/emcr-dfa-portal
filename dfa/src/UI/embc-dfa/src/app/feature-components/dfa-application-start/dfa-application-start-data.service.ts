@@ -15,9 +15,89 @@ export class DFAApplicationStartDataService {
   private _applicationId: string;
   private _profileId: string;
   private _profile: Profile;
+  private _addressLine1: string;
+  private _addressLine2: string;
+  private _city: string;
+  private _postalCode: string;
+  private _stateProvince: string;
+  private _damageCausedByDisaster: boolean;
+  private _lossesExceed1000: boolean;
+  private _damageFromDate: string;
+  private _eventId: string;
+  private _isPrimaryAndDamagedAddressSame: boolean;
 
   constructor(
   ) {}
+
+  public get addressLine1(): string {
+    return this._addressLine1;
+  }
+  public set addressLine1(value: string) {
+    this._addressLine1 = value;
+  }
+
+  public get addressLine2(): string {
+    return this._addressLine2;
+  }
+  public set addressLine2(value: string) {
+    this._addressLine2 = value;
+  }
+
+  public get city(): string {
+    return this._city;
+  }
+  public set city(value: string) {
+    this._city = value;
+  }
+
+  public get postalCode(): string {
+    return this._postalCode;
+  }
+  public set postalCode(value: string) {
+    this._postalCode = value;
+  }
+
+  public get stateProvince(): string {
+    return this._stateProvince;
+  }
+  public set stateProvince(value: string) {
+    this._stateProvince = value;
+  }
+
+  public get damageFromDate(): string {
+    return this._damageFromDate;
+  }
+  public set damageFromDate(value: string) {
+    this._damageFromDate = value;
+  }
+
+  public get eventId(): string {
+    return this._eventId;
+  }
+  public set eventId(value: string) {
+    this._eventId = value;
+  }
+
+  public get damageCausedByDisaster(): boolean {
+    return this._damageCausedByDisaster;
+  }
+  public set damageCausedByDisaster(value: boolean) {
+    this._damageCausedByDisaster = value;
+  }
+
+  public get lossesExceed1000(): boolean {
+    return this._lossesExceed1000;
+  }
+  public set lossesExceed1000(value: boolean) {
+    this._lossesExceed1000 = value;
+  }
+
+  public get isPrimaryAndDamagedAddressSame(): boolean {
+    return this._isPrimaryAndDamagedAddressSame;
+  }
+  public set isPrimaryAndDamagedAddressSame(value: boolean) {
+    this._isPrimaryAndDamagedAddressSame = value;
+  }
 
   public get consent(): boolean {
     return this._consent;
@@ -109,7 +189,19 @@ export class DFAApplicationStartDataService {
         farmOption: this.farmOption,
         applicantSignature: this.applicantSignature,
         secondaryApplicantSignature: this.secondaryApplicantSignature
-       }
+       },
+      otherPreScreeningQuestions: {
+        addressLine1: this.addressLine1,
+        addressLine2: this.addressLine2,
+        city: this.city,
+        postalCode: this.postalCode,
+        stateProvince: this.stateProvince,
+        isPrimaryAndDamagedAddressSame: this.isPrimaryAndDamagedAddressSame,
+        damageCausedByDisaster: this.damageCausedByDisaster,
+        lossesExceed1000: this.lossesExceed1000,
+        damageFromDate: this.damageFromDate,
+        eventId: this.eventId
+      }
     };
   }
 }

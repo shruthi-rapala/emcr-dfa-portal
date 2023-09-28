@@ -376,6 +376,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
     this.prescreeningForm.controls.city.updateValueAndValidity();
     this.prescreeningForm.controls.postalCode.updateValueAndValidity();
     this.prescreeningForm.controls.stateProvince.updateValueAndValidity();
+    this.prescreeningForm.controls.eventId.updateValueAndValidity();
     this.prescreeningForm.updateValueAndValidity();
   }
 

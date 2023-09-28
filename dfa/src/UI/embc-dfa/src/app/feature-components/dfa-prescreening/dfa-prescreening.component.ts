@@ -1,8 +1,6 @@
 import {
   Component,
   OnInit,
-  ViewChild,
-  AfterViewInit,
   AfterViewChecked,
   ChangeDetectorRef
 } from '@angular/core';
@@ -12,11 +10,8 @@ import * as globalConst from '../../core/services/globalConstants';
 import { MatStepper } from '@angular/material/stepper';
 import { Subscription } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
-import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAPrescreeningDataService } from './dfa-prescreening-data.service';
-import { DFAPrescreeningService } from './dfa-prescreening.service';
 import { ApplicantOption } from 'src/app/core/api/models';
-import { ApplicationService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmPrescreeningDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-prescreening-dialog/dfa-confirm-prescreening-dialog.component';
 
@@ -45,14 +40,10 @@ export class DFAPrescreeningComponent
     private route: ActivatedRoute,
     private formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
-    private alertService: AlertService,
     public dfaPrescreeningDataService: DFAPrescreeningDataService,
-    private dfaPrescreeningService: DFAPrescreeningService,
-    private applicationService: ApplicationService,
     public dialog: MatDialog,
   ) {
     const navigation = this.router.getCurrentNavigation();
-
   }
 
   clearAnswers() {
@@ -157,7 +148,7 @@ export class DFAPrescreeningComponent
       .afterClosed()
       .subscribe((result) => {
         if (result === 'confirm') {
-          const navigationPath = '/' + this.currentFlow + '/dfa-application-start';
+          const navigationPath = '/dfa-application-start';
           this.router.navigate([navigationPath]);
         } else this.returnToDashboard();
       });
