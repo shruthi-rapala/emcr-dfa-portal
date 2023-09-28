@@ -652,5 +652,67 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
             }
         }
+
+        public async Task<IEnumerable<dfa_event>> GetOpenEventListForPrescreening()
+        {
+            try
+            {
+                // TODO: Retrieve appropriate geographical information
+                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_eventid", "dfa_id", "dfa_dateofevent",
+                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2"
+                    }
+                });
+
+                // As per Jira ticket EMBCDFA-623 the field "dfa_90daydeadline" has incorrect information
+                // the 90 day deadline should be calculated to be 90 days from the latest of dfa_date, dfa_dateofeventdeclaredrevised, dfa_dateofeventdeclaredrevised2
+                var nowDate = DateTime.Now;
+                foreach (var disasterEvent in lstEvents.List)
+                {
+                    var ninetydaydeadline = nowDate.AddYears(-1000);
+                    if (disasterEvent.dfa_dateofevent != null)
+                    {
+                        var dateOfEvent = Convert.ToDateTime(disasterEvent.dfa_dateofevent);
+                        if (dateOfEvent.AddDays(90) > ninetydaydeadline)
+                        {
+                            ninetydaydeadline = dateOfEvent.AddDays(90);
+                        }
+                    }
+
+                    if (disasterEvent.dfa_dateofeventdeclaredrevised != null)
+                    {
+                        var dateOfEventRevised = Convert.ToDateTime(disasterEvent.dfa_dateofeventdeclaredrevised);
+                        if (dateOfEventRevised.AddDays(90) > ninetydaydeadline)
+                        {
+                            ninetydaydeadline = dateOfEventRevised.AddDays(90);
+                        }
+                    }
+
+                    if (disasterEvent.dfa_dateofeventdeclaredrevised2 != null)
+                    {
+                        var dateOfEventRevised2 = Convert.ToDateTime(disasterEvent.dfa_dateofeventdeclaredrevised2);
+                        if (dateOfEventRevised2.AddDays(90) > ninetydaydeadline)
+                        {
+                            ninetydaydeadline = dateOfEventRevised2.AddDays(90);
+                        }
+                    }
+
+                    if (ninetydaydeadline != nowDate.AddYears(-1000))
+                    {
+                        disasterEvent.dfa_90daydeadline = ninetydaydeadline.ToString();
+                    }
+                }
+
+                // open events are those where the 90 day deadline is now or in the future
+                return lstEvents.List.Where(m => m.dfa_90daydeadline != null && Convert.ToDateTime(m.dfa_90daydeadline) >= nowDate);
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
     }
 }

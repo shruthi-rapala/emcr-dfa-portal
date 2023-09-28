@@ -400,6 +400,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_damagedescription, opts => opts.MapFrom(s => s.description))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
+            CreateMap<dfa_event, DisasterEvent>()
+                .ForMember(d => d.ninetyDayDeadline, opts => opts.MapFrom(s => s.dfa_90daydeadline))
+                .ForMember(d => d.eventId, opts => opts.MapFrom(s => s.dfa_eventid))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_id));
+
             CreateMap<SecurityQuestion, ESS.Shared.Contracts.Events.SecurityQuestion>()
                 .ReverseMap()
                 ;

@@ -33,6 +33,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
         Task<bool> GetEventList();
+        Task<IEnumerable<dfa_event>> GetOpenEventListForPrescreening();
 
         //Task<IEnumerable> GetDistrictsAsync();
 

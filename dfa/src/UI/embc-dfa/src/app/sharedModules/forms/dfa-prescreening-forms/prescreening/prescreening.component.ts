@@ -13,11 +13,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { Address, ApplicantOption, InsuranceOption } from 'src/app/core/api/models';
+import { Address, ApplicantOption, InsuranceOption, DisasterEvent } from 'src/app/core/api/models';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import * as globalConst from '../../../../core/services/globalConstants';
 import { MatDialog } from '@angular/material/dialog';
@@ -27,7 +27,7 @@ import { DialogContent } from 'src/app/core/model/dialog-content.model';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
-import { ProfileService } from 'src/app/core/api/services';
+import { EligibilityService, ProfileService } from 'src/app/core/api/services';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 
 @Component({
@@ -46,9 +46,12 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
   showOtherDocuments: boolean = false;
   private _profileAddress: Address;
   todayDate = new Date().toISOString();
-  addressWithinOpenEvent: boolean = false;
   dateWithinOpenEvent: boolean = false;
   isValidAddress: boolean = false;
+  public openDisasterEvents: DisasterEventMatching[] = [];
+  matchingEventsColumnsToDisplay = ['eventId', 'id', 'ninetyDayDeadline'];
+  matchingEventsDataSource = new BehaviorSubject([]);
+  matchingEventsData = [];
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -56,7 +59,8 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
     public customValidator: CustomValidationService,
     public dialog: MatDialog,
     private router: Router,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private eligibilityService: EligibilityService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -79,15 +83,8 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
         this.prescreeningForm.addValidators([ValidateInsuranceOption.notFullInsurance('insuranceOption', InsuranceOption.Yes)]);
       });
 
-    this.profileService.profileGetProfile().subscribe(profile => {
-        this.profileAddress = {
-          addressLine1: profile?.primaryAddress?.addressLine1,
-          addressLine2: profile?.primaryAddress?.addressLine2,
-          postalCode: profile?.primaryAddress?.postalCode,
-          stateProvince: profile?.primaryAddress?.stateProvince ? profile.primaryAddress?.stateProvince : "BC",
-          city: profile?.primaryAddress?.city
-        }
-    })
+    this.getProfileAddress();
+    this.getOpenDisasterEvents();
 
     this.prescreeningForm
       .get('applicantOption')
@@ -207,6 +204,24 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       });
   }
 
+  getProfileAddress() {
+    this.profileService.profileGetProfile().subscribe(profile => {
+      this.profileAddress = {
+        addressLine1: profile?.primaryAddress?.addressLine1,
+        addressLine2: profile?.primaryAddress?.addressLine2,
+        postalCode: profile?.primaryAddress?.postalCode,
+        stateProvince: profile?.primaryAddress?.stateProvince ? profile.primaryAddress?.stateProvince : "BC",
+        city: profile?.primaryAddress?.city
+      }
+    });
+  }
+
+  getOpenDisasterEvents() {
+    this.eligibilityService.eligibilityGetPrescreeningEvents().subscribe((openDisasterEvents: DisasterEventMatching[]) => {
+      this.openDisasterEvents = openDisasterEvents;
+    })
+  }
+
   checkIsValidAddress() {
     if (this.prescreeningForm.controls.addressLine1.valid &&
       this.prescreeningForm.controls.city.valid &&
@@ -214,7 +229,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       this.prescreeningForm.controls.stateProvince.valid)
       this.isValidAddress = true;
     else this.isValidAddress = false;
-    this.addressWithinOpenEvent = false;
+    this.matchingEventsData = [];
   }
 
   yesFullyInsured(): void {
@@ -292,8 +307,11 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
 
   checkAddressWithinOpenEvent(): void {
     // TODO: check if address with GeoBC data
-    this.addressWithinOpenEvent = false;
-    if (this.addressWithinOpenEvent == false) {
+    this.openDisasterEvents.forEach(disasterEvent => disasterEvent.match = true);
+    this.matchingEventsData = this.openDisasterEvents.filter(disasterEvent => disasterEvent.match == true);
+    this.matchingEventsDataSource.next(this.matchingEventsData);
+    let countMatchingEvents = this.matchingEventsData.length;
+    if (countMatchingEvents <= 0) {
       this.dialog
       .open(DFAEligibilityDialogComponent, {
         data: {
@@ -314,7 +332,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
   checkDateWithinOpenEvent(): void {
     this.dateWithinOpenEvent = false;
     // TODO: check if date withing open event matched by address
-    if (this.addressWithinOpenEvent == false || this.dateWithinOpenEvent == false) {
+    if (this.matchingEventsData.length <= 0 || this.dateWithinOpenEvent == false) {
       this.dialog
       .open(DFAEligibilityDialogComponent, {
         data: {
@@ -400,3 +418,7 @@ export class ValidateInsuranceOption {
   declarations: [PrescreeningComponent]
 })
 class AppTypeInsuranceModule {}
+
+export interface DisasterEventMatching extends DisasterEvent {
+  match: boolean;
+}
