@@ -71,6 +71,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_damagedpropertypostalcode { get; set; } // optional string
         public string? dfa_dateofdamage { get; set; } // optoinal date only
         public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean
+        // public string? dfa_eventid { get; set; } // required string disaster event id TODO: uncomment
     }
 
     public class dfa_signature
@@ -478,6 +479,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_dateofeventdeclaredrevised { get; set; }
         public string dfa_dateofeventdeclaredrevised2 { get; set; }
         public string? dfa_90daydeadline { get; set; } // this is recalculated
+        public string? dfa_startdate { get; set; }
+        public string? dfa_enddate { get; set; }
     }
 
     public class dfa_incident

@@ -89,9 +89,10 @@ export const businessNotManagedByAllOwnersOnDayToDayBasis: DialogContent = {
   confirmButton: 'Yes, Continue my Application'
 }
 
-export const addressNotWithinOpenEvent: DialogContent = {
-  text: '<pYour address isn\'t within the DFA event area.<br/><br/>To qualify for DFA your address must be within the disaster event area. ' +
-  'To view the current list of DFA eligible events and their areas, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program Webpage</a>.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Would you like to correct the address of the damaged property?</b></p>',
+export const addressAndDateNotWithinOpenEvent: DialogContent = {
+  text: '<p>The damaged property address wasn\'t in the area of any DFA eligible events on the date the damaged property address was first impacted.<br/><br/>' +
+  'To view the current list of DFA eligible events and their areas and start/end dates, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program Webpage</a>.</p><p>You may call us to discuss further at 1-888-257-4777.</p>' +
+  '<p><b>Would you like to correct the damaged property address or the date your damaged property was first impacted?</b></p>',
   cancelButton: 'No, Save & Close my Application',
   confirmButton: 'Yes, Continue my Application'
 }

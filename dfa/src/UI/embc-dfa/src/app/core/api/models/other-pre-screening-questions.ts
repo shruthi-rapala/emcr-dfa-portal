@@ -10,6 +10,7 @@ export interface OtherPreScreeningQuestions {
   city?: null | string;
   damageCausedByDisaster?: null | boolean;
   damageFromDate?: null | string;
+  eventId?: null | string;
   isPrimaryAndDamagedAddressSame?: null | boolean;
   lossesExceed1000?: null | boolean;
   postalCode?: null | string;

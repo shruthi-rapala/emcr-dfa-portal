@@ -17,7 +17,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { Address, ApplicantOption, InsuranceOption, DisasterEvent } from 'src/app/core/api/models';
+import { Address, ApplicantOption, InsuranceOption, DisasterEvent, Profile } from 'src/app/core/api/models';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import * as globalConst from '../../../../core/services/globalConstants';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,6 +29,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { EligibilityService, ProfileService } from 'src/app/core/api/services';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
+import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
+import { DFAPrescreeningDataService } from 'src/app/feature-components/dfa-prescreening/dfa-prescreening-data.service';
 
 @Component({
   selector: 'prescreening',
@@ -44,14 +47,11 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
   radioApplicantOptions = ApplicantOption;
   radioInsuranceOptions = InsuranceOption;
   showOtherDocuments: boolean = false;
-  private _profileAddress: Address;
+  private _profile: Profile;
   todayDate = new Date().toISOString();
-  dateWithinOpenEvent: boolean = false;
-  isValidAddress: boolean = false;
+  isValidAddressAndDate: boolean = false;
   public openDisasterEvents: DisasterEventMatching[] = [];
-  matchingEventsColumnsToDisplay = ['eventId', 'id', 'ninetyDayDeadline'];
-  matchingEventsDataSource = new BehaviorSubject([]);
-  matchingEventsData = [];
+  matchingEventsData: DisasterEventMatching[] = [];
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -60,17 +60,18 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private router: Router,
     private profileService: ProfileService,
-    private eligibilityService: EligibilityService
+    private eligibilityService: EligibilityService,
+    private prescreeningDataService: DFAPrescreeningDataService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
   }
 
-  public get profileAddress(): Address {
-    return this._profileAddress;
+  public get profile(): Profile {
+    return this._profile;
   }
-  public set profileAddress(value: Address) {
-    this._profileAddress = value;
+  public set profile(value: Profile) {
+    this._profile = value;
   }
 
   ngOnInit(): void {
@@ -82,6 +83,12 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
         // add form level validator to check that insurance option is not set to yes
         this.prescreeningForm.addValidators([ValidateInsuranceOption.notFullInsurance('insuranceOption', InsuranceOption.Yes)]);
       });
+
+    this.prescreeningDataService.clearPreScreeningAnswers.subscribe(any => {
+      this.prescreeningForm.reset();
+      this.getProfileAddress();
+      this.prescreeningForm.updateValueAndValidity();
+    })
 
     this.getProfileAddress();
     this.getOpenDisasterEvents();
@@ -146,6 +153,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '')
           this.prescreeningForm.get('damageFromDate').reset();
+        this.checkIsValidAddressAndDate();
       });
 
     this.prescreeningForm
@@ -154,7 +162,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '')
           this.prescreeningForm.get('addressLine1').reset();
-        this.checkIsValidAddress();
+        this.checkIsValidAddressAndDate();
       });
 
     this.prescreeningForm
@@ -163,7 +171,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '')
           this.prescreeningForm.get('addressLine2').reset();
-        this.checkIsValidAddress();
+        this.checkIsValidAddressAndDate();
       });
 
     this.prescreeningForm
@@ -172,7 +180,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '')
           this.prescreeningForm.get('city').reset();
-        this.checkIsValidAddress();
+        this.checkIsValidAddressAndDate();
       });
 
     this.prescreeningForm
@@ -182,7 +190,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.prescreeningForm.get('community').reset();
         } else this.prescreeningForm.get('city').setValue(this.prescreeningForm.get('community').value);
-        this.checkIsValidAddress();
+        this.checkIsValidAddressAndDate();
       });
 
     this.prescreeningForm
@@ -191,7 +199,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '')
           this.prescreeningForm.get('postalCode').reset();
-        this.checkIsValidAddress();
+        this.checkIsValidAddressAndDate();
       });
 
     this.prescreeningForm
@@ -200,19 +208,23 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value === '')
           this.prescreeningForm.get('stateProvince').reset();
-        this.checkIsValidAddress();
+        this.checkIsValidAddressAndDate();
       });
+
+    this.prescreeningForm
+      .get('eventId')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '')
+          this.prescreeningForm.get('eventId').reset();
+      });
+
   }
 
   getProfileAddress() {
     this.profileService.profileGetProfile().subscribe(profile => {
-      this.profileAddress = {
-        addressLine1: profile?.primaryAddress?.addressLine1,
-        addressLine2: profile?.primaryAddress?.addressLine2,
-        postalCode: profile?.primaryAddress?.postalCode,
-        stateProvince: profile?.primaryAddress?.stateProvince ? profile.primaryAddress?.stateProvince : "BC",
-        city: profile?.primaryAddress?.city
-      }
+      this.profile = profile;
+      this.prescreeningForm.controls.profileId.setValue(profile.id);
     });
   }
 
@@ -222,14 +234,16 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
     })
   }
 
-  checkIsValidAddress() {
+  checkIsValidAddressAndDate() {
     if (this.prescreeningForm.controls.addressLine1.valid &&
       this.prescreeningForm.controls.city.valid &&
       this.prescreeningForm.controls.postalCode.valid &&
-      this.prescreeningForm.controls.stateProvince.valid)
-      this.isValidAddress = true;
-    else this.isValidAddress = false;
+      this.prescreeningForm.controls.stateProvince.valid &&
+      this.prescreeningForm.controls.damageFromDate.valid)
+      this.isValidAddressAndDate = true;
+    else this.isValidAddressAndDate = false;
     this.matchingEventsData = [];
+    if (this.isValidAddressAndDate) this.checkAddressAndDateWithinOpenEvent();
   }
 
   yesFullyInsured(): void {
@@ -261,18 +275,18 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
     if (!choice.value) return; // not a radio button change
     if (choice.value == 'true') // yes
     {
-      this.prescreeningForm.controls.addressLine1.setValue(this.profileAddress.addressLine1);
-      this.prescreeningForm.controls.addressLine2.setValue(this.profileAddress.addressLine2);
-      this.prescreeningForm.controls.city.setValue(this.profileAddress.city);
-      this.prescreeningForm.controls.stateProvince.setValue(this.profileAddress.stateProvince);
-      this.prescreeningForm.controls.postalCode.setValue(this.profileAddress.postalCode);
+      this.prescreeningForm.controls.addressLine1.setValue(this.profile.primaryAddress.addressLine1);
+      this.prescreeningForm.controls.addressLine2.setValue(this.profile.primaryAddress.addressLine2);
+      this.prescreeningForm.controls.city.setValue(this.profile.primaryAddress.city);
+      this.prescreeningForm.controls.stateProvince.setValue(this.profile.primaryAddress.stateProvince);
+      this.prescreeningForm.controls.postalCode.setValue(this.profile.primaryAddress.postalCode);
     } else { // no
       this.prescreeningForm.controls.addressLine1.setValue(null);
       this.prescreeningForm.controls.addressLine2.setValue(null);
       this.prescreeningForm.controls.city.setValue(null);
       this.prescreeningForm.controls.postalCode.setValue(null);
     }
-    this.checkIsValidAddress();
+    this.checkIsValidAddressAndDate();
   }
 
   public onToggleOtherDocuments() {
@@ -305,38 +319,27 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
     this.router.navigate(['/dfa-dashboard']);
   }
 
-  checkAddressWithinOpenEvent(): void {
+  checkAddressAndDateWithinOpenEvent(): void {
     // TODO: check if address with GeoBC data
-    this.openDisasterEvents.forEach(disasterEvent => disasterEvent.match = true);
-    this.matchingEventsData = this.openDisasterEvents.filter(disasterEvent => disasterEvent.match == true);
-    this.matchingEventsDataSource.next(this.matchingEventsData);
+    this.openDisasterEvents.forEach(disasterEvent => disasterEvent.matchArea = true);
+
+    // check for date of damage between start date and end date
+    this.openDisasterEvents.forEach(disasterEvent => {
+      if (new Date(disasterEvent.endDate) >= this.prescreeningForm.controls.damageFromDate.value &&
+          new Date(disasterEvent.startDate) <= this.prescreeningForm.controls.damageFromDate.value) {
+        disasterEvent.matchDate = true;
+      } else disasterEvent.matchDate = false;
+    })
+
+    // Matching Events to display
+    this.matchingEventsData = this.openDisasterEvents.filter(disasterEvent => disasterEvent.matchArea == true && disasterEvent.matchDate == true);
+
     let countMatchingEvents = this.matchingEventsData.length;
     if (countMatchingEvents <= 0) {
       this.dialog
       .open(DFAEligibilityDialogComponent, {
         data: {
-          content: globalConst.addressNotWithinOpenEvent
-        },
-        width: '700px',
-        disableClose: true
-      })
-      .afterClosed()
-      .subscribe((result) => {
-        if (result === 'cancel') {
-          this.cancelPrescreening();
-        }
-      });
-    }
-  }
-
-  checkDateWithinOpenEvent(): void {
-    this.dateWithinOpenEvent = false;
-    // TODO: check if date withing open event matched by address
-    if (this.matchingEventsData.length <= 0 || this.dateWithinOpenEvent == false) {
-      this.dialog
-      .open(DFAEligibilityDialogComponent, {
-        data: {
-          content: globalConst.addressNotWithinOpenEvent
+          content: globalConst.addressAndDateNotWithinOpenEvent
         },
         width: '700px',
         disableClose: true
@@ -413,12 +416,15 @@ export class ValidateInsuranceOption {
     MatNativeDateModule,
     MatDatepickerModule,
     MatInputModule,
-    AddressFormsModule
+    AddressFormsModule,
+    MatTableModule,
+    MatSelectModule,
   ],
   declarations: [PrescreeningComponent]
 })
 class AppTypeInsuranceModule {}
 
 export interface DisasterEventMatching extends DisasterEvent {
-  match: boolean;
+  matchArea: boolean;
+  matchDate: boolean;
 }

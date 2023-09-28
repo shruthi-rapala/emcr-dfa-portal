@@ -146,7 +146,7 @@
         </div>
         <hr style="border: 2px solid;"/>
 
-        <!-- Damaged Property Address -->
+        <!-- Damaged Property Address & Date of Damage -->
         <div class="row">
           <div class="col-md-8 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
@@ -160,9 +160,9 @@
               aria-label="Select an option">
               <mat-radio-button value=true>Same as my profile address</mat-radio-button>
               <div class="row radio-extra-label">
-                {{ profileAddress?.addressLine1}}<br/>
-                <div *ngIf="profileAddress?.addressLine2">{{ profileAddress?.addressLine2}}<br/></div>
-                {{ profileAddress?.city }}&nbsp;{{profileAddress?.stateProvince}}&nbsp;{{ profileAddress?.postalCode }}<br /><br/>
+                {{ profile?.primaryAddress?.addressLine1}}<br/>
+                <div *ngIf="profile?.primaryAddress?.addressLine2">{{ profile?.primaryAddress?.addressLine2}}<br/></div>
+                {{ profile?.primaryAddress?.city }}&nbsp;{{profile?.primaryAddress?.stateProvince}}&nbsp;{{ profile?.primaryAddress?.postalCode }}<br /><br/>
               </div>
               <mat-radio-button value=false>Different from my profile address above</mat-radio-button>
               <div class="row radio-extra-label" *ngIf="prescreeningForm.get('isPrimaryAndDamagedAddressSame').value == 'false'">
@@ -171,19 +171,60 @@
                   [primaryAddressWarning]="false"
                 ></app-bc-address>
               </div>
-            </mat-radio-group>
-            <button
-              mat-button
-              class="button-p"
-              style="float: left;"
-              type="button"
-              [disabled]="!isValidAddress"
-              (click)="checkAddressWithinOpenEvent()">
-                Check Address Eligibility
-            </button>
-          </div>
-          <div class="col-md-4 bottomspace">
-
+            </mat-radio-group><br/><br/>
+            <p class="sub-heading" style="font-size: 15px">
+              What date was your property first impacted by the disaster event?<span style="color:red" >*</span>
+            </p>
+            <mat-form-field appearance="outline" >
+              <input matInput
+                [matDatepicker]="fromPicker"
+                formControlName="damageFromDate"
+                [max]="todayDate"
+                required >
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromPicker></mat-datepicker>
+              <mat-error
+                *ngIf="
+                prescreeningForm.get('damageFromDate').invalid &&
+                prescreeningForm.get('damageFromDate').hasError('required')
+              "
+              >
+                From date is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                prescreeningForm.get('damageFromDate').invalid &&
+                prescreeningForm.get('damageFromDate').hasError('matDatepickerMax')
+              "
+              >
+                From date cannot be in the future</mat-error
+              >
+            </mat-form-field><br/><br/>
+            <p class="sub-heading" style="font-size: 15px">
+              Fill in address and date, then select a disaster event that matches this address & date.<span style="color:red" >*</span>
+            </p>
+            <mat-form-field appearance="outline">
+              <mat-label>Matching Disaster Event</mat-label>
+              <mat-select formControlName="eventId" matInput placeholder="Matching Disaster Event" required [disabled]="!isValidAddressAndDate || matchingEventsData.length <= 0">
+                <mat-option *ngFor="let option of matchingEventsData"
+                  [value]="option.eventId">
+                  {{ option.id }}&nbsp;&nbsp;({{option.startDate | date: "MM/dd/yyyy"}} to {{ option.endDate | date: "MM/dd/yyyy"}})
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  prescreeningForm.get('eventId').invalid &&
+                  prescreeningForm.get('eventId').hasError('required') &&
+                  prescreeningForm.get('eventId').touched
+                "
+              >
+                Disaster Event is required</mat-error
+              >
+            </mat-form-field>
+            <div *ngIf="matchingEventsData.length <= 0 && isValidAddressAndDate">
+              <span style="color:red;">No matching disaster events for this address and date.</span>
+            </div>
           </div>
         </div>
         <hr style="border: 2px solid;"/>
@@ -206,42 +247,6 @@
               To qualify for DFA the damages and losses to your property must have been caused by the disaster event.<br/>
               To view the current list of DFA eligible events,, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program webpage</a>.<br/><br/>
             </div>
-          </div>
-        </div>
-        <hr style="border: 2px solid;"/>
-
-        <!-- Date of damage -->
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            What date was your property first impacted by the disaster event?<span style="color:red" >*</span>
-          </p>
-          <div class="col-md-4">
-            <mat-form-field appearance="outline" >
-              <input matInput
-                [matDatepicker]="fromPicker"
-                formControlName="damageFromDate"
-                [max]="todayDate"
-                required >
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-              <mat-datepicker #fromPicker></mat-datepicker>
-              <mat-error
-                *ngIf="
-                prescreeningForm.get('damageFromDate').invalid &&
-                prescreeningForm.get('damageFromDate').hasError('required')
-              "
-              >
-                From date is required</mat-error
-              >
-              <mat-error
-              *ngIf="
-              prescreeningForm.get('damageFromDate').invalid &&
-              prescreeningForm.get('damageFromDate').hasError('matDatepickerMax')
-            "
-            >
-              From date cannot be in the future</mat-error
-            >
-            </mat-form-field>
           </div>
         </div>
         <hr style="border: 2px solid;"/>

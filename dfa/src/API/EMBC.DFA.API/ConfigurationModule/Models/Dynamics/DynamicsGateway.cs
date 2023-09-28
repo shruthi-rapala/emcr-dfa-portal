@@ -663,7 +663,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_eventid", "dfa_id", "dfa_dateofevent",
-                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2"
+                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2", "dfa_startdate", "dfa_enddate"
                     }
                 });
 

@@ -119,6 +119,7 @@ namespace EMBC.DFA.API.Controllers
         public string? damageFromDate { get; set; }
         public bool? lossesExceed1000 { get; set; }
         public bool? damageCausedByDisaster { get; set; }
+        public string? eventId { get; set; }
     }
 
     /// <summary>

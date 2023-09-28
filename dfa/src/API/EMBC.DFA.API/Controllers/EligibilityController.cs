@@ -76,8 +76,10 @@ namespace EMBC.DFA.API.Controllers
 
     public class DisasterEvent
     {
-        public string eventId { get; set; }
-        public string id { get; set; }
-        public string ninetyDayDeadline { get; set; }
+        public string? eventId { get; set; }
+        public string? id { get; set; }
+        public string? ninetyDayDeadline { get; set; }
+        public string? startDate { get; set; }
+        public string? endDate { get; set; }
     }
 }

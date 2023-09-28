@@ -22,6 +22,7 @@ import { ProfileDataService } from '../profile/profile-data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAApplicationAlertDialogComponent } from 'src/app/core/components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
 import { ProfileService } from 'src/app/core/api/services';
+import { DFAPrescreeningDataService } from '../dfa-prescreening/dfa-prescreening-data.service';
 
 
 @Component({
@@ -62,6 +63,7 @@ export class DFAApplicationStartComponent
     private dfaApplicationStartService: DFAApplicationStartService,
     private profileService: ProfileService,
     public dialog: MatDialog,
+    private dfaPrescreeningDataService: DFAPrescreeningDataService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -89,11 +91,11 @@ export class DFAApplicationStartComponent
       this.checkSubmitAllowed();
     })
 
+    console.log("app start", this.dfaPrescreeningDataService.dfaPrescreening);
+
   }
 
   checkSubmitAllowed() {
-    // debugger;
-    console.log(this.form);
     this.submitAllowed = false;
     this.form.updateValueAndValidity();
 
@@ -162,6 +164,7 @@ export class DFAApplicationStartComponent
    * Dashboard
    */
   returnToDashboard(): void {
+    console.log("back to dashboard");
     const navigationPath = '/' + this.currentFlow + '/dashboard';
     this.router.navigate([navigationPath]);
   }

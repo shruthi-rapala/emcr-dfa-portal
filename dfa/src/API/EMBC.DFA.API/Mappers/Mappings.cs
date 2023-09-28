@@ -102,6 +102,7 @@ namespace EMBC.DFA.API.Mappers
                 //    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Landlord ? SmallBusinessOptionSet.Landlord : SmallBusinessOptionSet.General))))
                 //.ForMember(d => d.dfa_farmtype, opts => opts.MapFrom(s => s.AppTypeInsurance.farmOption == FarmOption.General ? FarmOptionSet.General :
                 //    (s.AppTypeInsurance.farmOption == FarmOption.Corporate ? FarmOptionSet.Corporate : FarmOptionSet.General)))
+                //.ForMember(d => d.dfa_eventid, opts => opts.MapFrom(s => s.OtherPrescreeningQuestions.eventId)) // TODO: uncomment
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_primaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_primaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.signedName))
@@ -403,6 +404,8 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<dfa_event, DisasterEvent>()
                 .ForMember(d => d.ninetyDayDeadline, opts => opts.MapFrom(s => s.dfa_90daydeadline))
                 .ForMember(d => d.eventId, opts => opts.MapFrom(s => s.dfa_eventid))
+                .ForMember(d => d.startDate, opts => opts.MapFrom(s => s.dfa_startdate))
+                .ForMember(d => d.endDate, opts => opts.MapFrom(s => s.dfa_enddate))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_id));
 
             CreateMap<SecurityQuestion, ESS.Shared.Contracts.Events.SecurityQuestion>()

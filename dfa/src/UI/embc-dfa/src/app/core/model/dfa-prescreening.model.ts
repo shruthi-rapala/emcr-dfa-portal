@@ -10,7 +10,7 @@ export class DfaPrescreening {
   applicantOption: ApplicantOption;
   insuranceOption: InsuranceOption;
   profileId: string;
-  profile: Profile;
+  profile?: Profile;
   addressLine1?: null | string;
   addressLine2?: null | string;
   city?: null | string;
@@ -20,6 +20,7 @@ export class DfaPrescreening {
   stateProvince?: null | string;
   damageCausedByDisaster?: null | boolean;
   damageFromDate?: null | string;
+  eventId?: null | string;
 
   constructor(
     applicantOption?: ApplicantOption,
@@ -34,7 +35,8 @@ export class DfaPrescreening {
     postalCode?: null | string,
     stateProvince?: null | string,
     damageCausedByDisaster?: null | boolean,
-    damageFromDate?: null | string
+    damageFromDate?: null | string,
+    eventId?: null | string
     ) {}
 }
 
@@ -52,6 +54,7 @@ export class DfaPrescreeningForm {
   damageCausedByDisaster = new UntypedFormControl();
   damageFromDate = new UntypedFormControl();
   community = new UntypedFormControl();
+  eventId = new UntypedFormControl();
 
   constructor(
     prescreening: DfaPrescreening,
@@ -138,5 +141,10 @@ export class DfaPrescreeningForm {
       this.damageCausedByDisaster.setValue(prescreening.damageCausedByDisaster);
     }
     this.damageCausedByDisaster.setValidators([Validators.required]);
+
+    if (prescreening.eventId) {
+      this.eventId.setValue(prescreening.eventId);
+    }
+    this.eventId.setValidators([Validators.required]);
   }
 }
