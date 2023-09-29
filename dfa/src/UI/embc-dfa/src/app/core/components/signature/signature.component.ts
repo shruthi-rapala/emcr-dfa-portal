@@ -61,7 +61,7 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
       var background = new Image();
         background.src = this.signatureBlock?.signature;
         background.onload = function() {
-          ctxt.drawImage(background, 0, 0, canvasEl?.width, canvasEl?.height);
+          ctxt?.drawImage(background, 0, 0, canvasEl?.width, canvasEl?.height);
         };
     }
   }

@@ -12,7 +12,7 @@ import { ComponentCreationService } from '../../core/services/componentCreation.
 import * as globalConst from '../../core/services/globalConstants';
 import { ComponentMetaDataModel } from '../../core/model/componentMetaData.model';
 import { MatStepper } from '@angular/material/stepper';
-import { Subscription } from 'rxjs';
+import { Subscription, mapTo } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
@@ -21,6 +21,7 @@ import { ApplicantOption, FarmOption, SmallBusinessOption } from 'src/app/core/a
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
+import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -49,6 +50,7 @@ export class DFAApplicationMainComponent
   isApplicantSigned: boolean = false;
   isSecondaryApplicantSigned: boolean = false;
   isSecondaryApplicant: boolean = false;
+  secondaryApplicants: SecondaryApplicant[] = [];
   isSignaturesValid: boolean = false;
   appTypeInsuranceForm: UntypedFormGroup;
   appTypeInsuranceForm$: Subscription;
@@ -178,11 +180,6 @@ export class DFAApplicationMainComponent
     this.editstep = this.dfaApplicationMainDataService.getEditStep();
 
     //this.dfaApplicationMainDataService.setViewOrEdit('');
-    this.formCreationService.secondaryApplicantsChanged.subscribe(secondaryApplicants => {
-      if (secondaryApplicants?.length > 0) this.isSecondaryApplicant = true;
-      else this.isSecondaryApplicant = false;
-      this.checkSignaturesValid();
-    });
     this.formCreationService.signaturesChanged.subscribe(signAndSubmit => {
       signAndSubmit.get('applicantSignature').get('dateSigned').updateValueAndValidity();
       this.isApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.applicantSignature.valid;
@@ -190,6 +187,19 @@ export class DFAApplicationMainComponent
       this.checkSignaturesValid();
     });
 
+    const _secondaryApplicantsFormArray = this.formCreationService.secondaryApplicantsForm.value.get('secondaryApplicants');
+    _secondaryApplicantsFormArray.valueChanges
+      .pipe(
+        mapTo(_secondaryApplicantsFormArray.getRawValue())
+        ).subscribe(data => {
+          this.secondaryApplicants = _secondaryApplicantsFormArray.getRawValue();
+          if (this.secondaryApplicants.filter(x => x.deleteFlag != true)?.length > 0) {
+            this.isSecondaryApplicant = true;
+          } else {
+            this.isSecondaryApplicant = false;
+          }
+          this.checkSignaturesValid();
+        });
   }
 
 
@@ -208,8 +218,8 @@ export class DFAApplicationMainComponent
   }
 
   checkSignaturesValid() {
-    if (!this.isSecondaryApplicant && this.isApplicantSigned) this.isSignaturesValid = true; // no secondary applicant and primary applicant signature valid
-    else if (this.isSecondaryApplicant && this.isApplicantSigned && this.isSecondaryApplicantSigned) this.isSignaturesValid = true; // secondary and primary signatures valid
+    if (this.isSecondaryApplicant == false && this.isApplicantSigned == true) this.isSignaturesValid = true; // no secondary applicant and primary applicant signature valid
+    else if (this.isSecondaryApplicant == true && this.isApplicantSigned == true && this.isSecondaryApplicantSigned == true) this.isSignaturesValid = true; // secondary and primary signatures valid
     else this.isSignaturesValid = false;
   }
 
