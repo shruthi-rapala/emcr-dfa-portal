@@ -148,6 +148,51 @@
           </div>
         </div>
 
+        <div class="row" *ngIf="isCharitableOrganization == true">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Does the charitable organization provide a benefit or service to the community?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="charityProvidesCommunityBenefit"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group><br/><br/>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isCharitableOrganization == true">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Has the charitable organization been in existence for at least 12 months?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="charityExistsAtLeast12Months"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group><br/><br/>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isCharitableOrganization == true">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Is the charitable organization registered under the BC <i>Societies Act</i>?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="charityRegistered"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group><br/><br/>
+          </div>
+        </div>
+
         <div class="row" *ngIf="isSmallBusinessOwner === true || isFarmOwner === true || isCharitableOrganization === true">
           <div class="col-md-6 bottomspace">
             <p class="sub-heading" style="font-size: 15px">Provide the {{ accountLegalNameLabel }}, if applicable</p>
@@ -367,6 +412,7 @@
 
       </ng-container>
     </form>
+    <button (click)="showForm()">Show Form</button>
 
    </mat-card-content>
 </mat-card>

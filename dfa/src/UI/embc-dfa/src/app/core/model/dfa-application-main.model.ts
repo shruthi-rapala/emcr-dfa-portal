@@ -32,6 +32,9 @@ export class DamagedPropertyAddress {
   farmoperation?: null | boolean;
   ownedandoperatedbya?: null | boolean;
   farmoperationderivesthatpersonsmajorincom?: null | boolean;
+  charityExistsAtLeast12Months?: null | boolean;
+  charityProvidesCommunityBenefit?: null | boolean;
+  charityRegistered?: null | boolean;
 
   constructor(
     addressLine1?: string,
@@ -58,6 +61,9 @@ export class DamagedPropertyAddress {
     farmoperation?: null | boolean,
     ownedandoperatedbya?: null | boolean,
     farmoperationderivesthatpersonsmajorincom?: null | boolean,
+    charityExistsAtLeast12Months?: null | boolean,
+    charityProvidesCommunityBenefit?: null | boolean,
+    charityRegistered?: null | boolean,
     ) {}
 }
 
@@ -85,6 +91,9 @@ export class DamagedPropertyAddressForm {
   farmoperation = new UntypedFormControl();
   ownedandoperatedbya = new UntypedFormControl();
   farmoperationderivesthatpersonsmajorincom = new UntypedFormControl();
+  charityExistsAtLeast12Months = new UntypedFormControl();
+  charityProvidesCommunityBenefit = new UntypedFormControl();
+  charityRegistered = new UntypedFormControl();
 
   constructor(
     damagedPropertyAddress: DamagedPropertyAddress,
@@ -223,6 +232,20 @@ export class DamagedPropertyAddressForm {
     }
     this.lossesExceed1000.setValidators(null);
 
+    if (damagedPropertyAddress.charityExistsAtLeast12Months) {
+      this.charityExistsAtLeast12Months.setValue(damagedPropertyAddress.charityExistsAtLeast12Months);
+    }
+    this.charityExistsAtLeast12Months.setValidators(null);
+
+    if (damagedPropertyAddress.charityProvidesCommunityBenefit) {
+      this.charityProvidesCommunityBenefit.setValue(damagedPropertyAddress.charityProvidesCommunityBenefit);
+    }
+    this.charityProvidesCommunityBenefit.setValidators(null);
+
+    if (damagedPropertyAddress.charityRegistered) {
+      this.charityRegistered.setValue(damagedPropertyAddress.charityRegistered);
+    }
+    this.charityRegistered.setValidators(null);
   }
 }
 

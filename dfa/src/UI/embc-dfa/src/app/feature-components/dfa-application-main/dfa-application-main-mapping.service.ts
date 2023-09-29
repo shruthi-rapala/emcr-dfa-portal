@@ -46,6 +46,9 @@ export class DFAApplicationMainMappingService {
           farmoperationderivesthatpersonsmajorincom: dfaApplicationMain.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom === false ? 'false' : null),
           ownedandoperatedbya: dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === false ? 'false' : null),
           lossesExceed1000: dfaApplicationMain.damagedPropertyAddress.lossesExceed1000 === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.lossesExceed1000 === false ? 'false' : null),
+          charityRegistered: dfaApplicationMain.damagedPropertyAddress.charityRegistered === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityRegistered === false ? 'false' : null),
+          charityExistsAtLeast12Months: dfaApplicationMain.damagedPropertyAddress.charityExistsAtLeast12Months === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityExistsAtLeast12Months === false ? 'false' : null),
+          charityProvidesCommunityBenefit: dfaApplicationMain.damagedPropertyAddress.charityProvidesCommunityBenefit === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityProvidesCommunityBenefit === false ? 'false' : null),
         });
         formGroup = damagedPropertyAddress;
       });

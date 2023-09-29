@@ -163,6 +163,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         // public int? dfa_farmoperation { get; set; } // optional Option set
         // public int? dfa_ownedandoperatedbya { get; set; } // optional Option set
         // public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optional Option set
+        // public int? dfa_charityregistered { get; set; } // optional Option set
+        // public int? dfa_charityexistsatleast12months { get; set; } // optional Option set
+        // public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set
 
         public bool delete { get; set; } // delete or not
     }
@@ -215,6 +218,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_farmoperation { get; set; } // optoinal Option Set
         public int? dfa_ownedandoperatedbya { get; set; } // optoinal Option Set
         public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optoinal Option Set
+        // public int? dfa_charityregistered { get; set; } // optional Option set
+        // public int? dfa_charityexistsatleast12months { get; set; } // optional Option set
+        // public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set
     }
 
     public class dfa_appbuildingownerlandlord
