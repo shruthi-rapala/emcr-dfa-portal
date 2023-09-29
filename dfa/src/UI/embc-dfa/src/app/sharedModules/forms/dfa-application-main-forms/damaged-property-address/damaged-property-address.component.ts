@@ -436,10 +436,6 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     });
   }
 
-  showForm() {
-    console.log(this.damagedPropertyAddressForm);
-  }
-
   dontContinueApplication(content: DialogContent, controlName: string) {
     this.dialog
       .open(DFAEligibilityDialogComponent, {
