@@ -93,7 +93,6 @@ export class DFAApplicationStartComponent
 
   checkSubmitAllowed() {
     // debugger;
-    console.log(this.form);
     this.submitAllowed = false;
     this.form.updateValueAndValidity();
 
