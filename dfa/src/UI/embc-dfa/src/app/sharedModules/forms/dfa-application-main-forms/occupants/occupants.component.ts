@@ -111,7 +111,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       .get('addNewSecondaryApplicantIndicator')
       .valueChanges.subscribe((value) => this.updateSecondaryApplicantOnVisibility());
     this.getSecondaryApplicantsForApplication(this.dfaApplicationMainDataService.getApplicationId());
-    this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   getSecondaryApplicantsForApplication(applicationId: string) {
@@ -276,7 +275,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
     this.secondaryApplicantsForm.get('secondaryApplicant.deleteFlag').setValue(false);
     this.secondaryApplicantsForm.get('secondaryApplicant.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
-    this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   saveSecondaryApplicants(): void {
@@ -288,7 +286,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
           this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
           this.secondaryApplicantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);
           this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
-          this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
         },
         error: (error) => {
           console.error(error);
@@ -302,7 +299,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   cancelSecondaryApplicants(): void {
     this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
     this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(false);
-    this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
   }
 
   deleteSecondaryApplicantRow(index: number): void {
@@ -317,7 +313,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
             .get('addNewSecondaryApplicantIndicator')
             .setValue(false);
           }
-        this.formCreationService.secondaryApplicantsChanged.emit(this.secondaryApplicantsData);
       },
       error: (error) => {
         console.error(error);
