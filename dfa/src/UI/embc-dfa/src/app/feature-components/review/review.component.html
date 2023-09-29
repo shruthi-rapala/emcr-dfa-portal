@@ -618,6 +618,42 @@
             }}</span>
           </div>
         </div>
+        <div class="row info-detail" *ngIf="isCharitableOrganization">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityProvidesCommunityBenefit}">Charity provides community benefit/service:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityProvidesCommunityBenefit}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityProvidesCommunityBenefit == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityProvidesCommunityBenefit == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isCharitableOrganization">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityExistsAtLeast12Months}">Charity has existed for at least 12 months:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityExistsAtLeast12Months}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityExistsAtLeast12Months == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityExistsAtLeast12Months == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isCharitableOrganization">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityRegistered}">Charity registered under BC Societies Act:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityRegistered}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityRegistered == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityRegistered == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
         <div class="row info-detail" *ngIf="isSmallBusinessOwner || isFarmOwner || isCharitableOrganization">
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isSmallBusinessOwner">Business legal name:</span>
