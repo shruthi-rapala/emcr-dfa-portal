@@ -24,7 +24,10 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
+              "src/dfa/favicon.ico",
               "src/assets",
+              "src/dfa",
+              "src/dfa/img",
               "src/dfa/dfa.html",
               {
                 "glob": "dfa.html",
