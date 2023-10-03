@@ -28,6 +28,11 @@
               "src/assets",
               "src/dfa",
               "src/dfa/img",
+              {
+                "glob": "img",
+                "input": "src/dfa/",
+                "output": "/dfa-dashboard/"
+              },
               "src/dfa/dfa.html",
               {
                 "glob": "dfa.html",
