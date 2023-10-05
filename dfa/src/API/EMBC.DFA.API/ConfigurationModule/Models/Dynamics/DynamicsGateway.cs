@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -95,11 +96,30 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         }
 
         // TODO: fails with null dates when signatures not passed in
-        public async Task<string> AddApplication(dfa_appapplicationstart_params application)
+        public async Task<string> AddApplication(dfa_appapplicationstart_params application, temp_dfa_appapplicationstart_params temp_params)
         {
             try
             {
                 var result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+
+                // Update with additional values TODO: remove when dynamics process updated to include these parameters
+                dynamic updateObject = new ExpandoObject();
+                updateObject.dfa_isprimaryanddamagedaddresssame2 = application.dfa_isprimaryanddamagedaddresssame2;
+                updateObject.dfa_damagedpropertystreet1 = application.dfa_damagedpropertystreet1;
+                updateObject.dfa_damagedpropertystreet2 = application.dfa_damagedpropertystreet2;
+                updateObject.dfa_damagedpropertycitytext = application.dfa_damagedpropertycitytext;
+                updateObject.dfa_damagedpropertyprovince = application.dfa_damagedpropertyprovince;
+                updateObject.dfa_damagedpropertypostalcode = application.dfa_damagedpropertypostalcode;
+                updateObject.dfa_dateofdamage = application.dfa_dateofdamage;
+                updateObject.dfa_doyourlossestotalmorethan10002 = temp_params.dfa_doyourlossestotalmorethan10002; // TODO: pass this in from dfa_applicationstart_params
+
+                // parent event object
+                var parEventIndexer = updateObject as IDictionary<string, object>;
+                parEventIndexer["dfa_EventId@odata.bind"] = "/dfa_events(" + temp_params.dfa_eventid + ")";
+
+                Guid applicationId = new Guid(result.Where(m => m.Key == "output").ToList()[0].Value.ToString());
+
+                var updateResult = await api.Update("dfa_appapplications", applicationId, updateObject, false);
 
                 if (result != null)
                 {
@@ -127,11 +147,24 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpdateApplication(dfa_appapplicationmain_params application)
+        public async Task<string> UpdateApplication(dfa_appapplicationmain_params application, temp_dfa_appapplicationmain_params temp_params)
         {
             try
             {
                 var result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+
+                // Update with additional values TODO: remove when dynamics process updated to include these parameters
+
+                dynamic updateObject = new ExpandoObject();
+                updateObject.dfa_accountlegalname = temp_params.dfa_accountlegalname;
+                updateObject.dfa_businessmanagedbyallownersondaytodaybasis = temp_params.dfa_businessmanagedbyallownersondaytodaybasis;
+                updateObject.dfa_grossrevenues100002000000beforedisaster = temp_params.dfa_grossrevenues100002000000beforedisaster;
+                updateObject.dfa_employlessthan50employeesatanyonetime = temp_params.dfa_employlessthan50employeesatanyonetime;
+                updateObject.dfa_farmoperation = temp_params.dfa_farmoperation;
+                updateObject.dfa_ownedandoperatedbya = temp_params.dfa_ownedandoperatedbya;
+                updateObject.dfa_farmoperationderivesthatpersonsmajorincom = temp_params.dfa_farmoperationderivesthatpersonsmajorincom;
+
+                var updateResult = await api.Update("dfa_appapplications", application.dfa_appapplicationid, updateObject, false);
 
                 if (result != null)
                 {
@@ -155,7 +188,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_appapplicationid", "dfa_applicanttype", "dfa_doyouhaveinsurancecoverage2", "_dfa_applicant_value",
                     "dfa_primaryapplicantsignednoins",
                     "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "dfa_secondaryapplicantsignednoins",
-                    "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins"
+                    "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins", "dfa_isprimaryanddamagedaddresssame2",
+                    "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2", "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince",
+                    "dfa_damagedpropertypostalcode", "dfa_dateofdamage", "dfa_doyourlossestotalmorethan10002", "_dfa_eventid_value"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -231,14 +266,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     }
                 }
             }
-
-            list.List.FirstOrDefault().dfa_accountlegalname = "Lorraine's Company"; // TODO: delete these 7 lines when values available in dynamics
-            list.List.FirstOrDefault().dfa_businessmanagedbyallownersondaytodaybasis = (int)YesNoNullOptionSet.Yes;
-            list.List.FirstOrDefault().dfa_grossrevenues100002000000beforedisaster = (int)YesNoNullOptionSet.Yes;
-            list.List.FirstOrDefault().dfa_employlessthan50employeesatanyonetime = (int)YesNoNullOptionSet.Yes;
-            list.List.FirstOrDefault().dfa_farmoperation = (int)YesNoNullOptionSet.Yes;
-            list.List.FirstOrDefault().dfa_farmoperationderivesthatpersonsmajorincom = (int)YesNoNullOptionSet.Yes;
-            list.List.FirstOrDefault().dfa_ownedandoperatedbya = (int)YesNoNullOptionSet.Yes;
 
             return list.List.FirstOrDefault();
         }
@@ -645,6 +672,68 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 var lstDateOfEventRevised2 = lstEvents.List.Where(m => m.dfa_dateofeventdeclaredrevised2 != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2).AddDays(90) >= DateTime.Now).Count();
 
                 return (lstDateOfEvent + lstDateOfEventRevised1 + lstDateOfEventRevised2) > 0 ? true : false;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+
+        public async Task<IEnumerable<dfa_event>> GetOpenEventListForPrescreening()
+        {
+            try
+            {
+                // TODO: Retrieve appropriate geographical information
+                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_eventid", "dfa_id", "dfa_dateofevent",
+                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2", "dfa_startdate", "dfa_enddate"
+                    }
+                });
+
+                // As per Jira ticket EMBCDFA-623 the field "dfa_90daydeadline" has incorrect information
+                // the 90 day deadline should be calculated to be 90 days from the latest of dfa_date, dfa_dateofeventdeclaredrevised, dfa_dateofeventdeclaredrevised2
+                var nowDate = DateTime.Now;
+                foreach (var disasterEvent in lstEvents.List)
+                {
+                    var ninetydaydeadline = nowDate.AddYears(-1000);
+                    if (disasterEvent.dfa_dateofevent != null)
+                    {
+                        var dateOfEvent = Convert.ToDateTime(disasterEvent.dfa_dateofevent);
+                        if (dateOfEvent.AddDays(90) > ninetydaydeadline)
+                        {
+                            ninetydaydeadline = dateOfEvent.AddDays(90);
+                        }
+                    }
+
+                    if (disasterEvent.dfa_dateofeventdeclaredrevised != null)
+                    {
+                        var dateOfEventRevised = Convert.ToDateTime(disasterEvent.dfa_dateofeventdeclaredrevised);
+                        if (dateOfEventRevised.AddDays(90) > ninetydaydeadline)
+                        {
+                            ninetydaydeadline = dateOfEventRevised.AddDays(90);
+                        }
+                    }
+
+                    if (disasterEvent.dfa_dateofeventdeclaredrevised2 != null)
+                    {
+                        var dateOfEventRevised2 = Convert.ToDateTime(disasterEvent.dfa_dateofeventdeclaredrevised2);
+                        if (dateOfEventRevised2.AddDays(90) > ninetydaydeadline)
+                        {
+                            ninetydaydeadline = dateOfEventRevised2.AddDays(90);
+                        }
+                    }
+
+                    if (ninetydaydeadline != nowDate.AddYears(-1000))
+                    {
+                        disasterEvent.dfa_90daydeadline = ninetydaydeadline.ToString();
+                    }
+                }
+
+                // open events are those where the 90 day deadline is now or in the future
+                return lstEvents.List.Where(m => m.dfa_90daydeadline != null && Convert.ToDateTime(m.dfa_90daydeadline) >= nowDate);
             }
             catch (System.Exception ex)
             {

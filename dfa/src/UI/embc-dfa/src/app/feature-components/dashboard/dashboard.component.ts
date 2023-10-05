@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
         this.appSessionService.appNumber = null;
       }
     }, 100);
-    
+
     setTimeout(
       function () {
 
@@ -96,10 +96,10 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  navigateToDFAApplicationStart(): void {
+  navigateToDFAPrescreening(): void {
     this.dfaApplicationMainDataService.setViewOrEdit('add');
     var profileId = this.profileDataService.getProfileId();
-    this.router.navigate(['/dfa-application-start']);
+    this.router.navigate(['/dfa-prescreening']);
     //this.appService.applicationGetDfaApplications({ profileId: profileId }).subscribe({
     //  next: (loginProfile) => {
     //    //this.profileMapping.mapLoginProfile(loginProfile);

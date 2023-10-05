@@ -60,8 +60,9 @@ namespace EMBC.DFA.API.Controllers
 
             if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationstart_params>(application);
+            var tempParms = mapper.Map<temp_dfa_appapplicationstart_params>(application); // TODO: remove
 
-            var applicationId = await handler.HandleApplication(mappedApplication);
+            var applicationId = await handler.HandleApplication(mappedApplication, tempParms);
 
             // Verify Profile
             application.ProfileVerification.profile.BCServiceCardId = currentUserId;
@@ -106,8 +107,9 @@ namespace EMBC.DFA.API.Controllers
         {
             if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
+            var temp_params = mapper.Map<temp_dfa_appapplicationmain_params>(application);
 
-            var result = await handler.HandleApplicationUpdate(mappedApplication);
+            var result = await handler.HandleApplicationUpdate(mappedApplication, temp_params);
 
             // Add signatures
             if (application.signAndSubmit?.applicantSignature?.signature != null &&
@@ -152,6 +154,12 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationStart.ProfileVerification = mapper.Map<ProfileVerification>(dfa_appapplication);
             dfaApplicationStart.Consent = mapper.Map<Consent>(dfa_appapplication);
             dfaApplicationStart.AppTypeInsurance = mapper.Map<AppTypeInsurance>(dfa_appapplication);
+            dfaApplicationStart.OtherPreScreeningQuestions = mapper.Map<OtherPreScreeningQuestions>(dfa_appapplication);
+
+            // Fill in profile
+            var userId = currentUserId;
+            var profile = await handler.HandleGetUser(userId);
+            dfaApplicationStart.ProfileVerification.profile = profile;
             return Ok(dfaApplicationStart);
         }
 
@@ -208,6 +216,8 @@ namespace EMBC.DFA.API.Controllers
         public ProfileVerification ProfileVerification { get; set; }
 
         public AppTypeInsurance AppTypeInsurance { get; set; }
+
+        public OtherPreScreeningQuestions OtherPreScreeningQuestions { get; set; }
     }
 
     public class DFAApplicationMain

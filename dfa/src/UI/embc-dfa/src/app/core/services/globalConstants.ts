@@ -42,7 +42,7 @@ export const gender = [
 export const yesFullyInsuredBody: DialogContent = {
   text: 'Insurable damages in the private sector aren’t eligible.' +
   '<br/><br/> To determine if your damages are insurable or uninsurable, contact your insurance provider as a first step. They will provide you with information about your insurance coverage.<br/><br/>' +
-  'Program staff are available to discuss how your insurance relates to your eligibility and application. Please call <span style="white-space: nowrap; font-weight: bold;">1-888-257-4777.</span><br/><br/>' +
+  'For more information about DFA eligibility, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program webpage</a>.<br/><br/>' +
   '<p><b>Do you have insurance that will cover all your losses?</b></p>',
   cancelButton: 'Yes, Cancel my Application',
   confirmButton: 'No, Go Back & Edit'
@@ -54,6 +54,13 @@ export const confirmSubmitApplicationBody: DialogContent = {
   'After submitting, you may continue to add or Update Other Contacts, add to the Clean Up Log, add items to the Damaged Items by Room list, and add additional documents. You can\'t delete any documents that you upload.',
   confirmButton: 'Yes, I want to submit my application.',
   cancelButton: 'No, I don\'t want to submit my application yet'
+}
+
+export const confirmPrescreeningBody: DialogContent = {
+  text: 'You may be eligible for DFA and may submit an application.' +
+  '<br/><br/>Please note that during the application process, information that you provide may make you ineligible for DFA. ',
+  confirmButton: 'Yes, I want to apply now',
+  cancelButton: 'No, I am not ready to apply now'
 }
 
 export const bcscMissingEmail: DialogContent = {
@@ -70,14 +77,33 @@ export const dontOccupyDamagedPropertyBody: DialogContent = {
   confirmButton: 'Yes, Continue my Application'
 }
 
+export const damageNotCausedByDisasterBody: DialogContent = {
+  text: '<p>The damages and losses must have been caused by the disaster event to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Are the damages and losses to your property caused by the disaster event?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
 export const businessNotManagedByAllOwnersOnDayToDayBasis: DialogContent = {
   text: '<p>To be eligible for DFA, your business must be managed by all owners on a day to day basis.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Is your business managed by all owners on a day to day basis?</b></p>',
   cancelButton: 'No, Save & Close my Application',
   confirmButton: 'Yes, Continue my Application'
 }
 
+export const addressAndDateNotWithinOpenEvent: DialogContent = {
+  text: '<p>The damaged property address wasn\'t in the area of any DFA eligible events on the date the damaged property address was first impacted.<br/><br/>' +
+  'To view the current list of DFA eligible events and their areas and start/end dates, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program Webpage</a>.</p><p>You may call us to discuss further at 1-888-257-4777.</p>' +
+  '<p><b>Would you like to correct the damaged property address or the date your damaged property was first impacted?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
 export const lossesDontExceed1000: DialogContent = {
-  text: '<p>To be eligible for DFA, your losses must exceed $1,000.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?</b></p>',
+  text: '<p>DFA is unable to compensate for damages that are under $1,000. Per the <i>Compensation and Disaster Financial Assistance Regulation</i> the following applies:<br/>' +
+  '2.2 Limits on assistance for private sector claims:<br/>' +
+  'a. The amount of financial assistance provided for each accepted claim is 80 percent of the amount of the total eligible damage that exceeds $1,000 to a maximum claim of $400,000.<br/>' +
+  'Please review the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA guidelines</a>' +
+  ' for eligible and non-eligible items, as well as the appropriate schedule for your application type to ensure you have over $1,000 in eligible damages. You may call us to discuss further at ' +
+  '1-888-257-4777.</p><p><b>Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?</b></p>',
   cancelButton: 'No, Save & Close my Application',
   confirmButton: 'Yes, Continue my Application'
 }
