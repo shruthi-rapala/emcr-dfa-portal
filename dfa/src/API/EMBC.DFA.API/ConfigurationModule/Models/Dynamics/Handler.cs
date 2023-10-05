@@ -22,9 +22,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<Profile> HandleGetUser(string userID);
         Task<IEnumerable<Country>> HandleCountry();
         Task<string> HandleContact(dfa_appcontact objContact);
-        Task<string> HandleApplication(dfa_appapplicationstart_params objApplication);
+        Task<string> HandleApplication(dfa_appapplicationstart_params objApplication, temp_dfa_appapplicationstart_params temp_params);
         Task<string> HandleSignature(dfa_signature objSignature);
-        Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication);
+        Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication, temp_dfa_appapplicationmain_params temp_params);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartAsync(Guid applicationId);
         Task<dfa_appapplicationmain_retrieve> GetApplicationMainAsync(Guid applicationId);
         Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems);
@@ -107,9 +107,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return contactId;
         }
 
-        public async Task<string> HandleApplication(dfa_appapplicationstart_params objApplication)
+        public async Task<string> HandleApplication(dfa_appapplicationstart_params objApplication, temp_dfa_appapplicationstart_params temp_params)
         {
-            var applicationId = await listsGateway.AddApplication(objApplication);
+            var applicationId = await listsGateway.AddApplication(objApplication, temp_params);
             return applicationId;
         }
 
@@ -119,9 +119,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return result;
         }
 
-        public async Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication)
+        public async Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication, temp_dfa_appapplicationmain_params temp_params)
         {
-            var result = await listsGateway.UpdateApplication(objApplication);
+            var result = await listsGateway.UpdateApplication(objApplication, temp_params);
             return result;
         }
 

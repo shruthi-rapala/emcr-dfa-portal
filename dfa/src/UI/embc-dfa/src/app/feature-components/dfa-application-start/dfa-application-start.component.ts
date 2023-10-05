@@ -216,10 +216,6 @@ export class DFAApplicationStartComponent
     }
   }
 
-  showForm() {
-    console.log(this.form);
-  }
-
   /**
    * Sets the form data to the DTO services
    *

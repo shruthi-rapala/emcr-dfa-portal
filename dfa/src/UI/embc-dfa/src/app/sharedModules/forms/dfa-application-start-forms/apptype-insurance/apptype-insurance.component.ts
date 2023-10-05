@@ -56,6 +56,11 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    let fullyInsuredEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
+    let notInsuredEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
+    let unsureEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Unsure)];
+
     this.appTypeInsuranceForm$ = this.formCreationService
       .getAppTypeInsuranceForm()
       .subscribe((appTypeInsurance) => {
@@ -63,6 +68,8 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         // pre-set from prescreening choices
         this.appTypeInsuranceForm.controls.applicantOption.setValue(this.dfaApplicationStartDataService.applicantOption);
         this.appTypeInsuranceForm.controls.insuranceOption.setValue(this.dfaApplicationStartDataService.insuranceOption);
+        if (this.dfaApplicationStartDataService.insuranceOption == InsuranceOption.No) this.notInsured = true;
+        else this.notInsured = false;
         this.appTypeInsuranceForm.updateValueAndValidity();
         // add form level validator to check that insurance option is not set to yes
         this.appTypeInsuranceForm.addValidators([ValidateInsuranceOption.notFullInsurance('insuranceOption', InsuranceOption.Yes)]);
@@ -91,10 +98,6 @@ export default class AppTypeInsuranceComponent implements OnInit, OnDestroy {
         this.formCreationService.applicantOptionChanged.emit();
         this.appTypeInsuranceForm.updateValueAndValidity();
       });
-
-    let fullyInsuredEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
-    let notInsuredEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
-    let unsureEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Unsure)];
 
     this.appTypeInsuranceForm
       .get('insuranceOption')
