@@ -91,6 +91,7 @@ export class DFAApplicationStartComponent
   }
 
   checkSubmitAllowed() {
+    // debugger;
     this.submitAllowed = false;
 
     // must have a value for both applicant option and insurance option

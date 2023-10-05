@@ -26,7 +26,6 @@ export class FormCreationService {
   public farmOptionChanged: EventEmitter<any>;
   public smallBusinessOptionChanged: EventEmitter<any>;
   public appTypeInsuranceFormValidityChange: EventEmitter<string>;
-  public secondaryApplicantsChanged: EventEmitter<Array<SecondaryApplicant>>;
   public signaturesChanged: EventEmitter<UntypedFormGroup>;
   public AppTypeInsuranceData: AppTypeInsurance;
 
@@ -275,7 +274,6 @@ export class FormCreationService {
     this.applicantOptionChanged = new EventEmitter<any>();
     this.farmOptionChanged = new EventEmitter<any>();
     this.smallBusinessOptionChanged = new EventEmitter<any>();
-    this.secondaryApplicantsChanged = new EventEmitter<Array<SecondaryApplicant>>();
     this.appTypeInsuranceFormValidityChange = new EventEmitter<string>();
     this.signaturesChanged = new EventEmitter<UntypedFormGroup>;
   }
