@@ -9,6 +9,9 @@ export interface DamagedPropertyAddress {
   addressLine2?: null | string;
   businessLegalName?: null | string;
   businessManagedByAllOwnersOnDayToDayBasis?: null | boolean;
+  charityExistsAtLeast12Months?: null | boolean;
+  charityProvidesCommunityBenefit?: null | boolean;
+  charityRegistered?: null | boolean;
   community?: null | string;
   eligibleForHomeOwnerGrant?: null | boolean;
   employLessThan50EmployeesAtAnyOneTime?: null | boolean;

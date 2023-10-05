@@ -121,7 +121,19 @@ export const ownedandoperatedbya: DialogContent = {
 }
 
 export const farmoperationderivesthatpersonsmajorincom: DialogContent = {
-  text: '<p>To be eligible for DFA, your farm operation must be the means by which the owner(s) derives the majority of that person\’s income?.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Is the farm operation the means by which the owner(s) derives the majority of that person\’s income?</b></p>',
+  text: '<p>To be eligible for DFA, your farm operation must be the means by which the owner(s) derives the majority of that person\’s income.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Is the farm operation the means by which the owner(s) derives the majority of that person\’s income?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const charitynobenefit: DialogContent = {
+  text: '<p>Your charitable organization must provide a benefit or service to the community to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Does your charitable organization provide a benefit or service to the community?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const charityno12months: DialogContent = {
+  text: '<p>Your charitable organization must have been in existence for at least 12 months to be eligible for DFA..</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Has your charitable organization been in existence for at least 12 months?</b></p>',
   cancelButton: 'No, Save & Close my Application',
   confirmButton: 'Yes, Continue my Application'
 }

@@ -188,6 +188,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_wereyouevacuatedduringtheevent2", "dfa_accountlegalname", "dfa_businessmanagedbyallownersondaytodaybasis",
                     "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
                     "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom"
+                 // "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });

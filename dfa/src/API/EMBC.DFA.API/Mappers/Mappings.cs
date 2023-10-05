@@ -199,6 +199,9 @@ namespace EMBC.DFA.API.Mappers
                 //.ForMember(d => d.dfa_farmoperation, opts => opts.MapFrom(s => s.damagedPropertyAddress.farmoperation == null ? (int?)null : (s.damagedPropertyAddress.farmoperation == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 //.ForMember(d => d.dfa_ownedandoperatedbya, opts => opts.MapFrom(s => s.damagedPropertyAddress.ownedandoperatedbya == null ? (int?)null : (s.damagedPropertyAddress.ownedandoperatedbya == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 //.ForMember(d => d.dfa_farmoperationderivesthatpersonsmajorincom, opts => opts.MapFrom(s => s.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom == null ? (int?)null : (s.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                //.ForMember(d => d.dfa_charityregistered, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityRegistered == null ? (int?)null : (s.damagedPropertyAddress.charityRegistered == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                //.ForMember(d => d.dfa_charityexistsatleast12months, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityExistsAtLeast12Months == null ? (int?)null : (s.damagedPropertyAddress.charityExistsAtLeast12Months == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                //.ForMember(d => d.dfa_charityprovidescommunitybenefit, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityProvidesCommunityBenefit == null ? (int?)null : (s.damagedPropertyAddress.charityProvidesCommunityBenefit == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 //.ForMember(d => d.dfa_accountlegalname, opts => opts.MapFrom(s => s.damagedPropertyAddress.businessLegalName))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
