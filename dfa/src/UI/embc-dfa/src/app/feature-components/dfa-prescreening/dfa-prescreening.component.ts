@@ -14,6 +14,7 @@ import { DFAPrescreeningDataService } from './dfa-prescreening-data.service';
 import { ApplicantOption } from 'src/app/core/api/models';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmPrescreeningDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-prescreening-dialog/dfa-confirm-prescreening-dialog.component';
+import { LoginService } from 'src/app/core/services/login.service';
 
 @Component({
   selector: 'app-dfa-prescreening',
@@ -42,6 +43,7 @@ export class DFAPrescreeningComponent
     private cd: ChangeDetectorRef,
     public dfaPrescreeningDataService: DFAPrescreeningDataService,
     public dialog: MatDialog,
+    private loginService: LoginService
   ) {
     const navigation = this.router.getCurrentNavigation();
   }
@@ -147,7 +149,7 @@ export class DFAPrescreeningComponent
       })
       .afterClosed()
       .subscribe((result) => {
-        if (result === 'confirm') {
+        if (result === 'confirm' && this.loginService.isLoggedIn()) {
           const navigationPath = '/dfa-application-start';
           this.router.navigate([navigationPath]);
         } else this.returnToDashboard();
