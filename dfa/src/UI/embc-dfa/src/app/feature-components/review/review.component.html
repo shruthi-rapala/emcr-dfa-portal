@@ -682,7 +682,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="isResidentialTenant || isHomeowner">
+        <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'false'))}">Losses Total More Than $1000?:</span></div>
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'false'))}">
             {{

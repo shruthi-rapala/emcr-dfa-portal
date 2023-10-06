@@ -32,6 +32,7 @@ import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAPrescreeningDataService } from 'src/app/feature-components/dfa-prescreening/dfa-prescreening-data.service';
+import { LoginService } from 'src/app/core/services/login.service';
 
 @Component({
   selector: 'prescreening',
@@ -52,6 +53,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
   isValidAddressAndDate: boolean = false;
   public openDisasterEvents: DisasterEventMatching[] = [];
   matchingEventsData: DisasterEventMatching[] = [];
+  public isLoggedIn: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -61,7 +63,8 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
     private router: Router,
     private profileService: ProfileService,
     private eligibilityService: EligibilityService,
-    private prescreeningDataService: DFAPrescreeningDataService
+    private prescreeningDataService: DFAPrescreeningDataService,
+    private loginService: LoginService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -86,11 +89,18 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
 
     this.prescreeningDataService.clearPreScreeningAnswers.subscribe(any => {
       this.prescreeningForm.reset();
-      this.getProfileAddress();
       this.prescreeningForm.updateValueAndValidity();
     })
 
-    this.getProfileAddress();
+    if (this.loginService.isLoggedIn() == true) {
+      this.isLoggedIn = true;
+      this.getProfileAddress();
+    } else {
+      this.prescreeningForm.controls.isPrimaryAndDamagedAddressSame.setValidators(null);
+      this.prescreeningForm.controls.profileId.setValidators(null);
+      this.prescreeningForm.updateValueAndValidity();
+    }
+
     this.getOpenDisasterEvents();
 
     this.prescreeningForm
@@ -262,7 +272,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
           this.cancelPrescreening();
           }
         else if (result === 'confirm') {
-          this.prescreeningForm.controls.insuranceOption.setValue(Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)]);
+          this.prescreeningForm.controls.insuranceOption.setValue(null);
           this.prescreeningForm.updateValueAndValidity();
         }
         else this.prescreeningForm.controls.insuranceOption.setValue(null);
@@ -350,6 +360,9 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
           this.cancelPrescreening();
         }
       });
+    } else if (countMatchingEvents == 1) {
+      this.prescreeningForm.controls.eventId.setValue(this.matchingEventsData[0].eventId);
+      this.prescreeningForm.updateValueAndValidity();
     }
   }
 

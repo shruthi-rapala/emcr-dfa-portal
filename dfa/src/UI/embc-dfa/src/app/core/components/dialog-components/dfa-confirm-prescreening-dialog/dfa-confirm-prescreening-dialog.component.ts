@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, Inject } from '@angular/core';
 import { DialogContent } from 'src/app/core/model/dialog-content.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LoginService } from 'src/app/core/services/login.service';
 
 @Component({
   selector: 'app-confirm-prescreening-dialog',
@@ -11,12 +12,15 @@ export class DFAConfirmPrescreeningDialogComponent {
   public content: DialogContent;
   @Input() initDialog: boolean;
   @Output() outputEvent = new EventEmitter<string>();
+  public isLoggedIn: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<DFAConfirmPrescreeningDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    loginService: LoginService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     ) {
       this.content = this.data.content;
+      if (loginService.isLoggedIn()) this.isLoggedIn = true;
     }
 
   cancel() {

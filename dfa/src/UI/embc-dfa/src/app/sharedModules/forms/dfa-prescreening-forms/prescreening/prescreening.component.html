@@ -4,6 +4,19 @@
     <form [formGroup]="prescreeningForm">
 
       <ng-container>
+        <!-- Extra warning if not logged in -->
+        <div class="row" *ngIf="!isLoggedIn">
+          <div class="col-md-8 bottomspace">
+              If you are eligible for DFA and want to create an application, you must:<br/>
+              <ul>
+                <li>log in with your BC Services Card,</li>
+                <li>create a profile, and </li>
+                <li>repeat the prescreening process.</li>
+              </ul>
+          </div>
+        </div>
+        <hr style="border: 2px solid;" *ngIf="!isLoggedIn"/>
+
         <!-- Applicant options -->
         <div class="row">
           <div class="col-md-8 bottomspace">
@@ -157,6 +170,7 @@
               class="primary-radio-group"
               (change)="onUseProfileAddressChoice($event)"
               required
+              *ngIf="isLoggedIn == true"
               aria-label="Select an option">
               <mat-radio-button value=true>Same as my profile address</mat-radio-button>
               <div class="row radio-extra-label">
@@ -171,7 +185,14 @@
                   [primaryAddressWarning]="false"
                 ></app-bc-address>
               </div>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
+            <div class="row radio-extra-label" *ngIf="isLoggedIn == false">
+              <app-bc-address
+                [addressForm]="prescreeningForm"
+                [primaryAddressWarning]="false"
+              ></app-bc-address>
+            </div>
+            <br/><br/>
             <p class="sub-heading" style="font-size: 15px">
               What date was your property first impacted by the disaster event?<span style="color:red" >*</span>
             </p>
@@ -241,12 +262,6 @@
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
             </mat-radio-group>
-            <div class="sub-heading radio-extra-label col-md-10" *ngIf="prescreeningForm.controls.damageCausedByDisaster.value === 'false'">
-              <br/>
-              The damages and losses weren't caused by the disaster event.<br/><br/>
-              To qualify for DFA the damages and losses to your property must have been caused by the disaster event.<br/>
-              To view the current list of DFA eligible events,, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program webpage</a>.<br/><br/>
-            </div>
           </div>
         </div>
         <hr style="border: 2px solid;"/>
@@ -263,13 +278,6 @@
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
             </mat-radio-group>
-            <div class="sub-heading radio-extra-label col-md-10" *ngIf="prescreeningForm.controls.lossesExceed1000.value === 'false'">
-              <br/>
-              DFA is unable to compensate for damages that are under $1,000. Per the <i>Compensation and Disaster Financial Assistance Regulation</i> the following applies:<br/><br/>
-              2.2 Limits on assistance for private sector claims:<br/><br/>
-              a. The amount of financial assistance provided for each accepted claim is 80 percent of the amount of the total eligible damage that exceeds $1,000 to a maximum claim of $400,000.<br/><br/>
-              Please review the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA guidelines</a> for eligible and non-eligible items, as well as the appropriate schedule for your application type to ensure you have over $1,000 in eligible damages.<br/><br/>
-            </div>
           </div>
         </div>
         <hr style="border: 2px solid;"/>
@@ -291,13 +299,6 @@
                 >
                   {{ option.value }}
                 </mat-radio-button>
-                <div class="sub-heading radio-extra-label col-md-10" *ngIf="prescreeningForm.controls.insuranceOption.value === option.key && option.value === radioInsuranceOptions.Yes">
-                  <br/>
-                  Insurable damages in the private sector aren’t eligible.
-                  <br/><br/>
-                  To determine if your damages are insurable or uninsurable, contact your insurance provider as a first step. They will provide you with information about your insurance coverage.<br/><br/>
-                  For more information about DFA eligibility, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program webpage</a>.<br/><br/>
-                </div>
                 <div class="sub-heading radio-extra-label col-md-10" *ngIf="prescreeningForm.get('insuranceOption').value === option.key && option.value === radioInsuranceOptions.Unsure">
                   <br/>You may be eligible for DFA and should submit an application. As part of your application process, you must provide insurance payout documentation from your insurance broker
                   showing what was covered by your insurance provider. The DFA Program won't be able to confirm eligibility until this information is provided.<br/><br/>

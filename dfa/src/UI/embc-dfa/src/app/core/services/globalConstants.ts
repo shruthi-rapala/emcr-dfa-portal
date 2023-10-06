@@ -44,7 +44,7 @@ export const yesFullyInsuredBody: DialogContent = {
   '<br/><br/> To determine if your damages are insurable or uninsurable, contact your insurance provider as a first step. They will provide you with information about your insurance coverage.<br/><br/>' +
   'For more information about DFA eligibility, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program webpage</a>.<br/><br/>' +
   '<p><b>Do you have insurance that will cover all your losses?</b></p>',
-  cancelButton: 'Yes, Cancel my Application',
+  cancelButton: 'Yes, Don\'t Continue',
   confirmButton: 'No, Go Back & Edit'
 }
 
@@ -79,8 +79,8 @@ export const dontOccupyDamagedPropertyBody: DialogContent = {
 
 export const damageNotCausedByDisasterBody: DialogContent = {
   text: '<p>The damages and losses must have been caused by the disaster event to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Are the damages and losses to your property caused by the disaster event?</b></p>',
-  cancelButton: 'No, Save & Close my Application',
-  confirmButton: 'Yes, Continue my Application'
+  cancelButton: 'No, Don\'t Continue',
+  confirmButton: 'Yes, Continue'
 }
 
 export const businessNotManagedByAllOwnersOnDayToDayBasis: DialogContent = {
@@ -93,8 +93,8 @@ export const addressAndDateNotWithinOpenEvent: DialogContent = {
   text: '<p>The damaged property address wasn\'t in the area of any DFA eligible events on the date the damaged property address was first impacted.<br/><br/>' +
   'To view the current list of DFA eligible events and their areas and start/end dates, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program Webpage</a>.</p><p>You may call us to discuss further at 1-888-257-4777.</p>' +
   '<p><b>Would you like to correct the damaged property address or the date your damaged property was first impacted?</b></p>',
-  cancelButton: 'No, Save & Close my Application',
-  confirmButton: 'Yes, Continue my Application'
+  cancelButton: 'No, Don\'t Continue',
+  confirmButton: 'Yes, Continue'
 }
 
 export const lossesDontExceed1000: DialogContent = {
@@ -104,8 +104,8 @@ export const lossesDontExceed1000: DialogContent = {
   'Please review the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA guidelines</a>' +
   ' for eligible and non-eligible items, as well as the appropriate schedule for your application type to ensure you have over $1,000 in eligible damages. You may call us to discuss further at ' +
   '1-888-257-4777.</p><p><b>Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?</b></p>',
-  cancelButton: 'No, Save & Close my Application',
-  confirmButton: 'Yes, Continue my Application'
+  cancelButton: 'No, Don\'t Continue',
+  confirmButton: 'Yes, Continue'
 }
 
 export const farmoperation: DialogContent = {
