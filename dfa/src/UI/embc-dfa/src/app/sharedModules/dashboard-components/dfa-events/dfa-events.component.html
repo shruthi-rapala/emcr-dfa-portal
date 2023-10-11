@@ -12,7 +12,7 @@
           <span><b>90-Day Deadline:</b>&nbsp;&nbsp;{{eventItem.ninetyDayDeadline | date: "dd-MMM-yyyy"}}</span>
         </div>
       </div><br/><br/>
-      <table mat-table [dataSource]="getEffectedRegionCommuntiesForEvent(eventItem.eventId)" style="width:100%">
+      <table mat-table [dataSource]="getEffectedRegionCommuntiesForEvent(eventItem.eventId)" style="width:100%" *ngIf="getEffectedRegionCommuntiesForEvent(eventItem.eventId).length>0">
         <!-- Effected Community -->
         <ng-container matColumnDef="communityName">
           <th mat-header-cell *matHeaderCellDef>
@@ -41,6 +41,9 @@
           [style.height]="'auto'"
         ></tr>
       </table><br/><br/>
+      <div *ngIf="getEffectedRegionCommuntiesForEvent(eventItem.eventId).length == 0">
+        <h2 style="text-align:center"><b>No Effected Communities</b></h2>
+      </div>
       <button mat-button type="button" class="button-p" (click)="checkEligibility()">Check Eligibility</button>
     </mat-card>
   </div>
