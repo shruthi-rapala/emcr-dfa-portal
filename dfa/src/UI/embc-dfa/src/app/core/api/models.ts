@@ -35,6 +35,7 @@ export { CommunityType } from './models/community-type';
 export { DamagedRoom } from './models/damaged-room';
 export { RoomType } from './models/room-type';
 export { DisasterEvent } from './models/disaster-event';
+export { EffectedRegionCommunity } from './models/effected-region-community';
 export { FullTimeOccupant } from './models/full-time-occupant';
 export { OtherContact } from './models/other-contact';
 export { ProfileDataConflict } from './models/profile-data-conflict';

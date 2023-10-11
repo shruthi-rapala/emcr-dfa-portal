@@ -658,6 +658,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
+                // TODO: when new event name field is added, retrieve the new field
                 var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
                 {
                     Select = new[]
@@ -679,7 +680,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<IEnumerable<dfa_event>> GetOpenEventListForPrescreening()
+        public async Task<IEnumerable<dfa_event>> GetOpenEventList()
         {
             try
             {
@@ -739,6 +740,35 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             {
                 throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
             }
+        }
+
+        public async Task<IEnumerable<dfa_effectedregioncommunities>> GetEffectedRegionCommunitiesList()
+        {
+            var lstEffectedRegionCommunties = await api.GetList<dfa_effectedregioncommunities>("dfa_effectedregioncommunities", new CRMGetListOptions
+            {
+                Select = new[]
+                {
+                        "dfa_effectedregioncommunityid", "_dfa_regionid_value", "dfa_areaname",
+                        "_dfa_eventid_value"
+                }
+            });
+            var lstRegions = await api.GetList<dfa_region>("dfa_regions", new CRMGetListOptions
+            {
+                Select = new[]
+                {
+                        "dfa_regionid", "dfa_name"
+                }
+            });
+
+            foreach (dfa_effectedregioncommunities dfa_effectedregioncommunity in lstEffectedRegionCommunties.List)
+            {
+                if (dfa_effectedregioncommunity._dfa_regionid_value != null)
+                {
+                    dfa_effectedregioncommunity.dfa_name = lstRegions.List.Find(x => x.dfa_regionid == dfa_effectedregioncommunity._dfa_regionid_value)?.dfa_name;
+                }
+            }
+
+            return lstEffectedRegionCommunties.List;
         }
     }
 }

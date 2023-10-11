@@ -515,4 +515,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         [Description("I don't have a permanent address right now")]
         NoAddress = 222710002
     }
+
+    public class dfa_effectedregioncommunities
+    {
+        public string dfa_effectedregioncommunityid { get; set; }
+        public string _dfa_regionid_value { get; set; }
+        public string dfa_areaname { get; set; }
+        public string _dfa_eventid_value { get; set; }
+        public string dfa_name { get; set; }
+    }
+
+    public class dfa_region
+    {
+        public string dfa_regionid { get; set; }
+        public string dfa_name { get; set; }
+    }
 }
