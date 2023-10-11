@@ -42,7 +42,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
         Task<bool> HandleEvents();
-        Task<IEnumerable<dfa_event>> HandlePrescreeningEventList();
+        Task<IEnumerable<dfa_event>> HandleOpenEventList();
+        Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList();
     }
 
     public class Handler : IConfigurationHandler
@@ -219,9 +220,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             return await listsGateway.GetEventList();
         }
-        public async Task<IEnumerable<dfa_event>> HandlePrescreeningEventList()
+        public async Task<IEnumerable<dfa_event>> HandleOpenEventList()
         {
-            return await listsGateway.GetOpenEventListForPrescreening();
+            return await listsGateway.GetOpenEventList();
+        }
+
+        public async Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList()
+        {
+            return await listsGateway.GetEffectedRegionCommunitiesList();
         }
     }
 }

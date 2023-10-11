@@ -9,6 +9,8 @@ import { tap } from 'rxjs/internal/operators/tap';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { Observable, Subject } from 'rxjs';
+import { EligibilityService } from 'src/app/core/api/services';
+import { DisasterEvent } from 'src/app/core/api/models';
 //import {
 //  DfaAppapplication
 //} from 'src/app/core/api/models';
@@ -28,12 +30,14 @@ export class DashboardComponent implements OnInit {
   intervalId;
 
   tabs: DashTabModel[];
+  openDisasterEvents: DisasterEvent[];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     public formCreationService: FormCreationService,
     private appService: Service,
+    private eligibilityService: EligibilityService,
     private profService: ProfileService,
     private profileDataService: ProfileDataService,
     private appSessionService: AppSessionService,
@@ -56,6 +60,10 @@ export class DashboardComponent implements OnInit {
       }
     }, 100);
 
+    this.eligibilityService.eligibilityGetOpenEvents().subscribe((openDisasterEvents: DisasterEvent[]) => {
+      this.eventsCount = (openDisasterEvents ? openDisasterEvents.length : 0).toString();
+    })
+
     setTimeout(
       function () {
 
@@ -67,13 +75,13 @@ export class DashboardComponent implements OnInit {
             inactiveImage: '/assets/images/past-evac.svg',
             count: this.currentApplicationsCount
           },
-          //{
-          //  label: 'DFA Events',
-          //  route: 'eventlist',
-          //  activeImage: '/assets/images/curr-evac-active.svg',
-          //  inactiveImage: '/assets/images/curr-evac.svg',
-          //  count: this.eventsCount
-          //},
+          {
+           label: 'DFA Events',
+           route: 'eventlist',
+           activeImage: '/assets/images/curr-evac-active.svg',
+           inactiveImage: '/assets/images/curr-evac.svg',
+           count: this.eventsCount
+          },
           //{
           //  label: 'Past Applications',
           //  route: 'past',

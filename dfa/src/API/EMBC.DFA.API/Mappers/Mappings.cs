@@ -416,6 +416,12 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.endDate, opts => opts.MapFrom(s => s.dfa_enddate))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_id));
 
+            CreateMap<dfa_effectedregioncommunities, EffectedRegionCommunity>()
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_effectedregioncommunityid))
+                .ForMember(d => d.eventId, opts => opts.MapFrom(s => s._dfa_eventid_value))
+                .ForMember(d => d.communityName, opts => opts.MapFrom(s => s.dfa_areaname))
+                .ForMember(d => d.regionName, opts => opts.MapFrom(s => s.dfa_name));
+
             CreateMap<SecurityQuestion, ESS.Shared.Contracts.Events.SecurityQuestion>()
                 .ReverseMap()
                 ;

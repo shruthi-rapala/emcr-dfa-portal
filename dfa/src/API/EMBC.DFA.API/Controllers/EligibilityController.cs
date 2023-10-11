@@ -46,16 +46,16 @@ namespace EMBC.DFA.API.Controllers
         }
 
         /// <summary>
-        /// Retrieve list of open events for prescreening
+        /// Retrieve list of open events
         /// </summary>
-        /// <returns>list of prescreening events</returns>
-        [HttpGet("prescreeningEvents")]
+        /// <returns>list of open events</returns>
+        [HttpGet("openEvents")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<DisasterEvent>>> GetPrescreeningEvents()
+        public async Task<ActionResult<IEnumerable<DisasterEvent>>> GetOpenEvents()
         {
-            var dfa_events = await handler.HandlePrescreeningEventList();
+            var dfa_events = await handler.HandleOpenEventList();
 
             IEnumerable<DisasterEvent> disasterEvents = new DisasterEvent[] { };
             if (dfa_events != null)
@@ -72,6 +72,34 @@ namespace EMBC.DFA.API.Controllers
                 return Ok(null);
             }
         }
+
+        /// <summary>
+        /// Retrieve list of effected region communities
+        /// </summary>
+        /// <returns>list of effected region communities</returns>
+        [HttpGet("regionCommunities")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<EffectedRegionCommunity>>> GetRegionCommunties()
+        {
+            var dfa_effectedregioncommunities = await handler.HandleEffectedRegionCommunityList();
+
+            IEnumerable<EffectedRegionCommunity> effectedRegionCommunties = new EffectedRegionCommunity[] { };
+            if (dfa_effectedregioncommunities != null)
+            {
+                foreach (dfa_effectedregioncommunities dfa_effectedregioncommunity in dfa_effectedregioncommunities)
+                {
+                    EffectedRegionCommunity effectedRegionCommunity = mapper.Map<EffectedRegionCommunity>(dfa_effectedregioncommunity);
+                    effectedRegionCommunties = effectedRegionCommunties.Append<EffectedRegionCommunity>(effectedRegionCommunity);
+                }
+                return Ok(effectedRegionCommunties);
+            }
+            else
+            {
+                return Ok(null);
+            }
+        }
     }
 
     public class DisasterEvent
@@ -81,5 +109,13 @@ namespace EMBC.DFA.API.Controllers
         public string? ninetyDayDeadline { get; set; }
         public string? startDate { get; set; }
         public string? endDate { get; set; }
+    }
+
+    public class EffectedRegionCommunity
+    {
+        public string id { get; set; }
+        public string communityName { get; set; }
+        public string eventId { get; set; }
+        public string regionName { get; set; }
     }
 }

@@ -239,7 +239,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
   }
 
   getOpenDisasterEvents() {
-    this.eligibilityService.eligibilityGetPrescreeningEvents().subscribe((openDisasterEvents: DisasterEventMatching[]) => {
+    this.eligibilityService.eligibilityGetOpenEvents().subscribe((openDisasterEvents: DisasterEventMatching[]) => {
       this.openDisasterEvents = openDisasterEvents;
     })
   }

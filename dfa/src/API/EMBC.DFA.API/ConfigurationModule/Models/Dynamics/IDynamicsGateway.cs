@@ -33,20 +33,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
         Task<bool> GetEventList();
-        Task<IEnumerable<dfa_event>> GetOpenEventListForPrescreening();
-
-        //Task<IEnumerable> GetDistrictsAsync();
-
-        //Task<IEnumerable<JurisdictionEntity>> GetJurisdictionsAsync();
-
-        //Task<IEnumerable<JurisdictionEntity>> GetJurisdictionsAsync(string stateProvinceId);
-
-        //Task<IEnumerable> GetRegionsAsync();
-
-        //Task<IEnumerable<StateProvinceEntity>> GetStateProvincesAsync();
-
-        //Task<IEnumerable<StateProvinceEntity>> GetStateProvincesAsync(string countryId);
-
-        //Task<IEnumerable<SupportEntity>> GetSupportsAsync();
+        Task<IEnumerable<dfa_event>> GetOpenEventList();
+        Task<IEnumerable<dfa_effectedregioncommunities>> GetEffectedRegionCommunitiesList();
     }
 }
