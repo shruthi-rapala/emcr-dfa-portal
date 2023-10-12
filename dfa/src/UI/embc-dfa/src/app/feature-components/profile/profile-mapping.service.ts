@@ -64,13 +64,10 @@ export class ProfileMappingService {
       .subscribe((details) => {
         details.setValue({
           email: profile.contactDetails.email,
-          currentEmail: profile.contactDetails.currentEmail,
-          confirmEmail: profile.contactDetails.email,
           showContacts: true,
           cellPhoneNumber: profile.contactDetails.cellPhoneNumber,
           residencePhone: profile.contactDetails.residencePhone,
           alternatePhone: profile.contactDetails.alternatePhone,
-          preferBCSCEmail: profile.contactDetails.preferBCSCEmail
         });
       });
 

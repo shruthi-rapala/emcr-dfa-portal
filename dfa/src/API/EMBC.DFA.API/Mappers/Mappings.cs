@@ -26,7 +26,6 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_initial, opts => opts.MapFrom(s => s.PersonalDetails.Initials))
                 .ForMember(d => d.dfa_isindigenous2, opts => opts.MapFrom(s => s.PersonalDetails.IndigenousStatus == null ? (int?)YesNoNullOptionSet.Null : (s.PersonalDetails.IndigenousStatus.ToLower() == "yes" ? (int?)YesNoNullOptionSet.Yes : (int?)YesNoNullOptionSet.No)))
                 .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.ContactDetails.Email))
-                //.ForMember(d => d.dfa_currentemailaddress, opts => opts.MapFrom(s => s.ContactDetails.CurrentEmail)) // TODO: Uncomment when field added
                 .ForMember(d => d.dfa_cellphonenumber, opts => opts.MapFrom(s => s.ContactDetails.CellPhoneNumber))
                 .ForMember(d => d.dfa_residencetelephonenumber, opts => opts.MapFrom(s => s.ContactDetails.ResidencePhone))
                 .ForMember(d => d.dfa_alternatephonenumber, opts => opts.MapFrom(s => s.ContactDetails.AlternatePhone))
@@ -45,16 +44,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_isprimaryandsecondaryaddresssame, opts => opts.MapFrom(s => (!string.IsNullOrEmpty(s.IsMailingAddressSameAsPrimaryAddress) ?
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == SameAddressOptionSet.Yes.ToString().ToLower() ? Convert.ToInt32(SameAddressOptionSet.Yes) :
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == SameAddressOptionSet.No.ToString().ToLower() ? Convert.ToInt32(SameAddressOptionSet.No) : Convert.ToInt32(SameAddressOptionSet.NoAddress))) : Convert.ToInt32(SameAddressOptionSet.NoAddress))))
-                //.ForMember(d => d.dfa_preferbcscemailaddress, opts => opts.MapFrom(s => s.ContactDetails.PreferBCSCEmail == null ? null :
-                //            (s.ContactDetails.PreferBCSCEmail == true ? YesNoOptionSet.Yes : YesNoOptionSet.No))) // TODO: uncomment when fields added
                 .ReverseMap()
                 .ForMember(d => d.Id, opts => opts.MapFrom(s => s.dfa_appcontactid))
                 .ForMember(d => d.IsMailingAddressSameAsPrimaryAddress, opts => opts.MapFrom(s => (s.dfa_isprimaryandsecondaryaddresssame.HasValue ?
                                                 (s.dfa_isprimaryandsecondaryaddresssame == Convert.ToInt32(SameAddressOptionSet.Yes) ? SameAddressOptionSet.Yes.ToString() :
                                                 (s.dfa_isprimaryandsecondaryaddresssame == Convert.ToInt32(SameAddressOptionSet.No) ? SameAddressOptionSet.No.ToString() : SameAddressOptionSet.NoAddress.ToString())) : SameAddressOptionSet.NoAddress.ToString())))
-                //.ForMember(d => d.ContactDetails.PreferBCSCEmail, opts => opts.MapFrom(s => (s.dfa_preferbcscemailaddress.HasValue ?
-                //                                (s.dfa_preferbcscemailaddress == Convert.ToInt32(YesNoOptionSet.Yes) ? YesNoOptionSet.Yes.ToString() :
-                //                                (s.dfa_preferbcscemailaddress == Convert.ToInt32(YesNoOptionSet.No) ? YesNoOptionSet.No.ToString() : null)) // TODO: uncomment when field added
                 .ForMember(d => d.PersonalDetails, opts => opts.MapFrom(s => new PersonDetails()
                 {
                     FirstName = s.dfa_firstname,

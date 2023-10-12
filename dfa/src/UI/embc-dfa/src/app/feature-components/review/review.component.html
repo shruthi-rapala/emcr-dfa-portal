@@ -390,26 +390,10 @@
         </div>
         <hr />
         <div class="row info-detail">
-          <div class="col-md-3">BC Services Card Email Address:</div>
+          <div class="col-md-3">Email Address:</div>
           <div class="col-md-3">
             {{
               (formCreationService.contactDetailsForm$ | async)?.value?.email
-            }}
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3">Prefer BCSC Email for Contact?:</div>
-          <div class="col-md-3">
-            {{
-              ((formCreationService.contactDetailsForm$ | async)?.value?.preferBCSCEmail == 'true') ? "Yes" : (((formCreationService.contactDetailsForm$ | async)?.value?.preferBCSCEmail == 'false') ? "No" : "Please enter a selection")
-            }}
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.contactDetailsForm$ | async)?.value?.preferBCSCEmail == 'false'">
-          <div class="col-md-3">Current Email Address:</div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.contactDetailsForm$ | async)?.value?.currentEmail
             }}
           </div>
         </div>

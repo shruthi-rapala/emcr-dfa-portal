@@ -127,31 +127,6 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
       });
 
     this.contactInfoForm
-      .get('currentEmail')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.contactInfoForm.get('currentEmail').reset();
-        }
-      });
-
-    this.contactInfoForm
-      .get('preferBCSCEmail')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        console.log(value);
-        if (value === '') {
-          this.contactInfoForm.get('preferBCSCEmail').reset();
-        } else if (value === true) {
-          this.contactInfoForm.get('currentEmail').reset();
-          this.contactInfoForm.get('currentEmail').setValidators([Validators.email, Validators.maxLength(100)]);
-        } else if (value === false) {
-          this.contactInfoForm.get('currentEmail').setValidators([Validators.required, Validators.email, Validators.maxLength(100)]);
-        }
-        this.contactInfoForm.get('currentEmail').updateValueAndValidity();
-      });
-
-    this.contactInfoForm
       .get('confirmEmail')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
@@ -199,8 +174,6 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
     this.contactInfoForm.get('cellPhoneNumber').updateValueAndValidity();
     this.contactInfoForm.get('email').updateValueAndValidity();
     this.contactInfoForm.get('confirmEmail').updateValueAndValidity();
-    this.contactInfoForm.get('preferBCSCEmail').updateValueAndValidity();
-    this.contactInfoForm.get('currentEmail').updateValueAndValidity();
   }
 
   ngOnDestroy(): void {

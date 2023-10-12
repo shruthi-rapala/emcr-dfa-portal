@@ -113,13 +113,6 @@ export class ContactDetailsForm {
         .bind(customValidator)
     ]);
 
-    this.currentEmail.setValidators([
-      Validators.email,
-      customValidator
-        .maxLengthValidator(100)
-        .bind(customValidator)
-    ]);
-
     this.cellPhoneNumber.setValidators([
       customValidator.maskedNumberLengthValidator().bind(customValidator),
       customValidator
