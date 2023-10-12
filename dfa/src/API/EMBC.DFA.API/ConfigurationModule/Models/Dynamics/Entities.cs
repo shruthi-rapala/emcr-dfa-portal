@@ -42,6 +42,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_isindigenous2 { get; set; }
         public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
         public string dfa_appcontactid { get; set; }
+        // public string dfa_currentemailaddress { get; set; } // TODO: uncomment when field exists in dfa_appcontact
+        // public int? dfa_preferbcscemailaddress { get; set; } // TODO: uncomment when field exists in dfa_appcontact
     }
 
     public class dfa_appcontact_extended : dfa_appcontact

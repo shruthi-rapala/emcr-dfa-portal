@@ -98,7 +98,6 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
             .bind(this.customValidator)
         ]);
         this.contactInfoForm.updateValueAndValidity();
-        if (!this.contactInfoForm.value.confirmEmail) this.bcscEmailError(); // must have bcsc email address
       });
 
     this.contactInfoForm

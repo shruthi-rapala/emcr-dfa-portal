@@ -97,6 +97,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             var objUser = await listsGateway.GetUserProfileAsync(userID);
             var mappedProfile = mapper.Map<Profile>(objUser);
+            if (mappedProfile != null && mappedProfile.ContactDetails != null)
+            {
+                mappedProfile.ContactDetails.CurrentEmail = mappedProfile.ContactDetails.Email; // TODO: remove this line when new field for current email address exists
+                if (mappedProfile.ContactDetails.Email is null) mappedProfile.ContactDetails.PreferBCSCEmail = false; // TODO: remove this line and next when field added
+                else mappedProfile.ContactDetails.PreferBCSCEmail = true;
+            }
             return mappedProfile;
         }
 

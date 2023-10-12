@@ -126,31 +126,21 @@ information and to verify that the information provided by you is accurate.
 
         <div class="row">
           <div class="col-md-12">
-            <p class="sub-heading">Email Address</p>
+            <p class="sub-heading">Email Address<span style="color:red"><b>*</b></span></p>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-5">
             <mat-form-field appearance="outline">
-              <!-- [hideRequiredMarker]="contactFormControl?.hideEmailRequired?.value" -->
-              <mat-label>Email Address</mat-label>
+              <mat-label>This is the email address from your BC Services Card</mat-label>
               <input
                 formControlName="email"
                 matInput
                 placeholder="Email Address"
                 autocomplete="new-password"
-                required
                 readonly="true"
               />
-              <mat-error
-                *ngIf="
-                  contactFormControl.email.invalid &&
-                  contactFormControl.email.hasError('required')
-                "
-              >
-                Email is required</mat-error
-              >
               <mat-error
                 *ngIf="
                   contactFormControl.email.invalid &&
@@ -162,6 +152,46 @@ information and to verify that the information provided by you is accurate.
                 *ngIf="
                   contactFormControl.email.invalid &&
                   contactFormControl.email.hasError('maxLength')
+                "
+                >Maximum length is 100 characters</mat-error
+              >
+            </mat-form-field>
+            <mat-label>Do you want to use this email to communicate and, if applicable, receive payments from the DFA?</mat-label>
+            <mat-radio-group
+              formControlName="preferBCSCEmail"
+              class="primary-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>
+              <mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group><br/><br/>
+            <mat-form-field appearance="outline" *ngIf="contactFormControl.currentEmail.value == false">
+              <mat-label>Provide a current email address</mat-label>
+              <input
+                formControlName="email"
+                [required]="contactFormControl.currentEmail.value == false"
+                matInput
+                placeholder="Email Address"
+                autocomplete="new-password"
+              />
+              <mat-error
+                *ngIf="
+                  contactFormControl.currentEmail.invalid &&
+                  contactFormControl.currentEmail.hasError('email')
+                "
+                >Current email address is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  contactFormControl.currentEmail.invalid &&
+                  contactFormControl.currentEmail.hasError('email')
+                "
+                >Invalid email</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  contactFormControl.currentEemail.invalid &&
+                  contactFormControl.currentEmail.hasError('maxLength')
                 "
                 >Maximum length is 100 characters</mat-error
               >

@@ -81,6 +81,8 @@ export class ContactDetails {
   //hidePhoneRequired: boolean;
   residencePhone: string;
   alternatePhone: string;
+  preferBCSCEmail?: boolean;
+  currentEmail?: string;
   constructor() {}
 }
 
@@ -93,6 +95,8 @@ export class ContactDetailsForm {
   //hidePhoneRequired = new UntypedFormControl(false);
   residencePhone = new UntypedFormControl();
   alternatePhone = new UntypedFormControl();
+  currentEmail = new UntypedFormControl();
+  preferBCSCEmail = new UntypedFormControl();
 
   constructor(
     contactDetails: ContactDetails,
@@ -103,6 +107,13 @@ export class ContactDetailsForm {
 
     //this.email.setValue(contactDetails.email);
     this.email.setValidators([
+      Validators.email,
+      customValidator
+        .maxLengthValidator(100)
+        .bind(customValidator)
+    ]);
+
+    this.currentEmail.setValidators([
       Validators.email,
       customValidator
         .maxLengthValidator(100)

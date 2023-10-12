@@ -63,6 +63,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_secondarycity", "dfa_secondarypostalcode", "dfa_secondarystateprovince",
                         "dfa_isprimaryandsecondaryaddresssame", "dfa_appcontactid",
                         "dfa_bcservicecardid"
+                        // "dfa_currentemailaddress", "dfa_preferbcscemailaddress" // TODO: Uncomment when fields added to entity
                     },
                     Filter = $"dfa_bcservicecardid eq '{userId}'"
                 });

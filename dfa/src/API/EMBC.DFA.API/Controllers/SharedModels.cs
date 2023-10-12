@@ -51,6 +51,8 @@ namespace EMBC.DFA.API.Controllers
         public string? CellPhoneNumber { get; set; }
 
         public string? AlternatePhone { get; set; }
+        public string? CurrentEmail { get; set; }
+        public bool? PreferBCSCEmail { get; set; }
     }
 
     /// <summary>

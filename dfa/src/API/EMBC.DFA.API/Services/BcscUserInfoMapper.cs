@@ -52,6 +52,7 @@ namespace EMBC.DFA.API.Services
                 ContactDetails = new ContactDetails
                 {
                     Email = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Email)?.GetString(),
+                    CurrentEmail = userData.RootElement.AttemptToGetProperty(BcscTokenKeys.Email)?.GetString(),
                 },
                 PrimaryAddress = new Address
                 {
