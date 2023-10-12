@@ -149,7 +149,7 @@ information and to verify that the information provided by you is accurate.
               <mat-error
                 *ngIf="
                   contactFormControl?.confirmEmail.invalid &&
-                  contactFormControl?.confirmEmail.hasError('whitespaceError')
+                  contactFormControl?.confirmEmail.hasError('required')
                 "
               >
                 Confirm email is required</mat-error

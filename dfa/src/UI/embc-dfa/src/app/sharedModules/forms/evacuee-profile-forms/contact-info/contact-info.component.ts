@@ -97,7 +97,6 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
             .bind(this.customValidator)
         ]);
         this.contactFormControl.confirmEmail.reset();
-        console.log("reset confirmEmail");
         this.contactInfoForm.updateValueAndValidity();
       });
 
