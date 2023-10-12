@@ -4,7 +4,7 @@ mat-form-field {
 
 .primary-radio-group {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: 15px 0;
 }
 
@@ -22,11 +22,4 @@ mat-form-field {
   font-weight: bold;
   color: #169bd5;
   padding: 10px;
-}
-
-.horizontal-radio-group {
-  display: flex; flex-direction: row;
-  /* display: inline-grid; */
-  /* display: grid; */
-  margin: 15px 0;
 }
