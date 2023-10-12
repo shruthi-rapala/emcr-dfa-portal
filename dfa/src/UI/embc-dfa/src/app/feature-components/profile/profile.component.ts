@@ -17,6 +17,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { ProfileDataService } from './profile-data.service';
 import { ProfileService } from './profile.service';
 import * as globalConst from '../../core/services/globalConstants';
+import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 
 @Component({
   selector: 'app-profile',
@@ -50,7 +51,8 @@ export class ProfileComponent
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
     private profileDataService: ProfileDataService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private customValidation: CustomValidationService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
