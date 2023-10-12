@@ -28,7 +28,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { BCSCEmailErrorDialogComponent } from 'src/app/core/components/dialog-components/bcsc-email-error-dialog/bcsc-email-error-dialog.component';
 import { LoginService } from 'src/app/core/services/login.service';
 
 export class CustomErrorMailMatcher implements ErrorStateMatcher {
@@ -97,8 +96,8 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
             .maxLengthValidator(100)
             .bind(this.customValidator)
         ]);
+        this.contactFormControl.confirmEmail.reset();
         this.contactInfoForm.updateValueAndValidity();
-        if (!this.contactInfoForm.value.confirmEmail) this.bcscEmailError(); // must have bcsc email address
       });
 
     this.contactInfoForm
@@ -136,22 +135,6 @@ export default class ContactInfoComponent implements OnInit, OnDestroy {
         }
         this.contactInfoForm.get('email').updateValueAndValidity();
         this.contactInfoForm.get('cellPhoneNumber').updateValueAndValidity();
-      });
-  }
-
-  bcscEmailError(): void {
-    this.dialog
-      .open(BCSCEmailErrorDialogComponent, {
-        data: {
-          content: globalConst.bcscMissingEmail
-        },
-        height: '375px',
-        width: '750px',
-        disableClose: true
-      })
-      .afterClosed()
-      .subscribe((result) => {
-        this.loginService.logout();
       });
   }
 
