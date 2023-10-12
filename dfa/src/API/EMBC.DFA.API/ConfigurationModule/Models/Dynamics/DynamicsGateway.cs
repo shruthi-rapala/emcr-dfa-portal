@@ -654,7 +654,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<bool> GetEventList()
+        public async Task<int> GetEventCount()
         {
             try
             {
@@ -672,7 +672,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 var lstDateOfEventRevised1 = lstEvents.List.Where(m => m.dfa_dateofeventdeclaredrevised != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised).AddDays(90) >= DateTime.Now).Count();
                 var lstDateOfEventRevised2 = lstEvents.List.Where(m => m.dfa_dateofeventdeclaredrevised2 != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2).AddDays(90) >= DateTime.Now).Count();
 
-                return (lstDateOfEvent + lstDateOfEventRevised1 + lstDateOfEventRevised2) > 0 ? true : false;
+                return lstDateOfEvent + lstDateOfEventRevised1 + lstDateOfEventRevised2;
             }
             catch (System.Exception ex)
             {

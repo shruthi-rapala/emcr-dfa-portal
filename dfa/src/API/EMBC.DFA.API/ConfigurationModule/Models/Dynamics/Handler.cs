@@ -41,7 +41,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> DeleteFileUploadAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms);
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
-        Task<bool> HandleEvents();
+        Task<int> HandleEvents();
         Task<IEnumerable<dfa_event>> HandleOpenEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList();
     }
@@ -216,9 +216,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return await listsGateway.GetDocumentLocationsListAsync(applicationId);
         }
 
-        public async Task<bool> HandleEvents()
+        public async Task<int> HandleEvents()
         {
-            return await listsGateway.GetEventList();
+            return await listsGateway.GetEventCount();
         }
         public async Task<IEnumerable<dfa_event>> HandleOpenEventList()
         {

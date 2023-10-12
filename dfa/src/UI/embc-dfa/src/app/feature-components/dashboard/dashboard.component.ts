@@ -60,8 +60,8 @@ export class DashboardComponent implements OnInit {
       }
     }, 100);
 
-    this.eligibilityService.eligibilityGetOpenEvents().subscribe((openDisasterEvents: DisasterEvent[]) => {
-      this.eventsCount = (openDisasterEvents ? openDisasterEvents.length : 0).toString();
+    this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
+      this.eventsCount = eventsCount.toString();
     })
 
     setTimeout(

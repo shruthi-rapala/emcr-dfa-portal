@@ -39,7 +39,7 @@ export class EligibilityService extends BaseService {
    * This method doesn't expect any request body.
    */
   eligibilityGetEvents$Response(params?: {
-  }): Observable<StrictHttpResponse<boolean>> {
+  }): Observable<StrictHttpResponse<number>> {
 
     const rb = new RequestBuilder(this.rootUrl, EligibilityService.EligibilityGetEventsPath, 'get');
     if (params) {
@@ -51,7 +51,7 @@ export class EligibilityService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: String((r as HttpResponse<any>).body) === 'true' }) as StrictHttpResponse<boolean>;
+        return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
       })
     );
   }
@@ -67,10 +67,10 @@ export class EligibilityService extends BaseService {
    * This method doesn't expect any request body.
    */
   eligibilityGetEvents(params?: {
-  }): Observable<boolean> {
+  }): Observable<number> {
 
     return this.eligibilityGetEvents$Response(params).pipe(
-      map((r: StrictHttpResponse<boolean>) => r.body as boolean)
+      map((r: StrictHttpResponse<number>) => r.body as number)
     );
   }
 
