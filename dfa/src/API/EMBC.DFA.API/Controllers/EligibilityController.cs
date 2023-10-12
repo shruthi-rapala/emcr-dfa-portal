@@ -34,12 +34,12 @@ namespace EMBC.DFA.API.Controllers
         /// <summary>
         /// Checking events are present in the system
         /// </summary>
-        /// <returns>true or false</returns>
+        /// <returns>number of open events</returns>
         [HttpGet("checkEventsAvailable")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<bool>> GetEvents()
+        public async Task<ActionResult<int>> GetEvents()
         {
             var result = await handler.HandleEvents();
             return Ok(result);

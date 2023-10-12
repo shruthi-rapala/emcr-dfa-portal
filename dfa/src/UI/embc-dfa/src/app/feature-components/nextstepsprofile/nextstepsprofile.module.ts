@@ -7,6 +7,7 @@ import { NextstepsprofileRoutingModule } from './nextstepsprofile-routing.module
 import { NextstepsprofileComponent } from './nextstepsprofile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
   declarations: [NextstepsprofileComponent],
@@ -16,7 +17,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCardModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    CommonModule,
+    CoreModule
   ]
 })
 export class NextstepsprofileModule { }
