@@ -9,7 +9,7 @@ on:
 
     paths:
       - "landing-page/**"
-      - ".github/workflows/cd-dfa-landing-page.yml"
+      - ".github/workflows/cd-dfa-landing-page-support.yml"
 
 env:
   IMAGE_NAME: dfa-landing-page
