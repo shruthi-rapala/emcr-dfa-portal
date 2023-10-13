@@ -1,5 +1,5 @@
-#CD pipeline for dfa landing page
-name: cd-dfa-landing-page
+#CD pipeline for dfa landing page into the project stream
+name: cd-dfa-landing-page-project
 
 on:
   push:
