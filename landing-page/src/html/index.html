@@ -165,11 +165,11 @@ a:hover {
 }
 
 .homeBackground {
-    background-color: rgb(4 0 6 / 40%);
+    background-color: rgb(4 0 6 / 45%);
 }
 
 .container {
-	max-width: 1262px;
+	/*max-width: 1262px;*/
 	margin: 0 auto;
 	padding: 0 20px;
 }
@@ -209,22 +209,26 @@ a:hover {
 
 
 /** Hero **/
-.hero{
-	background: url(img/dfa_bghome.png) no-repeat center right;
-	background-size: 100%;
-}
-/*.hero::before {
-    content: "";
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    background-color: rgba(152, 66, 211, 0.63);
-}*/
+        .hero {
+            position: relative;
+        }
+        .hero::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: url(img/dfa_bghome.png) no-repeat center right;
+            background-size: 100%;
+            width: 100%;
+            height: 100%;
+            /*opacity: 0.2;*/
+            z-index: -1;
+        }
 .hero-content {
 	padding: 30px 0 10px 0;
-	width:50%;
+	width:83%;
+	margin: 0 auto;
 }
 .hero-content h1,
 .hero-content p{
@@ -557,6 +561,11 @@ a:hover {
 	.site-footer-links li {
 		margin-bottom: 0;
 	}
+
+    .hero-text {
+        padding: 30px 0 10px 0;
+        width: 50%;
+    }
 }
 
 </style>
@@ -595,7 +604,7 @@ a:hover {
 		<section class="hero">
 			<div class="container homeBackground">
 				<div class="hero-content">
-					<div>
+					<div class="hero-text">
 						<h1>Disaster Financial Assistance (DFA)</h1>
 						<p class="lead"><p>After a disaster, the provincial government may declare the event eligible for <strong>Disaster Financial Assistance (DFA).</strong> Once declared, the DFA program may provide applicants with financial assistance to restore uninsurable losses that are essential to your home, livelihood or community service.</p>
 						<p class="lead"><a class="--link-light-blue --link-strong" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance" target="_blank">Learn more ></a></p>
