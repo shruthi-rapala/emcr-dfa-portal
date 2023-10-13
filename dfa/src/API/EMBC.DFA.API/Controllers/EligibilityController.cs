@@ -7,6 +7,7 @@ using AutoMapper;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.Utilities.Messaging;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -16,6 +17,7 @@ namespace EMBC.DFA.API.Controllers
 {
     [Route("api/eligibility")]
     [ApiController]
+    [EnableCors("AllowCors")]
     public class EligibilityController : ControllerBase
     {
         private readonly IConfigurationHandler handler;
@@ -37,6 +39,7 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [AllowAnonymous]
         public async Task<ActionResult<bool>> GetEvents()
         {
             var result = await handler.HandleEvents();
