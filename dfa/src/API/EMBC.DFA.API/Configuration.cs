@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Json;
@@ -164,6 +165,20 @@ namespace EMBC.DFA.API
                     GetAccessToken = async (s) => await tokenProvider.AcquireToken()
                 });
             });
+            services.AddCors(opts => opts.AddDefaultPolicy(policy =>
+            {
+                policy.SetIsOriginAllowedToAllowWildcardSubdomains().WithOrigins(new string[]
+                {
+                    "https://dfa-landing-page-dev.apps.silver.devops.gov.bc.ca/"
+                });
+            }));
+            //services.AddCors(options =>
+            //    options.AddDefaultPolicy(builder =>
+            //        builder
+            //            .SetIsOriginAllowed(_ => true)
+            //            .AllowAnyMethod()
+            //            .AllowAnyHeader()
+            //            .AllowCredentials()));
         }
 
         public void ConfigurePipeline(PipelineServices services)
