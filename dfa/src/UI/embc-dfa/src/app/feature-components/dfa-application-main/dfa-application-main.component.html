@@ -3,7 +3,7 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationMainHeading }}</span>
     </div>
-    <div class="col-4" *ngIf="vieworedit !== 'view'" >
+    <div class="col-4" *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'" >
       <button
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"
@@ -18,7 +18,7 @@
         ></app-loader>
       </button>
     </div>
-    <div class="col-4" *ngIf="vieworedit === 'view'" >
+    <div class="col-4" *ngIf="vieworedit === 'view' || vieworedit === 'edit'" >
       <button
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"
@@ -112,7 +112,7 @@
             type="button"
             (click)="dfaApplicationMainStepper.previous()"
           >
-            Go Back<span *ngIf="vieworedit !== 'view'"> & Edit</span>
+            Go Back<span *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'"> & Edit</span>
           </button>
         </div>
         <div class="col-md-6">
@@ -147,7 +147,7 @@
             type="button"
             (click)="dfaApplicationMainStepper.previous()"
           >
-            Go Back<span *ngIf="vieworedit !== 'view'"> & Edit</span>
+            Go Back<span *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'"> & Edit</span>
           </button>
           <button *ngIf="isSubmitted === true"
             class="button-s"
@@ -165,7 +165,7 @@
              && (formCreationService.supportingDocumentsForm$ | async)?.valid
              && (formCreationService.otherContactsForm$ | async)?.valid
              && (formCreationService.fullTimeOccupantsForm$ | async)?.valid
-             && vieworedit !== 'view'
+             && vieworedit !== 'view' && vieworedit !== 'edit'
              && requiredDocumentsSupplied()
              ">
           <button
@@ -187,7 +187,7 @@
                 || !(formCreationService.fullTimeOccupantsForm$ | async)?.valid
                 || !(this.requiredDocumentsSupplied())
                  )
-            && vieworedit !== 'view'">
+            && vieworedit !== 'view' && vieworedit !== 'edit'">
           <span style="color:red">Enter all required information and sign before submitting.</span>
         </div>
       </div>
