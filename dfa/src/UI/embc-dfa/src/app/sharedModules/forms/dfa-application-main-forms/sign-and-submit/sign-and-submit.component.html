@@ -25,7 +25,7 @@
 
       </ng-container>
     </form>
-    <div *ngIf="dfaApplicationMainDataService.isSubmitted == true || dfaApplicationMainDataService.getViewOrEdit() === 'view'">
+    <div *ngIf="dfaApplicationMainDataService.isSubmitted == true || dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit'">
       Your application has been submitted.<br/><br/>
 
       You may view the status of your application on your dashboard. While you must submit an application for each DFA property claim, do not submit more than one application for the same property.<br/><br/>
