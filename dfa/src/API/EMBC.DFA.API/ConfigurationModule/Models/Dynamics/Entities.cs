@@ -483,6 +483,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_event { get; set; }
         public string dfa_casenumber { get; set; }
         public string dfa_primaryapplicantsigneddate { get; set; }
+        public string dfa_datefileclosed { get; set; }
+        public string dfa_applicationstatusportal { get; set; }
         public string createdon { get; set; }
     }
 
@@ -502,6 +504,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string incidentid { get; set; }
         public string ticketnumber { get; set; }
+        public string dfa_datefileclosed { get; set; }
     }
 
     public enum SameAddressOptionSet

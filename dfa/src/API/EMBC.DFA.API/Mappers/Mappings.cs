@@ -364,6 +364,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.dfa_applicanttype))))
                 .ForMember(d => d.PrimaryApplicantSignedDate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_primaryapplicantsigneddate) ? null : s.dfa_primaryapplicantsigneddate))
                 .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => s.dfa_casenumber))
+                .ForMember(d => d.ApplicationStatusPortal, opts => opts.MapFrom(s => s.dfa_applicationstatusportal))
+                .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_datefileclosed))
                 .ForMember(d => d.EventId, opts => opts.MapFrom(s => s.dfa_event))
                 .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => string.Join(", ", (new string[] { s.dfa_damagedpropertystreet1, s.dfa_damagedpropertycitytext }).Where(m => !string.IsNullOrEmpty(m)))))
                 .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));

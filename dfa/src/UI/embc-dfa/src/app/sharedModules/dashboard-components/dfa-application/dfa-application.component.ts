@@ -3,16 +3,10 @@ import { DashboardComponent } from '../../../feature-components/dashboard/dashbo
 import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
 import { ApplicationService as Service } from '../../../core/api/services/application.service';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
-import {
-  bookIcon,
-  eyeIcon,
-  fileAddIcon,
-  paperclipIcon,
-  userIcon,
-} from "@progress/kendo-svg-icons";
+import { CurrentApplication } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-dfadashboard-application',
@@ -20,10 +14,9 @@ import {
   styleUrls: ['./dfa-application.component.scss']
 })
 export class DfaApplicationComponent implements OnInit {
-  @Output() currentApplicationsCount = new EventEmitter<number>();
 
   addNewItem(value: number) {
-    this.currentApplicationsCount.emit(value);
+    this.appSessionService.currentApplicationsCount.emit(value);
   }
 
   items = [
@@ -36,9 +29,11 @@ export class DfaApplicationComponent implements OnInit {
     { label: "Reviewing Damage Report", isCompleted: false, currentStep: false },
     { label: "DFA Decision made", isCompleted: false, currentStep: false },
   ];
-  lstApplications = [];
+  lstApplications: CurrentApplication[] = [];
   isLinear = true;
   current = 1;
+  public appType: string;
+  private sixtyDaysAgo: number;
 
   constructor(
     private profileDataService: ProfileDataService,
@@ -47,8 +42,11 @@ export class DfaApplicationComponent implements OnInit {
     private router: Router,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
+    private route: ActivatedRoute
   ) {
     const navigation = this.router.getCurrentNavigation();
+    this.appType = this.route.snapshot.data["apptype"];
+    this.sixtyDaysAgo = new Date().getDate()-60;
   }
 
   ngOnInit(): void {
@@ -69,6 +67,19 @@ export class DfaApplicationComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.appSessionService.appNumber = res.length.toString() != null ? res.length.toString() : "0" ;
     this.lstApplications = res;
+    if (this.appType === "current") {
+      this.lstApplications = this.lstApplications
+         .filter(x => (x.applicationStatusPortal != "DFA Decision Made"
+         && x.applicationStatusPortal != "Closed: Inactive" && x.applicationStatusPortal != "Closed: Withdrawn")
+         || (!x.dateFileClosed || (this.sixtyDaysAgo > new Date(x.dateFileClosed).getDate())));
+      this.appSessionService.currentApplicationsCount.emit(this.lstApplications ? this.lstApplications.length : 0);
+    } else {
+      this.lstApplications = this.lstApplications
+        .filter(x => (x.applicationStatusPortal === "DFA Decision Made"
+        || x.applicationStatusPortal === "Closed: Inactive" || x.applicationStatusPortal === "Closed: Withdrawn")
+        && (x.dateFileClosed && (this.sixtyDaysAgo <= new Date(x.dateFileClosed).getDate())));
+      this.appSessionService.pastApplicationsCount.emit(this.lstApplications ? this.lstApplications.length : 0);
+    }
   }
 
   ViewApplication(applicationId: string, primaryApplicantSignedDate: string): void {

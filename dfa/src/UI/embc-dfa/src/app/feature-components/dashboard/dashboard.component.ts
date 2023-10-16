@@ -48,7 +48,8 @@ export class DashboardComponent implements OnInit {
     this.currentFlow = this.route.snapshot.data.flow;
     this.profService.getProfile();
     //alert(this.appSessionService.appNumber);
-    this.currentApplicationsCount = this.appSessionService.appNumber;
+    this.appSessionService.currentApplicationsCount.subscribe(n => this.currentApplicationsCount = n.toString());
+    this.appSessionService.pastApplicationsCount.subscribe(n => this.pastApplicationsCount = n.toString());
 
     this.isLoading = true;
 
@@ -82,13 +83,13 @@ export class DashboardComponent implements OnInit {
            inactiveImage: '/assets/images/curr-evac.svg',
            count: this.eventsCount
           },
-          //{
-          //  label: 'Past Applications',
-          //  route: 'past',
-          //  activeImage: '/assets/images/past-evac-active.svg',
-          //  inactiveImage: '/assets/images/past-evac.svg',
-          //  count: this.pastApplicationsCount
-          //},
+          {
+           label: 'Past Applications',
+           route: 'past',
+           activeImage: '/assets/images/past-evac-active.svg',
+           inactiveImage: '/assets/images/past-evac.svg',
+           count: this.pastApplicationsCount
+          },
           {
             label: 'Profile',
             route: 'profile',
