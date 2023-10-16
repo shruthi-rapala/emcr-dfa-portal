@@ -1,5 +1,5 @@
-#CD pipeline for dfa landing page
-name: cd-dfa-landing-page
+#CD pipeline for dfa landing page into the project stream
+name: cd-dfa-landing-page-project
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
     paths:
       - "landing-page/**"
-      - ".github/workflows/cd-dfa-landing-page.yml"
+      - ".github/workflows/cd-dfa-landing-page-project.yml"
 
 env:
   IMAGE_NAME: dfa-landing-page
