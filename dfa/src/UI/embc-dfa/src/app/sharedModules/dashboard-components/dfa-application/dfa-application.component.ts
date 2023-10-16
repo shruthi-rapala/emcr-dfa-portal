@@ -67,6 +67,7 @@ export class DfaApplicationComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.appSessionService.appNumber = res.length.toString() != null ? res.length.toString() : "0" ;
     this.lstApplications = res;
+    console.log(res, this.lstApplications);
     if (this.appType === "current") {
       this.lstApplications = this.lstApplications
          .filter(x => (x.applicationStatusPortal != "DFA Decision Made"
