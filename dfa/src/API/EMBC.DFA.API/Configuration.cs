@@ -165,20 +165,18 @@ namespace EMBC.DFA.API
                     GetAccessToken = async (s) => await tokenProvider.AcquireToken()
                 });
             });
-            //services.AddCors(opts => opts.AddDefaultPolicy(policy =>
-            //{
-            //    policy.SetIsOriginAllowedToAllowWildcardSubdomains().WithOrigins(new string[]
-            //    {
-            //        "https://dfa-landing-page-dev.apps.silver.devops.gov.bc.ca/"
-            //    });
-            //}));
-            services.AddCors(options =>
-                options.AddDefaultPolicy(builder =>
-                    builder
-                        .SetIsOriginAllowed(_ => true)
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials()));
+            services.AddCors(opts => opts.AddDefaultPolicy(policy =>
+            {
+                // try to get array of origins from section array
+                var corsOrigins = configuration.GetSection("cors:origins").GetChildren().Select(c => c.Value).ToArray();
+                // try to get array of origins from value
+                if (!corsOrigins.Any()) corsOrigins = configuration.GetValue("cors:origins", string.Empty).Split(',');
+                corsOrigins = corsOrigins.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
+                if (corsOrigins.Any())
+                {
+                    policy.SetIsOriginAllowedToAllowWildcardSubdomains().WithOrigins(corsOrigins);
+                }
+            }));
         }
 
         public void ConfigurePipeline(PipelineServices services)
