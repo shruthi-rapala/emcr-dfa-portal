@@ -12,7 +12,7 @@ import { ComponentCreationService } from '../../core/services/componentCreation.
 import * as globalConst from '../../core/services/globalConstants';
 import { ComponentMetaDataModel } from '../../core/model/componentMetaData.model';
 import { MatStepper } from '@angular/material/stepper';
-import { Subscription, mapTo } from 'rxjs';
+import { Subscription, distinctUntilChanged, mapTo } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
@@ -61,6 +61,7 @@ export class DFAApplicationMainComponent
   isIdentificationUploaded = false;
   isResidentialTenant: boolean = false;
   AppOptions = ApplicantOption;
+  signAndSubmitForm: UntypedFormGroup;
 
   constructor(
     private router: Router,
@@ -196,18 +197,37 @@ export class DFAApplicationMainComponent
   }
 
   ngAfterViewInit(): void {
-    if (this.vieworedit == 'view' || this.vieworedit == 'edit') {
-      for (var i = 0; i <= 7; i++) {
-        this.dfaApplicationMainStepper.selected.completed = true;
-        this.dfaApplicationMainStepper.next();
-      }
+    let form$ = this.formCreationService
+      .getSignAndSubmitForm()
+      .subscribe((signAndSubmit)=> {
+        this.signAndSubmitForm = signAndSubmit;
+    });
 
-      this.dfaApplicationMainStepper.selectedIndex = 0;
-
-      if (this.vieworedit == 'edit') {
-        this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
-      }
-    }
+    this.signAndSubmitForm
+      .get('applicantSignature')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (this.vieworedit === 'view' || this.vieworedit === 'edit') {
+          for (var i = 0; i <= 7; i++) {
+            this.dfaApplicationMainStepper.selected.completed = true;
+            this.dfaApplicationMainStepper.next();
+          }
+          if (this.vieworedit === 'edit') this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
+        } else if (this.vieworedit !== 'add' && this.vieworedit !== 'update') {
+          this.dfaApplicationMainStepper.selectedIndex = 0;
+          if (this.signAndSubmitForm.get('applicantSignature')?.get('dateSigned')?.value) {
+            this.vieworedit = "view";
+            this.dfaApplicationMainDataService.isSubmitted = true;
+            for (var i = 0; i <= 7; i++) {
+              this.dfaApplicationMainStepper.selected.completed = true;
+              this.dfaApplicationMainStepper.next();
+            }
+          }
+          else {
+            this.vieworedit = "update";
+          }
+        }
+      });
   }
 
   navigateToStep(stepIndex: number) {
