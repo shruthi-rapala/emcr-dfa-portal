@@ -17,7 +17,6 @@ namespace EMBC.DFA.API.Controllers
 {
     [Route("api/eligibility")]
     [ApiController]
-    [EnableCors("AllowCors")]
     public class EligibilityController : ControllerBase
     {
         private readonly IConfigurationHandler handler;
