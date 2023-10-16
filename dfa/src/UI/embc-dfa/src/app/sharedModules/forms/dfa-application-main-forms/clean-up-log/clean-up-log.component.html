@@ -345,7 +345,7 @@
               mat-icon-button
               aria-label="Remove"
               (click)="confirmDeleteCleanupLogFileRow(elementFile)"
-              *ngIf="dfaApplicationMainDataService.getViewOrEdit() !== 'view'"
+              *ngIf="dfaApplicationMainDataService.getViewOrEdit() !== 'view' && dfaApplicationMainDataService.getViewOrEdit() !== 'edit'"
             >
               <img src="/assets/images/delete.svg" height="35" width="35" />
               <img
