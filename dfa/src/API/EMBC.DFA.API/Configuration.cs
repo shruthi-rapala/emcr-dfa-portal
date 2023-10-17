@@ -181,7 +181,7 @@ namespace EMBC.DFA.API
                 corsOrigins = corsOrigins.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
                 if (corsOrigins.Any())
                 {
-                    policy.SetIsOriginAllowedToAllowWildcardSubdomains().WithOrigins(corsOrigins);
+                    policy.WithOrigins(corsOrigins);
                 }
             }));
         }
