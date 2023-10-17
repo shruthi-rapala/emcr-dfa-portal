@@ -67,19 +67,18 @@ export class DfaApplicationComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.appSessionService.appNumber = res.length.toString() != null ? res.length.toString() : "0" ;
     this.lstApplications = res;
-    console.log(res, this.lstApplications);
     if (this.appType === "current") {
       this.lstApplications = this.lstApplications
          .filter(x => (x.applicationStatusPortal != "DFA Decision Made"
          && x.applicationStatusPortal != "Closed: Inactive" && x.applicationStatusPortal != "Closed: Withdrawn")
          || (!x.dateFileClosed || (this.sixtyDaysAgo > new Date(x.dateFileClosed).getDate())));
-      this.appSessionService.currentApplicationsCount.emit(this.lstApplications ? this.lstApplications.length : 0);
+      this.appSessionService.currentApplicationsCount?.emit(this.lstApplications.length);
     } else {
       this.lstApplications = this.lstApplications
         .filter(x => (x.applicationStatusPortal === "DFA Decision Made"
         || x.applicationStatusPortal === "Closed: Inactive" || x.applicationStatusPortal === "Closed: Withdrawn")
         && (x.dateFileClosed && (this.sixtyDaysAgo <= new Date(x.dateFileClosed).getDate())));
-      this.appSessionService.pastApplicationsCount.emit(this.lstApplications ? this.lstApplications.length : 0);
+      this.appSessionService.pastApplicationsCount?.emit(this.lstApplications.length);
     }
   }
 

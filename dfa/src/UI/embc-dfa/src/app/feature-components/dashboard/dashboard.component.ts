@@ -48,8 +48,14 @@ export class DashboardComponent implements OnInit {
     this.currentFlow = this.route.snapshot.data.flow;
     this.profService.getProfile();
     //alert(this.appSessionService.appNumber);
-    this.appSessionService.currentApplicationsCount.subscribe(n => this.currentApplicationsCount = n.toString());
-    this.appSessionService.pastApplicationsCount.subscribe(n => this.pastApplicationsCount = n.toString());
+    this.appSessionService.currentApplicationsCount.subscribe((n: number) => {
+      this.currentApplicationsCount = n.toString()
+      this.tabs[0].count = n ? n.toString() : "0";
+    });
+    this.appSessionService.pastApplicationsCount.subscribe((n: number) => {
+        this.pastApplicationsCount = n.toString();
+        this.tabs[2].count = n ? n.toString() : "0";
+    });
 
     this.isLoading = true;
 
@@ -65,44 +71,38 @@ export class DashboardComponent implements OnInit {
       this.eventsCount = eventsCount.toString();
     })
 
-    setTimeout(
-      function () {
+    this.tabs = [
+    {
+      label: 'Current Applications',
+      route: 'current',
+      activeImage: '/assets/images/past-evac-active.svg',
+      inactiveImage: '/assets/images/past-evac.svg',
+      count: this.currentApplicationsCount
+    },
+    {
+      label: 'DFA Events',
+      route: 'eventlist',
+      activeImage: '/assets/images/curr-evac-active.svg',
+      inactiveImage: '/assets/images/curr-evac.svg',
+      count: this.eventsCount
+    },
+    {
+      label: 'Past Applications',
+      route: 'past',
+      activeImage: '/assets/images/past-evac-active.svg',
+      inactiveImage: '/assets/images/past-evac.svg',
+      count: this.pastApplicationsCount
+    },
+    {
+      label: 'Profile',
+      route: 'profile',
+      activeImage: '/assets/images/profile-active.svg',
+      inactiveImage: '/assets/images/profile.svg',
+      count: ""
+    }
+  ];
 
-        this.tabs = [
-          {
-            label: 'Current Applications',
-            route: 'current',
-            activeImage: '/assets/images/past-evac-active.svg',
-            inactiveImage: '/assets/images/past-evac.svg',
-            count: this.currentApplicationsCount
-          },
-          {
-           label: 'DFA Events',
-           route: 'eventlist',
-           activeImage: '/assets/images/curr-evac-active.svg',
-           inactiveImage: '/assets/images/curr-evac.svg',
-           count: this.eventsCount
-          },
-          {
-           label: 'Past Applications',
-           route: 'past',
-           activeImage: '/assets/images/past-evac-active.svg',
-           inactiveImage: '/assets/images/past-evac.svg',
-           count: this.pastApplicationsCount
-          },
-          {
-            label: 'Profile',
-            route: 'profile',
-            activeImage: '/assets/images/profile-active.svg',
-            inactiveImage: '/assets/images/profile.svg',
-            count: ""
-          }
-        ];
-
-        this.isLoading = false;
-      }.bind(this),
-      2000
-    );
+  this.isLoading = false;
   }
 
   navigateToDFAPrescreening(): void {
