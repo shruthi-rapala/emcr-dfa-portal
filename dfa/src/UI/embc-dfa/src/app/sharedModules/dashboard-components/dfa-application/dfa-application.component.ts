@@ -33,7 +33,7 @@ export class DfaApplicationComponent implements OnInit {
   isLinear = true;
   current = 1;
   public appType: string;
-  private sixtyDaysAgo: number;
+  private sixtyOneDaysAgo: number;
 
   constructor(
     private profileDataService: ProfileDataService,
@@ -46,7 +46,7 @@ export class DfaApplicationComponent implements OnInit {
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.appType = this.route.snapshot.data["apptype"];
-    this.sixtyDaysAgo = new Date().getDate()-60;
+    this.sixtyOneDaysAgo = new Date().getDate()-61;
   }
 
   ngOnInit(): void {
@@ -71,13 +71,13 @@ export class DfaApplicationComponent implements OnInit {
       this.lstApplications = this.lstApplications
          .filter(x => (x.applicationStatusPortal != "DFA Decision Made"
          && x.applicationStatusPortal != "Closed: Inactive" && x.applicationStatusPortal != "Closed: Withdrawn")
-         || (!x.dateFileClosed || (this.sixtyDaysAgo > new Date(x.dateFileClosed).getDate())));
+         || (!x.dateFileClosed || (this.sixtyOneDaysAgo > new Date(x.dateFileClosed).getDate())));
       this.appSessionService.currentApplicationsCount?.emit(this.lstApplications.length);
     } else {
       this.lstApplications = this.lstApplications
         .filter(x => (x.applicationStatusPortal === "DFA Decision Made"
         || x.applicationStatusPortal === "Closed: Inactive" || x.applicationStatusPortal === "Closed: Withdrawn")
-        && (x.dateFileClosed && (this.sixtyDaysAgo <= new Date(x.dateFileClosed).getDate())));
+        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate())));
       this.appSessionService.pastApplicationsCount?.emit(this.lstApplications.length);
     }
   }
