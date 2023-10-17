@@ -29,7 +29,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: "Reviewing Damage Report", isCompleted: false, currentStep: false },
     { label: "DFA Decision made", isCompleted: false, currentStep: false },
   ];
-  lstApplications: CurrentApplication[] = [];
+  lstApplications: ApplicationExtended[] = [];
   isLinear = true;
   current = 1;
   public appType: string;
@@ -65,35 +65,39 @@ export class DfaApplicationComponent implements OnInit {
 
   mapData(lstApp: Object): void {
     var res = JSON.parse(JSON.stringify(lstApp));
-    this.appSessionService.appNumber = res.length.toString() != null ? res.length.toString() : "0" ;
     this.lstApplications = res;
+    this.lstApplications.forEach(x => {
+      if ((x.applicationStatusPortal === "DFA Decision Made"
+        || x.applicationStatusPortal === "Closed: Inactive" || x.applicationStatusPortal === "Closed: Withdrawn")
+        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) {
+          x.currentApplication = false;
+      } else x.currentApplication = true;
+    })
     if (this.appType === "current") {
       this.lstApplications = this.lstApplications
-         .filter(x => (x.applicationStatusPortal != "DFA Decision Made"
-         && x.applicationStatusPortal != "Closed: Inactive" && x.applicationStatusPortal != "Closed: Withdrawn")
-         || (!x.dateFileClosed || (this.sixtyOneDaysAgo > new Date(x.dateFileClosed).getDate())));
+         .filter(x => x.currentApplication === true);
       this.appSessionService.currentApplicationsCount?.emit(this.lstApplications.length);
     } else {
       this.lstApplications = this.lstApplications
-        .filter(x => (x.applicationStatusPortal === "DFA Decision Made"
-        || x.applicationStatusPortal === "Closed: Inactive" || x.applicationStatusPortal === "Closed: Withdrawn")
-        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate())));
+        .filter(x => x.currentApplication === false);
       this.appSessionService.pastApplicationsCount?.emit(this.lstApplications.length);
     }
   }
 
-  ViewApplication(applicationId: string, primaryApplicantSignedDate: string): void {
-    this.dfaApplicationMainDataService.setApplicationId(applicationId);
-    this.dfaApplicationStartDataService.setApplicationId(applicationId);
+  ViewApplication(applItem: ApplicationExtended): void {
+    this.dfaApplicationMainDataService.setApplicationId(applItem.applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applItem.applicationId);
 
-    if (primaryApplicantSignedDate == null) {
+    if (applItem.primaryApplicantSignedDate == null) {
       this.dfaApplicationMainDataService.setViewOrEdit('update');
     }
-    else {
+    else if (applItem.currentApplication === true) {
       this.dfaApplicationMainDataService.setViewOrEdit('view');
+    } else if (applItem.currentApplication === false) {
+      this.dfaApplicationMainDataService.setViewOrEdit('viewOnly');
     }
 
-    this.router.navigate(['/dfa-application-main/'+applicationId]);
+    this.router.navigate(['/dfa-application-main/'+applItem.applicationId]);
   }
 
   EditApplication(applicationId: string, tabId: string): void {
@@ -104,4 +108,8 @@ export class DfaApplicationComponent implements OnInit {
     this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
+}
+
+export interface ApplicationExtended extends CurrentApplication {
+  currentApplication: boolean;
 }

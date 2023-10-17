@@ -47,7 +47,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
     this.profService.getProfile();
-    //alert(this.appSessionService.appNumber);
     this.appSessionService.currentApplicationsCount.subscribe((n: number) => {
       this.currentApplicationsCount = n.toString()
       this.tabs[0].count = n ? n.toString() : "0";
@@ -58,14 +57,6 @@ export class DashboardComponent implements OnInit {
     });
 
     this.isLoading = true;
-
-    this.intervalId = setInterval(() => {
-      this.currentApplicationsCount = this.appSessionService.appNumber;
-      if (this.appSessionService.appNumber != null && this.appSessionService.appNumber != 'null') {
-        clearInterval(this.intervalId);
-        this.appSessionService.appNumber = null;
-      }
-    }, 100);
 
     this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
       this.eventsCount = eventsCount.toString();
@@ -109,13 +100,6 @@ export class DashboardComponent implements OnInit {
     this.dfaApplicationMainDataService.setViewOrEdit('add');
     var profileId = this.profileDataService.getProfileId();
     this.router.navigate(['/dfa-prescreening']);
-    //this.appService.applicationGetDfaApplications({ profileId: profileId }).subscribe({
-    //  next: (loginProfile) => {
-    //    //this.profileMapping.mapLoginProfile(loginProfile);
-    //  },
-    //  error: (error) => {
-    //  }
-    //});
   }
 
 }

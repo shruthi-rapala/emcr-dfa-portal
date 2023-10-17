@@ -76,7 +76,7 @@
           class="col-md-2 application-button"
           type="button"
           *ngIf="applItem.primaryApplicantSignedDate"
-          (click)="ViewApplication(applItem.applicationId, applItem.primaryApplicantSignedDate)"
+          (click)="ViewApplication(applItem)"
         >
           View Application
         </button>
@@ -85,7 +85,7 @@
         class="col-md-2 application-button"
         type="button"
         *ngIf="!applItem.primaryApplicantSignedDate"
-        (click)="ViewApplication(applItem.applicationId, applItem.primaryApplicantSignedDate)"
+        (click)="ViewApplication(applItem)"
         >
           Complete Application
         </button>
@@ -93,7 +93,7 @@
         <button
           class="col-md-2 application-button whitebutton"
           type="button"
-          *ngIf="applItem.primaryApplicantSignedDate"
+          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
           (click)="EditApplication(applItem.applicationId, '3')"
         >
           Add to Clean Up Log
@@ -102,7 +102,7 @@
         <button
           class="col-md-2 application-button whitebutton"
           type="button"
-          *ngIf="applItem.primaryApplicantSignedDate"
+          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
           (click)="EditApplication(applItem.applicationId, '4')"
         >
           Add to Damaged Items
@@ -111,7 +111,7 @@
         <button
           class="col-md-2 application-button whitebutton"
           type="button"
-          *ngIf="applItem.primaryApplicantSignedDate"
+          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
           (click)="EditApplication(applItem.applicationId, '5')"
         >
           Add Supporting Docs
@@ -120,7 +120,7 @@
         <button
           class="col-md-2 application-button whitebutton"
           type="button"
-          *ngIf="applItem.primaryApplicantSignedDate"
+          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
           (click)="EditApplication(applItem.applicationId, '2')"
         >
           Add Other Contacts
