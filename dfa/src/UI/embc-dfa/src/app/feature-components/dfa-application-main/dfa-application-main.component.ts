@@ -217,6 +217,7 @@ export class DFAApplicationMainComponent
           this.dfaApplicationMainStepper.selectedIndex = 0;
           if (this.signAndSubmitForm.get('applicantSignature')?.get('dateSigned')?.value) {
             this.vieworedit = "view";
+            this.dfaApplicationMainDataService.setViewOrEdit("view");
             this.dfaApplicationMainDataService.isSubmitted = true;
             for (var i = 0; i <= 7; i++) {
               this.dfaApplicationMainStepper.selected.completed = true;
