@@ -167,15 +167,22 @@ namespace EMBC.DFA.API
             });
             services.AddCors(opts => opts.AddDefaultPolicy(policy =>
             {
-                // try to get array of origins from section array
-                var corsOrigins = configuration.GetSection("cors:origins").GetChildren().Select(c => c.Value).ToArray();
-                // try to get array of origins from value
-                if (!corsOrigins.Any()) corsOrigins = configuration.GetValue("cors:origins", string.Empty).Split(',');
-                corsOrigins = corsOrigins.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
-                if (corsOrigins.Any())
-                {
-                    policy.SetIsOriginAllowedToAllowWildcardSubdomains().WithOrigins(corsOrigins);
-                }
+            //policy.AllowAnyHeader();
+            //policy.AllowAnyMethod();
+            //policy.AllowAnyOrigin();
+
+            //policy.WithOrigins("https://dfa-portal-dev.apps.silver.devops.gov.bc.ca",
+            //                "https://dfa-landing-page-dev.apps.silver.devops.gov.bc.ca");
+
+            //try to get array of origins from section array
+            var corsOrigins = configuration.GetSection("cors:origins").GetChildren().Select(c => c.Value).ToArray();
+            // try to get array of origins from value
+            if (!corsOrigins.Any()) corsOrigins = configuration.GetValue("cors:origins", string.Empty).Split(',');
+            corsOrigins = corsOrigins.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
+            if (corsOrigins.Any())
+            {
+                policy.WithOrigins(corsOrigins);
+            }
             }));
         }
 
@@ -193,6 +200,7 @@ namespace EMBC.DFA.API
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
             }
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
         }
