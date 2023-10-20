@@ -617,15 +617,32 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_eventid", "dfa_id", "dfa_dateofevent",
-                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2"
+                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2", "statuscode", "dfa_90daydeadline"
                     }
                 });
 
-                var lstDateOfEvent = lstEvents.List.Where(m => m.dfa_dateofevent != null && Convert.ToDateTime(m.dfa_dateofevent) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofevent).AddDays(90) >= DateTime.Now).Count();
-                var lstDateOfEventRevised1 = lstEvents.List.Where(m => m.dfa_dateofeventdeclaredrevised != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised).AddDays(90) >= DateTime.Now).Count();
-                var lstDateOfEventRevised2 = lstEvents.List.Where(m => m.dfa_dateofeventdeclaredrevised2 != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2).AddDays(90) >= DateTime.Now).Count();
+                bool isActive = false;
 
-                return (lstDateOfEvent + lstDateOfEventRevised1 + lstDateOfEventRevised2) > 0 ? true : false;
+                if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
+                {
+                    var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1").ToList();
+
+                    var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadline != null && Convert.ToDateTime(m.dfa_90daydeadline) >= DateTime.Now).Count();
+                    if (deadline90days > 0)
+                    {
+                        return true;
+                    }
+                    var lstDateOfEvent = lstActiveEvents.Where(m => m.dfa_dateofevent != null && Convert.ToDateTime(m.dfa_dateofevent) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofevent).AddDays(90) >= DateTime.Now).Count();
+                    var lstDateOfEventRevised1 = lstActiveEvents.Where(m => m.dfa_dateofeventdeclaredrevised != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised).AddDays(90) >= DateTime.Now).Count();
+                    var lstDateOfEventRevised2 = lstActiveEvents.Where(m => m.dfa_dateofeventdeclaredrevised2 != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2).AddDays(90) >= DateTime.Now).Count();
+
+                    if ((lstDateOfEvent + lstDateOfEventRevised1 + lstDateOfEventRevised2) > 0)
+                    {
+                        return true;
+                    }
+                }
+
+                return isActive;
             }
             catch (System.Exception ex)
             {
