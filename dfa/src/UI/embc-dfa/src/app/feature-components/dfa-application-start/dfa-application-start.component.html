@@ -45,7 +45,7 @@
           <button
             class="button-p"
             mat-stroked-button
-            [disabled]="step.isLast == true && submitAllowed == false || !form?.valid"
+            [disabled]="!form?.valid"
             type="button"
             (click)="goForward(dfaApplicationStartStepper, step.isLast, step.component)"
           >

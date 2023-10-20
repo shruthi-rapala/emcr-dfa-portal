@@ -12,7 +12,7 @@ import { ComponentCreationService } from '../../core/services/componentCreation.
 import * as globalConst from '../../core/services/globalConstants';
 import { ComponentMetaDataModel } from '../../core/model/componentMetaData.model';
 import { MatStepper } from '@angular/material/stepper';
-import { Subscription } from 'rxjs';
+import { Subscription, distinctUntilChanged, mapTo } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
@@ -21,6 +21,7 @@ import { ApplicantOption, FarmOption, SmallBusinessOption } from 'src/app/core/a
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
+import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 
 @Component({
@@ -50,6 +51,7 @@ export class DFAApplicationMainComponent
   isApplicantSigned: boolean = false;
   isSecondaryApplicantSigned: boolean = false;
   isSecondaryApplicant: boolean = false;
+  secondaryApplicants: SecondaryApplicant[] = [];
   isSignaturesValid: boolean = false;
   appTypeInsuranceForm: UntypedFormGroup;
   appTypeInsuranceForm$: Subscription;
@@ -66,6 +68,7 @@ export class DFAApplicationMainComponent
   AppOptions = ApplicantOption;
   SmallBusinessOptions = SmallBusinessOption;
   FarmOptions = FarmOption;
+  signAndSubmitForm: UntypedFormGroup;
 
   constructor(
     private router: Router,
@@ -179,17 +182,26 @@ export class DFAApplicationMainComponent
     this.editstep = this.dfaApplicationMainDataService.getEditStep();
 
     //this.dfaApplicationMainDataService.setViewOrEdit('');
-    this.formCreationService.secondaryApplicantsChanged.subscribe(secondaryApplicants => {
-      if (secondaryApplicants?.length > 0) this.isSecondaryApplicant = true;
-      else this.isSecondaryApplicant = false;
-      this.checkSignaturesValid();
-    });
     this.formCreationService.signaturesChanged.subscribe(signAndSubmit => {
       signAndSubmit.get('applicantSignature').get('dateSigned').updateValueAndValidity();
       this.isApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.applicantSignature.valid;
       this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
       this.checkSignaturesValid();
     });
+
+    const _secondaryApplicantsFormArray = this.formCreationService.secondaryApplicantsForm.value.get('secondaryApplicants');
+    _secondaryApplicantsFormArray.valueChanges
+      .pipe(
+        mapTo(_secondaryApplicantsFormArray.getRawValue())
+        ).subscribe(data => {
+          this.secondaryApplicants = _secondaryApplicantsFormArray.getRawValue();
+          if (this.secondaryApplicants.filter(x => x.deleteFlag != true)?.length > 0) {
+            this.isSecondaryApplicant = true;
+          } else {
+            this.isSecondaryApplicant = false;
+          }
+          this.checkSignaturesValid();
+        });
   }
 
 
@@ -208,8 +220,8 @@ export class DFAApplicationMainComponent
   }
 
   checkSignaturesValid() {
-    if (!this.isSecondaryApplicant && this.isApplicantSigned) this.isSignaturesValid = true; // no secondary applicant and primary applicant signature valid
-    else if (this.isSecondaryApplicant && this.isApplicantSigned && this.isSecondaryApplicantSigned) this.isSignaturesValid = true; // secondary and primary signatures valid
+    if (this.isSecondaryApplicant == false && this.isApplicantSigned == true) this.isSignaturesValid = true; // no secondary applicant and primary applicant signature valid
+    else if (this.isSecondaryApplicant == true && this.isApplicantSigned == true && this.isSecondaryApplicantSigned == true) this.isSignaturesValid = true; // secondary and primary signatures valid
     else this.isSignaturesValid = false;
   }
 
@@ -218,23 +230,38 @@ export class DFAApplicationMainComponent
   }
 
   ngAfterViewInit(): void {
-    //alert(this.vieworedit.toString())
-    if (this.vieworedit == 'view' || this.vieworedit == 'edit') {
-      for (var i = 0; i <= 7; i++) {
-        this.dfaApplicationMainStepper.selected.completed = true;
-        this.dfaApplicationMainStepper.next();
-      }
+    let form$ = this.formCreationService
+      .getSignAndSubmitForm()
+      .subscribe((signAndSubmit)=> {
+        this.signAndSubmitForm = signAndSubmit;
+    });
 
-      this.dfaApplicationMainStepper.selectedIndex = 0;
-      
-      if (this.vieworedit == 'edit') {
-        this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
-      }
-    }
-
-    //if (this.vieworedit == 'update') {
-    //  this.notifyAddressChange();
-    //}
+    this.signAndSubmitForm
+      .get('applicantSignature')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (this.vieworedit === 'view' || this.vieworedit === 'edit') {
+          for (var i = 0; i <= 7; i++) {
+            this.dfaApplicationMainStepper.selected.completed = true;
+            this.dfaApplicationMainStepper.next();
+          }
+          if (this.vieworedit === 'edit') this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
+        } else if (this.vieworedit !== 'add' && this.vieworedit !== 'update') {
+          this.dfaApplicationMainStepper.selectedIndex = 0;
+          if (this.signAndSubmitForm.get('applicantSignature')?.get('dateSigned')?.value) {
+            this.vieworedit = "view";
+            this.dfaApplicationMainDataService.setViewOrEdit("view");
+            this.dfaApplicationMainDataService.isSubmitted = true;
+            for (var i = 0; i <= 7; i++) {
+              this.dfaApplicationMainStepper.selected.completed = true;
+              this.dfaApplicationMainStepper.next();
+            }
+          }
+          else {
+            this.vieworedit = "update";
+          }
+        }
+      });
   }
 
   navigateToStep(stepIndex: number) {
@@ -393,6 +420,9 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.damagedPropertyAddress.ownedandoperatedbya = this.form.get('ownedandoperatedbya').value == 'true' ? true : (this.form.get('ownedandoperatedbya').value == 'false' ? false : null);
         this.dfaApplicationMainDataService.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom = this.form.get('farmoperationderivesthatpersonsmajorincom').value == 'true' ? true : (this.form.get('farmoperationderivesthatpersonsmajorincom').value == 'false' ? false : null);
         this.dfaApplicationMainDataService.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster = this.form.get('grossRevenues100002000000BeforeDisaster').value == 'true' ? true : (this.form.get('grossRevenues100002000000BeforeDisaster').value == 'false' ? false : null);
+        this.dfaApplicationMainDataService.damagedPropertyAddress.charityRegistered = this.form.get('charityRegistered').value == 'true' ? true : (this.form.get('charityRegistered').value == 'false' ? false : null);
+        this.dfaApplicationMainDataService.damagedPropertyAddress.charityExistsAtLeast12Months = this.form.get('charityExistsAtLeast12Months').value == 'true' ? true : (this.form.get('charityExistsAtLeast12Months').value == 'false' ? false : null);
+        this.dfaApplicationMainDataService.damagedPropertyAddress.charityProvidesCommunityBenefit = this.form.get('charityProvidesCommunityBenefit').value == 'true' ? true : (this.form.get('charityExistsAtLeast12Months').value == 'false' ? false : null);
         break;
       case 'property-damage':
         this.dfaApplicationMainDataService.propertyDamage.briefDescription = this.form.get('briefDescription').value;

@@ -13,11 +13,12 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, mapTo } from 'rxjs/operators';
 import { SignatureBlock } from 'src/app/core/api/models';
 import { CoreModule } from 'src/app/core/core.module';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { Signature } from 'typescript';
+import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
 
 @Component({
   selector: 'app-sign-and-submit',
@@ -30,6 +31,7 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   signAndSubmitForm$: Subscription;
   formCreationService: FormCreationService;
   isSecondaryApplicant: boolean = false;
+  secondaryApplicants: SecondaryApplicant[] = [];
   initialApplicantSignature: SignatureBlock = {dateSigned: null, signedName: null, signature: null};
   initialSecondaryApplicantSignature: SignatureBlock = {dateSigned: null, signedName: null, signature: null};
 
@@ -69,34 +71,39 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
         this.initialApplicantSignature.signature = this.signAndSubmitForm?.get('applicantSignature')?.get('signature').value;
       });
 
-      this.signAndSubmitForm
-      .get('secondaryApplicantSignature')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.signAndSubmitForm.get('secondaryApplicantSignature').reset();
-        }
-        this.initialSecondaryApplicantSignature.dateSigned = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('dateSigned').value;
-        this.initialSecondaryApplicantSignature.signedName = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signedName').value;
-        this.initialSecondaryApplicantSignature.signature = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signature').value;
-      });
+    this.signAndSubmitForm
+    .get('secondaryApplicantSignature')
+    .valueChanges.pipe(distinctUntilChanged())
+    .subscribe((value) => {
+      if (value === '') {
+        this.signAndSubmitForm.get('secondaryApplicantSignature').reset();
+      }
+      this.initialSecondaryApplicantSignature.dateSigned = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('dateSigned').value;
+      this.initialSecondaryApplicantSignature.signedName = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signedName').value;
+      this.initialSecondaryApplicantSignature.signature = this.signAndSubmitForm?.get('secondaryApplicantSignature')?.get('signature').value;
+    });
 
-      this.formCreationService.secondaryApplicantsChanged.subscribe((secondaryApplicants) => {
-        if (secondaryApplicants?.length > 0) {
-          this.isSecondaryApplicant = true;
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signature').setValidators([Validators.required]);
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('dateSigned').setValidators([Validators.required]);
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signedName').setValidators([Validators.required, Validators.maxLength(100)]);
-        }
-        else {
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signature').setValidators(null);
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('dateSigned').setValidators(null);
-          this.signAndSubmitForm.get('secondaryApplicantSignature').get('signedName').setValidators(Validators.maxLength(100));
-          this.isSecondaryApplicant = false;
-        }
-        this.signAndSubmitForm.get('secondaryApplicantSignature').updateValueAndValidity();
-        this.signAndSubmitForm.updateValueAndValidity();
-      });
+    // subscribe to changes in secondary applicants
+    const _secondaryApplicantsFormArray = this.formCreationService.secondaryApplicantsForm.value.get('secondaryApplicants');
+    _secondaryApplicantsFormArray.valueChanges
+      .pipe(
+        mapTo(_secondaryApplicantsFormArray.getRawValue())
+        ).subscribe(data => {
+          this.secondaryApplicants = _secondaryApplicantsFormArray.getRawValue();
+          if (this.secondaryApplicants.filter(x => x.deleteFlag != true)?.length > 0) {
+            this.isSecondaryApplicant = true;
+            this.signAndSubmitForm.get('secondaryApplicantSignature').get('signature').setValidators([Validators.required]);
+            this.signAndSubmitForm.get('secondaryApplicantSignature').get('dateSigned').setValidators([Validators.required]);
+            this.signAndSubmitForm.get('secondaryApplicantSignature').get('signedName').setValidators([Validators.required, Validators.maxLength(100)]);
+          } else {
+            this.isSecondaryApplicant = false;
+            this.signAndSubmitForm.get('secondaryApplicantSignature').get('signature').setValidators(null);
+            this.signAndSubmitForm.get('secondaryApplicantSignature').get('dateSigned').setValidators(null);
+            this.signAndSubmitForm.get('secondaryApplicantSignature').get('signedName').setValidators(Validators.maxLength(100));
+          }
+          this.signAndSubmitForm.get('secondaryApplicantSignature').updateValueAndValidity();
+          this.signAndSubmitForm.updateValueAndValidity();
+        });
   }
 
   /**

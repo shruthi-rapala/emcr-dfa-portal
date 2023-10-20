@@ -18,10 +18,10 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationStartDataService } from './dfa-application-start-data.service';
 import { DFAApplicationStartService } from './dfa-application-start.service';
 import { InsuranceOption, SignatureBlock } from 'src/app/core/api/models';
-import { ProfileDataService } from '../profile/profile-data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAApplicationAlertDialogComponent } from 'src/app/core/components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
 import { ProfileService } from 'src/app/core/api/services';
+import { DFAPrescreeningDataService } from '../dfa-prescreening/dfa-prescreening-data.service';
 
 
 @Component({
@@ -49,7 +49,7 @@ export class DFAApplicationStartComponent
   parentPageName = 'dfa-application-start';
   showLoader = false;
   isSubmitted = false;
-  submitAllowed: boolean = false;
+  submitAllowed: boolean = true;
 
   constructor(
     private router: Router,
@@ -62,6 +62,7 @@ export class DFAApplicationStartComponent
     private dfaApplicationStartService: DFAApplicationStartService,
     private profileService: ProfileService,
     public dialog: MatDialog,
+    private dfaPrescreeningDataService: DFAPrescreeningDataService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -73,32 +74,28 @@ export class DFAApplicationStartComponent
     this.formCreationService.insuranceOptionChanged.subscribe((any) => {
       let yesEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.Yes)];
       if (this.form?.controls?.insuranceOption?.value === yesEnumKey) this.fullInsurance = true; else this.fullInsurance = false;
-      this.checkSubmitAllowed();
-
+      // this.checkSubmitAllowed();
       });
 
     this.formCreationService.applicantOptionChanged.subscribe((any) => {
-      this.checkSubmitAllowed();
+      // this.checkSubmitAllowed();
     });
 
     this.formCreationService.smallBusinessOptionChanged.subscribe((any) => {
-      this.checkSubmitAllowed();
+      // this.checkSubmitAllowed();
     })
 
     this.formCreationService.farmOptionChanged.subscribe((any) => {
-      this.checkSubmitAllowed();
+      // this.checkSubmitAllowed();
     })
-
   }
 
   checkSubmitAllowed() {
     // debugger;
-    console.log(this.form);
     this.submitAllowed = false;
-    this.form.updateValueAndValidity();
 
     // must have a value for both applicant option and insurance option
-    if (!this.form?.get('applicantOption')?.value || !this.form?.get('insuranceOption')?.value) return;
+    if (!this.dfaApplicationStartDataService.applicantOption || !this.dfaApplicationStartDataService.insuranceOption) return;
 
     // if insurance option is no check for signatures
     let noEnumKey = Object.keys(InsuranceOption)[Object.values(InsuranceOption).indexOf(InsuranceOption.No)];
@@ -110,7 +107,7 @@ export class DFAApplicationStartComponent
     }
 
     // check for valid form
-    if (!this.form.valid) return;
+    if (!this.form?.valid) return;
 
     this.submitAllowed = true;
   }
@@ -124,11 +121,22 @@ export class DFAApplicationStartComponent
     this.dfaApplicationStartDataService.consent = true;
     this.dfaApplicationStartDataService.applicantSignature = { dateSigned: null, signedName: null, signature: null};
     this.dfaApplicationStartDataService.secondaryApplicantSignature = { dateSigned: null, signedName: null, signature: null };
-    this.dfaApplicationStartDataService.applicantOption = null;
+    this.dfaApplicationStartDataService.applicantOption = this.dfaPrescreeningDataService.dfaPrescreening.applicantOption;
     this.dfaApplicationStartDataService.farmOption = null;
-    this.dfaApplicationStartDataService.insuranceOption = null;
+    this.dfaApplicationStartDataService.insuranceOption = this.dfaPrescreeningDataService.dfaPrescreening.insuranceOption;
     this.dfaApplicationStartDataService.smallBusinessOption = null;
+    this.dfaApplicationStartDataService.addressLine1 = this.dfaPrescreeningDataService.dfaPrescreening.addressLine1;
+    this.dfaApplicationStartDataService.addressLine2 = this.dfaPrescreeningDataService.dfaPrescreening.addressLine2;
+    this.dfaApplicationStartDataService.city = this.dfaPrescreeningDataService.dfaPrescreening.city;
+    this.dfaApplicationStartDataService.postalCode = this.dfaPrescreeningDataService.dfaPrescreening.postalCode;
+    this.dfaApplicationStartDataService.stateProvince = this.dfaPrescreeningDataService.dfaPrescreening.stateProvince;
+    this.dfaApplicationStartDataService.isPrimaryAndDamagedAddressSame = this.dfaPrescreeningDataService.dfaPrescreening.isPrimaryAndDamagedAddressSame;
+    this.dfaApplicationStartDataService.damageCausedByDisaster = this.dfaPrescreeningDataService.dfaPrescreening.damageCausedByDisaster;
+    this.dfaApplicationStartDataService.damageFromDate = this.dfaPrescreeningDataService.dfaPrescreening.damageFromDate;
+    this.dfaApplicationStartDataService.eventId = this.dfaPrescreeningDataService.dfaPrescreening.eventId;
+    this.dfaApplicationStartDataService.lossesExceed1000 = this.dfaPrescreeningDataService.dfaPrescreening.lossesExceed1000;
     this.dfaApplicationStartDataService.createDFAApplicationStartDTO();
+    // this.checkSubmitAllowed();
   }
 
   ngAfterViewChecked(): void {

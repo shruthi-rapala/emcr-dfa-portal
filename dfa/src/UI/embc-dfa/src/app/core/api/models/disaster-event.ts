@@ -1,7 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface DisasterEvent {
-  eventId?: string;
-  id?: string;
-  ninetyDayDeadline?: string;
+  endDate?: null | string;
+  eventId?: null | string;
+  id?: null | string;
+  ninetyDayDeadline?: null | string;
+  startDate?: null | string;
 }

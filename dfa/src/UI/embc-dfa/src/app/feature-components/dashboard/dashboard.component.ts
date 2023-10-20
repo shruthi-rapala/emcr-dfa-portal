@@ -9,6 +9,8 @@ import { tap } from 'rxjs/internal/operators/tap';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { Observable, Subject } from 'rxjs';
+import { EligibilityService } from 'src/app/core/api/services';
+import { DisasterEvent } from 'src/app/core/api/models';
 //import {
 //  DfaAppapplication
 //} from 'src/app/core/api/models';
@@ -28,12 +30,14 @@ export class DashboardComponent implements OnInit {
   intervalId;
 
   tabs: DashTabModel[];
+  openDisasterEvents: DisasterEvent[];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     public formCreationService: FormCreationService,
     private appService: Service,
+    private eligibilityService: EligibilityService,
     private profService: ProfileService,
     private profileDataService: ProfileDataService,
     private appSessionService: AppSessionService,
@@ -55,7 +59,11 @@ export class DashboardComponent implements OnInit {
         this.appSessionService.appNumber = null;
       }
     }, 100);
-    
+
+    this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
+      this.eventsCount = eventsCount.toString();
+    })
+
     setTimeout(
       function () {
 
@@ -67,13 +75,13 @@ export class DashboardComponent implements OnInit {
             inactiveImage: '/assets/images/past-evac.svg',
             count: this.currentApplicationsCount
           },
-          //{
-          //  label: 'DFA Events',
-          //  route: 'eventlist',
-          //  activeImage: '/assets/images/curr-evac-active.svg',
-          //  inactiveImage: '/assets/images/curr-evac.svg',
-          //  count: this.eventsCount
-          //},
+          {
+           label: 'DFA Events',
+           route: 'eventlist',
+           activeImage: '/assets/images/curr-evac-active.svg',
+           inactiveImage: '/assets/images/curr-evac.svg',
+           count: this.eventsCount
+          },
           //{
           //  label: 'Past Applications',
           //  route: 'past',
@@ -96,10 +104,10 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  navigateToDFAApplicationStart(): void {
+  navigateToDFAPrescreening(): void {
     this.dfaApplicationMainDataService.setViewOrEdit('add');
     var profileId = this.profileDataService.getProfileId();
-    this.router.navigate(['/dfa-application-start']);
+    this.router.navigate(['/dfa-prescreening']);
     //this.appService.applicationGetDfaApplications({ profileId: profileId }).subscribe({
     //  next: (loginProfile) => {
     //    //this.profileMapping.mapLoginProfile(loginProfile);

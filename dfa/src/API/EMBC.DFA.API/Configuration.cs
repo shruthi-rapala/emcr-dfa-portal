@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Json;
@@ -164,6 +165,25 @@ namespace EMBC.DFA.API
                     GetAccessToken = async (s) => await tokenProvider.AcquireToken()
                 });
             });
+            services.AddCors(opts => opts.AddDefaultPolicy(policy =>
+            {
+            //policy.AllowAnyHeader();
+            //policy.AllowAnyMethod();
+            //policy.AllowAnyOrigin();
+
+            //policy.WithOrigins("https://dfa-portal-dev.apps.silver.devops.gov.bc.ca",
+            //                "https://dfa-landing-page-dev.apps.silver.devops.gov.bc.ca");
+
+            //try to get array of origins from section array
+            var corsOrigins = configuration.GetSection("cors:origins").GetChildren().Select(c => c.Value).ToArray();
+            // try to get array of origins from value
+            if (!corsOrigins.Any()) corsOrigins = configuration.GetValue("cors:origins", string.Empty).Split(',');
+            corsOrigins = corsOrigins.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
+            if (corsOrigins.Any())
+            {
+                policy.WithOrigins(corsOrigins);
+            }
+            }));
         }
 
         public void ConfigurePipeline(PipelineServices services)
@@ -180,6 +200,7 @@ namespace EMBC.DFA.API
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
             }
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
         }

@@ -104,9 +104,16 @@ export class ContactDetailsForm {
     //this.email.setValue(contactDetails.email);
     this.email.setValidators([
       Validators.email,
+      Validators.maxLength(100),
       customValidator
-        .maxLengthValidator(100)
-        .bind(customValidator)
+      .conditionalValidation(
+        () =>
+          this.email.value !== '' &&
+          this.email.value !== undefined &&
+          this.email.value !== null,
+        Validators.required,
+      )
+      .bind(customValidator)
     ]);
 
     this.cellPhoneNumber.setValidators([
@@ -130,20 +137,20 @@ export class ContactDetailsForm {
         .bind(customValidator)
     ]);
 
-    //this.confirmEmail.setValue(contactDetails.confirmEmail);
-    //this.confirmEmail.setValidators([
-    //  Validators.email,
-    //  customValidator
-    //    .conditionalValidation(
-    //      () =>
-    //        this.email.value !== '' &&
-    //        this.email.value !== undefined &&
-    //        this.email.value !== null &&
-    //        this.showContacts.value === true,
-    //      Validators.required
-    //    )
-    //    .bind(customValidator)
-    //]);
+    this.confirmEmail.setValue(contactDetails.confirmEmail);
+    this.confirmEmail.setValidators([
+     Validators.email,
+     Validators.maxLength(100),
+     customValidator
+       .conditionalValidation(
+         () =>
+           this.email.value !== '' &&
+           this.email.value !== undefined &&
+           this.email.value !== null,
+         Validators.required
+       )
+       .bind(customValidator)
+    ]);
 
     //this.phone.setValue(contactDetails.phone);
     //this.phone.setValidators([
