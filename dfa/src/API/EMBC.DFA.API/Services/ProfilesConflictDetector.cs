@@ -39,8 +39,9 @@ namespace EMBC.DFA.API.Services
             (address == null && other == null) ||
             (address != null &&
             address.AddressLine1.StringSafeEquals(other?.AddressLine1) &&
+            address.AddressLine2.StringSafeEquals(other?.AddressLine2) &&
             address.PostalCode.StringSafeEquals(other?.PostalCode) &&
-            address.StateProvince.StringSafeEquals(other?.StateProvince));
+            address.City.StringSafeEquals(other?.City));
 
         private static bool NameEquals(this PersonDetails personDetails, PersonDetails other) =>
             personDetails != null &&

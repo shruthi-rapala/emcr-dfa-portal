@@ -42,6 +42,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_isindigenous2 { get; set; }
         public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
         public string dfa_appcontactid { get; set; }
+        public string? dfa_lastdateupdated { get; set; }
     }
 
     public class dfa_appcontact_extended : dfa_appcontact
@@ -215,6 +216,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_farmoperation { get; set; } // optoinal Option Set
         public int? dfa_ownedandoperatedbya { get; set; } // optoinal Option Set
         public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optoinal Option Set
+        public string? createdon { get; set; } // optional string
     }
 
     public class dfa_appbuildingownerlandlord

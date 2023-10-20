@@ -21,6 +21,7 @@ import { ApplicantOption, FarmOption, SmallBusinessOption } from 'src/app/core/a
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
+import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -189,7 +190,6 @@ export class DFAApplicationMainComponent
       this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
       this.checkSignaturesValid();
     });
-
   }
 
 
@@ -218,6 +218,7 @@ export class DFAApplicationMainComponent
   }
 
   ngAfterViewInit(): void {
+    //alert(this.vieworedit.toString())
     if (this.vieworedit == 'view' || this.vieworedit == 'edit') {
       for (var i = 0; i <= 7; i++) {
         this.dfaApplicationMainStepper.selected.completed = true;
@@ -225,11 +226,15 @@ export class DFAApplicationMainComponent
       }
 
       this.dfaApplicationMainStepper.selectedIndex = 0;
-
+      
       if (this.vieworedit == 'edit') {
         this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
       }
     }
+
+    //if (this.vieworedit == 'update') {
+    //  this.notifyAddressChange();
+    //}
   }
 
   navigateToStep(stepIndex: number) {
@@ -520,5 +525,23 @@ export class DFAApplicationMainComponent
 
   BackToDashboard(): void {
     this.router.navigate(['/dfa-dashboard']);
+  }
+
+  notifyAddressChange(): void {
+    this.dialog
+      .open(AddressChangeComponent, {
+        data: {
+          content: globalConst.notifyBCSCAddressChangeBody
+        },
+        height: '300px',
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        //if (result === 'confirm') {
+          
+        //}
+      });
   }
 }
