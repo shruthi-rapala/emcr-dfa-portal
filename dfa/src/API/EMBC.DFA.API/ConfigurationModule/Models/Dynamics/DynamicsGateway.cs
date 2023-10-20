@@ -63,7 +63,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_primarystateprovince", "dfa_secondaryaddressline1", "dfa_secondaryaddressline2",
                         "dfa_secondarycity", "dfa_secondarypostalcode", "dfa_secondarystateprovince",
                         "dfa_isprimaryandsecondaryaddresssame", "dfa_appcontactid",
-                        "dfa_bcservicecardid"
+                        "dfa_bcservicecardid", "dfa_lastdateupdated"
                     },
                     Filter = $"dfa_bcservicecardid eq '{userId}'"
                 });
@@ -220,7 +220,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
                     "dfa_wereyouevacuatedduringtheevent2", "dfa_accountlegalname", "dfa_businessmanagedbyallownersondaytodaybasis",
                     "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
-                    "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom"
+                    "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon"
                  // "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"

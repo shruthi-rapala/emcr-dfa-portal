@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -14,7 +15,9 @@ using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using EMBC.ESS.Shared.Contracts;
 using EMBC.ESS.Shared.Contracts.Events;
+using EMBC.ESS.Shared.Contracts.Teams;
 using EMBC.Utilities.Messaging;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +79,24 @@ namespace EMBC.DFA.API.Controllers
                 //try get BCSC profile
                 profile = GetUserFromPrincipal();
             }
+            else
+            {
+                var profileBCSC = GetUserFromPrincipal();
+                var conflicts = ProfilesConflictDetector.DetectConflicts(mapper.Map<Profile>(profile), profileBCSC);
+
+                if (conflicts.Count() > 0)
+                {
+                    profile.ContactDetails.Email = profileBCSC.ContactDetails.Email;
+                    profile.PersonalDetails.FirstName = profileBCSC.PersonalDetails.FirstName;
+                    profile.PersonalDetails.LastName = profileBCSC.PersonalDetails.LastName;
+                    profile.PrimaryAddress = profileBCSC.PrimaryAddress;
+                    profile.lastUpdatedDateBCSC = DateTime.Now.ToShortDateString();
+
+                    var mappedProfile = mapper.Map<dfa_appcontact>(profile);
+                    var contactId = await handler.HandleContact(mappedProfile);
+                }
+            }
+
             if (profile == null) return NotFound(userId);
             return Ok(profile);
         }
@@ -155,6 +176,29 @@ namespace EMBC.DFA.API.Controllers
             return Ok(conflicts);
         }
 
+        /// <summary>
+        /// Marking the BCSC address change message as displayed
+        /// </summary>
+        /// <returns>true after update</returns>
+        [HttpGet("addressChangeMsg")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> MarkAddressChangeMessageDisplay()
+        {
+            var userId = currentUserId;
+            var profile = await handler.HandleGetUser(userId);
+
+            if (profile != null)
+            {
+                var mappedProfile = mapper.Map<dfa_appcontact>(profile);
+                mappedProfile.dfa_lastdateupdated = !string.IsNullOrEmpty(mappedProfile.dfa_lastdateupdated) ?
+                    Convert.ToDateTime(mappedProfile.dfa_lastdateupdated).ToShortDateString() : null;
+                var contactId = await handler.HandleContact(mappedProfile);
+            }
+
+            return Ok(true);
+        }
+
         private Profile GetUserFromPrincipal()
         {
             if (!User.HasClaim(c => c.Type.Equals("userInfo", System.StringComparison.OrdinalIgnoreCase))) return null;
@@ -201,6 +245,8 @@ namespace EMBC.DFA.API.Controllers
         public string IsMailingAddressSameAsPrimaryAddress { get; set; }
 
         public string? BCServiceCardId { get; set; }
+
+        public string? lastUpdatedDateBCSC { get; set; }
     }
 
     /// <summary>

@@ -176,6 +176,9 @@ namespace EMBC.DFA.API.Controllers
             [Required]
             Guid applicationId)
         {
+            var userId = currentUserId;
+            var appContactProfile = await handler.HandleGetUser(userId);
+
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
@@ -184,6 +187,13 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
             dfaApplicationMain.cleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
             dfaApplicationMain.supportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
+
+            if (DateTime.Parse(dfa_appapplication.createdon) < DateTime.Parse(appContactProfile.lastUpdatedDateBCSC)
+                && dfa_appapplication.dfa_primaryapplicantsigneddate == null)
+            {
+                dfaApplicationMain.notifyUser = true;
+            }
+
             return Ok(dfaApplicationMain);
         }
 
@@ -218,6 +228,7 @@ namespace EMBC.DFA.API.Controllers
         public AppTypeInsurance AppTypeInsurance { get; set; }
 
         public OtherPreScreeningQuestions OtherPreScreeningQuestions { get; set; }
+        public bool notifyUser { get; set; }
     }
 
     public class DFAApplicationMain
@@ -234,6 +245,7 @@ namespace EMBC.DFA.API.Controllers
 
         public SignAndSubmit? signAndSubmit { get; set; }
         public bool deleteFlag { get; set; }
+        public bool notifyUser { get; set; }
     }
 
     public class CurrentApplication

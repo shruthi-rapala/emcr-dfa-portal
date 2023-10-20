@@ -13,5 +13,6 @@ export interface DfaApplicationStart {
   consent?: Consent;
   id?: null | string;
   otherPreScreeningQuestions?: OtherPreScreeningQuestions;
+  notifyUser?: boolean;
   profileVerification?: ProfileVerification;
 }
