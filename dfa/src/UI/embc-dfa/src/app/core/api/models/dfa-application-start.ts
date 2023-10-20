@@ -11,5 +11,6 @@ export interface DfaApplicationStart {
   appTypeInsurance?: AppTypeInsurance;
   consent?: Consent;
   id?: null | string;
+  notifyUser?: boolean;
   profileVerification?: ProfileVerification;
 }
