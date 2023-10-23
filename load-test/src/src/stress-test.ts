@@ -1,6 +1,6 @@
 import { Options, Scenario } from 'k6/options';
-export { RegistrantAnonymousRegistration, RegistrantNewRegistration, RegistrantExistingProfileRegistration } from './registrant-portal-scripts';
-export { ResponderNewRegistration, ResponderExistingRegistration } from './responder-portal-scripts';
+// export { RegistrantAnonymousRegistration, RegistrantNewRegistration, RegistrantExistingProfileRegistration } from './registrant-portal-scripts';
+// export { ResponderNewRegistration, ResponderExistingRegistration } from './responder-portal-scripts';
 import { getSummaryRes, registrant_thresholds, responder_thresholds, setUseRandomWaitTime } from './utilities';
 
 const STAGE_DURATION = '3m';

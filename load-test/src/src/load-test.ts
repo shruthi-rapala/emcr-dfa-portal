@@ -1,6 +1,6 @@
 import { Options, Scenario } from 'k6/options';
-export { RegistrantAnonymousRegistration, RegistrantNewRegistration, RegistrantExistingProfileRegistration } from './registrant-portal-scripts';
-export { ResponderNewRegistration, ResponderExistingRegistration } from './responder-portal-scripts';
+// export { RegistrantAnonymousRegistration, RegistrantNewRegistration, RegistrantExistingProfileRegistration } from './registrant-portal-scripts';
+// export { ResponderNewRegistration, ResponderExistingRegistration } from './responder-portal-scripts';
 import { setUseRandomWaitTime, getSummaryRes, registrant_thresholds, responder_thresholds } from './utilities';
 
 let REGISTRANT_TARGET = parseInt(__ENV.REG || "50");

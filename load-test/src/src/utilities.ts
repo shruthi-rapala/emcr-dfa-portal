@@ -137,6 +137,9 @@ export function getSummaryRes(TEST_TYPE: string, data: any) {
     return res
 }
 
+export const dfa_thresholds = {
+}
+
 export const registrant_thresholds = {
     'reg_failed_to_login': ['rate<0.01'], //Less than 1% are allowed to fail
     'reg_failed_form_fetches': ['rate<0.01'], //Less than 1% are allowed to fail
