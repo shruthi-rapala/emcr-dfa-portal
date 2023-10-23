@@ -1,7 +1,6 @@
 import { Options } from 'k6/options';
-export { RegistrantAnonymousRegistration, RegistrantNewRegistration, RegistrantExistingProfileRegistration } from './registrant-portal-scripts';
-export { ResponderNewRegistration, ResponderExistingRegistration } from './responder-portal-scripts';
-import { getExecutionType, getSummaryRes, registrant_thresholds, responder_thresholds, setUseRandomWaitTime } from './utilities';
+export { SubmitNewApplication } from './dfa-portal-scripts';
+import { getExecutionType, getSummaryRes, dfa_thresholds, setUseRandomWaitTime } from './utilities';
 
 //benchmark default to 5m duration
 if (!__ENV.ITERS) {
@@ -15,35 +14,15 @@ if (__ENV.RND) {
 
 export const options: Options = {
     scenarios: {
-        /*---Registrant---*/
-        anonymousRegistration: {
-            exec: 'RegistrantAnonymousRegistration',
-            ...execution_type
-        },
-        newRegistration: {
-            exec: 'RegistrantNewRegistration',
-            ...execution_type
-        },
-        existingProfileRegistration: {
-            exec: 'RegistrantExistingProfileRegistration',
-            ...execution_type
-        },
-
-
-        /*---Responder---*/
-        ResponderNewRegistration: {
-            exec: 'ResponderNewRegistration',
-            ...execution_type
-        },
-        ResponderExistingRegistration: {
-            exec: 'ResponderExistingRegistration',
+        /*---DFA---*/
+        submitNewApplication: {
+            exec: 'SubmitNewApplication',
             ...execution_type
         },
     },
 
     thresholds: {
-        ...registrant_thresholds,
-        ...responder_thresholds
+        ...dfa_thresholds
     }
 };
 

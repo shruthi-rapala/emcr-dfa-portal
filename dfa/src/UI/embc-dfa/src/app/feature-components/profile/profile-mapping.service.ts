@@ -134,7 +134,7 @@ export class ProfileMappingService {
         address.setValue({
           address: primaryAddress,
           isBcAddress: this.isBCAddress(profile.primaryAddress.stateProvince),
-          isNewMailingAddress: profile.isMailingAddressSameAsPrimaryAddress,
+          isNewMailingAddress: (profile.isMailingAddressSameAsPrimaryAddress == 'NoAddress' ? 'I don\'t have a permanent address right now' : profile.isMailingAddressSameAsPrimaryAddress),
           isBcMailingAddress: this.isBCAddress(
             profile.mailingAddress.stateProvince
           ),
@@ -146,8 +146,7 @@ export class ProfileMappingService {
       this.locationService.getAddressRegFromAddress(profile.primaryAddress);
     this.profileDataService.mailingAddressDetails =
       this.locationService.getAddressRegFromAddress(profile.mailingAddress);
-    this.profileDataService.IsMailingAddressSameAsPrimaryAddressDetails =
-      profile.isMailingAddressSameAsPrimaryAddress;
+    this.profileDataService.IsMailingAddressSameAsPrimaryAddressDetails = profile.isMailingAddressSameAsPrimaryAddress;
   }
 
   private setContactDetails(profile: Profile): void {
