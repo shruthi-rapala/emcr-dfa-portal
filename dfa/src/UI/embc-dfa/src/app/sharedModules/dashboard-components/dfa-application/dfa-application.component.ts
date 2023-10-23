@@ -72,8 +72,8 @@ export class DfaApplicationComponent implements OnInit {
     this.lstApplications = res;
     this.lstApplications.forEach(x => {
       if ((x.applicationStatusPortal.toLowerCase() === "dfa decision made"
-        || x.applicationStatusPortal.toLowerCase() === "closed: inactive" || x.applicationStatusPortal.toLowerCase() === "closed: withdrawn")) {
-        // && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) { // TODO: uncomment
+        || x.applicationStatusPortal.toLowerCase() === "closed: inactive" || x.applicationStatusPortal.toLowerCase() === "closed: withdrawn")
+        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) { // TODO: uncomment
           x.currentApplication = false;
       } else x.currentApplication = true;
     })
