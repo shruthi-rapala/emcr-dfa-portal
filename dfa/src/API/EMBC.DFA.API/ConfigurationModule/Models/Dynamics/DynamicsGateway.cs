@@ -632,14 +632,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         return true;
                     }
-                    var lstDateOfEvent = lstActiveEvents.Where(m => m.dfa_dateofevent != null && Convert.ToDateTime(m.dfa_dateofevent) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofevent).AddDays(90) >= DateTime.Now).Count();
-                    var lstDateOfEventRevised1 = lstActiveEvents.Where(m => m.dfa_dateofeventdeclaredrevised != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised).AddDays(90) >= DateTime.Now).Count();
-                    var lstDateOfEventRevised2 = lstActiveEvents.Where(m => m.dfa_dateofeventdeclaredrevised2 != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2).AddDays(90) >= DateTime.Now).Count();
-
-                    if ((lstDateOfEvent + lstDateOfEventRevised1 + lstDateOfEventRevised2) > 0)
-                    {
-                        return true;
-                    }
                 }
 
                 return isActive;
