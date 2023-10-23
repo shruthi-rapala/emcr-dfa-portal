@@ -22,6 +22,7 @@ import { ApplicationService, AttachmentService } from 'src/app/core/api/services
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
 import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
+import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -554,5 +555,23 @@ export class DFAApplicationMainComponent
 
   BackToDashboard(): void {
     this.router.navigate(['/dfa-dashboard']);
+  }
+
+  notifyAddressChange(): void {
+    this.dialog
+      .open(AddressChangeComponent, {
+        data: {
+          content: globalConst.notifyBCSCAddressChangeBody
+        },
+        height: '300px',
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        //if (result === 'confirm') {
+          
+        //}
+      });
   }
 }

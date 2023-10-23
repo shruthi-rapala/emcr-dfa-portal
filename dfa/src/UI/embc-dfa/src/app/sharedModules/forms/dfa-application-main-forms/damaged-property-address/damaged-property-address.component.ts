@@ -31,6 +31,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ApplicationService, ProfileService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
 import { DialogContent } from 'src/app/core/model/dialog-content.model';
+import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
+
 
 @Component({
   selector: 'app-damaged-property-address',
@@ -425,6 +427,10 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   getDamagedPropertyForApplication(applicationId: string) {
     this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
       next: (dfaApplicationMain) => {
+        //console.log('dfaApplicationMain: ' + JSON.stringify(dfaApplicationMain))
+        if (dfaApplicationMain.notifyUser == true) {
+          this.notifyAddressChange();
+        }
         this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);
       },
       error: (error) => {
@@ -516,6 +522,25 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
    */
   get damagedPropertyAddressFormControl(): { [key: string]: AbstractControl } {
     return this.damagedPropertyAddressForm.controls;
+  }
+
+
+  notifyAddressChange(): void {
+    this.dialog
+      .open(AddressChangeComponent, {
+        data: {
+          content: globalConst.notifyBCSCAddressChangeBody
+        },
+        height: '300px',
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        //if (result === 'confirm') {
+
+        //}
+      });
   }
 
   ngOnDestroy(): void {

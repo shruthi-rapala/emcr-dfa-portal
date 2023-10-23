@@ -36,6 +36,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DirectivesModule } from './directives/directives.module';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAApplicationAlertDialogComponent } from './components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
+import { AddressChangeComponent } from './components/dialog-components/address-change-dialog/address-change-dialog.component';
 
 @NgModule({
   imports: [
@@ -76,7 +77,8 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
     TimeOutDialogComponent,
-    DFAApplicationAlertDialogComponent
+    DFAApplicationAlertDialogComponent,
+    AddressChangeComponent
   ],
   exports: [
     AppLoaderComponent,
@@ -97,7 +99,8 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     TimeOutDialogComponent,
     MatToolbarModule,
     MatButtonModule,
-    DFAApplicationAlertDialogComponent
+    DFAApplicationAlertDialogComponent,
+    AddressChangeComponent
   ]
 })
 export class CoreModule {}

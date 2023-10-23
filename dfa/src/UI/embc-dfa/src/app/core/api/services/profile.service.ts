@@ -292,6 +292,57 @@ export class ProfileService extends BaseService {
   }
 
   /**
+   * Path part for operation profileMarkAddressChangeMessageDisplay
+   */
+  static readonly ProfileMarkAddressChangeMessageDisplayPath = '/api/profiles/addressChangeMsg';
+
+  /**
+   * Marking the BCSC address change message as displayed.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `profileMarkAddressChangeMessageDisplay()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  profileMarkAddressChangeMessageDisplay$Response(params?: {
+  }): Observable<StrictHttpResponse<boolean>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ProfileService.ProfileMarkAddressChangeMessageDisplayPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: String((r as HttpResponse<any>).body) === 'true' }) as StrictHttpResponse<boolean>;
+      })
+    );
+  }
+
+  /**
+   * Marking the BCSC address change message as displayed.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `profileMarkAddressChangeMessageDisplay$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  profileMarkAddressChangeMessageDisplay(params?: {
+  }): Observable<boolean> {
+
+    return this.profileMarkAddressChangeMessageDisplay$Response(params).pipe(
+      map((r: StrictHttpResponse<boolean>) => r.body as boolean)
+    );
+  }
+
+  /**
    * Path part for operation profileInvite
    */
   static readonly ProfileInvitePath = '/api/profiles/invite-anonymous';

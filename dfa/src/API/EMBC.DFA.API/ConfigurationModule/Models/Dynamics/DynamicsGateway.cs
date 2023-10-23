@@ -63,7 +63,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_primarystateprovince", "dfa_secondaryaddressline1", "dfa_secondaryaddressline2",
                         "dfa_secondarycity", "dfa_secondarypostalcode", "dfa_secondarystateprovince",
                         "dfa_isprimaryandsecondaryaddresssame", "dfa_appcontactid",
-                        "dfa_bcservicecardid"
+                        "dfa_bcservicecardid", "dfa_lastdateupdated"
                     },
                     Filter = $"dfa_bcservicecardid eq '{userId}'"
                 });
@@ -220,7 +220,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
                     "dfa_wereyouevacuatedduringtheevent2", "dfa_accountlegalname", "dfa_businessmanagedbyallownersondaytodaybasis",
                     "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
-                    "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom"
+                    "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon"
                  // "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
@@ -666,16 +666,22 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id", "dfa_dateofevent",
-                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2"
+                        "dfa_eventid", "dfa_id", "statuscode", "dfa_90daydeadline"
                     }
                 });
 
-                var lstDateOfEvent = lstEvents.List.Where(m => m.dfa_dateofevent != null && Convert.ToDateTime(m.dfa_dateofevent) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofevent).AddDays(90) >= DateTime.Now).Count();
-                var lstDateOfEventRevised1 = lstEvents.List.Where(m => m.dfa_dateofeventdeclaredrevised != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised).AddDays(90) >= DateTime.Now).Count();
-                var lstDateOfEventRevised2 = lstEvents.List.Where(m => m.dfa_dateofeventdeclaredrevised2 != null && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2) <= DateTime.Now && Convert.ToDateTime(m.dfa_dateofeventdeclaredrevised2).AddDays(90) >= DateTime.Now).Count();
+                if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
+                {
+                    var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1").ToList();
 
-                return lstDateOfEvent + lstDateOfEventRevised1 + lstDateOfEventRevised2;
+                    var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadline != null && Convert.ToDateTime(m.dfa_90daydeadline) >= DateTime.Now).Count();
+                    if (deadline90days > 0)
+                    {
+                        return deadline90days;
+                    }
+                }
+
+                return 0;
             }
             catch (System.Exception ex)
             {
@@ -692,52 +698,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id", "dfa_dateofevent",
-                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2", "dfa_startdate", "dfa_enddate"
+                        "dfa_eventid", "dfa_id", "statuscode", "dfa_startdate", "dfa_enddate", "dfa_90daydeadline"
                     }
                 });
 
-                // As per Jira ticket EMBCDFA-623 the field "dfa_90daydeadline" has incorrect information
-                // the 90 day deadline should be calculated to be 90 days from the latest of dfa_date, dfa_dateofeventdeclaredrevised, dfa_dateofeventdeclaredrevised2
                 var nowDate = DateTime.Now;
-                foreach (var disasterEvent in lstEvents.List)
-                {
-                    var ninetydaydeadline = nowDate.AddYears(-1000);
-                    if (disasterEvent.dfa_dateofevent != null)
-                    {
-                        var dateOfEvent = Convert.ToDateTime(disasterEvent.dfa_dateofevent);
-                        if (dateOfEvent.AddDays(90) > ninetydaydeadline)
-                        {
-                            ninetydaydeadline = dateOfEvent.AddDays(90);
-                        }
-                    }
-
-                    if (disasterEvent.dfa_dateofeventdeclaredrevised != null)
-                    {
-                        var dateOfEventRevised = Convert.ToDateTime(disasterEvent.dfa_dateofeventdeclaredrevised);
-                        if (dateOfEventRevised.AddDays(90) > ninetydaydeadline)
-                        {
-                            ninetydaydeadline = dateOfEventRevised.AddDays(90);
-                        }
-                    }
-
-                    if (disasterEvent.dfa_dateofeventdeclaredrevised2 != null)
-                    {
-                        var dateOfEventRevised2 = Convert.ToDateTime(disasterEvent.dfa_dateofeventdeclaredrevised2);
-                        if (dateOfEventRevised2.AddDays(90) > ninetydaydeadline)
-                        {
-                            ninetydaydeadline = dateOfEventRevised2.AddDays(90);
-                        }
-                    }
-
-                    if (ninetydaydeadline != nowDate.AddYears(-1000))
-                    {
-                        disasterEvent.dfa_90daydeadline = ninetydaydeadline.ToString();
-                    }
-                }
-
-                // open events are those where the 90 day deadline is now or in the future
-                return lstEvents.List.Where(m => m.dfa_90daydeadline != null && Convert.ToDateTime(m.dfa_90daydeadline) >= nowDate);
+                // open events are those active events where the 90 day deadline is now or in the future
+                return lstEvents.List.Where(m => m.dfa_90daydeadline != null && Convert.ToDateTime(m.dfa_90daydeadline) >= nowDate && m.statuscode == "1");
             }
             catch (System.Exception ex)
             {

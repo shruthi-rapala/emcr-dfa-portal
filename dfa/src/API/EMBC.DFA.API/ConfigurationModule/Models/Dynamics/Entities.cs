@@ -42,6 +42,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_isindigenous2 { get; set; }
         public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
         public string dfa_appcontactid { get; set; }
+        public string? dfa_lastdateupdated { get; set; }
     }
 
     public class dfa_appcontact_extended : dfa_appcontact
@@ -247,6 +248,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         // public int? dfa_charityregistered { get; set; } // optional Option set
         // public int? dfa_charityexistsatleast12months { get; set; } // optional Option set
         // public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set
+        public string? createdon { get; set; } // optional string
     }
 
     public class dfa_appbuildingownerlandlord
@@ -492,12 +494,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string dfa_eventid { get; set; }
         public string dfa_id { get; set; }
-        public string dfa_dateofevent { get; set; }
-        public string dfa_dateofeventdeclaredrevised { get; set; }
-        public string dfa_dateofeventdeclaredrevised2 { get; set; }
-        public string? dfa_90daydeadline { get; set; } // this is recalculated
+        public string? dfa_90daydeadline { get; set; }
         public string? dfa_startdate { get; set; }
         public string? dfa_enddate { get; set; }
+        public string statuscode { get; set; }
     }
 
     public class dfa_incident
