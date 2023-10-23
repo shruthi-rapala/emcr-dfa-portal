@@ -1,7 +1,7 @@
 <mat-card class="card-align"  [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts {{ dfaApplicationMainDataService.getViewOrEdit() }}</p>
+    <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts</p>
     <br />
 
     <form [formGroup]="fullTimeOccupantsForm" *ngIf="isHomeowner || isResidentialTenant" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly' ? 'none' : ''}">
