@@ -1,10 +1,10 @@
 <mat-card class="card-align"  [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts</p>
+    <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts {{ dfaApplicationMainDataService.getViewOrEdit() }}</p>
     <br />
 
-    <form [formGroup]="fullTimeOccupantsForm" *ngIf="isHomeowner || isResidentialTenant" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}">
+    <form [formGroup]="fullTimeOccupantsForm" *ngIf="isHomeowner || isResidentialTenant" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly' ? 'none' : ''}">
       <div formGroupName="fullTimeOccupant">
         <ng-container>
           <div class="row">
@@ -77,7 +77,7 @@
               </div>
 
               <button
-                *ngIf="!showFullTimeOccupantForm && dfaApplicationMainDataService.getViewOrEdit() !== 'view' && dfaApplicationMainDataService.getViewOrEdit() !== 'edit'"
+                *ngIf="!showFullTimeOccupantForm && dfaApplicationMainDataService.getViewOrEdit() === 'add' || dfaApplicationMainDataService.getViewOrEdit() === 'update'"
                 class="family-button"
                 mat-button
                 type="button"
@@ -195,7 +195,7 @@
       </div><br/><br/>
     </form>
 
-    <form [formGroup]="secondaryApplicantsForm" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}">
+    <form [formGroup]="secondaryApplicantsForm" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly' ? 'none' : ''}">
       <div formGroupName="secondaryApplicant">
         <ng-container>
           <div class="row">
@@ -283,13 +283,13 @@
                 <br /><br/>
               </div>
 
-              <div *ngIf="secondaryApplicantsDataSource.getValue().length == 0 && (dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit')">
+              <div *ngIf="secondaryApplicantsDataSource.getValue().length == 0 && (dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly')">
                 <b>No secondary applicants added.</b>
                 <br /><br/>
               </div>
 
               <button
-                *ngIf="!showSecondaryApplicantForm && dfaApplicationMainDataService.getViewOrEdit() !== 'view' && dfaApplicationMainDataService.getViewOrEdit() !== 'edit'"
+                *ngIf="!showSecondaryApplicantForm && dfaApplicationMainDataService.getViewOrEdit() === 'add' || dfaApplicationMainDataService.getViewOrEdit() === 'update'"
                 class="family-button"
                 mat-button
                 type="button"

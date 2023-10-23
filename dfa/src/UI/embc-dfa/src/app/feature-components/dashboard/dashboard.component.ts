@@ -22,13 +22,13 @@ import { DisasterEvent } from 'src/app/core/api/models';
 })
 export class DashboardComponent implements OnInit {
   currentFlow: string;
-  currentApplicationsCount = "0";
-  pastApplicationsCount = "0";
+  currentApplicationsCount = 0;
+  pastApplicationsCount = 0;
   eventsCount = "0";
   isLoading = false;
   bgColor = 'transparent';
   intervalId;
-
+  sixtyOneDaysAgo: number = 0;
   tabs: DashTabModel[];
   openDisasterEvents: DisasterEvent[];
 
@@ -42,21 +42,35 @@ export class DashboardComponent implements OnInit {
     private profileDataService: ProfileDataService,
     private appSessionService: AppSessionService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
-  ) { }
+  ) {
+    this.sixtyOneDaysAgo = new Date().getDate()-61;
+  }
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
     this.profService.getProfile();
     this.appSessionService.currentApplicationsCount.subscribe((n: number) => {
-      this.currentApplicationsCount = n.toString()
+      this.currentApplicationsCount = n;
       this.tabs[0].count = n ? n.toString() : "0";
     });
     this.appSessionService.pastApplicationsCount.subscribe((n: number) => {
-        this.pastApplicationsCount = n.toString();
+        this.pastApplicationsCount = n;
         this.tabs[2].count = n ? n.toString() : "0";
     });
 
     this.isLoading = true;
+
+    this.appService.applicationGetDfaApplications().subscribe({
+      next: (lstData) => {
+        if (lstData != null) {
+          this.countAppData(lstData);
+          this.tabs[0].count =this.currentApplicationsCount.toString();
+          this.tabs[2].count = this.pastApplicationsCount.toString();
+        }
+      },
+      error: (error) => {
+      }
+    });
 
     this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
       this.eventsCount = eventsCount.toString();
@@ -68,7 +82,7 @@ export class DashboardComponent implements OnInit {
       route: 'current',
       activeImage: '/assets/images/past-evac-active.svg',
       inactiveImage: '/assets/images/past-evac.svg',
-      count: this.currentApplicationsCount
+      count: this.currentApplicationsCount.toString()
     },
     {
       label: 'DFA Events',
@@ -82,7 +96,7 @@ export class DashboardComponent implements OnInit {
       route: 'past',
       activeImage: '/assets/images/past-evac-active.svg',
       inactiveImage: '/assets/images/past-evac.svg',
-      count: this.pastApplicationsCount
+      count: this.pastApplicationsCount.toString()
     },
     {
       label: 'Profile',
@@ -94,6 +108,19 @@ export class DashboardComponent implements OnInit {
   ];
 
   this.isLoading = false;
+  }
+
+  countAppData(lstApp: Object): void {
+    var res = JSON.parse(JSON.stringify(lstApp));
+    let lstApplications = res;
+    this.currentApplicationsCount = 0; this.pastApplicationsCount = 0;
+    lstApplications.forEach(x => {
+      if ((x.applicationStatusPortal === "DFA Decision Made"
+        || x.applicationStatusPortal === "Closed: Inactive" || x.applicationStatusPortal === "Closed: Withdrawn")
+        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) {
+          this.pastApplicationsCount++;
+      } else this.currentApplicationsCount++;
+    })
   }
 
   navigateToDFAPrescreening(): void {
