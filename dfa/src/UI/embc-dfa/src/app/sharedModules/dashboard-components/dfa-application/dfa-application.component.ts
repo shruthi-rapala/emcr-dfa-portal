@@ -34,6 +34,8 @@ export class DfaApplicationComponent implements OnInit {
   current = 1;
   public appType: string;
   private sixtyOneDaysAgo: number;
+  public isLoading: boolean = true;
+  public color: string = "'#169BD5";
 
   constructor(
     private profileDataService: ProfileDataService,
@@ -56,8 +58,10 @@ export class DfaApplicationComponent implements OnInit {
         if (lstData != null) {
           this.mapData(lstData);
         }
+        this.isLoading = false;
       },
       error: (error) => {
+        this.isLoading = false;
       }
     });
 
@@ -67,9 +71,9 @@ export class DfaApplicationComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.lstApplications = res;
     this.lstApplications.forEach(x => {
-      if ((x.applicationStatusPortal === "DFA Decision Made"
-        || x.applicationStatusPortal === "Closed: Inactive" || x.applicationStatusPortal === "Closed: Withdrawn")
-        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) {
+      if ((x.applicationStatusPortal.toLowerCase() === "dfa decision made"
+        || x.applicationStatusPortal.toLowerCase() === "closed: inactive" || x.applicationStatusPortal.toLowerCase() === "closed: withdrawn")
+        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) { // TODO: uncomment
           x.currentApplication = false;
       } else x.currentApplication = true;
     })

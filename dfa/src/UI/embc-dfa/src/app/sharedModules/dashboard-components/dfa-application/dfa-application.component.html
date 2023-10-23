@@ -136,7 +136,7 @@
     </mat-card>
   </div>
 </div>
-<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstApplications.length == 0">
+<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstApplications.length == 0 && isLoading == false">
  <div class="heading-container">
     <div class="row">
       <div class="col-md-12">
@@ -145,3 +145,11 @@
     </div>
   </div>
 </div>
+<app-loader
+class="spinner"
+[showLoader]="isLoading"
+[strokeWidth]="10"
+[diameter]="50"
+[color]="color"
+>
+</app-loader>

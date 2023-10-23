@@ -188,7 +188,7 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationMain.cleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
             dfaApplicationMain.supportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
 
-            if (DateTime.Parse(dfa_appapplication.createdon) < DateTime.Parse(appContactProfile.lastUpdatedDateBCSC)
+            if ((appContactProfile.lastUpdatedDateBCSC == null || DateTime.Parse(dfa_appapplication.createdon) < DateTime.Parse(appContactProfile.lastUpdatedDateBCSC))
                 && dfa_appapplication.dfa_primaryapplicantsigneddate == null)
             {
                 dfaApplicationMain.notifyUser = true;
