@@ -240,7 +240,7 @@ export class DFAApplicationMainComponent
       .get('applicantSignature')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
-        if (this.vieworedit === 'view' || this.vieworedit === 'edit') {
+        if (this.vieworedit === 'view' || this.vieworedit === 'edit' || this.vieworedit === 'viewOnly') {
           for (var i = 0; i <= 7; i++) {
             this.dfaApplicationMainStepper.selected.completed = true;
             this.dfaApplicationMainStepper.next();
@@ -570,7 +570,7 @@ export class DFAApplicationMainComponent
       .afterClosed()
       .subscribe((result) => {
         //if (result === 'confirm') {
-          
+
         //}
       });
   }

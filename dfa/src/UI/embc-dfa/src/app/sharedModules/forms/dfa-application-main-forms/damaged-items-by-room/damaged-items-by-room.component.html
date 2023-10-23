@@ -1,4 +1,4 @@
-<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align"  [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly' ? 'none' : ''}"style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <form [formGroup]="damagedRoomsForm">
@@ -275,7 +275,7 @@
                   mat-icon-button
                   aria-label="Remove"
                   (click)="confirmDeleteDamagePhotoRow(element)"
-                  *ngIf="dfaApplicationMainDataService.getViewOrEdit() !== 'view' && dfaApplicationMainDataService.getViewOrEdit() !== 'edit'"
+                  *ngIf="dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'update'"
                 >
                   <img src="/assets/images/delete.svg" height="35" width="35" />
                   <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
