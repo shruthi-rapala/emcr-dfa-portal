@@ -20,11 +20,11 @@ export class DfaApplicationComponent implements OnInit {
   }
 
   items = [
-    { label: "Draft Application", isCompleted : true, currentStep : false },
-    { label: "Submitted Application", isCompleted: true, currentStep: false },
-    { label: "Reviewing Application", isCompleted: true, currentStep: false },
-    { label: "Creating Case File", isCompleted: true, currentStep: false },
-    { label: "Confirming Eligibility", isCompleted: false, currentStep: true },
+    { label: "Draft Application", isCompleted: false, currentStep: false },
+    { label: "Submitted Application", isCompleted: false, currentStep: false },
+    { label: "Reviewing Application", isCompleted: false, currentStep: false },
+    { label: "Creating Case File", isCompleted: false, currentStep: false },
+    { label: "Confirming Eligibility", isCompleted: false, currentStep: false },
     { label: "Assessing Damage", isCompleted: false, currentStep: false },
     { label: "Reviewing Damage Report", isCompleted: false, currentStep: false },
     { label: "DFA Decision made", isCompleted: false, currentStep: false },
@@ -56,7 +56,26 @@ export class DfaApplicationComponent implements OnInit {
     this.appService.applicationGetDfaApplications().subscribe({
       next: (lstData) => {
         if (lstData != null) {
-          this.mapData(lstData);
+          var lstDataModified = [];
+          lstData.forEach(objApp => {
+            var isFound = false;
+            var jsonVal = JSON.stringify(this.items);
+            objApp.statusBar = JSON.parse(jsonVal);
+            objApp.statusBar.forEach(objStatItem => {
+
+              if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+                objStatItem.currentStep = true;
+                isFound = true
+              }
+
+              if (isFound == false) {
+                objStatItem.isCompleted = true;
+              }
+            });
+
+            lstDataModified.push(objApp);
+          })
+          this.mapData(lstDataModified);
         }
         this.isLoading = false;
       },
@@ -71,8 +90,8 @@ export class DfaApplicationComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.lstApplications = res;
     this.lstApplications.forEach(x => {
-      if ((x.applicationStatusPortal.toLowerCase() === "dfa decision made"
-        || x.applicationStatusPortal.toLowerCase() === "closed: inactive" || x.applicationStatusPortal.toLowerCase() === "closed: withdrawn")
+      if ((x.status.toLowerCase() === "dfa decision made"
+        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
         && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) { // TODO: uncomment
           x.currentApplication = false;
       } else x.currentApplication = true;

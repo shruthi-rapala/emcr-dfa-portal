@@ -20,6 +20,7 @@ export { CleanUpLog } from './models/clean-up-log';
 export { SupportingDocuments } from './models/supporting-documents';
 export { SignAndSubmit } from './models/sign-and-submit';
 export { CurrentApplication } from './models/current-application';
+export { StatusBar } from './models/status-bar';
 export { FileUpload } from './models/file-upload';
 export { FileCategory } from './models/file-category';
 export { RequiredDocumentType } from './models/required-document-type';
