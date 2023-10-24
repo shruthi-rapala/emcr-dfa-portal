@@ -490,6 +490,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_datefileclosed { get; set; }
         public string dfa_applicationstatusportal { get; set; }
         public string createdon { get; set; }
+        //public string dfa_statuslastupdated { get; set; }
     }
 
     public class dfa_event

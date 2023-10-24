@@ -341,7 +341,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
                                    dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
                                    dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
-                                   createdon = objApp.createdon
+                                   createdon = objApp.createdon,
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
                 //from objEvent in lstEvents.List
