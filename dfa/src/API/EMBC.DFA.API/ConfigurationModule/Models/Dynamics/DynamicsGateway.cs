@@ -218,7 +218,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_description", "dfa_doyourlossestotalmorethan10002", "dfa_haveinvoicesreceiptsforcleanuporrepairs2",
                     "dfa_primaryapplicantprintname", "dfa_primaryapplicantsigned", "dfa_primaryapplicantsigneddate",
                     "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
-                    "dfa_wereyouevacuatedduringtheevent2"
                     "dfa_wereyouevacuatedduringtheevent2", "dfa_accountlegalname", "dfa_businessmanagedbyallownersondaytodaybasis",
                     "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
                     "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon", "_dfa_eventid_value"

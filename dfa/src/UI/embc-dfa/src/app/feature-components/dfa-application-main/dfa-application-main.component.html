@@ -1,11 +1,20 @@
 <div class="container container-frame">
+  <div class="row" *ngIf="(vieworedit === 'add' || vieworedit === 'update') && ninetyDayDeadline" >
+    <div class="col-8">&nbsp;</div>
+    <div class="col-4" style="float:right;"
+        matTooltip="You have until midnight on the day displayed to submit your application for DFA."
+        matTooltipPosition="above">
+        <span class="sub-heading" style="float:right;">Submit application before midnight on {{ninetyDayDeadline | date: "MM/dd/yyyy"}}</span><br/>
+        <span class="sub-heading" style="color:#941372; float:right;" *ngIf="daysToApply>0">{{ daysToApply }} day(s) remaining to apply</span>
+        <span class="sub-heading" style="color:#941372; float:right;" *ngIf="daysToApply==0">DUE MIDNIGHT TODAY</span>
+        <span class="sub-heading" style="color:#941372; float:right;" *ngIf="daysToApply<0">{{ -1 - daysToApply }} DAY(S) OVERDUE</span>
+    </div>
+  </div>
   <div class="row heading-container">
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationMainHeading }}</span>
     </div>
     <div class="col-4" *ngIf="vieworedit === 'add' || vieworedit === 'update'" >
-      Submit application before midnight on<br/>
-      xx days remaining to applyM<br/>
       <button
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"

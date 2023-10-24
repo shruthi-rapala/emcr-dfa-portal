@@ -7,6 +7,6 @@ import { SignatureBlock } from './signature-block';
  */
 export interface SignAndSubmit {
   applicantSignature?: null | SignatureBlock;
-  ninetyDayDeadline?: string;
+  ninetyDayDeadline?: null | string;
   secondaryApplicantSignature?: null | SignatureBlock;
 }
