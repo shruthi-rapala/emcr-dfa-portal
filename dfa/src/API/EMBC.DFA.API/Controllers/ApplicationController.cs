@@ -257,5 +257,15 @@ namespace EMBC.DFA.API.Controllers
         public string CaseNumber { get; set; }
         public string DateOfDamage { get; set; }
         public string PrimaryApplicantSignedDate { get; set; }
+        public string Status { get; set; }
+        public List<StatusBar> StatusBar { get; set; }
+        public string StatusLastUpdated { get; set; }
+    }
+
+    public class StatusBar
+    {
+        public string Label { get; set; }
+        public bool IsCompleted { get; set; }
+        public bool CurrentStep { get; set; }
     }
 }

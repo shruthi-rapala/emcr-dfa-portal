@@ -21,9 +21,17 @@
     </div>-->
     <mat-card class="mat-elevation-z4 content">
 
-      <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px;">
-        <span>Event ID</span><br />
-        <span style="font-size: 20px;"><b>{{applItem.eventId == null ? "To Be Assigned" : applItem.eventId }}</b></span>
+      <div style="border-bottom: 1px solid lightgrey; padding-bottom: 20px; display: flex;">
+        <div class="col-md-3">
+          <span>Event ID</span><br />
+          <span style="font-size: 20px;"><b>{{applItem.eventId == null ? "To Be Assigned" : applItem.eventId }}</b></span>
+        </div>
+        <div class="col-md-7">
+        </div>
+        <!--<div class="col-md-2" style="text-align: right">
+          <span>Status Last Updated</span><br />
+          <span style="font-size: 16px;">{{applItem.statusLastUpdated }}</span>
+        </div>-->
       </div>
       <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;">
        <!--<kendo-stepper
@@ -38,11 +46,11 @@
         <div class="col-md-3" style="margin-top: 20px;">
           <span><b>Application Status</b></span><br />
         </div>
-        <div *ngFor="let item of items; let i=index" id="item{{i}}" class="stepsDesc col-md-1">
+        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" class="stepsDesc col-md-1">
           <span class="stepText">{{item.label}}</span>
         </div>
         <br style="clear: both;" />
-        <div *ngFor="let item of items; let i=index" id="item{{i}}" [ngClass]="i == 0 ? 'nocircle col-md-1' : 'circle col-md-1'">
+        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="i == 0 ? 'nocircle col-md-1' : 'circle col-md-1'">
           <!--<span [ngClass]="item.isCompleted == true ? 'material-icons' : 'material-symbols-outlined'" style="color: rgb(0, 128, 55);">
             {{item.isCompleted == true ? 'check_circle' : 'circle'}}
           </span>-->
@@ -61,7 +69,7 @@
           </span>-->
         </div>
         <br style="clear: both;" />
-        <div *ngFor="let item of items; let i=index" id="item{{i}}" [ngClass]="item.currentStep == true ? 'stepsDesc col-md-2' : 'stepsDesc col-md-1'">
+        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.currentStep == true ? 'stepsDesc col-md-2' : 'stepsDesc col-md-1'">
             <span *ngIf="item.currentStep == true" class="youAreHere">You are here</span>
           </div>
       </div>
