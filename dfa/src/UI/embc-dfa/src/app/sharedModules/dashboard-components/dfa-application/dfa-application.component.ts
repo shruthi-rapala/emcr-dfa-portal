@@ -62,7 +62,7 @@ export class DfaApplicationComponent implements OnInit {
             var jsonVal = JSON.stringify(this.items);
             objApp.statusBar = JSON.parse(jsonVal);
             objApp.statusBar.forEach(objStatItem => {
-              
+
               if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
                 objStatItem.currentStep = true;
                 isFound = true
@@ -71,7 +71,6 @@ export class DfaApplicationComponent implements OnInit {
               if (isFound == false) {
                 objStatItem.isCompleted = true;
               }
-              
             });
 
             lstDataModified.push(objApp);
@@ -91,8 +90,8 @@ export class DfaApplicationComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.lstApplications = res;
     this.lstApplications.forEach(x => {
-      if ((x.applicationStatusPortal.toLowerCase() === "dfa decision made"
-        || x.applicationStatusPortal.toLowerCase() === "closed: inactive" || x.applicationStatusPortal.toLowerCase() === "closed: withdrawn")
+      if ((x.status.toLowerCase() === "dfa decision made"
+        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
         && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) { // TODO: uncomment
           x.currentApplication = false;
       } else x.currentApplication = true;
