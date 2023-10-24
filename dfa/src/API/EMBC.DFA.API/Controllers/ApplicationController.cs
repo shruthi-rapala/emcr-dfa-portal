@@ -257,7 +257,6 @@ namespace EMBC.DFA.API.Controllers
         public string CaseNumber { get; set; }
         public string DateOfDamage { get; set; }
         public string PrimaryApplicantSignedDate { get; set; }
-        public string ApplicationStatusPortal { get; set; }
         public string DateFileClosed { get; set; }
         public string Status { get; set; }
         public List<StatusBar> StatusBar { get; set; }

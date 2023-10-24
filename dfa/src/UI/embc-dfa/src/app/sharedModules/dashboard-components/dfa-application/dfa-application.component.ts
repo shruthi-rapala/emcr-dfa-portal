@@ -62,7 +62,7 @@ export class DfaApplicationComponent implements OnInit {
             var jsonVal = JSON.stringify(this.items);
             objApp.statusBar = JSON.parse(jsonVal);
             objApp.statusBar.forEach(objStatItem => {
-              
+
               if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
                 objStatItem.currentStep = true;
                 isFound = true
@@ -71,7 +71,6 @@ export class DfaApplicationComponent implements OnInit {
               if (isFound == false) {
                 objStatItem.isCompleted = true;
               }
-              
             });
 
             lstDataModified.push(objApp);
