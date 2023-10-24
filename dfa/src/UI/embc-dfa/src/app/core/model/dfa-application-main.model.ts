@@ -2817,11 +2817,13 @@ export class SupportingDocumentsForm {
 export class SignAndSubmit {
   applicantSignature?: null | SignatureBlock;
   secondaryApplicantSignature?: null | SignatureBlock;
+  ninetyDayDeadline?: null | string;
 }
 
 export class SignAndSubmitForm {
   applicantSignature: UntypedFormGroup;
   secondaryApplicantSignature: UntypedFormGroup;
+  ninetyDayDeadline = new UntypedFormControl();
 
   constructor(
     signAndSubmit: SignAndSubmit,
@@ -2844,6 +2846,8 @@ export class SignAndSubmitForm {
     this.secondaryApplicantSignature?.controls.signature.setValue(signAndSubmit?.secondaryApplicantSignature?.signature);
     this.secondaryApplicantSignature?.controls.dateSigned.setValue(signAndSubmit?.secondaryApplicantSignature?.dateSigned);
     this.secondaryApplicantSignature?.controls.signedName.setValue(signAndSubmit?.secondaryApplicantSignature?.signedName);
+
+    this.ninetyDayDeadline.setValue(signAndSubmit.ninetyDayDeadline);
   }
 }
 

@@ -220,7 +220,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
                     "dfa_wereyouevacuatedduringtheevent2", "dfa_accountlegalname", "dfa_businessmanagedbyallownersondaytodaybasis",
                     "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
-                    "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon"
+                    "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon", "_dfa_eventid_value"
                  // "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
@@ -264,6 +264,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         application.dfa_secondaryapplicantsignature = annotation.documentbody;
                     }
+                }
+
+                if (application._dfa_eventid_value != null)
+                {
+                    var eventlist = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                            "dfa_eventid", "dfa_90daydeadline"
+                        },
+                        Filter = $"dfa_eventid eq {application._dfa_eventid_value}"
+                    });
+
+                    application.dfa_90daydeadline = eventlist.List.Last().dfa_90daydeadline;
                 }
             }
 

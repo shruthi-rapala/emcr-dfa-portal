@@ -238,6 +238,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? _dfa_buildingownerlandlord_value { get; set; } // optional string
         public string? dfa_primaryapplicantsignature { get; set; } // optional string
         public string? dfa_secondaryapplicantsignature { get; set; } // optional string
+        public string? _dfa_eventid_value { get; set; } // optional string
+        public string? dfa_90daydeadline { get; set; } // optional string
         public string? dfa_accountlegalname { get; set; } // optional string
         public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } // optional Option Set
         public int? dfa_grossrevenues100002000000beforedisaster { get; set; } //optional Option Set
