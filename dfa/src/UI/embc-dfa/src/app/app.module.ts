@@ -14,6 +14,7 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { OutageBannerComponent } from './sharedModules/outage-components/outage-banner/outage-banner.component';
 import { OutageDialogComponent } from './sharedModules/outage-components/outage-dialog/outage-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent, OutageBannerComponent, OutageDialogComponent],
@@ -35,7 +36,11 @@ import { OutageDialogComponent } from './sharedModules/outage-components/outage-
           url.toLowerCase().includes('/api/') &&
           !url.toLowerCase().endsWith('/configuration')
       }
-    })
+    }),
+    MatIconModule
+  ],
+  exports: [
+    MatIconModule
   ],
   providers: [
     {
@@ -52,4 +57,5 @@ import { OutageDialogComponent } from './sharedModules/outage-components/outage-
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
+export class MaterialModule { }

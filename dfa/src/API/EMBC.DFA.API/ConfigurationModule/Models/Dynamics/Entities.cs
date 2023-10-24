@@ -410,6 +410,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_casenumber { get; set; }
         public string dfa_primaryapplicantsigneddate { get; set; }
         public string createdon { get; set; }
+        public string dfa_applicationstatusportal { get; set; }
     }
 
     public class dfa_event

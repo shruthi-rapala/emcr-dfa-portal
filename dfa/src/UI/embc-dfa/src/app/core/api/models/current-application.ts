@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { StatusBar } from './status-bar';
 export interface CurrentApplication {
   applicationId?: string;
   applicationType?: string;
@@ -8,4 +9,7 @@ export interface CurrentApplication {
   dateOfDamage?: string;
   eventId?: string;
   primaryApplicantSignedDate?: string;
+  status?: string;
+  statusBar?: Array<StatusBar>;
+  statusLastUpdated?: string;
 }

@@ -19,7 +19,21 @@ export class DfaApplicationComponent implements OnInit {
     this.currentApplicationsCount.emit(value);
   }
 
+  items = [
+    { label: "Draft Application", isCompleted: false, currentStep: false },
+    { label: "Submitted Application", isCompleted: false, currentStep: false },
+    { label: "Reviewing Application", isCompleted: false, currentStep: false },
+    { label: "Creating Case File", isCompleted: false, currentStep: false },
+    { label: "Confirming Eligibility", isCompleted: false, currentStep: false },
+    { label: "Assessing Damage", isCompleted: false, currentStep: false },
+    { label: "Reviewing Damage Report", isCompleted: false, currentStep: false },
+    { label: "DFA Decision made", isCompleted: false, currentStep: false },
+  ];
+
   lstApplications = [];
+
+  isLinear = true;
+  current = 1;
 
   constructor(
     private profileDataService: ProfileDataService,
@@ -37,7 +51,27 @@ export class DfaApplicationComponent implements OnInit {
     this.appService.applicationGetDfaApplications().subscribe({
       next: (lstData) => {
         if (lstData != null) {
-          this.mapData(lstData);
+          var lstDataModified = [];
+          lstData.forEach(objApp => {
+            var isFound = false;
+            var jsonVal = JSON.stringify(this.items);
+            objApp.statusBar = JSON.parse(jsonVal);
+            objApp.statusBar.forEach(objStatItem => {
+
+              if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+                objStatItem.currentStep = true;
+                isFound = true
+              } 
+
+              if (isFound == false) {
+                objStatItem.isCompleted = true;
+              }
+
+            });
+
+            lstDataModified.push(objApp);
+          })
+          this.mapData(lstDataModified);
         }
       },
       error: (error) => {
