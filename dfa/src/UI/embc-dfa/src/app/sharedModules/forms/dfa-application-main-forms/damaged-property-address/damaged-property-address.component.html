@@ -1,4 +1,4 @@
-<mat-card class="card-align" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly' ? 'none' : ''}" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <form [formGroup]="damagedPropertyAddressForm">
@@ -15,6 +15,7 @@
             <mat-radio-group
               formControlName="isPrimaryAndDamagedAddressSame"
               class="primary-radio-group"
+              [disabled]="isReadOnly == true"
               (change)="onUseProfileAddressChoice($event)"
               required
               aria-label="Select an option">
@@ -29,6 +30,7 @@
                 <app-bc-address
                   [addressForm]="damagedPropertyAddressForm"
                   [primaryAddressWarning]="false"
+                  [readOnly]="isReadOnly"
                 ></app-bc-address>
               </div>
             </mat-radio-group><br/><br/>
@@ -42,6 +44,7 @@
             </p>
             <mat-radio-group
               formControlName="occupyAsPrimaryResidence"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -64,6 +67,7 @@
             </p>
             <mat-radio-group
               formControlName="businessManagedByAllOwnersOnDayToDayBasis"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -80,6 +84,7 @@
             </p>
             <mat-radio-group
               formControlName="grossRevenues100002000000BeforeDisaster"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -95,6 +100,7 @@
             </p>
             <mat-radio-group
               formControlName="employLessThan50EmployeesAtAnyOneTime"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -110,6 +116,7 @@
             </p>
             <mat-radio-group
               formControlName="farmoperation"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -126,6 +133,7 @@
             <mat-radio-group
               formControlName="ownedandoperatedbya"
               class="primary-radio-group horizontal-radio-group"
+              [disabled]="isReadOnly == true"
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -141,6 +149,7 @@
             <mat-radio-group
               formControlName="farmoperationderivesthatpersonsmajorincom"
               class="primary-radio-group horizontal-radio-group"
+              [disabled]="isReadOnly == true"
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -156,6 +165,7 @@
             <mat-radio-group
               formControlName="charityProvidesCommunityBenefit"
               class="primary-radio-group horizontal-radio-group"
+              [disabled]="isReadOnly == true"
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -170,6 +180,7 @@
             </p>
             <mat-radio-group
               formControlName="charityExistsAtLeast12Months"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -185,6 +196,7 @@
             </p>
             <mat-radio-group
               formControlName="charityRegistered"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -197,7 +209,12 @@
           <div class="col-md-6 bottomspace">
             <p class="sub-heading" style="font-size: 15px">Provide the {{ accountLegalNameLabel }}, if applicable</p>
             <mat-form-field appearance="outline">
-              <input formControlName="businessLegalName" matInput [placeholder]="accountLegalNameLabel" maxlength="100"/>
+              <input
+                formControlName="businessLegalName"
+                matInput
+                [readonly]="isReadOnly == true"
+                [placeholder]="accountLegalNameLabel"
+                maxlength="100"/>
               <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
                 *ngIf="
@@ -219,6 +236,7 @@
             </p>
             <mat-radio-group
               formControlName="lossesExceed1000"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -234,6 +252,7 @@
             </p>
             <mat-radio-group
               formControlName="onAFirstNationsReserve"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -247,7 +266,13 @@
           <div class="col-md-6 bottomspace">
             <mat-form-field appearance="outline">
               <mat-label>Name of First Nations Reserve</mat-label>
-              <input formControlName="firstNationsReserve" matInput placeholder="Name of First Nations Reserve" [required]="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'" maxlength="100"/>
+              <input
+                formControlName="firstNationsReserve"
+                matInput
+                [readonly]="isReadOnly == true"
+                placeholder="Name of First Nations Reserve"
+                [required]="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'"
+                maxlength="100"/>
               <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
                 *ngIf="
@@ -283,6 +308,7 @@
             A manufactured home is a modular or mobile homes that is typically built in a factory off-site and then delivered and assembled on-site.
             <mat-radio-group
               formControlName="manufacturedHome"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -297,6 +323,7 @@
             </p>
             <mat-radio-group
               formControlName="eligibleForHomeOwnerGrant"
+              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -312,7 +339,13 @@
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <mat-label>First name</mat-label>
-              <input formControlName="landlordGivenNames" matInput placeholder="First name" required maxlength="49"/>
+              <input
+                formControlName="landlordGivenNames"
+                matInput
+                placeholder="First name"
+                required
+                [readonly]="isReadOnly == true"
+                maxlength="49"/>
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordGivenNames').invalid &&
@@ -335,7 +368,13 @@
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <mat-label>Last name</mat-label>
-              <input formControlName="landlordSurname" matInput placeholder="Last name" required maxlength="49"/>
+              <input
+                formControlName="landlordSurname"
+                matInput
+                placeholder="Last name"
+                required
+                [readonly]="isReadOnly == true"
+                maxlength="49"/>
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordSurname').invalid &&
@@ -360,6 +399,7 @@
               <mat-label>Contact Telephone</mat-label>
               <input formControlName="landlordPhone"
                 matInput required
+                [readonly]="isReadOnly == true"
                 placeholder="Contact Telephone"
                 [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
               <mat-error
@@ -386,6 +426,7 @@
               <mat-label>Contact Email</mat-label>
               <input formControlName="landlordEmail"
                 matInput
+                [readonly]="isReadOnly == true"
                 placeholder="Contact Email"
                 type="email"
                 maxlength="100"

@@ -262,6 +262,7 @@ export class DFAApplicationMainComponent
           }
           else {
             this.vieworedit = "update";
+            this.dfaApplicationMainDataService.setViewOrEdit("update");
           }
         }
       });

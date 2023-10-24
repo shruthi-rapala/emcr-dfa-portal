@@ -22,6 +22,7 @@ import {
 export class BcAddressComponent implements OnInit, AfterViewChecked {
   @Input() addressForm: UntypedFormGroup;
   @Input() primaryAddressWarning: boolean;
+  @Input() readOnly: boolean;
   filteredOptions: Observable<Community[]>;
   city: Community[] = [];
   province = [globalConst.defaultProvince];

@@ -9,7 +9,7 @@
           placeholder="Address Line 1"
           maxlength="100"
           required
-          [readonly]="primaryAddressWarning == true"
+          [readonly]="primaryAddressWarning == true || readOnly == true"
         />
         <mat-error
           *ngIf="
@@ -49,7 +49,7 @@
           matInput
           placeholder="Address Line 2"
           maxlength="100"
-          [readonly]="primaryAddressWarning == true"
+          [readonly]="primaryAddressWarning == true || readOnly == true"
         />
         <mat-error
           *ngIf="
@@ -73,7 +73,7 @@
           formControlName="community"
           matInput
           placeholder="City"
-          [readonly]="primaryAddressWarning == true"
+          [readonly]="primaryAddressWarning == true || readOnly == true"
         />
         <!--<mat-autocomplete
           #auto="matAutocomplete"
@@ -115,7 +115,7 @@
           formControlName="stateProvince"
           matInput
           placeholder="Province"
-          [readonly]="primaryAddressWarning == true"
+          [readonly]="primaryAddressWarning == true || readOnly == true"
           value="British Columbia"
         />
         <mat-error
@@ -137,7 +137,7 @@
         <input
           formControlName="postalCode"
           matInput
-          [readonly]="primaryAddressWarning == true"
+          [readonly]="primaryAddressWarning == true || readOnly == true"
           placeholder="Postal Code"
         />
         <mat-error

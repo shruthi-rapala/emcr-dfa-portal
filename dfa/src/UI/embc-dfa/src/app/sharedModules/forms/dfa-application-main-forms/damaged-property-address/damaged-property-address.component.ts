@@ -66,6 +66,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   isCharitableOrganization: boolean = false;
   isFarmOwner: boolean = false;
   accountLegalNameLabel: string = "";
+  isReadOnly: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -82,6 +83,16 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.isReadOnly = (dfaApplicationMainDataService.getViewOrEdit() === 'view'
+      || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
+      || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.isReadOnly = (vieworedit === 'view'
+      || vieworedit === 'edit'
+      || vieworedit === 'viewOnly');
+    })
   }
 
   public get profileAddress(): Address {

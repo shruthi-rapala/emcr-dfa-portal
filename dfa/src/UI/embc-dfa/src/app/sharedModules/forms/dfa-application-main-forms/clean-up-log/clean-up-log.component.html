@@ -1,8 +1,8 @@
-<mat-card class="card-align"  [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly' ? 'none' : ''}"style="border: none;"
+<mat-card class="card-align" style="border: none;"
           [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-  <p class="sub-heading" style="font-size: 20px">Clean Up Log</p>
+  <p class="sub-heading" style="font-size: 20px">Clean Up Log {{ vieworedit }}</p>
   <br />
 
   <form [formGroup]="cleanUpLogWorkForm">
@@ -88,10 +88,11 @@
                   </th>
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
-                    class="delete-image"
-                    mat-icon-button
-                    aria-label="Remove"
-                    (click)="confirmDeleteCleanuplogRow(index)"
+                      class="delete-image"
+                      *ngIf="vieworedit !== 'viewOnly'"
+                      mat-icon-button
+                      aria-label="Remove"
+                      (click)="confirmDeleteCleanuplogRow(index)"
                   >
                     <img src="/assets/images/delete.svg" height="35" width="35" />
                     <img
@@ -119,6 +120,7 @@
               <button
                 *ngIf="!showCleanUpWorkForm"
                 class="addcleanup-button"
+                [disabled]="vieworedit === 'viewOnly'"
                 mat-button
                 type="button"
                 (click)="addCleanupLog()"
@@ -344,7 +346,7 @@
               mat-icon-button
               aria-label="Remove"
               (click)="confirmDeleteCleanupLogFileRow(elementFile)"
-              *ngIf="dfaApplicationMainDataService.getViewOrEdit() === 'add' || dfaApplicationMainDataService.getViewOrEdit() === 'update'"
+              *ngIf="vieworedit !== 'viewOnly'"
             >
               <img src="/assets/images/delete.svg" height="35" width="35" />
               <img
