@@ -342,7 +342,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
                                    dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
                                    createdon = objApp.createdon,
-                                   dfa_applicationstatusportal = objApp.dfa_applicationstatusportal
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
                 //from objEvent in lstEvents.List
