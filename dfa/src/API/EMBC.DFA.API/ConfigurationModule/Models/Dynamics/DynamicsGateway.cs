@@ -255,7 +255,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         "dfa_appapplicationid", "dfa_applicanttype",
                         "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext",
-                        "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon"
+                        "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon",
+                        "dfa_applicationstatusportal"
                     },
                     Filter = $"_dfa_applicant_value eq {profileId}"
                     //Expand = new CRMExpandOptions[]
@@ -283,7 +284,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_event = objAppEvent != null ? objAppEvent.dfa_id : null,
                                    dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
                                    dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
-                                   createdon = objApp.createdon
+                                   createdon = objApp.createdon,
+                                   dfa_applicationstatusportal = objApp.dfa_applicationstatusportal
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
                 //from objEvent in lstEvents.List
