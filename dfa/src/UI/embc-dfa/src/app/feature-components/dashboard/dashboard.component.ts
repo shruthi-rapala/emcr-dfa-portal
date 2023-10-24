@@ -115,9 +115,9 @@ export class DashboardComponent implements OnInit {
     let lstApplications = res;
     this.currentApplicationsCount = 0; this.pastApplicationsCount = 0;
     lstApplications.forEach(x => {
-      if ((x.status.toLowerCase() === "dfa decision made"
-        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
-        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) { // TODO: uncomment
+      if ((x.status.toLowerCase() === "dfa decision made" || x.status.toLowerCase() == "reviewing application"
+        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")) {
+        // && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) {
           this.pastApplicationsCount++;
       } else this.currentApplicationsCount++;
     })

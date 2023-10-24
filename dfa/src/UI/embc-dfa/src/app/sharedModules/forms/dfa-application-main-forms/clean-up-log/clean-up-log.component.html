@@ -2,7 +2,7 @@
           [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-  <p class="sub-heading" style="font-size: 20px">Clean Up Log {{ vieworedit }}</p>
+  <p class="sub-heading" style="font-size: 20px">Clean Up Log</p>
   <br />
 
   <form [formGroup]="cleanUpLogWorkForm">
@@ -117,10 +117,13 @@
                 <br /><br/>
               </div>
 
+              <div  *ngIf="cleanUpWorkDataSource.getValue().length == 0 && vieworedit == 'viewOnly'">
+                <br />No cleanup logs were added.<br/>
+              </div>
+
               <button
-                *ngIf="!showCleanUpWorkForm"
+                *ngIf="!showCleanUpWorkForm && vieworedit !== 'viewOnly'"
                 class="addcleanup-button"
-                [disabled]="vieworedit === 'viewOnly'"
                 mat-button
                 type="button"
                 (click)="addCleanupLog()"
@@ -276,6 +279,7 @@
     <div class="row">
       <div class="col-md-8">
         <app-dfa-attachment
+          *ngIf="vieworedit !== 'viewOnly'"
           title="Cleanup Invoices/Receipts"
           description=" If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs. <br />You may also attach them to this application"
           [allowedFileTypes]="allowedFileTypes"
@@ -369,6 +373,9 @@
 
         <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
           <br /><br/>
+        </div>
+        <div  *ngIf="cleanUpWorkFileDataSource.data.length == 0">
+          <br />No cleanup photos were added.<br/>
         </div>
       </div>
     </div>
