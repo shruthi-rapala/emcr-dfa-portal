@@ -3,7 +3,9 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationMainHeading }}</span>
     </div>
-    <div class="col-4" *ngIf="vieworedit !== 'view' && vieworedit !== 'edit'" >
+    <div class="col-4" *ngIf="vieworedit === 'add' || vieworedit === 'update'" >
+      Submit application before midnight on<br/>
+      xx days remaining to applyM<br/>
       <button
         class="button-p save-button col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"

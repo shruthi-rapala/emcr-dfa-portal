@@ -180,7 +180,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_description", "dfa_doyourlossestotalmorethan10002", "dfa_haveinvoicesreceiptsforcleanuporrepairs2",
                     "dfa_primaryapplicantprintname", "dfa_primaryapplicantsigned", "dfa_primaryapplicantsigneddate",
                     "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
-                    "dfa_wereyouevacuatedduringtheevent2"
+                    "dfa_wereyouevacuatedduringtheevent2", "_dfa_eventid_value"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -223,6 +223,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         application.dfa_secondaryapplicantsignature = annotation.documentbody;
                     }
+                }
+
+                if (application._dfa_eventid_value != null)
+                {
+                    var eventlist = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                            "dfa_eventid", "dfa_90daydeadline"
+                        },
+                        Filter = $"dfa_eventid eq {application._dfa_eventid_value}"
+                    });
+
+                    application.dfa_90daydeadline = eventlist.List.Last().dfa_90daydeadline;
                 }
             }
 
