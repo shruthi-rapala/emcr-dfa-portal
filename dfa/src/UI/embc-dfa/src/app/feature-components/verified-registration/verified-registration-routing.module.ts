@@ -46,6 +46,12 @@ const routes: Routes = [
         data: { flow: 'verified-registration' }
       },
       {
+        path: 'dfa-prescreening',
+        loadChildren: () =>
+          import('../dfa-prescreening/dfa-prescreening.module').then((m) => m.DFAPrescreeningModule),
+        data: { flow: 'verified-registration' }
+      },
+      {
         path: 'dashboard',
         loadChildren: () =>
           import(

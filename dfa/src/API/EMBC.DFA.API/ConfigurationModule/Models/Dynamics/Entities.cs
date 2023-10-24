@@ -42,6 +42,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_isindigenous2 { get; set; }
         public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
         public string dfa_appcontactid { get; set; }
+        public string? dfa_lastdateupdated { get; set; }
     }
 
     public class dfa_appcontact_extended : dfa_appcontact
@@ -53,6 +54,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class dfa_appapplicationstart_params
     {
         public int dfa_applicanttype { get; set; } // required (already existing)
+        // public int? dfa_smallbusinesstype { get; set; } // optional OptionSet TODO: uncomment
+        // public int? dfa_farmtype { get; set; } // optional OptionSet TODO: uncomment
         public int dfa_doyouhaveinsurancecoverage2 { get; set; } // required
         public string dfa_appcontactid { get; set; } // required string passed in to PROC, PROC looks up appcontact to fill in application fields
         public int dfa_primaryapplicantsignednoins { get; set; } // required Yes or No option set
@@ -61,6 +64,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int dfa_secondaryapplicantsignednoins { get; set; } // required OptionSet existing Yes or No option set
         public string? dfa_secondaryapplicantprintnamenoins { get; set; } // optional string
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
+        public int? dfa_isprimaryanddamagedaddresssame2 { get; set; } // optional Two Options
+        public string? dfa_damagedpropertystreet1 { get; set; } // optional string
+        public string? dfa_damagedpropertystreet2 { get; set; } // optional string
+        public string? dfa_damagedpropertycitytext { get; set; } // optional string
+        public string? dfa_damagedpropertyprovince { get; set; } // optional string
+        public string? dfa_damagedpropertypostalcode { get; set; } // optional string
+        public string? dfa_dateofdamage { get; set; } // optoinal date only
+    }
+
+    public class temp_dfa_appapplicationstart_params
+    {
+        public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean  TODO: move to dfa_applicationstart_params
+        public string? dfa_eventid { get; set; } // required string disaster event id TODO: move to dfa_applicationstart_params
     }
 
     public class dfa_signature
@@ -104,6 +120,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string? dfa_appapplicationid { get; set; } // optional string
         public int? dfa_applicanttype { get; set; } // required (already existing)
+        public int? dfa_smallbusinesstype { get; set; } // optional OptionSet
+        public int? dfa_farmtype { get; set; } // optional OptionSet
         public int? dfa_doyouhaveinsurancecoverage2 { get; set; } // required
         public int? dfa_primaryapplicantsignednoins { get; set; } // required Yes or No option set
         public string? dfa_primaryapplicantprintnamenoins { get; set; } // optional string
@@ -112,6 +130,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantprintnamenoins { get; set; } // optional string
         public string? dfa_secondaryapplicantsigneddatenoins { get; set; } // optional  Date and Time (Date Only)
         public string? _dfa_applicant_value { get; set; }
+        public int? dfa_isprimaryanddamagedaddresssame2 { get; set; } // optional Two Options
+        public string? dfa_damagedpropertystreet1 { get; set; } // optional string
+        public string? dfa_damagedpropertystreet2 { get; set; } // optional string
+        public string? dfa_damagedpropertycitytext { get; set; } // optional string
+        public string? dfa_damagedpropertyprovince { get; set; } // optional string
+        public string? dfa_damagedpropertypostalcode { get; set; } // optional string
+        public string? dfa_dateofdamage { get; set; } // optoinal date only
+        public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean
+        public string? _dfa_eventid_value { get; set; } // optional string
     }
 
     public class dfa_appapplicationmain_params
@@ -152,7 +179,22 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int dfa_secondaryapplicantsigned { get; set; } // required Two Options
         public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
         public int? dfa_wereyouevacuatedduringtheevent2 { get; set; } // optional boolean
+        // public int? dfa_charityregistered { get; set; } // optional Option set TODO: uncomment when new field added to dynamics
+        // public int? dfa_charityexistsatleast12months { get; set; } // optional Option set uncomment when new field added to dynamics
+        // public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set uncomment when new field added to dynamics
+
         public bool delete { get; set; } // delete or not
+    }
+
+    public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
+    {
+        public string? dfa_accountlegalname { get; set; } // optional string
+        public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } //optional Option set
+        public int? dfa_grossrevenues100002000000beforedisaster { get; set; } // optional Option set
+        public int? dfa_employlessthan50employeesatanyonetime { get; set; } // optional Option set
+        public int? dfa_farmoperation { get; set; } // optional Option set
+        public int? dfa_ownedandoperatedbya { get; set; } // optional Option set
+        public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optional Option set
     }
 
     public class dfa_appapplicationmain_retrieve
@@ -198,6 +240,17 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantsignature { get; set; } // optional string
         public string? _dfa_eventid_value { get; set; } // optional string
         public string? dfa_90daydeadline { get; set; } // optional string
+        public string? dfa_accountlegalname { get; set; } // optional string
+        public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } // optional Option Set
+        public int? dfa_grossrevenues100002000000beforedisaster { get; set; } //optional Option Set
+        public int? dfa_employlessthan50employeesatanyonetime { get; set; } // optional Option Set
+        public int? dfa_farmoperation { get; set; } // optoinal Option Set
+        public int? dfa_ownedandoperatedbya { get; set; } // optoinal Option Set
+        public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optoinal Option Set
+        // public int? dfa_charityregistered { get; set; } // optional Option set
+        // public int? dfa_charityexistsatleast12months { get; set; } // optional Option set
+        // public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set
+        public string? createdon { get; set; } // optional string
     }
 
     public class dfa_appbuildingownerlandlord
@@ -306,6 +359,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string createdon { get; set; } // uploaded date
         public string dfa_documenttype { get; set; }
         public string dfa_modifiedby { get; set; }
+        public string dfa_requireddocumenttype { get; set; }
     }
 
     public class AttachmentEntity
@@ -325,6 +379,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_description { get; set; } // pass in description
         public string dfa_modifiedby { get; set; } // pass in modified by
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
+        // public string? dfa_requireddocumenttype { get; set; } // for required documents TODO: uncomment
     }
 
     public class dfa_DFAActionDeleteDocuments_parms
@@ -373,6 +428,27 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Incorporated = 222710006
     }
 
+    public enum SmallBusinessOptionSet
+    {
+        [Description("General")]
+        General = 222710000,
+
+        [Description("Corporate")]
+        Corporate = 222710001,
+
+        [Description("Landlord")]
+        Landlord = 222710002
+    }
+
+    public enum FarmOptionSet
+    {
+        [Description("General")]
+        General = 222710000,
+
+        [Description("Corporate")]
+        Corporate = 222710001
+    }
+
     public enum SecondaryApplicantTypeOptionSet
     {
         Contact = 222710006,
@@ -411,6 +487,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_event { get; set; }
         public string dfa_casenumber { get; set; }
         public string dfa_primaryapplicantsigneddate { get; set; }
+        public string dfa_datefileclosed { get; set; }
+        public string dfa_applicationstatusportal { get; set; }
         public string createdon { get; set; }
     }
 
@@ -418,17 +496,17 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string dfa_eventid { get; set; }
         public string dfa_id { get; set; }
-        public string dfa_dateofevent { get; set; }
-        public string dfa_dateofeventdeclaredrevised { get; set; }
-        public string dfa_dateofeventdeclaredrevised2 { get; set; }
+        public string? dfa_90daydeadline { get; set; }
+        public string? dfa_startdate { get; set; }
+        public string? dfa_enddate { get; set; }
         public string statuscode { get; set; }
-        public string dfa_90daydeadline { get; set; }
     }
 
     public class dfa_incident
     {
         public string incidentid { get; set; }
         public string ticketnumber { get; set; }
+        public string dfa_datefileclosed { get; set; }
     }
 
     public enum SameAddressOptionSet
@@ -441,5 +519,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("I don't have a permanent address right now")]
         NoAddress = 222710002
+    }
+
+    public class dfa_effectedregioncommunities
+    {
+        public string dfa_effectedregioncommunityid { get; set; }
+        public string _dfa_regionid_value { get; set; }
+        public string dfa_areaname { get; set; }
+        public string _dfa_eventid_value { get; set; }
+        public string dfa_name { get; set; }
+    }
+
+    public class dfa_region
+    {
+        public string dfa_regionid { get; set; }
+        public string dfa_name { get; set; }
     }
 }

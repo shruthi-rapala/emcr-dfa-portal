@@ -109,6 +109,7 @@ namespace EMBC.DFA.API.Controllers
         public string? fileName { get; set; }
         public string? fileDescription { get; set; }
         public FileCategory? fileType { get; set; }
+        public RequiredDocumentType? requiredDocumentType { get; set; }
         public string? uploadedDate { get; set; }
         public string? modifiedBy { get; set; }
         public byte[]? fileData { get; set; }

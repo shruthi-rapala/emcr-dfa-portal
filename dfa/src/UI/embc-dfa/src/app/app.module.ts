@@ -14,6 +14,12 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { OutageBannerComponent } from './sharedModules/outage-components/outage-banner/outage-banner.component';
 import { OutageDialogComponent } from './sharedModules/outage-components/outage-dialog/outage-dialog.component';
+import { LayoutModule } from "@progress/kendo-angular-layout";
+//import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
+//import { LabelModule } from "@progress/kendo-angular-label";
+import { ButtonsModule } from "@progress/kendo-angular-buttons";
+import { ICON_SETTINGS } from "@progress/kendo-angular-icons";
+import { MatIconModule } from '@angular/material/icon'
 
 @NgModule({
   declarations: [AppComponent, OutageBannerComponent, OutageDialogComponent],
@@ -35,7 +41,13 @@ import { OutageDialogComponent } from './sharedModules/outage-components/outage-
           url.toLowerCase().includes('/api/') &&
           !url.toLowerCase().endsWith('/configuration')
       }
-    })
+    }),
+    LayoutModule,
+    ButtonsModule,
+    MatIconModule
+  ],
+  exports: [
+    MatIconModule
   ],
   providers: [
     {
@@ -48,8 +60,13 @@ import { OutageDialogComponent } from './sharedModules/outage-components/outage-
         return result;
       },
       deps: [PlatformLocation]
+    },
+    {
+      provide: ICON_SETTINGS,
+      useValue: { type: "font" },
     }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+export class MaterialModule { }

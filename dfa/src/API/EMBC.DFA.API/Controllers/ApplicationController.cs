@@ -60,8 +60,14 @@ namespace EMBC.DFA.API.Controllers
 
             if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationstart_params>(application);
+            var tempParms = mapper.Map<temp_dfa_appapplicationstart_params>(application); // TODO: remove
 
-            var applicationId = await handler.HandleApplication(mappedApplication);
+            var applicationId = await handler.HandleApplication(mappedApplication, tempParms);
+
+            // Verify Profile
+            application.ProfileVerification.profile.BCServiceCardId = currentUserId;
+            var mappedProfile = mapper.Map<dfa_appcontact>(application.ProfileVerification.profile);
+            var msg = await handler.HandleContact(mappedProfile);
 
             // If no insurance, add signatures
             if (application.AppTypeInsurance.insuranceOption == InsuranceOption.No)
@@ -101,8 +107,9 @@ namespace EMBC.DFA.API.Controllers
         {
             if (application == null) return BadRequest("Application details cannot be empty.");
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
+            var temp_params = mapper.Map<temp_dfa_appapplicationmain_params>(application);
 
-            var result = await handler.HandleApplicationUpdate(mappedApplication);
+            var result = await handler.HandleApplicationUpdate(mappedApplication, temp_params);
 
             // Add signatures
             if (application.signAndSubmit?.applicantSignature?.signature != null &&
@@ -147,6 +154,12 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationStart.ProfileVerification = mapper.Map<ProfileVerification>(dfa_appapplication);
             dfaApplicationStart.Consent = mapper.Map<Consent>(dfa_appapplication);
             dfaApplicationStart.AppTypeInsurance = mapper.Map<AppTypeInsurance>(dfa_appapplication);
+            dfaApplicationStart.OtherPreScreeningQuestions = mapper.Map<OtherPreScreeningQuestions>(dfa_appapplication);
+
+            // Fill in profile
+            var userId = currentUserId;
+            var profile = await handler.HandleGetUser(userId);
+            dfaApplicationStart.ProfileVerification.profile = profile;
             return Ok(dfaApplicationStart);
         }
 
@@ -163,6 +176,9 @@ namespace EMBC.DFA.API.Controllers
             [Required]
             Guid applicationId)
         {
+            var userId = currentUserId;
+            var appContactProfile = await handler.HandleGetUser(userId);
+
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
@@ -171,6 +187,13 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
             dfaApplicationMain.cleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
             dfaApplicationMain.supportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
+
+            if ((appContactProfile.lastUpdatedDateBCSC == null || DateTime.Parse(dfa_appapplication.createdon) < DateTime.Parse(appContactProfile.lastUpdatedDateBCSC))
+                && dfa_appapplication.dfa_primaryapplicantsigneddate == null)
+            {
+                dfaApplicationMain.notifyUser = true;
+            }
+
             return Ok(dfaApplicationMain);
         }
 
@@ -186,7 +209,6 @@ namespace EMBC.DFA.API.Controllers
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             var profileId = profile.Id;
-            //var profileId = "d245240e-99f0-46d1-8d82-78e1196f4e09";
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }
@@ -204,6 +226,9 @@ namespace EMBC.DFA.API.Controllers
         public ProfileVerification ProfileVerification { get; set; }
 
         public AppTypeInsurance AppTypeInsurance { get; set; }
+
+        public OtherPreScreeningQuestions OtherPreScreeningQuestions { get; set; }
+        public bool notifyUser { get; set; }
     }
 
     public class DFAApplicationMain
@@ -220,6 +245,7 @@ namespace EMBC.DFA.API.Controllers
 
         public SignAndSubmit? signAndSubmit { get; set; }
         public bool deleteFlag { get; set; }
+        public bool notifyUser { get; set; }
     }
 
     public class CurrentApplication
@@ -231,5 +257,7 @@ namespace EMBC.DFA.API.Controllers
         public string CaseNumber { get; set; }
         public string DateOfDamage { get; set; }
         public string PrimaryApplicantSignedDate { get; set; }
+        public string ApplicationStatusPortal { get; set; }
+        public string DateFileClosed { get; set; }
     }
 }

@@ -217,12 +217,14 @@ export default class AddressComponent
       this.primaryAddressForm.get('mailingAddress').setValue(primaryAddress);
       this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.community').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.postalCode').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators(null);
     } else if (event.value === 'No') {
       this.primaryAddressForm.get('mailingAddress').reset();
       this.primaryAddressForm.get('isBcMailingAddress').reset();
       this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators([Validators.required]);
       this.primaryAddressForm.get('mailingAddress.community').setValidators([Validators.required]);
+      this.primaryAddressForm.get('mailingAddress.postalCode').setValidators([Validators.required]);
       this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators([Validators.required]);
     }
     else {
@@ -230,6 +232,7 @@ export default class AddressComponent
       this.primaryAddressForm.get('isBcMailingAddress').reset();
       this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.community').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.postalCode').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.postalCode').setValidators(null);
     }

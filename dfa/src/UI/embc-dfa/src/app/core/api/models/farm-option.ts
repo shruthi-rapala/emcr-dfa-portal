@@ -5,6 +5,6 @@
  * Farm Options
  */
 export enum FarmOption {
-  General = 'General or Sole Proprietorship or DBA name',
-  Corporate = 'Corporate (Ltd./Inc.) Company'
+  General = 'General Partnership, Sole Proprietorship, Unregistered, or DBA Name',
+  Corporate = 'Corporate Company (Ltd./Inc.)'
 }

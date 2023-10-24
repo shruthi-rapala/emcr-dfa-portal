@@ -36,7 +36,6 @@ export class DFAApplicationMainDataService {
     private applicationService: ApplicationService
   ) {
   }
-
   public get requiredDocuments(): Array<string> {
     return this._requiredDocuments;
   }
