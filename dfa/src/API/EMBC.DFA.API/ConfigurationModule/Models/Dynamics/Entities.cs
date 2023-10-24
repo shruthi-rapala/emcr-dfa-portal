@@ -238,6 +238,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? _dfa_buildingownerlandlord_value { get; set; } // optional string
         public string? dfa_primaryapplicantsignature { get; set; } // optional string
         public string? dfa_secondaryapplicantsignature { get; set; } // optional string
+        public string? _dfa_eventid_value { get; set; } // optional string
+        public string? dfa_90daydeadline { get; set; } // optional string
         public string? dfa_accountlegalname { get; set; } // optional string
         public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } // optional Option Set
         public int? dfa_grossrevenues100002000000beforedisaster { get; set; } //optional Option Set
@@ -485,6 +487,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_event { get; set; }
         public string dfa_casenumber { get; set; }
         public string dfa_primaryapplicantsigneddate { get; set; }
+        public string dfa_datefileclosed { get; set; }
+        public string dfa_applicationstatusportal { get; set; }
         public string createdon { get; set; }
         public string dfa_applicationstatusportal { get; set; }
         //public string dfa_statuslastupdated { get; set; }
@@ -494,18 +498,17 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string dfa_eventid { get; set; }
         public string dfa_id { get; set; }
-        public string dfa_dateofevent { get; set; }
-        public string dfa_dateofeventdeclaredrevised { get; set; }
-        public string dfa_dateofeventdeclaredrevised2 { get; set; }
-        public string? dfa_90daydeadline { get; set; } // this is recalculated
+        public string? dfa_90daydeadline { get; set; }
         public string? dfa_startdate { get; set; }
         public string? dfa_enddate { get; set; }
+        public string statuscode { get; set; }
     }
 
     public class dfa_incident
     {
         public string incidentid { get; set; }
         public string ticketnumber { get; set; }
+        public string dfa_datefileclosed { get; set; }
     }
 
     public enum SameAddressOptionSet

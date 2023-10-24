@@ -12,7 +12,7 @@ export interface DfaApplicationStart {
   appTypeInsurance?: AppTypeInsurance;
   consent?: Consent;
   id?: null | string;
-  otherPreScreeningQuestions?: OtherPreScreeningQuestions;
   notifyUser?: boolean;
+  otherPreScreeningQuestions?: OtherPreScreeningQuestions;
   profileVerification?: ProfileVerification;
 }

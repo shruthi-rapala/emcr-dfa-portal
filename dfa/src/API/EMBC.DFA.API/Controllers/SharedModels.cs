@@ -387,5 +387,6 @@ namespace EMBC.DFA.API.Controllers
     {
         public SignatureBlock? applicantSignature { get; set; }
         public SignatureBlock? secondaryApplicantSignature { get; set; }
+        public string? ninetyDayDeadline { get; set; }
     }
 }

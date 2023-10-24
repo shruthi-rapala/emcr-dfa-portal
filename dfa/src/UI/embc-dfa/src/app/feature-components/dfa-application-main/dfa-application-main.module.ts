@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ComponentWrapperModule } from '../../sharedModules/components/component-wrapper/component-wrapper.module';
 import { ReviewModule } from '../review/review.module';
 import { CoreModule } from '../../core/core.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [DFAApplicationMainComponent],
@@ -19,7 +20,8 @@ import { CoreModule } from '../../core/core.module';
     MatSelectModule,
     ComponentWrapperModule,
     ReviewModule,
-    CoreModule
+    CoreModule,
+    MatTooltipModule
   ]
 })
 export class DFAApplicationMainModule {}

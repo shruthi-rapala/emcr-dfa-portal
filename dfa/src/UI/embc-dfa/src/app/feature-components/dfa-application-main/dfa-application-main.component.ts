@@ -4,7 +4,8 @@ import {
   ViewChild,
   AfterViewInit,
   AfterViewChecked,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -57,6 +58,8 @@ export class DFAApplicationMainComponent
   appTypeInsuranceForm$: Subscription;
   vieworedit: string;
   editstep: string;
+  ninetyDayDeadline: string;
+  daysToApply: number;
   isResidentialTenant: boolean = false;
   isGeneral: boolean = false;
   isCorporate: boolean = false;
@@ -240,7 +243,7 @@ export class DFAApplicationMainComponent
       .get('applicantSignature')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
-        if (this.vieworedit === 'view' || this.vieworedit === 'edit') {
+        if (this.vieworedit === 'view' || this.vieworedit === 'edit' || this.vieworedit === 'viewOnly') {
           for (var i = 0; i <= 7; i++) {
             this.dfaApplicationMainStepper.selected.completed = true;
             this.dfaApplicationMainStepper.next();
@@ -262,6 +265,19 @@ export class DFAApplicationMainComponent
           }
         }
       });
+
+    this.signAndSubmitForm
+      .get('ninetyDayDeadline')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+
+        if (value) {
+          this.ninetyDayDeadline = value;
+          let date = new Date(value);
+          let currentDate = new Date();
+          this.daysToApply = Math.floor((date.getTime() - currentDate.getTime()) / 1000 / 60 / 60 / 24);
+        }
+      })
   }
 
   navigateToStep(stepIndex: number) {
@@ -570,7 +586,7 @@ export class DFAApplicationMainComponent
       .afterClosed()
       .subscribe((result) => {
         //if (result === 'confirm') {
-          
+
         //}
       });
   }

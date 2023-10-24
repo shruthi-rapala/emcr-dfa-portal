@@ -16,11 +16,11 @@
     "clean-webpack-plugin": "4.0.0-alpha.0",
     "copy-webpack-plugin": "^9.0.1",
     "faker": "5.5.3",
+    "ng-openapi-gen": "^0.21.2",
     "typescript": "4.2.4",
     "webpack": "5.35.1",
     "webpack-cli": "4.6.0",
-    "webpack-glob-entries": "^1.0.1",
-    "ng-openapi-gen": "^0.21.2"
+    "webpack-glob-entries": "^1.0.1"
   },
   "scripts": {
     "start": "webpack",
@@ -41,7 +41,6 @@
     "loadTest": "k6 run ./dist/load-test.js",
     "benchmark": "k6 run ./dist/benchmark-test.js",
     "stressTest": "k6 run ./dist/stress-test.js",
-    "gen-registrants-api": "ng-openapi-gen -i https://dev1-era-registrants.apps.silver.devops.gov.bc.ca/api/openapi/v1/openapi.json -o ./src/api/registrants --ignoreUnusedModels false",
-    "gen-responders-api": "ng-openapi-gen -i https://dev1-embc-responders.apps.silver.devops.gov.bc.ca/api/openapi/v1/openapi.json -o ./src/api/responders --ignoreUnusedModels false"
+    "gen-dfa-api": "ng-openapi-gen -i https://dfa-portal-dev.apps.silver.devops.gov.bc.ca/api/openapi/v1/openapi.json -o ./src/api/dfa --ignoreUnusedModels false"
   }
 }
