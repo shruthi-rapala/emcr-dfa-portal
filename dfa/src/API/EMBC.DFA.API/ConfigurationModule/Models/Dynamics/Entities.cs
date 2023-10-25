@@ -421,7 +421,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_dateofeventdeclaredrevised { get; set; }
         public string dfa_dateofeventdeclaredrevised2 { get; set; }
         public string statuscode { get; set; }
-        public string dfa_90daydeadline { get; set; }
+        public string dfa_90daydeadlinenew { get; set; }
     }
 
     public class dfa_incident
