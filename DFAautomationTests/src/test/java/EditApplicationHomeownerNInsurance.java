@@ -180,7 +180,7 @@ public class EditApplicationHomeownerNInsurance {
         Thread.sleep(1000);
         //Choose the app
         JavascriptExecutor js381 = (JavascriptExecutor) driver;
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/app-root/div/main/div/app-dfa-dashboard/div/div[2]/div[2]/app-dfadashboard-application/div/div[1]/mat-card/div[3]/button[1]")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Complete Application ')]")));
         js381.executeScript("arguments[0].click();", element);
         Thread.sleep(1000);
 

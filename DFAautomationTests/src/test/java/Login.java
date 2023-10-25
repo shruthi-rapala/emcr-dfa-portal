@@ -19,7 +19,7 @@ public class Login {
     private static String bceidPASSWORD = System.getenv("PASSWORD_BCEID");
 
 
-    @After
+/*    @After
     public void tearDown() {
         driver.close();
         driver.quit();
@@ -27,7 +27,7 @@ public class Login {
     @AfterClass
     public static void afterClass() {
         WebDriverManager.instance = null;
-    }
+    }*/
 
 
     @Test
