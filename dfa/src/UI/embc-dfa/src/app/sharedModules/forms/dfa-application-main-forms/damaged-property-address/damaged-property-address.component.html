@@ -15,7 +15,6 @@
             <mat-radio-group
               formControlName="isPrimaryAndDamagedAddressSame"
               class="primary-radio-group"
-              [disabled]="isReadOnly == true"
               (change)="onUseProfileAddressChoice($event)"
               required
               aria-label="Select an option">
@@ -44,7 +43,6 @@
             </p>
             <mat-radio-group
               formControlName="occupyAsPrimaryResidence"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -67,7 +65,6 @@
             </p>
             <mat-radio-group
               formControlName="businessManagedByAllOwnersOnDayToDayBasis"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -84,7 +81,6 @@
             </p>
             <mat-radio-group
               formControlName="grossRevenues100002000000BeforeDisaster"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -100,7 +96,6 @@
             </p>
             <mat-radio-group
               formControlName="employLessThan50EmployeesAtAnyOneTime"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -116,7 +111,6 @@
             </p>
             <mat-radio-group
               formControlName="farmoperation"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -133,7 +127,6 @@
             <mat-radio-group
               formControlName="ownedandoperatedbya"
               class="primary-radio-group horizontal-radio-group"
-              [disabled]="isReadOnly == true"
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -149,7 +142,6 @@
             <mat-radio-group
               formControlName="farmoperationderivesthatpersonsmajorincom"
               class="primary-radio-group horizontal-radio-group"
-              [disabled]="isReadOnly == true"
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -165,7 +157,6 @@
             <mat-radio-group
               formControlName="charityProvidesCommunityBenefit"
               class="primary-radio-group horizontal-radio-group"
-              [disabled]="isReadOnly == true"
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -180,7 +171,6 @@
             </p>
             <mat-radio-group
               formControlName="charityExistsAtLeast12Months"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -196,7 +186,6 @@
             </p>
             <mat-radio-group
               formControlName="charityRegistered"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -236,7 +225,6 @@
             </p>
             <mat-radio-group
               formControlName="lossesExceed1000"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -252,7 +240,6 @@
             </p>
             <mat-radio-group
               formControlName="onAFirstNationsReserve"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">
@@ -308,7 +295,6 @@
             A manufactured home is a modular or mobile homes that is typically built in a factory off-site and then delivered and assembled on-site.
             <mat-radio-group
               formControlName="manufacturedHome"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -323,7 +309,6 @@
             </p>
             <mat-radio-group
               formControlName="eligibleForHomeOwnerGrant"
-              [disabled]="isReadOnly == true"
               class="primary-radio-group horizontal-radio-group"
               required
               aria-label="Select an option">

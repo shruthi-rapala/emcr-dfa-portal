@@ -42,6 +42,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   isResidentialTenant: boolean = false;
   isHomeowner: boolean = false;
   isSmallBusinessOwner: boolean = false;
+  isReadOnly: boolean = false;
   isFarmOwner: boolean = false;
   isCharitableOrganization: boolean = false;
 
@@ -54,6 +55,37 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.isReadOnly = (dfaApplicationMainDataService.getViewOrEdit() === 'view'
+    || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
+    || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
+    this.setViewOrEditControls();
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.isReadOnly = (vieworedit === 'view'
+      || vieworedit === 'edit'
+      || vieworedit === 'viewOnly');
+      this.setViewOrEditControls();
+    })
+  }
+
+  setViewOrEditControls() {
+    if (!this.propertyDamageForm) return;
+    if (this.isReadOnly) {
+      this.propertyDamageForm.controls.floodDamage.disable();
+      this.propertyDamageForm.controls.landslideDamage.disable();
+      this.propertyDamageForm.controls.stormDamage.disable();
+      this.propertyDamageForm.controls.otherDamage.disable();
+      this.propertyDamageForm.controls.wereYouEvacuated.disable();
+      this.propertyDamageForm.controls.residingInResidence.disable();
+    } else {
+      this.propertyDamageForm.controls.floodDamage.enable();
+      this.propertyDamageForm.controls.landslideDamage.enable();
+      this.propertyDamageForm.controls.stormDamage.enable();
+      this.propertyDamageForm.controls.otherDamage.enable();
+      this.propertyDamageForm.controls.wereYouEvacuated.enable();
+      this.propertyDamageForm.controls.residingInResidence.enable();
+    }
   }
 
   ngOnInit(): void {

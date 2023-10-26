@@ -80,6 +80,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   AppOptions = ApplicantOption;
   SmallBusinessOptions = SmallBusinessOption;
   FarmOptions = FarmOption;
+  vieworedit: string = "";
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -94,6 +95,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.vieworedit = vieworedit;
+    });
+
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);

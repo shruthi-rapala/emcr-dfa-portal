@@ -51,6 +51,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email', 'deleteIcon'];
   secondaryApplicantsDataSource = new BehaviorSubject([]);
   secondaryApplicantsData = [];
+  vieworedit: string = "";
   public ApplicantOptions = ApplicantOption;
   isHomeowner: boolean = false;
   isResidentialTenant: boolean = false;
@@ -83,6 +84,12 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.vieworedit = vieworedit;
+    })
   }
 
   ngOnInit(): void {

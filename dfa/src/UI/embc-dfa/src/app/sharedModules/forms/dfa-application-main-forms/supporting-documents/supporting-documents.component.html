@@ -33,12 +33,12 @@
             <li *ngIf="isCharitableOrganization">Structure and purpose: a statement of the organization's structure and purpose.</li>
             <li *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner || isCharitableOrganization">Lease agreement: if applicable.</li>
           </ul>
-          <p class="sub-heading" style="font-size: 15px">Upload Required Documents</p>
+          <p class="sub-heading" style="font-size: 15px" *ngIf="vieworedit !== 'viewOnly'">Upload Required Documents</p>
         </div>
       </div>
     </ng-container>
 
-    <ng-container *ngIf="isHomeowner || isResidentialTenant || (isSmallBusinessOwner && isLandlord)"> <!-- Insurance Template for Homeowner, residential tenant -->
+    <ng-container *ngIf="(isHomeowner || isResidentialTenant || (isSmallBusinessOwner && isLandlord)) && vieworedit !== 'viewOnly'"> <!-- Insurance Template for Homeowner, residential tenant -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -68,7 +68,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner || isCharitableOrganization"> <!-- Insurance Template for Small Business: General, Corporate, Farm: General, Corporate, Charitable Organization -->
+    <ng-container *ngIf="((isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner || isCharitableOrganization) && vieworedit !== 'viewOnly'"> <!-- Insurance Template for Small Business: General, Corporate, Farm: General, Corporate, Charitable Organization -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -98,7 +98,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isResidentialTenant"> <!-- Rental Agreement for Residential Tenant-->
+    <ng-container *ngIf="isResidentialTenant && vieworedit !== 'viewOnly'"> <!-- Rental Agreement for Residential Tenant-->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -139,7 +139,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isResidentialTenant"> <!-- Identification for Residential Tenant -->
+    <ng-container *ngIf="isResidentialTenant && vieworedit !== 'viewOnly'"> <!-- Identification for Residential Tenant -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -169,7 +169,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isLandlord)) || (isFarmOwner && isGeneral)"> <!-- T1 Income tax return for Small Business Owner: General, Farm Owner: General -->
+    <ng-container *ngIf="((isSmallBusinessOwner && (isGeneral || isLandlord)) || (isFarmOwner && isGeneral)) && vieworedit !== 'viewOnly'"> <!-- T1 Income tax return for Small Business Owner: General, Farm Owner: General -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -199,7 +199,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)"> <!-- T2 Income tax return for Small Business Owner: Corporate, Farm Owner: Corporate -->
+    <ng-container *ngIf="((isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)) && vieworedit !== 'viewOnly'"> <!-- T2 Income tax return for Small Business Owner: Corporate, Farm Owner: Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -229,7 +229,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)"> <!-- Proof of ownership for Small Business Owner: Corporate -->
+    <ng-container *ngIf="((isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)) && vieworedit !== 'viewOnly'"> <!-- Proof of ownership for Small Business Owner: Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -259,7 +259,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isSmallBusinessOwner && isLandlord"> <!-- T776 for Small Business Owner: Landlord -->
+    <ng-container *ngIf="isSmallBusinessOwner && isLandlord && vieworedit !== 'viewOnly'"> <!-- T776 for Small Business Owner: Landlord -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -289,7 +289,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner"> <!-- Financial Statements for Small Business Owner: General, Corporate -->
+    <ng-container *ngIf="((isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner) && vieworedit !== 'viewOnly'"> <!-- Financial Statements for Small Business Owner: General, Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -319,7 +319,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isCharitableOrganization"> <!-- Directors Listing for Charitable Organization -->
+    <ng-container *ngIf="isCharitableOrganization && vieworedit !== 'viewOnly'"> <!-- Directors Listing for Charitable Organization -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -349,7 +349,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isCharitableOrganization"> <!-- Registration Proof for Charitable Organization -->
+    <ng-container *ngIf="isCharitableOrganization && vieworedit !== 'viewOnly'"> <!-- Registration Proof for Charitable Organization -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -379,7 +379,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isCharitableOrganization"> <!--Structure and Purpose for Charitable Organization -->
+    <ng-container *ngIf="isCharitableOrganization && vieworedit !== 'viewOnly'"> <!--Structure and Purpose for Charitable Organization -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -409,7 +409,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="(isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner || isCharitableOrganization"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
+    <ng-container *ngIf="((isSmallBusinessOwner && (isGeneral || isCorporate)) || isFarmOwner || isCharitableOrganization) && vieworedit !== 'viewOnly'"> <!-- Lease Agreement for Small Business Owner: General, Corporate -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -439,7 +439,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container *ngIf="isSmallBusinessOwner && isLandlord"> <!-- Residential Tenancy Agreement for Small Business Owner: Landlord -->
+    <ng-container *ngIf="isSmallBusinessOwner && isLandlord && vieworedit !== 'viewOnly'"> <!-- Residential Tenancy Agreement for Small Business Owner: Landlord -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -469,7 +469,7 @@
       <br/><br/>
     </ng-container>
 
-    <ng-container> <!-- Supporting Documents -->
+    <ng-container *ngIf="vieworedit !== 'viewOnly'"> <!-- Supporting Documents -->
       <div class="row">
         <div class="col-md-8">
           <app-dfa-attachment
@@ -550,7 +550,7 @@
             mat-icon-button
             aria-label="Remove"
             (click)="confirmDeleteDocumentSummaryRow(element)"
-            *ngIf="dfaApplicationMainDataService.getViewOrEdit() === 'add' || dfaApplicationMainDataService.getViewOrEdit() === 'update'"
+            *ngIf="vieworedit === 'add' || vieworedit === 'update'"
           >
             <img src="/assets/images/delete.svg" height="35" width="35" />
             <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
