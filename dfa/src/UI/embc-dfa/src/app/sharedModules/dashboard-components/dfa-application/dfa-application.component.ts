@@ -90,9 +90,9 @@ export class DfaApplicationComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.lstApplications = res;
     this.lstApplications.forEach(x => {
-      if ((x.status.toLowerCase() === "dfa decision made" || x.status.toLowerCase() == "reviewing application"
-        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn"))  {
-        // && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) {
+      if ((x.status.toLowerCase() === "dfa decision made"
+        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
+        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) {
           x.currentApplication = false;
       } else x.currentApplication = true;
     })
