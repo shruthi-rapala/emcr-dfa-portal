@@ -19,11 +19,21 @@ export class LoginService {
 
   public async login(targetUrl: string = undefined): Promise<boolean> {
     return await this.oauthService.tryLoginImplicitFlow().then(() => {
+
+      //debugger
       if (!this.oauthService.hasValidAccessToken()) {
-        this.oauthService.initImplicitFlow(targetUrl);
-        this.isLoggedIn$.next(false);
-        return Promise.resolve(false);
+        if (targetUrl == '/verified-registration') {
+          this.oauthService.initImplicitFlow(targetUrl);
+          this.isLoggedIn$.next(false);
+          return Promise.resolve(false);
+        }
+        else {
+          this.router.navigateByUrl('/');
+          this.isLoggedIn$.next(false);
+          return Promise.resolve(false);
+        }
       }
+
       this.isLoggedIn$.next(true);
       return Promise.resolve(true);
     });

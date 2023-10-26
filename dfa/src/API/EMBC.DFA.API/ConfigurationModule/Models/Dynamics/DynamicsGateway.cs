@@ -688,7 +688,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1").ToList();
 
-                    var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadline != null && Convert.ToDateTime(m.dfa_90daydeadline) >= DateTime.Now).Count();
+                    var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= DateTime.Now).Count();
                     if (deadline90days > 0)
                     {
                         return deadline90days;
