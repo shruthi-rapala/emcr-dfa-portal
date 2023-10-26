@@ -218,6 +218,7 @@ export default class AddressComponent
       this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.community').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.postalCode').setValidators(null);
     } else if (event.value === 'No') {
       this.primaryAddressForm.get('mailingAddress').reset();
       this.primaryAddressForm.get('isBcMailingAddress').reset();
