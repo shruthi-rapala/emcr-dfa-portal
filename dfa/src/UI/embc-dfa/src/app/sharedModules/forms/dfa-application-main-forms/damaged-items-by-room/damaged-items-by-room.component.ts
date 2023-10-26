@@ -57,6 +57,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   damagePhotosColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate', 'icons'];
   damagePhotosDataSource = new MatTableDataSource();
   isLoading: boolean = false;
+  vieworedit: string = "";
   allowedFileTypes = [
     'application/pdf',
     'image/jpg',
@@ -83,6 +84,12 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.vieworedit = vieworedit;
+    })
   }
 
   ngOnInit(): void {

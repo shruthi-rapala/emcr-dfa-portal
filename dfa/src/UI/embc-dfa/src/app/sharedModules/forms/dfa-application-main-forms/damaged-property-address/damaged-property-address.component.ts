@@ -66,6 +66,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   isCharitableOrganization: boolean = false;
   isFarmOwner: boolean = false;
   accountLegalNameLabel: string = "";
+  isReadOnly: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -82,8 +83,56 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.isReadOnly = (dfaApplicationMainDataService.getViewOrEdit() === 'view'
+      || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
+      || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
+    this.setViewOrEditControls();
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.isReadOnly = (vieworedit === 'view'
+      || vieworedit === 'edit'
+      || vieworedit === 'viewOnly');
+      this.setViewOrEditControls();
+    })
   }
 
+  setViewOrEditControls() {
+    if (!this.damagedPropertyAddressForm) return;
+    if (this.isReadOnly === true) {
+      this.damagedPropertyAddressForm.controls.isPrimaryAndDamagedAddressSame.disable();
+      this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.disable();
+      this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.disable();
+      this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.disable();
+      this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.disable();
+      this.damagedPropertyAddressForm.controls.farmoperation.disable();
+      this.damagedPropertyAddressForm.controls.ownedandoperatedbya.disable();
+      this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.disable();
+      this.damagedPropertyAddressForm.controls.charityProvidesCommunityBenefit.disable();
+      this.damagedPropertyAddressForm.controls.charityExistsAtLeast12Months.disable();
+      this.damagedPropertyAddressForm.controls.charityRegistered.disable();
+      this.damagedPropertyAddressForm.controls.lossesExceed1000.disable();
+      this.damagedPropertyAddressForm.controls.onAFirstNationsReserve.disable();
+      this.damagedPropertyAddressForm.controls.manufacturedHome.disable();
+      this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.disable();
+    } else {
+      this.damagedPropertyAddressForm.controls.isPrimaryAndDamagedAddressSame.enable();
+      this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.enable();
+      this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.enable();
+      this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.enable();
+      this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.enable();
+      this.damagedPropertyAddressForm.controls.farmoperation.enable();
+      this.damagedPropertyAddressForm.controls.ownedandoperatedbya.enable();
+      this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.enable();
+      this.damagedPropertyAddressForm.controls.charityProvidesCommunityBenefit.enable();
+      this.damagedPropertyAddressForm.controls.charityExistsAtLeast12Months.enable();
+      this.damagedPropertyAddressForm.controls.charityRegistered.enable();
+      this.damagedPropertyAddressForm.controls.lossesExceed1000.enable();
+      this.damagedPropertyAddressForm.controls.onAFirstNationsReserve.enable();
+      this.damagedPropertyAddressForm.controls.manufacturedHome.enable();
+      this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.enable();
+    }
+  }
   public get profileAddress(): Address {
     return this._profileAddress;
   }
