@@ -333,6 +333,7 @@ export class DFAApplicationMainComponent
       },
       error => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       });
     }
   }
@@ -460,6 +461,7 @@ export class DFAApplicationMainComponent
     },
     error => {
       console.error(error);
+      document.location.href = 'https://dfa.gov.bc.ca/error.html';
     });
   }
 
@@ -490,6 +492,7 @@ export class DFAApplicationMainComponent
           },
           error => {
             console.error(error);
+            document.location.href = 'https://dfa.gov.bc.ca/error.html';
           });
         }
       });

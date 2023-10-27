@@ -156,10 +156,15 @@ export class DFAApplicationMainDataService {
 
   public setApplicationId(applicationId: string): void {
     this._applicationId = applicationId;
-    this.applicationService.applicationGetApplicationStart({applicationId: applicationId})
-      .subscribe(application => {
-        this.setDfaApplicationStart(application);
-      })
+    this.applicationService.applicationGetApplicationStart({ applicationId: applicationId })
+      .subscribe({
+        next: (application) => {
+          this.setDfaApplicationStart(application);
+        },
+        error: (error) => {
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        }
+      });
   }
 
   public getApplicationId(): string {
