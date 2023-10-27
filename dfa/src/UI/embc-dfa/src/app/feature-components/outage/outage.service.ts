@@ -198,8 +198,7 @@ export class OutageService {
             }
           },
           error: (error) => {
-            this.alertService.clearAlert();
-            this.alertService.setAlert('danger', globalConst.systemError);
+            document.location.href = 'https://dfa.gov.bc.ca/error.html';
           }
         })
     );

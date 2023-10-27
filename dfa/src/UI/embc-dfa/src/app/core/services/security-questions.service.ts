@@ -40,8 +40,7 @@ export class SecurityQuestionsService {
         this.securityQuestionOptions = list;
       },
       error: (error) => {
-        this.alertService.clearAlert();
-        this.alertService.setAlert('danger', globalConst.securityQuesError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }

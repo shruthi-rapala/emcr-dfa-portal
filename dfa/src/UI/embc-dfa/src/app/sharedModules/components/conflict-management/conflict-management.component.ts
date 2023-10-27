@@ -69,8 +69,7 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
         }
       },
       error: (error) => {
-        this.alertService.clearAlert();
-        this.alertService.setAlert('danger', globalConst.genericError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
@@ -155,7 +154,7 @@ export class ConflictManagementComponent implements OnInit, DoCheck {
       error: (error) => {
         this.showLoader = !this.showLoader;
         this.isSubmitted = !this.isSubmitted;
-        this.alertService.setAlert('danger', globalConst.editProfileError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
