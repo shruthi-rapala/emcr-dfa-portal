@@ -50,29 +50,31 @@ export class DfaApplicationComponent implements OnInit {
 
     this.appService.applicationGetDfaApplications().subscribe({
       next: (lstData) => {
-        if (lstData != null) {
-          var lstDataModified = [];
-          lstData.forEach(objApp => {
-            var isFound = false;
-            var jsonVal = JSON.stringify(this.items);
-            objApp.statusBar = JSON.parse(jsonVal);
-            objApp.statusBar.forEach(objStatItem => {
+        //if (lstData != null) {
+        //  var lstDataModified = [];
+        //  lstData.forEach(objApp => {
+        //    var isFound = false;
+        //    var jsonVal = JSON.stringify(this.items);
+        //    objApp.statusBar = JSON.parse(jsonVal);
+        //    objApp.statusBar.forEach(objStatItem => {
 
-              if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
-                objStatItem.currentStep = true;
-                isFound = true
-              } 
+        //      if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+        //        objStatItem.currentStep = true;
+        //        isFound = true
+        //      }
 
-              if (isFound == false) {
-                objStatItem.isCompleted = true;
-              }
+        //      if (isFound == false) {
+        //        objStatItem.isCompleted = true;
+        //      }
 
-            });
+        //    });
 
-            lstDataModified.push(objApp);
-          })
-          this.mapData(lstDataModified);
-        }
+        //    lstDataModified.push(objApp);
+        //  })
+        //  this.mapData(lstDataModified);
+
+        //}
+        this.mapData(lstData);
       },
       error: (error) => {
       }
