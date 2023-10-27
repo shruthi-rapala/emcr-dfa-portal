@@ -127,6 +127,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
@@ -145,6 +146,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
@@ -163,6 +165,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
@@ -187,6 +190,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
     } else {
@@ -214,6 +218,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
@@ -238,6 +243,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error(error);
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     } else {
@@ -265,6 +271,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
@@ -289,6 +296,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error(error);
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     } else {
@@ -316,6 +324,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }

@@ -32,6 +32,7 @@ export class DfaProfileComponent implements OnInit {
         }
       },
       error: (error) => {
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }

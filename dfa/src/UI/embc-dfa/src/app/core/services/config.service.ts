@@ -124,12 +124,7 @@ export class ConfigService {
         this.setEnvironmentBanner(env);
       },
       error: (error) => {
-        if (error.status === 400 || error.status === 404) {
-          this.environmentBanner = null;
-        } else {
-          this.alertService.clearAlert();
-          this.alertService.setAlert('danger', globalConst.systemError);
-        }
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
     return environment;

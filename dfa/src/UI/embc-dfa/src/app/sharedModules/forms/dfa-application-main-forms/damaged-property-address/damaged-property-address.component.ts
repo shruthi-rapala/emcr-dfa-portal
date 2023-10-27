@@ -271,6 +271,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       },
       error: (error) => {
         console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
@@ -321,6 +322,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         },
         error: (error) => {
           console.error(error);
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
   }

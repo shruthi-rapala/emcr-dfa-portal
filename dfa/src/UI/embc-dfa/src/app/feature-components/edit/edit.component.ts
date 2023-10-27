@@ -93,10 +93,7 @@ export class EditComponent implements OnInit, OnDestroy {
             },
             error: (error) => {
               this.showLoader = !this.showLoader;
-              this.alertService.setAlert(
-                'danger',
-                globalConst.editProfileError
-              );
+              document.location.href = 'https://dfa.gov.bc.ca/error.html';
             }
           });
       } else if (this.appSessionService.editParentPage === 'dfa-application-start') {
