@@ -33,16 +33,7 @@
           <span style="font-size: 16px;">{{applItem.statusLastUpdated }}</span>
         </div>-->
       </div>
-      <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;">
-       <!--<kendo-stepper
-          [style.width.px]="500"
-          [steps]="steps"
-          [linear]="false"
-          stepType="full"
-          [style.marginBottom.px]="50"
-          [(currentStep)]="current"
-        >
-      </kendo-stepper>-->
+      <!--<div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;">
         <div class="col-md-3" style="margin-top: 20px;">
           <span><b>Application Status</b></span><br />
         </div>
@@ -50,11 +41,11 @@
           <span class="stepText">{{item.label}}</span>
         </div>
         <br style="clear: both;" />
-        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="i == 0 ? 'nocircle col-md-1' : 'circle col-md-1'">
+        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="i == 0 ? 'nocircle col-md-1' : 'circle col-md-1'">-->
           <!--<span [ngClass]="item.isCompleted == true ? 'material-icons' : 'material-symbols-outlined'" style="color: rgb(0, 128, 55);">
             {{item.isCompleted == true ? 'check_circle' : 'circle'}}
           </span>-->
-          <span *ngIf="item.isCompleted == true" class="material-icons" style="color: rgb(21 178 89);">
+          <!--<span *ngIf="item.isCompleted == true" class="material-icons" style="color: rgb(21 178 89);">
             check_circle
           </span>
           <span *ngIf="item.isCompleted == false && item.currentStep == true" class="material-symbols-outlined" style="color: darkblue">
@@ -62,17 +53,17 @@
           </span>
           <span *ngIf="item.isCompleted == false && item.currentStep == false" class="material-symbols-outlined" style="color: lightgrey">
             circle
-          </span>
+          </span>-->
           <!--<mat-icon>circle</mat-icon>
           <span class="material-symbols-outlined">
           circle
           </span>-->
-        </div>
+        <!--</div>
         <br style="clear: both;" />
         <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.currentStep == true ? 'stepsDesc col-md-2' : 'stepsDesc col-md-1'">
             <span *ngIf="item.currentStep == true" class="youAreHere">You are here</span>
           </div>
-      </div>
+      </div>-->
       <div class="row" style="padding-top: 20px;">
         <div class="col-md-3">
           <span><b>Application Type</b></span><br />
