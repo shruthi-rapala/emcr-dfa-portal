@@ -2,7 +2,13 @@
 name: cd-dfa-portal-support-api
 
 on:
-  workflow_dispatch: {}
+  push:
+    branches:
+      - support-develop
+
+    paths:
+      - "dfa/src/API/**"
+      - ".github/workflows/cd-dfa-portal-project-api.yml"
 
 env:
   IMAGE_NAME: dfa-portal-api
