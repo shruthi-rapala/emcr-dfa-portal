@@ -4,8 +4,7 @@ name: cd-dfa-portal-project-ui
 on:
   push:
     branches:
-      #- master
-      - feature/dfa_cleanup
+      - develop
 
     paths:
       - "dfa/src/UI/**"
