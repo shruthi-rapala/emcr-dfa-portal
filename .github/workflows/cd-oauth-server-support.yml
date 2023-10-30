@@ -3,10 +3,6 @@ name: cd-oauth-server-support
 on:
   workflow_dispatch: {}
 
-    paths:
-      - "oauth-server/src/API/**"
-      - ".github/workflows/cd-oauth-server-support.yml"
-
 env:
   IMAGE_NAME: oauth-server
   WORKING_DIRECTORY: ./oauth-server/src/API
