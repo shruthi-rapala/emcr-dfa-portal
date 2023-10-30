@@ -2,10 +2,6 @@ name: cd-oauth-server-support
 
 on:
   workflow_dispatch: {}
-  push:
-    branches:
-      #- master
-      - feature/dfa_cleanup
 
     paths:
       - "oauth-server/src/API/**"
