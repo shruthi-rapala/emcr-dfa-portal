@@ -42,11 +42,7 @@ export class SupportsService {
           );
         },
         error: (error) => {
-          this.alertService.clearAlert();
-          this.alertService.setAlert(
-            'danger',
-            globalConst.supportStatusListError
-          );
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
   }

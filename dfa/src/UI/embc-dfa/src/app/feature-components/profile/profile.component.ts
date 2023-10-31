@@ -250,7 +250,7 @@ export class ProfileComponent
          error: (error) => {
            this.showLoader = !this.showLoader;
            this.isSubmitted = !this.isSubmitted;
-           this.alertService.setAlert('danger', globalConst.saveProfileError);
+           document.location.href = 'https://dfa.gov.bc.ca/error.html';
          }
        });
   }

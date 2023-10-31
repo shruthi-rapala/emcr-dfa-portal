@@ -260,8 +260,7 @@ export class LocationService {
         this.setRegionalDistricts(communities.map((comm) => comm.districtName));
       },
       error: (error) => {
-        this.alertService.clearAlert();
-        this.alertService.setAlert('danger', globalConst.systemError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
     return this.communityList || [];
@@ -280,8 +279,7 @@ export class LocationService {
         );
       },
       error: (error) => {
-        this.alertService.clearAlert();
-        this.alertService.setAlert('danger', globalConst.systemError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
     return this.stateProvinceList || [];
@@ -299,8 +297,7 @@ export class LocationService {
         );
       },
       error: (error) => {
-        this.alertService.clearAlert();
-        this.alertService.setAlert('danger', globalConst.systemError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
     return this.countriesList || [];
@@ -316,11 +313,7 @@ export class LocationService {
           );
         },
         error: (error) => {
-          this.alertService.clearAlert();
-          this.alertService.setAlert(
-            'danger',
-            globalConst.supportCategoryListError
-          );
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
   }
@@ -335,11 +328,7 @@ export class LocationService {
           );
         },
         error: (error) => {
-          this.alertService.clearAlert();
-          this.alertService.setAlert(
-            'danger',
-            globalConst.supportCategoryListError
-          );
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
   }
