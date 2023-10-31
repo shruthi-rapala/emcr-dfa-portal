@@ -1,9 +1,15 @@
 <div class="content-container"  style="padding-bottom: 100px; padding-top: 50px;" *ngIf="openDisasterEvents.length > 0">
+  <div style="font-size: 15px; padding-bottom: 15px;">
+    The following are the current eligible events open for DFA applications. If you've recently experienced a disaster and it's not
+    <br />on the eligible events list, contact your Indigenous or local government first.'
+    <br />
+    <br />You must submit an application within 90 days of the disaster event.
+  </div>
   <div class="row" *ngFor="let eventItem of openDisasterEvents">
     <mat-card class="mat-elevation-z4 content" style="padding-bottom: 20px; padding-top: 20px;">
       <div class="row">
         <div class="col-4">
-          <span><b>Event Name:</b>&nbsp;&nbsp;{{eventItem.id == null ? "To Be Assigned" : eventItem.id }}</span>
+          <span><b>Event Name:</b>&nbsp;&nbsp;{{eventItem.eventName == null ? "To Be Assigned" : eventItem.eventName }}</span>
         </div>
         <div class="col-4">
           <span><b>Date of Event:</b>&nbsp;&nbsp;{{eventItem.startDate ? (eventItem.startDate | date: "dd-MMM-YYYY") : "TBD"}} to {{eventItem.endDate ? (eventItem.endDate | date: "dd-MMM-yyyy") : "TBD"}}</span>
