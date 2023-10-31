@@ -680,7 +680,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id", "statuscode", "dfa_90daydeadline"
+                        "dfa_eventid", "dfa_id", "statuscode", "dfa_90daydeadlinenew"
                     }
                 });
 
@@ -712,13 +712,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id", "statuscode", "dfa_startdate", "dfa_enddate", "dfa_90daydeadline"
+                        "dfa_eventid", "dfa_id", "statuscode", "dfa_startdate", "dfa_enddate", "dfa_90daydeadlinenew", "dfa_eventname"
                     }
                 });
 
                 var nowDate = DateTime.Now;
                 // open events are those active events where the 90 day deadline is now or in the future
-                return lstEvents.List.Where(m => m.dfa_90daydeadline != null && Convert.ToDateTime(m.dfa_90daydeadline) >= nowDate && m.statuscode == "1");
+                return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate && m.statuscode == "1");
             }
             catch (System.Exception ex)
             {

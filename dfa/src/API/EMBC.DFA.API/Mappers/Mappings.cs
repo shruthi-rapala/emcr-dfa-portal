@@ -415,10 +415,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
             CreateMap<dfa_event, DisasterEvent>()
-                .ForMember(d => d.ninetyDayDeadline, opts => opts.MapFrom(s => s.dfa_90daydeadline))
+                .ForMember(d => d.ninetyDayDeadline, opts => opts.MapFrom(s => s.dfa_90daydeadlinenew))
                 .ForMember(d => d.eventId, opts => opts.MapFrom(s => s.dfa_eventid))
                 .ForMember(d => d.startDate, opts => opts.MapFrom(s => s.dfa_startdate))
                 .ForMember(d => d.endDate, opts => opts.MapFrom(s => s.dfa_enddate))
+                .ForMember(d => d.eventName, opts => opts.MapFrom(s => s.dfa_eventname))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_id));
 
             CreateMap<dfa_effectedregioncommunities, EffectedRegionCommunity>()

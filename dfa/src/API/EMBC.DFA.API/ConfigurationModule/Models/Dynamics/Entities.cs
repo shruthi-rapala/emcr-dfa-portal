@@ -502,6 +502,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_enddate { get; set; }
         public string statuscode { get; set; }
         public string dfa_90daydeadlinenew { get; set; }
+        public string dfa_eventname { get; set; }
     }
 
     public class dfa_incident
