@@ -26,6 +26,18 @@ public class CommonUtils {
             driver.navigate().to("https://dfa-portal-test.apps.silver.devops.gov.bc.ca/");
             driver.navigate().refresh();
 
+
+        } else if (Config.ENVIROMENT.equals(Constants.DEV_Support)) {
+            driver.get("https://portal.dev.dfa.gov.bc.ca");
+            driver.navigate().to("https://portal.dev.dfa.gov.bc.ca");
+            driver.navigate().refresh();
+
+        }
+        else if (Config.ENVIROMENT.equals(Constants.TST_Support)) {
+            driver.get("https://portal.test.dfa.gov.bc.ca");
+            driver.navigate().to("https://portal.test.dfa.gov.bc.ca");
+            driver.navigate().refresh();
+
         }
     }
 
