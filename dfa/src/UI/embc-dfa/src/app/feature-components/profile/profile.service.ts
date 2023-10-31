@@ -25,8 +25,7 @@ export class ProfileService {
         this.profileMapping.mapLoginProfile(loginProfile);
       },
       error: (error) => {
-        this.alertService.clearAlert();
-        this.alertService.setAlert('danger', globalConst.getProfileError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
@@ -37,8 +36,7 @@ export class ProfileService {
         this.profileMapping.mapProfile(profile);
       },
       error: (error) => {
-        this.alertService.clearAlert();
-        this.alertService.setAlert('danger', globalConst.getProfileError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }

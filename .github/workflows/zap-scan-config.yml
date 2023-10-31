@@ -2,8 +2,7 @@ name: ZAP Scan
 on:
   push:
     branches:
-      #- master
-      - feature/dfa_cleanup
+      - develop
 
     paths:
       - ".github/workflows/zap-scan-config.yml"
@@ -19,5 +18,5 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.6.1
         with:
-          target: 'https://era-dfa-dev.apps.silver.devops.gov.bc.ca/'
+          target: 'https://portal.dev.dfa.gov.bc.ca'
           token: ${{ secrets.GITHUB_TOKEN }}

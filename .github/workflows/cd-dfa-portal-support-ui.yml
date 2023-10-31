@@ -4,12 +4,11 @@ name: cd-dfa-portal-support-ui
 on:
   push:
     branches:
-      #- master
-      - feature/dfa_cleanup
+      - support-develop
 
     paths:
       - "dfa/src/UI/**"
-      - ".github/workflows/cd-dfa-portal-support-ui.yml"
+      - ".github/workflows/cd-dfa-portal-project-ui.yml"
 
 env:
   IMAGE_NAME: dfa-portal-ui

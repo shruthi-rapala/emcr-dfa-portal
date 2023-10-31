@@ -53,12 +53,11 @@ export class VerifiedRegistrationComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.alertService.clearAlert();
-          this.alertService.setAlert('danger', globalConst.profileExistError);
+           document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     }
-
+    
     this.timeOutService.init(
       this.timeOutService.timeOutInfo?.sessionTimeoutInMinutes ? this.timeOutService.timeOutInfo?.sessionTimeoutInMinutes : 10,
       this.timeOutService.timeOutInfo?.warningMessageDuration ? this.timeOutService.timeOutInfo?.warningMessageDuration : 6
@@ -96,8 +95,7 @@ export class VerifiedRegistrationComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.alertService.clearAlert();
-        this.alertService.setAlert('danger', globalConst.systemError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }

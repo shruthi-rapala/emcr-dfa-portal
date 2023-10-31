@@ -328,6 +328,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error(error);
           this.isLoading = false;
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     } else {
@@ -356,6 +357,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error(error);
           this.isLoading = false;
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     } else {
@@ -372,6 +374,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error(error);
           this.isLoading = false;
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     }
@@ -468,6 +471,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error(error);
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     } else if (element.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]) {
@@ -493,6 +497,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error(error);
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     }

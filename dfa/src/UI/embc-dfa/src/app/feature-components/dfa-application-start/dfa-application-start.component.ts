@@ -317,7 +317,7 @@ export class DFAApplicationStartComponent
       error: (error) => {
         this.showLoader = !this.showLoader;
         this.isSubmitted = !this.isSubmitted;
-        this.alertService.setAlert('danger', globalConst.saveApplicationError);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
      });
   }
