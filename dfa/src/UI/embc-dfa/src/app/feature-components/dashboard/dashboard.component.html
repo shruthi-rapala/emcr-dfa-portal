@@ -22,15 +22,27 @@
 If you're an Indigenous community or local government your process is different: <a target="_blank" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/local-emergency-programs/financial/communities-dfa">DFA for community recovery.</a>
         </div>
       <div class="col-md-6"></div>
-      <!--<div class="col-md-6">
-         <button
+      <div class="col-md-6">
+        
+        <button *ngIf="hasActiveEvents == true"
               class="button-p notice-button left-align"
               mat-button
               (click)="navigateToDFAApplicationStart()"
             >
               Create New Application
-          </button>
-      </div>-->
+        </button>
+
+        <div *ngIf="hasActiveEvents == false">
+          <br />
+          <b>
+            There are currently no active events, please visit our website
+            <a target="_blank" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">Financial assistance in a disaster</a>
+            for more information
+          </b>
+       </div>
+         
+        
+      </div>
       <div class="col-md-6"></div>
     </div>
     <div class="container" style="padding-bottom: 100px; padding-top: 30px;">
