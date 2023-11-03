@@ -36,6 +36,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DirectivesModule } from './directives/directives.module';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAApplicationAlertDialogComponent } from './components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
+import { DFADeleteConfirmDialogComponent } from './components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { AddressChangeComponent } from './components/dialog-components/address-change-dialog/address-change-dialog.component';
 
 @NgModule({
@@ -78,6 +79,7 @@ import { AddressChangeComponent } from './components/dialog-components/address-c
     EnvironmentBannerComponent,
     TimeOutDialogComponent,
     DFAApplicationAlertDialogComponent,
+    DFADeleteConfirmDialogComponent,
     AddressChangeComponent
   ],
   exports: [
@@ -100,6 +102,7 @@ import { AddressChangeComponent } from './components/dialog-components/address-c
     MatToolbarModule,
     MatButtonModule,
     DFAApplicationAlertDialogComponent,
+    DFADeleteConfirmDialogComponent,
     AddressChangeComponent
   ]
 })

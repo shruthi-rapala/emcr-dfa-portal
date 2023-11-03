@@ -23,6 +23,8 @@ import { ApplicantOption, SecondaryApplicantTypeOption } from 'src/app/core/api/
 import { MatSelectModule } from '@angular/material/select';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { FullTimeOccupantService, OtherContactService, SecondaryApplicantService } from 'src/app/core/api/services';
+import { DFADeleteConfirmDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-occupants',
@@ -80,7 +82,8 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private secondaryApplicantsService: SecondaryApplicantService,
     private otherContactsService: OtherContactService,
-    private fullTimeOccupantsService: FullTimeOccupantService
+    private fullTimeOccupantsService: FullTimeOccupantService,
+    public dialog: MatDialog
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -397,6 +400,28 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.secondaryApplicantsForm
       .get('secondaryApplicant.email')
       .updateValueAndValidity();
+  }
+
+  confirmDeleteOtherContactRow(index: number): void {
+    if (this.otherContactsData.length == 1) {
+      this.dialog
+        .open(DFADeleteConfirmDialogComponent, {
+          data: {
+            content: "Other contact cannot be left empty, please try adding the new record and try deleting the old one!"
+          },
+          width: '500px',
+          disableClose: true
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          //if (result === 'confirm') {
+          //  this.deleteOtherContactRow(index);
+          //}
+        });
+    }
+    else {
+      this.deleteOtherContactRow(index);
+    }
   }
 
   /**
