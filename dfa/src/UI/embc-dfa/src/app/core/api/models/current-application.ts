@@ -6,6 +6,7 @@ export interface CurrentApplication {
   applicationType?: string;
   caseNumber?: string;
   damagedAddress?: string;
+  dateFileClosed?: string;
   dateOfDamage?: string;
   eventId?: string;
   primaryApplicantSignedDate?: string;

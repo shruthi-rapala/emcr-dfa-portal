@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
@@ -28,6 +28,7 @@ export class DFAApplicationMainDataService {
   private _vieworedit: string;
   private _editstep: string;
   private _requiredDocuments = [];
+  public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(
     private cacheService: CacheService,
@@ -36,7 +37,6 @@ export class DFAApplicationMainDataService {
     private applicationService: ApplicationService
   ) {
   }
-
   public get requiredDocuments(): Array<string> {
     return this._requiredDocuments;
   }
@@ -173,6 +173,7 @@ export class DFAApplicationMainDataService {
 
   public setViewOrEdit(vieworedit: string): void {
     this._vieworedit = vieworedit;
+    this.changeViewOrEdit.emit(vieworedit);
   }
   public getViewOrEdit(): string {
     return this._vieworedit;

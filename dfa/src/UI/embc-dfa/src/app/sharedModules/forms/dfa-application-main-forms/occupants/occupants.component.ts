@@ -3,6 +3,7 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
   AbstractControl,
+  Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -18,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
-import { SecondaryApplicantTypeOption } from 'src/app/core/api/models';
+import { ApplicantOption, SecondaryApplicantTypeOption } from 'src/app/core/api/models';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { FullTimeOccupantService, OtherContactService, SecondaryApplicantService } from 'src/app/core/api/services';
@@ -50,6 +51,13 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email', 'deleteIcon'];
   secondaryApplicantsDataSource = new BehaviorSubject([]);
   secondaryApplicantsData = [];
+  vieworedit: string = "";
+  public ApplicantOptions = ApplicantOption;
+  isHomeowner: boolean = false;
+  isResidentialTenant: boolean = false;
+  isSmallBusinessOwner: boolean = false;
+  isCharitableOrganization: boolean = false;
+  isFarmOwner: boolean = false;
   readonly phoneMask = [
     /\d/,
     /\d/,
@@ -76,6 +84,12 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.vieworedit = vieworedit;
+    })
   }
 
   ngOnInit(): void {
@@ -83,6 +97,17 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       .getFullTimeOccupantsForm()
       .subscribe((fullTimeOccupants) => {
         this.fullTimeOccupantsForm = fullTimeOccupants;
+        this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+          if (application) {
+            this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+            this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
+            this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
+            this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
+            this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
+            if (this.isHomeowner || this.isResidentialTenant) this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators([Validators.required]);
+            else this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators(null);
+          }
+          });
       });
 
     this.fullTimeOccupantsForm

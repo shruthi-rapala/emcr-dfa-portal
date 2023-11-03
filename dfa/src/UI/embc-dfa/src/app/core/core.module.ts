@@ -26,6 +26,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { DfaAttachmentComponent } from './components/dfa-attachment/dfa-attachment.component';
 import { DFAEligibilityDialogComponent } from './components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import { DFAConfirmSubmitDialogComponent } from './components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
+import { DFAConfirmPrescreeningDialogComponent } from './components/dialog-components/dfa-confirm-prescreening-dialog/dfa-confirm-prescreening-dialog.component';
 import { FileUploadWarningDialogComponent } from './components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 import { DFAFileDeleteDialogComponent } from './components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 import { DFACleanuplogDeleteDialogComponent } from './components/dialog-components/dfa-cleanuplog-delete-dialog/dfa-cleanuplog-delete.component';
@@ -35,6 +36,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DirectivesModule } from './directives/directives.module';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAApplicationAlertDialogComponent } from './components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
+import { AddressChangeComponent } from './components/dialog-components/address-change-dialog/address-change-dialog.component';
 
 @NgModule({
   imports: [
@@ -68,13 +70,15 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     InformationDialogComponent,
     DFAEligibilityDialogComponent,
     DFAConfirmSubmitDialogComponent,
+    DFAConfirmPrescreeningDialogComponent,
     FileUploadWarningDialogComponent,
     DFAFileDeleteDialogComponent,
     DFACleanuplogDeleteDialogComponent,
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
     TimeOutDialogComponent,
-    DFAApplicationAlertDialogComponent
+    DFAApplicationAlertDialogComponent,
+    AddressChangeComponent
   ],
   exports: [
     AppLoaderComponent,
@@ -88,13 +92,15 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     EnvironmentBannerComponent,
     DFAEligibilityDialogComponent,
     DFAConfirmSubmitDialogComponent,
+    DFAConfirmPrescreeningDialogComponent,
     FileUploadWarningDialogComponent,
     DFAFileDeleteDialogComponent,
     DFACleanuplogDeleteDialogComponent,
     TimeOutDialogComponent,
     MatToolbarModule,
     MatButtonModule,
-    DFAApplicationAlertDialogComponent
+    DFAApplicationAlertDialogComponent,
+    AddressChangeComponent
   ]
 })
 export class CoreModule {}

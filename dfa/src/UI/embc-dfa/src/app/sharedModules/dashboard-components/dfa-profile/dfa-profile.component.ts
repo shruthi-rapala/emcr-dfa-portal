@@ -24,21 +24,5 @@ export class DfaProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
-
-    this.appService.applicationGetDfaApplications().subscribe({
-      next: (lstData) => {
-        if (lstData != null) {
-          this.mapData(lstData);
-        }
-      },
-      error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
-      }
-    });
-  }
-
-  mapData(lstApp: Object): void {
-    var res = JSON.parse(JSON.stringify(lstApp));
-    this.appSessionService.appNumber = res.length.toString() != null ? res.length.toString() : "0";
   }
 }

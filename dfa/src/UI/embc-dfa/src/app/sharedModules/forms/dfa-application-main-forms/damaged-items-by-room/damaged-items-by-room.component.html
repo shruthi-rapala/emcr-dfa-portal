@@ -47,6 +47,7 @@
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                       class="edit-image"
+                      *ngIf="vieworedit !== 'viewOnly'"
                       mat-icon-button
                       aria-label="Edit"
                       (click)="editDamagedRoomRow(element, index)"
@@ -60,6 +61,7 @@
                     </button>&nbsp;
                     <button
                       class="delete-image"
+                      *ngIf="vieworedit != 'viewOnly'"
                       mat-icon-button
                       aria-label="Remove"
                       (click)="deleteDamagedRoomRow(index)"
@@ -84,8 +86,12 @@
                 <br /><br/>
               </div>
 
+              <div  *ngIf="damagedRoomsDataSource.getValue().length == 0 && vieworedit == 'viewOnly'">
+                <br />No damaged rooms were added.<br/>
+              </div>
+
               <button
-                *ngIf="!showDamagedRoomForm"
+                *ngIf="!showDamagedRoomForm && vieworedit !== 'viewOnly'"
                 class="family-button"
                 mat-button
                 type="button"
@@ -209,8 +215,8 @@
         <div class="col-md-8">
           <app-dfa-attachment
             title="Damage photo"
+            *ngIf="vieworedit !== 'viewOnly'"
             description="Attach a photo/scanned copy of damaged items"
-            requiredFile="no"
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="DamagePhoto"
@@ -276,7 +282,7 @@
                   mat-icon-button
                   aria-label="Remove"
                   (click)="confirmDeleteDamagePhotoRow(element)"
-                  *ngIf="dfaApplicationMainDataService.getViewOrEdit() !== 'view' && dfaApplicationMainDataService.getViewOrEdit() !== 'edit'"
+                  *ngIf="vieworedit !== 'viewOnly'"
                 >
                   <img src="/assets/images/delete.svg" height="35" width="35" />
                   <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
@@ -296,6 +302,9 @@
 
           <div  *ngIf="damagePhotosDataSource.data.length > 0">
             <br /><br/>
+          </div>
+          <div  *ngIf="damagePhotosDataSource.data.length == 0 && vieworedit === 'viewOnly'">
+            <br />No damage photos were added.<br/>
           </div>
         </div>
       </div>

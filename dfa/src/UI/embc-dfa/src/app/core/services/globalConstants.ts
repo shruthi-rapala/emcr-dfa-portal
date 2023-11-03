@@ -42,9 +42,9 @@ export const gender = [
 export const yesFullyInsuredBody: DialogContent = {
   text: 'Insurable damages in the private sector aren’t eligible.' +
   '<br/><br/> To determine if your damages are insurable or uninsurable, contact your insurance provider as a first step. They will provide you with information about your insurance coverage.<br/><br/>' +
-  'Program staff are available to discuss how your insurance relates to your eligibility and application. Please call <span style="white-space: nowrap; font-weight: bold;">1-888-257-4777.</span><br/><br/>' +
+  'For more information about DFA eligibility, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program webpage</a>.<br/><br/>' +
   '<p><b>Do you have insurance that will cover all your losses?</b></p>',
-  cancelButton: 'Yes, Cancel my Application',
+  cancelButton: 'Yes, Don\'t Continue',
   confirmButton: 'No, Go Back & Edit'
 }
 
@@ -54,6 +54,13 @@ export const confirmSubmitApplicationBody: DialogContent = {
   'After submitting, you may continue to add or Update Other Contacts, add to the Clean Up Log, add items to the Damaged Items by Room list, and add additional documents. You can\'t delete any documents that you upload.',
   confirmButton: 'Yes, I want to submit my application.',
   cancelButton: 'No, I don\'t want to submit my application yet'
+}
+
+export const confirmPrescreeningBody: DialogContent = {
+  text: 'You may be eligible for DFA and may submit an application.' +
+  '<br/><br/>Please note that during the application process, information that you provide may make you ineligible for DFA. ',
+  confirmButton: 'Yes, I want to apply now',
+  cancelButton: 'No, I am not ready to apply now'
 }
 
 export const bcscMissingEmail: DialogContent = {
@@ -66,6 +73,79 @@ export const bcscMissingEmail: DialogContent = {
 
 export const dontOccupyDamagedPropertyBody: DialogContent = {
   text: '<p>You must have occupied the property as your principal residence at the time of the event to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Did you occupy the damaged property as your principal residence at the time of the event? If you are a landlord, you must apply and qualify as a small business owner.</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const damageNotCausedByDisasterBody: DialogContent = {
+  text: '<p>The damages and losses must have been caused by the disaster event to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Are the damages and losses to your property caused by the disaster event?</b></p>',
+  cancelButton: 'No, Don\'t Continue',
+  confirmButton: 'Yes, Continue'
+}
+
+export const businessNotManagedByAllOwnersOnDayToDayBasis: DialogContent = {
+  text: '<p>To be eligible for DFA, your business must be managed by all owners on a day to day basis.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Is your business managed by all owners on a day to day basis?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const addressAndDateNotWithinOpenEvent: DialogContent = {
+  text: '<p>The damaged property address wasn\'t in the area of any DFA eligible events on the date the damaged property address was first impacted.<br/><br/>' +
+  'To view the current list of DFA eligible events and their areas and start/end dates, go to the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA Program Webpage</a>.</p><p>You may call us to discuss further at 1-888-257-4777.</p>' +
+  '<p><b>Would you like to correct the damaged property address or the date your damaged property was first impacted?</b></p>',
+  cancelButton: 'No, Don\'t Continue',
+  confirmButton: 'Yes, Continue'
+}
+
+export const lossesDontExceed1000: DialogContent = {
+  text: '<p>DFA is unable to compensate for damages that are under $1,000. Per the <i>Compensation and Disaster Financial Assistance Regulation</i> the following applies:<br/>' +
+  '2.2 Limits on assistance for private sector claims:<br/>' +
+  'a. The amount of financial assistance provided for each accepted claim is 80 percent of the amount of the total eligible damage that exceeds $1,000 to a maximum claim of $400,000.<br/>' +
+  'Please review the <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance#step3" target="_blank">DFA guidelines</a>' +
+  ' for eligible and non-eligible items, as well as the appropriate schedule for your application type to ensure you have over $1,000 in eligible damages. You may call us to discuss further at ' +
+  '1-888-257-4777.</p><p><b>Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?</b></p>',
+  cancelButton: 'No, Don\'t Continue',
+  confirmButton: 'Yes, Continue'
+}
+
+export const farmoperation: DialogContent = {
+  text: '<p>To be eligible for DFA, your farm operation must be identified in the current assessment of the British Columbia Assessment Authority as a developing or established agricultural operation.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Is the farm operation identified in the current assessment of the British Columbia Assessment Authority as a developing or established agricultural operation?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const ownedandoperatedbya: DialogContent = {
+  text: '<p>To be eligible for DFA, your farm operation must be owned and operated by a person(s) who full-time employment is as a farmer?.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Is the farm operation owned and operated by a person(s) who full-time employment is as a farmer?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const farmoperationderivesthatpersonsmajorincom: DialogContent = {
+  text: '<p>To be eligible for DFA, your farm operation must be the means by which the owner(s) derives the majority of that person\’s income.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b> Is the farm operation the means by which the owner(s) derives the majority of that person\’s income?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const charitynobenefit: DialogContent = {
+  text: '<p>Your charitable organization must provide a benefit or service to the community to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Does your charitable organization provide a benefit or service to the community?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const charityno12months: DialogContent = {
+  text: '<p>Your charitable organization must have been in existence for at least 12 months to be eligible for DFA..</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Has your charitable organization been in existence for at least 12 months?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const wrongGrossRevenues: DialogContent = {
+  text: '<p>To be eligible for DFA, the gross revenue of your business must be more than $10,000 but less than $2 million in the year before the disaster.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Are the gross revenues of the business more than $10,000 but less than $2 million in the year before the disaster?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
+export const dontEmployLessThan50EmployeesAtAnyOneTime: DialogContent = {
+  text: '<p>To be eligible for DFA, your business must employ less than 50 employees at any one time.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Does the business employ less than 50 employees at any one time?</b></p>',
   cancelButton: 'No, Save & Close my Application',
   confirmButton: 'Yes, Continue my Application'
 }
@@ -142,6 +222,11 @@ export const uneditableApplicationTypeAlert: DialogContent = {
     '<br/><br/>Are you sure you want to continue?<br/><br/>',
   cancelButton: 'No, I want to change the application<br/>\r\ntype or insurance selection',
   confirmButton: 'Yes, I have selected the correct\r\napplication type and insurance selection'
+}
+
+export const notifyBCSCAddressChangeBody: DialogContent = {
+  text: 'A difference in the primary address from BC Service Card has been detected. Please make sure the Damaged property address is correct before proceeding..!',
+  cancelButton: 'Close'
 }
 
 

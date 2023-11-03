@@ -24,15 +24,15 @@ const routes: Routes = [{
         import(
           'src/app/sharedModules/dashboard-components/dfa-application/dfa-application.module'
         ).then((m) => m.DFADashApplicationModule),
-      data: { flow: 'dfa-dashboard' }
+      data: { flow: 'dfa-dashboard', apptype: 'current' }
     },
     {
       path: 'past',
       loadChildren: () =>
         import(
-          'src/app/sharedModules/dashboard-components/dfa-events/dfa-events.module'
-        ).then((m) => m.DFAEventsModule),
-      data: { flow: 'dfa-dashboard' }
+          'src/app/sharedModules/dashboard-components/dfa-application/dfa-application.module'
+        ).then((m) => m.DFADashApplicationModule),
+      data: { flow: 'dfa-dashboard', apptype: 'past' }
     },
     {
       path: 'profile',

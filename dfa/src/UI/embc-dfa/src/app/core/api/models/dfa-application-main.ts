@@ -10,6 +10,7 @@ export interface DfaApplicationMain {
   damagedPropertyAddress?: null | DamagedPropertyAddress;
   deleteFlag?: boolean;
   id?: string;
+  notifyUser?: boolean;
   propertyDamage?: null | PropertyDamage;
   signAndSubmit?: null | SignAndSubmit;
   supportingDocuments?: null | SupportingDocuments;

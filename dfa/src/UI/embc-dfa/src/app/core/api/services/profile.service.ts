@@ -139,6 +139,57 @@ export class ProfileService extends BaseService {
   }
 
   /**
+   * Path part for operation profileGetProfileWithUpdatedBcsc
+   */
+  static readonly ProfileGetProfileWithUpdatedBcscPath = '/api/profiles/currentWithBCSCUpdates';
+
+  /**
+   * Get the current logged in user's profile, with first name, last name, primary address and email from BCSC.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `profileGetProfileWithUpdatedBcsc()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  profileGetProfileWithUpdatedBcsc$Response(params?: {
+  }): Observable<StrictHttpResponse<Profile>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ProfileService.ProfileGetProfileWithUpdatedBcscPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Profile>;
+      })
+    );
+  }
+
+  /**
+   * Get the current logged in user's profile, with first name, last name, primary address and email from BCSC.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `profileGetProfileWithUpdatedBcsc$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  profileGetProfileWithUpdatedBcsc(params?: {
+  }): Observable<Profile> {
+
+    return this.profileGetProfileWithUpdatedBcsc$Response(params).pipe(
+      map((r: StrictHttpResponse<Profile>) => r.body as Profile)
+    );
+  }
+
+  /**
    * Path part for operation profileGetDoesUserExists
    */
   static readonly ProfileGetDoesUserExistsPath = '/api/profiles/current/exists';
@@ -237,6 +288,57 @@ export class ProfileService extends BaseService {
 
     return this.profileGetProfileConflicts$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ProfileDataConflict>>) => r.body as Array<ProfileDataConflict>)
+    );
+  }
+
+  /**
+   * Path part for operation profileMarkAddressChangeMessageDisplay
+   */
+  static readonly ProfileMarkAddressChangeMessageDisplayPath = '/api/profiles/addressChangeMsg';
+
+  /**
+   * Marking the BCSC address change message as displayed.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `profileMarkAddressChangeMessageDisplay()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  profileMarkAddressChangeMessageDisplay$Response(params?: {
+  }): Observable<StrictHttpResponse<boolean>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ProfileService.ProfileMarkAddressChangeMessageDisplayPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: String((r as HttpResponse<any>).body) === 'true' }) as StrictHttpResponse<boolean>;
+      })
+    );
+  }
+
+  /**
+   * Marking the BCSC address change message as displayed.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `profileMarkAddressChangeMessageDisplay$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  profileMarkAddressChangeMessageDisplay(params?: {
+  }): Observable<boolean> {
+
+    return this.profileMarkAddressChangeMessageDisplay$Response(params).pipe(
+      map((r: StrictHttpResponse<boolean>) => r.body as boolean)
     );
   }
 
