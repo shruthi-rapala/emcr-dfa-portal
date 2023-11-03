@@ -35,6 +35,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DirectivesModule } from './directives/directives.module';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAApplicationAlertDialogComponent } from './components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
+import { DFADeleteConfirmDialogComponent } from './components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 
 @NgModule({
   imports: [
@@ -74,7 +75,8 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     BcscInviteDialogComponent,
     EnvironmentBannerComponent,
     TimeOutDialogComponent,
-    DFAApplicationAlertDialogComponent
+    DFAApplicationAlertDialogComponent,
+    DFADeleteConfirmDialogComponent
   ],
   exports: [
     AppLoaderComponent,
@@ -94,7 +96,8 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
     TimeOutDialogComponent,
     MatToolbarModule,
     MatButtonModule,
-    DFAApplicationAlertDialogComponent
+    DFAApplicationAlertDialogComponent,
+    DFADeleteConfirmDialogComponent
   ]
 })
 export class CoreModule {}
