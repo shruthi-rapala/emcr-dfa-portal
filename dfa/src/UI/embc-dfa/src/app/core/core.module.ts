@@ -79,7 +79,7 @@ import { AddressChangeComponent } from './components/dialog-components/address-c
     EnvironmentBannerComponent,
     TimeOutDialogComponent,
     DFAApplicationAlertDialogComponent,
-    DFADeleteConfirmDialogComponent
+    DFADeleteConfirmDialogComponent,
     AddressChangeComponent
   ],
   exports: [
@@ -102,7 +102,7 @@ import { AddressChangeComponent } from './components/dialog-components/address-c
     MatToolbarModule,
     MatButtonModule,
     DFAApplicationAlertDialogComponent,
-    DFADeleteConfirmDialogComponent
+    DFADeleteConfirmDialogComponent,
     AddressChangeComponent
   ]
 })
