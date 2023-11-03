@@ -9,7 +9,7 @@ import { tap } from 'rxjs/internal/operators/tap';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { Observable, Subject } from 'rxjs';
-import { EligibilityService } from 'src/app/core/api/services';
+import { EligibilityService } from '../../core/api/services/eligibility.service';
 import { DisasterEvent } from 'src/app/core/api/models';
 //import {
 //  DfaAppapplication
@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit {
   isLoading = false;
   bgColor = 'transparent';
   intervalId;
+  hasActiveEvents = false;
+
   sixtyOneDaysAgo: number = 0;
   tabs: DashTabModel[];
   openDisasterEvents: DisasterEvent[];
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit {
     private profileDataService: ProfileDataService,
     private appSessionService: AppSessionService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private eventService: EligibilityService,
   ) {
     this.sixtyOneDaysAgo = new Date().getDate()-61;
   }
@@ -49,6 +52,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
     this.profService.getProfile();
+    this.eventService.eligibilityGetEvents().subscribe({
+      next: (count: number) => {
+        this.hasActiveEvents == count < 0;
+      },
+      error: (error) => {
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      }
+    });
+    //alert(this.appSessionService.appNumber);
+    //this.currentApplicationsCount = this.appSessionService.appNumber;
     this.appSessionService.currentApplicationsCount.subscribe((n: number) => {
       this.currentApplicationsCount = n;
       this.tabs[0].count = n ? n.toString() : "0";
