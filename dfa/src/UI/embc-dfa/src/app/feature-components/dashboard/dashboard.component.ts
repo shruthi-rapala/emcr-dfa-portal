@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
     this.profService.getProfile();
     this.eventService.eligibilityGetEvents().subscribe({
       next: (count: number) => {
-        this.hasActiveEvents == count < 0;
+        this.hasActiveEvents = count > 0;
       },
       error: (error) => {
         document.location.href = 'https://dfa.gov.bc.ca/error.html';
