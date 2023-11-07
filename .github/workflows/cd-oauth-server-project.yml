@@ -1,7 +1,6 @@
 name: cd-oauth-server-project
 
 on:
-  workflow_dispatch: {}
   push:
     branches:
       - develop
@@ -9,6 +8,7 @@ on:
     paths:
       - "oauth-server/src/API/**"
       - ".github/workflows/cd-oauth-server-project.yml"
+  workflow_dispatch:
 
 env:
   IMAGE_NAME: oauth-server
