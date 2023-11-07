@@ -57,9 +57,9 @@ public class WebDriverManager {
 
         if (Config.SELECTED_DRIVER.equals(Constants.CHROME_DRIVER)) {
 
-            File file = new File("bin/chromedriver.exe");
+           File file = new File("bin/chromedriver.exe");
 
-            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+           System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
 
             DesiredCapabilities capabilities = new DesiredCapabilities();
 

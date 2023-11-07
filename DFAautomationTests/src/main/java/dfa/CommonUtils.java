@@ -17,13 +17,31 @@ public class CommonUtils {
         WebElement element = WebDriverManager.getElement();
 
         if (Config.ENVIROMENT.equals(Constants.DEV)) {
-            driver.get("http://localhost:5200/");
-            driver.navigate().to("http://localhost:5200/");
+            driver.get("https://dfa-portal-dev.apps.silver.devops.gov.bc.ca/");
+            driver.navigate().to("https://dfa-portal-dev.apps.silver.devops.gov.bc.ca/");
             driver.navigate().refresh();
 
         } else if (Config.ENVIROMENT.equals(Constants.TST)) {
-            driver.get("");
-            driver.navigate().to("");
+            driver.get("https://dfa-portal-test.apps.silver.devops.gov.bc.ca/");
+            driver.navigate().to("https://dfa-portal-test.apps.silver.devops.gov.bc.ca/");
+            driver.navigate().refresh();
+
+
+        } else if (Config.ENVIROMENT.equals(Constants.DEV_Support)) {
+            driver.get("https://portal.dev.dfa.gov.bc.ca");
+            driver.navigate().to("https://portal.dev.dfa.gov.bc.ca");
+            driver.navigate().refresh();
+
+        }
+        else if (Config.ENVIROMENT.equals(Constants.TST_Support)) {
+            driver.get("https://portal.test.dfa.gov.bc.ca");
+            driver.navigate().to("https://portal.test.dfa.gov.bc.ca");
+            driver.navigate().refresh();
+
+        }
+        else if (Config.ENVIROMENT.equals(Constants.TRN_Support)) {
+            driver.get("https://portal.training.dfa.gov.bc.ca");
+            driver.navigate().to("https://portal.training.dfa.gov.bc.ca");
             driver.navigate().refresh();
 
         }

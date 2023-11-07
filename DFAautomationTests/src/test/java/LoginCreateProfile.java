@@ -12,14 +12,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class Login {
+public class LoginCreateProfile {
 
     private WebDriver driver;
     private static String  bceidUSERNAME = System.getenv("USERNAME_BCEID");
     private static String bceidPASSWORD = System.getenv("PASSWORD_BCEID");
 
 
-/*    @After
+    @After
     public void tearDown() {
         driver.close();
         driver.quit();
@@ -27,7 +27,7 @@ public class Login {
     @AfterClass
     public static void afterClass() {
         WebDriverManager.instance = null;
-    }*/
+    }
 
 
     @Test
@@ -55,12 +55,14 @@ public class Login {
         element.sendKeys(bceidPASSWORD);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("submit-btn")));
         element.click();
-//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnSubmit")));
-//        element.click();
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnSubmit")));
+        element.click();
 
         //Display notice of Collention
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'This page is for homeowners and residential tenants.')]")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Notice of Collection')]")));
+
+
 
     }
 }
