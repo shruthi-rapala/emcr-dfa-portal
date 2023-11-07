@@ -44,7 +44,7 @@ export default class AddressComponent
 {
   primaryAddressForm: UntypedFormGroup;
   primaryAddressForm$: Subscription;
-  radioOption: string[] = ['Yes', 'No', 'I don\'t have a permanent address right now'];
+  radioOption: string[] = ['Yes', 'No', 'I don\'t have a mailing address right now'];
   formBuilder: UntypedFormBuilder;
   formCreationService: FormCreationService;
   filteredOptions: Observable<Country[]>;

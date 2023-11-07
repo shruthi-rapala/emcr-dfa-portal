@@ -32,7 +32,7 @@ import { AddressFormsModule } from '../../address-forms/address-forms.module';
 export default class ProfileVerificationComponent implements OnInit, OnDestroy {
   profileVerificationForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
-  mailingAddressRadioOption: string[] = ['Yes', 'No', 'I don\'t have a permanent address right now'];
+  mailingAddressRadioOption: string[] = ['Yes', 'No', 'I don\'t have a mailing address right now'];
   profileVerificationForm$: Subscription;
   formCreationService: FormCreationService;
   radioOption: string[] = ['Yes', 'No'];
