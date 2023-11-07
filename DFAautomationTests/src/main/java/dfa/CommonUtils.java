@@ -39,6 +39,12 @@ public class CommonUtils {
             driver.navigate().refresh();
 
         }
+        else if (Config.ENVIROMENT.equals(Constants.TRN_Support)) {
+            driver.get("https://portal.training.dfa.gov.bc.ca");
+            driver.navigate().to("https://portal.training.dfa.gov.bc.ca");
+            driver.navigate().refresh();
+
+        }
     }
 
 

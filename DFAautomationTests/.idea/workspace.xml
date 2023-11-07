@@ -12,6 +12,8 @@
       <change beforePath="$PROJECT_DIR$/target/classes/dfa/CommonUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dfa/CommonUtils.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/dfa/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dfa/Config.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/dfa/Constants.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dfa/Constants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/CreateNewApplicationHomeowner.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/CreateNewApplicationHomeowner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/Login.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,25 +77,11 @@
       <recent name="C:\workspace4\emcr-dfa-portal\DFAautomationTests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.EditApplicationHomeownerNInsurance">
-    <configuration name="CreateProfile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.Login.test">
+    <configuration name="CreateNewApplicationHomeowner" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="CreateProfile" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
-      <envs>
-        <env name="USERNAME_BCEID" value="DFA00010" />
-        <env name="PASSWORD_BCEID" value="98900010" />
-      </envs>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EditApplicationHomeownerNInsurance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="DFAautomationTests" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="EditApplicationHomeownerNInsurance" />
+      <option name="MAIN_CLASS_NAME" value="CreateNewApplicationHomeowner" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <envs>
@@ -132,6 +120,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Login.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DFAautomationTests" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="Login" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <envs>
+        <env name="USERNAME_BCEID" value="DFA00004" />
+        <env name="PASSWORD_BCEID" value="98900004" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TestSuiteAllTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DFAautomationTests" />
       <option name="PACKAGE_NAME" value="" />
@@ -148,18 +150,18 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.TestSuiteAllTests" />
-      <item itemvalue="JUnit.EditApplicationHomeownerNInsurance" />
-      <item itemvalue="JUnit.CreateProfile" />
       <item itemvalue="JUnit.HomeOwnerApplicationDetails.test" />
       <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
+      <item itemvalue="JUnit.CreateNewApplicationHomeowner" />
+      <item itemvalue="JUnit.Login.test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EditApplicationHomeownerNInsurance" />
+        <item itemvalue="JUnit.Login.test" />
+        <item itemvalue="JUnit.CreateNewApplicationHomeowner" />
+        <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
         <item itemvalue="JUnit.TestSuiteAllTests" />
         <item itemvalue="JUnit.HomeOwnerApplicationDetails.test" />
-        <item itemvalue="JUnit.HomeOwnerApplicationDetails" />
-        <item itemvalue="JUnit.CreateProfile" />
       </list>
     </recent_temporary>
   </component>
