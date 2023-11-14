@@ -335,8 +335,8 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
 
     // check for date of damage between start date and end date
     this.openDisasterEvents.forEach(disasterEvent => {
-      if (new Date(disasterEvent.endDate) >= this.prescreeningForm.controls.damageFromDate.value &&
-          new Date(disasterEvent.startDate) <= this.prescreeningForm.controls.damageFromDate.value) {
+      if (new Date(new Date(disasterEvent.endDate).toDateString()) >= this.prescreeningForm.controls.damageFromDate.value &&
+        new Date(new Date(disasterEvent.startDate).toDateString()) <= this.prescreeningForm.controls.damageFromDate.value) {
         disasterEvent.matchDate = true;
       } else disasterEvent.matchDate = false;
     })
