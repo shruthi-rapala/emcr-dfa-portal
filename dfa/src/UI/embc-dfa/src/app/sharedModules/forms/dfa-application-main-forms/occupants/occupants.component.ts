@@ -407,7 +407,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       this.dialog
         .open(DFADeleteConfirmDialogComponent, {
           data: {
-            content: "Other contact cannot be left empty, please try adding the new record and try deleting the old one!"
+            content: "DFA requires that you have at least one Other Contact.<br/>Please add a new contact before deleting this one."
           },
           width: '500px',
           disableClose: true
