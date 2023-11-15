@@ -487,20 +487,98 @@
                   <span>Email Address:</span><br/><br/>
                 </div>
                 <div class="col-md-3">
-                  <span>{{
-                    profileVerificationForm.get('profile.contactDetails.email').value
-                  }}</span><br/><br/>
+                  <mat-form-field appearance="outline">
+                  <mat-label>Email address</mat-label>
+                  <input
+                    formControlName="email"
+                    matInput
+                    placeholder="Current Email Address"
+                    autocomplete="new-password"
+                    required
+                  />
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.contactDetails.email').invalid &&
+                      profileVerificationForm.get('profile.contactDetails.email').hasError('required')
+                    "
+                  >
+                    Email is required</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.contactDetails.email').invalid &&
+                      profileVerificationForm.get('profile.contactDetails.email').hasError('email')
+                    "
+                    >Invalid email</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.contactDetails.email').invalid &&
+                      profileVerificationForm.get('profile.contactDetails.email').hasError('maxLength')
+                    "
+                    >Maximum length is 100 characters</mat-error
+                  >
+            </mat-form-field>
                 </div>
                 <div class="col-md-1">
                 </div>
-                <div class="col-md-5 nameMessage">
+                <!--<div class="col-md-5 nameMessage">
                   This is your email address from your BC Services Card and can't be changed.
                   If you need to update your legal name, visit
                   <br />
                   <a target="_blank" href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information">BC Service Card, Change your personal information</a>
+                </div>-->
+              </div>
+              <div class="row info-detail">
+                <div class="col-md-3">
+                  <span>Re-enter your email address:</span><br/><br/>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline">
+                  <mat-label>Re-enter your email address</mat-label>
+                  <input
+                    formControlName="confirmEmail"
+                    matInput
+                    placeholder="Current Email Address"
+                    [errorStateMatcher]="emailMatcher"
+                    required
+                  />
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.contactDetails.confirmEmail').invalid &&
+                      profileVerificationForm.get('profile.contactDetails.confirmEmail').hasError('required')
+                    "
+                  >
+                    Confirm email is required</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.contactDetails.confirmEmail').invalid &&
+                      profileVerificationForm.get('profile.contactDetails.confirmEmail').hasError('email')
+                    "
+                    >Invalid email</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.contactDetails.confirmEmail').invalid &&
+                      profileVerificationForm.get('profile.contactDetails.confirmEmail').hasError('maxLength')
+                    "
+                    >Maximum length is 100 characters</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      profileVerificationForm.get('profile.contactDetails').hasError('emailMatch')
+                    "
+                  >
+                    Email address mismatch</mat-error
+                  >
+            </mat-form-field>
+                </div>
+                <div class="col-md-1">
                 </div>
               </div>
           </div>
+          
         </mat-card-content>
       </ng-container>
     </form>

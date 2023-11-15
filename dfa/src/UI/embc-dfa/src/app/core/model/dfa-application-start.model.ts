@@ -51,6 +51,7 @@ export class ProfileVerificationForm {
   mailingAddress: UntypedFormGroup;
   contactDetails: UntypedFormGroup;
   email = new UntypedFormControl();
+  confirmEmail = new UntypedFormControl();
   cellPhoneNumber = new UntypedFormControl();
   id = new UntypedFormControl();
   bcServiceCardId = new UntypedFormControl();
@@ -178,6 +179,15 @@ export class ProfileVerificationForm {
             customValidator
             .maxLengthValidator(100)
             .bind(customValidator)]
+        ],
+        confirmEmail: [
+          profileVerification.profile?.contactDetails.email,
+          [Validators.required,
+          Validators.email,
+          customValidator
+            .maxLengthValidator(100)
+              .bind(customValidator)
+          ]
         ],
         cellPhoneNumber: [
           profileVerification.profile?.contactDetails.cellPhoneNumber,
