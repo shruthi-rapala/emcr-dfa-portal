@@ -5,6 +5,9 @@ import {
   AbstractControl,
   FormsModule,
   Validators,
+  UntypedFormControl,
+  FormGroupDirective,
+  NgForm
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -23,6 +26,23 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { TextMaskModule } from 'angular2-text-mask';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+export class CustomErrorMailMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: UntypedFormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    const isSubmitted = form && form.submitted;
+    return (
+      !!(
+        control &&
+        control.invalid &&
+        (control.dirty || control.touched || isSubmitted)
+      ) || control.parent.hasError('emailMatch')
+    );
+  }
+}
 
 @Component({
   selector: 'app-profile-verification',
@@ -50,6 +70,7 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
     /\d/,
     /\d/
   ];
+  emailMatcher = new CustomErrorMailMatcher();
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -68,6 +89,13 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
       .getProfileVerificationForm()
       .subscribe((profileVerification) => {
         this.profileVerificationForm = profileVerification;
+        this.profileVerificationForm.get('profile.contactDetails').setValidators([
+          this.customValidator
+            .confirmProfileEmailValidator()
+            .bind(this.customValidator)
+        ]);
+        this.profileVerificationForm.get('profile.contactDetails.confirmEmail').reset();
+        this.profileVerificationForm.get('profile.contactDetails.confirmEmail').setValue(this.profileVerificationForm.get('profile.contactDetails.email').value);
         this.profileVerificationForm.updateValueAndValidity();
         this.profileService.profileGetProfileWithUpdatedBcsc().subscribe(profile => {
           this.profileVerificationForm.get('profile').patchValue(profile);
@@ -192,6 +220,33 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.profileVerificationForm.get('profile.contactDetails.alternatePhone').reset();
         }
+      });
+
+    this.profileVerificationForm
+      .get('profile.contactDetails.email')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        //if (value === '') {
+        //  this.profileVerificationForm.get('profile.contactDetails.email').reset();
+        //  this.profileVerificationForm.get('profile.contactDetails.confirmEmail').reset();
+        //  this.profileVerificationForm.get('profile.contactDetails.confirmEmail').disable();
+        //} else {
+        //  this.profileVerificationForm.get('profile.contactDetails.confirmEmail').enable();
+        //}
+        //this.profileVerificationForm.get('profile.contactDetails.confirmEmail').updateValueAndValidity();
+        this.profileVerificationForm.updateValueAndValidity();
+      });
+
+    this.profileVerificationForm
+      .get('profile.contactDetails.confirmEmail')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        //if (value === '') {
+        //  this.profileVerificationForm.get('profile.contactDetails.confirmEmail').reset();
+        //}
+        //this.profileVerificationForm.get('profile.contactDetails.email').updateValueAndValidity();
+        //this.profileVerificationForm.get('profile.contactDetails.confirmEmail').updateValueAndValidity();
+        this.profileVerificationForm.updateValueAndValidity();
       });
   }
 

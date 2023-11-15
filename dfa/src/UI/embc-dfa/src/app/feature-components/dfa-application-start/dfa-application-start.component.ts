@@ -240,6 +240,7 @@ export class DFAApplicationStartComponent
         this.dfaApplicationStartDataService.profile.contactDetails.alternatePhone = this.form.get('profile.contactDetails.alternatePhone').value;
         this.dfaApplicationStartDataService.profile.contactDetails.cellPhoneNumber = this.form.get('profile.contactDetails.cellPhoneNumber').value;
         this.dfaApplicationStartDataService.profile.contactDetails.residencePhone = this.form.get('profile.contactDetails.residencePhone').value;
+        this.dfaApplicationStartDataService.profile.contactDetails.email = this.form.get('profile.contactDetails.email').value;
         break;
       case 'apptype-insurance':
         this.dfaApplicationStartDataService.applicantOption = this.form.controls.applicantOption.value;
