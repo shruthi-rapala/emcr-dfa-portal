@@ -112,6 +112,7 @@ namespace EMBC.DFA.API.Controllers
         public string? startDate { get; set; }
         public string? endDate { get; set; }
         public string? eventName { get; set; }
+        public string? remainingDays { get; set; }
     }
 
     public class EffectedRegionCommunity

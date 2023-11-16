@@ -416,6 +416,7 @@ namespace EMBC.DFA.API.Mappers
 
             CreateMap<dfa_event, DisasterEvent>()
                 .ForMember(d => d.ninetyDayDeadline, opts => opts.MapFrom(s => s.dfa_90daydeadlinenew))
+                .ForMember(d => d.remainingDays, opts => opts.MapFrom(s => (Convert.ToDateTime(s.dfa_90daydeadlinenew) - DateTime.Now).Days.ToString()))
                 .ForMember(d => d.eventId, opts => opts.MapFrom(s => s.dfa_eventid))
                 .ForMember(d => d.startDate, opts => opts.MapFrom(s => s.dfa_startdate))
                 .ForMember(d => d.endDate, opts => opts.MapFrom(s => s.dfa_enddate))
