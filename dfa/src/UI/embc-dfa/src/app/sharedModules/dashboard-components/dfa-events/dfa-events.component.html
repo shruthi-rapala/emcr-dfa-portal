@@ -14,8 +14,9 @@
         <div class="col-4">
           <span><b>Date of Event:</b>&nbsp;&nbsp;{{eventItem.startDate ? (eventItem.startDate | date: "dd-MMM-YYYY") : "TBD"}} to {{eventItem.endDate ? (eventItem.endDate | date: "dd-MMM-yyyy") : "TBD"}}</span>
         </div>
-        <div class="col-4">
-          <span><b>90-Day Deadline:</b>&nbsp;&nbsp;{{eventItem.ninetyDayDeadline | date: "dd-MMM-yyyy"}}</span>
+        <div class="col-4" style="text-align: center">
+          <span><b>Submit before midnight on:</b>&nbsp;&nbsp;{{eventItem.ninetyDayDeadline | date: "dd-MMM-yyyy"}}</span> <br />
+          <span><b style="color: #990000">{{ eventItem.remainingDays }} days remaining to apply</b></span>
         </div>
       </div><br/><br/>
       <table mat-table [dataSource]="getEffectedRegionCommuntiesForEvent(eventItem.eventId)" style="width:100%" *ngIf="getEffectedRegionCommuntiesForEvent(eventItem.eventId).length>0">
