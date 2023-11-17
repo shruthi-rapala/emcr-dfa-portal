@@ -272,12 +272,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         Select = new[]
                         {
-                            "dfa_eventid", "dfa_90daydeadline"
+                            "dfa_eventid", "dfa_90daydeadlinenew"
                         },
                         Filter = $"dfa_eventid eq {application._dfa_eventid_value}"
                     });
 
-                    application.dfa_90daydeadline = eventlist.List.Last()?.dfa_90daydeadline;
+                    application.dfa_90daydeadline = eventlist.List.Last()?.dfa_90daydeadlinenew;
                 }
             }
 
