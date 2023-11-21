@@ -58,6 +58,23 @@
           </div>
         </div>
 
+        
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="lossesExceed1000"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div><br/><br/>
+
+
         <div class="row" *ngIf="isSmallBusinessOwner == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
@@ -196,13 +213,16 @@
 
         <div class="row" *ngIf="isSmallBusinessOwner === true || isFarmOwner === true || isCharitableOrganization === true">
           <div class="col-md-6 bottomspace">
-            <p class="sub-heading" style="font-size: 15px">Provide the {{ accountLegalNameLabel }}, if applicable</p>
+            <p class="sub-heading" style="font-size: 15px">
+              Provide the {{ accountLegalNameLabel }} LEGAL NAME, if applicable<span style="color:red" >*</span>
+            </p>
             <mat-form-field appearance="outline">
               <input
                 formControlName="businessLegalName"
                 matInput
+                required
                 [readonly]="isReadOnly == true"
-                [placeholder]="accountLegalNameLabel"
+                placeholder="{{accountLegalNameLabel + 'legal name'}}"
                 maxlength="100"/>
               <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
@@ -213,25 +233,18 @@
               >
                 Maximum length is 100 characters</mat-error
               >
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('businessLegalName').invalid &&
+                  damagedPropertyAddressForm.get('businessLegalName').hasError('required')
+                "
+              >
+                {{accountLegalNameLabel + 'legal name is required'}}</mat-error
+              >
             </mat-form-field>
-            <br/><br/><br/>
+            <br/><br/>
           </div>
         </div>
-
-        <div class="row">
-          <div class="col-md-12 bottomspace">
-            <p class="sub-heading" style="font-size: 15px">
-              Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?<span style="color:red" >*</span>
-            </p>
-            <mat-radio-group
-              formControlName="lossesExceed1000"
-              class="primary-radio-group horizontal-radio-group"
-              required
-              aria-label="Select an option">
-              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div><br/><br/>
 
         <div class="row">
           <div class="col-md-12 bottomspace">

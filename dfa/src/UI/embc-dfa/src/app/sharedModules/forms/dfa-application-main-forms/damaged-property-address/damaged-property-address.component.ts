@@ -175,7 +175,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.maxLength(100)]);
           this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.maxLength(100)]);
           this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators(null);
-          this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100)]);
+          this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100), Validators.required]);
           this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators(null);
           this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators(null);
           this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators(null);
@@ -185,7 +185,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.damagedPropertyAddressForm.controls.farmoperation.setValidators(null);
           this.damagedPropertyAddressForm.controls.ownedandoperatedbya.setValidators(null);
           this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.setValidators(null);
-          this.accountLegalNameLabel = "Farm's legal name"
+          this.accountLegalNameLabel = "Farm's "
           if (this.isHomeowner) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators([Validators.required]);
@@ -195,21 +195,21 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
             this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.required, Validators.maxLength(100)]);
             this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators([Validators.required]);
           } else if (this.isSmallBusinessOwner) {
-            this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100)]);
+            this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100), Validators.required]);
             this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators([Validators.required]);
-            this.accountLegalNameLabel = "Small Business's legal name"
+            this.accountLegalNameLabel = "Small Business's "
           } else if (this.isFarmOwner) {
             this.damagedPropertyAddressForm.controls.farmoperation.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.ownedandoperatedbya.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.setValidators([Validators.required]);
-            this.accountLegalNameLabel = "Farm's legal name"
+            this.accountLegalNameLabel = "Farm's "
           } else if (this.isCharitableOrganization) {
             this.damagedPropertyAddressForm.controls.charityExistsAtLeast12Months.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.charityRegistered.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.charityProvidesCommunityBenefit.setValidators([Validators.required]);
-            this.accountLegalNameLabel = "Charitable Organization's legal name"
+            this.accountLegalNameLabel = "Charitable Organization's "
           }
         this.damagedPropertyAddressForm.updateValueAndValidity();
         }
