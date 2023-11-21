@@ -195,7 +195,7 @@ export class DamagedPropertyAddressForm {
     if (damagedPropertyAddress.businessLegalName) {
       this.businessLegalName.setValue(damagedPropertyAddress.businessLegalName);
     }
-    this.businessLegalName.setValidators(null);
+    this.businessLegalName.setValidators([Validators.required]);
 
     if (damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime) {
       this.employLessThan50EmployeesAtAnyOneTime.setValue(damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime);
