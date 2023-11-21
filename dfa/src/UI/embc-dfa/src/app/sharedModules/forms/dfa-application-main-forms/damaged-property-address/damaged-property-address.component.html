@@ -216,6 +216,9 @@
             <p class="sub-heading" style="font-size: 15px">
               Provide the {{ accountLegalNameLabel }} LEGAL NAME, if applicable<span style="color:red" >*</span>
             </p>
+            <p *ngIf="isSmallBusinessOwner === true">
+              If you are a landlord, provide the property owner's name
+            </p>
             <mat-form-field appearance="outline">
               <input
                 formControlName="businessLegalName"
