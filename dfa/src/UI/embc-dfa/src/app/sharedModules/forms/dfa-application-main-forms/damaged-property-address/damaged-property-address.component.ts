@@ -66,6 +66,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   isCharitableOrganization: boolean = false;
   isFarmOwner: boolean = false;
   accountLegalNameLabel: string = "";
+  accountPlaceHolderLabel: string = "";
   isReadOnly: boolean = false;
 
   constructor(
@@ -185,7 +186,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.damagedPropertyAddressForm.controls.farmoperation.setValidators(null);
           this.damagedPropertyAddressForm.controls.ownedandoperatedbya.setValidators(null);
           this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.setValidators(null);
-          this.accountLegalNameLabel = "Farm's "
+          this.accountLegalNameLabel = "farm's ";
+          this.accountPlaceHolderLabel = "Farm";
           if (this.isHomeowner) {
             this.damagedPropertyAddressForm.controls.eligibleForHomeOwnerGrant.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators([Validators.required]);
@@ -199,17 +201,20 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
             this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators([Validators.required]);
-            this.accountLegalNameLabel = "Small Business's "
+            this.accountLegalNameLabel = "business'"
+            this.accountPlaceHolderLabel = "Business";
           } else if (this.isFarmOwner) {
             this.damagedPropertyAddressForm.controls.farmoperation.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.ownedandoperatedbya.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.farmoperationderivesthatpersonsmajorincom.setValidators([Validators.required]);
-            this.accountLegalNameLabel = "Farm's "
+            this.accountLegalNameLabel = "farm's"
+            this.accountPlaceHolderLabel = "Farm";
           } else if (this.isCharitableOrganization) {
             this.damagedPropertyAddressForm.controls.charityExistsAtLeast12Months.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.charityRegistered.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.charityProvidesCommunityBenefit.setValidators([Validators.required]);
-            this.accountLegalNameLabel = "Charitable Organization's "
+            this.accountLegalNameLabel = "charitable organization's"
+            this.accountPlaceHolderLabel = "Charitable Organization";
           }
         this.damagedPropertyAddressForm.updateValueAndValidity();
         }
