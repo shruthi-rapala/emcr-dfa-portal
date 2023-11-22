@@ -214,10 +214,10 @@
         <div class="row" *ngIf="isSmallBusinessOwner === true || isFarmOwner === true || isCharitableOrganization === true">
           <div class="col-md-6 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
-              Provide the {{ accountLegalNameLabel }} LEGAL NAME, if applicable<span style="color:red" >*</span>
+              Provide the {{ accountLegalNameLabel }} legal name.<span style="color:red" >*</span>
             </p>
             <p *ngIf="isSmallBusinessOwner === true">
-              If you are a landlord, provide the property owner's name
+              If you are a landlord, provide the property owner's name.
             </p>
             <mat-form-field appearance="outline">
               <input
@@ -225,7 +225,7 @@
                 matInput
                 required
                 [readonly]="isReadOnly == true"
-                placeholder="{{accountLegalNameLabel + 'legal name'}}"
+                placeholder="{{accountPlaceHolderLabel + ' Legal Name'}}"
                 maxlength="100"/>
               <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
@@ -242,7 +242,7 @@
                   damagedPropertyAddressForm.get('businessLegalName').hasError('required')
                 "
               >
-                {{accountLegalNameLabel + 'legal name is required'}}</mat-error
+                {{accountPlaceHolderLabel + ' Legal Name is required'}}</mat-error
               >
             </mat-form-field>
             <br/><br/>
