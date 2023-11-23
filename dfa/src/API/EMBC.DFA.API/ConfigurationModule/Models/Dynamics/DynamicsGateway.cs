@@ -635,7 +635,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
                 if (result != null)
                 {
-                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
+                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value?.ToString() : string.Empty;
                 }
                 return "Submitted";
             }
