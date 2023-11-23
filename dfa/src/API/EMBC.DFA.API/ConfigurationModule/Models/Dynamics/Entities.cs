@@ -379,7 +379,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_description { get; set; } // pass in description
         public string dfa_modifiedby { get; set; } // pass in modified by
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
-        // public string? dfa_requireddocumenttype { get; set; } // for required documents TODO: uncomment
+        public string? dfa_requireddocumenttype { get; set; } // for required documents TODO: uncomment
     }
 
     public class dfa_DFAActionDeleteDocuments_parms

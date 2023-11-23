@@ -358,7 +358,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
-                //.ForMember(d => d.dfa_RequiredDocumentType, opts => opts.MapFrom(s => s.RequiredDocumentType)) // TODO map required file type
+                .ForMember(d => d.dfa_requireddocumenttype, opts => opts.MapFrom(s => s.requiredDocumentType)) // TODO map required file type
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => s.fileType));
 
             CreateMap<dfa_appapplication, CurrentApplication>()
