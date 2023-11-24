@@ -176,7 +176,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.damagedPropertyAddressForm.controls.landlordSurname.setValidators([Validators.maxLength(100)]);
           this.damagedPropertyAddressForm.controls.landlordPhone.setValidators([Validators.maxLength(100)]);
           this.damagedPropertyAddressForm.controls.occupyAsPrimaryResidence.setValidators(null);
-          this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100), Validators.required]);
+          this.damagedPropertyAddressForm.controls.businessLegalName.setValidators(null);
           this.damagedPropertyAddressForm.controls.employLessThan50EmployeesAtAnyOneTime.setValidators(null);
           this.damagedPropertyAddressForm.controls.grossRevenues100002000000BeforeDisaster.setValidators(null);
           this.damagedPropertyAddressForm.controls.businessManagedByAllOwnersOnDayToDayBasis.setValidators(null);
