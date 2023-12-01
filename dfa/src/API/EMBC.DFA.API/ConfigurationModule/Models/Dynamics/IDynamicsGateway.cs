@@ -35,5 +35,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<int> GetEventCount();
         Task<IEnumerable<dfa_event>> GetOpenEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> GetEffectedRegionCommunitiesList();
+        Task<IEnumerable<dfa_areacommunitieses>> GetCommunitiesAsync();
     }
 }

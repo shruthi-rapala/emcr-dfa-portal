@@ -63,7 +63,6 @@ export default class AddressComponent
 
   ngOnInit(): void {
     //this.countries = this.locationService.getActiveCountriesList();
-
     this.primaryAddressForm$ = this.formCreationService
       .getAddressForm()
       .subscribe((primaryAddress) => {
@@ -112,7 +111,14 @@ export default class AddressComponent
         this.updateOnVisibilityMailingAddress();
       });
 
+    //this.primaryAddressForm
+    //  .get('mailingAddress.addressLine2')
+    //  .valueChanges.subscribe((value) => {
+    //    this.updateOnVisibilityMailingAddress();
+    //  });
+
     this.primaryAddressForm.get('address').valueChanges.subscribe((value) => {
+      
       if (this.primaryAddressForm.get('isNewMailingAddress').value === 'Yes') {
         const primaryAddress = this.primaryAddressForm.getRawValue().address;
         this.primaryAddressForm.get('mailingAddress').setValue(primaryAddress);
@@ -202,6 +208,9 @@ export default class AddressComponent
     this.primaryAddressForm
       .get('mailingAddress.addressLine1')
       .updateValueAndValidity();
+    this.primaryAddressForm
+      .get('mailingAddress.addressLine2')
+      .updateValueAndValidity();
     this.primaryAddressForm.get('mailingAddress.community').updateValueAndValidity();
     this.primaryAddressForm
       .get('mailingAddress.stateProvince')
@@ -211,6 +220,7 @@ export default class AddressComponent
   }
 
   sameAsPrimary(event: MatRadioChange): void {
+    
     //this.updateOnVisibilityMailingAddress();
     if (event.value === 'Yes') {
       const primaryAddress = this.primaryAddressForm.getRawValue().address;

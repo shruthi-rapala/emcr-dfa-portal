@@ -19,7 +19,11 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
 //import { LabelModule } from "@progress/kendo-angular-label";
 import { ButtonsModule } from "@progress/kendo-angular-buttons";
 import { ICON_SETTINGS } from "@progress/kendo-angular-icons";
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
+import { ScriptService } from "./core/services/scriptServices";
+import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY } from '@angular/material/autocomplete';
+import { MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [AppComponent, OutageBannerComponent, OutageDialogComponent],
@@ -44,7 +48,8 @@ import { MatIconModule } from '@angular/material/icon'
     }),
     LayoutModule,
     ButtonsModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatIconModule
@@ -64,7 +69,8 @@ import { MatIconModule } from '@angular/material/icon'
     {
       provide: ICON_SETTINGS,
       useValue: { type: "font" },
-    }
+    },
+    ScriptService
   ],
   bootstrap: [AppComponent]
 })

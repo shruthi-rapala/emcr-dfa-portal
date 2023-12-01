@@ -10,6 +10,7 @@ using AutoMapper;
 using EMBC.DFA.API.ConfigurationModule.Models;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Mappers;
+using EMBC.DFA.API.Services;
 using EMBC.ESS.Shared.Contracts.Metadata;
 using EMBC.Utilities.Caching;
 using EMBC.Utilities.Extensions;
@@ -19,6 +20,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Org.BouncyCastle.Utilities;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -187,6 +189,19 @@ namespace EMBC.DFA.API.Controllers
                 TimeSpan.FromSeconds(30));
             return Ok(mapper.Map<OutageInformation>(outageInfo));
         }
+
+        /// <summary>
+        /// Get the current logged in user's profile
+        /// </summary>
+        /// <returns>Currently logged in user's profile</returns>
+        [HttpGet("areacommunities")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<AreaCommunity>>> GetAreaCommunities()
+        {
+            var lstCommunities = await handler.HandleGetAreaCommunities();
+            return Ok(mapper.Map<IEnumerable<AreaCommunity>>(lstCommunities));
+        }
     }
 
     public class Configuration
@@ -237,6 +252,13 @@ namespace EMBC.DFA.API.Controllers
     public class CaptchaConfiguration
     {
         public string Key { get; set; }
+    }
+
+    public class AreaCommunity
+    {
+        public string AreaCommunityId { get; set; }
+        public CommunityType CommunityType { get; set; }
+        public string Name { get; set; }
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]

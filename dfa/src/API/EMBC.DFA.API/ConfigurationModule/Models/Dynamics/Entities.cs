@@ -19,6 +19,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool statecode { get; set; }
     }
 
+    public class dfa_areacommunitieses
+    {
+        public string dfa_areacommunitiesid { get; set; }
+        public string dfa_name { get; set; }
+        public string dfa_typeofcommunity { get; set; }
+    }
+
     public class dfa_appcontact
     {
         public string dfa_firstname { get; set; }

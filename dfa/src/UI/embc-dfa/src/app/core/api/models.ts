@@ -33,6 +33,7 @@ export { CaptchaConfiguration } from './models/captcha-configuration';
 export { Code } from './models/code';
 export { CommunityCode } from './models/community-code';
 export { CommunityType } from './models/community-type';
+export { AreaCommunity } from './models/area-community';
 export { DamagedRoom } from './models/damaged-room';
 export { RoomType } from './models/room-type';
 export { DisasterEvent } from './models/disaster-event';
