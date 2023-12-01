@@ -48,6 +48,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return list.List;
         }
 
+        public async Task<IEnumerable<dfa_areacommunitieses>> GetCommunitiesAsync()
+        {
+            var list = await api.GetList<dfa_areacommunitieses>("dfa_areacommunitieses", new CRMGetListOptions
+            {
+                Select = new[] { "dfa_areacommunitiesid", "dfa_name", "dfa_typeofcommunity" }
+            });
+
+            return list.List;
+        }
+
         public async Task<dfa_appcontact> GetUserProfileAsync(string userId)
         {
             try

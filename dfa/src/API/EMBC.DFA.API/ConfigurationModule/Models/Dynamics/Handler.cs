@@ -44,6 +44,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<int> HandleEvents();
         Task<IEnumerable<dfa_event>> HandleOpenEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList();
+        Task<List<AreaCommunity>> HandleGetAreaCommunities();
     }
 
     public class Handler : IConfigurationHandler
@@ -228,6 +229,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public async Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList()
         {
             return await listsGateway.GetEffectedRegionCommunitiesList();
+        }
+
+        public async Task<List<AreaCommunity>> HandleGetAreaCommunities()
+        {
+            var lstCommunities = await listsGateway.GetCommunitiesAsync();
+            var mappedList = mapper.Map<List<AreaCommunity>>(lstCommunities);
+            return mappedList;
         }
     }
 }

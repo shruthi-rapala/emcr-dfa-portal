@@ -281,6 +281,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
   }
 
   onUseProfileAddressChoice(choice: any) {
+    
     this.prescreeningForm.controls.stateProvince.setValue("BC");
     if (!choice.value) return; // not a radio button change
     if (choice.value == 'true') // yes
@@ -288,12 +289,14 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       this.prescreeningForm.controls.addressLine1.setValue(this.profile.primaryAddress.addressLine1);
       this.prescreeningForm.controls.addressLine2.setValue(this.profile.primaryAddress.addressLine2);
       this.prescreeningForm.controls.city.setValue(this.profile.primaryAddress.city);
+      this.prescreeningForm.controls.community.setValue(this.profile.primaryAddress.city);
       this.prescreeningForm.controls.stateProvince.setValue(this.profile.primaryAddress.stateProvince);
       this.prescreeningForm.controls.postalCode.setValue(this.profile.primaryAddress.postalCode);
     } else { // no
       this.prescreeningForm.controls.addressLine1.setValue(null);
       this.prescreeningForm.controls.addressLine2.setValue(null);
       this.prescreeningForm.controls.city.setValue(null);
+      this.prescreeningForm.controls.community.setValue(null);
       this.prescreeningForm.controls.postalCode.setValue(null);
     }
     this.checkIsValidAddressAndDate();

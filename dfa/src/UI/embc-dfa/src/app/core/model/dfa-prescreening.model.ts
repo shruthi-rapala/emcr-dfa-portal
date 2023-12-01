@@ -94,7 +94,7 @@ export class DfaPrescreeningForm {
     if (prescreening.city) {
       this.community.setValue(prescreening.city);
     }
-    this.community.setValidators([
+    this.community.setValidators([Validators.required,
       customValidator
         .maxLengthValidator(100)
         .bind(customValidator)

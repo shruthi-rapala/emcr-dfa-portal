@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CommunityType, CommunityCode, Code, Address } from '../api/models';
+import { CommunityType, CommunityCode, Code, Address, AreaCommunity } from '../api/models';
 import { ConfigurationService } from '../api/services';
 import { RegAddress } from '../model/address';
 import { AlertService } from './alert.service';
@@ -33,7 +33,7 @@ export interface Community {
 
 @Injectable({ providedIn: 'root' })
 export class LocationService {
-  private communityList: Community[];
+  private communityList: AreaCommunity[];
   private stateProvinceList: StateProvince[];
   private countriesList: Country[];
   private regionalDistricts: string[];
@@ -46,7 +46,7 @@ export class LocationService {
     private alertService: AlertService
   ) {}
 
-  public getCommunityList(): Community[] {
+  public getCommunityList(): AreaCommunity[] {
     return this.communityList
       ? this.communityList
       : JSON.parse(this.cacheService.get('communityList'))
@@ -54,9 +54,9 @@ export class LocationService {
       : this.getCommunities();
   }
 
-  public getActiveCommunityList(): Community[] {
-    return this.getCommunityList().filter((c) => c.isActive);
-  }
+  //public getActiveCommunityList(): Community[] {
+  //  return this.getCommunityList().filter((c) => c.isActive);
+  //}
 
   public getStateProvinceList(): StateProvince[] {
     return this.stateProvinceList
@@ -223,7 +223,7 @@ export class LocationService {
     return address;
   }
 
-  private setCommunityList(communityList: Community[]): void {
+  private setCommunityList(communityList: AreaCommunity[]): void {
     this.communityList = communityList;
     this.cacheService.set('communityList', communityList);
   }
@@ -243,21 +243,15 @@ export class LocationService {
     this.cacheService.set('countriesList', countriesList);
   }
 
-  private getCommunities(): Community[] {
-    this.configService.configurationGetCommunities().subscribe({
-      next: (communities: CommunityCode[]) => {
+  private getCommunities(): AreaCommunity[] {
+    this.configService.configurationGetAreaCommunities().subscribe({
+      next: (communities: AreaCommunity[]) => {
         this.setCommunityList(
           [...communities].map((c) => ({
-            code: c.value,
-            name: c.description,
-            districtName: c.districtName,
-            stateProvinceCode: c.parentCode.value,
-            countryCode: c.parentCode.parentCode.value,
-            type: c.communityType,
-            isActive: c.isActive
+            name: c.name
           }))
         );
-        this.setRegionalDistricts(communities.map((comm) => comm.districtName));
+        //this.setRegionalDistricts(communities.map((comm) => comm.districtName));
       },
       error: (error) => {
         document.location.href = 'https://dfa.gov.bc.ca/error.html';
