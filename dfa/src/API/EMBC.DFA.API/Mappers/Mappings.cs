@@ -98,11 +98,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_doyouhaveinsurancecoverage2, opts => opts.MapFrom(s => s.AppTypeInsurance.insuranceOption == InsuranceOption.Yes ? InsuranceTypeOptionSet.Yes :
                     (s.AppTypeInsurance.insuranceOption == InsuranceOption.No ? InsuranceTypeOptionSet.No :
                     (s.AppTypeInsurance.insuranceOption == InsuranceOption.Unsure ? InsuranceTypeOptionSet.YesBut : InsuranceTypeOptionSet.Yes))))
-                //.ForMember(d => d.dfa_smallbusinesstype, opts => opts.MapFrom(s => s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.General ? SmallBusinessOptionSet.General :
-                //    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Corporate ? SmallBusinessOptionSet.Corporate :
-                //    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Landlord ? SmallBusinessOptionSet.Landlord : SmallBusinessOptionSet.General))))
-                //.ForMember(d => d.dfa_farmtype, opts => opts.MapFrom(s => s.AppTypeInsurance.farmOption == FarmOption.General ? FarmOptionSet.General :
-                //    (s.AppTypeInsurance.farmOption == FarmOption.Corporate ? FarmOptionSet.Corporate : FarmOptionSet.General)))
+                .ForMember(d => d.dfa_smallbusinesstype, opts => opts.MapFrom(s => s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.General ? SmallBusinessOptionSet.General :
+                    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Corporate ? SmallBusinessOptionSet.Corporate :
+                    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Landlord ? SmallBusinessOptionSet.Landlord : SmallBusinessOptionSet.General))))
+                .ForMember(d => d.dfa_farmtype, opts => opts.MapFrom(s => s.AppTypeInsurance.farmOption == FarmOption.General ? FarmOptionSet.General :
+                    (s.AppTypeInsurance.farmOption == FarmOption.Corporate ? FarmOptionSet.Corporate : FarmOptionSet.General)))
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_primaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_primaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.signedName))
@@ -116,6 +116,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_damagedpropertypostalcode, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.postalCode))
                 .ForMember(d => d.dfa_damagedpropertyprovince, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.stateProvince))
                 .ForMember(d => d.dfa_isprimaryanddamagedaddresssame2, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.isPrimaryAndDamagedAddressSame == null ? (int?)null : (s.OtherPreScreeningQuestions.isPrimaryAndDamagedAddressSame == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                //.ForMember(d => d.dfa_eventid, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.eventId)) // TO DO : uncomment
+                //.ForMember(d => d.dfa_doyourlossestotalmorethan10002, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.lossesExceed1000 == null ? (int?)null : (s.OtherPreScreeningQuestions.lossesExceed1000 == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.damageFromDate));
 
             CreateMap<DFAApplicationStart, temp_dfa_appapplicationstart_params>()
@@ -197,9 +199,16 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_havereceiptsforcleanupsorrepairs2, opts => opts.MapFrom(s => s.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs == null ? (int?)null : (s.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_acopyofarentalagreementorlease2, opts => opts.MapFrom(s => s.supportingDocuments.hasCopyOfARentalAgreementOrLease == null ? (int?)null : (s.supportingDocuments.hasCopyOfARentalAgreementOrLease == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_isprimaryanddamagedaddresssame2, opts => opts.MapFrom(s => s.damagedPropertyAddress.isPrimaryAndDamagedAddressSame == null ? (int?)null : (s.damagedPropertyAddress.isPrimaryAndDamagedAddressSame == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
-                //.ForMember(d => d.dfa_charityregistered, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityRegistered == null ? (int?)null : (s.damagedPropertyAddress.charityRegistered == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
-                //.ForMember(d => d.dfa_charityexistsatleast12months, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityExistsAtLeast12Months == null ? (int?)null : (s.damagedPropertyAddress.charityExistsAtLeast12Months == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
-                //.ForMember(d => d.dfa_charityprovidescommunitybenefit, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityProvidesCommunityBenefit == null ? (int?)null : (s.damagedPropertyAddress.charityProvidesCommunityBenefit == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_charityregistered, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityRegistered == null ? (int?)null : (s.damagedPropertyAddress.charityRegistered == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_charityexistsatleast12months, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityExistsAtLeast12Months == null ? (int?)null : (s.damagedPropertyAddress.charityExistsAtLeast12Months == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_charityprovidescommunitybenefit, opts => opts.MapFrom(s => s.damagedPropertyAddress.charityProvidesCommunityBenefit == null ? (int?)null : (s.damagedPropertyAddress.charityProvidesCommunityBenefit == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_businessmanagedbyallownersondaytodaybasis, opts => opts.MapFrom(s => s.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis == null ? (int?)null : (s.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_grossrevenues100002000000beforedisaster, opts => opts.MapFrom(s => s.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster == null ? (int?)null : (s.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_employlessthan50employeesatanyonetime, opts => opts.MapFrom(s => s.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime == null ? (int?)null : (s.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_farmoperation, opts => opts.MapFrom(s => s.damagedPropertyAddress.farmoperation == null ? (int?)null : (s.damagedPropertyAddress.farmoperation == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_ownedandoperatedbya, opts => opts.MapFrom(s => s.damagedPropertyAddress.ownedandoperatedbya == null ? (int?)null : (s.damagedPropertyAddress.ownedandoperatedbya == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_farmoperationderivesthatpersonsmajorincom, opts => opts.MapFrom(s => s.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom == null ? (int?)null : (s.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_accountlegalname, opts => opts.MapFrom(s => s.damagedPropertyAddress.businessLegalName))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
             CreateMap<DFAApplicationMain, temp_dfa_appapplicationmain_params>() // TODO: map into dfa_application_params when dynamics process updated
@@ -240,6 +249,9 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.farmoperation, opts => opts.MapFrom(s => s.dfa_farmoperation == (int)YesNoOptionSet.Yes ? true : (s.dfa_farmoperation == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.ownedandoperatedbya, opts => opts.MapFrom(s => s.dfa_ownedandoperatedbya == (int)YesNoOptionSet.Yes ? true : (s.dfa_ownedandoperatedbya == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.farmoperationderivesthatpersonsmajorincom, opts => opts.MapFrom(s => s.dfa_farmoperationderivesthatpersonsmajorincom == (int)YesNoOptionSet.Yes ? true : (s.dfa_farmoperationderivesthatpersonsmajorincom == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.charityRegistered, opts => opts.MapFrom(s => s.dfa_charityregistered == (int)YesNoOptionSet.Yes ? true : (s.dfa_charityregistered == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.charityExistsAtLeast12Months, opts => opts.MapFrom(s => s.dfa_charityexistsatleast12months == (int)YesNoOptionSet.Yes ? true : (s.dfa_charityexistsatleast12months == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.charityProvidesCommunityBenefit, opts => opts.MapFrom(s => s.dfa_charityprovidescommunitybenefit == (int)YesNoOptionSet.Yes ? true : (s.dfa_charityprovidescommunitybenefit == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.isPrimaryAndDamagedAddressSame, opts => opts.MapFrom(s => s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
 
             CreateMap<dfa_appapplicationmain_retrieve, PropertyDamage>()

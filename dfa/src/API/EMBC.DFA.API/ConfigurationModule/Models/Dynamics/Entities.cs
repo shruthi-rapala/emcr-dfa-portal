@@ -61,8 +61,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class dfa_appapplicationstart_params
     {
         public int dfa_applicanttype { get; set; } // required (already existing)
-        // public int? dfa_smallbusinesstype { get; set; } // optional OptionSet TODO: uncomment
-        // public int? dfa_farmtype { get; set; } // optional OptionSet TODO: uncomment
+        public int? dfa_smallbusinesstype { get; set; } // optional OptionSet TODO: uncomment
+        public int? dfa_farmtype { get; set; } // optional OptionSet TODO: uncomment
         public int dfa_doyouhaveinsurancecoverage2 { get; set; } // required
         public string dfa_appcontactid { get; set; } // required string passed in to PROC, PROC looks up appcontact to fill in application fields
         public int dfa_primaryapplicantsignednoins { get; set; } // required Yes or No option set
@@ -186,10 +186,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int dfa_secondaryapplicantsigned { get; set; } // required Two Options
         public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
         public int? dfa_wereyouevacuatedduringtheevent2 { get; set; } // optional boolean
-        // public int? dfa_charityregistered { get; set; } // optional Option set TODO: uncomment when new field added to dynamics
-        // public int? dfa_charityexistsatleast12months { get; set; } // optional Option set uncomment when new field added to dynamics
-        // public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set uncomment when new field added to dynamics
-
+        public int? dfa_charityregistered { get; set; } // optional Option set TODO: uncomment when new field added to dynamics
+        public int? dfa_charityexistsatleast12months { get; set; } // optional Option set uncomment when new field added to dynamics
+        public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set uncomment when new field added to dynamics
+        public string? dfa_accountlegalname { get; set; } // optional string
+        public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } //optional Option set
+        public int? dfa_grossrevenues100002000000beforedisaster { get; set; } // optional Option set
+        public int? dfa_employlessthan50employeesatanyonetime { get; set; } // optional Option set
+        public int? dfa_farmoperation { get; set; } // optional Option set
+        public int? dfa_ownedandoperatedbya { get; set; } // optional Option set
+        public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optional Option set
         public bool delete { get; set; } // delete or not
     }
 
@@ -254,9 +260,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_farmoperation { get; set; } // optoinal Option Set
         public int? dfa_ownedandoperatedbya { get; set; } // optoinal Option Set
         public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optoinal Option Set
-        // public int? dfa_charityregistered { get; set; } // optional Option set
-        // public int? dfa_charityexistsatleast12months { get; set; } // optional Option set
-        // public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set
+        public int? dfa_charityregistered { get; set; } // optional Option set
+        public int? dfa_charityexistsatleast12months { get; set; } // optional Option set
+        public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set
         public string? createdon { get; set; } // optional string
     }
 
