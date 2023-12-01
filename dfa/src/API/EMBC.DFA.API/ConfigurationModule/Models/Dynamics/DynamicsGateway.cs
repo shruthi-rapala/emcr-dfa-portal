@@ -302,7 +302,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id"
+                        "dfa_eventid", "dfa_id", "dfa_eventname"
                     }
                 });
 
@@ -346,7 +346,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_dateofdamage = objApp.dfa_dateofdamage,
                                    dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
                                    dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                                   dfa_event = objAppEvent != null ? objAppEvent.dfa_id : null,
+                                   dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
                                    dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
                                    dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
                                    dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
