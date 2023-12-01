@@ -141,7 +141,7 @@ export class CanAddressComponent implements OnInit {
     //console.log(searchstring.length + "::::" + searchstring);
 
     //console.log('JSON.stringify(obj): ' + JSON.stringify(addr1.value));
-    var url = 'http://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/Find/v2.10/json3.ws';
+    var url = 'https://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/Find/v2.10/json3.ws';
     var params = '';
     params += "&Key=" + encodeURIComponent('ea53-hg74-kb59-ym41');
     params += "&SearchTerm=" + encodeURIComponent(searchstring);
@@ -230,7 +230,7 @@ export class CanAddressComponent implements OnInit {
     //console.log(IdVal.length + "::::" + IdVal);
 
     //console.log('JSON.stringify(obj): ' + JSON.stringify(IdVal));
-    var url = 'http://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/Retrieve/v2.11/json3.ws';
+    var url = 'https://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/Retrieve/v2.11/json3.ws';
     var params = '';
     params += "&Key=" + encodeURIComponent('ea53-hg74-kb59-ym41');
     params += "&Id=" + encodeURIComponent(IdVal);
