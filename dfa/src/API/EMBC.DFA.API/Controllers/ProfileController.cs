@@ -247,6 +247,7 @@ namespace EMBC.DFA.API.Controllers
         public string? BCServiceCardId { get; set; }
 
         public string? lastUpdatedDateBCSC { get; set; }
+        public bool? isMailingAddressVerified { get; set; }
     }
 
     /// <summary>

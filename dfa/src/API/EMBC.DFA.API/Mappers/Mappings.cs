@@ -45,6 +45,7 @@ namespace EMBC.DFA.API.Mappers
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == SameAddressOptionSet.Yes.ToString().ToLower() ? Convert.ToInt32(SameAddressOptionSet.Yes) :
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == SameAddressOptionSet.No.ToString().ToLower() ? Convert.ToInt32(SameAddressOptionSet.No) : Convert.ToInt32(SameAddressOptionSet.NoAddress))) : Convert.ToInt32(SameAddressOptionSet.NoAddress))))
                 .ForMember(d => d.dfa_lastdateupdated, opts => opts.MapFrom(s => s.lastUpdatedDateBCSC))
+                .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s => s.MailingAddress.isAddressVerified == null ? (int?)null : (s.MailingAddress.isAddressVerified == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ReverseMap()
                 .ForMember(d => d.Id, opts => opts.MapFrom(s => s.dfa_appcontactid))
                 .ForMember(d => d.IsMailingAddressSameAsPrimaryAddress, opts => opts.MapFrom(s => (s.dfa_isprimaryandsecondaryaddresssame.HasValue ?
@@ -116,6 +117,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_damagedpropertypostalcode, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.postalCode))
                 .ForMember(d => d.dfa_damagedpropertyprovince, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.stateProvince))
                 .ForMember(d => d.dfa_isprimaryanddamagedaddresssame2, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.isPrimaryAndDamagedAddressSame == null ? (int?)null : (s.OtherPreScreeningQuestions.isPrimaryAndDamagedAddressSame == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_damagedpropertyaddresscanadapostverified, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.isDamagedAddressVerified == null ? (int?)null : (s.OtherPreScreeningQuestions.isDamagedAddressVerified == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 //.ForMember(d => d.dfa_eventid, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.eventId)) // TO DO : uncomment
                 //.ForMember(d => d.dfa_doyourlossestotalmorethan10002, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.lossesExceed1000 == null ? (int?)null : (s.OtherPreScreeningQuestions.lossesExceed1000 == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.OtherPreScreeningQuestions.damageFromDate));

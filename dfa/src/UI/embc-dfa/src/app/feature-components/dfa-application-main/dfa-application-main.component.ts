@@ -272,7 +272,6 @@ export class DFAApplicationMainComponent
       .get('ninetyDayDeadline')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
-        debugger
         if (value) {
           this.ninetyDayDeadline = value;
           let date = new Date(value);

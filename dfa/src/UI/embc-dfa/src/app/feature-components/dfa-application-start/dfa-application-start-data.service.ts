@@ -25,6 +25,8 @@ export class DFAApplicationStartDataService {
   private _damageFromDate: string;
   private _eventId: string;
   private _isPrimaryAndDamagedAddressSame: boolean;
+  private _isDamagedAddressVerified: boolean;
+  private _isMailingAddressVerified: boolean;
 
   constructor(
   ) {}
@@ -97,6 +99,20 @@ export class DFAApplicationStartDataService {
   }
   public set isPrimaryAndDamagedAddressSame(value: boolean) {
     this._isPrimaryAndDamagedAddressSame = value;
+  }
+
+  public get isDamagedAddressVerified(): boolean {
+    return this._isDamagedAddressVerified;
+  }
+  public set isDamagedAddressVerified(value: boolean) {
+    this._isDamagedAddressVerified = value;
+  }
+
+  public get isMailingAddressVerified(): boolean {
+    return this._isMailingAddressVerified;
+  }
+  public set isMailingAddressVerified(value: boolean) {
+    this._isMailingAddressVerified = value;
   }
 
   public get consent(): boolean {
@@ -200,7 +216,8 @@ export class DFAApplicationStartDataService {
         damageCausedByDisaster: this.damageCausedByDisaster,
         lossesExceed1000: this.lossesExceed1000,
         damageFromDate: this.damageFromDate,
-        eventId: this.eventId
+        eventId: this.eventId,
+        isDamagedAddressVerified: this.isDamagedAddressVerified
       }
     };
   }

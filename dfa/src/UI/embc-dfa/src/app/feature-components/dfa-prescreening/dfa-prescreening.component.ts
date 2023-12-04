@@ -116,6 +116,7 @@ export class DFAPrescreeningComponent
       damageFromDate: this.form.get('damageFromDate').value,
       damageCausedByDisaster: this.form.get('damageCausedByDisaster').value == 'true' ? true : (this.form.get('damagedCausedByDisaster').value == 'false' ? false : null),
       isPrimaryAndDamagedAddressSame: this.form.get('isPrimaryAndDamagedAddressSame').value == 'true' ? true : (this.form.get('isPrimaryAndDamagedAddressSame').value == 'false' ? false : null),
+      isDamagedAddressVerified: this.form.get('isDamagedAddressVerified').value == 'true' ? true : (this.form.get('isDamagedAddressVerified').value == 'false' ? false : null),
       lossesExceed1000: this.form.get('lossesExceed1000').value == 'true' ? true : (this.form.get('lossesExceed1000').value == 'false' ? false : null),
       profileId: this.form.get('profileId').value,
     }

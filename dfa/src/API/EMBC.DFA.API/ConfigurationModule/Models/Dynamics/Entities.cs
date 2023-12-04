@@ -50,6 +50,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_isprimaryandsecondaryaddresssame { get; set; }
         public string dfa_appcontactid { get; set; }
         public string? dfa_lastdateupdated { get; set; }
+        public int? dfa_mailingaddresscanadapostverified { get; set; }
     }
 
     public class dfa_appcontact_extended : dfa_appcontact
@@ -78,6 +79,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_damagedpropertyprovince { get; set; } // optional string
         public string? dfa_damagedpropertypostalcode { get; set; } // optional string
         public string? dfa_dateofdamage { get; set; } // optoinal date only
+        public int? dfa_damagedpropertyaddresscanadapostverified { get; set; } // optional Two Options
     }
 
     public class temp_dfa_appapplicationstart_params

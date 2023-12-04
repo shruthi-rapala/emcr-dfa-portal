@@ -20,6 +20,7 @@ namespace EMBC.DFA.API.Controllers
         public string? StateProvince { get; set; }
 
         public string? PostalCode { get; set; }
+        public bool? isAddressVerified { get; set; }
     }
 
     /// <summary>
@@ -120,6 +121,7 @@ namespace EMBC.DFA.API.Controllers
         public bool? lossesExceed1000 { get; set; }
         public bool? damageCausedByDisaster { get; set; }
         public string? eventId { get; set; }
+        public bool? isDamagedAddressVerified { get; set; }
     }
 
     /// <summary>

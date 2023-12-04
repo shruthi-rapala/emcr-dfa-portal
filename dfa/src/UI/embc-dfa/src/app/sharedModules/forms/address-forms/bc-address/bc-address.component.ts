@@ -257,6 +257,7 @@ export class BcAddressComponent implements OnInit, AfterViewChecked {
                   self.myControl.setValue("");
                   self.addressFormControl.community.setValue("");
                   //self.addressFormControl.myControl.setValue('');
+                  self.addressFormControl.isDamagedAddressVerified.setValue('false');
                   self.isCanadaPostValidated = 'false';
                   self.addressMatchResponse = "Unable to validate the address";
                 }
@@ -320,6 +321,7 @@ export class BcAddressComponent implements OnInit, AfterViewChecked {
               self.addressFormControl.stateProvince.setValue(response.Items[0].Province);
               self.addressFormControl.postalCode.setValue(response.Items[0].PostalCode);
               self.selectedAddress = responeAddress;
+              self.addressFormControl.isDamagedAddressVerified.setValue('true');
 
               self.isCanadaPostValidated = 'true';
               self.addressMatchResponse = "Validated against Canada Post";
@@ -328,6 +330,7 @@ export class BcAddressComponent implements OnInit, AfterViewChecked {
 
               if (responeAddress.replace(/ /g, '') == inputTextVal.replace(/ /g, '') && self.isCanadaPostValidated != 'true') {
                 self.isCanadaPostValidated = 'true';
+                self.addressFormControl.isDamagedAddressVerified.setValue('true');
                 self.addressMatchResponse = "Validated against Canada Post";
               }
               //else if (!self.isCanadaPostValidated) {

@@ -204,6 +204,7 @@ export class CanAddressComponent implements OnInit {
                 self.myControl.setValue("");
                 self.addressFormControl.community.setValue("");
                 //self.addressFormControl.myControl.setValue('');
+                self.addressFormControl.isAddressVerified.setValue(false);
                 self.isCanadaPostValidated = 'false';
                 self.addressMatchResponse = "Unable to validate the address";
               }
@@ -268,6 +269,7 @@ export class CanAddressComponent implements OnInit {
               self.addressFormControl.postalCode.setValue(response.Items[0].PostalCode ?
                 response.Items[0].PostalCode.replace(/ /g, '') : response.Items[0].PostalCode);
               self.selectedAddress = responeAddress;
+              self.addressFormControl.isAddressVerified.setValue(true);
 
               self.isCanadaPostValidated = 'true';
               self.addressMatchResponse = "Validated against Canada Post";
@@ -275,6 +277,7 @@ export class CanAddressComponent implements OnInit {
             else {
 
               if (responeAddress.replace(/ /g, '') == inputTextVal.replace(/ /g, '') && self.isCanadaPostValidated != 'true') {
+                self.addressFormControl.isAddressVerified.setValue(true);
                 self.isCanadaPostValidated = 'true';
                 self.addressMatchResponse = "Validated against Canada Post";
               }
