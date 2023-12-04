@@ -193,7 +193,8 @@ export class LocationService {
       community: addressObject.city,
       stateProvince: addressObject.stateProvince ? addressObject.stateProvince : "BC",
       postalCode: addressObject.postalCode,
-      country: { code: 'CAN', name: 'Canada' }
+      country: { code: 'CAN', name: 'Canada' },
+      isAddressVerified: addressObject.isAddressVerified
     };
   }
 
@@ -213,7 +214,8 @@ export class LocationService {
         //  ? addressObject.community
         //  : null,
       postalCode: addressObject.postalCode,
-      stateProvince: addressObject.stateProvince
+      stateProvince: addressObject.stateProvince,
+      isAddressVerified: addressObject.isAddressVerified
         //addressObject.stateProvince === null ||
         //addressObject.stateProvince === undefined
         //  ? null

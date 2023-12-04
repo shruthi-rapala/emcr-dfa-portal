@@ -131,6 +131,7 @@ export class DFAApplicationStartComponent
     this.dfaApplicationStartDataService.postalCode = this.dfaPrescreeningDataService.dfaPrescreening.postalCode;
     this.dfaApplicationStartDataService.stateProvince = this.dfaPrescreeningDataService.dfaPrescreening.stateProvince;
     this.dfaApplicationStartDataService.isPrimaryAndDamagedAddressSame = this.dfaPrescreeningDataService.dfaPrescreening.isPrimaryAndDamagedAddressSame;
+    this.dfaApplicationStartDataService.isDamagedAddressVerified = this.dfaPrescreeningDataService.dfaPrescreening.isDamagedAddressVerified;
     this.dfaApplicationStartDataService.damageCausedByDisaster = this.dfaPrescreeningDataService.dfaPrescreening.damageCausedByDisaster;
     this.dfaApplicationStartDataService.damageFromDate = this.dfaPrescreeningDataService.dfaPrescreening.damageFromDate;
     this.dfaApplicationStartDataService.eventId = this.dfaPrescreeningDataService.dfaPrescreening.eventId;

@@ -229,6 +229,13 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
           this.prescreeningForm.get('eventId').reset();
       });
 
+    this.prescreeningForm
+      .get('isDamagedAddressVerified')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '')
+          this.prescreeningForm.get('isDamagedAddressVerified').reset();
+      });
   }
 
   getProfileAddress() {

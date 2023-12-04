@@ -21,6 +21,7 @@ export class DfaPrescreening {
   damageCausedByDisaster?: null | boolean;
   damageFromDate?: null | string;
   eventId?: null | string;
+  isDamagedAddressVerified?: null | boolean;
 
   constructor(
     applicantOption?: ApplicantOption,
@@ -36,7 +37,8 @@ export class DfaPrescreening {
     stateProvince?: null | string,
     damageCausedByDisaster?: null | boolean,
     damageFromDate?: null | string,
-    eventId?: null | string
+    eventId?: null | string,
+    isDamagedAddressVerified?: null | boolean
     ) {}
 }
 
@@ -48,6 +50,7 @@ export class DfaPrescreeningForm {
   stateProvince = new UntypedFormControl();
   postalCode = new UntypedFormControl();
   isPrimaryAndDamagedAddressSame = new UntypedFormControl();
+  isDamagedAddressVerified = new UntypedFormControl();
   applicantOption = new UntypedFormControl();
   insuranceOption = new UntypedFormControl();
   lossesExceed1000 = new UntypedFormControl();
@@ -146,5 +149,10 @@ export class DfaPrescreeningForm {
       this.eventId.setValue(prescreening.eventId);
     }
     this.eventId.setValidators([Validators.required]);
+
+    if (prescreening.isDamagedAddressVerified) {
+      this.isDamagedAddressVerified.setValue(prescreening.isDamagedAddressVerified);
+    }
+    
   }
 }
