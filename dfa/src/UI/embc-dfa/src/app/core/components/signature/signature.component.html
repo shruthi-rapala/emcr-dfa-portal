@@ -35,6 +35,7 @@
           [(ngModel)]="signatureBlock.signedName"
           placeholder="Print Name*"
           maxlength="100"
+          [disabled]="isReadOnly === true"
         />
         <mat-error
                 *ngIf="
@@ -55,6 +56,7 @@
           [readonly]="isReadOnly === true"
           [(ngModel)]="signatureBlock.dateSigned"
           (dateChange)="updateSignatureBlock()"
+          [disabled]="isReadOnly === true"
           style="width:100%">
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matSuffix [for]="datePicker" [disabled]="isReadOnly === true"></mat-datepicker-toggle>

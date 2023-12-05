@@ -115,6 +115,10 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
           this.signAndSubmitForm.get('secondaryApplicantSignature').updateValueAndValidity();
           this.signAndSubmitForm.updateValueAndValidity();
         });
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.signAndSubmitForm.disable();
+    }
   }
 
   /**

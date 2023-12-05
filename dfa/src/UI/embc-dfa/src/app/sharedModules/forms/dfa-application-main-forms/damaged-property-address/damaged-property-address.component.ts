@@ -220,7 +220,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
         }
       });
     });
-
+    
     this.damagedPropertyAddressForm
       .get('addressLine1')
       .valueChanges.pipe(distinctUntilChanged())
@@ -476,6 +476,10 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     this.onUseProfileAddressChoice(false);
 
     this.getDamagedPropertyForApplication(this.dfaApplicationMainDataService.getApplicationId());
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.damagedPropertyAddressForm.disable();
+    }
   }
 
   getDamagedPropertyForApplication(applicationId: string) {
@@ -483,7 +487,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       next: (dfaApplicationMain) => {
         //console.log('dfaApplicationMain: ' + JSON.stringify(dfaApplicationMain))
         if (dfaApplicationMain.notifyUser == true) {
-          this.notifyAddressChange();
+          //this.notifyAddressChange();
         }
         this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);
       },
@@ -594,7 +598,9 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .afterClosed()
       .subscribe((result) => {
         //if (result === 'confirm') {
-
+        if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+          this.damagedPropertyAddressForm.disable();
+        }
         //}
       });
   }

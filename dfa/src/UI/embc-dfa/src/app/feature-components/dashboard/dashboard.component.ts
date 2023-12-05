@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private eventService: EligibilityService,
   ) {
-    this.sixtyOneDaysAgo = new Date().getDate()-61;
+    this.sixtyOneDaysAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 61)).getTime()
   }
 
   ngOnInit(): void {
@@ -128,9 +128,11 @@ export class DashboardComponent implements OnInit {
     let lstApplications = res;
     this.currentApplicationsCount = 0; this.pastApplicationsCount = 0;
     lstApplications.forEach(x => {
-      if ((x.status.toLowerCase() === "dfa decision made"
+      if (
+        (x.status.toLowerCase() === "dfa decision made"
         || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
-        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) {
+        &&
+        (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getTime()))) {
           this.pastApplicationsCount++;
       } else this.currentApplicationsCount++;
     })
