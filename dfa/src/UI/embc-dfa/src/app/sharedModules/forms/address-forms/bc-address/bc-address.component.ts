@@ -169,8 +169,8 @@ export class BcAddressComponent implements OnInit, AfterViewChecked {
   public SelectCity(optionObj, inputText): void {
     var textVal = inputText == 'input' ? optionObj.srcElement.value : optionObj.name;
     //console.log('optionObj.name: ' + optionObj.name)
-    this.addressFormControl.community.setValue(textVal);
-    this.addressFormControl.city.setValue(textVal);
+    this.addressFormControl.community?.setValue(textVal);
+    this.addressFormControl.city?.setValue(textVal);
   }
 
   public selectOption(objSelectedVal, objResponseText): void {

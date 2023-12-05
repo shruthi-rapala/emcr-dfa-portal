@@ -346,6 +346,7 @@ namespace EMBC.DFA.API.Controllers
         public bool? charityProvidesCommunityBenefit { get; set; }
         public bool? charityExistsAtLeast12Months { get; set; }
         public bool? charityRegistered { get; set; }
+        public bool? isDamagedAddressVerified { get; set; }
     }
 
     /// <summary>

@@ -19,6 +19,7 @@ export interface DamagedPropertyAddress {
   farmoperationderivesthatpersonsmajorincom?: null | boolean;
   firstNationsReserve?: null | string;
   grossRevenues100002000000BeforeDisaster?: null | boolean;
+  isDamagedAddressVerified?: null | boolean;
   isPrimaryAndDamagedAddressSame?: null | boolean;
   landlordEmail?: null | string;
   landlordGivenNames?: null | string;

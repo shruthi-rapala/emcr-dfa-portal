@@ -35,6 +35,7 @@ export class DamagedPropertyAddress {
   charityExistsAtLeast12Months?: null | boolean;
   charityProvidesCommunityBenefit?: null | boolean;
   charityRegistered?: null | boolean;
+  isDamagedAddressVerified?: null | boolean;
 
   constructor(
     addressLine1?: string,
@@ -64,6 +65,8 @@ export class DamagedPropertyAddress {
     charityExistsAtLeast12Months?: null | boolean,
     charityProvidesCommunityBenefit?: null | boolean,
     charityRegistered?: null | boolean,
+    isDamagedAddressVerified?: null | boolean,
+
     ) {}
 }
 
@@ -94,6 +97,7 @@ export class DamagedPropertyAddressForm {
   charityExistsAtLeast12Months = new UntypedFormControl();
   charityProvidesCommunityBenefit = new UntypedFormControl();
   charityRegistered = new UntypedFormControl();
+  isDamagedAddressVerified = new UntypedFormControl();
 
   constructor(
     damagedPropertyAddress: DamagedPropertyAddress,
@@ -246,6 +250,10 @@ export class DamagedPropertyAddressForm {
       this.charityRegistered.setValue(damagedPropertyAddress.charityRegistered);
     }
     this.charityRegistered.setValidators(null);
+
+    if (damagedPropertyAddress.isDamagedAddressVerified) {
+      this.isDamagedAddressVerified.setValue(damagedPropertyAddress.isDamagedAddressVerified);
+    }
   }
 }
 
