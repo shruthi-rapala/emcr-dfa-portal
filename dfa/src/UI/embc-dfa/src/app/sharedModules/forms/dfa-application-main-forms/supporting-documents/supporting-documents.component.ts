@@ -160,6 +160,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       .pipe(
         mapTo(_documentSummaryFormArray.getRawValue())
         ).subscribe(data => this.documentSummaryDataSource.data = _documentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false));
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.supportingDocumentsForm.disable();
+      this.fileUploadForm.disable();
+    }
   }
 
   // Preserve original property order

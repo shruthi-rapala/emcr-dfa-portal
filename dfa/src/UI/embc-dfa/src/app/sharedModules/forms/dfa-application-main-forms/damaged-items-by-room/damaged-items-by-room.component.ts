@@ -152,6 +152,10 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
          ).subscribe(data => this.damagePhotosDataSource.data = _damagePhotosFormArray.getRawValue()?.filter(x => x.fileType ===Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false));
 
     this.initDamagePhoto();
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.damagePhotosForm.disable();
+    }
   }
 
   getDamagedRoomsForApplication(applicationId: string) {

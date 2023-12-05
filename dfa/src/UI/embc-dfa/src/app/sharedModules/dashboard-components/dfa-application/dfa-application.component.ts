@@ -48,7 +48,7 @@ export class DfaApplicationComponent implements OnInit {
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.appType = this.route.snapshot.data["apptype"];
-    this.sixtyOneDaysAgo = new Date().getDate()-61;
+    this.sixtyOneDaysAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 61)).getTime()
   }
 
   ngOnInit(): void {
@@ -95,9 +95,11 @@ export class DfaApplicationComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.lstApplications = res;
     this.lstApplications.forEach(x => {
-      if ((x.status.toLowerCase() === "dfa decision made"
-        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
-        && (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getDate()))) {
+      if (
+        (x.status.toLowerCase() === "dfa decision made"
+          || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
+        &&
+        (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getTime()))) {
           x.currentApplication = false;
       } else x.currentApplication = true;
     })
@@ -116,7 +118,7 @@ export class DfaApplicationComponent implements OnInit {
     this.dfaApplicationMainDataService.setApplicationId(applItem.applicationId);
     this.dfaApplicationStartDataService.setApplicationId(applItem.applicationId);
 
-    if (applItem.primaryApplicantSignedDate == null) {
+    if (applItem.primaryApplicantSignedDate == null && applItem.currentApplication != false) {
       this.dfaApplicationMainDataService.setViewOrEdit('update');
     }
     else if (applItem.currentApplication === true) {

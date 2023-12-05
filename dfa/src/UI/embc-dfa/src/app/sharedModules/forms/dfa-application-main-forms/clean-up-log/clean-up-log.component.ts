@@ -132,6 +132,10 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
          ).subscribe(data => this.cleanUpWorkFileDataSource.data = _cleanUpWorkFileFormArray.getRawValue()?.filter(x => x.fileType === "Cleanup" && x.deleteFlag === false));
 
     this.initCleanUpWorkFiles();
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.cleanUpWorkFilesForm.disable();
+    }
   }
 
   getCleanUpLogsForApplication(applicationId: string) {

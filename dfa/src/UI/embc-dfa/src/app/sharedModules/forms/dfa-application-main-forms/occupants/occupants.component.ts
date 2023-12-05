@@ -139,6 +139,10 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       .get('addNewSecondaryApplicantIndicator')
       .valueChanges.subscribe((value) => this.updateSecondaryApplicantOnVisibility());
     this.getSecondaryApplicantsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.secondaryApplicantsForm.disable();
+    }
   }
 
   getSecondaryApplicantsForApplication(applicationId: string) {

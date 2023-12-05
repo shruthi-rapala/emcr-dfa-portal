@@ -227,6 +227,10 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
           this.propertyDamageForm.get('residingInResidence').reset();
         }
       });
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.propertyDamageForm.disable();
+    }
   }
 
   validateFormCauseOfDamage(form: FormGroup) {
