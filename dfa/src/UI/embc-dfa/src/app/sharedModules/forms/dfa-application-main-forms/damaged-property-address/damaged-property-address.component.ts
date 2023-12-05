@@ -486,9 +486,9 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
       next: (dfaApplicationMain) => {
         //console.log('dfaApplicationMain: ' + JSON.stringify(dfaApplicationMain))
-        if (dfaApplicationMain.notifyUser == true) {
-          //this.notifyAddressChange();
-        }
+        //if (dfaApplicationMain.notifyUser == true) {
+        //  //this.notifyAddressChange();
+        //}
         this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);
       },
       error: (error) => {
