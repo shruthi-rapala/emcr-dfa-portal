@@ -49,6 +49,7 @@ export class DFAApplicationMainMappingService {
           charityRegistered: dfaApplicationMain.damagedPropertyAddress.charityRegistered === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityRegistered === false ? 'false' : null),
           charityExistsAtLeast12Months: dfaApplicationMain.damagedPropertyAddress.charityExistsAtLeast12Months === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityExistsAtLeast12Months === false ? 'false' : null),
           charityProvidesCommunityBenefit: dfaApplicationMain.damagedPropertyAddress.charityProvidesCommunityBenefit === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityProvidesCommunityBenefit === false ? 'false' : null),
+          isDamagedAddressVerified: dfaApplicationMain.damagedPropertyAddress.isDamagedAddressVerified === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.isDamagedAddressVerified === false ? 'false' : null),
         });
         formGroup = damagedPropertyAddress;
       });

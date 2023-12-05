@@ -199,6 +199,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_ownedandoperatedbya { get; set; } // optional Option set
         public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optional Option set
         public bool delete { get; set; } // delete or not
+        public int? dfa_damagedpropertyaddresscanadapostverified { get; set; } // optional Two Options
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
