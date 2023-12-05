@@ -36,6 +36,21 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p class="sub-heading" style="font-size: 15px">
+              Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?<span style="color:red" >*</span>
+            </p>
+            <mat-radio-group
+              formControlName="lossesExceed1000"
+              class="primary-radio-group horizontal-radio-group"
+              required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div><br/><br/>
+        
         <div class="row" *ngIf="isHomeowner === true || isResidentialTenant === true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
@@ -57,23 +72,6 @@
             </div>
           </div>
         </div>
-
-        
-        <div class="row">
-          <div class="col-md-12 bottomspace">
-            <p class="sub-heading" style="font-size: 15px">
-              Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?<span style="color:red" >*</span>
-            </p>
-            <mat-radio-group
-              formControlName="lossesExceed1000"
-              class="primary-radio-group horizontal-radio-group"
-              required
-              aria-label="Select an option">
-              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div><br/><br/>
-
 
         <div class="row" *ngIf="isSmallBusinessOwner == true">
           <div class="col-md-12 bottomspace">
