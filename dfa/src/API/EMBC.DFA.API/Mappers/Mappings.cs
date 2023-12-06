@@ -46,6 +46,7 @@ namespace EMBC.DFA.API.Mappers
                                                 (s.IsMailingAddressSameAsPrimaryAddress.ToLower() == SameAddressOptionSet.No.ToString().ToLower() ? Convert.ToInt32(SameAddressOptionSet.No) : Convert.ToInt32(SameAddressOptionSet.NoAddress))) : Convert.ToInt32(SameAddressOptionSet.NoAddress))))
                 .ForMember(d => d.dfa_lastdateupdated, opts => opts.MapFrom(s => s.lastUpdatedDateBCSC))
                 .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s => s.MailingAddress.isAddressVerified == null ? (int?)null : (s.MailingAddress.isAddressVerified == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s => s.PrimaryAddress.isAddressVerified == null ? true : true))
                 .ReverseMap()
                 .ForMember(d => d.Id, opts => opts.MapFrom(s => s.dfa_appcontactid))
                 .ForMember(d => d.IsMailingAddressSameAsPrimaryAddress, opts => opts.MapFrom(s => (s.dfa_isprimaryandsecondaryaddresssame.HasValue ?

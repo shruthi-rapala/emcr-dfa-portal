@@ -89,6 +89,7 @@ export class ProfileMappingService {
               this.profileDataService.primaryAddressDetails.stateProvince,
             postalCode: this.profileDataService.primaryAddressDetails.postalCode,
             country: null,
+            isAddressVerified: true
           },
           isBcAddress: null,
           isNewMailingAddress: null,
@@ -99,7 +100,8 @@ export class ProfileMappingService {
             community: null,
             stateProvince: null,
             country: null,
-            postalCode: null
+            postalCode: null,
+            isAddressVerified: false
           }
         });
       });
