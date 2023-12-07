@@ -245,6 +245,7 @@ export class DFAApplicationMainComponent
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (this.vieworedit === 'view' || this.vieworedit === 'edit' || this.vieworedit === 'viewOnly') {
+          this.dfaApplicationMainDataService.setViewOrEdit(this.vieworedit);
           for (var i = 0; i <= 7; i++) {
             this.dfaApplicationMainStepper.selected.completed = true;
             this.dfaApplicationMainStepper.next();
