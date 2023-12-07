@@ -140,6 +140,13 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       .valueChanges.subscribe((value) => this.updateSecondaryApplicantOnVisibility());
     this.getSecondaryApplicantsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
+    if (this.vieworedit === 'view'
+      || this.vieworedit === 'edit'
+      || this.vieworedit === 'viewOnly') {
+        this.secondaryApplicantsForm.disable();
+        this.fullTimeOccupantsForm.disable();
+      }
+
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
       this.secondaryApplicantsForm.disable();
     }
