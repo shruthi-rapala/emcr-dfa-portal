@@ -138,6 +138,12 @@ export const charityno12months: DialogContent = {
   confirmButton: 'Yes, Continue my Application'
 }
 
+export const charityBCSocietiesAct: DialogContent = {
+  text: '<p>Your charitable organization must be registered under the BC Societies Act.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Is your charitable organization registered under the BC Societies Act?</b></p>',
+  cancelButton: 'No, Save & Close my Application',
+  confirmButton: 'Yes, Continue my Application'
+}
+
 export const wrongGrossRevenues: DialogContent = {
   text: '<p>To be eligible for DFA, the gross revenue of your business must be more than $10,000 but less than $2 million in the year before the disaster.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Are the gross revenues of the business more than $10,000 but less than $2 million in the year before the disaster?</b></p>',
   cancelButton: 'No, Save & Close my Application',

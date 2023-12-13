@@ -436,6 +436,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       .subscribe((value) => {
         if (value === '') {
           this.damagedPropertyAddressForm.get('charityRegistered').reset();
+        } else if (value === 'false') {
+          this.dontContinueApplication(globalConst.charityBCSocietiesAct, "charityRegistered");
         }
       });
 
