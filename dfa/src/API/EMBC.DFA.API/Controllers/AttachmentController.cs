@@ -44,7 +44,6 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [RequestSizeLimit(100000000)]
         public async Task<ActionResult<string>> UpsertDeleteAttachment(FileUpload fileUpload)
         {
             if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
