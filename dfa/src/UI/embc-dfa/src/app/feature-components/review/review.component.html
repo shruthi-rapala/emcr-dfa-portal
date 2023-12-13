@@ -656,12 +656,12 @@
         </div>
         <div class="row info-detail" *ngIf="isSmallBusinessOwner || isFarmOwner || isCharitableOrganization">
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isSmallBusinessOwner">Business legal name:</span>
-            <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isFarmOwner">Farm legal name:</span>
-            <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isCharitableOrganization">Charitable organization legal name:</span>
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isSmallBusinessOwner">Business legal name:</span>
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isFarmOwner">Farm legal name:</span>
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isCharitableOrganization">Charitable organization legal name:</span>
           </div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls?.businessLegalName.invalid}">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}">
               {{
                 (formCreationService.damagedPropertyAddressForm$ | async)?.value
                   .businessLegalName ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
