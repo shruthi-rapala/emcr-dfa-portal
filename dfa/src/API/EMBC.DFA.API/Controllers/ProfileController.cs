@@ -114,13 +114,13 @@ namespace EMBC.DFA.API.Controllers
             var appContactProfile = await handler.HandleGetUser(userId);
 
             // get BCSC profile
-            var bcscProfile = GetUserFromPrincipal();
+            //var bcscProfile = GetUserFromPrincipal();
 
-            // update appContact details from BCSC login
-            appContactProfile.ContactDetails.Email = bcscProfile.ContactDetails.Email;
-            appContactProfile.PersonalDetails.FirstName = bcscProfile.PersonalDetails.FirstName;
-            appContactProfile.PersonalDetails.LastName = bcscProfile.PersonalDetails.LastName;
-            appContactProfile.PrimaryAddress = bcscProfile.PrimaryAddress;
+            //// update appContact details from BCSC login
+            //appContactProfile.ContactDetails.Email = bcscProfile.ContactDetails.Email;
+            //appContactProfile.PersonalDetails.FirstName = bcscProfile.PersonalDetails.FirstName;
+            //appContactProfile.PersonalDetails.LastName = bcscProfile.PersonalDetails.LastName;
+            //appContactProfile.PrimaryAddress = bcscProfile.PrimaryAddress;
 
             return Ok(appContactProfile);
         }
