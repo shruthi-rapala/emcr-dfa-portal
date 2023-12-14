@@ -196,7 +196,7 @@ export class BcAddressComponent implements OnInit, AfterViewChecked {
       //console.log('JSON.stringify(obj): ' + JSON.stringify(addr1.value));
       var url = 'https://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/Find/v2.10/json3.ws';
       var params = '';
-      params += "&Key=" + encodeURIComponent('ma59-na36-xb12-am61');
+      params += "&Key=" + encodeURIComponent('uj94-ae11-tj88-cd39');
       params += "&SearchTerm=" + encodeURIComponent(searchstring);
       params += "&LastId=" + encodeURIComponent('');
       params += "&SearchFor=" + encodeURIComponent('Everything');
@@ -219,7 +219,7 @@ export class BcAddressComponent implements OnInit, AfterViewChecked {
         http.onreadystatechange = function () {
 
           if (http.readyState == 4 && http.status == 200) {
-            //console.log(http.responseText);
+            console.log(http.responseText);
             var response = JSON.parse(http.responseText);
             // Test for an error
             if (response.Items.length == 1 && typeof (response.Items[0].Error) != "undefined") {
@@ -286,7 +286,7 @@ export class BcAddressComponent implements OnInit, AfterViewChecked {
     //console.log('JSON.stringify(obj): ' + JSON.stringify(IdVal));
     var url = 'https://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/Retrieve/v2.11/json3.ws';
     var params = '';
-    params += "&Key=" + encodeURIComponent('ma59-na36-xb12-am61');
+    params += "&Key=" + encodeURIComponent('uj94-ae11-tj88-cd39');
     params += "&Id=" + encodeURIComponent(IdVal);
     var self = this;
     var http = new XMLHttpRequest();
@@ -296,7 +296,7 @@ export class BcAddressComponent implements OnInit, AfterViewChecked {
       if (http.readyState == 4 && http.status == 200) {
 
         var response = JSON.parse(http.responseText);
-        //console.log('Id response: ' + http.responseText)
+        console.log('Id response: ' + http.responseText)
         // Test for an error
         if (response.Items.length == 1 && typeof (response.Items[0].Error) != "undefined") {
           // Show the error message
