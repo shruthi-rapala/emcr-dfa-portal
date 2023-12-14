@@ -9,6 +9,7 @@ export interface CurrentApplication {
   dateFileClosed?: string;
   dateOfDamage?: string;
   eventId?: string;
+  isErrorInStatus?: boolean;
   primaryApplicantSignedDate?: string;
   status?: string;
   statusBar?: Array<StatusBar>;

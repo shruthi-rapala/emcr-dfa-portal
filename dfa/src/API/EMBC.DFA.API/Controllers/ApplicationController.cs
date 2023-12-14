@@ -261,6 +261,7 @@ namespace EMBC.DFA.API.Controllers
         public string Status { get; set; }
         public List<StatusBar> StatusBar { get; set; }
         public string StatusLastUpdated { get; set; }
+        public bool IsErrorInStatus { get; set; }
     }
 
     public class StatusBar
@@ -268,5 +269,7 @@ namespace EMBC.DFA.API.Controllers
         public string Label { get; set; }
         public bool IsCompleted { get; set; }
         public bool CurrentStep { get; set; }
+        public bool IsFinalStep { get; set; }
+        public bool IsErrorInStatus { get; set; }
     }
 }
