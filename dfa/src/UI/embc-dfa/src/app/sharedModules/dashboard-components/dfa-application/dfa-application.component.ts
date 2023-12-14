@@ -20,16 +20,18 @@ export class DfaApplicationComponent implements OnInit {
   }
 
   items = [
-    { label: "Draft Application", isCompleted: false, currentStep: false },
-    { label: "Submitted Application", isCompleted: false, currentStep: false },
-    { label: "Reviewing Application", isCompleted: false, currentStep: false },
-    { label: "Creating Case File", isCompleted: false, currentStep: false },
-    { label: "Confirming Eligibility", isCompleted: false, currentStep: false },
-    { label: "Assessing Damage", isCompleted: false, currentStep: false },
-    { label: "Reviewing Damage Report", isCompleted: false, currentStep: false },
-    { label: "DFA Decision made", isCompleted: false, currentStep: false },
+    { label: "Draft Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { label: "Submitted Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { label: "Reviewing Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { label: "Creating Case File", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { label: "Checking Criteria", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { label: "Assessing Damage", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { label: "Reviewing Damage Report", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { label: "DFA Making Decision", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { label: "DFA Decision Made", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
   ];
   lstApplications: ApplicationExtended[] = [];
+  matchStatusFound = false;
   isLinear = true;
   current = 1;
   public appType: string;
@@ -57,19 +59,32 @@ export class DfaApplicationComponent implements OnInit {
       next: (lstData) => {
         if (lstData != null) {
           var lstDataModified = [];
+          var lstDataUnModified = [];
+          var initialList = lstData;
+          lstDataUnModified.push(initialList);
           lstData.forEach(objApp => {
             var isFound = false;
             var jsonVal = JSON.stringify(this.items);
+            objApp.isErrorInStatus = false;
             objApp.statusBar = JSON.parse(jsonVal);
             objApp.statusBar.forEach(objStatItem => {
-
               if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
                 objStatItem.currentStep = true;
                 isFound = true
+                this.matchStatusFound = true;
               }
 
               if (isFound == false) {
                 objStatItem.isCompleted = true;
+              }
+
+              if (objStatItem.isFinalStep == true) {
+                if (isFound == false) {
+                  objApp.isErrorInStatus = true;
+                }
+                else if (objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+                  objStatItem.isCompleted = true;
+                }
               }
 
             });
@@ -78,7 +93,6 @@ export class DfaApplicationComponent implements OnInit {
           })
 
           this.mapData(lstDataModified);
-
         }
             //this.mapData(lstData);
         this.isLoading = false;

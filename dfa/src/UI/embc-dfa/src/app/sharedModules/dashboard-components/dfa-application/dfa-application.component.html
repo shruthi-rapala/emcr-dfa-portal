@@ -29,9 +29,10 @@
           <span style="font-size: 16px;">{{applItem.statusLastUpdated }}</span>
         </div>-->
       </div>
-      <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;">
+      <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;width: 90%;min-width: 725px;">
         <div class="col-md-3" style="margin-top: 20px;">
           <span><b>Application Status</b></span><br />
+          <span *ngIf="applItem.isErrorInStatus == true" style="color: red;">Error in displaying status<br /></span>
         </div>
         <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" class="stepsDesc col-md-1">
           <span class="stepText">{{item.label}}</span>
@@ -41,13 +42,16 @@
           <!--<span [ngClass]="item.isCompleted == true ? 'material-icons' : 'material-symbols-outlined'" style="color: rgb(0, 128, 55);">
             {{item.isCompleted == true ? 'check_circle' : 'circle'}}
           </span>-->
-          <span *ngIf="item.isCompleted == true" class="material-icons" style="color: rgb(21 178 89);">
+          <span *ngIf="item.isCompleted == true && applItem.isErrorInStatus == false" class="material-icons" style="color: rgb(21 178 89);">
             check_circle
           </span>
-          <span *ngIf="item.isCompleted == false && item.currentStep == true" class="material-symbols-outlined" style="color: darkblue">
+          <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false" class="material-symbols-outlined" style="color: darkblue">
             circle
           </span>
-          <span *ngIf="item.isCompleted == false && item.currentStep == false" class="material-symbols-outlined" style="color: lightgrey">
+          <span *ngIf="item.isCompleted == false && item.currentStep == false && applItem.isErrorInStatus == false" class="material-symbols-outlined" style="color: lightgrey">
+            circle
+          </span>
+          <span *ngIf="applItem.isErrorInStatus == true" class="material-symbols-outlined" style="color: lightgrey">
             circle
           </span>
           <!--<mat-icon>circle</mat-icon>
@@ -57,7 +61,7 @@
         </div>
         <br style="clear: both;" />
         <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.currentStep == true ? 'stepsDesc col-md-2' : 'stepsDesc col-md-1'">
-            <span *ngIf="item.currentStep == true" class="youAreHere">You are here</span>
+            <span *ngIf="item.currentStep == true && applItem.isErrorInStatus == false && item.isCompleted == false" class="youAreHere">You are here</span>
           </div>
       </div>
       <div class="row" style="padding-top: 20px;">
