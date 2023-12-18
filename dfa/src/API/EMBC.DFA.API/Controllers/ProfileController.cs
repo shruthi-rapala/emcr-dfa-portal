@@ -82,7 +82,8 @@ namespace EMBC.DFA.API.Controllers
             else
             {
                 var profileBCSC = GetUserFromPrincipal();
-                var conflicts = ProfilesConflictDetector.DetectConflicts(mapper.Map<Profile>(profile), profileBCSC);
+                var profileDFA = mapper.Map<Profile>(profile);
+                var conflicts = ProfilesConflictDetector.DetectConflicts(profileDFA, profileBCSC);
 
                 if (conflicts.Count() > 0)
                 {
@@ -93,6 +94,20 @@ namespace EMBC.DFA.API.Controllers
                     profile.lastUpdatedDateBCSC = DateTime.Now.ToShortDateString();
 
                     var mappedProfile = mapper.Map<dfa_appcontact>(profile);
+
+                    var addressConflicts = ProfilesConflictDetector.DetectAddressConflicts(profileDFA);
+
+                    if (addressConflicts.Count() > 0)
+                    {
+                        mappedProfile.dfa_isprimaryandsecondaryaddresssame = Convert.ToInt32(SameAddressOptionSet.No);
+                        profile.IsMailingAddressSameAsPrimaryAddress = SameAddressOptionSet.No.ToString();
+                    }
+                    else
+                    {
+                        mappedProfile.dfa_isprimaryandsecondaryaddresssame = Convert.ToInt32(SameAddressOptionSet.Yes);
+                        profile.IsMailingAddressSameAsPrimaryAddress = SameAddressOptionSet.Yes.ToString();
+                    }
+
                     var contactId = await handler.HandleContact(mappedProfile);
                 }
             }
