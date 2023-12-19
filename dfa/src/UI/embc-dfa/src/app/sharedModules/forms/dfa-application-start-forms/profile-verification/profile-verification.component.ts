@@ -101,11 +101,35 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
           this.profileVerificationForm.get('profile').patchValue(profile);
           // trim phone numbers
           this.profileVerificationForm.get('profile.isMailingAddressSameAsPrimaryAddress').setValue(profile.isMailingAddressSameAsPrimaryAddress == 'NoAddress' ? 'I don\'t have a mailing address right now' : profile.isMailingAddressSameAsPrimaryAddress);
-          this.profileVerificationForm.get('profile.contactDetails.cellPhoneNumber').setValue(profile?.contactDetails?.cellPhoneNumber?.substring(0,12));
+          
+          if (profile.isMailingAddressSameAsPrimaryAddress === 'Yes') {
+            this.profileVerificationForm.get('profile.mailingAddress.addressLine1').setValidators(null);
+            this.profileVerificationForm.get('profile.mailingAddress.city').setValidators(null);
+            this.profileVerificationForm.get('profile.mailingAddress.stateProvince').setValidators(null);
+            this.profileVerificationForm.get('profile.mailingAddress.postalCode').setValidators(null);
+          }
+          else if (profile.isMailingAddressSameAsPrimaryAddress === 'No') {
+            this.profileVerificationForm.get('profile.mailingAddress').reset();
+            this.profileVerificationForm.get('profile.mailingAddress.addressLine1').setValidators([Validators.required]);
+            this.profileVerificationForm.get('profile.mailingAddress.city').setValidators([Validators.required]);
+            this.profileVerificationForm.get('profile.mailingAddress.postalCode').setValidators([Validators.required]);
+            this.profileVerificationForm.get('profile.mailingAddress.stateProvince').setValidators(null);
+          }
+          else if (profile.isMailingAddressSameAsPrimaryAddress == 'NoAddress') {
+            this.profileVerificationForm.get('profile.mailingAddress').reset();
+            this.profileVerificationForm.get('profile.mailingAddress.addressLine1').setValidators(null);
+            this.profileVerificationForm.get('profile.mailingAddress.city').setValidators(null);
+            this.profileVerificationForm.get('profile.mailingAddress.stateProvince').setValidators(null);
+            this.profileVerificationForm.get('profile.mailingAddress.postalCode').setValidators(null);
+          }
+          this.updateOnVisibility();
+
+          this.profileVerificationForm.get('profile.contactDetails.cellPhoneNumber').setValue(profile?.contactDetails?.cellPhoneNumber?.substring(0, 12));
           this.profileVerificationForm.get('profile.contactDetails.alternatePhone').setValue(profile?.contactDetails?.alternatePhone?.substring(0,12));
           this.profileVerificationForm.get('profile.contactDetails.residencePhone').setValue(profile?.contactDetails?.residencePhone?.substring(0,12));
           if (!this.profileVerificationForm.get('profile.primaryAddress.stateProvince').value) this.profileVerificationForm.get('profile.primaryAddress.stateProvince')?.setValue("BC");
           this.profileVerificationForm.get('profileId').setValue(profile.id);
+          this.profileVerificationForm.updateValueAndValidity();
           this.dfaApplicationStartDataService.profile = profile;
         })
       });
