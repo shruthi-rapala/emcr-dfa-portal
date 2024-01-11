@@ -15,6 +15,11 @@ import { ApplicantOption } from 'src/app/core/api/models';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmPrescreeningDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-prescreening-dialog/dfa-confirm-prescreening-dialog.component';
 import { LoginService } from 'src/app/core/services/login.service';
+import { InformationDialogComponent } from 'src/app/core/components/dialog-components/information-dialog/information-dialog.component';
+import { DialogContent } from '../../core/model/dialog-content.model';
+import { HttpClient } from '@angular/common/http';
+import { DialogComponent } from '../../core/components/dialog/dialog.component';
+import { DFAConfirmDashboardNavigationDialogComponent } from '../../core/components/dialog-components/dfa-confirm-dashboard-navigation/dfa-confirm-dashboard-navigation.component';
 
 @Component({
   selector: 'app-dfa-prescreening',
@@ -32,6 +37,7 @@ export class DFAPrescreeningComponent
   type = 'dfa-prescreening';
   parentPageName = 'dfa-dashboard';
   showLoader = false;
+  isLoggedIn = false;
   ApplicantOptions = ApplicantOption;
   dfaPrescreeningForm: UntypedFormGroup;
   dfaPrescreeningForm$: Subscription;
@@ -43,7 +49,8 @@ export class DFAPrescreeningComponent
     private cd: ChangeDetectorRef,
     public dfaPrescreeningDataService: DFAPrescreeningDataService,
     public dialog: MatDialog,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private httpClient: HttpClient
   ) {
     const navigation = this.router.getCurrentNavigation();
   }
@@ -66,6 +73,8 @@ export class DFAPrescreeningComponent
       .subscribe((prescreening) => {
         this.dfaPrescreeningForm = prescreening;
       });
+
+    this.isLoggedIn = this.loginService.isLoggedIn();
   }
 
   ngAfterViewChecked(): void {
@@ -137,6 +146,27 @@ export class DFAPrescreeningComponent
 
   returnToDashboard() {
     this.router.navigate(['/dfa-dashboard']);
+  }
+
+  BackToDashboard(): void {
+    this.router.navigate(['/dfa-dashboard']);
+  }
+
+  ConfirmDashboardNavigation(): void {
+    this.dialog
+      .open(DFAConfirmDashboardNavigationDialogComponent, {
+        data: {
+          content: globalConst.confirmDashboardNavigationBody
+        },
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm' && this.loginService.isLoggedIn()) {
+          this.returnToDashboard();
+        }
+      });
   }
 
   submitFile(): void {

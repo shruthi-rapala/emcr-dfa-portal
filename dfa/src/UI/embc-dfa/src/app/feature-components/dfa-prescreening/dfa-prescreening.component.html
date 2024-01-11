@@ -3,6 +3,22 @@
     <div class="col-8">
       <span class="page-heading">Are You Eligible?</span>
     </div>
+    <div class="col-4" *ngIf="isLoggedIn==true">
+      <button
+        class="button-p save-button col-4"
+        style="height:40px !important; vertical-align: middle; width:220px;"
+        (click)="ConfirmDashboardNavigation()"
+        mat-stroked-button
+        type="button"
+        >
+         Back to Dashboard
+         <app-loader
+          [strokeWidth]="3"
+          [diameter]="25"
+          [showLoader]="showLoader"
+        ></app-loader>
+      </button>
+    </div>
   </div>
 
   <app-component-wrapper
