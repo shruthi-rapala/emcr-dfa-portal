@@ -15,10 +15,7 @@ import { ApplicantOption } from 'src/app/core/api/models';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmPrescreeningDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-prescreening-dialog/dfa-confirm-prescreening-dialog.component';
 import { LoginService } from 'src/app/core/services/login.service';
-import { InformationDialogComponent } from 'src/app/core/components/dialog-components/information-dialog/information-dialog.component';
-import { DialogContent } from '../../core/model/dialog-content.model';
 import { HttpClient } from '@angular/common/http';
-import { DialogComponent } from '../../core/components/dialog/dialog.component';
 import { DFAConfirmDashboardNavigationDialogComponent } from '../../core/components/dialog-components/dfa-confirm-dashboard-navigation/dfa-confirm-dashboard-navigation.component';
 
 @Component({
