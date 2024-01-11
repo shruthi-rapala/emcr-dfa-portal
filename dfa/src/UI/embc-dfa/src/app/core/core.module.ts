@@ -38,6 +38,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { DFAApplicationAlertDialogComponent } from './components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
 import { DFADeleteConfirmDialogComponent } from './components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { AddressChangeComponent } from './components/dialog-components/address-change-dialog/address-change-dialog.component';
+import { DFAConfirmDashboardNavigationDialogComponent } from './components/dialog-components/dfa-confirm-dashboard-navigation/dfa-confirm-dashboard-navigation.component';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { AddressChangeComponent } from './components/dialog-components/address-c
     TimeOutDialogComponent,
     DFAApplicationAlertDialogComponent,
     DFADeleteConfirmDialogComponent,
-    AddressChangeComponent
+    AddressChangeComponent,
+    DFAConfirmDashboardNavigationDialogComponent
   ],
   exports: [
     AppLoaderComponent,
@@ -103,7 +105,8 @@ import { AddressChangeComponent } from './components/dialog-components/address-c
     MatButtonModule,
     DFAApplicationAlertDialogComponent,
     DFADeleteConfirmDialogComponent,
-    AddressChangeComponent
+    AddressChangeComponent,
+    DFAConfirmDashboardNavigationDialogComponent
   ]
 })
 export class CoreModule {}
