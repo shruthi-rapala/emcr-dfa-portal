@@ -63,6 +63,12 @@ export const confirmPrescreeningBody: DialogContent = {
   cancelButton: 'No, I am not ready to apply now'
 }
 
+export const confirmDashboardNavigationBody: DialogContent = {
+  text: 'Are you sure you want to go back to the Dashboard?<br/><br/><br/><br/>',
+  confirmButton: 'Yes, Go Back to Dashboard',
+  cancelButton: 'No, Stay on Prescreening'
+}
+
 export const bcscMissingEmail: DialogContent = {
   text: 'You must provide your BC Services Card email address to online services to create a DFA application.<br/><br/>' +
   'In your BC Services Card account, select <b>Account Details</b>, under <b>Preferences</b>, select <b>Manage Preferences</b>, and then select <b>Edit</b>. For the question, <b>When should your ' +
