@@ -125,6 +125,7 @@ export class CanAddressComponent implements OnInit {
   }
 
   public checkCanadaPostAddress(addr1, addr2, city, province, postCode, responseHtml): void {
+    this.addressFormControl.addressLine1.setValue(addr1.value);
     /*if (!this.primaryAddressWarning) {*/
     var searchstring = ((addr1.value == null ? "" : addr1.value + " ")
       + (addr2.value == null ? "" : addr2.value + " ")
@@ -201,9 +202,17 @@ export class CanAddressComponent implements OnInit {
               }
 
               if (self.isCanadaPostValidated != 'true') {
-                self.myControl.setValue("");
-                self.addressFormControl.community.setValue("");
+                //self.myControl.setValue("");
+                //self.addressFormControl.community.setValue("");
                 //self.addressFormControl.myControl.setValue('');
+
+                if (self.addressMatchResponse != 'Unable to validate the address') {
+                  self.myControl.setValue("");
+                }
+                //} else if (self.addressMatchResponse == 'Unable to validate the address') {
+                //  self.myControl.setValue("");
+                //}
+
                 self.addressFormControl.isAddressVerified.setValue(false);
                 self.isCanadaPostValidated = 'false';
                 self.addressMatchResponse = "Unable to validate the address";
