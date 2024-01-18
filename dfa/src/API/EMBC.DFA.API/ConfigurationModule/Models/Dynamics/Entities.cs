@@ -267,6 +267,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_charityexistsatleast12months { get; set; } // optional Option set
         public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set
         public string? createdon { get; set; } // optional string
+        public int? dfa_damagedpropertyaddresscanadapostverified { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord

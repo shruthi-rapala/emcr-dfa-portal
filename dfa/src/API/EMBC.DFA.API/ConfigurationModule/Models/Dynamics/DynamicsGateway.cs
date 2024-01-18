@@ -231,7 +231,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_wereyouevacuatedduringtheevent2", "dfa_accountlegalname", "dfa_businessmanagedbyallownersondaytodaybasis",
                     "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
                     "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon", "_dfa_eventid_value",
-                    "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit"
+                    "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit",
+                    "dfa_damagedpropertyaddresscanadapostverified"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -664,15 +665,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_appdocumentlocationsid", "_dfa_applicationid_value", "dfa_name", "dfa_description", "createdon", "dfa_documenttype", "dfa_modifiedby"
+                        "dfa_appdocumentlocationsid", "_dfa_applicationid_value", "dfa_name", "dfa_description", "createdon", "dfa_documenttype", "dfa_modifiedby", "dfa_requireddocumenttype"
                     }, Filter = $"_dfa_applicationid_value eq {applicationIdString}"
                 });
 
                 // TODO: delete this loop and replace with actual retrieval of required document type above
-                list.List.ForEach(item =>
-                {
-                    if (item.dfa_documenttype == "Insurance") item.dfa_requireddocumenttype = "Insurance Template";
-                });
+                //list.List.ForEach(item =>
+                //{
+                //    if (item.dfa_documenttype == "Insurance") item.dfa_requireddocumenttype = "Insurance Template";
+                //});
                 return list.List;
             }
             catch (System.Exception ex)

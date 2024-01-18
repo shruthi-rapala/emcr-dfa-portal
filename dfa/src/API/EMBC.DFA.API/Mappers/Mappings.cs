@@ -256,7 +256,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.charityRegistered, opts => opts.MapFrom(s => s.dfa_charityregistered == (int)YesNoOptionSet.Yes ? true : (s.dfa_charityregistered == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.charityExistsAtLeast12Months, opts => opts.MapFrom(s => s.dfa_charityexistsatleast12months == (int)YesNoOptionSet.Yes ? true : (s.dfa_charityexistsatleast12months == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.charityProvidesCommunityBenefit, opts => opts.MapFrom(s => s.dfa_charityprovidescommunitybenefit == (int)YesNoOptionSet.Yes ? true : (s.dfa_charityprovidescommunitybenefit == (int)YesNoOptionSet.No ? false : (bool?)null)))
-                .ForMember(d => d.isPrimaryAndDamagedAddressSame, opts => opts.MapFrom(s => s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
+                .ForMember(d => d.isPrimaryAndDamagedAddressSame, opts => opts.MapFrom(s => s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.isDamagedAddressVerified, opts => opts.MapFrom(s => s.dfa_damagedpropertyaddresscanadapostverified == (int)YesNoOptionSet.Yes ? true : (s.dfa_damagedpropertyaddresscanadapostverified == (int)YesNoOptionSet.No ? false : (bool?)null)));
 
             CreateMap<dfa_appapplicationmain_retrieve, PropertyDamage>()
                 .ForMember(d => d.stormDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
@@ -537,7 +538,7 @@ namespace EMBC.DFA.API.Mappers
                     {
                         return RequiredDocumentType.T776;
                     }
-                case "Dirctors Listing":
+                case "Directors Listing":
                     {
                         return RequiredDocumentType.DirectorsListing;
                     }
