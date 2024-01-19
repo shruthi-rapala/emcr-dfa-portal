@@ -100,11 +100,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_doyouhaveinsurancecoverage2, opts => opts.MapFrom(s => s.AppTypeInsurance.insuranceOption == InsuranceOption.Yes ? InsuranceTypeOptionSet.Yes :
                     (s.AppTypeInsurance.insuranceOption == InsuranceOption.No ? InsuranceTypeOptionSet.No :
                     (s.AppTypeInsurance.insuranceOption == InsuranceOption.Unsure ? InsuranceTypeOptionSet.YesBut : InsuranceTypeOptionSet.Yes))))
-                .ForMember(d => d.dfa_smallbusinesstype, opts => opts.MapFrom(s => s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.General ? SmallBusinessOptionSet.General :
-                    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Corporate ? SmallBusinessOptionSet.Corporate :
-                    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Landlord ? SmallBusinessOptionSet.Landlord : SmallBusinessOptionSet.General))))
-                .ForMember(d => d.dfa_farmtype, opts => opts.MapFrom(s => s.AppTypeInsurance.farmOption == FarmOption.General ? FarmOptionSet.General :
-                    (s.AppTypeInsurance.farmOption == FarmOption.Corporate ? FarmOptionSet.Corporate : FarmOptionSet.General)))
+                .ForMember(d => d.dfa_smallbusinesstype, opts => opts.MapFrom(s => s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.General ? (int?)SmallBusinessOptionSet.General :
+                    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Corporate ? (int?)SmallBusinessOptionSet.Corporate :
+                    (s.AppTypeInsurance.smallBusinessOption == SmallBusinessOption.Landlord ? (int?)SmallBusinessOptionSet.Landlord : (int?)null))))
+                .ForMember(d => d.dfa_farmtype, opts => opts.MapFrom(s => s.AppTypeInsurance.farmOption == FarmOption.General ? (int?)FarmOptionSet.General :
+                    (s.AppTypeInsurance.farmOption == FarmOption.Corporate ? (int?)FarmOptionSet.Corporate : (int?)null)))
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_primaryapplicantsignednoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature != null ? YesNoOptionSet.Yes : YesNoOptionSet.No))
                 .ForMember(d => d.dfa_primaryapplicantprintnamenoins, opts => opts.MapFrom(s => s.AppTypeInsurance.applicantSignature.signedName))

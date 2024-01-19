@@ -200,13 +200,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "dfa_secondaryapplicantsignednoins",
                     "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins", "dfa_isprimaryanddamagedaddresssame2",
                     "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2", "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince",
-                    "dfa_damagedpropertypostalcode", "dfa_dateofdamage", "dfa_doyourlossestotalmorethan10002", "_dfa_eventid_value"
+                    "dfa_damagedpropertypostalcode", "dfa_dateofdamage", "dfa_doyourlossestotalmorethan10002", "_dfa_eventid_value",
+                    "dfa_farmtype", "dfa_smallbusinesstype"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
 
-            list.List.FirstOrDefault().dfa_farmtype = (int)FarmOptionSet.General; // TODO: replace this with actual retrieve
-            list.List.FirstOrDefault().dfa_smallbusinesstype = (int)SmallBusinessOptionSet.General; // TODO: replace this with actual retrieve
+            //list.List.FirstOrDefault().dfa_farmtype = (int)FarmOptionSet.General; // TODO: replace this with actual retrieve
+            //list.List.FirstOrDefault().dfa_smallbusinesstype = (int)SmallBusinessOptionSet.General; // TODO: replace this with actual retrieve
 
             return list.List.FirstOrDefault();
         }
