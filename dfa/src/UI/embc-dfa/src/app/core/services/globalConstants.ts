@@ -237,7 +237,7 @@ export const uneditableApplicationTypeAlert: DialogContent = {
 }
 
 export const notifyBCSCAddressChangeBody: DialogContent = {
-  text: 'A difference in the primary address from BC Service Card has been detected. Please make sure the Damaged property address is correct before proceeding..!',
+  text: 'A difference in the primary address from BC Services Card has been detected. Please make sure the Damaged property address is correct before proceeding..!',
   cancelButton: 'Close'
 }
 
