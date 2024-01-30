@@ -12,6 +12,8 @@ export interface Profile {
   contactDetails?: ContactDetails;
   id?: null | string;
   isMailingAddressSameAsPrimaryAddress?: string;
+  isMailingAddressVerified?: null | boolean;
+  lastUpdatedDateBCSC?: null | string;
   mailingAddress?: Address;
   personalDetails?: PersonDetails;
   primaryAddress?: Address;

@@ -88,10 +88,11 @@
                   </th>
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
-                    class="delete-image"
-                    mat-icon-button
-                    aria-label="Remove"
-                    (click)="confirmDeleteCleanuplogRow(index)"
+                      class="delete-image"
+                      *ngIf="vieworedit !== 'viewOnly'"
+                      mat-icon-button
+                      aria-label="Remove"
+                      (click)="confirmDeleteCleanuplogRow(index)"
                   >
                     <img src="/assets/images/delete.svg" height="35" width="35" />
                     <img
@@ -116,8 +117,12 @@
                 <br /><br/>
               </div>
 
+              <div  *ngIf="cleanUpWorkDataSource.getValue().length == 0 && vieworedit == 'viewOnly'">
+                <br />No cleanup logs were added.<br/>
+              </div>
+
               <button
-                *ngIf="!showCleanUpWorkForm"
+                *ngIf="!showCleanUpWorkForm && vieworedit !== 'viewOnly'"
                 class="addcleanup-button"
                 mat-button
                 type="button"
@@ -274,9 +279,9 @@
     <div class="row">
       <div class="col-md-8">
         <app-dfa-attachment
+          *ngIf="vieworedit !== 'viewOnly'"
           title="Cleanup Invoices/Receipts"
           description=" If you have invoices/receipts for cleanup or repairs, please have them available during the site meeting to help the evaluator identify eligible costs. <br />You may also attach them to this application"
-          requiredFile="no"
           [allowedFileTypes]="allowedFileTypes"
           allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
           fileType="Cleanup"
@@ -345,7 +350,7 @@
               mat-icon-button
               aria-label="Remove"
               (click)="confirmDeleteCleanupLogFileRow(elementFile)"
-              *ngIf="dfaApplicationMainDataService.getViewOrEdit() !== 'view' && dfaApplicationMainDataService.getViewOrEdit() !== 'edit'"
+              *ngIf="vieworedit !== 'viewOnly'"
             >
               <img src="/assets/images/delete.svg" height="35" width="35" />
               <img
@@ -368,6 +373,9 @@
 
         <div  *ngIf="cleanUpWorkFileDataSource.data.length > 0">
           <br /><br/>
+        </div>
+        <div  *ngIf="cleanUpWorkFileDataSource.data.length == 0">
+          <br />No cleanup photos were added.<br/>
         </div>
       </div>
     </div>

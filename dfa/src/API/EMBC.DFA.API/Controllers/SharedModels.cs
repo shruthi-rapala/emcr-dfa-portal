@@ -20,6 +20,7 @@ namespace EMBC.DFA.API.Controllers
         public string? StateProvince { get; set; }
 
         public string? PostalCode { get; set; }
+        public bool? isAddressVerified { get; set; }
     }
 
     /// <summary>
@@ -79,6 +80,7 @@ namespace EMBC.DFA.API.Controllers
     {
         public bool profileVerified { get; set; }
         public string? profileId { get; set; }
+        public Profile? profile { get; set; }
     }
 
     /// <summary>
@@ -102,6 +104,24 @@ namespace EMBC.DFA.API.Controllers
         public string? dateSigned { get; set; }
         public string? signedName { get; set; }
         public string? signature { get; set; }
+    }
+
+    /// <summary>
+    /// PreScreeningQuestions
+    /// </summary>
+    public class OtherPreScreeningQuestions
+    {
+        public string? addressLine1 { get; set; }
+        public string? addressLine2 { get; set; }
+        public string? city { get; set; }
+        public string? postalCode { get; set; }
+        public string? stateProvince { get; set; }
+        public bool? isPrimaryAndDamagedAddressSame { get; set; }
+        public string? damageFromDate { get; set; }
+        public bool? lossesExceed1000 { get; set; }
+        public bool? damageCausedByDisaster { get; set; }
+        public string? eventId { get; set; }
+        public bool? isDamagedAddressVerified { get; set; }
     }
 
     /// <summary>
@@ -132,13 +152,13 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Residential Tenant")]
         ResidentialTenant,
 
-        [EnumMember(Value = "Small Business Owner (including landlords)")]
+        [EnumMember(Value = "Small Business Owner")]
         SmallBusinessOwner,
 
-        [EnumMember(Value = "Farm Owner)")]
+        [EnumMember(Value = "Farm Owner")]
         FarmOwner,
 
-        [EnumMember(Value = "Charitable Organization (including non-profilts)")]
+        [EnumMember(Value = "Charitable Organization")]
         CharitableOrganization
     }
 
@@ -148,10 +168,10 @@ namespace EMBC.DFA.API.Controllers
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum FarmOption
     {
-        [EnumMember(Value = "General or Sole Proprietorship or DBA name")]
+        [EnumMember(Value = "General Partnership, Sole Proprietorship, Unregistered, or DBA Name")]
         General,
 
-        [EnumMember(Value = "Corporate (Ltd./Inc.) Company")]
+        [EnumMember(Value = "Corporate Company (Ltd./Inc.)")]
         Corporate,
     }
 
@@ -164,7 +184,7 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "General or Sole Proprietorship or DBA name")]
         General,
 
-        [EnumMember(Value = "Corporate (Ltd./Inc.) Company")]
+        [EnumMember(Value = "Corporate Company (Ltd./Inc.)")]
         Corporate,
 
         [EnumMember(Value = "Landlord")]
@@ -211,10 +231,53 @@ namespace EMBC.DFA.API.Controllers
         [EnumMember(Value = "Appeal")]
         Appeal,
 
-        [EnumMember(Value = "Identification")]
+        [EnumMember(Value = "Unknown")]
+        Unknown
+    }
+
+    /// <summary>
+    /// File Category Options
+    /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum RequiredDocumentType
+    {
+        [EnumMember(Value = "Identification")] // Tenancy Proof for Residential Tenant
         Identification,
 
-        [EnumMember(Value = "Unknown")]
+        [EnumMember(Value = "Insurance Template")] // Insurance Category for Homeowner, Residential Tenant, Small Business General or Sole or Corporate Company or Landlord, Farm General or Sole or Corporate, Charity
+        InsuranceTemplate,
+
+        [EnumMember(Value = "Tenancy Agreement")] // Tenancy proof for Residential Tenant
+        TenancyAgreement,
+
+        [EnumMember(Value = "Residential Tenancy Agreement")] // Tenancy proof for Small Business Landlord
+        ResidentialTenancyAgreement,
+
+        [EnumMember(Value = "T1 General Income Tax Return")] // Financial for Small Business General or Sole or Landlord, Farm General or Sole
+        T1GeneralIncomeTaxReturn,
+
+        [EnumMember(Value = "T2 Corporate Income Tax Return")] // Financial for Small Business Corporate Company, Farm Corporate
+        T2CorporateIncomeTaxReturn,
+
+        [EnumMember(Value = "Financial Statements")] // Financial for Small Business General or Sole or Corporate Company, Farm General or Sole or Corporate
+        FinancialStatements,
+
+        [EnumMember(Value = "Proof of Ownership")] // Financial for Small Business Corporate Company, Farm Corporate
+        ProofOfOwnership,
+
+        [EnumMember(Value = "T776 Statement of Real Estate Rentals")] // Financial for Small Business Landlord
+        T776,
+
+        [EnumMember(Value = "Directors Listing")] // Financial for Charity
+        DirectorsListing,
+
+        [EnumMember(Value = "Registration Proof")] // Financial for Charity
+        RegistrationProof,
+
+        [EnumMember(Value = "Structure and Purpose")] // Financial for Charity
+        StructureAndPurpose,
+
+        [EnumMember(Value = "Unknown")] // Unknown
         Unknown
     }
 
@@ -272,6 +335,18 @@ namespace EMBC.DFA.API.Controllers
         public string? landlordPhone { get; set; }
         public string? landlordEmail { get; set; }
         public bool? isPrimaryAndDamagedAddressSame { get; set; }
+        public string? businessLegalName { get; set; }
+        public bool? businessManagedByAllOwnersOnDayToDayBasis { get; set; }
+        public bool? grossRevenues100002000000BeforeDisaster { get; set; }
+        public bool? employLessThan50EmployeesAtAnyOneTime { get; set; }
+        public bool? farmoperation { get; set; }
+        public bool? ownedandoperatedbya { get; set; }
+        public bool? farmoperationderivesthatpersonsmajorincom { get; set; }
+        public bool? lossesExceed1000 { get; set; }
+        public bool? charityProvidesCommunityBenefit { get; set; }
+        public bool? charityExistsAtLeast12Months { get; set; }
+        public bool? charityRegistered { get; set; }
+        public bool? isDamagedAddressVerified { get; set; }
     }
 
     /// <summary>
@@ -287,7 +362,6 @@ namespace EMBC.DFA.API.Controllers
         public string? damageFromDate { get; set; }
         public string? damageToDate { get; set; }
         public string? briefDescription { get; set; }
-        public bool? lossesExceed1000 { get; set; }
         public bool? wereYouEvacuated { get; set; }
         public string? dateReturned { get; set; }
         public bool? residingInResidence { get; set; }
@@ -316,5 +390,6 @@ namespace EMBC.DFA.API.Controllers
     {
         public SignatureBlock? applicantSignature { get; set; }
         public SignatureBlock? secondaryApplicantSignature { get; set; }
+        public string? ninetyDayDeadline { get; set; }
     }
 }

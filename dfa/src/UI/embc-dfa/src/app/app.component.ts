@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { OnInit, Renderer2 } from '@angular/core';
 import { Component } from '@angular/core';
 import { AlertService } from './core/services/alert.service';
 import * as globalConst from './core/services/globalConstants';
@@ -7,6 +7,9 @@ import { LoginService } from './core/services/login.service';
 import { ConfigService } from './core/services/config.service';
 import { EnvironmentInformation } from './core/model/environment-information.model';
 import { OutageService } from './feature-components/outage/outage.service';
+import { ScriptService } from "./core/services/scriptServices";
+
+const SCRIPT_PATH = 'http://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js?key=ea53-hg74-kb59-ym41';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +20,16 @@ export class AppComponent implements OnInit {
   public isLoading = true;
   public color = '#169BD5';
   public environment: EnvironmentInformation = {};
+  public gapi: any;
 
   constructor(
     public outageService: OutageService,
     private alertService: AlertService,
     private bootstrapService: BootstrapService,
     private loginService: LoginService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private renderer: Renderer2,
+    private scriptService: ScriptService
   ) {}
 
   public async ngOnInit(): Promise<void> {
@@ -44,6 +50,19 @@ export class AppComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
+
+    //const scriptElement = this.scriptService.loadJsScript(this.renderer, SCRIPT_PATH);
+    //scriptElement.onload = (obj) => {
+    //  console.log('Canada post script loaded');
+    //  console.log(JSON.stringify(obj));
+
+    //  // Load the JavaScript client library.
+    //  // (the init() method has been omitted for brevity)
+    //  //this.gapi.load('client', init);
+    //}
+    //scriptElement.onerror = () => {
+    //  console.log('Could not load the Google API Script!');
+    //}
     
     //this.outageService.outagePolling();
     //this.outageService.startOutageInterval();

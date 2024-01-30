@@ -6,6 +6,18 @@ namespace EMBC.DFA.API.Services
 {
     public static class ProfilesConflictDetector
     {
+        public static IEnumerable<ProfileDataConflict> DetectAddressConflicts(Profile source)
+        {
+            if (source.PrimaryAddress != null && source.MailingAddress != null && !source.PrimaryAddress.AddressEquals(source.MailingAddress))
+            {
+                yield return new AddressDataConflict
+                {
+                    OriginalValue = source.PrimaryAddress,
+                    ConflictingValue = source.MailingAddress,
+                };
+            }
+        }
+
         public static IEnumerable<ProfileDataConflict> DetectConflicts(Profile source, Profile target)
         {
             if (source == null || target == null) yield break;
@@ -39,8 +51,9 @@ namespace EMBC.DFA.API.Services
             (address == null && other == null) ||
             (address != null &&
             address.AddressLine1.StringSafeEquals(other?.AddressLine1) &&
+            address.AddressLine2.StringSafeEquals(other?.AddressLine2) &&
             address.PostalCode.StringSafeEquals(other?.PostalCode) &&
-            address.StateProvince.StringSafeEquals(other?.StateProvince));
+            address.City.StringSafeEquals(other?.City));
 
         private static bool NameEquals(this PersonDetails personDetails, PersonDetails other) =>
             personDetails != null &&

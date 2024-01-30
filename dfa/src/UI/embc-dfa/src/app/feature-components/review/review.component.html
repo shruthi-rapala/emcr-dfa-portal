@@ -218,7 +218,7 @@
 
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Current Contact Address</div>
+          <div class="col-md-6 card-heading">Mailing Address</div>
           <div class="col-md-2">
             <button
               class="edit-image"
@@ -408,6 +408,7 @@
         Please check that your application information is correct before submitting. Missing required fields marked in red.
       </p>
 
+      <!--- Application Type & Insurance -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Application & Insurance</div>
@@ -422,7 +423,18 @@
                   (formCreationService.appTypeInsuranceForm$ | async)?.value
                     ?.applicantOption
                 }}</span
-              ></p>
+              >
+              <span *ngIf="isSmallBusinessOwner"
+              > -- {{
+                (formCreationService.appTypeInsuranceForm$ | async)?.value
+                ?.smallBusinessOption
+              }}</span>
+              <span *ngIf="isFarmOwner"
+              > -- {{
+                (formCreationService.appTypeInsuranceForm$ | async)?.value
+                ?.farmOption
+              }}</span>
+            </p>
           </div>
         </div>
         <div class="row info-detail">
@@ -438,6 +450,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Damaged Property Address -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Damaged Property</div>
@@ -533,7 +546,131 @@
             </p>
           </div>
         </div>
-        <div class="row info-detail">
+        <div class="row info-detail" *ngIf="isSmallBusinessOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessManagedByAllOwnersOnDayToDayBasis}">Business managed by all owners day to day:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessManagedByAllOwnersOnDayToDayBasis}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .businessManagedByAllOwnersOnDayToDayBasis == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .businessManagedByAllOwnersOnDayToDayBasis == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isSmallBusinessOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.grossRevenues100002000000BeforeDisaster}">Gross revenues more than $10,000 but less than $2 million:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.grossRevenues100002000000BeforeDisaster}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .grossRevenues100002000000BeforeDisaster == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .grossRevenues100002000000BeforeDisaster == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isSmallBusinessOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.employLessThan50EmployeesAtAnyOneTime}">Employ less than 50 employees:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.employLessThan50EmployeesAtAnyOneTime}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .employLessThan50EmployeesAtAnyOneTime == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .employLessThan50EmployeesAtAnyOneTime == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isFarmOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperation}">Developing or established agricultural operation:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperation}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .farmoperation == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .farmoperation == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isFarmOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.ownedandoperatedbya}">Owned and operated by a farmer:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.ownedandoperatedbya}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .ownedandoperatedbya == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .ownedandoperatedbya == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isFarmOwner">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperationderivesthatpersonsmajorincom}">Farm operation is the means by which the owner(s) derives majority of income:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperationderivesthatpersonsmajorincom}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .farmoperationderivesthatpersonsmajorincom == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .farmoperationderivesthatpersonsmajorincom == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isCharitableOrganization">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityProvidesCommunityBenefit}">Charity provides community benefit/service:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityProvidesCommunityBenefit}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityProvidesCommunityBenefit == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityProvidesCommunityBenefit == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isCharitableOrganization">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityExistsAtLeast12Months}">Charity has existed for at least 12 months:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityExistsAtLeast12Months}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityExistsAtLeast12Months == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityExistsAtLeast12Months == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isCharitableOrganization">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityRegistered}">Charity registered under BC Societies Act:</span></div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityRegistered}">{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityRegistered == 'true'
+                ? 'Yes'
+                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .charityRegistered == 'false' ? 'No' : 'Make a selection')
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isSmallBusinessOwner || isFarmOwner || isCharitableOrganization">
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isSmallBusinessOwner">Business legal name:</span>
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isFarmOwner">Farm legal name:</span>
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isCharitableOrganization">Charitable organization legal name:</span>
+          </div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}">
+              {{
+                (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                  .businessLegalName ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                  .businessLegalName : "Enter required information"
+              }}
+            </span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isHomeowner || isResidentialTenant">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">Occupied as Primary Residence during event:</span></div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">{{
@@ -544,6 +681,18 @@
                 .occupyAsPrimaryResidence == 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
+        </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'false'))}">Losses Total More Than $1000?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'false'))}">
+            {{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .lossesExceed1000 === 'true'
+                ? 'Yes'
+                :  ((formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .lossesExceed1000 == 'false' ? 'No' : 'Make a selection')
+            }}
+          </span></div>
         </div>
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.onAFirstNationsReserve}">On a First Nations Reserve:</span></div>
@@ -569,7 +718,7 @@
             </span>
           </div>
         </div>
-        <div class="row info-detail">
+        <div class="row info-detail" *ngIf="isHomeowner || isResidentialTenant">
           <div class="col-md-3">Manufactured Home:</div>
           <div class="col-md-3">
             {{
@@ -581,7 +730,7 @@
             }}
           </div>
         </div>
-        <div class="row info-detail" *ngIf="!isResidentialTenant">
+        <div class="row info-detail" *ngIf="isHomeowner">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">Eligible for a BC Home Owner Grant for this Property:</span></div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">{{
@@ -634,6 +783,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Cause of Damage -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Cause of Damage</div>
@@ -736,19 +886,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.lossesExceed1000 == 'false'))}">Losses Total More Than $1000?:</span></div>
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.lossesExceed1000 == 'false'))}">
-            {{
-              (formCreationService.propertyDamageForm$ | async)?.value
-                .lossesExceed1000 === 'true'
-                ? 'Yes'
-                :  ((formCreationService.propertyDamageForm$ | async)?.value
-                .lossesExceed1000 == 'false' ? 'No' : 'Make a selection')
-            }}
-          </span></div>
-        </div>
-        <div class="row info-detail">
+        <div class="row info-detail" *ngIf="isResidentialTenant || isHomeowner">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'false'))}">Were You Evacuated?:</span></div>
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'false'))}">
             {{
@@ -762,7 +900,7 @@
             }}
           </span></div>
         </div>
-        <div class="row info-detail">
+        <div class="row info-detail" *ngIf="isResidentialTenant || isHomeowner">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'false'))}">Residing In Residence?:</span></div>
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'false'))}">
             {{
@@ -776,6 +914,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Occupants -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Occupants, Secondary Applicants and Contacts</div>
@@ -796,7 +935,7 @@
           </div>
         </div>
         <hr />
-        <div class="row info-detail" *ngIf="(formCreationService.fullTimeOccupantsForm$ | async)?.value?.fullTimeOccupants?.length > 0">
+        <div class="row info-detail" *ngIf="(isHomeowner || isResidentialTenant) && (formCreationService.fullTimeOccupantsForm$ | async)?.value?.fullTimeOccupants?.length > 0">
           <b>Full Time Occupants</b>
           <table mat-table [dataSource]="fullTimeOccupantsDataSource">
             <!-- Name Column -->
@@ -827,7 +966,7 @@
             ></tr>
           </table>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fullTimeOccupantsForm$ | async)?.value?.fullTimeOccupants?.length == 0">
+        <div class="row info-detail" *ngIf="(isHomeowner || isResidentialTenant) && (formCreationService.fullTimeOccupantsForm$ | async)?.value?.fullTimeOccupants?.length == 0">
           <span style="color:red">At least one full time occupant is required.</span>
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.secondaryApplicantsForm$ | async)?.value?.secondaryApplicants?.length > 0">
@@ -930,6 +1069,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Clean up Log -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">&nbsp;Clean Up Log</div>
@@ -1048,6 +1188,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Damaged Items By Room -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Damaged Items By Room</div>
@@ -1148,6 +1289,7 @@
         </div>
       </mat-card-content>
 
+      <!-- Required Documents -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Required Documents</div>
@@ -1222,14 +1364,42 @@
         <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noInsuranceTemplate')">
           <span style="color:red">Insurance template is required.</span>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noRentalAgreement') && isResidentialTenant">
-          <span style="color:red">Rental Agreement is required.</span>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noRentalAgreement')">
+          <span style="color:red">Proof of tenancy is required.</span>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noIdentification') && isResidentialTenant">
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noIdentification')">
           <span style="color:red">Identification is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noT1GeneralIncomeTaxReturn')">
+          <span style="color:red">A T1 general income tax return is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noFinancialStatements')">
+          <span style="color:red">Financial statements required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noT2CorporateIncomeTaxReturn')">
+          <span style="color:red">A T2 corporate income tax return is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noProofOfOwnership')">
+          <span style="color:red">Proof of ownership is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noT776')">
+          <span style="color:red">A T776 statement of real estate rentals is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noResidentialTenancyAgreement')">
+          <span style="color:red">A residential tenancy agreement is required.</span>
+        </div>
+        <div class="row info-detail"  *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noDirectorsListing')">
+          <span style="color:red">A listing of directors is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noRegistrationProof')">
+          <span style="color:red">Proof of the organization's registration is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noStructureAndPurpose')">
+          <span style="color:red">A statement outlining structure and purpose is required.</span>
         </div>
       </mat-card-content>
 
+      <!-- Supporting Documents -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Supporting Documents</div>

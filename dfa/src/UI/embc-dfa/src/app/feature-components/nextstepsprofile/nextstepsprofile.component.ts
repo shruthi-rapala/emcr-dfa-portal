@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfileDataService } from '../profile/profile-data.service';
+import { EligibilityService } from 'src/app/core/api/services';
 
 @Component({
   selector: 'app-nextstepsprofile',
@@ -9,19 +10,24 @@ import { ProfileDataService } from '../profile/profile-data.service';
 })
 export class NextstepsprofileComponent implements OnInit {
   profileId: string;
+  eventsCount: number = 0;
 
   constructor(
     private router: Router,
-    profileDataService: ProfileDataService
+    profileDataService: ProfileDataService,
+    private eligibilityService: EligibilityService
   ) {
     var profileId = profileDataService.getProfileId();
    }
 
   ngOnInit(): void {
+    this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
+      this.eventsCount = eventsCount;
+    })
   }
 
-  navigateToDFAApplicationStart(): void {
-    this.router.navigate(['/dfa-application-start']);
+  navigateToDFAPrescreening(): void {
+    this.router.navigate(['/dfa-prescreening']);
   }
 
   navigateToDashboard(): void {

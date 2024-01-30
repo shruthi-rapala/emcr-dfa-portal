@@ -1,23 +1,41 @@
 <div class="container container-frame">
-  <!--<div class="heading-container">
-    <div class="row">
-      <div class="col-md-12">
-        <span class="page-heading">Notice of Collection</span>
-      </div>
-    </div>
-  </div>-->
   <div class="row">
-     <div class="col-1"></div>
+    <div class="col-1"></div>
     <div class="col-10 content-container">
       <mat-card>
-     <p>Your profile has now been submitted.</p>
+      <p>Your profile has now been submitted.</p>
       <p>You must apply for DFA within 90 days of the disaster event.</p>
       <br /><br /><br />
-      <!--<p style="text-align : center;font-size: 18px;">Do you want to apply for DFA now?</p>-->
+        <div *ngIf="eventsCount > 0">
+           <p style="text-align : center;font-size: 18px;">Do you want to apply for DFA now?</p>
 
+          <br />
+          <br />
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-3" style="justify-content:center">
+              <button
+                class="button-p notice-button"
+                mat-button
+                (click)="navigateToDashboard()"
+              >
+                No, I am not ready to apply
+              </button>
+            </div>
+            <div class="col-3" style="justify-content:center">
+              <button
+                class="button-p notice-button"
+                mat-button
+                (click)="navigateToDFAPrescreening()"
+              >
+                Yes, I want to apply now
+              </button>
+            </div>
+          </div>
+        </div>
       <br />
       <br />
-      <div class="row">
+      <div class="row" *ngIf="eventsCount == 0">
         <div class="col-3" style="justify-content:center">
           <button
             class="button-p notice-button"
@@ -27,20 +45,13 @@
             Close
           </button>
         </div>
-        <!--<div class="col-3" style="justify-content:center">
-          <button
-            class="button-p notice-button"
-            mat-button
-            (click)="navigateToDFAApplicationStart()"
-          >
-            Yes, I want to apply now
-          </button>
-        </div>-->
         <div class="col-3"></div>
       </div>
         <br />
         <br />
-        </mat-card>
+      </mat-card>
+      <br />
+          <br />
     </div>
     <div class="col-1"></div>
   </div>

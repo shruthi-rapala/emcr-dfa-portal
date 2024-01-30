@@ -55,6 +55,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   cleanUpWorkFileDataSource = new MatTableDataSource();
   FileCategories = FileCategory;
   todayDate = new Date().toISOString();
+  vieworedit: string = "";
   allowedFileTypes = [
     'application/pdf',
     'image/jpg',
@@ -81,6 +82,12 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.vieworedit = vieworedit;
+    })
   }
 
   ngOnInit(): void {
@@ -125,6 +132,10 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
          ).subscribe(data => this.cleanUpWorkFileDataSource.data = _cleanUpWorkFileFormArray.getRawValue()?.filter(x => x.fileType === "Cleanup" && x.deleteFlag === false));
 
     this.initCleanUpWorkFiles();
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.cleanUpWorkFilesForm.disable();
+    }
   }
 
   getCleanUpLogsForApplication(applicationId: string) {
@@ -201,6 +212,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
   initCleanUpWorkFiles(): void {
     this.cleanUpWorkFilesForm.get('cleanupFileUpload').reset();
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
+    this.cleanUpWorkFilesForm.get('cleanupFileUpload.requiredDocumentType').setValue(null);
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.modifiedBy').setValue("Applicant");

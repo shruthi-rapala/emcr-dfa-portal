@@ -19,7 +19,7 @@ public class Login {
     private static String bceidPASSWORD = System.getenv("PASSWORD_BCEID");
 
 
-    @After
+/*    @After
     public void tearDown() {
         driver.close();
         driver.quit();
@@ -27,7 +27,7 @@ public class Login {
     @AfterClass
     public static void afterClass() {
         WebDriverManager.instance = null;
-    }
+    }*/
 
 
     @Test
@@ -43,24 +43,24 @@ public class Login {
                 .presenceOfElementLocated(By.xpath("//*[contains(text(), ' Log in with BC Services Card ')]")));
         js.executeScript("arguments[0].click();", element);
         element = driverWait.until(ExpectedConditions
-                .presenceOfElementLocated(By.xpath("//*[contains(text(), 'Virtual testing')]")));
+                .presenceOfElementLocated(By.xpath("//*[contains(text(), 'Test with username and password')]")));
         element.click();
 
         //To be added as sys variables
         Thread.sleep(1000);
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("csn")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("username")));
         element.sendKeys(bceidUSERNAME);
-        //Continue
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("continue")));
-        element.click();
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("passcode")));
+        //Pass
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("password")));
         element.sendKeys(bceidPASSWORD);
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnSubmit")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("submit-btn")));
         element.click();
+//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnSubmit")));
+//        element.click();
 
         //Display notice of Collention
-//        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-//                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'This page is for homeowners and residential tenants.')]")));
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'This page is for homeowners and residential tenants.')]")));
 
     }
 }

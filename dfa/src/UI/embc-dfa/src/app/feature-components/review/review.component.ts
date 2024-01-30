@@ -1,14 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, mapTo } from 'rxjs';
+import { Observable, Subscription, mapTo } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import {
   CaptchaResponse,
   CaptchaResponseType
 } from 'src/app/core/components/captcha-v2/captcha-v2.component';
-import { ApplicantOption, FileCategory, InsuranceOption, RoomType } from 'src/app/core/api/models';
+import { ApplicantOption, FarmOption, FileCategory, FileUpload, InsuranceOption, RoomType, SmallBusinessOption } from 'src/app/core/api/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-review',
@@ -39,45 +40,74 @@ export class ReviewComponent implements OnInit {
   otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email'];
   cleanUpWorkDataSource = new MatTableDataSource();
   cleanUpWorkColumnsToDisplay = ['date', 'name','hours','description'];
-  cleanUpWorkFileDataSource = new MatTableDataSource();
+  cleanUpWorkFileDataSource = new MatTableDataSource<FileUpload>();
   cleanUpWorkFileColumnsToDisplay = ['fileName', 'fileDescription', 'fileDate'];
   damagedRoomsDataSource = new MatTableDataSource();
   damagedRoomsColumnsToDisplay = ['roomType', 'description'];
-  damagePhotosDataSource = new MatTableDataSource();
+  damagePhotosDataSource = new MatTableDataSource<FileUpload>();
   damagePhotosColumnsToDisplay = ['fileName', 'fileDescription', 'uploadedDate'];
-  supportingDocumentsDataSource = new MatTableDataSource();
+  supportingDocumentsDataSource = new MatTableDataSource<FileUpload>();
   supportingDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
-  requiredDocumentsDataSource = new MatTableDataSource();
+  requiredDocumentsDataSource = new MatTableDataSource<FileUpload>();
   requiredDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
   RoomTypes = RoomType;
   FileCategories = FileCategory;
+  SmallBusinessOptions = SmallBusinessOption;
+  FarmOptions = FarmOption;
   isResidentialTenant: boolean = false;
+  isHomeowner: boolean = false;
+  isSmallBusinessOwner: boolean = false;
+  isFarmOwner: boolean = false;
+  isCharitableOrganization: boolean = false;
+  isGeneral: boolean = false;
+  isCorporate: boolean = false;
+  isLandlord: boolean = false;
   insuranceOptionName: string = "";
+  appTypeInsuranceForm: UntypedFormGroup;
+  appTypeInsuranceForm$: Subscription;
 
   constructor(
     private router: Router,
     public formCreationService: FormCreationService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService
   ) {
-    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application =>{
-      if (application) {
-        this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
-        switch (application.appTypeInsurance.insuranceOption) {
-          case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.Unsure)]:
-            this.insuranceOptionName = this.InsuranceOptions.Unsure.toString();
-            break;
-          case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.Yes)]:
-            this.insuranceOptionName = this.InsuranceOptions.Yes.toString();
-            break;
-          case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.No)]:
-            this.insuranceOptionName = this.InsuranceOptions.No.toString();
-            break;
-          default:
-            this.insuranceOptionName = application.appTypeInsurance.insuranceOption;
-            break;
-        }
-      }
-    });
+
+    this.appTypeInsuranceForm$ = this.formCreationService
+      .getAppTypeInsuranceForm()
+      .subscribe((appTypeInsurance) => {
+        this.appTypeInsuranceForm = appTypeInsurance;
+        this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => { // setting these fields in fileUploadForm for validation checking
+          if (application) {
+            this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+            this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
+            this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
+            this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
+            this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
+            if (this.isSmallBusinessOwner) {
+              this.isGeneral = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.General)]);
+              this.isCorporate = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Corporate)]);
+              this.isLandlord = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Landlord)]);
+            } else if (this.isFarmOwner) {
+              this.isGeneral = (application.appTypeInsurance.farmOption == Object.keys(this.FarmOptions)[Object.values(this.FarmOptions).indexOf(this.FarmOptions.General)]);
+              this.isCorporate = (application.appTypeInsurance.farmOption == Object.keys(this.FarmOptions)[Object.values(this.FarmOptions).indexOf(this.FarmOptions.Corporate)]);
+            }
+            switch (application.appTypeInsurance.insuranceOption) {
+              case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.Unsure)]:
+                this.insuranceOptionName = this.InsuranceOptions.Unsure.toString();
+                break;
+              case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.Yes)]:
+                this.insuranceOptionName = this.InsuranceOptions.Yes.toString();
+                break;
+              case Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.No)]:
+                this.insuranceOptionName = this.InsuranceOptions.No.toString();
+                break;
+              default:
+                this.insuranceOptionName = application.appTypeInsurance.insuranceOption;
+                break;
+            }
+           }
+        });
+      });
   }
 
   ngOnInit(): void {
@@ -116,13 +146,6 @@ export class ReviewComponent implements OnInit {
         mapTo(_cleanUpWorkFormArray.getRawValue())
         ).subscribe(data => this.cleanUpWorkDataSource.data = _cleanUpWorkFormArray.getRawValue());
 
-    // subscribe to changes in receipts and invocies
-    const _cleanUpWorkFileFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
-    _cleanUpWorkFileFormArray.valueChanges
-      .pipe(
-        mapTo(_cleanUpWorkFileFormArray.getRawValue())
-        ).subscribe(data => { this.cleanUpWorkFileDataSource.data = _cleanUpWorkFileFormArray?.getRawValue()?.filter(x => x.fileType === this.FileCategories.Cleanup && x.deleteFlag == false) });
-
     // subscribe to changes in damaged rooms
     const _damagedRoomsFormArray = this.formCreationService.damagedRoomsForm.value.get('damagedRooms');
     _damagedRoomsFormArray.valueChanges
@@ -130,39 +153,28 @@ export class ReviewComponent implements OnInit {
         mapTo(_damagedRoomsFormArray.getRawValue())
         ).subscribe(data => this.damagedRoomsDataSource.data = _damagedRoomsFormArray.getRawValue());
 
-    // subscribe to changes in damage photos
-    const _damagePhotosFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
-    _damagePhotosFormArray.valueChanges
-      .pipe(
-        mapTo(_damagePhotosFormArray.getRawValue())
-        ).subscribe(data => this.damagePhotosDataSource.data = _damagePhotosFormArray.getRawValue()?.filter(x => x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag == false));
-
-    // subscribe to changes in supporting documents
-    const _supportingDocumentsFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
-    _supportingDocumentsFormArray.valueChanges
-      .pipe(
-        mapTo(_supportingDocumentsFormArray.getRawValue())
-        ).subscribe(data => {
-          this.supportingDocumentsDataSource.data =
-            _supportingDocumentsFormArray.getRawValue()?.filter(x => x.fileType !== Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]
-              && x.fileType !== this.FileCategories.Cleanup
-              && this.dfaApplicationMainDataService.requiredDocuments.indexOf(x.fileType) < 0
-              && x.deleteFlag == false) } );
-
-    // subscribe to changes in required documents
-    const _requiredDocumentsFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
-    _requiredDocumentsFormArray.valueChanges
-      .pipe(
-        mapTo(_requiredDocumentsFormArray.getRawValue())
-        ).subscribe(data => { this.requiredDocumentsDataSource.data =
-          _requiredDocumentsFormArray.getRawValue()?.filter(x =>
-            this.dfaApplicationMainDataService.requiredDocuments.indexOf(x.fileType) >= 0
-            && x.deleteFlag == false) } );
+    // subscribe to changes in file uploads
+    const _fileUploadsFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+    _fileUploadsFormArray.valueChanges
+    .pipe(
+      mapTo(_fileUploadsFormArray.value)
+    ).subscribe(data => {
+      this.supportingDocumentsDataSource.data =
+        _fileUploadsFormArray.value?.filter(x =>
+          (x.requiredDocumentType === null || x.requiredDocumentType === '' || x.requiredDocumentType === undefined)
+          && x.deleteFlag === false);
+      this.requiredDocumentsDataSource.data =
+        _fileUploadsFormArray.value?.filter(x =>
+          (x.requiredDocumentType !== null && x.requiredDocumentType !== '' && x.requiredDocumentType !== undefined)
+          && x.deleteFlag === false);
+      this.damagePhotosDataSource.data =
+        _fileUploadsFormArray.value?.filter(x =>
+          x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false)
+      this.cleanUpWorkFileDataSource.data =
+        _fileUploadsFormArray?.value?.filter(x =>
+          x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false)
+    })
   }
-
-  // callParentMoveStep(index: number) {
-  //   this.parentApi.callParentMoveStep(index)
-  // }
 
   navigateToStep(stepIndex: number) {
     this.stepToNavigate.emit(stepIndex);

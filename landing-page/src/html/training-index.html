@@ -35,6 +35,7 @@ table td {
 
 table td.borderCls {
     position: relative;
+    width: 50%;
 }
 
 table td.borderCls:after {
@@ -51,15 +52,22 @@ table td.borderCls:after {
 }*/
 
 p {
-	font-size: 16px;
-	line-height: 24px;
-	margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 20px;
+}
+
+p.headerText {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 h1 {
 	font-size: 28px;
 	font-weight: bold;
-	max-width: 540px;
+	/*max-width: 540px;*/
 	margin-bottom: 10px;
 }
 
@@ -78,8 +86,12 @@ h3 {
     text-align: center;
 }
 
+h2.headerStyle {
+	color: white;
+}
 
-@media (min-width: 1024px) {
+
+@media (min-width: 1400px) {
 	h1 {
 		font-size: 40px;
 		line-height: 49px;
@@ -87,7 +99,7 @@ h3 {
 	}
 
 	h2 {
-		font-size: 45px;
+		font-size: 35px;
 	}
 
 	h3 {
@@ -191,7 +203,7 @@ a:hover {
 }
 
 .btn--regular1 {
-    font-size: 14px;
+    font-size: 18px;
     height: 55px;
     display: inline-block;
     font-weight: 400;
@@ -216,7 +228,7 @@ a:hover {
 
 @media (max-width: 1450px) {
     .btn--regular1 {
-        padding-top: 7px;
+        /*padding-top: 7px;*/
     }
     .btn--regular2 {
         padding-top: 7px;
@@ -270,20 +282,22 @@ a:hover {
 /** Hero **/
         .hero {
             position: relative;
+            background-color: #003366;
         }
-        .hero::after {
-            content: "";
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: url(img/dfa_bghome.png) no-repeat center right;
-            background-size: 100%;
-            width: 100%;
-            height: 100%;
-            /*opacity: 0.2;*/
-            z-index: -1;
-        }
+            /*.hero::after {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;*/
+                /*background: url(img/dfa_bghome.png) no-repeat center right;*/
+                /*background-size: 100%;
+                background-color: #003366;
+                width: 100%;
+                height: 100%;*/
+                /*opacity: 0.2;*/
+                /*z-index: -1;
+            }*/
 .hero-content {
 	padding: 30px 0 10px 0;
 	width:83%;
@@ -330,16 +344,16 @@ a:hover {
 
 @media (min-width: 720px) {
 	.are-evacuated-description {
-		width: 85%;
+		width: 100%;
 		padding-right: 30px;
 	}
 }
 
 @media (min-width: 1024px) {
 	.are-evacuated-description {
-		width: 85%;
+		width: 100%;
 		padding-right: 30px;
-		padding-left: 120px;
+		padding-left: 30px;
 	}
 }
 
@@ -625,6 +639,11 @@ a:hover {
         padding: 30px 0 10px 0;
         width: 50%;
     }
+
+    .fontweight90 {
+        font-weight: bold;
+        text-align: center;
+    }
 }
 
 </style>
@@ -663,12 +682,12 @@ a:hover {
 
 	<main>
 		<section class="hero">
-			<div class="container homeBackground">
+			<div class="container">
 				<div class="hero-content">
 					<div class="hero-text">
-						<h1>Disaster Financial Assistance (DFA)</h1>
-						<p class="lead"><p>After a disaster, the provincial government may declare the event eligible for <strong>Disaster Financial Assistance (DFA).</strong> Once declared, the DFA program may provide applicants with financial assistance to restore uninsurable losses that are essential to your home, livelihood or community service.</p>
-						<p class="lead"><a class="--link-light-blue --link-strong" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance" target="_blank">Learn more ></a></p>
+						<h2 class="headerStyle">Disaster Financial Assistance (DFA)</h2>
+						<p class="lead"><p class="headerText">After a disaster, the provincial government may declare the event eligible for <strong>Disaster Financial Assistance (DFA).</strong> Once declared, the DFA program may provide applicants with financial assistance to restore uninsurable losses that are essential to your home, livelihood or community service.</p>
+						<p class="lead headerText"><a class="--link-light-blue --link-strong" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance" target="_blank">Learn more ></a></p>
 					</div>
 				</div>
 			</div>
@@ -680,35 +699,24 @@ a:hover {
 					<!--<h1>Are you Eligible?</h1>
 					<p>If you've recently experienced a disaster and your event is not on the eligible events list, contact your Indigenous or local government first.</p>-->
 					<p>
-					<table>
+					<table style="width: 100%;">
 						<tr>
 							<td class="borderCls">
-								<h3 class="headSize">Homeowner or Residential Tenant</h3>
-								<p>If you are a homeowner or residential tenant, you may submit an application by selecting this button and signing in with BC Service Card: </p>
 							
 								<div id="divHomeOwnerButton" class="are-evacuated-registration center">
 								<!--<a class="btn btn--dark-blue btn--strong" href="">Check Eligible Events</a>-->
 									<a class="btn btn--regular1 btn--dark-blue" target="_blank" href="https://portal.training.dfa.gov.bc.ca/verified-registration">
-										Create Homeowner or Residential Tenant Application
+										Apply For DFA
 									</a>
-								</div>
-							</td>
-							<td>
-								<h3 class="headSize">Small Business, Farm, or Charitable Organization</h3>
-								<p>If you are a small business (including landlords), farm, or charitable organization, you may submit an application by selecting this button and signing in with BCeID: </p>
+								<p>Apply for Disaster Financial Assistance (DFA). You may submit an<br />application by selecting this button and signing in with BC Service Card. </p>
 
-							
-								<div id="divSmallBusinessButton" class="are-evacuated-registration center">
-									<!--<a class="btn btn--dark-blue btn--strong" href="">Check Eligible Events</a>-->
-									<a class="btn btn--regular2 btn--dark-blue" target="_blank" href="https://submit.digital.gov.bc.ca/app/form/submit?f=b0fe2afe-49c0-4a4b-a89f-4c9e2f2466db">
-										Create Small Business, Farm, or Charitable Organization Application
-									</a>
 								</div>
+
 							</td>
 						</tr>
 					</table>
 					
-					<p>Applications must be submitted within 90 days of the disaster being declared eligible.</p>
+					<p class="fontweight90">Applications must be submitted within 90 days of the disaster being declared eligible.</p>
 				</div>
 				<!--<div id="divCheckEligibilityButton" class="are-evacuated-registration center">-->
 					<!--<a class="btn btn--dark-blue btn--strong" href="">Check Eligible Events</a>-->

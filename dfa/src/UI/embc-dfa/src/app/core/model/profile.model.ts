@@ -175,6 +175,7 @@ export class Address {
   mailingAddress: RegAddress;
   isNewMailingAddress: string;
   isBcMailingAddress: string;
+  //isAddressVerified: string;
 
   constructor() {}
 }
@@ -184,6 +185,7 @@ export class AddressForm {
   isBcAddress = new UntypedFormControl();
   isNewMailingAddress = new UntypedFormControl();
   isBcMailingAddress = new UntypedFormControl();
+  //isAddressVerified = new UntypedFormControl();
   mailingAddress: UntypedFormGroup;
 
   constructor(
@@ -219,7 +221,8 @@ export class AddressForm {
             .maxLengthValidator(100)
             .bind(customValidator)]
       ],
-      country: ''
+      country: '',
+      isAddressVerified: ''
     });
 
     this.mailingAddress = builder.group({
@@ -251,13 +254,15 @@ export class AddressForm {
             .bind(customValidator)
         ]
       ],
-      country: ''
+      country: '',
+      isAddressVerified: ''
     });
 
     //this.isBcAddress.setValue(address.isBcAddress);
     //this.isBcAddress.setValidators([Validators.required]);
 
     this.isNewMailingAddress.setValue(address.isNewMailingAddress);
+    //this.isAddressVerified.setValue(address.isAddressVerified);
     //this.isNewMailingAddress.setValidators([Validators.required]);
 
     //this.isNewMailingAddress.setValue(address.isNewMailingAddress);

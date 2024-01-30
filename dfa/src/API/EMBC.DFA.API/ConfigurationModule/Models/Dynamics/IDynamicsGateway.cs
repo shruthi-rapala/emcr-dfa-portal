@@ -13,9 +13,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcontact>> GetContactsAsync();
         Task<dfa_appcontact> GetUserProfileAsync(string userId);
         Task<string> AddContact(dfa_appcontact contact);
-        Task<string> AddApplication(dfa_appapplicationstart_params application);
+        Task<string> AddApplication(dfa_appapplicationstart_params application, temp_dfa_appapplicationstart_params temp_params);
         Task<string> AddApplicationSignature(dfa_signature dfa_signature);
-        Task<string> UpdateApplication(dfa_appapplicationmain_params application);
+        Task<string> UpdateApplication(dfa_appapplicationmain_params application, temp_dfa_appapplicationmain_params temp_params);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartById(Guid applicationId);
         Task<dfa_appapplicationmain_retrieve> GetApplicationMainById(Guid applicationId);
         Task<IEnumerable<dfa_appdamageditems_retrieve>> GetDamagedItemsListAsync(Guid applicationId);
@@ -32,20 +32,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> DeleteDocumentLocationAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms);
         Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
-        Task<bool> GetEventList();
-
-        //Task<IEnumerable> GetDistrictsAsync();
-
-        //Task<IEnumerable<JurisdictionEntity>> GetJurisdictionsAsync();
-
-        //Task<IEnumerable<JurisdictionEntity>> GetJurisdictionsAsync(string stateProvinceId);
-
-        //Task<IEnumerable> GetRegionsAsync();
-
-        //Task<IEnumerable<StateProvinceEntity>> GetStateProvincesAsync();
-
-        //Task<IEnumerable<StateProvinceEntity>> GetStateProvincesAsync(string countryId);
-
-        //Task<IEnumerable<SupportEntity>> GetSupportsAsync();
+        Task<int> GetEventCount();
+        Task<IEnumerable<dfa_event>> GetOpenEventList();
+        Task<IEnumerable<dfa_effectedregioncommunities>> GetEffectedRegionCommunitiesList();
+        Task<IEnumerable<dfa_areacommunitieses>> GetCommunitiesAsync();
     }
 }

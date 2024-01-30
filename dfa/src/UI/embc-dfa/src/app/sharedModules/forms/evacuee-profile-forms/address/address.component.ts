@@ -44,7 +44,7 @@ export default class AddressComponent
 {
   primaryAddressForm: UntypedFormGroup;
   primaryAddressForm$: Subscription;
-  radioOption: string[] = ['Yes', 'No', 'I don\'t have a permanent address right now'];
+  radioOption: string[] = ['Yes', 'No', 'I don\'t have a mailing address right now'];
   formBuilder: UntypedFormBuilder;
   formCreationService: FormCreationService;
   filteredOptions: Observable<Country[]>;
@@ -63,7 +63,6 @@ export default class AddressComponent
 
   ngOnInit(): void {
     //this.countries = this.locationService.getActiveCountriesList();
-
     this.primaryAddressForm$ = this.formCreationService
       .getAddressForm()
       .subscribe((primaryAddress) => {
@@ -112,7 +111,14 @@ export default class AddressComponent
         this.updateOnVisibilityMailingAddress();
       });
 
+    //this.primaryAddressForm
+    //  .get('mailingAddress.addressLine2')
+    //  .valueChanges.subscribe((value) => {
+    //    this.updateOnVisibilityMailingAddress();
+    //  });
+
     this.primaryAddressForm.get('address').valueChanges.subscribe((value) => {
+      
       if (this.primaryAddressForm.get('isNewMailingAddress').value === 'Yes') {
         const primaryAddress = this.primaryAddressForm.getRawValue().address;
         this.primaryAddressForm.get('mailingAddress').setValue(primaryAddress);
@@ -202,6 +208,9 @@ export default class AddressComponent
     this.primaryAddressForm
       .get('mailingAddress.addressLine1')
       .updateValueAndValidity();
+    this.primaryAddressForm
+      .get('mailingAddress.addressLine2')
+      .updateValueAndValidity();
     this.primaryAddressForm.get('mailingAddress.community').updateValueAndValidity();
     this.primaryAddressForm
       .get('mailingAddress.stateProvince')
@@ -211,12 +220,14 @@ export default class AddressComponent
   }
 
   sameAsPrimary(event: MatRadioChange): void {
+    
     //this.updateOnVisibilityMailingAddress();
     if (event.value === 'Yes') {
       const primaryAddress = this.primaryAddressForm.getRawValue().address;
       this.primaryAddressForm.get('mailingAddress').setValue(primaryAddress);
       this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.community').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.postalCode').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.postalCode').setValidators(null);
     } else if (event.value === 'No') {
@@ -224,6 +235,7 @@ export default class AddressComponent
       this.primaryAddressForm.get('isBcMailingAddress').reset();
       this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators([Validators.required]);
       this.primaryAddressForm.get('mailingAddress.community').setValidators([Validators.required]);
+      this.primaryAddressForm.get('mailingAddress.postalCode').setValidators([Validators.required]);
       this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators([Validators.required]);
     }
     else {
@@ -231,6 +243,7 @@ export default class AddressComponent
       this.primaryAddressForm.get('isBcMailingAddress').reset();
       this.primaryAddressForm.get('mailingAddress.addressLine1').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.community').setValidators(null);
+      this.primaryAddressForm.get('mailingAddress.postalCode').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.stateProvince').setValidators(null);
       this.primaryAddressForm.get('mailingAddress.postalCode').setValidators(null);
     }

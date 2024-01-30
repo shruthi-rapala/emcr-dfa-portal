@@ -39,6 +39,17 @@ export class DFAApplicationMainMappingService {
           onAFirstNationsReserve: dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.onAFirstNationsReserve === false ? 'false' : null),
           manufacturedHome: dfaApplicationMain.damagedPropertyAddress.manufacturedHome === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.manufacturedHome === false ? 'false' : null),
           eligibleForHomeOwnerGrant: dfaApplicationMain.damagedPropertyAddress.eligibleForHomeOwnerGrant === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.eligibleForHomeOwnerGrant === false ? 'false' : null),
+          businessManagedByAllOwnersOnDayToDayBasis: dfaApplicationMain.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis === false ? 'false' : null),
+          employLessThan50EmployeesAtAnyOneTime: dfaApplicationMain.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime === false ? 'false' : null),
+          grossRevenues100002000000BeforeDisaster: dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster === false ? 'false' : null),
+          farmoperation: dfaApplicationMain.damagedPropertyAddress.farmoperation === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.farmoperation === false ? 'false' : null),
+          farmoperationderivesthatpersonsmajorincom: dfaApplicationMain.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom === false ? 'false' : null),
+          ownedandoperatedbya: dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.ownedandoperatedbya === false ? 'false' : null),
+          lossesExceed1000: dfaApplicationMain.damagedPropertyAddress.lossesExceed1000 === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.lossesExceed1000 === false ? 'false' : null),
+          charityRegistered: dfaApplicationMain.damagedPropertyAddress.charityRegistered === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityRegistered === false ? 'false' : null),
+          charityExistsAtLeast12Months: dfaApplicationMain.damagedPropertyAddress.charityExistsAtLeast12Months === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityExistsAtLeast12Months === false ? 'false' : null),
+          charityProvidesCommunityBenefit: dfaApplicationMain.damagedPropertyAddress.charityProvidesCommunityBenefit === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.charityProvidesCommunityBenefit === false ? 'false' : null),
+          isDamagedAddressVerified: dfaApplicationMain.damagedPropertyAddress.isDamagedAddressVerified === true ? 'true' : (dfaApplicationMain.damagedPropertyAddress.isDamagedAddressVerified === false ? 'false' : null),
         });
         formGroup = damagedPropertyAddress;
       });
@@ -98,7 +109,6 @@ export class DFAApplicationMainMappingService {
       .subscribe((propertyDamage) => {
         propertyDamage.setValue({
           ...dfaApplicationMain.propertyDamage,
-          lossesExceed1000: dfaApplicationMain.propertyDamage.lossesExceed1000 === true ? 'true' : (dfaApplicationMain.propertyDamage.lossesExceed1000 === false ? 'false' : null),
           wereYouEvacuated: dfaApplicationMain.propertyDamage.wereYouEvacuated === true ? 'true' : (dfaApplicationMain.propertyDamage.wereYouEvacuated === false ? 'false' : null),
           residingInResidence: dfaApplicationMain.propertyDamage.residingInResidence === true ? 'true' : (dfaApplicationMain.propertyDamage.residingInResidence === false ? 'false' : null),
         });

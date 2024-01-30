@@ -31,6 +31,7 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   signAndSubmitForm$: Subscription;
   formCreationService: FormCreationService;
   isSecondaryApplicant: boolean = false;
+  isReadOnly: boolean = false;
   secondaryApplicants: SecondaryApplicant[] = [];
   initialApplicantSignature: SignatureBlock = {dateSigned: null, signedName: null, signature: null};
   initialSecondaryApplicantSignature: SignatureBlock = {dateSigned: null, signedName: null, signature: null};
@@ -43,6 +44,16 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.isReadOnly = (dfaApplicationMainDataService.getViewOrEdit() === 'view'
+    || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
+    || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.isReadOnly = (vieworedit === 'view'
+      || vieworedit === 'edit'
+      || vieworedit === 'viewOnly');
+    })
   }
 
   ngOnInit(): void {
@@ -104,6 +115,10 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
           this.signAndSubmitForm.get('secondaryApplicantSignature').updateValueAndValidity();
           this.signAndSubmitForm.updateValueAndValidity();
         });
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.signAndSubmitForm.disable();
+    }
   }
 
   /**

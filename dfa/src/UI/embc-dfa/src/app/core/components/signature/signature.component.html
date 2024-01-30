@@ -11,6 +11,7 @@
       </mat-label>
       <canvas
         id="canvas"
+        [ngStyle]="{'pointer-events': isReadOnly === true ? 'none' : ''}"
         ref="canvas"
         #canvas
         (touchstart)="preventDefault($event)"
@@ -29,10 +30,12 @@
         <mat-label>Print Name<span style="color:red" *ngIf="isRequired == true" >*</span></mat-label>
         <input matInput
           type="text"
+          [readonly]="isReadOnly === true"
           (change)="updateSignatureBlock()"
           [(ngModel)]="signatureBlock.signedName"
           placeholder="Print Name*"
           maxlength="100"
+          [disabled]="isReadOnly === true"
         />
         <mat-error
                 *ngIf="
@@ -50,12 +53,14 @@
         <mat-label>Date<span style="color:red" *ngIf="isRequired == true" >*</span></mat-label>
         <input matInput
           [matDatepicker]="datePicker"
+          [readonly]="isReadOnly === true"
           [(ngModel)]="signatureBlock.dateSigned"
           (dateChange)="updateSignatureBlock()"
+          [disabled]="isReadOnly === true"
           style="width:100%">
         <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-        <mat-datepicker #datePicker></mat-datepicker>
+        <mat-datepicker-toggle matSuffix [for]="datePicker" [disabled]="isReadOnly === true"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker [disabled]="isReadOnly === true"></mat-datepicker>
       </mat-form-field>
     </div>
   </div>

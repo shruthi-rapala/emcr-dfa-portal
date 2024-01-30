@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { AreaCommunity } from '../models/area-community';
 import { Code } from '../models/code';
 import { CommunityCode } from '../models/community-code';
 import { CommunityType } from '../models/community-type';
@@ -363,6 +364,57 @@ export class ConfigurationService extends BaseService {
 
     return this.configurationGetOutageInfo$Response(params).pipe(
       map((r: StrictHttpResponse<OutageInformation>) => r.body as OutageInformation)
+    );
+  }
+
+  /**
+   * Path part for operation configurationGetAreaCommunities
+   */
+  static readonly ConfigurationGetAreaCommunitiesPath = '/api/Configuration/areacommunities';
+
+  /**
+   * Get the current logged in user's profile.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `configurationGetAreaCommunities()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  configurationGetAreaCommunities$Response(params?: {
+  }): Observable<StrictHttpResponse<Array<AreaCommunity>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ConfigurationService.ConfigurationGetAreaCommunitiesPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<AreaCommunity>>;
+      })
+    );
+  }
+
+  /**
+   * Get the current logged in user's profile.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `configurationGetAreaCommunities$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  configurationGetAreaCommunities(params?: {
+  }): Observable<Array<AreaCommunity>> {
+
+    return this.configurationGetAreaCommunities$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<AreaCommunity>>) => r.body as Array<AreaCommunity>)
     );
   }
 

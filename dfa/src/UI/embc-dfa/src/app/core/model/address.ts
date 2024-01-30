@@ -5,6 +5,7 @@ export interface RegAddress {
   postalCode: null | string;
   stateProvince: string;
   country: Country;
+  isAddressVerified: boolean;
 }
 
 export interface Community {

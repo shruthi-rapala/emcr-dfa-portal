@@ -22,9 +22,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<Profile> HandleGetUser(string userID);
         Task<IEnumerable<Country>> HandleCountry();
         Task<string> HandleContact(dfa_appcontact objContact);
-        Task<string> HandleApplication(dfa_appapplicationstart_params objApplication);
+        Task<string> HandleApplication(dfa_appapplicationstart_params objApplication, temp_dfa_appapplicationstart_params temp_params);
         Task<string> HandleSignature(dfa_signature objSignature);
-        Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication);
+        Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication, temp_dfa_appapplicationmain_params temp_params);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartAsync(Guid applicationId);
         Task<dfa_appapplicationmain_retrieve> GetApplicationMainAsync(Guid applicationId);
         Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems);
@@ -41,7 +41,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> DeleteFileUploadAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms);
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
-        Task<bool> HandleEvents();
+        Task<int> HandleEvents();
+        Task<IEnumerable<dfa_event>> HandleOpenEventList();
+        Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList();
+        Task<List<AreaCommunity>> HandleGetAreaCommunities();
     }
 
     public class Handler : IConfigurationHandler
@@ -106,9 +109,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return contactId;
         }
 
-        public async Task<string> HandleApplication(dfa_appapplicationstart_params objApplication)
+        public async Task<string> HandleApplication(dfa_appapplicationstart_params objApplication, temp_dfa_appapplicationstart_params temp_params)
         {
-            var applicationId = await listsGateway.AddApplication(objApplication);
+            var applicationId = await listsGateway.AddApplication(objApplication, temp_params);
             return applicationId;
         }
 
@@ -118,9 +121,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return result;
         }
 
-        public async Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication)
+        public async Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication, temp_dfa_appapplicationmain_params temp_params)
         {
-            var result = await listsGateway.UpdateApplication(objApplication);
+            var result = await listsGateway.UpdateApplication(objApplication, temp_params);
             return result;
         }
 
@@ -214,9 +217,25 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return await listsGateway.GetDocumentLocationsListAsync(applicationId);
         }
 
-        public async Task<bool> HandleEvents()
+        public async Task<int> HandleEvents()
         {
-            return await listsGateway.GetEventList();
+            return await listsGateway.GetEventCount();
+        }
+        public async Task<IEnumerable<dfa_event>> HandleOpenEventList()
+        {
+            return await listsGateway.GetOpenEventList();
+        }
+
+        public async Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList()
+        {
+            return await listsGateway.GetEffectedRegionCommunitiesList();
+        }
+
+        public async Task<List<AreaCommunity>> HandleGetAreaCommunities()
+        {
+            var lstCommunities = await listsGateway.GetCommunitiesAsync();
+            var mappedList = mapper.Map<List<AreaCommunity>>(lstCommunities);
+            return mappedList;
         }
     }
 }

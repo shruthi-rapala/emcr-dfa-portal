@@ -17,6 +17,7 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   @Input() whoseSignature: string;
   @Input() initialSignedName: string;
   @Input() initialDateSigned: string;
+  @Input() isReadOnly: boolean;
   @Input() initialSignature: string;
   @Output() public signature: EventEmitter<SignatureBlock> = new EventEmitter<SignatureBlock>();
 
@@ -182,6 +183,8 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
   public clearCanvas() {
       this.context
           .clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+      this.signatureBlock.signature = null;
+      this.updateSignatureBlock();
   }
 }
 

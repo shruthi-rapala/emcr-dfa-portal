@@ -12,6 +12,5 @@ export enum FileCategory {
   DamagePhoto = 'Damage photo',
   Cleanup = 'Cleanup',
   Appeal = 'Appeal',
-  Identification = 'Identification',
   Unknown = 'Unknown'
 }

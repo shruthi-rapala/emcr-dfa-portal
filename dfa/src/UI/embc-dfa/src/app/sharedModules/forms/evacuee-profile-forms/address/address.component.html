@@ -155,15 +155,17 @@
 
   <mat-card class="card-align">
     <mat-card-content>
-      <p class="card-heading">Current Contact Address <span style="color:red">*</span></p>
+      <p class="card-heading">Mailing Address <span style="color:red">*</span></p>
+      <span>You must be able to receive mail at this address.  Please keep this address up to date during the process.</span>
+
       <!-- <form [formGroup]="mailingAddressForm"> -->
 
       <div class="row">
         <div class="col-md-12">
           <label
             id="isNewMailingAddress-radio-group-label"
-
-            >Is the address you are currently using the same as your primary address above?</label
+            >
+            <br/><br/>Is your mailing address different from your profile address above?</label
           >
           <mat-radio-group
             formControlName="isNewMailingAddress"
@@ -174,10 +176,21 @@
           >
             <mat-radio-button
               class="primary-radio-button"
-              *ngFor="let option of radioOption"
-              [value]="option"
+              value="Yes"
             >
-              {{ option }}
+              No
+            </mat-radio-button>
+            <mat-radio-button
+              class="primary-radio-button"
+              value="No"
+            >
+              Yes
+            </mat-radio-button>
+            <mat-radio-button
+              class="primary-radio-button"
+              value="I don't have a mailing address right now"
+            >
+              I don't have a mailing address right now
             </mat-radio-button>
             <mat-error
               class="custom-mat-error"

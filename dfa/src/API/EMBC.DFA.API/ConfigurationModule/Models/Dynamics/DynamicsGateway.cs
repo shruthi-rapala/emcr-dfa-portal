@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -47,6 +48,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return list.List;
         }
 
+        public async Task<IEnumerable<dfa_areacommunitieses>> GetCommunitiesAsync()
+        {
+            var list = await api.GetList<dfa_areacommunitieses>("dfa_areacommunitieses", new CRMGetListOptions
+            {
+                Select = new[] { "dfa_areacommunitiesid", "dfa_name", "dfa_typeofcommunity" }
+            });
+
+            return list.List;
+        }
+
         public async Task<dfa_appcontact> GetUserProfileAsync(string userId)
         {
             try
@@ -62,7 +73,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_primarystateprovince", "dfa_secondaryaddressline1", "dfa_secondaryaddressline2",
                         "dfa_secondarycity", "dfa_secondarypostalcode", "dfa_secondarystateprovince",
                         "dfa_isprimaryandsecondaryaddresssame", "dfa_appcontactid",
-                        "dfa_bcservicecardid"
+                        "dfa_bcservicecardid", "dfa_lastdateupdated"
                     },
                     Filter = $"dfa_bcservicecardid eq '{userId}'"
                 });
@@ -95,11 +106,30 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         }
 
         // TODO: fails with null dates when signatures not passed in
-        public async Task<string> AddApplication(dfa_appapplicationstart_params application)
+        public async Task<string> AddApplication(dfa_appapplicationstart_params application, temp_dfa_appapplicationstart_params temp_params)
         {
             try
             {
                 var result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+
+                // Update with additional values TODO: remove when dynamics process updated to include these parameters
+                dynamic updateObject = new ExpandoObject();
+                updateObject.dfa_isprimaryanddamagedaddresssame2 = application.dfa_isprimaryanddamagedaddresssame2;
+                updateObject.dfa_damagedpropertystreet1 = application.dfa_damagedpropertystreet1;
+                updateObject.dfa_damagedpropertystreet2 = application.dfa_damagedpropertystreet2;
+                updateObject.dfa_damagedpropertycitytext = application.dfa_damagedpropertycitytext;
+                updateObject.dfa_damagedpropertyprovince = application.dfa_damagedpropertyprovince;
+                updateObject.dfa_damagedpropertypostalcode = application.dfa_damagedpropertypostalcode;
+                updateObject.dfa_dateofdamage = application.dfa_dateofdamage;
+                updateObject.dfa_doyourlossestotalmorethan10002 = temp_params.dfa_doyourlossestotalmorethan10002; // TODO: pass this in from dfa_applicationstart_params
+
+                // parent event object
+                var parEventIndexer = updateObject as IDictionary<string, object>;
+                parEventIndexer["dfa_EventId@odata.bind"] = "/dfa_events(" + temp_params.dfa_eventid + ")";
+
+                Guid applicationId = new Guid(result.Where(m => m.Key == "output").ToList()[0].Value.ToString());
+
+                var updateResult = await api.Update("dfa_appapplications", applicationId, updateObject, false);
 
                 if (result != null)
                 {
@@ -127,11 +157,24 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<string> UpdateApplication(dfa_appapplicationmain_params application)
+        public async Task<string> UpdateApplication(dfa_appapplicationmain_params application, temp_dfa_appapplicationmain_params temp_params)
         {
             try
             {
                 var result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+
+                // Update with additional values TODO: remove when dynamics process updated to include these parameters
+
+                dynamic updateObject = new ExpandoObject();
+                updateObject.dfa_accountlegalname = temp_params.dfa_accountlegalname;
+                updateObject.dfa_businessmanagedbyallownersondaytodaybasis = temp_params.dfa_businessmanagedbyallownersondaytodaybasis;
+                updateObject.dfa_grossrevenues100002000000beforedisaster = temp_params.dfa_grossrevenues100002000000beforedisaster;
+                updateObject.dfa_employlessthan50employeesatanyonetime = temp_params.dfa_employlessthan50employeesatanyonetime;
+                updateObject.dfa_farmoperation = temp_params.dfa_farmoperation;
+                updateObject.dfa_ownedandoperatedbya = temp_params.dfa_ownedandoperatedbya;
+                updateObject.dfa_farmoperationderivesthatpersonsmajorincom = temp_params.dfa_farmoperationderivesthatpersonsmajorincom;
+
+                var updateResult = await api.Update("dfa_appapplications", application.dfa_appapplicationid, updateObject, false);
 
                 if (result != null)
                 {
@@ -155,10 +198,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_appapplicationid", "dfa_applicanttype", "dfa_doyouhaveinsurancecoverage2", "_dfa_applicant_value",
                     "dfa_primaryapplicantsignednoins",
                     "dfa_primaryapplicantprintnamenoins", "dfa_primaryapplicantsigneddatenoins", "dfa_secondaryapplicantsignednoins",
-                    "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins"
+                    "dfa_secondaryapplicantprintnamenoins", "dfa_secondaryapplicantsigneddatenoins", "dfa_isprimaryanddamagedaddresssame2",
+                    "dfa_damagedpropertystreet1", "dfa_damagedpropertystreet2", "dfa_damagedpropertycitytext", "dfa_damagedpropertyprovince",
+                    "dfa_damagedpropertypostalcode", "dfa_dateofdamage", "dfa_doyourlossestotalmorethan10002", "_dfa_eventid_value",
+                    "dfa_farmtype", "dfa_smallbusinesstype"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
+
+            //list.List.FirstOrDefault().dfa_farmtype = (int)FarmOptionSet.General; // TODO: replace this with actual retrieve
+            //list.List.FirstOrDefault().dfa_smallbusinesstype = (int)SmallBusinessOptionSet.General; // TODO: replace this with actual retrieve
 
             return list.List.FirstOrDefault();
         }
@@ -180,7 +229,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_description", "dfa_doyourlossestotalmorethan10002", "dfa_haveinvoicesreceiptsforcleanuporrepairs2",
                     "dfa_primaryapplicantprintname", "dfa_primaryapplicantsigned", "dfa_primaryapplicantsigneddate",
                     "dfa_secondaryapplicantprintname", "dfa_secondaryapplicantsigned", "dfa_secondaryapplicantsigneddate",
-                    "dfa_wereyouevacuatedduringtheevent2"
+                    "dfa_wereyouevacuatedduringtheevent2", "dfa_accountlegalname", "dfa_businessmanagedbyallownersondaytodaybasis",
+                    "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
+                    "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon", "_dfa_eventid_value",
+                    "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit",
+                    "dfa_damagedpropertyaddresscanadapostverified"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -224,6 +277,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         application.dfa_secondaryapplicantsignature = annotation.documentbody;
                     }
                 }
+
+                if (application._dfa_eventid_value != null)
+                {
+                    var eventlist = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                            "dfa_eventid", "dfa_90daydeadlinenew"
+                        },
+                        Filter = $"dfa_eventid eq {application._dfa_eventid_value}"
+                    });
+
+                    application.dfa_90daydeadline = eventlist.List.Last()?.dfa_90daydeadlinenew;
+                }
             }
 
             return list.List.FirstOrDefault();
@@ -237,7 +304,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id"
+                        "dfa_eventid", "dfa_id", "dfa_eventname"
                     }
                 });
 
@@ -245,7 +312,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "incidentid", "ticketnumber"
+                        "incidentid", "ticketnumber", "dfa_datefileclosed"
                     }
                 });
 
@@ -281,11 +348,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_dateofdamage = objApp.dfa_dateofdamage,
                                    dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
                                    dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                                   dfa_event = objAppEvent != null ? objAppEvent.dfa_id : null,
+                                   dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
                                    dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
                                    dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
+                                   dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
+                                   dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
                                    createdon = objApp.createdon,
-                                   dfa_applicationstatusportal = objApp.dfa_applicationstatusportal
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
                 //from objEvent in lstEvents.List
@@ -579,7 +647,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
                 if (result != null)
                 {
-                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
+                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value?.ToString() : string.Empty;
                 }
                 return "Submitted";
             }
@@ -598,10 +666,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_appdocumentlocationsid", "_dfa_applicationid_value", "dfa_name", "dfa_description", "createdon", "dfa_documenttype", "dfa_modifiedby"
+                        "dfa_appdocumentlocationsid", "_dfa_applicationid_value", "dfa_name", "dfa_description", "createdon", "dfa_documenttype", "dfa_modifiedby", "dfa_requireddocumenttype"
                     }, Filter = $"_dfa_applicationid_value eq {applicationIdString}"
                 });
 
+                // TODO: delete this loop and replace with actual retrieval of required document type above
+                //list.List.ForEach(item =>
+                //{
+                //    if (item.dfa_documenttype == "Insurance") item.dfa_requireddocumenttype = "Insurance Template";
+                //});
                 return list.List;
             }
             catch (System.Exception ex)
@@ -610,20 +683,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<bool> GetEventList()
+        public async Task<int> GetEventCount()
         {
             try
             {
+                // TODO: when new event name field is added, retrieve the new field
                 var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id", "dfa_dateofevent",
-                        "dfa_dateofeventdeclaredrevised", "dfa_dateofeventdeclaredrevised2", "statuscode", "dfa_90daydeadlinenew"
+                        "dfa_eventid", "dfa_id", "statuscode", "dfa_90daydeadlinenew"
                     }
                 });
-
-                bool isActive = false;
 
                 if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
                 {
@@ -632,16 +703,68 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= DateTime.Now).Count();
                     if (deadline90days > 0)
                     {
-                        return true;
+                        return deadline90days;
                     }
                 }
 
-                return isActive;
+                return 0;
             }
             catch (System.Exception ex)
             {
                 throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
             }
+        }
+
+        public async Task<IEnumerable<dfa_event>> GetOpenEventList()
+        {
+            try
+            {
+                // TODO: Retrieve appropriate geographical information
+                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_eventid", "dfa_id", "statuscode", "dfa_startdate", "dfa_enddate", "dfa_90daydeadlinenew", "dfa_eventname"
+                    }
+                });
+
+                var nowDate = DateTime.Now;
+                // open events are those active events where the 90 day deadline is now or in the future
+                return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate && m.statuscode == "1");
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+
+        public async Task<IEnumerable<dfa_effectedregioncommunities>> GetEffectedRegionCommunitiesList()
+        {
+            var lstEffectedRegionCommunties = await api.GetList<dfa_effectedregioncommunities>("dfa_effectedregioncommunities", new CRMGetListOptions
+            {
+                Select = new[]
+                {
+                        "dfa_effectedregioncommunityid", "_dfa_regionid_value", "dfa_areaname",
+                        "_dfa_eventid_value"
+                }
+            });
+            var lstRegions = await api.GetList<dfa_region>("dfa_regions", new CRMGetListOptions
+            {
+                Select = new[]
+                {
+                        "dfa_regionid", "dfa_name"
+                }
+            });
+
+            foreach (dfa_effectedregioncommunities dfa_effectedregioncommunity in lstEffectedRegionCommunties.List)
+            {
+                if (dfa_effectedregioncommunity._dfa_regionid_value != null)
+                {
+                    dfa_effectedregioncommunity.dfa_name = lstRegions.List.Find(x => x.dfa_regionid == dfa_effectedregioncommunity._dfa_regionid_value)?.dfa_name;
+                }
+            }
+
+            return lstEffectedRegionCommunties.List;
         }
     }
 }

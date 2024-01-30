@@ -9,7 +9,7 @@ on:
     paths:
       - "dfa/src/UI/**"
       - ".github/workflows/cd-dfa-portal-project-ui.yml"
-
+  workflow_dispatch:
 env:
   IMAGE_NAME: dfa-portal-ui
   WORKING_DIRECTORY: ./dfa/src/UI

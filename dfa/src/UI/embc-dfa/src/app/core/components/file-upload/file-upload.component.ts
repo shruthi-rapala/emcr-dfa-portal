@@ -33,7 +33,7 @@ export class FileUploadComponent {
     for (const e of event) {
       if (!(e.size > 0)) {
         this.warningDialog(constant.zeroFileMessage);
-      } else if (!(e.size <= 52428800)) {
+      } else if (!(e.size <= 26214400)) {
         this.warningDialog(constant.fileTooLargeMessage);
       } else if (!this.allowedFileTypes?.includes(e.type)) {
         this.warningDialog(constant.fileTypeMessage);

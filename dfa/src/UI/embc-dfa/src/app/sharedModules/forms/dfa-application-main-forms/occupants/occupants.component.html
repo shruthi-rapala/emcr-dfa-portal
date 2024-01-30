@@ -4,7 +4,7 @@
     <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts</p>
     <br />
 
-    <form [formGroup]="fullTimeOccupantsForm" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}">
+    <form [formGroup]="fullTimeOccupantsForm" *ngIf="isHomeowner || isResidentialTenant">
       <div formGroupName="fullTimeOccupant">
         <ng-container>
           <div class="row">
@@ -45,6 +45,7 @@
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
+                    *ngIf="vieworedit !== 'viewOnly'"
                     mat-icon-button
                     aria-label="Remove"
                     (click)="deleteFullTimeOccupantRow(index)"
@@ -77,7 +78,7 @@
               </div>
 
               <button
-                *ngIf="!showFullTimeOccupantForm && dfaApplicationMainDataService.getViewOrEdit() !== 'view' && dfaApplicationMainDataService.getViewOrEdit() !== 'edit'"
+                *ngIf="!showFullTimeOccupantForm && (vieworedit === 'add' || vieworedit === 'update')"
                 class="family-button"
                 mat-button
                 type="button"
@@ -195,7 +196,7 @@
       </div><br/><br/>
     </form>
 
-    <form [formGroup]="secondaryApplicantsForm" [ngStyle]="{'pointer-events': dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit' ? 'none' : ''}">
+    <form [formGroup]="secondaryApplicantsForm">
       <div formGroupName="secondaryApplicant">
         <ng-container>
           <div class="row">
@@ -256,6 +257,7 @@
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
+                    *ngIf="vieworedit !== 'viewOnly'"
                     mat-icon-button
                     aria-label="Remove"
                     (click)="deleteSecondaryApplicantRow(index)"
@@ -283,13 +285,13 @@
                 <br /><br/>
               </div>
 
-              <div *ngIf="secondaryApplicantsDataSource.getValue().length == 0 && (dfaApplicationMainDataService.getViewOrEdit() === 'view' || dfaApplicationMainDataService.getViewOrEdit() === 'edit')">
+              <div *ngIf="secondaryApplicantsDataSource.getValue().length == 0 && (vieworedit === 'view' || vieworedit === 'edit' || vieworedit === 'viewOnly')">
                 <b>No secondary applicants added.</b>
                 <br /><br/>
               </div>
 
               <button
-                *ngIf="!showSecondaryApplicantForm && dfaApplicationMainDataService.getViewOrEdit() !== 'view' && dfaApplicationMainDataService.getViewOrEdit() !== 'edit'"
+                *ngIf="!showSecondaryApplicantForm && (vieworedit === 'add' || vieworedit === 'update')"
                 class="family-button"
                 mat-button
                 type="button"
@@ -516,9 +518,10 @@
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
+                    *ngIf="vieworedit !== 'viewOnly'"
                     mat-icon-button
                     aria-label="Remove"
-                    (click)="deleteOtherContactRow(index)"
+                    (click)="confirmDeleteOtherContactRow(index)"
                   >
                     <img src="/assets/images/delete.svg" height="35" width="35" />
                     <img
@@ -548,7 +551,7 @@
               </div>
 
               <button
-                *ngIf="!showOtherContactForm"
+                *ngIf="!showOtherContactForm && vieworedit !== 'viewOnly'"
                 class="family-button"
                 mat-button
                 type="button"

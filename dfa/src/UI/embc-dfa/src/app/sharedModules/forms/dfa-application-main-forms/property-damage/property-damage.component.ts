@@ -23,6 +23,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { ApplicantOption } from 'src/app/core/api/models';
 
 
 @Component({
@@ -37,6 +38,13 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   formCreationService: FormCreationService;
   remainingLength: number = 2000;
   todayDate = new Date().toISOString();
+  public ApplicantOptions = ApplicantOption;
+  isResidentialTenant: boolean = false;
+  isHomeowner: boolean = false;
+  isSmallBusinessOwner: boolean = false;
+  isReadOnly: boolean = false;
+  isFarmOwner: boolean = false;
+  isCharitableOrganization: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -47,6 +55,37 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.isReadOnly = (dfaApplicationMainDataService.getViewOrEdit() === 'view'
+    || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
+    || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
+    this.setViewOrEditControls();
+
+    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+      this.isReadOnly = (vieworedit === 'view'
+      || vieworedit === 'edit'
+      || vieworedit === 'viewOnly');
+      this.setViewOrEditControls();
+    })
+  }
+
+  setViewOrEditControls() {
+    if (!this.propertyDamageForm) return;
+    if (this.isReadOnly) {
+      this.propertyDamageForm.controls.floodDamage.disable();
+      this.propertyDamageForm.controls.landslideDamage.disable();
+      this.propertyDamageForm.controls.stormDamage.disable();
+      this.propertyDamageForm.controls.otherDamage.disable();
+      this.propertyDamageForm.controls.wereYouEvacuated.disable();
+      this.propertyDamageForm.controls.residingInResidence.disable();
+    } else {
+      this.propertyDamageForm.controls.floodDamage.enable();
+      this.propertyDamageForm.controls.landslideDamage.enable();
+      this.propertyDamageForm.controls.stormDamage.enable();
+      this.propertyDamageForm.controls.otherDamage.enable();
+      this.propertyDamageForm.controls.wereYouEvacuated.enable();
+      this.propertyDamageForm.controls.residingInResidence.enable();
+    }
   }
 
   ngOnInit(): void {
@@ -54,6 +93,26 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       .getPropertyDamageForm()
       .subscribe((propertyDamage) => {
         this.propertyDamageForm = propertyDamage;
+        this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+          if (application) {
+            this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+            this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
+            this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
+            this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
+            this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
+            if (this.isHomeowner || this.isResidentialTenant) {
+              this.propertyDamageForm.controls.wereYouEvacuated.setValidators([Validators.required]);
+              this.propertyDamageForm.controls.residingInResidence.setValidators([Validators.required]);
+            } else if (this.isSmallBusinessOwner || this.isFarmOwner || this.isCharitableOrganization) {
+              this.propertyDamageForm.controls.wereYouEvacuated.setValidators(null);
+              this.propertyDamageForm.controls.wereYouEvacuated.setValue(null);
+              this.propertyDamageForm.controls.dateReturned.setValue(null);
+              this.propertyDamageForm.controls.residingInResidence.setValidators(null);
+              this.propertyDamageForm.controls.residingInResidence.setValue(null);
+            }
+          this.propertyDamageForm.updateValueAndValidity();
+          }
+        });
         this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
         if (this.propertyDamageForm.get('otherDamage').value === 'true') {
           this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required, Validators.maxLength(100)]);
@@ -143,15 +202,6 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       });
 
     this.propertyDamageForm
-      .get('lossesExceed1000')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.propertyDamageForm.get('lossesExceed1000').reset();
-        }
-      });
-
-    this.propertyDamageForm
       .get('wereYouEvacuated')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
@@ -177,6 +227,10 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
           this.propertyDamageForm.get('residingInResidence').reset();
         }
       });
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.propertyDamageForm.disable();
+    }
   }
 
   validateFormCauseOfDamage(form: FormGroup) {
@@ -188,7 +242,6 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-
 
   calcRemainingChars() {
     this.remainingLength = 2000 - this.propertyDamageForm.get('briefDescription').value?.length;

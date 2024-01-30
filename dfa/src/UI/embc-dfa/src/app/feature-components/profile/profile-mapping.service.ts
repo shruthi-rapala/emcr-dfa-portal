@@ -89,6 +89,7 @@ export class ProfileMappingService {
               this.profileDataService.primaryAddressDetails.stateProvince,
             postalCode: this.profileDataService.primaryAddressDetails.postalCode,
             country: null,
+            isAddressVerified: true
           },
           isBcAddress: null,
           isNewMailingAddress: null,
@@ -99,7 +100,8 @@ export class ProfileMappingService {
             community: null,
             stateProvince: null,
             country: null,
-            postalCode: null
+            postalCode: null,
+            isAddressVerified: false
           }
         });
       });
@@ -134,7 +136,7 @@ export class ProfileMappingService {
         address.setValue({
           address: primaryAddress,
           isBcAddress: this.isBCAddress(profile.primaryAddress.stateProvince),
-          isNewMailingAddress: (profile.isMailingAddressSameAsPrimaryAddress == 'NoAddress' ? 'I don\'t have a permanent address right now' : profile.isMailingAddressSameAsPrimaryAddress),
+          isNewMailingAddress: (profile.isMailingAddressSameAsPrimaryAddress == 'NoAddress' ? 'I don\'t have a mailing address right now' : profile.isMailingAddressSameAsPrimaryAddress),
           isBcMailingAddress: this.isBCAddress(
             profile.mailingAddress.stateProvince
           ),
