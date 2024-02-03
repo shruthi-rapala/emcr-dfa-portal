@@ -109,7 +109,7 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
             this.profileVerificationForm.get('profile.mailingAddress.postalCode').setValidators(null);
           }
           else if (profile.isMailingAddressSameAsPrimaryAddress === 'No') {
-            this.profileVerificationForm.get('profile.mailingAddress').reset();
+            //this.profileVerificationForm.get('profile.mailingAddress').reset();
             this.profileVerificationForm.get('profile.mailingAddress.addressLine1').setValidators([Validators.required]);
             this.profileVerificationForm.get('profile.mailingAddress.city').setValidators([Validators.required]);
             this.profileVerificationForm.get('profile.mailingAddress.postalCode').setValidators([Validators.required]);
