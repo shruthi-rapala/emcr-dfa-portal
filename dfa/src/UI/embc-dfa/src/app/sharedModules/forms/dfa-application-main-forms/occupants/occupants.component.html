@@ -257,7 +257,7 @@
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
-                    *ngIf="vieworedit !== 'viewOnly'"
+                    *ngIf="vieworedit !== 'viewOnly' && vieworedit !== 'view'"
                     mat-icon-button
                     aria-label="Remove"
                     (click)="deleteSecondaryApplicantRow(index)"
