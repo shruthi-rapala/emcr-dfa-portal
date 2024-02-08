@@ -87,6 +87,7 @@ export class DashboardComponent implements OnInit {
 
     this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
       this.eventsCount = eventsCount.toString();
+      this.tabs[1].count = eventsCount.toString();
     })
 
     this.tabs = [
