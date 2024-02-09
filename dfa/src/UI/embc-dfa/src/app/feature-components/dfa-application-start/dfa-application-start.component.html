@@ -3,9 +3,10 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationStartHeading }}</span>
     </div>
-    <div class="col-4" *ngIf="showSaveButton === true">
+    <div class="col-4">
       <button
         class="button-p save-button col-4"
+        style="height:40px !important; vertical-align: middle; width:220px;"
         (click)="backToDashboard()"
         mat-stroked-button
         type="button"
