@@ -39,6 +39,7 @@ import { DFAApplicationAlertDialogComponent } from './components/dialog-componen
 import { DFADeleteConfirmDialogComponent } from './components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { AddressChangeComponent } from './components/dialog-components/address-change-dialog/address-change-dialog.component';
 import { DFAConfirmDashboardNavigationDialogComponent } from './components/dialog-components/dfa-confirm-dashboard-navigation/dfa-confirm-dashboard-navigation.component';
+import { SecondaryApplicantWarningDialogComponent } from './components/dialog-components/secondary-applicant-warning-dialog/secondary-applicant-warning-dialog.component';
 
 @NgModule({
   imports: [
@@ -82,7 +83,8 @@ import { DFAConfirmDashboardNavigationDialogComponent } from './components/dialo
     DFAApplicationAlertDialogComponent,
     DFADeleteConfirmDialogComponent,
     AddressChangeComponent,
-    DFAConfirmDashboardNavigationDialogComponent
+    DFAConfirmDashboardNavigationDialogComponent,
+    SecondaryApplicantWarningDialogComponent
   ],
   exports: [
     AppLoaderComponent,
@@ -106,7 +108,8 @@ import { DFAConfirmDashboardNavigationDialogComponent } from './components/dialo
     DFAApplicationAlertDialogComponent,
     DFADeleteConfirmDialogComponent,
     AddressChangeComponent,
-    DFAConfirmDashboardNavigationDialogComponent
+    DFAConfirmDashboardNavigationDialogComponent,
+    SecondaryApplicantWarningDialogComponent
   ]
 })
 export class CoreModule {}

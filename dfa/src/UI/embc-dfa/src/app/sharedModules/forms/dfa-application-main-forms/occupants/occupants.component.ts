@@ -25,6 +25,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { FullTimeOccupantService, OtherContactService, SecondaryApplicantService } from 'src/app/core/api/services';
 import { DFADeleteConfirmDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SecondaryApplicantWarningDialogComponent } from '../../../../core/components/dialog-components/secondary-applicant-warning-dialog/secondary-applicant-warning-dialog.component';
 
 @Component({
   selector: 'app-occupants',
@@ -316,11 +317,27 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   addSecondaryApplicant(): void {
-    this.secondaryApplicantsForm.get('secondaryApplicant').reset();
-    this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
-    this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
-    this.secondaryApplicantsForm.get('secondaryApplicant.deleteFlag').setValue(false);
-    this.secondaryApplicantsForm.get('secondaryApplicant.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    if (this.secondaryApplicantsDataSource.getValue().length > 0) {
+      this.dialog
+        .open(SecondaryApplicantWarningDialogComponent, {
+          data: {
+            content: "Delete the current secondary applicant record first and then try adding new record."
+          },
+          width: '500px',
+          disableClose: true
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          
+        });
+    }
+    else {
+      this.secondaryApplicantsForm.get('secondaryApplicant').reset();
+      this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
+      this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
+      this.secondaryApplicantsForm.get('secondaryApplicant.deleteFlag').setValue(false);
+      this.secondaryApplicantsForm.get('secondaryApplicant.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    }
   }
 
   saveSecondaryApplicants(): void {
