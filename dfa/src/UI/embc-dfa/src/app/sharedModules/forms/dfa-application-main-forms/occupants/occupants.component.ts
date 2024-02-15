@@ -50,6 +50,9 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email', 'deleteIcon'];
   otherContactsDataSource = new BehaviorSubject([]);
   otherContactsData = [];
+  otherContactsEditIndex: number;
+  otherContactsRowEdit = false;
+  otherContactsEditFlag = false;
   showSecondaryApplicantForm: boolean = false;
   secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email', 'deleteIcon'];
   secondaryApplicantsDataSource = new BehaviorSubject([]);
@@ -273,19 +276,37 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   saveOtherContact(): void {
     if (this.otherContactsForm.get('otherContact').status === 'VALID') {
-      this.otherContactsService.otherContactUpsertDeleteOtherContact({body: this.otherContactsForm.get('otherContact').getRawValue() }).subscribe({
-        next: (otherContactId) => {
-          this.otherContactsForm.get('otherContact').get('id').setValue(otherContactId);
-          this.otherContactsData.push(this.otherContactsForm.get('otherContact').value);
-          this.otherContactsDataSource.next(this.otherContactsData);
-          this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
-          this.showOtherContactForm = !this.showOtherContactForm;
-        },
-        error: (error) => {
-          console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });
+      if (this.otherContactsEditIndex !== undefined && this.otherContactsRowEdit) {
+        this.otherContactsService.otherContactUpsertDeleteOtherContact({ body: this.otherContactsForm.get('otherContact').getRawValue() }).subscribe({
+          next: (result) => {
+            this.otherContactsData[this.otherContactsEditIndex] = this.otherContactsForm.get('otherContact').value;
+            this.otherContactsRowEdit = !this.otherContactsRowEdit;
+            this.otherContactsEditIndex = undefined;
+            this.otherContactsDataSource.next(this.otherContactsData);
+            this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+            this.showOtherContactForm = !this.showOtherContactForm;
+            this.otherContactsEditFlag = !this.otherContactsEditFlag;
+          },
+          error: (error) => {
+            console.error(error);
+            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          }
+        });
+      } else {
+        this.otherContactsService.otherContactUpsertDeleteOtherContact({ body: this.otherContactsForm.get('otherContact').getRawValue() }).subscribe({
+          next: (otherContactId) => {
+            this.otherContactsForm.get('otherContact').get('id').setValue(otherContactId);
+            this.otherContactsData.push(this.otherContactsForm.get('otherContact').value);
+            this.otherContactsDataSource.next(this.otherContactsData);
+            this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+            this.showOtherContactForm = !this.showOtherContactForm;
+          },
+          error: (error) => {
+            console.error(error);
+            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          }
+        });
+      }
     } else {
       this.otherContactsForm.get('otherContact').markAllAsTouched();
     }
@@ -295,6 +316,18 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(false);
   }
+
+
+  editOtherContactsRow(element, index): void {
+    this.otherContactsEditIndex = index;
+    this.otherContactsRowEdit = !this.otherContactsRowEdit;
+    this.otherContactsForm.get('otherContact').setValue(element);
+    this.showOtherContactForm = !this.showOtherContactForm;
+    this.otherContactsEditFlag = !this.otherContactsEditFlag;
+    this.otherContactsForm
+      .get('addNewOtherContactIndicator').setValue(true);
+  }
+
 
   deleteOtherContactRow(index: number): void {
     this.otherContactsData[index].deleteFlag = true;
