@@ -45,7 +45,7 @@
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
-                    *ngIf="vieworedit !== 'viewOnly'"
+                    *ngIf="vieworedit !== 'viewOnly' && vieworedit !== 'view'"
                     mat-icon-button
                     aria-label="Remove"
                     (click)="deleteFullTimeOccupantRow(index)"
@@ -257,7 +257,7 @@
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                     class="delete-image"
-                    *ngIf="vieworedit !== 'viewOnly'"
+                    *ngIf="vieworedit !== 'viewOnly' && vieworedit !== 'view'"
                     mat-icon-button
                     aria-label="Remove"
                     (click)="deleteSecondaryApplicantRow(index)"
@@ -516,6 +516,20 @@
                     &nbsp;
                   </th>
                   <td *matCellDef="let element; let index = index" mat-cell>
+                    <button
+                      class="edit-image"
+                      *ngIf="vieworedit !== 'viewOnly'"
+                      mat-icon-button
+                      aria-label="Edit"
+                      (click)="editOtherContactsRow(element, index)"
+                    >
+                      <img src="/assets/images/edit.svg" height="35" width="35" />
+                      <img
+                        src="/assets/images/edit_onhover.svg"
+                        height="35"
+                        width="35"
+                      />
+                    </button>&nbsp;
                     <button
                     class="delete-image"
                     *ngIf="vieworedit !== 'viewOnly'"

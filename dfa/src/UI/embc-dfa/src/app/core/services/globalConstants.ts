@@ -139,7 +139,7 @@ export const charitynobenefit: DialogContent = {
 }
 
 export const charityno12months: DialogContent = {
-  text: '<p>Your charitable organization must have been in existence for at least 12 months to be eligible for DFA..</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Has your charitable organization been in existence for at least 12 months?</b></p>',
+  text: '<p>Your charitable organization must have been in existence for at least 12 months to be eligible for DFA.</p><p>You may call us to discuss further at 1-888-257-4777.</p><p><b>Has your charitable organization been in existence for at least 12 months?</b></p>',
   cancelButton: 'No, Save & Close my Application',
   confirmButton: 'Yes, Continue my Application'
 }
