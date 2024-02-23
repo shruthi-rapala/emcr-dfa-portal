@@ -22,7 +22,7 @@
             <li *ngIf="isResidentialTenant">Identification: a copy of government issued identification such as Driver's License, Service Card, or BC ID.</li>
             <li *ngIf="(isSmallBusinessOwner && isGeneral) || (isFarmOwner && isGeneral)">Income tax return: completed T1 general income tax return with supporting schedules for all owners.</li>
             <li *ngIf="isSmallBusinessOwner && isLandlord">Income tax return: complete T1 general income tax returns for all owners of rented property.</li>
-            <li *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)">Income tax return: completed T2 corporate income tax return for the company.</li>
+            <li *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)">Income tax return: completed T2 corporate income tax return for the company with supporting schedules.</li>
             <li *ngIf="isSmallBusinessOwner && isLandlord">T776: statement of real estate rentals.</li>
             <li *ngIf="isSmallBusinessOwner && isLandlord">Residential tenancy agreement.</li>
             <li *ngIf="(isSmallBusinessOwner && isCorporate) || (isFarmOwner && isCorporate)">Proof of ownership: Central Securities Register listing all shareholders or Partnership Agreement.</li>
@@ -204,7 +204,7 @@
         <div class="col-md-8">
           <app-dfa-attachment
             title="Income Tax Return"
-            description="Attach your completed T2 corporate income tax return for the company."
+            description="Attach your completed T2 corporate income tax return for the company with supporting schedules."
             *ngIf="fileUploadForm.hasError('noT2CorporateIncomeTaxReturn')"
             requiredDocumentType="T2CorporateIncomeTaxReturn"
             [allowedFileTypes]="allowedFileTypes"
@@ -384,7 +384,7 @@
         <div class="col-md-8">
           <app-dfa-attachment
             title="Structure and Purpose"
-            description="Attach a statement outlining the organization’s structure and purpose, and any other documentation supporting how the organization meets the eligibility criteria for Disaster Financial Assistance (DFA)."
+            description="Attach a statement outlining the organizations benefit or service to the community, and any other documentation supporting how the organization meets the eligibility criteria for Disaster Financial Assistance (DFA)."
             *ngIf="fileUploadForm.hasError('noStructureAndPurpose')"
             requiredDocumentType="StructureAndPurpose"
             [allowedFileTypes]="allowedFileTypes"
