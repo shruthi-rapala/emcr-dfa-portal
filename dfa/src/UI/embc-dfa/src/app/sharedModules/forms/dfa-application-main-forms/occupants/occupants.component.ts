@@ -53,6 +53,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   otherContactsEditIndex: number;
   otherContactsRowEdit = false;
   otherContactsEditFlag = false;
+  otherContactText = 'New Other Contact';
   showSecondaryApplicantForm: boolean = false;
   secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email', 'deleteIcon'];
   secondaryApplicantsDataSource = new BehaviorSubject([]);
@@ -267,6 +268,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   addOtherContact(): void {
+    this.otherContactText = 'New Other Contact'
     this.otherContactsForm.get('otherContact').reset();
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
@@ -315,10 +317,12 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   cancelOtherContact(): void {
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(false);
+    this.otherContactText = 'New Other Contact'
   }
 
 
   editOtherContactsRow(element, index): void {
+    this.otherContactText = 'Edit Other Contact'
     this.otherContactsEditIndex = index;
     this.otherContactsRowEdit = !this.otherContactsRowEdit;
     this.otherContactsForm.get('otherContact').setValue(element);
