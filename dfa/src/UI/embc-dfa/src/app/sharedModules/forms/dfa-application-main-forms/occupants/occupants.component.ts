@@ -25,6 +25,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { FullTimeOccupantService, OtherContactService, SecondaryApplicantService } from 'src/app/core/api/services';
 import { DFADeleteConfirmDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SecondaryApplicantWarningDialogComponent } from '../../../../core/components/dialog-components/secondary-applicant-warning-dialog/secondary-applicant-warning-dialog.component';
 
 @Component({
   selector: 'app-occupants',
@@ -49,6 +50,10 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email', 'deleteIcon'];
   otherContactsDataSource = new BehaviorSubject([]);
   otherContactsData = [];
+  otherContactsEditIndex: number;
+  otherContactsRowEdit = false;
+  otherContactsEditFlag = false;
+  otherContactText = 'New Other Contact';
   showSecondaryApplicantForm: boolean = false;
   secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email', 'deleteIcon'];
   secondaryApplicantsDataSource = new BehaviorSubject([]);
@@ -263,6 +268,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   addOtherContact(): void {
+    this.otherContactText = 'New Other Contact'
     this.otherContactsForm.get('otherContact').reset();
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
@@ -272,19 +278,37 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   saveOtherContact(): void {
     if (this.otherContactsForm.get('otherContact').status === 'VALID') {
-      this.otherContactsService.otherContactUpsertDeleteOtherContact({body: this.otherContactsForm.get('otherContact').getRawValue() }).subscribe({
-        next: (otherContactId) => {
-          this.otherContactsForm.get('otherContact').get('id').setValue(otherContactId);
-          this.otherContactsData.push(this.otherContactsForm.get('otherContact').value);
-          this.otherContactsDataSource.next(this.otherContactsData);
-          this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
-          this.showOtherContactForm = !this.showOtherContactForm;
-        },
-        error: (error) => {
-          console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });
+      if (this.otherContactsEditIndex !== undefined && this.otherContactsRowEdit) {
+        this.otherContactsService.otherContactUpsertDeleteOtherContact({ body: this.otherContactsForm.get('otherContact').getRawValue() }).subscribe({
+          next: (result) => {
+            this.otherContactsData[this.otherContactsEditIndex] = this.otherContactsForm.get('otherContact').value;
+            this.otherContactsRowEdit = !this.otherContactsRowEdit;
+            this.otherContactsEditIndex = undefined;
+            this.otherContactsDataSource.next(this.otherContactsData);
+            this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+            this.showOtherContactForm = !this.showOtherContactForm;
+            this.otherContactsEditFlag = !this.otherContactsEditFlag;
+          },
+          error: (error) => {
+            console.error(error);
+            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          }
+        });
+      } else {
+        this.otherContactsService.otherContactUpsertDeleteOtherContact({ body: this.otherContactsForm.get('otherContact').getRawValue() }).subscribe({
+          next: (otherContactId) => {
+            this.otherContactsForm.get('otherContact').get('id').setValue(otherContactId);
+            this.otherContactsData.push(this.otherContactsForm.get('otherContact').value);
+            this.otherContactsDataSource.next(this.otherContactsData);
+            this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+            this.showOtherContactForm = !this.showOtherContactForm;
+          },
+          error: (error) => {
+            console.error(error);
+            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          }
+        });
+      }
     } else {
       this.otherContactsForm.get('otherContact').markAllAsTouched();
     }
@@ -293,7 +317,21 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   cancelOtherContact(): void {
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(false);
+    this.otherContactText = 'New Other Contact'
   }
+
+
+  editOtherContactsRow(element, index): void {
+    this.otherContactText = 'Edit Other Contact'
+    this.otherContactsEditIndex = index;
+    this.otherContactsRowEdit = !this.otherContactsRowEdit;
+    this.otherContactsForm.get('otherContact').setValue(element);
+    this.showOtherContactForm = !this.showOtherContactForm;
+    this.otherContactsEditFlag = !this.otherContactsEditFlag;
+    this.otherContactsForm
+      .get('addNewOtherContactIndicator').setValue(true);
+  }
+
 
   deleteOtherContactRow(index: number): void {
     this.otherContactsData[index].deleteFlag = true;
@@ -316,11 +354,27 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   addSecondaryApplicant(): void {
-    this.secondaryApplicantsForm.get('secondaryApplicant').reset();
-    this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
-    this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
-    this.secondaryApplicantsForm.get('secondaryApplicant.deleteFlag').setValue(false);
-    this.secondaryApplicantsForm.get('secondaryApplicant.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    if (this.secondaryApplicantsDataSource.getValue().length > 0) {
+      this.dialog
+        .open(SecondaryApplicantWarningDialogComponent, {
+          data: {
+            content: "Delete the current secondary applicant record first and then try adding new record."
+          },
+          width: '500px',
+          disableClose: true
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          
+        });
+    }
+    else {
+      this.secondaryApplicantsForm.get('secondaryApplicant').reset();
+      this.showSecondaryApplicantForm = !this.showSecondaryApplicantForm;
+      this.secondaryApplicantsForm.get('addNewSecondaryApplicantIndicator').setValue(true);
+      this.secondaryApplicantsForm.get('secondaryApplicant.deleteFlag').setValue(false);
+      this.secondaryApplicantsForm.get('secondaryApplicant.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    }
   }
 
   saveSecondaryApplicants(): void {
