@@ -233,7 +233,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_grossrevenues100002000000beforedisaster", "dfa_employlessthan50employeesatanyonetime",
                     "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon", "_dfa_eventid_value",
                     "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit",
-                    "dfa_damagedpropertyaddresscanadapostverified"
+                    "dfa_damagedpropertyaddresscanadapostverified", "dfa_iamtheonlypersoninthehome"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });

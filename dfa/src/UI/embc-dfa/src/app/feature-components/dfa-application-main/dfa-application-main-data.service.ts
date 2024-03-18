@@ -28,6 +28,7 @@ export class DFAApplicationMainDataService {
   private _vieworedit: string;
   private _editstep: string;
   private _requiredDocuments = [];
+  private _onlyOccupantInHome: boolean = false;
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(
@@ -186,6 +187,13 @@ export class DFAApplicationMainDataService {
     return this._editstep;
   }
 
+  public getIsOnlyOccupantInHome(): boolean {
+    return this._onlyOccupantInHome;
+  }
+  public setIsOnlyOccupantInHome(value: boolean): void {
+    this._onlyOccupantInHome = value;
+  }
+
    public createDFAApplicationMainDTO(): DfaApplicationMain {
     return {
       id: this._applicationId,
@@ -194,7 +202,8 @@ export class DFAApplicationMainDataService {
       propertyDamage: this._propertyDamage,
       supportingDocuments: this._supportingDocuments,
       signAndSubmit: this._signAndSubmit,
-      deleteFlag: false
+      deleteFlag: false,
+      onlyOccupantInHome: this._onlyOccupantInHome
     };
   }
 }

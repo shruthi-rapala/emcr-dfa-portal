@@ -372,6 +372,7 @@ export class FullTimeOccupant {
   id?: null | string;
   lastName?: string;
   relationship?: string;
+  onlyOccupantInHome?: boolean;
 }
 
 export class FullTimeOccupantsForm {
@@ -384,6 +385,7 @@ export class FullTimeOccupantsForm {
   fullTimeOccupant: UntypedFormGroup;
   fullTimeOccupants = new UntypedFormControl([]);
   addNewFullTimeOccupantIndicator = new UntypedFormControl(false);
+  onlyOccupantInHome = new UntypedFormControl();
 
   constructor(
     fullTimeOccupants: Array<FullTimeOccupant>,
@@ -2870,4 +2872,5 @@ export interface DfaApplicationMain {
   signAndSubmit?: SignAndSubmit;
   supportingDocuments?: SupportingDocuments;
   deleteFlag?: boolean;
+  onlyOccupantInHome?: boolean
 }

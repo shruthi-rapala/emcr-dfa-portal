@@ -966,7 +966,10 @@
             ></tr>
           </table>
         </div>
-        <div class="row info-detail" *ngIf="(isHomeowner || isResidentialTenant) && (formCreationService.fullTimeOccupantsForm$ | async)?.value?.fullTimeOccupants?.length == 0">
+        <div class="row info-detail" *ngIf="(isHomeowner || isResidentialTenant) &&
+             ((formCreationService.fullTimeOccupantsForm$ | async)?.value?.onlyOccupantInHome == false &&
+             (formCreationService.fullTimeOccupantsForm$ | async)?.value?.fullTimeOccupants?.length == 0)
+             ">
           <span style="color:red">At least one full time occupant is required.</span>
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.secondaryApplicantsForm$ | async)?.value?.secondaryApplicants?.length > 0">
