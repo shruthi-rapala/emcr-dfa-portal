@@ -13,7 +13,11 @@
                 <b>Full-time Occupants<span style="color:red" >*</span></b>
               </p>
               <p>
-                Add yourself and the name(s) of all full-time occupants who lived in your home at the time of the event. Don't include tenants.<span style="color:red" >*</span>
+                Add the names of all full-time occupants who lived in your home at the time of the event. Don't include tenants.<br />
+                If you were the only person living in the home, please indicate here:&nbsp;
+                <mat-checkbox (change)="onChecked($event)" [disabled]="disableOnlyOccupant" [checked]="onlyOccupantInHome" id="onlyOccupantInHome">
+                I am the only person in the home
+                </mat-checkbox>
               </p>
 
               <table mat-table [dataSource]="fullTimeOccupantsDataSource" *ngIf="fullTimeOccupantsDataSource.getValue().length > 0">

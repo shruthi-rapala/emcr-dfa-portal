@@ -26,6 +26,7 @@ import { FullTimeOccupantService, OtherContactService, SecondaryApplicantService
 import { DFADeleteConfirmDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SecondaryApplicantWarningDialogComponent } from '../../../../core/components/dialog-components/secondary-applicant-warning-dialog/secondary-applicant-warning-dialog.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-occupants',
@@ -65,6 +66,8 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   isSmallBusinessOwner: boolean = false;
   isCharitableOrganization: boolean = false;
   isFarmOwner: boolean = false;
+  onlyOccupantInHome: boolean = false;
+  disableOnlyOccupant: boolean = false;
   readonly phoneMask = [
     /\d/,
     /\d/,
@@ -98,6 +101,8 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.vieworedit = vieworedit;
     })
+    
+    this.onlyOccupantInHome = this.dfaApplicationMainDataService.getIsOnlyOccupantInHome();
   }
 
   ngOnInit(): void {
@@ -114,9 +119,17 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
             this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
             if (this.isHomeowner || this.isResidentialTenant) this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators([Validators.required]);
             else this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators(null);
+
+            this.updateFullTimeOccupantOnlyOccupantInHome(this.onlyOccupantInHome);
           }
           });
       });
+      
+    this.fullTimeOccupantsForm
+      .get('onlyOccupantInHome')
+      .valueChanges.subscribe((value) =>
+        this.updateFullTimeOccupantOnlyOccupantInHome(value)
+    );
 
     this.fullTimeOccupantsForm
       .get('addNewFullTimeOccupantIndicator')
@@ -149,12 +162,25 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       || this.vieworedit === 'edit'
       || this.vieworedit === 'viewOnly') {
         this.secondaryApplicantsForm.disable();
-        this.fullTimeOccupantsForm.disable();
+      this.fullTimeOccupantsForm.disable();
+      this.disableOnlyOccupant = true;
       }
 
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
       this.secondaryApplicantsForm.disable();
     }
+
+    this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(this.onlyOccupantInHome);
+  }
+  
+  onChecked(e) {
+    console.log('asd asdfsdf3435')
+    if (e.checked) {
+      this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(true);
+    } else {
+      this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(false);
+    }
+
   }
 
   getSecondaryApplicantsForApplication(applicationId: string) {
@@ -196,7 +222,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   getFullTimeOccupantsForApplication(applicationId: string) {
-
+    
     if (applicationId === undefined) {
       applicationId = this.dfaApplicationMainDataService.getApplicationId();
     }
@@ -422,6 +448,17 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     });
   }
 
+  updateFullTimeOccupantOnlyOccupantInHome(value): void {
+    value == true ?
+      this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators(null) :
+      this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators([Validators.required]);
+    this.dfaApplicationMainDataService.setIsOnlyOccupantInHome(value);
+
+    this.fullTimeOccupantsForm
+      .get('fullTimeOccupants')
+      .updateValueAndValidity();
+  }
+
   updateFullTimeOccupantOnVisibility(): void {
     this.fullTimeOccupantsForm
       .get('fullTimeOccupant.firstName')
@@ -523,6 +560,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     MatIconModule,
     ReactiveFormsModule,
     DirectivesModule,
+    MatCheckboxModule
   ],
   declarations: [OccupantsComponent]
 })

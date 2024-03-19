@@ -11,6 +11,7 @@ export interface DfaApplicationMain {
   deleteFlag?: boolean;
   id?: string;
   notifyUser?: boolean;
+  onlyOccupantInHome?: boolean;
   propertyDamage?: null | PropertyDamage;
   signAndSubmit?: null | SignAndSubmit;
   supportingDocuments?: null | SupportingDocuments;
