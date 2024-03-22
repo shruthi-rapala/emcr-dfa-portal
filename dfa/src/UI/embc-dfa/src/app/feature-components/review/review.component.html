@@ -1067,7 +1067,8 @@
             ></tr>
           </table>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length == 0">
+        <div class="row info-detail" *ngIf="(formCreationService.otherContactsForm$ | async)?.value?.onlyOtherContact == false &&
+             (formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length == 0">
           <span style="color:red">At least one other contact is required.</span>
         </div>
       </mat-card-content>
