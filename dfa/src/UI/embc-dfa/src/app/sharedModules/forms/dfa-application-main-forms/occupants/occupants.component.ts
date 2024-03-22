@@ -68,6 +68,8 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   isFarmOwner: boolean = false;
   onlyOccupantInHome: boolean = false;
   disableOnlyOccupant: boolean = false;
+  onlyOtherContact: boolean = false;
+  disableOnlyOtherContact: boolean = false;
   readonly phoneMask = [
     /\d/,
     /\d/,
@@ -103,6 +105,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     })
     
     this.onlyOccupantInHome = this.dfaApplicationMainDataService.getIsOnlyOccupantInHome();
+    this.onlyOtherContact = this.dfaApplicationMainDataService.getIsOnlyOtherContact();
   }
 
   ngOnInit(): void {
@@ -121,6 +124,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
             else this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators(null);
 
             this.updateFullTimeOccupantOnlyOccupantInHome(this.onlyOccupantInHome);
+            this.updateOnlyOtherContact(this.onlyOtherContact);
           }
           });
       });
@@ -130,7 +134,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       .valueChanges.subscribe((value) =>
         this.updateFullTimeOccupantOnlyOccupantInHome(value)
     );
-
+    
     this.fullTimeOccupantsForm
       .get('addNewFullTimeOccupantIndicator')
       .valueChanges.subscribe((value) => this.updateFullTimeOccupantOnVisibility());
@@ -141,6 +145,12 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       .subscribe((otherContacts) => {
         this.otherContactsForm = otherContacts;
       });
+
+    this.otherContactsForm
+      .get('onlyOtherContact')
+      .valueChanges.subscribe((value) =>
+        this.updateOnlyOtherContact(value)
+      );
 
     this.otherContactsForm
       .get('addNewOtherContactIndicator')
@@ -164,6 +174,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         this.secondaryApplicantsForm.disable();
       this.fullTimeOccupantsForm.disable();
       this.disableOnlyOccupant = true;
+      //this.disableOnlyOtherContact = true;
       }
 
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
@@ -171,14 +182,23 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     }
 
     this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(this.onlyOccupantInHome);
+    this.otherContactsForm.get('onlyOtherContact').setValue(this.onlyOtherContact);
   }
   
   onChecked(e) {
-    console.log('asd asdfsdf3435')
     if (e.checked) {
       this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(true);
     } else {
       this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(false);
+    }
+
+  }
+
+  onCheckedNoOtherContact(e) {
+    if (e.checked) {
+      this.otherContactsForm.get('onlyOtherContact').setValue(true);
+    } else {
+      this.otherContactsForm.get('onlyOtherContact').setValue(false);
     }
 
   }
@@ -459,6 +479,17 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       .updateValueAndValidity();
   }
 
+  updateOnlyOtherContact(value): void {
+    value == true ?
+      this.otherContactsForm.get('otherContacts').setValidators(null) :
+      this.otherContactsForm.get('otherContacts').setValidators([Validators.required]);
+    this.dfaApplicationMainDataService.setIsOnlyOtherContact(value);
+
+    this.otherContactsForm
+      .get('otherContacts')
+      .updateValueAndValidity();
+  }
+
   updateFullTimeOccupantOnVisibility(): void {
     this.fullTimeOccupantsForm
       .get('fullTimeOccupant.firstName')
@@ -505,25 +536,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 
   confirmDeleteOtherContactRow(index: number): void {
-    if (this.otherContactsData.length == 1) {
-      this.dialog
-        .open(DFADeleteConfirmDialogComponent, {
-          data: {
-            content: "DFA requires that you have at least one Other Contact.<br/>Please add a new contact before deleting this one."
-          },
-          width: '500px',
-          disableClose: true
-        })
-        .afterClosed()
-        .subscribe((result) => {
-          //if (result === 'confirm') {
-          //  this.deleteOtherContactRow(index);
-          //}
-        });
-    }
-    else {
-      this.deleteOtherContactRow(index);
-    }
+    this.deleteOtherContactRow(index);
   }
 
   /**

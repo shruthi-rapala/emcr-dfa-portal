@@ -472,6 +472,7 @@ export class OtherContact {
   id?: null | string;
   lastName?: string;
   phoneNumber?: string;
+  onlyOtherContact?: boolean;
 }
 
 export class OtherContactsForm {
@@ -485,6 +486,7 @@ export class OtherContactsForm {
   addNewOtherContactIndicator = new UntypedFormControl(false);
   otherContact: UntypedFormGroup;
   otherContacts = new UntypedFormControl([], Validators.required);
+  onlyOtherContact = new UntypedFormControl();
 
   constructor(
     otherContacts: Array<OtherContact>,
@@ -2872,5 +2874,6 @@ export interface DfaApplicationMain {
   signAndSubmit?: SignAndSubmit;
   supportingDocuments?: SupportingDocuments;
   deleteFlag?: boolean;
-  onlyOccupantInHome?: boolean
+  onlyOccupantInHome?: boolean;
+  onlyOtherContact?: boolean
 }

@@ -214,6 +214,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_accountlegalname, opts => opts.MapFrom(s => s.damagedPropertyAddress.businessLegalName))
                 .ForMember(d => d.dfa_damagedpropertyaddresscanadapostverified, opts => opts.MapFrom(s => s.damagedPropertyAddress.isDamagedAddressVerified == null ? (int?)null : (s.damagedPropertyAddress.isDamagedAddressVerified == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_iamtheonlypersoninthehome, opts => opts.MapFrom(s => s.onlyOccupantInHome == false ? (int?)YesNoOptionSet.No : (int?)YesNoOptionSet.Yes))
+                .ForMember(d => d.dfa_idonthaveanothercontact, opts => opts.MapFrom(s => s.onlyOtherContact == false ? (int?)YesNoOptionSet.No : (int?)YesNoOptionSet.Yes))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
             CreateMap<DFAApplicationMain, temp_dfa_appapplicationmain_params>() // TODO: map into dfa_application_params when dynamics process updated

@@ -201,6 +201,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool delete { get; set; } // delete or not
         public int? dfa_damagedpropertyaddresscanadapostverified { get; set; } // optional Two Options
         public int? dfa_iamtheonlypersoninthehome { get; set; } // optional Two Options
+        public int? dfa_idonthaveanothercontact { get; set; } // optional Two Options
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
@@ -270,6 +271,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? createdon { get; set; } // optional string
         public int? dfa_damagedpropertyaddresscanadapostverified { get; set; }
         public int? dfa_iamtheonlypersoninthehome { get; set; }
+        public int? dfa_idonthaveanothercontact { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord

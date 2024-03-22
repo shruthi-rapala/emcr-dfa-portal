@@ -188,6 +188,7 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationMain.cleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
             dfaApplicationMain.supportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
             dfaApplicationMain.onlyOccupantInHome = dfa_appapplication.dfa_iamtheonlypersoninthehome == Convert.ToInt32(YesNoOptionSet.No) ? false : true;
+            dfaApplicationMain.onlyOtherContact = dfa_appapplication.dfa_idonthaveanothercontact == Convert.ToInt32(YesNoOptionSet.No) ? false : true;
 
             if ((appContactProfile.lastUpdatedDateBCSC == null || DateTime.Parse(dfa_appapplication.createdon) < DateTime.Parse(appContactProfile.lastUpdatedDateBCSC))
                 && dfa_appapplication.dfa_primaryapplicantsigneddate == null)
@@ -248,6 +249,7 @@ namespace EMBC.DFA.API.Controllers
         public bool deleteFlag { get; set; }
         public bool notifyUser { get; set; }
         public bool onlyOccupantInHome { get; set; }
+        public bool onlyOtherContact { get; set; }
     }
 
     public class CurrentApplication
