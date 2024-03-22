@@ -37,7 +37,7 @@
                     class="primary-radio-button row"
                     [value]="option.key"
                   ><span *ngIf="option.value === radioApplicantOptions.SmallBusinessOwner">Small business owner (including landlords)</span>
-                   <span *ngIf="option.value === radioApplicantOptions.CharitableOrganization">Charitable organization</span>
+                   <span *ngIf="option.value === radioApplicantOptions.CharitableOrganization">Charitable/non-profit organization</span>
                    <span *ngIf="option.value === radioApplicantOptions.ResidentialTenant">Residential tenant</span>
                    <span *ngIf="option.value === radioApplicantOptions.FarmOwner">Farm</span>
                    <span *ngIf="option.value === radioApplicantOptions.Homeowner"> {{ option.value }}</span>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="sub-heading radio-extra-label col-md-12" *ngIf="prescreeningForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.CharitableOrganization">
                       <br/>
-                      To qualify for DFA, your charitable organization must:
+                      To qualify for DFA, your charitable/non-profit organization must:
                       <ul>
                         <li>provide a benefit or service to the community,</li>
                         <li>have been in existence for at least 12 months, and</li>
@@ -152,7 +152,7 @@
           </div>
           <div class="col-md-4">
             <div class="sub-heading radio-extra-label" style="border: 3px solid #70abd9">
-              <b>This page is for individuals, small businesses, farms, and charitable organizations. If you're an Indigenous community or local government your
+              <b>This page is for individuals, small businesses, farms, and charitable/non-profit organizations. If you're an Indigenous community or local government your
                 process is different: <a href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/local-emergency-programs/financial/communities-dfa" target="_blank">DFA for community recovery</a>.</b>
             </div>
           </div>

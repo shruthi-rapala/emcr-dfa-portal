@@ -213,8 +213,8 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
             this.damagedPropertyAddressForm.controls.charityExistsAtLeast12Months.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.charityRegistered.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.charityProvidesCommunityBenefit.setValidators([Validators.required]);
-            this.accountLegalNameLabel = "charitable organization's"
-            this.accountPlaceHolderLabel = "Charitable Organization";
+            this.accountLegalNameLabel = "charitable/non-profit organization's"
+            this.accountPlaceHolderLabel = "Charitable/Non-profit Organization";
           }
         this.damagedPropertyAddressForm.updateValueAndValidity();
         }
