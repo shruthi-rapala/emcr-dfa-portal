@@ -18,7 +18,7 @@ import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 import { DFAApplicationMainService } from './dfa-application-main.service';
-import { ApplicantOption, FarmOption, SmallBusinessOption } from 'src/app/core/api/models';
+import { ApplicantOption, FarmOption, InsuranceOption, SmallBusinessOption } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
@@ -72,7 +72,8 @@ export class DFAApplicationMainComponent
   SmallBusinessOptions = SmallBusinessOption;
   FarmOptions = FarmOption;
   signAndSubmitForm: UntypedFormGroup;
-
+  InsuranceOptions = InsuranceOption;
+  isNoInsurance: boolean = false;
   constructor(
     private router: Router,
     private componentService: ComponentCreationService,
@@ -96,6 +97,7 @@ export class DFAApplicationMainComponent
 
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
+        this.isNoInsurance = (application.appTypeInsurance.insuranceOption == Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.No)]);
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
         this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
         this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
@@ -205,6 +207,7 @@ export class DFAApplicationMainComponent
           }
           this.checkSignaturesValid();
         });
+
   }
 
 
@@ -395,8 +398,7 @@ export class DFAApplicationMainComponent
     let isDirectorsListingUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "DirectorsListing" && x.deleteFlag == false).length >= 1 ? true : false;
     let isRegistrationProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "RegistrationProof" && x.deleteFlag == false).length >= 1 ? true : false;
     let isStructureAndPurposeUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "StructureAndPurpose" && x.deleteFlag == false).length >= 1 ? true : false;
-
-    if (isInsuranceTemplateUploaded == true
+    if ((this.isNoInsurance == false ? isInsuranceTemplateUploaded == true : true)
       && (this.isResidentialTenant == true ? (isIdentificationUploaded == true && isTenancyProofUploaded == true) : true)
       && ((this.isSmallBusinessOwner == true  && this.isGeneral == true) ? (isT1GeneralIncomeTaxReturnUploaded == true && isFinancialStatementsUploaded == true) : true )
       && ((this.isSmallBusinessOwner == true  && this.isCorporate == true) ? (isT2CorporateIncomeTaxReturnUploaded == true && isFinancialStatementsUploaded == true && isProofOfOwnershipUploaded) : true )
