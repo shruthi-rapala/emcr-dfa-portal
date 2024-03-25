@@ -658,7 +658,7 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isSmallBusinessOwner">Business legal name:</span>
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isFarmOwner">Farm legal name:</span>
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isCharitableOrganization">Charitable organization legal name:</span>
+            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isCharitableOrganization">Charitable/non-profit organization legal name:</span>
           </div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}">
