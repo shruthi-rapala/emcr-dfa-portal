@@ -123,7 +123,10 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
             if (this.isHomeowner || this.isResidentialTenant) this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators([Validators.required]);
             else this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators(null);
 
-            this.updateFullTimeOccupantOnlyOccupantInHome(this.onlyOccupantInHome);
+            if (this.isHomeowner || this.isResidentialTenant) {
+              this.updateFullTimeOccupantOnlyOccupantInHome(this.onlyOccupantInHome);
+            }
+
             this.updateOnlyOtherContact(this.onlyOtherContact);
           }
           });

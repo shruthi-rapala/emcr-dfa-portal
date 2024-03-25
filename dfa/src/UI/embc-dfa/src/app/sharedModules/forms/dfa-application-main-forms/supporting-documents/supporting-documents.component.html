@@ -14,10 +14,11 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <p class="sub-heading" style="font-size: 15px">Required Documents</p>
-          You must provide the following document before you can submit your application:
+          <p *ngIf="!(isHomeowner && isNoInsurance)" class="sub-heading" style="font-size: 15px">Required Documents</p>
+          <span *ngIf="!(isHomeowner && isNoInsurance)">
+          You must provide the following document before you can submit your application:</span>
           <ul>
-            <li>Insurance template completed by your insurance broker</li>
+            <li *ngIf="!isNoInsurance">Insurance template completed by your insurance broker</li>
             <li *ngIf="isResidentialTenant">Rental agreement: a copy of your rental agreement, lease, or other documentation to show that you are/were legally occupying the damaged property at the time of the event, and</li>
             <li *ngIf="isResidentialTenant">Identification: a copy of government issued identification such as Driver's License, Service Card, or BC ID.</li>
             <li *ngIf="(isSmallBusinessOwner && isGeneral) || (isFarmOwner && isGeneral)">Income tax return: completed T1 general income tax return with supporting schedules for all owners.</li>
@@ -60,7 +61,7 @@
             diameter="50"
             >
           </app-loader>
-          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noInsuranceTemplate')">
+          <mat-card class="row" *ngIf="(!fileUploadForm.hasError('noInsuranceTemplate') && !isNoInsurance)">
             <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
           </mat-card>
         </div>
@@ -90,7 +91,7 @@
             diameter="50"
           >
           </app-loader>
-          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noInsuranceTemplate')">
+          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noInsuranceTemplate') && !isNoInsurance">
             <p class="sub-heading" style="font-size: 15px">Required insurance template has been uploaded.</p>
           </mat-card>
         </div>

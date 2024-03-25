@@ -17,7 +17,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { BehaviorSubject, Observable, Subscription, catchError, mapTo, throwError } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { ApplicantOption, FileCategory, FileUpload, RequiredDocumentType, SmallBusinessOption, FarmOption } from 'src/app/core/api/models';
+import { ApplicantOption, FileCategory, FileUpload, RequiredDocumentType, SmallBusinessOption, FarmOption, InsuranceOption } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -80,7 +80,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   AppOptions = ApplicantOption;
   SmallBusinessOptions = SmallBusinessOption;
   FarmOptions = FarmOption;
+  InsuranceOptions = InsuranceOption;
   vieworedit: string = "";
+  isNoInsurance: boolean = false;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -104,6 +106,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
 
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
+        this.isNoInsurance = (application.appTypeInsurance.insuranceOption == Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.No)]);
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
         this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
         this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
@@ -177,9 +180,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     let supportingFiles = form.get('fileUploads')?.getRawValue();
     let applicantType = form.get('applicantType').value;
     const error={};
-    if (!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) {
+    if ((!supportingFiles || supportingFiles?.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length <= 0) && !this.isNoInsurance ) {
       invalid = true;
       error["noInsuranceTemplate"] = true;
+    }
+    else {
+      invalid = false;
+      error["noInsuranceTemplate"] = false;
     }
     switch (applicantType) {
       case "ResidentialTenant":
