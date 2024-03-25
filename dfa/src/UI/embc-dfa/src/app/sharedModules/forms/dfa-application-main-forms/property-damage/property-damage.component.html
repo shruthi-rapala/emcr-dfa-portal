@@ -200,6 +200,8 @@
                 matInput
                 [matDatepicker]="rtnPicker"
                 [readonly]="isReadOnly === true"
+                [min]="propertyDamageForm.get('damageFromDate').value ? propertyDamageForm.get('damageFromDate').value : '2000-01-01'"
+                [max]="todayDate"
                 formControlName="dateReturned">
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle
