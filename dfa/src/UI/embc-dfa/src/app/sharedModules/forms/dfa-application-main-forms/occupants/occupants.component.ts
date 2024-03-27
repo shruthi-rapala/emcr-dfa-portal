@@ -105,8 +105,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       this.vieworedit = vieworedit;
     })
     
-    this.onlyOccupantInHome = this.dfaApplicationMainDataService.getIsOnlyOccupantInHome();
-    this.onlyOtherContact = this.dfaApplicationMainDataService.getIsOnlyOtherContact();
   }
 
   ngOnInit(): void {
@@ -124,6 +122,18 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
             if (this.isHomeowner || this.isResidentialTenant) this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators([Validators.required]);
             else this.fullTimeOccupantsForm.get('fullTimeOccupants').setValidators(null);
 
+            this.onlyOccupantInHome = this.dfaApplicationMainDataService.getIsOnlyOccupantInHome();
+            this.onlyOtherContact = this.dfaApplicationMainDataService.getIsOnlyOtherContact();
+            
+            setTimeout(
+              function () {
+                this.onlyOccupantInHome = this.dfaApplicationMainDataService.getIsOnlyOccupantInHome();
+                this.onlyOtherContact = this.dfaApplicationMainDataService.getIsOnlyOtherContact();
+                this.hideOccupantButton = this.onlyOccupantInHome;
+                
+              }.bind(this),
+              1000
+            );
             if (this.isHomeowner || this.isResidentialTenant) {
               this.updateFullTimeOccupantOnlyOccupantInHome(this.onlyOccupantInHome);
             }
