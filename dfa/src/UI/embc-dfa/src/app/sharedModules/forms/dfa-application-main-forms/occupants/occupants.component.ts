@@ -68,6 +68,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   isFarmOwner: boolean = false;
   onlyOccupantInHome: boolean = false;
   disableOnlyOccupant: boolean = false;
+  hideOccupantButton: boolean = false;
   onlyOtherContact: boolean = false;
   disableOnlyOtherContact: boolean = false;
   readonly phoneMask = [
@@ -190,8 +191,10 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   
   onChecked(e) {
     if (e.checked) {
+      this.hideOccupantButton = true;
       this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(true);
     } else {
+      this.hideOccupantButton = false;
       this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(false);
     }
 
