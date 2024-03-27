@@ -71,6 +71,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   hideOccupantButton: boolean = false;
   onlyOtherContact: boolean = false;
   disableOnlyOtherContact: boolean = false;
+  hideOtherContactButton: boolean = false;
   readonly phoneMask = [
     /\d/,
     /\d/,
@@ -130,7 +131,10 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
                 this.onlyOccupantInHome = this.dfaApplicationMainDataService.getIsOnlyOccupantInHome();
                 this.onlyOtherContact = this.dfaApplicationMainDataService.getIsOnlyOtherContact();
                 this.hideOccupantButton = this.onlyOccupantInHome;
-                
+                this.hideOtherContactButton = this.onlyOtherContact;
+
+                this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(this.onlyOccupantInHome);
+                this.otherContactsForm.get('onlyOtherContact').setValue(this.onlyOtherContact);
               }.bind(this),
               1000
             );
@@ -212,8 +216,10 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   onCheckedNoOtherContact(e) {
     if (e.checked) {
+      this.hideOtherContactButton = true;
       this.otherContactsForm.get('onlyOtherContact').setValue(true);
     } else {
+      this.hideOtherContactButton = false;
       this.otherContactsForm.get('onlyOtherContact').setValue(false);
     }
 
