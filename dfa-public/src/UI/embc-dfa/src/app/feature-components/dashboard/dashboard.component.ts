@@ -142,7 +142,7 @@ export class DashboardComponent implements OnInit {
   navigateToDFAPrescreening(): void {
     this.dfaApplicationMainDataService.setViewOrEdit('add');
     var profileId = this.profileDataService.getProfileId();
-    this.router.navigate(['/dfa-prescreening']);
+    this.router.navigate(['/dfa-application-main']);
   }
 
 }

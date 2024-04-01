@@ -72,6 +72,7 @@ export class DFAApplicationMainComponent
   SmallBusinessOptions = SmallBusinessOption;
   FarmOptions = FarmOption;
   signAndSubmitForm: UntypedFormGroup;
+  showStepper: boolean = false;
 
   constructor(
     private router: Router,
@@ -94,192 +95,28 @@ export class DFAApplicationMainComponent
       }
     }
 
-    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-      if (application) {
-        this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
-        this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);
-        this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.SmallBusinessOwner)]);
-        this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.FarmOwner)]);
-        this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.CharitableOrganization)]);
-        if (this.isSmallBusinessOwner) {
-          this.isGeneral = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.General)]);
-          this.isCorporate = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Corporate)]);
-          this.isLandlord = (application.appTypeInsurance.smallBusinessOption == Object.keys(this.SmallBusinessOptions)[Object.values(this.SmallBusinessOptions).indexOf(this.SmallBusinessOptions.Landlord)]);
-        } else if (this.isFarmOwner) {
-          this.isGeneral = (application.appTypeInsurance.farmOption == Object.keys(this.FarmOptions)[Object.values(this.FarmOptions).indexOf(this.FarmOptions.General)]);
-          this.isCorporate = (application.appTypeInsurance.farmOption == Object.keys(this.FarmOptions)[Object.values(this.FarmOptions).indexOf(this.FarmOptions.Corporate)]);
-        }
-        if (this.isResidentialTenant) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "TenancyAgreement", "Identification"];
-        } else if (this.isHomeowner) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate" ];
-        } else if (this.isSmallBusinessOwner && this.isGeneral) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T1GeneralIncomeTaxReturn", "FinancialStatements"];
-        } else if (this.isSmallBusinessOwner && this.isCorporate) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T2CorporateIncomeTaxReturn", "ProofOfOwnership", "FinancialStatements"];
-        } else if (this.isSmallBusinessOwner && this.isLandlord) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T1GeneralIncomeTaxReturn", "T776", "FinancialStatements"];
-        } else if (this.isFarmOwner && this.isGeneral) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T1GeneralIncomeTaxReturn", "FinancialStatements"];
-        } else if (this.isFarmOwner && this.isCorporate) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "T2CorporateIncomeTaxReturn", "ProofOfOwnership", "FinancialStatements"];
-        } else if (this.isCharitableOrganization) {
-          this.dfaApplicationMainDataService.requiredDocuments = ["InsuranceTemplate", "DirectorsListing", "RegistrationProof", "StructureAndPurpose"]
-        }
-      }
-    });
   }
 
   ngOnInit(): void {
 
-    this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    let applicationId = this.route.snapshot.paramMap.get('id');
-
-    // clear old data
-    this.dfaApplicationMainDataService.setApplicationId(applicationId);
-    this.dfaApplicationMainDataService.cleanUpLog = null;
-    this.dfaApplicationMainDataService.cleanUpLogItems = null;
-    this.dfaApplicationMainDataService.damagedPropertyAddress = null;
-    this.dfaApplicationMainDataService.damagedRooms = null;
-    this.dfaApplicationMainDataService.fileUploads = null;
-    this.dfaApplicationMainDataService.fullTimeOccupants = null;
-    this.dfaApplicationMainDataService.isSubmitted = false;
-    this.dfaApplicationMainDataService.otherContacts = null;
     this.dfaApplicationMainDataService.propertyDamage = null;
-    this.dfaApplicationMainDataService.secondaryApplicants = null;
-    this.dfaApplicationMainDataService.signAndSubmit = null;
-    this.dfaApplicationMainDataService.supportingDocuments = null;
-    this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-    this.formCreationService.clearCleanUpLogData();
-    this.formCreationService.clearCleanUpLogItemsData();
-    this.formCreationService.clearDamagedPropertyAddressData();
-    this.formCreationService.clearDamagedRoomsData();
-    this.formCreationService.clearFileUploadsData();
-    this.formCreationService.clearFullTimeOccupantsData();
-    this.formCreationService.clearOtherContactsData();
     this.formCreationService.clearPropertyDamageData();
-    this.formCreationService.clearSecondaryApplicantsData();
-    this.formCreationService.clearSignAndSubmitData();
-    this.formCreationService.clearSupportingDocumentsData();
-
-    this.appTypeInsuranceForm$ = this.formCreationService
-      .getAppTypeInsuranceForm()
-      .subscribe((appTypeInsurance) => {
-        this.appTypeInsuranceForm = appTypeInsurance;
-      });
-
-    this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-      if (application) {
-        if (application.id == applicationId) this.getFileUploadsForApplication(applicationId);
-        this.dfaApplicationMainHeading = ApplicantOption[application.appTypeInsurance.applicantOption] + ' Application';
-        this.appTypeInsuranceForm.controls.applicantOption.setValue(application.appTypeInsurance.applicantOption);
-        this.appTypeInsuranceForm.controls.insuranceOption.setValue(application.appTypeInsurance.insuranceOption);
-        this.appTypeInsuranceForm.controls.smallBusinessOption.setValue(application.appTypeInsurance.smallBusinessOption);
-        this.appTypeInsuranceForm.controls.farmOption.setValue(application.appTypeInsurance.farmOption);
-        this.formCreationService.setAppTypeInsuranceForm(this.appTypeInsuranceForm);
-      }
-    });
 
     this.steps = this.componentService.createDFAApplicationMainSteps();
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.editstep = this.dfaApplicationMainDataService.getEditStep();
-
-    //this.dfaApplicationMainDataService.setViewOrEdit('');
-    this.formCreationService.signaturesChanged.subscribe(signAndSubmit => {
-      signAndSubmit.get('applicantSignature').get('dateSigned').updateValueAndValidity();
-      this.isApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.applicantSignature.valid;
-      this.isSecondaryApplicantSigned = this.formCreationService.signAndSubmitForm.value.controls.secondaryApplicantSignature.valid;
-      this.checkSignaturesValid();
-    });
-
-    const _secondaryApplicantsFormArray = this.formCreationService.secondaryApplicantsForm.value.get('secondaryApplicants');
-    _secondaryApplicantsFormArray.valueChanges
-      .pipe(
-        mapTo(_secondaryApplicantsFormArray.getRawValue())
-        ).subscribe(data => {
-          this.secondaryApplicants = _secondaryApplicantsFormArray.getRawValue();
-          if (this.secondaryApplicants.filter(x => x.deleteFlag != true)?.length > 0) {
-            this.isSecondaryApplicant = true;
-          } else {
-            this.isSecondaryApplicant = false;
-          }
-          this.checkSignaturesValid();
-        });
+    this.showStepper = false;
+    this.dfaApplicationMainHeading = 'Application Details'
   }
 
 
-  public getFileUploadsForApplication(applicationId: string) {
-
-    this.fileUploadsService.attachmentGetAttachments({applicationId: applicationId}).subscribe({
-      next: (attachments) => {
-         // initialize list of file uploads
-        this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(attachments);
-
-      },
-      error: (error) => {
-        console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
-      }
-    });
-  }
-
-  checkSignaturesValid() {
-    if (this.isSecondaryApplicant == false && this.isApplicantSigned == true) this.isSignaturesValid = true; // no secondary applicant and primary applicant signature valid
-    else if (this.isSecondaryApplicant == true && this.isApplicantSigned == true && this.isSecondaryApplicantSigned == true) this.isSignaturesValid = true; // secondary and primary signatures valid
-    else this.isSignaturesValid = false;
-  }
 
   ngAfterViewChecked(): void {
     this.cd.detectChanges();
   }
 
   ngAfterViewInit(): void {
-    let form$ = this.formCreationService
-      .getSignAndSubmitForm()
-      .subscribe((signAndSubmit)=> {
-        this.signAndSubmitForm = signAndSubmit;
-    });
-
-    this.signAndSubmitForm
-      .get('applicantSignature')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (this.vieworedit === 'view' || this.vieworedit === 'edit' || this.vieworedit === 'viewOnly') {
-          this.dfaApplicationMainDataService.setViewOrEdit(this.vieworedit);
-          for (var i = 0; i <= 7; i++) {
-            this.dfaApplicationMainStepper.selected.completed = true;
-            this.dfaApplicationMainStepper.next();
-          }
-          if (this.vieworedit === 'edit') this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
-        } else if (this.vieworedit !== 'add' && this.vieworedit !== 'update') {
-          this.dfaApplicationMainStepper.selectedIndex = 0;
-          if (this.signAndSubmitForm.get('applicantSignature')?.get('dateSigned')?.value) {
-            this.vieworedit = "view";
-            this.dfaApplicationMainDataService.setViewOrEdit("view");
-            this.dfaApplicationMainDataService.isSubmitted = true;
-            for (var i = 0; i <= 7; i++) {
-              this.dfaApplicationMainStepper.selected.completed = true;
-              this.dfaApplicationMainStepper.next();
-            }
-          }
-          else {
-            this.vieworedit = "update";
-            this.dfaApplicationMainDataService.setViewOrEdit("update");
-          }
-        }
-      });
-
-    this.signAndSubmitForm
-      .get('ninetyDayDeadline')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value) {
-          this.ninetyDayDeadline = value;
-          let date = new Date(value);
-          let currentDate = new Date();
-          this.daysToApply = Math.floor((date.getTime() - currentDate.getTime()) / 1000 / 60 / 60 / 24);
-        }
-      })
+    
   }
 
   navigateToStep(stepIndex: number) {
@@ -330,6 +167,7 @@ export class DFAApplicationMainComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
+    
     if (isLast && component === 'review') {
       this.dfaApplicationMainStepper.selected.completed = true;
       this.submitFile();
@@ -340,33 +178,9 @@ export class DFAApplicationMainComponent
 
         // determine if step is complete
         switch (component) {
-          case 'damaged-property-address':
-            if (this.form.valid) stepper.selected.completed = true;
-            else stepper.selected.completed = false;
-            break;
           case 'property-damage':
             if (this.form.valid) stepper.selected.completed = true;
             else stepper.selected.completed = false;
-            break;
-          case 'occupants':
-            if (this.formCreationService.otherContactsForm.value.valid && this.formCreationService.fullTimeOccupantsForm.value.valid) stepper.selected.completed = true;
-            else stepper.selected.completed = false;
-            break;
-          case 'clean-up-log':
-            stepper.selected.completed = true;
-            break;
-          case 'damaged-items-by-room':
-            stepper.selected.completed = true;
-            break;
-          case 'supporting-documents':
-            stepper.selected.completed = this.requiredDocumentsSupplied();
-            break;
-          case 'sign-and-submit':
-            if (this.form.valid) stepper.selected.completed = true;
-            else stepper.selected.completed = false;
-            break;
-          case 'review':
-            stepper.selected.completed = true;
             break;
           default:
             break;
@@ -445,17 +259,15 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.damagedPropertyAddress.isDamagedAddressVerified = this.form.get('isDamagedAddressVerified').value == 'true' ? true : (this.form.get('isDamagedAddressVerified').value == 'false' ? false : null);
         break;
       case 'property-damage':
-        this.dfaApplicationMainDataService.propertyDamage.briefDescription = this.form.get('briefDescription').value;
+        debugger
         this.dfaApplicationMainDataService.propertyDamage.damageFromDate = this.form.get('damageFromDate').value;
         this.dfaApplicationMainDataService.propertyDamage.damageToDate = this.form.get('damageToDate').value;
-        this.dfaApplicationMainDataService.propertyDamage.dateReturned = this.form.get('dateReturned').value;
         this.dfaApplicationMainDataService.propertyDamage.floodDamage = this.form.get('floodDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.landslideDamage = this.form.get('landslideDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.otherDamage = this.form.get('otherDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.otherDamageText = this.form.get('otherDamageText').value;
         this.dfaApplicationMainDataService.propertyDamage.stormDamage = this.form.get('stormDamage').value;
-        this.dfaApplicationMainDataService.propertyDamage.residingInResidence = this.form.get('residingInResidence').value == 'true' ? true : (this.form.get('residingInResidence').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.propertyDamage.wereYouEvacuated = this.form.get('wereYouEvacuated').value == 'true' ? true : (this.form.get('wereYouEvacuated').value == 'false' ? false : null);
+        this.dfaApplicationMainDataService.propertyDamage.wildfireDamage = this.form.get('wildfireDamage').value;
         break;
       case 'occupants':
         break;
@@ -489,42 +301,10 @@ export class DFAApplicationMainComponent
     switch (index) {
       case 0:
         this.form$ = this.formCreationService
-          .getDamagedPropertyAddressForm()
-          .subscribe((damagedPropertyAddress) => {
-            this.form = damagedPropertyAddress;
-          });
-        break;
-      case 1:
-        this.form$ = this.formCreationService
           .getPropertyDamageForm()
           .subscribe((propertyDamage) => {
             this.form = propertyDamage;
           });
-        break;
-      case 2:
-        this.form$ = null;
-      case 3:
-        this.form$ = this.formCreationService
-          .getCleanUpLogForm()
-          .subscribe((cleanUpLog) => {
-            this.form = cleanUpLog;
-          });
-        break;
-      case 4:
-        this.form$ = null;
-      case 5:
-        this.form$ = this.formCreationService
-          .getSupportingDocumentsForm()
-          .subscribe((supportingDocuments) => {
-            this.form = supportingDocuments;
-          });
-        break;
-      case 7:
-        this.form$ = this.formCreationService
-          .getSignAndSubmitForm()
-          .subscribe((signAndSubmit)=> {
-          this.form = signAndSubmit;
-        });
         break;
     }
   }
@@ -559,6 +339,7 @@ export class DFAApplicationMainComponent
       .afterClosed()
       .subscribe((result) => {
         if (result === 'confirm') {
+          this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
           let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
           this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
             this.isSubmitted = !this.isSubmitted;
@@ -569,7 +350,7 @@ export class DFAApplicationMainComponent
           },
           error => {
             console.error(error);
-            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            //document.location.href = 'https://dfa.gov.bc.ca/error.html';
           });
         }
       });

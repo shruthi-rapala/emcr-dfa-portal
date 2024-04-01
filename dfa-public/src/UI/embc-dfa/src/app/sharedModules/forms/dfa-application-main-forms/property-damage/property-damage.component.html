@@ -27,6 +27,11 @@
               Storm Damage
             </mat-checkbox><br/>
             <mat-checkbox
+              formControlName="wildfireDamage"
+              >
+              Wildfire Damage
+            </mat-checkbox><br/>
+            <mat-checkbox
               formControlName="otherDamage"
               class="col-md-4"
             >
@@ -145,91 +150,6 @@
           </div>
         </div><br/><br/>
 
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Brief description of damage/loss.<span style="color:red" >*</span>
-          </p>
-          <p>
-            Provide a brief description of the damages and losses. You will be provided the opportunity to itemize damaged items and clean up hours later in the application.
-          </p>
-          <mat-form-field appearance="outline">
-            <mat-label>Brief description of damage/loss</mat-label>
-            <textarea matInput
-              formControlName="briefDescription"
-              [rows]="5"
-              [readonly]="isReadOnly === true"
-              style="resize:none"
-              required
-              maxlength="2000"
-              (keyup)="calcRemainingChars()"></textarea>
-            <mat-hint>{{ remainingLength }} characters remaining.</mat-hint>
-            <mat-error
-                *ngIf="
-                  propertyDamageForm.get('briefDescription').invalid &&
-                propertyDamageForm.get('briefDescription').hasError('maxLength')
-                "
-              >
-                Maximum length is 2000 characters</mat-error
-              >
-          </mat-form-field>
-        </div><br/>
-
-        <div class="row" *ngIf="isResidentialTenant === true || isHomeowner === true">
-          <div class="col-md-12 bottomspace">
-            <p class="sub-heading" style="font-size: 15px">
-              Were you evacuated during the event?<span style="color:red" >*</span>
-            </p>
-            <mat-radio-group
-              formControlName="wereYouEvacuated"
-              class="primary-radio-group horizontal-radio-group"
-              required
-              aria-label="Select an option">
-              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div><br/><br/>
-
-        <div class="row" *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true' && (isResidentialTenant === true || isHomeowner === true)">
-          <p class="sub-heading" style="font-size: 15px">
-            If yes, when did you return to the residence?
-          </p>
-          <div class="col-md-4">
-            <mat-form-field appearance="outline" >
-              <mat-label>Date returned</mat-label>
-              <input
-                matInput
-                [matDatepicker]="rtnPicker"
-                [readonly]="isReadOnly === true"
-                formControlName="dateReturned">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle
-                matSuffix
-                [disabled]="isReadOnly === true"
-                [for]="rtnPicker"
-                ></mat-datepicker-toggle>
-              <mat-datepicker #rtnPicker  [disabled]="isReadOnly === true"
-              ></mat-datepicker>
-            </mat-form-field>
-          </div>
-        </div>
-        <div *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true'">
-          <br/><br/>
-        </div>
-
-        <div class="row" *ngIf="isResidentialTenant === true || isHomeowner === true">
-          <div class="col-md-12 bottomspace">
-            <p class="sub-heading" style="font-size: 15px">
-              Are you now residing in the residence?<span style="color:red" >*</span>
-            </p>
-            <mat-radio-group
-              formControlName="residingInResidence"
-              class="primary-radio-group horizontal-radio-group"
-              required
-              aria-label="Select an option">
-              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div><br/><br/>
 
       </ng-container>
     </form>

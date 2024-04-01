@@ -189,11 +189,7 @@ export class DFAApplicationMainDataService {
    public createDFAApplicationMainDTO(): DfaApplicationMain {
     return {
       id: this._applicationId,
-      cleanUpLog: this.cleanUpLog,
-      damagedPropertyAddress: this._damagedPropertyAddress,
       propertyDamage: this._propertyDamage,
-      supportingDocuments: this._supportingDocuments,
-      signAndSubmit: this._signAndSubmit,
       deleteFlag: false
     };
   }

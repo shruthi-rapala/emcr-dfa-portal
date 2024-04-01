@@ -14,6 +14,7 @@
     <div class="col-8">
       <span class="page-heading">{{ dfaApplicationMainHeading }}</span>
     </div>
+    <br />
     <div class="col-4" *ngIf="vieworedit === 'add' || vieworedit === 'update'" >
       <button
         class="button-p save-button col-4"
@@ -63,7 +64,8 @@
       ></app-component-wrapper>
       <br />
       <div class="row justify-content-between resp-style">
-        <div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'update'">
+          <div class="col-md-6"></div>
+        <!--<div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'update'">
           <button
             class="button-s"
             [hidden]="step.component === 'damaged-property-address'"
@@ -73,9 +75,9 @@
           >
             {{ step.backButtonLabel }}
           </button>
-        </div>
+        </div>-->
         <div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'update'">
-          <button
+          <!--<button
             *ngIf="
               currentFlow === 'verified-registration' &&
                 step.component === 'supporting-documents';
@@ -86,8 +88,8 @@
             (click)="goForward(dfaApplicationMainStepper, step.isLast, step.component)"
           >
             Next - Review Submission
-          </button>
-          <button
+          </button>-->
+          <!--<button
             *ngIf="!(currentFlow === 'verified-registration' && (step.component === 'review' || step.component === 'supporting-documents'))"
             class="button-p"
             mat-stroked-button
@@ -95,11 +97,23 @@
             (click)="goForward(dfaApplicationMainStepper, step.isLast, step.component)"
           >
             {{ step.nextButtonLabel }}
-          </button>
+          </button>-->
+          <div class="col-md-12" *ngIf="!isSubmitted
+               && (formCreationService.propertyDamageForm$ | async)?.valid
+               ">
+            <button
+              class="button-p save-button"
+              mat-stroked-button
+              type="button"
+              (click)="submitFile()"
+            >
+              Submit
+            </button>
+          </div>
         </div>
         <br/>
-        <label>** You do not have to complete the entire application at once, you can udpate it from the dashboard as needed.  However, before you
-        submit the final signed version, all fields marked with a <b><span style="color:red;">*</span></b> must be completed.</label>
+        <!--<label>** You do not have to complete the entire application at once, you can udpate it from the dashboard as needed.  However, before you
+        submit the final signed version, all fields marked with a <b><span style="color:red;">*</span></b> must be completed.</label>-->
       </div>
     </mat-step>
     <mat-step *ngIf="currentFlow === 'verified-registration' && (vieworedit === 'add' || vieworedit === 'update')">
@@ -169,37 +183,21 @@
             Return to Dashboard
           </button>
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted && isSignaturesValid
-             && (formCreationService.damagedPropertyAddressForm$ | async)?.valid
+        <div class="col-md-6" *ngIf="!isSubmitted
              && (formCreationService.propertyDamageForm$ | async)?.valid
-             && (formCreationService.cleanUpLogForm$ | async)?.valid
-             && (formCreationService.supportingDocumentsForm$ | async)?.valid
-             && (formCreationService.otherContactsForm$ | async)?.valid
-             && (formCreationService.fullTimeOccupantsForm$ | async)?.valid
-             && (vieworedit === 'add' || vieworedit === 'update')
-             && requiredDocumentsSupplied()
              ">
           <button
             class="button-p save-button"
             mat-stroked-button
             type="button"
-            (click)="setFormData('sign-and-submit');submitFile()"
+            (click)="submitFile()"
           >
             Submit
           </button>
         </div>
         <div class="col-md-6" *ngIf="!isSubmitted
-            && (!isSignaturesValid
-                || !(formCreationService.damagedPropertyAddressForm$ | async)?.valid
-                || !(formCreationService.propertyDamageForm$ | async)?.valid
-                || !(formCreationService.cleanUpLogForm$ | async)?.valid
-                || !(formCreationService.supportingDocumentsForm$ | async)?.valid
-                || !(formCreationService.otherContactsForm$ | async)?.valid
-                || !(formCreationService.fullTimeOccupantsForm$ | async)?.valid
-                || !(this.requiredDocumentsSupplied())
-                 )
-            && (vieworedit === 'add' || vieworedit === 'update')">
-          <span style="color:red">Enter all required information and sign before submitting.</span>
+            && !(formCreationService.propertyDamageForm$ | async)?.valid">
+          <span style="color:red">Enter all required information before submitting.</span>
         </div>
       </div>
     </mat-step>

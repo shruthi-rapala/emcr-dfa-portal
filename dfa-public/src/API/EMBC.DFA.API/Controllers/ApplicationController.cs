@@ -111,27 +111,6 @@ namespace EMBC.DFA.API.Controllers
 
             var result = await handler.HandleApplicationUpdate(mappedApplication, temp_params);
 
-            // Add signatures
-            if (application.signAndSubmit?.applicantSignature?.signature != null &&
-                application.deleteFlag == false)
-            {
-                var primarySignature = new dfa_signature();
-                primarySignature.signature = application.signAndSubmit.applicantSignature.signature.Substring(application.signAndSubmit.applicantSignature.signature.IndexOf(',') + 1);
-                primarySignature.filename = "primaryApplicantSignature";
-                primarySignature.dfa_appapplicationid = application.Id.ToString();
-                await handler.HandleSignature(primarySignature);
-            }
-
-            if (application.signAndSubmit?.secondaryApplicantSignature?.signature != null &&
-                application.deleteFlag == false)
-            {
-                var secondarySignature = new dfa_signature();
-                secondarySignature.signature = application.signAndSubmit.secondaryApplicantSignature.signature.Substring(application.signAndSubmit.secondaryApplicantSignature.signature.IndexOf(',') + 1);
-                secondarySignature.filename = "secondaryApplicantSignature";
-                secondarySignature.dfa_appapplicationid = application.Id.ToString();
-                await handler.HandleSignature(secondarySignature);
-            }
-
             return Ok(result);
         }
 
@@ -182,11 +161,6 @@ namespace EMBC.DFA.API.Controllers
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
-            dfaApplicationMain.damagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
-            dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
-            dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
-            dfaApplicationMain.cleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
-            dfaApplicationMain.supportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
 
             if ((appContactProfile.lastUpdatedDateBCSC == null || DateTime.Parse(dfa_appapplication.createdon) < DateTime.Parse(appContactProfile.lastUpdatedDateBCSC))
                 && dfa_appapplication.dfa_primaryapplicantsigneddate == null)
@@ -235,15 +209,8 @@ namespace EMBC.DFA.API.Controllers
     {
         public Guid Id { get; set; }
 
-        public DamagedPropertyAddress? damagedPropertyAddress { get; set; }
-
         public PropertyDamage? propertyDamage { get; set; }
 
-        public CleanUpLog? cleanUpLog { get; set; }
-
-        public SupportingDocuments? supportingDocuments { get; set; }
-
-        public SignAndSubmit? signAndSubmit { get; set; }
         public bool deleteFlag { get; set; }
         public bool notifyUser { get; set; }
     }
