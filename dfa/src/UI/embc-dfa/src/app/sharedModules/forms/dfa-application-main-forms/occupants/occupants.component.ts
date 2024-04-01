@@ -255,6 +255,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         this.otherContactsData = otherContacts;
         this.otherContactsDataSource.next(this.otherContactsData);
         this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+        this.disableOnlyOtherContact = this.otherContactsDataSource.getValue().length > 0
       },
       error: (error) => {
         console.error(error);
@@ -359,6 +360,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
             this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
             this.showOtherContactForm = !this.showOtherContactForm;
             this.otherContactsEditFlag = !this.otherContactsEditFlag;
+            this.disableOnlyOtherContact = this.otherContactsDataSource.getValue().length > 0
           },
           error: (error) => {
             console.error(error);
@@ -373,6 +375,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
             this.otherContactsDataSource.next(this.otherContactsData);
             this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
             this.showOtherContactForm = !this.showOtherContactForm;
+            this.disableOnlyOtherContact = this.otherContactsDataSource.getValue().length > 0
           },
           error: (error) => {
             console.error(error);
@@ -411,6 +414,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         this.otherContactsData.splice(index, 1);
         this.otherContactsDataSource.next(this.otherContactsData);
         this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+        this.disableOnlyOtherContact = this.otherContactsDataSource.getValue().length > 0
         if (this.otherContactsData.length === 0) {
           this.otherContactsForm
             .get('addNewOtherContactIndicator')
