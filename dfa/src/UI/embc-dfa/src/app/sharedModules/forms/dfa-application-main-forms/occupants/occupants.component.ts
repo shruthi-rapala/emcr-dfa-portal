@@ -274,6 +274,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         this.fullTimeOccupantsData = fullTimeOccupants;
         this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
         this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
+        this.disableOnlyOccupant = this.fullTimeOccupantsDataSource.getValue().length > 0
       },
       error: (error) => {
         console.error(error);
@@ -299,6 +300,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
         this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
         this.showFullTimeOccupantForm = !this.showFullTimeOccupantForm;
+        this.disableOnlyOccupant = this.fullTimeOccupantsDataSource.getValue().length > 0
       },
       error: (error) => {
         console.error(error);
@@ -322,6 +324,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         this.fullTimeOccupantsData.splice(index, 1);
         this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
         this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
+        this.disableOnlyOccupant = this.fullTimeOccupantsDataSource.getValue().length > 0
         if (this.fullTimeOccupantsData.length === 0) {
           this.fullTimeOccupantsForm
             .get('addNewFullTimeOccupantIndicator')
