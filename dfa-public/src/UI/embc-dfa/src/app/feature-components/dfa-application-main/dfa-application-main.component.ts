@@ -24,6 +24,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
 import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
+import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -85,7 +86,8 @@ export class DFAApplicationMainComponent
     private dfaApplicationMainService: DFAApplicationMainService,
     private applicationService: ApplicationService,
     public dialog: MatDialog,
-    private fileUploadsService: AttachmentService
+    private fileUploadsService: AttachmentService,
+    private dfaApplicationMainMapping: DFAApplicationMainMappingService,
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -99,7 +101,7 @@ export class DFAApplicationMainComponent
 
   ngOnInit(): void {
 
-    this.dfaApplicationMainDataService.propertyDamage = null;
+;
     this.formCreationService.clearPropertyDamageData();
 
     this.steps = this.componentService.createDFAApplicationMainSteps();
@@ -174,6 +176,8 @@ export class DFAApplicationMainComponent
     } else {
       this.setFormData(component);
       let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+      this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
+
       this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
 
         // determine if step is complete
@@ -305,6 +309,7 @@ export class DFAApplicationMainComponent
           .subscribe((propertyDamage) => {
             this.form = propertyDamage;
           });
+
         break;
     }
   }
@@ -339,8 +344,12 @@ export class DFAApplicationMainComponent
       .afterClosed()
       .subscribe((result) => {
         if (result === 'confirm') {
+          //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+          //debugger
+          //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
           let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+
           this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
             this.isSubmitted = !this.isSubmitted;
             this.alertService.clearAlert();

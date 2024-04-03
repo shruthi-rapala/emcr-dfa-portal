@@ -475,15 +475,7 @@ export class OtherContactsForm {
         ]
       ],
       applicationId: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewOtherContactIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
+        ''
       ],
       id: [
         ''
