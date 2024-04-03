@@ -290,6 +290,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.fullTimeOccupantsForm.get('addNewFullTimeOccupantIndicator').setValue(true);
     this.fullTimeOccupantsForm.get('fullTimeOccupant.deleteFlag').setValue(false);
     this.fullTimeOccupantsForm.get('fullTimeOccupant.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    this.disableOnlyOccupant = true;
   }
 
   saveFullTimeOccupants(): void {
@@ -316,6 +317,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   cancelFullTimeOccupants(): void {
     this.showFullTimeOccupantForm = !this.showFullTimeOccupantForm;
     this.fullTimeOccupantsForm.get('addNewFullTimeOccupantIndicator').setValue(false);
+    this.disableOnlyOccupant = this.fullTimeOccupantsDataSource.getValue().length > 0
   }
 
   deleteFullTimeOccupantRow(index: number): void {
@@ -325,7 +327,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         this.fullTimeOccupantsData.splice(index, 1);
         this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
         this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
-        this.disableOnlyOccupant = this.fullTimeOccupantsDataSource.getValue().length > 0
+        this.disableOnlyOccupant = this.showFullTimeOccupantForm
         if (this.fullTimeOccupantsData.length === 0) {
           this.fullTimeOccupantsForm
             .get('addNewFullTimeOccupantIndicator')
@@ -346,6 +348,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
     this.otherContactsForm.get('otherContact.deleteFlag').setValue(false);
     this.otherContactsForm.get('otherContact.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    this.disableOnlyOtherContact = true;
   }
 
   saveOtherContact(): void {
@@ -392,6 +395,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(false);
     this.otherContactText = 'New Other Contact'
+    this.disableOnlyOtherContact = this.otherContactsDataSource.getValue().length > 0
   }
 
 
@@ -414,7 +418,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         this.otherContactsData.splice(index, 1);
         this.otherContactsDataSource.next(this.otherContactsData);
         this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
-        this.disableOnlyOtherContact = this.otherContactsDataSource.getValue().length > 0
+        this.disableOnlyOtherContact = this.showOtherContactForm
         if (this.otherContactsData.length === 0) {
           this.otherContactsForm
             .get('addNewOtherContactIndicator')
