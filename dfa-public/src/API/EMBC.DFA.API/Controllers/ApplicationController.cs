@@ -106,10 +106,21 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpdateApplication(DFAApplicationMain application)
         {
             if (application == null) return BadRequest("Application details cannot be empty.");
+            var dfa_appcontact = await handler.HandleGetUser(currentUserId);
+            application.ProfileVerification = new ProfileVerification() { profileId = dfa_appcontact.Id };
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
-            var temp_params = mapper.Map<temp_dfa_appapplicationmain_params>(application);
+            var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
-            var result = await handler.HandleApplicationUpdate(mappedApplication, temp_params);
+            if (application.OtherContact != null)
+            {
+                foreach (var objContact in application.OtherContact)
+                {
+                    objContact.applicationId = Guid.Parse(result);
+                    var mappedOtherContact = mapper.Map<dfa_appothercontact_params>(objContact);
+
+                    var resultContact = await handler.HandleOtherContactAsync(mappedOtherContact);
+                }
+            }
 
             return Ok(result);
         }
@@ -208,9 +219,9 @@ namespace EMBC.DFA.API.Controllers
     public class DFAApplicationMain
     {
         public Guid Id { get; set; }
-
         public PropertyDamage? propertyDamage { get; set; }
-
+        public ProfileVerification? ProfileVerification { get; set; }
+        public OtherContact[]? OtherContact { get; set; }
         public bool deleteFlag { get; set; }
         public bool notifyUser { get; set; }
     }

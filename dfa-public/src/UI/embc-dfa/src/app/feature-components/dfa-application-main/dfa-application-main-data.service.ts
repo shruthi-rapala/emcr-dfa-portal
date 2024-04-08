@@ -190,6 +190,7 @@ export class DFAApplicationMainDataService {
     return {
       id: this._applicationId,
       propertyDamage: this._propertyDamage,
+      otherContact: this._otherContacts,
       deleteFlag: false
     };
   }

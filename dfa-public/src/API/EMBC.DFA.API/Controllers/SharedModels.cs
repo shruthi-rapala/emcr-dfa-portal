@@ -362,6 +362,7 @@ namespace EMBC.DFA.API.Controllers
         public string? otherDamageText { get; set; }
         public string? damageFromDate { get; set; }
         public string? damageToDate { get; set; }
+        public bool? guidanceSupport { get; set; }
     }
 
     /// <summary>

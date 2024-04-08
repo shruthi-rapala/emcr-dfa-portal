@@ -263,7 +263,6 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.damagedPropertyAddress.isDamagedAddressVerified = this.form.get('isDamagedAddressVerified').value == 'true' ? true : (this.form.get('isDamagedAddressVerified').value == 'false' ? false : null);
         break;
       case 'property-damage':
-        debugger
         this.dfaApplicationMainDataService.propertyDamage.damageFromDate = this.form.get('damageFromDate').value;
         this.dfaApplicationMainDataService.propertyDamage.damageToDate = this.form.get('damageToDate').value;
         this.dfaApplicationMainDataService.propertyDamage.floodDamage = this.form.get('floodDamage').value;
@@ -272,6 +271,9 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.propertyDamage.otherDamageText = this.form.get('otherDamageText').value;
         this.dfaApplicationMainDataService.propertyDamage.stormDamage = this.form.get('stormDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.wildfireDamage = this.form.get('wildfireDamage').value;
+        this.dfaApplicationMainDataService.propertyDamage.guidanceSupport = this.form.get('guidanceSupport').value == 'true' ? true : (this.form.get('guidanceSupport').value == 'false' ? false : null);
+        //this.dfaApplicationMainDataService.otherContacts = 
+        //this.otherContactsForm.get('otherContact').getRawValue()
         break;
       case 'occupants':
         break;
@@ -345,7 +347,6 @@ export class DFAApplicationMainComponent
       .subscribe((result) => {
         if (result === 'confirm') {
           //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-          //debugger
           //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
           let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();

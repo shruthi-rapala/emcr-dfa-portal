@@ -148,9 +148,20 @@
               >
             </mat-form-field>
           </div>
-        </div><br/><br/>
+        </div><br/>
 
-
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            If there was opportunity to receive guidance and support in assessing your damaged infrastructure, would you like to receive this support?<span style="color:red" >*</span>
+          </p>
+          <mat-radio-group
+            formControlName="guidanceSupport"
+            class="primary-radio-group horizontal-radio-group"
+            required
+            aria-label="Select an option">
+            <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+          </mat-radio-group><br/><br/><br/>
+        </div>
       </ng-container>
     </form>
     <form [formGroup]="otherContactsForm">
@@ -159,7 +170,7 @@
           <div class="row">
             <div class="col-md-12">
               <p class="sub-heading">
-                <b>Other Contact<span style="color:red" >*</span></b>
+                <b>Other Contact</b>
               </p>
               <p>
                 You must provide the name of one other contact person in case the DFA can't reach you. The Ministry of Emergency Management (EMCR) can't and won't speak with the contact
@@ -222,7 +233,7 @@
                     *ngIf="vieworedit !== 'viewOnly'"
                     mat-icon-button
                     aria-label="Remove"
-                    (click)="confirmDeleteOtherContactRow(index)"
+                    (click)="deleteOtherContactRow(index)"
                   >
                     <img src="/assets/images/delete.svg" height="35" width="35" />
                     <img
@@ -247,9 +258,9 @@
                 <br /><br/>
               </div>
 
-              <div *ngIf="otherContactsForm.get('otherContacts').invalid && otherContactsForm.get('otherContacts').hasError('required')">
+              <!--<div *ngIf="otherContactsForm.get('otherContacts').invalid && otherContactsForm.get('otherContacts').hasError('required')">
                 <span style="color:red">At least one other contact is required.</span>
-              </div>
+              </div>-->
 
               <button
                 *ngIf="!showOtherContactForm && vieworedit !== 'viewOnly'"

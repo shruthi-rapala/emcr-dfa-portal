@@ -152,26 +152,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
     public class dfa_appapplicationmain_params
     {
-        public string dfa_appapplicationid { get; set; } // required
         public int? dfa_causeofdamageflood2 { get; set; } // optional boolean
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal boolean
-        public int? dfa_causeofdamagewildfire { get; set; } // optoinal boolean
+        public int? dfa_receiveguidanceassessingyourinfra { get; set; } // optoinal boolean
+        public int? dfa_causeofdamagewildfire2 { get; set; } // optoinal boolean
         public int? dfa_causeofdamagelandslide2 { get; set; } // optional boolean
         public int? dfa_causeofdamageother2 { get; set; } // optional boolean
         public string? dfa_causeofdamageloss { get; set; } // optional string
         public string? dfa_dateofdamage { get; set; } // optoinal date only
         public string? dfa_dateofdamageto { get; set; } // optional date only
+        public string dfa_appcontactid { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
     {
         public string? dfa_accountlegalname { get; set; } // optional string
-        public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } //optional Option set
-        public int? dfa_grossrevenues100002000000beforedisaster { get; set; } // optional Option set
-        public int? dfa_employlessthan50employeesatanyonetime { get; set; } // optional Option set
-        public int? dfa_farmoperation { get; set; } // optional Option set
-        public int? dfa_ownedandoperatedbya { get; set; } // optional Option set
-        public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optional Option set
     }
 
     public class dfa_appapplicationmain_retrieve

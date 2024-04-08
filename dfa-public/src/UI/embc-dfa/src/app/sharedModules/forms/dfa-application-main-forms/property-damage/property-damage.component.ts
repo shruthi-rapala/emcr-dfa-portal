@@ -28,6 +28,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 
@@ -132,7 +133,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
           otherDamage: null,
           otherDamageText: null,
           stormDamage: null,
-          wildfireDamage: null
+          wildfireDamage: null,
+          guidanceSupport: null
         }
         //this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
         //  if (application) {
@@ -280,7 +282,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   }
 
   saveOtherContact(): void {
-    debugger
+    
     if (this.otherContactsForm.get('otherContact').status === 'VALID') {
       if (this.otherContactsEditIndex !== undefined && this.otherContactsRowEdit) {
         this.otherContactsData[this.otherContactsEditIndex] = this.otherContactsForm.get('otherContact').value;
@@ -297,6 +299,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
         this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
         this.showOtherContactForm = !this.showOtherContactForm;
       }
+
+      this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
     } else {
       this.otherContactsForm.get('otherContact').markAllAsTouched();
     }
@@ -382,7 +386,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     MatInputModule,
     DirectivesModule,
     MatTableModule,
-    CustomPipeModule
+    CustomPipeModule,
+    TextMaskModule
   ],
   declarations: [PropertyDamageComponent]
 })

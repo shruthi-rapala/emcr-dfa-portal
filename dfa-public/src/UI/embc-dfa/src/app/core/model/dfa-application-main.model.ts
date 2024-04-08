@@ -266,12 +266,14 @@ export class PropertyDamage {
   otherDamageText?: null | string;
   stormDamage?: null | boolean;
   wildfireDamage?: null | boolean;
+  guidanceSupport?: null | boolean;
 
   constructor(
     floodDamage?: null | boolean,
     landslideDamage?: null | boolean,
     stormDamage?: null | boolean,
     wildfireDamage?: null | boolean,
+    guidanceSupport?: null | boolean,
     otherDamage?: null | boolean,
     otherDamageText?: null | string,
     damageFromDate?: null | Date,
@@ -284,6 +286,7 @@ export class PropertyDamageForm {
   landslideDamage = new UntypedFormControl();
   stormDamage = new UntypedFormControl();
   wildfireDamage = new UntypedFormControl();
+  guidanceSupport = new UntypedFormControl();
   otherDamage = new UntypedFormControl();
   otherDamageText = new UntypedFormControl();
   damageFromDate = new UntypedFormControl();
@@ -312,6 +315,11 @@ export class PropertyDamageForm {
       this.stormDamage.setValue(propertyDamage.wildfireDamage);
     }
     this.wildfireDamage.setValidators(null);
+
+    if (propertyDamage.guidanceSupport) {
+      this.stormDamage.setValue(propertyDamage.guidanceSupport);
+    }
+    this.guidanceSupport.setValidators(null);
 
     if (propertyDamage.otherDamage) {
       this.otherDamage.setValue(propertyDamage.otherDamage);
@@ -2830,5 +2838,6 @@ export class SignAndSubmitForm {
 export interface DfaApplicationMain {
   id?: string;
   propertyDamage?: PropertyDamage;
+  otherContact?: OtherContact[];
   deleteFlag?: boolean;
 }

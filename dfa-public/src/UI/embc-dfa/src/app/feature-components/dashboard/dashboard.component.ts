@@ -73,17 +73,17 @@ export class DashboardComponent implements OnInit {
 
     this.isLoading = true;
 
-    this.appService.applicationGetDfaApplications().subscribe({
-      next: (lstData) => {
-        if (lstData != null) {
-          this.countAppData(lstData);
-          this.tabs[0].count =this.currentApplicationsCount.toString();
-          this.tabs[2].count = this.pastApplicationsCount.toString();
-        }
-      },
-      error: (error) => {
-      }
-    });
+    //this.appService.applicationGetDfaApplications().subscribe({
+    //  next: (lstData) => {
+    //    if (lstData != null) {
+    //      this.countAppData(lstData);
+    //      this.tabs[0].count =this.currentApplicationsCount.toString();
+    //      this.tabs[2].count = this.pastApplicationsCount.toString();
+    //    }
+    //  },
+    //  error: (error) => {
+    //  }
+    //});
 
     this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
       this.eventsCount = eventsCount.toString();

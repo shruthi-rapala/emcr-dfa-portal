@@ -55,53 +55,53 @@ export class DfaApplicationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.appService.applicationGetDfaApplications().subscribe({
-      next: (lstData) => {
-        if (lstData != null) {
-          var lstDataModified = [];
-          var lstDataUnModified = [];
-          var initialList = lstData;
-          lstDataUnModified.push(initialList);
-          lstData.forEach(objApp => {
-            var isFound = false;
-            var jsonVal = JSON.stringify(this.items);
-            objApp.isErrorInStatus = false;
-            objApp.statusBar = JSON.parse(jsonVal);
-            objApp.statusBar.forEach(objStatItem => {
-              if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
-                objStatItem.currentStep = true;
-                isFound = true
-                this.matchStatusFound = true;
-              }
+    //this.appService.applicationGetDfaApplications().subscribe({
+    //  next: (lstData) => {
+    //    if (lstData != null) {
+    //      var lstDataModified = [];
+    //      var lstDataUnModified = [];
+    //      var initialList = lstData;
+    //      lstDataUnModified.push(initialList);
+    //      lstData.forEach(objApp => {
+    //        var isFound = false;
+    //        var jsonVal = JSON.stringify(this.items);
+    //        objApp.isErrorInStatus = false;
+    //        objApp.statusBar = JSON.parse(jsonVal);
+    //        objApp.statusBar.forEach(objStatItem => {
+    //          if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+    //            objStatItem.currentStep = true;
+    //            isFound = true
+    //            this.matchStatusFound = true;
+    //          }
 
-              if (isFound == false) {
-                objStatItem.isCompleted = true;
-              }
+    //          if (isFound == false) {
+    //            objStatItem.isCompleted = true;
+    //          }
 
-              if (objStatItem.isFinalStep == true) {
-                if (isFound == false) {
-                  objApp.isErrorInStatus = true;
-                }
-                else if (objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
-                  objStatItem.isCompleted = true;
-                }
-              }
+    //          if (objStatItem.isFinalStep == true) {
+    //            if (isFound == false) {
+    //              objApp.isErrorInStatus = true;
+    //            }
+    //            else if (objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+    //              objStatItem.isCompleted = true;
+    //            }
+    //          }
 
-            });
+    //        });
 
-            lstDataModified.push(objApp);
-          })
+    //        lstDataModified.push(objApp);
+    //      })
 
-          this.mapData(lstDataModified);
-        }
-            //this.mapData(lstData);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        this.isLoading = false;
-      }
-    });
+    //      this.mapData(lstDataModified);
+    //    }
+    //        //this.mapData(lstData);
+    //    this.isLoading = false;
+    //  },
+    //  error: (error) => {
+    //    document.location.href = 'https://dfa.gov.bc.ca/error.html';
+    //    this.isLoading = false;
+    //  }
+    //});
 
   }
 

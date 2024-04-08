@@ -83,7 +83,7 @@ namespace EMBC.DFA.API.Controllers
     public class OtherContact
     {
         public Guid? id { get; set; }
-        public Guid applicationId { get; set; }
+        public Guid? applicationId { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string phoneNumber { get; set; }
