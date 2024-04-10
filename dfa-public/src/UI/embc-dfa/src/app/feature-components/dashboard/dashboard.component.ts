@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
+    this.isLoading = true;
     this.profService.getProfile();
     this.eventService.eligibilityGetEvents().subscribe({
       next: (count: number) => {
@@ -71,7 +72,7 @@ export class DashboardComponent implements OnInit {
         this.tabs[2].count = n ? n.toString() : "0";
     });
 
-    this.isLoading = true;
+    
 
     //this.appService.applicationGetDfaApplications().subscribe({
     //  next: (lstData) => {

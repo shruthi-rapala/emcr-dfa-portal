@@ -317,16 +317,18 @@ export class DFAApplicationMainComponent
   }
 
   saveAndBackToDashboard() {
-    this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
-    let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-    this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
-      this.showLoader = !this.showLoader;
-      this.returnToDashboard();
-    },
-    error => {
-      console.error(error);
-      document.location.href = 'https://dfa.gov.bc.ca/error.html';
-    });
+    //this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
+    //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+    //this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+    //  this.showLoader = !this.showLoader;
+    //  this.returnToDashboard();
+    //},
+    //error => {
+    //  console.error(error);
+    //  document.location.href = 'https://dfa.gov.bc.ca/error.html';
+    //  });
+
+    this.returnToDashboard();
   }
 
   returnToDashboard() {
