@@ -258,30 +258,26 @@ export class DamagedPropertyAddressForm {
 }
 
 export class PropertyDamage {
-  briefDescription?: null | string;
   damageFromDate?: null | string;
   damageToDate?: null | string;
-  dateReturned?: null | string;
   floodDamage?: null | boolean;
   landslideDamage?: null | boolean;
   otherDamage?: null | boolean;
   otherDamageText?: null | string;
-  residingInResidence?: null | boolean;
   stormDamage?: null | boolean;
-  wereYouEvacuated?: null | boolean;
+  wildfireDamage?: null | boolean;
+  guidanceSupport?: null | boolean;
 
   constructor(
     floodDamage?: null | boolean,
     landslideDamage?: null | boolean,
     stormDamage?: null | boolean,
+    wildfireDamage?: null | boolean,
+    guidanceSupport?: null | boolean,
     otherDamage?: null | boolean,
     otherDamageText?: null | string,
     damageFromDate?: null | Date,
     damageToDate?: null | Date,
-    briefDescription?: null | string,
-    wereYouEvacuated?: null | boolean,
-    dateReturned?: null | Date,
-    residingInResidence?: null | boolean,
   ) {}
 }
 
@@ -289,14 +285,12 @@ export class PropertyDamageForm {
   floodDamage = new UntypedFormControl();
   landslideDamage = new UntypedFormControl();
   stormDamage = new UntypedFormControl();
+  wildfireDamage = new UntypedFormControl();
+  guidanceSupport = new UntypedFormControl();
   otherDamage = new UntypedFormControl();
   otherDamageText = new UntypedFormControl();
   damageFromDate = new UntypedFormControl();
   damageToDate = new UntypedFormControl();
-  briefDescription = new UntypedFormControl();
-  wereYouEvacuated = new UntypedFormControl();
-  dateReturned = new UntypedFormControl();
-  residingInResidence = new UntypedFormControl();
 
   constructor(
     propertyDamage: PropertyDamage,
@@ -316,6 +310,16 @@ export class PropertyDamageForm {
       this.stormDamage.setValue(propertyDamage.stormDamage);
     }
     this.stormDamage.setValidators(null);
+
+    if (propertyDamage.wildfireDamage) {
+      this.stormDamage.setValue(propertyDamage.wildfireDamage);
+    }
+    this.wildfireDamage.setValidators(null);
+
+    if (propertyDamage.guidanceSupport) {
+      this.stormDamage.setValue(propertyDamage.guidanceSupport);
+    }
+    this.guidanceSupport.setValidators(null);
 
     if (propertyDamage.otherDamage) {
       this.otherDamage.setValue(propertyDamage.otherDamage);
@@ -338,29 +342,6 @@ export class PropertyDamageForm {
       this.damageToDate.setValue(propertyDamage.damageToDate);
     }
     this.damageToDate.setValidators(null);
-
-    if (propertyDamage.briefDescription) {
-      this.briefDescription.setValue(propertyDamage.briefDescription);
-    }
-    this.briefDescription.setValidators([customValidator
-      .maxLengthValidator(2000)
-      .bind(customValidator)]);
-
-    if (propertyDamage.wereYouEvacuated) {
-      this.wereYouEvacuated.setValue(propertyDamage.wereYouEvacuated);
-    }
-    this.wereYouEvacuated.setValidators(null);
-
-    if (propertyDamage.dateReturned) {
-      this.dateReturned.setValue(propertyDamage.dateReturned);
-    }
-    this.dateReturned.setValidators(null);
-
-    if (propertyDamage.residingInResidence) {
-      this.residingInResidence.setValue(propertyDamage.residingInResidence);
-    }
-    this.residingInResidence.setValidators(null);
-
   }
 }
 
@@ -502,15 +483,7 @@ export class OtherContactsForm {
         ]
       ],
       applicationId: [
-        '',
-        [
-          customValidator
-            .conditionalValidation(
-              () => this.addNewOtherContactIndicator.value,
-              Validators.required
-            )
-            .bind(customValidator)
-        ]
+        ''
       ],
       id: [
         ''
@@ -2863,11 +2836,8 @@ export class SignAndSubmitForm {
  * DFA Application Main
  **/
 export interface DfaApplicationMain {
-  cleanUpLog?: CleanUpLog;
-  damagedPropertyAddress?: DamagedPropertyAddress;
   id?: string;
   propertyDamage?: PropertyDamage;
-  signAndSubmit?: SignAndSubmit;
-  supportingDocuments?: SupportingDocuments;
+  otherContact?: OtherContact[];
   deleteFlag?: boolean;
 }

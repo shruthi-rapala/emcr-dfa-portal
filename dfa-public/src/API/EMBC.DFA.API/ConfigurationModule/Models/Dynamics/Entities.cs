@@ -152,65 +152,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
     public class dfa_appapplicationmain_params
     {
-        public string dfa_appapplicationid { get; set; } // required
-        public int? dfa_isprimaryanddamagedaddresssame2 { get; set; } // optional Two Options
-        public string? dfa_damagedpropertystreet1 { get; set; } // optional string
-        public string? dfa_damagedpropertystreet2 { get; set; } // optional string
-        public string? dfa_damagedpropertycitytext { get; set; } // optional string
-        public string? dfa_damagedpropertyprovince { get; set; } // optional string
-        public string? dfa_damagedpropertypostalcode { get; set; } // optional string
-        public int? dfa_isthispropertyyourp2 { get; set; } // optional boolean
-        public int? dfa_indigenousreserve2 { get; set; } // optional boolean
-        public string? dfa_nameoffirstnationsr { get; set; } // optional string
-        public int? dfa_manufacturedhom2 { get; set; } // optional boolean
-        public int? dfa_eligibleforbchomegrantonthisproperty2 { get; set; } // optional boolean
-        public string? dfa_contactfirstname { get; set; } // optional string
-        public string? dfa_contactlastname { get; set; } // optional string
-        public string? dfa_contactphone1 { get; set; } // optional string
-        public string? dfa_contactemail { get; set; } // optional string
-        public int? dfa_acopyofarentalagreementorlease2 { get; set; } // required boolean
-        public int? dfa_areyounowresidingintheresidence2 { get; set; } // optional boolean
         public int? dfa_causeofdamageflood2 { get; set; } // optional boolean
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal boolean
+        public int? dfa_receiveguidanceassessingyourinfra { get; set; } // optoinal boolean
+        public int? dfa_causeofdamagewildfire2 { get; set; } // optoinal boolean
         public int? dfa_causeofdamagelandslide2 { get; set; } // optional boolean
         public int? dfa_causeofdamageother2 { get; set; } // optional boolean
         public string? dfa_causeofdamageloss { get; set; } // optional string
         public string? dfa_dateofdamage { get; set; } // optoinal date only
         public string? dfa_dateofdamageto { get; set; } // optional date only
-        public string? dfa_datereturntoresidence { get; set; } // optional date only
-        public string? dfa_description { get; set; } // optional string
-        public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean
-        public int? dfa_havereceiptsforcleanupsorrepairs2 { get; set; } // required boolean
-        public string? dfa_primaryapplicantprintname { get; set; } // optional string
-        public int dfa_primaryapplicantsigned { get; set; } // required Two Options
-        public string? dfa_primaryapplicantsigneddate { get; set; } // optional string
-        public string? dfa_secondaryapplicantprintname { get; set; } // optional string
-        public int dfa_secondaryapplicantsigned { get; set; } // required Two Options
-        public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
-        public int? dfa_wereyouevacuatedduringtheevent2 { get; set; } // optional boolean
-        public int? dfa_charityregistered { get; set; } // optional Option set TODO: uncomment when new field added to dynamics
-        public int? dfa_charityexistsatleast12months { get; set; } // optional Option set uncomment when new field added to dynamics
-        public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set uncomment when new field added to dynamics
-        public string? dfa_accountlegalname { get; set; } // optional string
-        public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } //optional Option set
-        public int? dfa_grossrevenues100002000000beforedisaster { get; set; } // optional Option set
-        public int? dfa_employlessthan50employeesatanyonetime { get; set; } // optional Option set
-        public int? dfa_farmoperation { get; set; } // optional Option set
-        public int? dfa_ownedandoperatedbya { get; set; } // optional Option set
-        public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optional Option set
-        public bool delete { get; set; } // delete or not
-        public int? dfa_damagedpropertyaddresscanadapostverified { get; set; } // optional Two Options
+        public string dfa_appcontactid { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
     {
         public string? dfa_accountlegalname { get; set; } // optional string
-        public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } //optional Option set
-        public int? dfa_grossrevenues100002000000beforedisaster { get; set; } // optional Option set
-        public int? dfa_employlessthan50employeesatanyonetime { get; set; } // optional Option set
-        public int? dfa_farmoperation { get; set; } // optional Option set
-        public int? dfa_ownedandoperatedbya { get; set; } // optional Option set
-        public int? dfa_farmoperationderivesthatpersonsmajorincom { get; set; } // optional Option set
     }
 
     public class dfa_appapplicationmain_retrieve
@@ -235,6 +191,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_areyounowresidingintheresidence2 { get; set; } // optional Two Options
         public int? dfa_causeofdamageflood2 { get; set; } // optional Two Options
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal Two Options
+        public int? dfa_causeofdamagewildform { get; set; } // optoinal Two Options
         public int? dfa_causeofdamagelandslide2 { get; set; } // optional Two Options
         public int? dfa_causeofdamageother2 { get; set; } // optional Two Options
         public string? dfa_causeofdamageloss { get; set; } // optional string

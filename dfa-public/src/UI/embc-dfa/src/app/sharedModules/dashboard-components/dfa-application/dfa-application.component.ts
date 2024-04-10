@@ -102,7 +102,7 @@ export class DfaApplicationComponent implements OnInit {
         this.isLoading = false;
       }
     });
-
+    this.isLoading = false;
   }
 
   mapData(lstApp: Object): void {

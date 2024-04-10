@@ -106,30 +106,20 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<string>> UpdateApplication(DFAApplicationMain application)
         {
             if (application == null) return BadRequest("Application details cannot be empty.");
+            var dfa_appcontact = await handler.HandleGetUser(currentUserId);
+            application.ProfileVerification = new ProfileVerification() { profileId = dfa_appcontact.Id };
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
-            var temp_params = mapper.Map<temp_dfa_appapplicationmain_params>(application);
+            var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
-            var result = await handler.HandleApplicationUpdate(mappedApplication, temp_params);
-
-            // Add signatures
-            if (application.signAndSubmit?.applicantSignature?.signature != null &&
-                application.deleteFlag == false)
+            if (application.OtherContact != null)
             {
-                var primarySignature = new dfa_signature();
-                primarySignature.signature = application.signAndSubmit.applicantSignature.signature.Substring(application.signAndSubmit.applicantSignature.signature.IndexOf(',') + 1);
-                primarySignature.filename = "primaryApplicantSignature";
-                primarySignature.dfa_appapplicationid = application.Id.ToString();
-                await handler.HandleSignature(primarySignature);
-            }
+                foreach (var objContact in application.OtherContact)
+                {
+                    objContact.applicationId = Guid.Parse(result);
+                    var mappedOtherContact = mapper.Map<dfa_appothercontact_params>(objContact);
 
-            if (application.signAndSubmit?.secondaryApplicantSignature?.signature != null &&
-                application.deleteFlag == false)
-            {
-                var secondarySignature = new dfa_signature();
-                secondarySignature.signature = application.signAndSubmit.secondaryApplicantSignature.signature.Substring(application.signAndSubmit.secondaryApplicantSignature.signature.IndexOf(',') + 1);
-                secondarySignature.filename = "secondaryApplicantSignature";
-                secondarySignature.dfa_appapplicationid = application.Id.ToString();
-                await handler.HandleSignature(secondarySignature);
+                    var resultContact = await handler.HandleOtherContactAsync(mappedOtherContact);
+                }
             }
 
             return Ok(result);
@@ -182,11 +172,6 @@ namespace EMBC.DFA.API.Controllers
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
-            dfaApplicationMain.damagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
-            dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
-            dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
-            dfaApplicationMain.cleanUpLog = mapper.Map<CleanUpLog>(dfa_appapplication);
-            dfaApplicationMain.supportingDocuments = mapper.Map<SupportingDocuments>(dfa_appapplication);
 
             if ((appContactProfile.lastUpdatedDateBCSC == null || DateTime.Parse(dfa_appapplication.createdon) < DateTime.Parse(appContactProfile.lastUpdatedDateBCSC))
                 && dfa_appapplication.dfa_primaryapplicantsigneddate == null)
@@ -234,16 +219,9 @@ namespace EMBC.DFA.API.Controllers
     public class DFAApplicationMain
     {
         public Guid Id { get; set; }
-
-        public DamagedPropertyAddress? damagedPropertyAddress { get; set; }
-
         public PropertyDamage? propertyDamage { get; set; }
-
-        public CleanUpLog? cleanUpLog { get; set; }
-
-        public SupportingDocuments? supportingDocuments { get; set; }
-
-        public SignAndSubmit? signAndSubmit { get; set; }
+        public ProfileVerification? ProfileVerification { get; set; }
+        public OtherContact[]? OtherContact { get; set; }
         public bool deleteFlag { get; set; }
         public bool notifyUser { get; set; }
     }

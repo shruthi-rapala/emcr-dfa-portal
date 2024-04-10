@@ -162,19 +162,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             try
             {
                 var result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+                var jsonVal = JsonConvert.SerializeObject(application);
 
                 // Update with additional values TODO: remove when dynamics process updated to include these parameters
 
-                dynamic updateObject = new ExpandoObject();
-                updateObject.dfa_accountlegalname = temp_params.dfa_accountlegalname;
-                updateObject.dfa_businessmanagedbyallownersondaytodaybasis = temp_params.dfa_businessmanagedbyallownersondaytodaybasis;
-                updateObject.dfa_grossrevenues100002000000beforedisaster = temp_params.dfa_grossrevenues100002000000beforedisaster;
-                updateObject.dfa_employlessthan50employeesatanyonetime = temp_params.dfa_employlessthan50employeesatanyonetime;
-                updateObject.dfa_farmoperation = temp_params.dfa_farmoperation;
-                updateObject.dfa_ownedandoperatedbya = temp_params.dfa_ownedandoperatedbya;
-                updateObject.dfa_farmoperationderivesthatpersonsmajorincom = temp_params.dfa_farmoperationderivesthatpersonsmajorincom;
+                //dynamic updateObject = new ExpandoObject();
+                //updateObject.dfa_accountlegalname = temp_params.dfa_accountlegalname;
+                //updateObject.dfa_businessmanagedbyallownersondaytodaybasis = temp_params.dfa_businessmanagedbyallownersondaytodaybasis;
+                //updateObject.dfa_grossrevenues100002000000beforedisaster = temp_params.dfa_grossrevenues100002000000beforedisaster;
+                //updateObject.dfa_employlessthan50employeesatanyonetime = temp_params.dfa_employlessthan50employeesatanyonetime;
+                //updateObject.dfa_farmoperation = temp_params.dfa_farmoperation;
+                //updateObject.dfa_ownedandoperatedbya = temp_params.dfa_ownedandoperatedbya;
+                //updateObject.dfa_farmoperationderivesthatpersonsmajorincom = temp_params.dfa_farmoperationderivesthatpersonsmajorincom;
 
-                var updateResult = await api.Update("dfa_appapplications", application.dfa_appapplicationid, updateObject, false);
+                //var updateResult = await api.Update("dfa_appapplications", application.dfa_appapplicationid, updateObject, false);
 
                 if (result != null)
                 {
@@ -304,7 +305,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id", "dfa_eventname"
+                        "dfa_eventid", "dfa_id", "dfa_eventname", "dfa_eventtype"
                     }
                 });
 
@@ -341,6 +342,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                from objAppEvent in appEvent.DefaultIfEmpty()
                                join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
                                from objCaseEvent in appCase.DefaultIfEmpty()
+                               where objAppEvent != null && (objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
+                                                || objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())
                                select new dfa_appapplication
                                {
                                    dfa_appapplicationid = objApp.dfa_appapplicationid,
@@ -699,7 +702,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
                 {
                     var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1"
-                                            && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
+                                            && (m.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
                                                 || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())).ToList();
 
                     var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= DateTime.Now).Count();
@@ -735,7 +738,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null
                     && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate
                     && m.statuscode == "1"
-                    && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
+                    && (m.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
                                                 || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString()));
             }
             catch (System.Exception ex)

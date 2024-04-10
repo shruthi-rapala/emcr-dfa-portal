@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
+    this.isLoading = true;
     this.profService.getProfile();
     this.eventService.eligibilityGetEvents().subscribe({
       next: (count: number) => {
@@ -71,19 +72,19 @@ export class DashboardComponent implements OnInit {
         this.tabs[2].count = n ? n.toString() : "0";
     });
 
-    this.isLoading = true;
+    
 
-    this.appService.applicationGetDfaApplications().subscribe({
-      next: (lstData) => {
-        if (lstData != null) {
-          this.countAppData(lstData);
-          this.tabs[0].count =this.currentApplicationsCount.toString();
-          this.tabs[2].count = this.pastApplicationsCount.toString();
-        }
-      },
-      error: (error) => {
-      }
-    });
+    //this.appService.applicationGetDfaApplications().subscribe({
+    //  next: (lstData) => {
+    //    if (lstData != null) {
+    //      this.countAppData(lstData);
+    //      this.tabs[0].count =this.currentApplicationsCount.toString();
+    //      this.tabs[2].count = this.pastApplicationsCount.toString();
+    //    }
+    //  },
+    //  error: (error) => {
+    //  }
+    //});
 
     this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
       this.eventsCount = eventsCount.toString();
@@ -142,7 +143,7 @@ export class DashboardComponent implements OnInit {
   navigateToDFAPrescreening(): void {
     this.dfaApplicationMainDataService.setViewOrEdit('add');
     var profileId = this.profileDataService.getProfileId();
-    this.router.navigate(['/dfa-prescreening']);
+    this.router.navigate(['/dfa-application-main']);
   }
 
 }

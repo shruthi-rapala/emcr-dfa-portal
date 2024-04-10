@@ -5,7 +5,7 @@
  * Full Time Other Contact
  */
 export interface OtherContact {
-  applicationId?: string;
+  applicationId?: null | string;
   deleteFlag?: boolean;
   email?: string;
   firstName?: string;

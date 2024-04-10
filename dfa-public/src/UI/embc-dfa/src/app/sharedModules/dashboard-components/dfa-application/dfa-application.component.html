@@ -29,7 +29,7 @@
           <span style="font-size: 16px;">{{applItem.statusLastUpdated }}</span>
         </div>-->
       </div>
-      <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;width: 90%;min-width: 725px;">
+      <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;width: 90%;min-width: 725px;display: none;">
         <div class="col-md-3" style="margin-top: 20px;">
           <span><b>Application Status</b></span><br />
           <span *ngIf="applItem.isErrorInStatus == true" style="color: red;">Error in displaying status<br /></span>
@@ -65,7 +65,7 @@
           </div>
       </div>
       <div class="row" style="padding-top: 20px;">
-        <div class="col-md-3">
+        <!--<div class="col-md-3">
           <span><b>Application Type</b></span><br />
           <span>{{applItem.applicationType}}</span>
         </div>
@@ -76,7 +76,7 @@
         <div class="col-md-3">
           <span><b>Case Number</b></span><br />
           <span>{{applItem.caseNumber == null ? "To Be Assigned" : applItem.caseNumber }}</span>
-        </div>
+        </div>-->
         <div class="col-md-3">
           <span><b>Date of Damage</b></span><br />
           <span>{{applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
@@ -87,7 +87,7 @@
           class="col-md-2 application-button"
           type="button"
           *ngIf="applItem.primaryApplicantSignedDate || appType != 'current'"
-          (click)="ViewApplication(applItem)"
+          
         >
           View Application
         </button>
@@ -96,12 +96,12 @@
         class="col-md-2 application-button"
         type="button"
         *ngIf="!applItem.primaryApplicantSignedDate && appType == 'current'"
-        (click)="ViewApplication(applItem)"
+        
         >
           Complete Application
         </button>
 
-        <button
+        <!--<button
           class="col-md-2 application-button whitebutton"
           type="button"
           *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
@@ -135,7 +135,7 @@
           (click)="EditApplication(applItem.applicationId, '2')"
         >
           Add Other Contacts
-        </button>
+        </button>-->
 
         <!--<button
           class="application-button redbutton"

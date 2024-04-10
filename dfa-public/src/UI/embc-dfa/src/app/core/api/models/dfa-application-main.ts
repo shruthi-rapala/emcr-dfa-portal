@@ -1,17 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-import { CleanUpLog } from './clean-up-log';
-import { DamagedPropertyAddress } from './damaged-property-address';
+import { OtherContact } from './other-contact';
+import { ProfileVerification } from './profile-verification';
 import { PropertyDamage } from './property-damage';
-import { SignAndSubmit } from './sign-and-submit';
-import { SupportingDocuments } from './supporting-documents';
 export interface DfaApplicationMain {
-  cleanUpLog?: null | CleanUpLog;
-  damagedPropertyAddress?: null | DamagedPropertyAddress;
   deleteFlag?: boolean;
   id?: string;
   notifyUser?: boolean;
+  otherContact?: null | Array<OtherContact>;
+  profileVerification?: null | ProfileVerification;
   propertyDamage?: null | PropertyDamage;
-  signAndSubmit?: null | SignAndSubmit;
-  supportingDocuments?: null | SupportingDocuments;
 }

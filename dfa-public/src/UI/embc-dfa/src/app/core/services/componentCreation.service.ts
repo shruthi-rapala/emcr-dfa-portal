@@ -81,59 +81,15 @@ export class ComponentCreationService {
   ];
 
   dfaApplicationMainComponents: Array<any> = [
-    {
-      component: 'damaged-property-address',
-      nextButtonLabel: 'Next - Cause of Damage',
-      backButtonLabel: 'Return to Dashboard',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: -2,
-      stepName: 'Damaged Property'
-    },
+    
     {
       component: 'property-damage',
       nextButtonLabel: 'Next - Occupants',
       backButtonLabel: 'Go Back & Edit',
-      isLast: false,
+      isLast: true,
       loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Cause of Damage'
-    },
-    {
-      component: 'occupants',
-      nextButtonLabel: 'Next - Clean Up Log',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Occupants'
-    },
-    {
-      component: 'clean-up-log',
-      nextButtonLabel: 'Next - Damaged Items By Room',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Clean Up Log'
-    },
-    {
-      component: 'damaged-items-by-room',
-      nextButtonLabel: 'Next - Supporting Documents',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Damaged Items By Room'
-    },
-    {
-      component: 'supporting-documents',
-      nextButtonLabel: 'Next - Review',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: false,
-      loadWrapperButton: false,
-      lastStep: 0,
-      stepName: 'Supporting Documents'
+      lastStep: 1,
+      stepName: 'Application Details'
     }
 
   ];

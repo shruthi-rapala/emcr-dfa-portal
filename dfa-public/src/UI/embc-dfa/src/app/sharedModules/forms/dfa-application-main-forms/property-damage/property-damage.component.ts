@@ -14,7 +14,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -24,6 +24,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { ApplicantOption } from 'src/app/core/api/models';
+import { MatTableModule } from '@angular/material/table';
+import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
+import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TextMaskModule } from 'angular2-text-mask';
+
 
 
 @Component({
@@ -36,6 +42,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   formBuilder: UntypedFormBuilder;
   propertyDamageForm$: Subscription;
   formCreationService: FormCreationService;
+  otherContactsForm: UntypedFormGroup;
+  otherContactsForm$: Subscription;
   remainingLength: number = 2000;
   todayDate = new Date().toISOString();
   public ApplicantOptions = ApplicantOption;
@@ -45,13 +53,39 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   isReadOnly: boolean = false;
   isFarmOwner: boolean = false;
   isCharitableOrganization: boolean = false;
+  onlyOtherContact: boolean = false;
+  disableOnlyOtherContact: boolean = false;
+  hideOtherContactButton: boolean = false;
+  otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email', 'deleteIcon'];
+  otherContactsDataSource = new BehaviorSubject([]);
+  otherContactsData = [];
+  otherContactsEditIndex: number;
+  otherContactsRowEdit = false;
+  otherContactsEditFlag = false;
+  otherContactText = 'New Other Contact';
+  showOtherContactForm: boolean = false;
+  vieworedit: string = "";
+  readonly phoneMask = [
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/
+  ];
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
-
+    public dialog: MatDialog
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -76,43 +110,52 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       this.propertyDamageForm.controls.landslideDamage.disable();
       this.propertyDamageForm.controls.stormDamage.disable();
       this.propertyDamageForm.controls.otherDamage.disable();
-      this.propertyDamageForm.controls.wereYouEvacuated.disable();
-      this.propertyDamageForm.controls.residingInResidence.disable();
     } else {
       this.propertyDamageForm.controls.floodDamage.enable();
       this.propertyDamageForm.controls.landslideDamage.enable();
       this.propertyDamageForm.controls.stormDamage.enable();
       this.propertyDamageForm.controls.otherDamage.enable();
-      this.propertyDamageForm.controls.wereYouEvacuated.enable();
-      this.propertyDamageForm.controls.residingInResidence.enable();
     }
   }
 
   ngOnInit(): void {
+    console.log('hd dhdhd')
     this.propertyDamageForm$ = this.formCreationService
       .getPropertyDamageForm()
       .subscribe((propertyDamage) => {
         this.propertyDamageForm = propertyDamage;
-        this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-          if (application) {
-            this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
-            this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
-            this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
-            this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
-            this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
-            if (this.isHomeowner || this.isResidentialTenant) {
-              this.propertyDamageForm.controls.wereYouEvacuated.setValidators([Validators.required]);
-              this.propertyDamageForm.controls.residingInResidence.setValidators([Validators.required]);
-            } else if (this.isSmallBusinessOwner || this.isFarmOwner || this.isCharitableOrganization) {
-              this.propertyDamageForm.controls.wereYouEvacuated.setValidators(null);
-              this.propertyDamageForm.controls.wereYouEvacuated.setValue(null);
-              this.propertyDamageForm.controls.dateReturned.setValue(null);
-              this.propertyDamageForm.controls.residingInResidence.setValidators(null);
-              this.propertyDamageForm.controls.residingInResidence.setValue(null);
-            }
-          this.propertyDamageForm.updateValueAndValidity();
-          }
-        });
+
+        this.dfaApplicationMainDataService.propertyDamage = {
+          damageFromDate: null,
+          damageToDate: null,
+          floodDamage: null,
+          landslideDamage: null,
+          otherDamage: null,
+          otherDamageText: null,
+          stormDamage: null,
+          wildfireDamage: null,
+          guidanceSupport: null
+        }
+        //this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
+        //  if (application) {
+        //    this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
+        //    this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
+        //    this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
+        //    this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
+        //    this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
+        //    if (this.isHomeowner || this.isResidentialTenant) {
+        //      this.propertyDamageForm.controls.wereYouEvacuated.setValidators([Validators.required]);
+        //      this.propertyDamageForm.controls.residingInResidence.setValidators([Validators.required]);
+        //    } else if (this.isSmallBusinessOwner || this.isFarmOwner || this.isCharitableOrganization) {
+        //      this.propertyDamageForm.controls.wereYouEvacuated.setValidators(null);
+        //      this.propertyDamageForm.controls.wereYouEvacuated.setValue(null);
+        //      this.propertyDamageForm.controls.dateReturned.setValue(null);
+        //      this.propertyDamageForm.controls.residingInResidence.setValidators(null);
+        //      this.propertyDamageForm.controls.residingInResidence.setValue(null);
+        //    }
+        //  this.propertyDamageForm.updateValueAndValidity();
+        //  }
+        //});
         this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
         if (this.propertyDamageForm.get('otherDamage').value === 'true') {
           this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required, Validators.maxLength(100)]);
@@ -122,6 +165,16 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
         this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
         this.propertyDamageForm.updateValueAndValidity();
       });
+
+    this.otherContactsForm$ = this.formCreationService
+      .getOtherContactsForm()
+      .subscribe((otherContacts) => {
+        this.otherContactsForm = otherContacts;
+      });
+
+    this.otherContactsForm
+      .get('addNewOtherContactIndicator')
+      .valueChanges.subscribe((value) => this.updateOtherContactOnVisibility());
 
     this.propertyDamageForm
       .get('floodDamage')
@@ -192,45 +245,30 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.propertyDamageForm
-      .get('briefDescription')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.propertyDamageForm.get('briefDescription').reset();
-        }
-      });
-
-    this.propertyDamageForm
-      .get('wereYouEvacuated')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.propertyDamageForm.get('wereYouEvacuated').reset();
-        }
-      });
-
-    this.propertyDamageForm
-      .get('dateReturned')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.propertyDamageForm.get('dateReturned').reset();
-        }
-      });
-
-    this.propertyDamageForm
-      .get('residingInResidence')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value === '') {
-          this.propertyDamageForm.get('residingInResidence').reset();
-        }
-      });
-
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
       this.propertyDamageForm.disable();
     }
+  }
+
+  updateOtherContactOnVisibility(): void {
+    this.otherContactsForm
+      .get('otherContact.firstName')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.lastName')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.phoneNumber')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.email')
+      .updateValueAndValidity();
+  }
+
+  cancelOtherContact(): void {
+    this.showOtherContactForm = !this.showOtherContactForm;
+    this.otherContactsForm.get('addNewOtherContactIndicator').setValue(false);
+    this.otherContactText = 'New Other Contact'
   }
 
   validateFormCauseOfDamage(form: FormGroup) {
@@ -243,8 +281,83 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  calcRemainingChars() {
-    this.remainingLength = 2000 - this.propertyDamageForm.get('briefDescription').value?.length;
+  saveOtherContact(): void {
+    
+    if (this.otherContactsForm.get('otherContact').status === 'VALID') {
+      if (this.otherContactsEditIndex !== undefined && this.otherContactsRowEdit) {
+        this.otherContactsData[this.otherContactsEditIndex] = this.otherContactsForm.get('otherContact').value;
+        this.otherContactsRowEdit = !this.otherContactsRowEdit;
+        this.otherContactsEditIndex = undefined;
+        this.otherContactsDataSource.next(this.otherContactsData);
+        this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+        this.showOtherContactForm = !this.showOtherContactForm;
+        this.otherContactsEditFlag = !this.otherContactsEditFlag;
+      } else {
+        //this.otherContactsForm.get('otherContact').get('id').setValue(otherContactId);
+        this.otherContactsData.push(this.otherContactsForm.get('otherContact').value);
+        this.otherContactsDataSource.next(this.otherContactsData);
+        this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+        this.showOtherContactForm = !this.showOtherContactForm;
+      }
+
+      this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+    } else {
+      this.otherContactsForm.get('otherContact').markAllAsTouched();
+    }
+  }
+
+  addOtherContact(): void {
+    this.otherContactText = 'New Other Contact'
+    this.otherContactsForm.get('otherContact').reset();
+    this.showOtherContactForm = !this.showOtherContactForm;
+    this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
+    this.otherContactsForm.get('otherContact.deleteFlag').setValue(false);
+    this.otherContactsForm.get('otherContact.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+  }
+
+  editOtherContactsRow(element, index): void {
+    this.otherContactText = 'Edit Other Contact'
+    this.otherContactsEditIndex = index;
+    this.otherContactsRowEdit = !this.otherContactsRowEdit;
+    //this.otherContactsForm.get('otherContact').setValue(element);
+    this.showOtherContactForm = !this.showOtherContactForm;
+    this.otherContactsEditFlag = !this.otherContactsEditFlag;
+    this.otherContactsForm
+      .get('addNewOtherContactIndicator').setValue(true);
+  }
+
+  deleteOtherContactRow(index: number): void {
+    this.otherContactsData[index].deleteFlag = true;
+    this.otherContactsData.splice(index, 1);
+    this.otherContactsDataSource.next(this.otherContactsData);
+    this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+    if (this.otherContactsData.length === 0) {
+      this.otherContactsForm
+        .get('addNewOtherContactIndicator')
+        .setValue(false);
+    }
+  }
+
+  confirmDeleteOtherContactRow(index: number): void {
+    if (this.otherContactsData.length == 1) {
+      this.dialog
+        .open(DFADeleteConfirmDialogComponent, {
+          data: {
+            content: "DFA requires that you have at least one Other Contact.<br/>Please add a new contact before deleting this one."
+          },
+          width: '500px',
+          disableClose: true
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          //if (result === 'confirm') {
+          //  this.deleteOtherContactRow(index);
+          //}
+        });
+    }
+    else {
+      this.deleteOtherContactRow(index);
+    }
   }
 
   /**
@@ -272,6 +385,9 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     ReactiveFormsModule,
     MatInputModule,
     DirectivesModule,
+    MatTableModule,
+    CustomPipeModule,
+    TextMaskModule
   ],
   declarations: [PropertyDamageComponent]
 })
