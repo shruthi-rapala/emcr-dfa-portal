@@ -305,7 +305,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_eventid", "dfa_id", "dfa_eventname"
+                        "dfa_eventid", "dfa_id", "dfa_eventname", "dfa_eventtype"
                     }
                 });
 
@@ -342,6 +342,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                from objAppEvent in appEvent.DefaultIfEmpty()
                                join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
                                from objCaseEvent in appCase.DefaultIfEmpty()
+                               where objAppEvent != null && (objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
+                                                || objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())
                                select new dfa_appapplication
                                {
                                    dfa_appapplicationid = objApp.dfa_appapplicationid,
@@ -700,7 +702,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
                 {
                     var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1"
-                                            && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
+                                            && (m.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
                                                 || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())).ToList();
 
                     var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= DateTime.Now).Count();
@@ -736,7 +738,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null
                     && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate
                     && m.statuscode == "1"
-                    && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
+                    && (m.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
                                                 || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString()));
             }
             catch (System.Exception ex)
