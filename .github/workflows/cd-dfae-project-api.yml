@@ -5,8 +5,7 @@ name: cd-dfae-project-api
 on:
   push:
     branches:
-      #      - develop
-      - 'feature/emcri-12'
+      - develop
     paths:
       - "dfa/src/API/**"
       - ".github/workflows/cd-dfae-project-api.yml"

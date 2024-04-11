@@ -3,8 +3,7 @@ name: cd-dfae-project-oauth
 on:
   push:
     branches:
-      #      - develop
-      - 'feature/emcri-12'
+       - develop
 
     paths:
       - "oauth-server/src/API/**"

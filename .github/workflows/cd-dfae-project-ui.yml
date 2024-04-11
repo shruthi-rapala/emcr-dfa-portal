@@ -3,8 +3,8 @@ name: cd-dfae-project-ui
 on:
   push:
     branches:
-      #      - develop
-      - 'feature/emcri-12'
+       - develop
+
 
     paths:
       - "dfa/src/UI/**"

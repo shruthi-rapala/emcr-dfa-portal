@@ -1,10 +1,11 @@
 #CD pipeline for dfa landing page into the project stream
-name: cd-dfa-landing-page-project
+name: OLD-cd-dfa-landing-page-project
 
 on:
   push:
     branches:
-      - develop
+      - 'feature/emcri-12'
+#     - develop
 
     paths:
       - "landing-page/**"

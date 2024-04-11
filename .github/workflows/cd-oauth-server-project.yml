@@ -1,9 +1,9 @@
-name: cd-oauth-server-project
+name: OLD-cd-oauth-server-project
 
 on:
   push:
     branches:
-      - develop
+      - 'feature/emcri-12'
 
     paths:
       - "oauth-server/src/API/**"
