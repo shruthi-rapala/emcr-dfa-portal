@@ -1,10 +1,10 @@
 #CD pipeline for dfa api
-name: cd-dfa-portal-project-api
+name: OLD-cd-dfa-portal-project-api
 
 on:
   push:
     branches:
-      - develop
+      - 'feature/emcri-12'
 
     paths:
       - "dfa/src/API/**"
