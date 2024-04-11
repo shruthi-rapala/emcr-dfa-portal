@@ -359,12 +359,14 @@ namespace EMBC.DFA.API.Controllers
         public bool? stormDamage { get; set; }
         public bool? otherDamage { get; set; }
         public string? otherDamageText { get; set; }
+        public string? previousApplicationText { get; set; }
         public string? damageFromDate { get; set; }
         public string? damageToDate { get; set; }
         public string? briefDescription { get; set; }
         public bool? wereYouEvacuated { get; set; }
         public string? dateReturned { get; set; }
         public bool? residingInResidence { get; set; }
+        public string? previousApplication { get; set; }
     }
 
     /// <summary>

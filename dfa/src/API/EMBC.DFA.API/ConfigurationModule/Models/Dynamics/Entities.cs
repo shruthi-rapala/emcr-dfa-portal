@@ -170,11 +170,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_contactemail { get; set; } // optional string
         public int? dfa_acopyofarentalagreementorlease2 { get; set; } // required boolean
         public int? dfa_areyounowresidingintheresidence2 { get; set; } // optional boolean
+        public int? dfa_previousdfaapplication { get; set; } // optional boolean
         public int? dfa_causeofdamageflood2 { get; set; } // optional boolean
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal boolean
         public int? dfa_causeofdamagelandslide2 { get; set; } // optional boolean
         public int? dfa_causeofdamageother2 { get; set; } // optional boolean
         public string? dfa_causeofdamageloss { get; set; } // optional string
+        public string? dfa_previousdfaapplicationdetails { get; set; } // optional string
         public string? dfa_dateofdamage { get; set; } // optoinal date only
         public string? dfa_dateofdamageto { get; set; } // optional date only
         public string? dfa_datereturntoresidence { get; set; } // optional date only
@@ -272,6 +274,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_damagedpropertyaddresscanadapostverified { get; set; }
         public int? dfa_iamtheonlypersoninthehome { get; set; }
         public int? dfa_idonthaveanothercontact { get; set; }
+        public string? dfa_previousdfaapplicationdetails { get; set; } // optional string
+        public int? dfa_previousdfaapplication { get; set; } // optional boolean
     }
 
     public class dfa_appbuildingownerlandlord
@@ -543,6 +547,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("I don't have a permanent address right now")]
         NoAddress = 222710002
+    }
+
+    public enum PreviousApplicationOptionSet
+    {
+        [Description("Yes")]
+        Yes = 222710000,
+
+        [Description("No")]
+        No = 222710001,
+
+        [Description("Not sure")]
+        Notsure = 222710002
     }
 
     public class dfa_effectedregioncommunities

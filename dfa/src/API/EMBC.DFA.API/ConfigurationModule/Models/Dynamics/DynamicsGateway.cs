@@ -234,7 +234,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon", "_dfa_eventid_value",
                     "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit",
                     "dfa_damagedpropertyaddresscanadapostverified", "dfa_iamtheonlypersoninthehome",
-                    "dfa_idonthaveanothercontact"
+                    "dfa_idonthaveanothercontact", "dfa_previousdfaapplicationdetails", "dfa_previousdfaapplication"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });

@@ -912,6 +912,26 @@
             }}
           </span></div>
         </div>
+        <div class="row info-detail">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.previousApplication !== ''))}">Previous DFA application?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.previousApplication !== ''))}">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .previousApplication !== ''
+                ? (formCreationService.propertyDamageForm$ | async)?.value.previousApplication
+                : 'Make a selection'
+            }}
+          </span></div>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.propertyDamageForm$ | async)?.value.previousApplication == 'Yes' || (formCreationService.propertyDamageForm$ | async)?.value.previousApplication == 'Not sure' ">
+          <div class="col-md-3"><span>Previous DFA application details?:</span></div>
+          <div class="col-md-3"><span>
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .previousApplicationText
+            }}
+          </span></div>
+        </div>
       </mat-card-content>
 
       <!-- Occupants -->

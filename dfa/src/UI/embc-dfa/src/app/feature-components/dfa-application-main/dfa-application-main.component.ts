@@ -455,8 +455,10 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.propertyDamage.landslideDamage = this.form.get('landslideDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.otherDamage = this.form.get('otherDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.otherDamageText = this.form.get('otherDamageText').value;
+        this.dfaApplicationMainDataService.propertyDamage.previousApplicationText = this.form.get('previousApplicationText').value;
         this.dfaApplicationMainDataService.propertyDamage.stormDamage = this.form.get('stormDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.residingInResidence = this.form.get('residingInResidence').value == 'true' ? true : (this.form.get('residingInResidence').value == 'false' ? false : null);
+        this.dfaApplicationMainDataService.propertyDamage.previousApplication = this.form.get('previousApplication').value;
         this.dfaApplicationMainDataService.propertyDamage.wereYouEvacuated = this.form.get('wereYouEvacuated').value == 'true' ? true : (this.form.get('wereYouEvacuated').value == 'false' ? false : null);
         break;
       case 'occupants':
