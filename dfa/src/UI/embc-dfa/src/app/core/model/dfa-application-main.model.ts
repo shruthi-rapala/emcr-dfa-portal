@@ -266,7 +266,9 @@ export class PropertyDamage {
   landslideDamage?: null | boolean;
   otherDamage?: null | boolean;
   otherDamageText?: null | string;
+  previousApplicationText?: null | string;
   residingInResidence?: null | boolean;
+  previousApplication?: null | string;
   stormDamage?: null | boolean;
   wereYouEvacuated?: null | boolean;
 
@@ -276,12 +278,14 @@ export class PropertyDamage {
     stormDamage?: null | boolean,
     otherDamage?: null | boolean,
     otherDamageText?: null | string,
+    previousApplicationText?: null | string,
     damageFromDate?: null | Date,
     damageToDate?: null | Date,
     briefDescription?: null | string,
     wereYouEvacuated?: null | boolean,
     dateReturned?: null | Date,
     residingInResidence?: null | boolean,
+    previousApplication?: null | string,
   ) {}
 }
 
@@ -291,12 +295,14 @@ export class PropertyDamageForm {
   stormDamage = new UntypedFormControl();
   otherDamage = new UntypedFormControl();
   otherDamageText = new UntypedFormControl();
+  previousApplicationText = new UntypedFormControl();
   damageFromDate = new UntypedFormControl();
   damageToDate = new UntypedFormControl();
   briefDescription = new UntypedFormControl();
   wereYouEvacuated = new UntypedFormControl();
   dateReturned = new UntypedFormControl();
   residingInResidence = new UntypedFormControl();
+  previousApplication = new UntypedFormControl();
 
   constructor(
     propertyDamage: PropertyDamage,
@@ -326,6 +332,13 @@ export class PropertyDamageForm {
       this.otherDamageText.setValue(propertyDamage.otherDamageText);
     }
     this.otherDamageText.setValidators([customValidator
+      .maxLengthValidator(100)
+      .bind(customValidator)]);
+
+    if (propertyDamage.previousApplicationText) {
+      this.previousApplicationText.setValue(propertyDamage.previousApplicationText);
+    }
+    this.previousApplicationText.setValidators([customValidator
       .maxLengthValidator(100)
       .bind(customValidator)]);
 
@@ -360,6 +373,11 @@ export class PropertyDamageForm {
       this.residingInResidence.setValue(propertyDamage.residingInResidence);
     }
     this.residingInResidence.setValidators(null);
+
+    if (propertyDamage.previousApplication) {
+      this.previousApplication.setValue(propertyDamage.previousApplication);
+    }
+    this.previousApplication.setValidators(null);
 
   }
 }

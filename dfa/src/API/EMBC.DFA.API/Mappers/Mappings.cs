@@ -11,7 +11,9 @@ using EMBC.DFA.API.Controllers;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.VisualBasic;
+using YamlDotNet.Core.Tokens;
 using static StackExchange.Redis.Role;
+using Enum = System.Enum;
 
 namespace EMBC.DFA.API.Mappers
 {
@@ -178,9 +180,13 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_causeofdamagelandslide2, opts => opts.MapFrom(s => s.propertyDamage.landslideDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageother2, opts => opts.MapFrom(s => s.propertyDamage.otherDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.otherDamageText))
+                .ForMember(d => d.dfa_previousdfaapplicationdetails, opts => opts.MapFrom(s => s.propertyDamage.previousApplicationText))
                 .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.propertyDamage.damageFromDate))
                 .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.propertyDamage.damageToDate))
                 .ForMember(d => d.dfa_areyounowresidingintheresidence2, opts => opts.MapFrom(s => s.propertyDamage.residingInResidence == null ? (int?)null : (s.propertyDamage.residingInResidence == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
+                .ForMember(d => d.dfa_previousdfaapplication, opts => opts.MapFrom(s => (!string.IsNullOrEmpty(s.propertyDamage.previousApplication) ?
+                                                (s.propertyDamage.previousApplication.ToLower() == PreviousApplicationOptionSet.Yes.ToString().ToLower() ? Convert.ToInt32(PreviousApplicationOptionSet.Yes) :
+                                                (s.propertyDamage.previousApplication.ToLower() == PreviousApplicationOptionSet.No.ToString().ToLower() ? Convert.ToInt32(PreviousApplicationOptionSet.No) : Convert.ToInt32(PreviousApplicationOptionSet.Notsure))) : Convert.ToInt32(PreviousApplicationOptionSet.Notsure))))
                 .ForMember(d => d.dfa_datereturntoresidence, opts => opts.MapFrom(s => s.propertyDamage.dateReturned))
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.propertyDamage.briefDescription))
                 .ForMember(d => d.dfa_doyourlossestotalmorethan10002, opts => opts.MapFrom(s => s.damagedPropertyAddress.lossesExceed1000 == null ? (int?)null : (s.damagedPropertyAddress.lossesExceed1000 == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
@@ -267,6 +273,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageother2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.floodDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
+                .ForMember(d => d.previousApplicationText, opts => opts.MapFrom(s => s.dfa_previousdfaapplicationdetails))
+                .ForMember(d => d.previousApplication, opts => opts.MapFrom(s => s.dfa_previousdfaapplication != null ? GetEnumDescription((PreviousApplicationOptionSet)Convert.ToInt32(s.dfa_previousdfaapplication)) : null))
                 .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamage) ? DateTime.Parse(s.dfa_dateofdamage).ToString("o") + "Z" : s.dfa_dateofdamage))
                 .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto))
                 .ForMember(d => d.residingInResidence, opts => opts.MapFrom(s => s.dfa_areyounowresidingintheresidence2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_areyounowresidingintheresidence2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
