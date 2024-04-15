@@ -331,9 +331,13 @@ namespace EMBC.DFA.API.Controllers
         public bool? manufacturedHome { get; set; }
         public bool? eligibleForHomeOwnerGrant { get; set; }
         public string? landlordGivenNames { get; set; }
+        public string? landlordGivenNames2 { get; set; }
         public string? landlordSurname { get; set; }
+        public string? landlordSurname2 { get; set; }
         public string? landlordPhone { get; set; }
+        public string? landlordPhone2 { get; set; }
         public string? landlordEmail { get; set; }
+        public string? landlordEmail2 { get; set; }
         public bool? isPrimaryAndDamagedAddressSame { get; set; }
         public string? businessLegalName { get; set; }
         public bool? businessManagedByAllOwnersOnDayToDayBasis { get; set; }

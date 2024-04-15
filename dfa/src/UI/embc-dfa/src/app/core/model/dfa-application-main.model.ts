@@ -16,9 +16,13 @@ export class DamagedPropertyAddress {
   firstNationsReserve?: null | string;
   isPrimaryAndDamagedAddressSame?: null | boolean;
   landlordEmail?: null | string;
+  landlordEmail2?: null | string;
   landlordGivenNames?: null | string;
+  landlordGivenNames2?: null | string;
   landlordPhone?: null | string;
+  landlordPhone2?: null | string;
   landlordSurname?: null | string;
+  landlordSurname2?: null | string;
   manufacturedHome?: null | boolean;
   occupyAsPrimaryResidence?: null | boolean;
   lossesExceed1000?: null | boolean;
@@ -52,9 +56,13 @@ export class DamagedPropertyAddress {
     isPrimaryAndDamagedAddressSame?: null | boolean,
     eligibleForHomeOwnerGrant?: null | boolean,
     landlordGivenNames?: null | string,
+    landlordGivenNames2?: null | string,
     landlordSurname?: null | string,
+    landlordSurname2?: null | string,
     landlordPhone?: null | string,
+    landlordPhone2?: null | string,
     landlordEmail?: null | string,
+    landlordEmail2?: null | string,
     businessLegalName?: null | string,
     businessManagedByAllOwnersOnDayToDayBasis?: null | boolean,
     employLessThan50EmployeesAtAnyOneTime?: null | boolean,
@@ -84,9 +92,13 @@ export class DamagedPropertyAddressForm {
   isPrimaryAndDamagedAddressSame = new UntypedFormControl();
   lossesExceed1000 = new UntypedFormControl();
   landlordGivenNames = new UntypedFormControl();
+  landlordGivenNames2 = new UntypedFormControl();
   landlordSurname = new UntypedFormControl();
+  landlordSurname2 = new UntypedFormControl();
   landlordPhone = new UntypedFormControl();
+  landlordPhone2 = new UntypedFormControl();
   landlordEmail = new UntypedFormControl();
+  landlordEmail2 = new UntypedFormControl();
   businessLegalName = new UntypedFormControl();
   businessManagedByAllOwnersOnDayToDayBasis = new UntypedFormControl();
   employLessThan50EmployeesAtAnyOneTime = new UntypedFormControl();
@@ -181,20 +193,40 @@ export class DamagedPropertyAddressForm {
     }
     this.landlordGivenNames.setValidators(null);
 
+    if (damagedPropertyAddress.landlordGivenNames2) {
+      this.landlordGivenNames2.setValue(damagedPropertyAddress.landlordGivenNames2);
+    }
+    this.landlordGivenNames2.setValidators(null);
+
     if (damagedPropertyAddress.landlordSurname) {
       this.landlordSurname.setValue(damagedPropertyAddress.landlordSurname);
     }
     this.landlordSurname.setValidators(null);
+
+    if (damagedPropertyAddress.landlordSurname2) {
+      this.landlordSurname2.setValue(damagedPropertyAddress.landlordSurname2);
+    }
+    this.landlordSurname2.setValidators(null);
 
     if (damagedPropertyAddress.landlordPhone) {
       this.landlordPhone.setValue(damagedPropertyAddress.landlordPhone);
     }
     this.landlordPhone.setValidators([customValidator.maskedNumberLengthValidator().bind(customValidator)]);
 
+    if (damagedPropertyAddress.landlordPhone2) {
+      this.landlordPhone2.setValue(damagedPropertyAddress.landlordPhone2);
+    }
+    this.landlordPhone2.setValidators([customValidator.maskedNumberLengthValidator().bind(customValidator)]);
+
     if (damagedPropertyAddress.landlordEmail) {
       this.landlordEmail.setValue(damagedPropertyAddress.landlordEmail);
     }
     this.landlordEmail.setValidators([Validators.email]);
+
+    if (damagedPropertyAddress.landlordEmail2) {
+      this.landlordEmail2.setValue(damagedPropertyAddress.landlordEmail2);
+    }
+    this.landlordEmail2.setValidators([Validators.email]);
 
     if (damagedPropertyAddress.businessLegalName) {
       this.businessLegalName.setValue(damagedPropertyAddress.businessLegalName);
