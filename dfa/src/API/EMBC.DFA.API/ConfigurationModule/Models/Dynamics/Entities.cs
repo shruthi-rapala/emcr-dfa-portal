@@ -168,6 +168,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_contactlastname { get; set; } // optional string
         public string? dfa_contactphone1 { get; set; } // optional string
         public string? dfa_contactemail { get; set; } // optional string
+        public string? dfa_contactfirstname2 { get; set; } // optional string
+        public string? dfa_contactlastname2 { get; set; } // optional string
+        public string? dfa_contactphone2 { get; set; } // optional string
+        public string? dfa_contactemai2 { get; set; } // optional string
         public int? dfa_acopyofarentalagreementorlease2 { get; set; } // required boolean
         public int? dfa_areyounowresidingintheresidence2 { get; set; } // optional boolean
         public int? dfa_previousdfaapplication { get; set; } // optional boolean
@@ -232,9 +236,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_manufacturedhom2 { get; set; } // optional Two Options
         public int? dfa_eligibleforbchomegrantonthisproperty2 { get; set; } // optional Two Options
         public string? dfa_contactfirstname { get; set; } // optional string
+        public string? dfa_contactfirstname2 { get; set; } // optional string
         public string? dfa_contactlastname { get; set; } // optional string
+        public string? dfa_contactlastname2 { get; set; } // optional string
         public string? dfa_contactphone1 { get; set; } // optional string
+        public string? dfa_contactphone2 { get; set; } // optional string
         public string? dfa_contactemail { get; set; } // optional string
+        public string? dfa_contactemail2 { get; set; } // optional string
         public int? dfa_acopyofarentalagreementorlease2 { get; set; } // required Two Options
         public int? dfa_areyounowresidingintheresidence2 { get; set; } // optional Two Options
         public int? dfa_causeofdamageflood2 { get; set; } // optional Two Options
@@ -256,6 +264,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_secondaryapplicantsigneddate { get; set; } // optional string
         public int? dfa_wereyouevacuatedduringtheevent2 { get; set; } // optional Two Options
         public string? _dfa_buildingownerlandlord_value { get; set; } // optional string
+        public string? _dfa_buildingownerlandlordsecond_value { get; set; } // optional string
         public string? dfa_primaryapplicantsignature { get; set; } // optional string
         public string? dfa_secondaryapplicantsignature { get; set; } // optional string
         public string? _dfa_eventid_value { get; set; } // optional string

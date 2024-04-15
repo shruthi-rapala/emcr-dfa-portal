@@ -423,9 +423,13 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.damagedPropertyAddress.community = this.form.get('community').value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.firstNationsReserve = this.form.get('firstNationsReserve').value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.landlordEmail = this.form.get('landlordEmail').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordEmail2 = this.form.get('landlordEmail2').value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.landlordGivenNames = this.form.get('landlordGivenNames').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordGivenNames2 = this.form.get('landlordGivenNames2').value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.landlordPhone = this.form.get('landlordPhone').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordPhone2 = this.form.get('landlordPhone2').value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.landlordSurname = this.form.get('landlordSurname').value;
+        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordSurname2 = this.form.get('landlordSurname2').value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.postalCode = this.form.get('postalCode').value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.stateProvince = this.form.get('stateProvince').value;
         this.dfaApplicationMainDataService.damagedPropertyAddress.eligibleForHomeOwnerGrant = this.form.get('eligibleForHomeOwnerGrant').value == 'true' ? true : (this.form.get('eligibleForHomeOwnerGrant').value == 'false' ? false : null);

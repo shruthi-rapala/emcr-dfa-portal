@@ -234,7 +234,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon", "_dfa_eventid_value",
                     "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit",
                     "dfa_damagedpropertyaddresscanadapostverified", "dfa_iamtheonlypersoninthehome",
-                    "dfa_idonthaveanothercontact", "dfa_previousdfaapplicationdetails", "dfa_previousdfaapplication"
+                    "dfa_idonthaveanothercontact", "dfa_previousdfaapplicationdetails", "dfa_previousdfaapplication",
+                    "_dfa_buildingownerlandlordsecond_value"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -256,6 +257,23 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     application.dfa_contactlastname = buildingOwnerlist.List.Last().dfa_contactlastname;
                     application.dfa_contactphone1 = buildingOwnerlist.List.Last().dfa_contactphone1;
                     application.dfa_contactemail = buildingOwnerlist.List.Last().dfa_contactemail;
+                }
+
+                if (application._dfa_buildingownerlandlordsecond_value != null)
+                {
+                    var buildingOwnerlist = await api.GetList<dfa_appbuildingownerlandlord>("dfa_appbuildingownerlandlords", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                            "dfa_contactlastname", "dfa_contactphone1", "dfa_contactemail", "dfa_contactfirstname"
+                        },
+                        Filter = $"dfa_appbuildingownerlandlordid eq {application._dfa_buildingownerlandlordsecond_value}"
+                    });
+
+                    application.dfa_contactfirstname2 = buildingOwnerlist.List.Last().dfa_contactfirstname;
+                    application.dfa_contactlastname2 = buildingOwnerlist.List.Last().dfa_contactlastname;
+                    application.dfa_contactphone2 = buildingOwnerlist.List.Last().dfa_contactphone1;
+                    application.dfa_contactemail2 = buildingOwnerlist.List.Last().dfa_contactemail;
                 }
 
                 var annotationList = await api.GetList<annotation>("annotations", new CRMGetListOptions

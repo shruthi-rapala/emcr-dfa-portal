@@ -336,7 +336,7 @@
 
         <div class="row" *ngIf="isResidentialTenant">
           <p class="sub-heading" style="font-size: 15px">
-           Provide the registered building owner(s) and/or landlord(s) name(s) and/or phone number(s).<span style="color:red" >*</span>
+           Provide at least one registered building owner and/or landlord name and phone number.<span style="color:red" >*</span>
           </p>
           <div class="col-md-4">
             <mat-form-field appearance="outline">
@@ -445,6 +445,99 @@
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordEmail').invalid &&
                   damagedPropertyAddressForm.get('landlordEmail').hasError('maxLength')
+                "
+              >
+                Maximum length is 100 characters</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isResidentialTenant">
+          <p class="sub-heading" style="font-size: 15px">
+           You may also provide a second registered building owner and/or landlord name and phone number, if applicable.
+          </p>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>First name</mat-label>
+              <input
+                formControlName="landlordGivenNames2"
+                matInput
+                placeholder="First name"
+                [readonly]="isReadOnly == true"
+                maxlength="49"/>
+              
+              <mat-error
+              *ngIf="
+                damagedPropertyAddressForm.get('landlordGivenNames2').invalid &&
+                damagedPropertyAddressForm.get('landlordGivenNames2').hasError('maxLength')
+              "
+            >
+              Maximum length is 49 characters</mat-error
+            >
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Last name</mat-label>
+              <input
+                formControlName="landlordSurname2"
+                matInput
+                placeholder="Last name"
+                [readonly]="isReadOnly == true"
+                maxlength="49"/>
+              
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordSurname2').invalid &&
+                  damagedPropertyAddressForm.get('landlordSurname2').hasError('maxLength')
+                "
+              >
+                Maximum length is 49 characters</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Contact Telephone</mat-label>
+              <input formControlName="landlordPhone2"
+                matInput 
+                [readonly]="isReadOnly == true"
+                placeholder="Contact Telephone"
+                [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordPhone2').invalid &&
+                  damagedPropertyAddressForm.get('landlordPhone2').hasError('incorrectLength')
+                "
+              >
+                Telephone number must have 10 digits</mat-error
+              >
+              
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Contact Email</mat-label>
+              <input formControlName="landlordEmail2"
+                matInput
+                [readonly]="isReadOnly == true"
+                placeholder="Contact Email"
+                type="email"
+                maxlength="100"
+                />
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordEmail2').invalid &&
+                  damagedPropertyAddressForm.get('landlordEmail2').hasError('email')
+                "
+              >
+                Invalid email address</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  damagedPropertyAddressForm.get('landlordEmail2').invalid &&
+                  damagedPropertyAddressForm.get('landlordEmail2').hasError('maxLength')
                 "
               >
                 Maximum length is 100 characters</mat-error

@@ -517,9 +517,13 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
           this.dfaApplicationMainDataService.damagedPropertyAddress.community = this.damagedPropertyAddressForm.get('community').value;
           this.dfaApplicationMainDataService.damagedPropertyAddress.firstNationsReserve = this.damagedPropertyAddressForm.get('firstNationsReserve').value;
           this.dfaApplicationMainDataService.damagedPropertyAddress.landlordEmail = this.damagedPropertyAddressForm.get('landlordEmail').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.landlordEmail2 = this.damagedPropertyAddressForm.get('landlordEmail2').value;
           this.dfaApplicationMainDataService.damagedPropertyAddress.landlordGivenNames = this.damagedPropertyAddressForm.get('landlordGivenNames').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.landlordGivenNames2 = this.damagedPropertyAddressForm.get('landlordGivenNames2').value;
           this.dfaApplicationMainDataService.damagedPropertyAddress.landlordPhone = this.damagedPropertyAddressForm.get('landlordPhone').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.landlordPhone2 = this.damagedPropertyAddressForm.get('landlordPhone2').value;
           this.dfaApplicationMainDataService.damagedPropertyAddress.landlordSurname = this.damagedPropertyAddressForm.get('landlordSurname').value;
+          this.dfaApplicationMainDataService.damagedPropertyAddress.landlordSurname2 = this.damagedPropertyAddressForm.get('landlordSurname2').value;
           this.dfaApplicationMainDataService.damagedPropertyAddress.postalCode = this.damagedPropertyAddressForm.get('postalCode').value;
           this.dfaApplicationMainDataService.damagedPropertyAddress.stateProvince = this.damagedPropertyAddressForm.get('stateProvince').value;
           this.dfaApplicationMainDataService.damagedPropertyAddress.eligibleForHomeOwnerGrant = this.damagedPropertyAddressForm.get('eligibleForHomeOwnerGrant').value == 'true' ? true : (this.damagedPropertyAddressForm.get('eligibleForHomeOwnerGrant').value == 'false' ? false : null);

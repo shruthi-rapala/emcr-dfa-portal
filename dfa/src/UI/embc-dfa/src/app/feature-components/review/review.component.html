@@ -781,6 +781,43 @@
             }}</span>
           </div>
         </div>
+
+        <div class="row info-detail" *ngIf="isResidentialTenant">
+          <div class="col-md-3"><span>Landlord First Name:</span></div>
+          <div class="col-md-3">
+            <span>{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+  .landlordGivenNames2
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isResidentialTenant">
+          <div class="col-md-3"><span>Landlord Last Name:</span></div>
+          <div class="col-md-3">
+            <span>{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+  .landlordSurname2
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isResidentialTenant">
+          <div class="col-md-3"><span>Landlord Phone:</span></div>
+          <div class="col-md-3">
+            <span>{{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+  .landlordPhone2
+            }}</span>
+          </div>
+        </div>
+        <div class="row info-detail" *ngIf="isResidentialTenant">
+          <div class="col-md-3"><span>Landlord Email:</span></div>
+          <div class="col-md-3"><span>
+            {{
+              (formCreationService.damagedPropertyAddressForm$ | async)?.value
+                .landlordEmail2
+            }}</span>
+          </div>
+        </div>
       </mat-card-content>
 
       <!-- Cause of Damage -->
