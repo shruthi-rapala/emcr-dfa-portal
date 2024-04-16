@@ -359,6 +359,7 @@ export class DFAApplicationMainComponent
             this.dfaApplicationMainDataService.isSubmitted = true;
             this.dfaApplicationMainDataService.setViewOrEdit('view');
             this.vieworedit = 'view';
+            this.returnToDashboard();
           },
           error => {
             console.error(error);
