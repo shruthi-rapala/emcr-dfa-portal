@@ -100,6 +100,7 @@
           </button>-->
           <div class="col-md-12" *ngIf="!isSubmitted
                && (formCreationService.propertyDamageForm$ | async)?.valid
+               && ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)
                ">
             <button
               class="button-p save-button"
