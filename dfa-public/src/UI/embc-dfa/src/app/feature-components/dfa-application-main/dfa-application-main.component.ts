@@ -103,6 +103,7 @@ export class DFAApplicationMainComponent
 
 ;
     this.formCreationService.clearPropertyDamageData();
+    this.formCreationService.clearOtherContactsData();
 
     this.steps = this.componentService.createDFAApplicationMainSteps();
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
