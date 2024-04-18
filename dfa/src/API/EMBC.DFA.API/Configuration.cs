@@ -184,6 +184,7 @@ namespace EMBC.DFA.API
                 policy.WithOrigins(corsOrigins);
             }
             }));
+            services.AddMemoryCache();
         }
 
         public void ConfigurePipeline(PipelineServices services)
