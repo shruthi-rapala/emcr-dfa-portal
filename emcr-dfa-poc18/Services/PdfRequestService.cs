@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using emcr_dfa_poc18.Models.AppSettings;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,17 +20,20 @@ namespace emcr_dfa_poc18.Services
 
         private HttpClient _client;
 
-        public PdfRequestService(HttpClient httpClient, IConfiguration configuration)
+        public PdfRequestService(HttpClient httpClient, 
+            IOptions<AppWebDefaults> webDefaults,
+            IConfiguration configuration)
         {
             // configure the HttpClient that is used for our direct REST calls.
             _client = httpClient;
-
             _client.Timeout = TimeSpan.FromMinutes(5);
+            AppWebDefaults appWebSettings = webDefaults?.Value ?? new AppWebDefaults();
 
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
-            string serviceUri = configuration["PDF_SERVICE_BASE_URI"] ?? "";
-            string serviceSecret = configuration["PDF_SERVICE_JWT_SECRET"] ?? "";
-            string serviceToken = configuration["PDF_JWT_TOKEN"] ?? "";
+            string serviceUri = appWebSettings.PDFServiceUri;
+            string serviceSecret = appWebSettings.PDFServiceSecret;
+            string serviceToken = appWebSettings.PDFServiceToken;
+
             if (!string.IsNullOrEmpty(serviceUri))
             {
                 BaseUri = serviceUri;
