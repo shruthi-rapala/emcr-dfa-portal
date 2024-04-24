@@ -100,8 +100,11 @@ export class DFAApplicationMainComponent
   }
 
   ngOnInit(): void {
+    let applicationId = this.route.snapshot.paramMap.get('id');
 
-;
+    if (applicationId) {
+      this.dfaApplicationMainDataService.setApplicationId(applicationId);
+    }
     this.formCreationService.clearPropertyDamageData();
     this.formCreationService.clearOtherContactsData();
 
@@ -333,6 +336,7 @@ export class DFAApplicationMainComponent
   }
 
   returnToDashboard() {
+    this.dfaApplicationMainDataService.setApplicationId(null);
     this.router.navigate(['/verified-registration/dashboard']);
   }
 

@@ -38,6 +38,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'dfa-application-main/:id',
+    loadChildren: () =>
+      import(
+        './feature-components/dfa-application-main/dfa-application-main.module'
+      ).then((m) => m.DFAApplicationMainModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'dfa-prescreening',
     loadChildren: () =>
       import(

@@ -29,7 +29,7 @@
           <span style="font-size: 16px;">{{applItem.statusLastUpdated }}</span>
         </div>-->
       </div>
-      <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;width: 90%;min-width: 725px;display: none;">
+      <div style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;width: 90%;min-width: 725px;">
         <div class="col-md-3" style="margin-top: 20px;">
           <span><b>Application Status</b></span><br />
           <span *ngIf="applItem.isErrorInStatus == true" style="color: red;">Error in displaying status<br /></span>
@@ -72,17 +72,30 @@
         <div class="col-md-3">
           <span><b>Damaged Property Address</b></span><br />
           <span>{{applItem.damagedAddress}}</span>
-        </div>
+        </div>-->
         <div class="col-md-3">
           <span><b>Case Number</b></span><br />
           <span>{{applItem.caseNumber == null ? "To Be Assigned" : applItem.caseNumber }}</span>
-        </div>-->
+        </div>
         <div class="col-md-3">
           <span><b>Date of Damage</b></span><br />
           <span>{{applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
         </div>
+        <div class="col-md-3">
+          <span><b>Cause(s) of Damage</b></span><br />
+          <span id="spnCauseOfDamage">{{CombineCauseOfDamages(applItem)}}</span>
+        </div>
+        <div class="col-md-3">
+          <button
+            class="application-button"
+            type="button"
+            (click)="ViewApplication(applItem)"
+          >
+            View Application
+          </button>
+        </div>
       </div>
-      <div class="row" style="padding-top: 35px;">
+      <!--<div class="row" style="padding-top: 35px;">
         <button
           class="col-md-2 application-button"
           type="button"
@@ -99,7 +112,7 @@
         
         >
           Complete Application
-        </button>
+        </button>-->
 
         <!--<button
           class="col-md-2 application-button whitebutton"
@@ -143,7 +156,7 @@
         >
           Delete Application
         </button>-->
-      </div>
+      <!--</div>-->
     </mat-card>
   </div>
 </div>

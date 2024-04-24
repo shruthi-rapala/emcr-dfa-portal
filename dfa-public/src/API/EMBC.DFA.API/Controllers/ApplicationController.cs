@@ -115,7 +115,14 @@ namespace EMBC.DFA.API.Controllers
             {
                 foreach (var objContact in application.OtherContact)
                 {
-                    objContact.applicationId = Guid.Parse(result);
+                    if (string.IsNullOrEmpty(mappedApplication.dfa_appapplicationid))
+                    {
+                        objContact.applicationId = Guid.Parse(result);
+                    }
+                    else
+                    {
+                        objContact.applicationId = Guid.Parse(mappedApplication.dfa_appapplicationid);
+                    }
                     var mappedOtherContact = mapper.Map<dfa_appothercontact_params>(objContact);
 
                     var resultContact = await handler.HandleOtherContactAsync(mappedOtherContact);
@@ -172,12 +179,7 @@ namespace EMBC.DFA.API.Controllers
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
-
-            if ((appContactProfile.lastUpdatedDateBCSC == null || DateTime.Parse(dfa_appapplication.createdon) < DateTime.Parse(appContactProfile.lastUpdatedDateBCSC))
-                && dfa_appapplication.dfa_primaryapplicantsigneddate == null)
-            {
-                dfaApplicationMain.notifyUser = true;
-            }
+            dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
 
             return Ok(dfaApplicationMain);
         }
@@ -218,7 +220,7 @@ namespace EMBC.DFA.API.Controllers
 
     public class DFAApplicationMain
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public PropertyDamage? propertyDamage { get; set; }
         public ProfileVerification? ProfileVerification { get; set; }
         public OtherContact[]? OtherContact { get; set; }
@@ -240,6 +242,12 @@ namespace EMBC.DFA.API.Controllers
         public List<StatusBar> StatusBar { get; set; }
         public string StatusLastUpdated { get; set; }
         public bool IsErrorInStatus { get; set; }
+        public bool? floodDamage { get; set; }
+        public bool? landslideDamage { get; set; }
+        public bool? stormDamage { get; set; }
+        public bool? wildfireDamage { get; set; }
+        public bool? otherDamage { get; set; }
+        public string? otherDamageText { get; set; }
     }
 
     public class StatusBar
