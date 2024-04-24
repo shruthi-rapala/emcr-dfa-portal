@@ -166,6 +166,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.damageCausedByDisaster, opts => opts.MapFrom(s => true));
 
             CreateMap<DFAApplicationMain, dfa_appapplicationmain_params>()
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.Id))
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.propertyDamage.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.propertyDamage.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
@@ -214,10 +215,11 @@ namespace EMBC.DFA.API.Mappers
 
             CreateMap<dfa_appapplicationmain_retrieve, PropertyDamage>()
                 .ForMember(d => d.stormDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
-                .ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildform == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagewildform == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageother2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.floodDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.Yes ? true : (s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
                 .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamage) ? DateTime.Parse(s.dfa_dateofdamage).ToString("o") + "Z" : s.dfa_dateofdamage))
                 .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto));
@@ -330,7 +332,7 @@ namespace EMBC.DFA.API.Mappers
 
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
-                .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.dfa_applicanttype))))
+                .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_applicanttype) ? GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.dfa_applicanttype)) : null))
                 .ForMember(d => d.PrimaryApplicantSignedDate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_primaryapplicantsigneddate) ? null : s.dfa_primaryapplicantsigneddate))
                 .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => s.dfa_casenumber))
                 .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_datefileclosed))
@@ -338,6 +340,12 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => string.Join(", ", (new string[] { s.dfa_damagedpropertystreet1, s.dfa_damagedpropertycitytext }).Where(m => !string.IsNullOrEmpty(m)))))
                 .ForMember(d => d.Status, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_applicationstatusportal) ? string.Empty : s.dfa_applicationstatusportal))
                 .ForMember(d => d.StatusLastUpdated, opts => opts.MapFrom(s => "01/01/2023"))
+                .ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildfire2 != null && s.dfa_causeofdamagewildfire2 == (int?)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.stormDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagestorm2 != null && s.dfa_causeofdamagestorm2 == (int?)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.floodDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageflood2 != null && s.dfa_causeofdamageflood2 == (int?)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 != null && s.dfa_causeofdamagelandslide2 == (int?)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 != null && s.dfa_causeofdamageother2 == (int?)YesNoOptionSet.Yes ? true : false))
+                .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
                 .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()

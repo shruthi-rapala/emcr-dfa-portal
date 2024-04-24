@@ -128,14 +128,31 @@ export class DfaApplicationComponent implements OnInit {
     }
   }
 
+  CombineCauseOfDamages(applItem: ApplicationExtended): string {
+    var causeofdamages = applItem.floodDamage == true ? "Flood, " : "";
+    causeofdamages += applItem.landslideDamage == true ? "Landslide, " : "";
+    causeofdamages += applItem.stormDamage == true ? "Storm, " : "";
+    causeofdamages += applItem.wildfireDamage == true ? "Wildfire, " : "";
+    causeofdamages += applItem.otherDamageText != null ? applItem.otherDamageText : "";
+    causeofdamages = causeofdamages.trim();
+
+    var lastChar = causeofdamages.slice(-1);
+    if (lastChar == ',') {
+      causeofdamages = causeofdamages.slice(0, -1);
+    }
+
+    return causeofdamages;
+  }
+
   ViewApplication(applItem: ApplicationExtended): void {
     this.dfaApplicationMainDataService.setApplicationId(applItem.applicationId);
     this.dfaApplicationStartDataService.setApplicationId(applItem.applicationId);
-
-    if (applItem.primaryApplicantSignedDate == null && applItem.currentApplication != false) {
-      this.dfaApplicationMainDataService.setViewOrEdit('update');
-    }
-    else if (applItem.currentApplication === true) {
+    
+    //if (applItem.primaryApplicantSignedDate == null && applItem.currentApplication != false) {
+    //  this.dfaApplicationMainDataService.setViewOrEdit('update');
+    //}
+    //else
+    if(applItem.currentApplication === true) {
       this.dfaApplicationMainDataService.setViewOrEdit('view');
     } else if (applItem.currentApplication === false) {
       this.dfaApplicationMainDataService.setViewOrEdit('viewOnly');

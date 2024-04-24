@@ -29,6 +29,7 @@ export class DFAApplicationMainMappingService {
       .subscribe((propertyDamage) => {
         propertyDamage.setValue({
           ...dfaApplicationMain.propertyDamage,
+          guidanceSupport: dfaApplicationMain.propertyDamage.guidanceSupport === true ? 'true' : (dfaApplicationMain.propertyDamage.guidanceSupport === false ? 'false' : null),
         });
         formGroup = propertyDamage;
       });

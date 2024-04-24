@@ -161,6 +161,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_causeofdamageloss { get; set; } // optional string
         public string? dfa_dateofdamage { get; set; } // optoinal date only
         public string? dfa_dateofdamageto { get; set; } // optional date only
+        public string? dfa_appapplicationid { get; set; } // optional string
         public string dfa_appcontactid { get; set; }
     }
 
@@ -190,8 +191,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_acopyofarentalagreementorlease2 { get; set; } // required Two Options
         public int? dfa_areyounowresidingintheresidence2 { get; set; } // optional Two Options
         public int? dfa_causeofdamageflood2 { get; set; } // optional Two Options
+        public int? dfa_receiveguidanceassessingyourinfra { get; set; } // optional Two Options
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal Two Options
-        public int? dfa_causeofdamagewildform { get; set; } // optoinal Two Options
+        public int? dfa_causeofdamagewildfire2 { get; set; } // optoinal Two Options
         public int? dfa_causeofdamagelandslide2 { get; set; } // optional Two Options
         public int? dfa_causeofdamageother2 { get; set; } // optional Two Options
         public string? dfa_causeofdamageloss { get; set; } // optional string
@@ -464,7 +466,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_datefileclosed { get; set; }
         public string dfa_applicationstatusportal { get; set; }
         public string createdon { get; set; }
-        //public string dfa_statuslastupdated { get; set; }
+        public int? dfa_causeofdamageflood2 { get; set; }
+        public int? dfa_causeofdamagestorm2 { get; set; }
+        public int? dfa_causeofdamagewildfire2 { get; set; }
+        public int? dfa_causeofdamagelandslide2 { get; set; }
+        public int? dfa_causeofdamageother2 { get; set; }
+        public int? dfa_receiveguidanceassessingyourinfra { get; set; }
+        public string? dfa_causeofdamageloss { get; set; }
     }
 
     public class dfa_event
