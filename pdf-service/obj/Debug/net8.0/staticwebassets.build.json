@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "FiX5JqyYtzqNjTZDAFs0kwI9Jdn9Xakqe5UNMWfv8iI=",
+  "Source": "pdf-service",
+  "BasePath": "_content/pdf-service",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
