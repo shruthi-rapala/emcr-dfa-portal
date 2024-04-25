@@ -259,7 +259,18 @@
             class="col-md-3">
             City:
           </div>
-
+          <div class="col-md-3" *ngIf="((formCreationService.addressForm$ | async)?.value?.mailingAddress
+                  ?.addressLine1 == null ||
+                               (formCreationService.addressForm$ | async)?.value?.mailingAddress
+                  ?.addressLine1 == '') &&
+               ((formCreationService.addressForm$ | async)?.value?.mailingAddress
+                  ?.addressLine2 == null ||
+                               (formCreationService.addressForm$ | async)?.value?.mailingAddress
+                  ?.addressLine2 == '') && ((formCreationService.addressForm$ | async)?.value?.mailingAddress
+                  ?.postalCode == null ||
+                               (formCreationService.addressForm$ | async)?.value?.mailingAddress
+                  ?.postalCode == '')
+                               "><b>No mailing address available.</b></div>
           <div
             class="col-md-3"
             *ngIf="
