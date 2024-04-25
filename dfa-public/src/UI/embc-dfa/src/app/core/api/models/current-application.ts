@@ -9,9 +9,15 @@ export interface CurrentApplication {
   dateFileClosed?: string;
   dateOfDamage?: string;
   eventId?: string;
+  floodDamage?: null | boolean;
   isErrorInStatus?: boolean;
+  landslideDamage?: null | boolean;
+  otherDamage?: null | boolean;
+  otherDamageText?: null | string;
   primaryApplicantSignedDate?: string;
   status?: string;
   statusBar?: Array<StatusBar>;
   statusLastUpdated?: string;
+  stormDamage?: null | boolean;
+  wildfireDamage?: null | boolean;
 }
