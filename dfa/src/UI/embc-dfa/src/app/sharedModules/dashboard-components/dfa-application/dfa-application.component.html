@@ -104,7 +104,13 @@
         <button
           class="col-md-2 application-button whitebutton"
           type="button"
-          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
+          *ngIf="applItem.primaryApplicantSignedDate &&
+                applItem.currentApplication === true &&
+                applItem.status.toLowerCase() !== 'assessing damage' &&
+                applItem.status.toLowerCase() !== 'reviewing damage report' &&
+                applItem.status.toLowerCase() !== 'dfa making mecision' &&
+                applItem.status.toLowerCase() !== 'dfa decision made'
+                "
           (click)="EditApplication(applItem.applicationId, '3')"
         >
           Add to Clean Up Log
@@ -113,7 +119,13 @@
         <button
           class="col-md-2 application-button whitebutton"
           type="button"
-          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
+          *ngIf="applItem.primaryApplicantSignedDate &&
+                applItem.currentApplication === true &&
+                applItem.status.toLowerCase() !== 'assessing damage' &&
+                applItem.status.toLowerCase() !== 'reviewing damage report' &&
+                applItem.status.toLowerCase() !== 'dfa making mecision' &&
+                applItem.status.toLowerCase() !== 'dfa decision made'
+                "
           (click)="EditApplication(applItem.applicationId, '4')"
         >
           Add to Damaged Items
@@ -122,7 +134,13 @@
         <button
           class="col-md-2 application-button whitebutton"
           type="button"
-          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
+          *ngIf="applItem.primaryApplicantSignedDate &&
+                applItem.currentApplication === true &&
+                applItem.status.toLowerCase() !== 'assessing damage' &&
+                applItem.status.toLowerCase() !== 'reviewing damage report' &&
+                applItem.status.toLowerCase() !== 'dfa making mecision' &&
+                applItem.status.toLowerCase() !== 'dfa decision made'
+                "
           (click)="EditApplication(applItem.applicationId, '5')"
         >
           Add Supporting Docs

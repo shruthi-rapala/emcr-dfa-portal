@@ -136,7 +136,16 @@ export class DfaApplicationComponent implements OnInit {
       this.dfaApplicationMainDataService.setViewOrEdit('update');
     }
     else if (applItem.currentApplication === true) {
-      this.dfaApplicationMainDataService.setViewOrEdit('view');
+      if (applItem.status.toLowerCase() === 'assessing damage' ||
+        applItem.status.toLowerCase() === 'reviewing damage report' ||
+        applItem.status.toLowerCase() === 'dfa making mecision' ||
+        applItem.status.toLowerCase() === 'dfa decision made') {
+        this.dfaApplicationMainDataService.setContactOnlyView('contactOnly');
+        this.dfaApplicationMainDataService.setViewOrEdit('viewOnly');
+      }
+      else {
+        this.dfaApplicationMainDataService.setViewOrEdit('view');
+      }
     } else if (applItem.currentApplication === false) {
       this.dfaApplicationMainDataService.setViewOrEdit('viewOnly');
     }
