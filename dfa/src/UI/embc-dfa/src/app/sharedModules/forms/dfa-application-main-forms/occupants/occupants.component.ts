@@ -60,6 +60,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   secondaryApplicantsDataSource = new BehaviorSubject([]);
   secondaryApplicantsData = [];
   vieworedit: string = "";
+  contactonly: string = "";
   public ApplicantOptions = ApplicantOption;
   isHomeowner: boolean = false;
   isResidentialTenant: boolean = false;
@@ -101,6 +102,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.formCreationService = formCreationService;
 
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+    this.contactonly = this.dfaApplicationMainDataService.getContactOnlyView();
 
     this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.vieworedit = vieworedit;

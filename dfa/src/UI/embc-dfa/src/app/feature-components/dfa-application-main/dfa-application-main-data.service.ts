@@ -26,6 +26,7 @@ export class DFAApplicationMainDataService {
   private _isSubmitted: boolean = false;
   private _applicationId: string;
   private _vieworedit: string;
+  private _contactonly: string;
   private _editstep: string;
   private _requiredDocuments = [];
   private _onlyOccupantInHome: boolean = false;
@@ -181,6 +182,14 @@ export class DFAApplicationMainDataService {
   }
   public getViewOrEdit(): string {
     return this._vieworedit;
+  }
+
+  public setContactOnlyView(contactonly: string): void {
+    this._contactonly = contactonly;
+    this.changeViewOrEdit.emit(contactonly);
+  }
+  public getContactOnlyView(): string {
+    return this._contactonly;
   }
 
   public setEditStep(editstep: string): void {
