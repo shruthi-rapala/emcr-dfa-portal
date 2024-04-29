@@ -206,6 +206,22 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
 
+            var application = list.List.FirstOrDefault();
+
+            if (application._dfa_eventid_value != null)
+            {
+                var eventlist = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                            "dfa_eventid", "dfa_90daydeadlinenew", "dfa_eventname"
+                    },
+                    Filter = $"dfa_eventid eq {application._dfa_eventid_value}"
+                });
+
+                application.dfa_eventname = eventlist.List.Last()?.dfa_eventname;
+            }
+
             //list.List.FirstOrDefault().dfa_farmtype = (int)FarmOptionSet.General; // TODO: replace this with actual retrieve
             //list.List.FirstOrDefault().dfa_smallbusinesstype = (int)SmallBusinessOptionSet.General; // TODO: replace this with actual retrieve
 
@@ -303,12 +319,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         Select = new[]
                         {
-                            "dfa_eventid", "dfa_90daydeadlinenew"
+                            "dfa_eventid", "dfa_90daydeadlinenew", "dfa_eventname"
                         },
                         Filter = $"dfa_eventid eq {application._dfa_eventid_value}"
                     });
 
                     application.dfa_90daydeadline = eventlist.List.Last()?.dfa_90daydeadlinenew;
+                    application.dfa_eventname = eventlist.List.Last()?.dfa_eventname;
                 }
             }
 

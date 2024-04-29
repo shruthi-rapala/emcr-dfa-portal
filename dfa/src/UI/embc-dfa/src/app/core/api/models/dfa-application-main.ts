@@ -9,9 +9,11 @@ export interface DfaApplicationMain {
   cleanUpLog?: null | CleanUpLog;
   damagedPropertyAddress?: null | DamagedPropertyAddress;
   deleteFlag?: boolean;
+  eventName?: string;
   id?: string;
   notifyUser?: boolean;
   onlyOccupantInHome?: boolean;
+  onlyOtherContact?: boolean;
   propertyDamage?: null | PropertyDamage;
   signAndSubmit?: null | SignAndSubmit;
   supportingDocuments?: null | SupportingDocuments;

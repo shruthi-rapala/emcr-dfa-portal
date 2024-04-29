@@ -59,6 +59,7 @@ export class DFAApplicationMainComponent
   vieworedit: string;
   editstep: string;
   ninetyDayDeadline: string;
+  event: string;
   daysToApply: number;
   isResidentialTenant: boolean = false;
   isGeneral: boolean = false;
@@ -172,6 +173,7 @@ export class DFAApplicationMainComponent
 
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
       if (application) {
+        this.event = application.eventName;
         if (application.id == applicationId) this.getFileUploadsForApplication(applicationId);
         this.dfaApplicationMainHeading = ApplicantOption[application.appTypeInsurance.applicantOption] + ' Application';
         this.appTypeInsuranceForm.controls.applicantOption.setValue(application.appTypeInsurance.applicantOption);

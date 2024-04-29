@@ -151,6 +151,7 @@ namespace EMBC.DFA.API.Controllers
             var dfa_appapplication = await handler.GetApplicationStartAsync(applicationId);
             DFAApplicationStart dfaApplicationStart = new DFAApplicationStart();
             dfaApplicationStart.Id = applicationId;
+            dfaApplicationStart.eventName = dfa_appapplication.dfa_eventname;
             dfaApplicationStart.ProfileVerification = mapper.Map<ProfileVerification>(dfa_appapplication);
             dfaApplicationStart.Consent = mapper.Map<Consent>(dfa_appapplication);
             dfaApplicationStart.AppTypeInsurance = mapper.Map<AppTypeInsurance>(dfa_appapplication);
@@ -182,6 +183,7 @@ namespace EMBC.DFA.API.Controllers
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
+            dfaApplicationMain.eventName = dfa_appapplication.dfa_eventname;
             dfaApplicationMain.damagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
             dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
             dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
@@ -230,6 +232,7 @@ namespace EMBC.DFA.API.Controllers
         public AppTypeInsurance AppTypeInsurance { get; set; }
 
         public OtherPreScreeningQuestions OtherPreScreeningQuestions { get; set; }
+        public string eventName { get; set; }
         public bool notifyUser { get; set; }
     }
 
@@ -250,6 +253,7 @@ namespace EMBC.DFA.API.Controllers
         public bool notifyUser { get; set; }
         public bool onlyOccupantInHome { get; set; }
         public bool onlyOtherContact { get; set; }
+        public string eventName { get; set; }
     }
 
     public class CurrentApplication
