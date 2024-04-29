@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -19,11 +20,15 @@ namespace emcr_dfa_poc18.Services
         public string BaseUri { get; set; } = "";
 
         private HttpClient _client;
+        private readonly ILogger<PdfRequestService> _logger;
 
         public PdfRequestService(HttpClient httpClient, 
             IOptions<AppWebDefaults> webDefaults,
-            IConfiguration configuration)
+            IConfiguration configuration, 
+            ILogger<PdfRequestService> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             // configure the HttpClient that is used for our direct REST calls.
             _client = httpClient;
             _client.Timeout = TimeSpan.FromMinutes(5);
@@ -72,12 +77,15 @@ namespace emcr_dfa_poc18.Services
         {
             byte[] result = null;
 
+            var saniPath = BaseUri + "/api/pdf/GetPdf/";
+            _logger.LogInformation($"Test harness calling PDF Service with: {saniPath}");
+
+
             HttpRequestMessage endpointRequest =
-                new HttpRequestMessage(HttpMethod.Post, BaseUri + "/api/pdf/GetPdf/" + template);
+                new HttpRequestMessage(HttpMethod.Post, saniPath + template);
 
             //HttpRequestMessage endpointRequest =
             //    new HttpRequestMessage(HttpMethod.Get, BaseUri + "/api/pdf/GetTestPDF");
-
 
 
             string jsonString = JsonConvert.SerializeObject(parameters);
@@ -97,7 +105,7 @@ namespace emcr_dfa_poc18.Services
                 }
                 else
                 {
-                    throw new Exception("PDF service did not return OK result.");
+                    throw new Exception($"PDF service did not return OK result. Result={_statusCode.ToString()}");
                 }
             }
             catch (Exception ex)

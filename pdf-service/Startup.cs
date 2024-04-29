@@ -21,6 +21,7 @@ using HealthChecks.UI.Client;
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
 using pdfservice.Utils;
+using pdfservice.Controllers;
 
 namespace pdfservice
 {
@@ -140,8 +141,13 @@ namespace pdfservice
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            var _logger = loggerFactory.CreateLogger(typeof(Startup));
+            _logger.LogInformation($"PDF-Service startup");
+
             if (env.IsDevelopment())
             {
+                _logger.LogInformation($"PDF-Service startup: environment is Development; enabling Swagger page");
+
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger(c =>
                 {
@@ -155,6 +161,7 @@ namespace pdfservice
 
             if (!string.IsNullOrEmpty(Configuration["JWT_TOKEN_KEY"]))
             {
+                _logger.LogInformation($"PDF-Service startup: JWT_TOKEN_KEY is not null; enabling Authentication");
                 app.UseAuthentication();
             }
 
