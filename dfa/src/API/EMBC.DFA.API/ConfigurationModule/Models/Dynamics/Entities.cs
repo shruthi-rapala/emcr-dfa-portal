@@ -148,6 +148,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_dateofdamage { get; set; } // optoinal date only
         public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean
         public string? _dfa_eventid_value { get; set; } // optional string
+        public string? dfa_eventname { get; set; } // optional string
     }
 
     public class dfa_appapplicationmain_params
@@ -268,6 +269,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_primaryapplicantsignature { get; set; } // optional string
         public string? dfa_secondaryapplicantsignature { get; set; } // optional string
         public string? _dfa_eventid_value { get; set; } // optional string
+        public string? dfa_eventname { get; set; } // optional string
         public string? dfa_90daydeadline { get; set; } // optional string
         public string? dfa_accountlegalname { get; set; } // optional string
         public int? dfa_businessmanagedbyallownersondaytodaybasis { get; set; } // optional Option Set
