@@ -65,7 +65,7 @@
                 Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
-            <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage')">
+            <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage') && vieworedit !== 'viewOnly'">
               <br/>At least one cause of damage is required.
             </mat-error>
           </div>

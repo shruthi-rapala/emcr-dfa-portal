@@ -102,9 +102,11 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.isReadOnly = (vieworedit === 'view'
       || vieworedit === 'edit'
-      || vieworedit === 'viewOnly');
+        || vieworedit === 'viewOnly');
       this.setViewOrEditControls();
     })
+
+    this.vieworedit = dfaApplicationMainDataService.getViewOrEdit();
   }
 
   setViewOrEditControls() {
