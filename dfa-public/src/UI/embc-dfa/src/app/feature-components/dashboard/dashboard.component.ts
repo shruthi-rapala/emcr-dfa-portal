@@ -74,17 +74,17 @@ export class DashboardComponent implements OnInit {
 
     
 
-    //this.appService.applicationGetDfaApplications().subscribe({
-    //  next: (lstData) => {
-    //    if (lstData != null) {
-    //      this.countAppData(lstData);
-    //      this.tabs[0].count =this.currentApplicationsCount.toString();
-    //      this.tabs[2].count = this.pastApplicationsCount.toString();
-    //    }
-    //  },
-    //  error: (error) => {
-    //  }
-    //});
+    this.appService.applicationGetDfaApplications().subscribe({
+      next: (lstData) => {
+        if (lstData != null) {
+          this.countAppData(lstData);
+          this.tabs[0].count =this.currentApplicationsCount.toString();
+          this.tabs[2].count = this.pastApplicationsCount.toString();
+        }
+      },
+      error: (error) => {
+      }
+    });
 
     this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
       this.eventsCount = eventsCount.toString();
@@ -134,7 +134,8 @@ export class DashboardComponent implements OnInit {
         (x.status.toLowerCase() === "dfa decision made"
         || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
         &&
-        (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getTime()))) {
+        (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getTime()))
+      ) {
           this.pastApplicationsCount++;
       } else this.currentApplicationsCount++;
     })
