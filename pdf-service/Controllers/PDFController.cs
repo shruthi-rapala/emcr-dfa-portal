@@ -89,9 +89,12 @@ namespace pdfservice.Controllers
         [ProducesResponseType(200, Type = typeof(FileContentResult))]
         public IActionResult GetPDF([FromBody] Dictionary<string, object> rawdata, string template)
         {
+            _logger.LogInformation($"PDF-Service GetPDF: received request");
+
             // first do a mustache merge.
             string filename = $"Templates/{template}.mustache";
 
+            _logger.LogInformation($"PDF-Service GetPDF: template filename is: {filename}");
 
             // remove serialized "signature" entry
             Dictionary<string, object> parameters = new Dictionary<string, object>();
@@ -119,6 +122,7 @@ namespace pdfservice.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                _logger.LogError($"PDF-Service GetPDF: Exception: {ex.Message}");
             }
 
             // add signatures back into Mustache data context
@@ -130,6 +134,8 @@ namespace pdfservice.Controllers
 
                 try
                 {
+                    _logger.LogInformation($"PDF-Service GetPDF: about to read {filename} and merge Mustache content");
+
                     string format = System.IO.File.ReadAllText(filename);
 
                     // 2024-04-15 Register Handlebar helper (extra features)
