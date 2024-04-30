@@ -261,6 +261,8 @@ namespace EMBC.DFA.API.Controllers
         public string ApplicationId { get; set; }
         public string EventId { get; set; }
         public string ApplicationType { get; set; }
+        public string ApplicationSubType { get; set; }
+        public string LegalName { get; set; }
         public string DamagedAddress { get; set; }
         public string CaseNumber { get; set; }
         public string DateOfDamage { get; set; }
