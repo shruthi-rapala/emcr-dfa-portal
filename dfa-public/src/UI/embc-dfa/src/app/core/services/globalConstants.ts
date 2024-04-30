@@ -49,11 +49,15 @@ export const yesFullyInsuredBody: DialogContent = {
 }
 
 export const confirmSubmitApplicationBody: DialogContent = {
-  text: 'Are you sure you want to submit your application?<br/><br/>' +
-  'You can\'t change your application or delete uploaded files once your application has been submitted.<br/><br/>' +
-  'After submitting, you may continue to add or Update Other Contacts, add to the Clean Up Log, add items to the Damaged Items by Room list, and add additional documents. You can\'t delete any documents that you upload.',
+  text: 'Are you sure you want to submit your application?<br/><br/>',
   confirmButton: 'Yes, I want to submit my application.',
   cancelButton: 'No, I don\'t want to submit my application yet'
+}
+
+export const confirmUpdateApplicationBody: DialogContent = {
+  text: 'Are you sure you want to update your application?<br/><br/>',
+  confirmButton: 'Yes, I want to update my application.',
+  cancelButton: 'No, I don\'t want to update my application.'
 }
 
 export const confirmPrescreeningBody: DialogContent = {

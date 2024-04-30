@@ -341,12 +341,17 @@ export class DFAApplicationMainComponent
   }
 
   submitFile(): void {
+    var contentDialog = globalConst.confirmSubmitApplicationBody;
+    if (this.dfaApplicationMainDataService.getApplicationId()) {
+      contentDialog = globalConst.confirmUpdateApplicationBody;
+    }
+
     this.dialog
       .open(DFAConfirmSubmitDialogComponent, {
         data: {
-          content: globalConst.confirmSubmitApplicationBody
+          content: contentDialog
         },
-        height: '350px',
+        height: '250px',
         width: '700px',
         disableClose: true
       })
