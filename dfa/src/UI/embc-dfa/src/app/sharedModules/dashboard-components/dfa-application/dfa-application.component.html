@@ -67,17 +67,21 @@
       <div class="row" style="padding-top: 20px;">
         <div class="col-md-3">
           <span><b>Application Type</b></span><br />
-          <span>{{applItem.applicationType}}</span>
+          <span>{{applItem.applicationType}}{{applItem.applicationSubType}}</span>
+        </div>
+        <div class="col-md-2" *ngIf="applItem.legalName">
+          <span><b>Legal Name</b></span><br />
+          <span>{{applItem.legalName}}</span>
         </div>
         <div class="col-md-3">
           <span><b>Damaged Property Address</b></span><br />
           <span>{{applItem.damagedAddress}}</span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <span><b>Case Number</b></span><br />
           <span>{{applItem.caseNumber == null ? "To Be Assigned" : applItem.caseNumber }}</span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <span><b>Date of Damage</b></span><br />
           <span>{{applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
         </div>
