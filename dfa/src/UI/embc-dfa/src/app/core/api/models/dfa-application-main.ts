@@ -9,7 +9,7 @@ export interface DfaApplicationMain {
   cleanUpLog?: null | CleanUpLog;
   damagedPropertyAddress?: null | DamagedPropertyAddress;
   deleteFlag?: boolean;
-  eventName?: string;
+  eventName?: null | string;
   id?: string;
   notifyUser?: boolean;
   onlyOccupantInHome?: boolean;

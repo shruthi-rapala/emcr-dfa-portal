@@ -232,7 +232,7 @@ namespace EMBC.DFA.API.Controllers
         public AppTypeInsurance AppTypeInsurance { get; set; }
 
         public OtherPreScreeningQuestions OtherPreScreeningQuestions { get; set; }
-        public string eventName { get; set; }
+        public string? eventName { get; set; }
         public bool notifyUser { get; set; }
     }
 
@@ -253,7 +253,7 @@ namespace EMBC.DFA.API.Controllers
         public bool notifyUser { get; set; }
         public bool onlyOccupantInHome { get; set; }
         public bool onlyOtherContact { get; set; }
-        public string eventName { get; set; }
+        public string? eventName { get; set; }
     }
 
     public class CurrentApplication
