@@ -49,13 +49,15 @@ export const yesFullyInsuredBody: DialogContent = {
 }
 
 export const confirmSubmitApplicationBody: DialogContent = {
-  text: 'Are you sure you want to submit your application?<br/><br/>',
+  text: 'Are you sure you want to submit your application?<br/><br/>' +
+    'You can\'t change the cause or dates of damage once your application has been submitted.<br/><br/>' +
+    'After submitting, you may continue to add or update the Primary and Additional Contacts and your answer to the question about receiving guidance and support.<br/><br/>',
   confirmButton: 'Yes, I want to submit my application.',
   cancelButton: 'No, I don\'t want to submit my application yet'
 }
 
 export const confirmUpdateApplicationBody: DialogContent = {
-  text: 'Are you sure you want to update your application?<br/><br/>',
+  text: 'Are you sure you want to update your application?<br/><br/><br/>',
   confirmButton: 'Yes, I want to update my application.',
   cancelButton: 'No, I don\'t want to update my application.'
 }
