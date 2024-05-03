@@ -4,6 +4,11 @@
     vertical-align: middle;
 }
 
+.infoHeader {
+    font-weight: bold;
+    font-size: 16px;
+}
+
 :host ::ng-deep .mat-horizontal-stepper-header-container {
   display: none;
 }
