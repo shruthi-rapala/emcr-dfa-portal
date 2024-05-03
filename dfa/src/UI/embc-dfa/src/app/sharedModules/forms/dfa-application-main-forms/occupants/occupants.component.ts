@@ -135,7 +135,9 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
                 this.hideOccupantButton = this.onlyOccupantInHome;
                 this.hideOtherContactButton = this.onlyOtherContact;
 
-                this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(this.onlyOccupantInHome);
+                if (this.isHomeowner || this.isResidentialTenant)
+                  this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(this.onlyOccupantInHome);
+
                 this.otherContactsForm.get('onlyOtherContact').setValue(this.onlyOtherContact);
 
                 if (this.isHomeowner || this.isResidentialTenant) {
