@@ -342,8 +342,10 @@ export class DFAApplicationMainComponent
 
   submitFile(): void {
     var contentDialog = globalConst.confirmSubmitApplicationBody;
+    var height = '350px';
     if (this.dfaApplicationMainDataService.getApplicationId()) {
       contentDialog = globalConst.confirmUpdateApplicationBody;
+      height = '250px';
     }
 
     this.dialog
@@ -351,7 +353,7 @@ export class DFAApplicationMainComponent
         data: {
           content: contentDialog
         },
-        height: '250px',
+        height: height,
         width: '700px',
         disableClose: true
       })
