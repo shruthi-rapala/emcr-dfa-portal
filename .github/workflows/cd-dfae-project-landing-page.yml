@@ -18,7 +18,7 @@ on:
 env:
   IMAGE_NAME: dfa-landing-page
   WORKING_DIRECTORY: ./landing-page/src
-  INDEX_FILE: index.html
+  INDEX_FILE: project_index.html
   ENV_FILE: dev_values.yaml
 
 jobs:
@@ -56,7 +56,8 @@ jobs:
         working-directory: ${{env.WORKING_DIRECTORY}}
         run: |
           cd html
-          mv ${{steps.LandingDir.outputs.Landing_INDEX_FILE}} ${{env.INDEX_FILE}}
+          ls -ltr
+          cp ${{steps.LandingDir.outputs.Landing_INDEX_FILE}} ${{env.INDEX_FILE}}
           ls -ltr
           cat index.html |grep  "link-light-blue register-dfa-link"
 

@@ -1,4 +1,4 @@
-
+﻿
 
 <!DOCTYPE html>
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -656,7 +656,7 @@
             return response.json();
         }).then(data => {
 
-            if (data > 0) {
+            if (data == true) {
                 document.getElementById('secAreEvacuated').style.display = 'block';
             }
             else {
@@ -705,7 +705,7 @@
 
                             <div id="divHomeOwnerButton" class="are-evacuated-registration center">
                                 <!--<a class="btn btn--dark-blue btn--strong" href="">Check Eligible Events</a>-->
-                                <a class="btn btn--regular1 btn--dark-blue" target="_blank" href="https://dfa-portal-dev.apps.silver.devops.gov.bc.ca/verified-registration">
+                                <a class="btn btn--regular1 btn--dark-blue" target="_blank" href="https://dfa-portal-training.apps.silver.devops.gov.bc.ca/verified-registration">
                                     Apply For DFA
                                 </a>
                                 <p>Apply for Disaster Financial Assistance (DFA). You may submit an<br />application by selecting this button and signing in with BC Service Card. </p>
