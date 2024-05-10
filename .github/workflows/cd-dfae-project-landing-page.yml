@@ -4,7 +4,7 @@ name: cd-dfae-project-landing-page
 on:
   workflow_dispatch:
     inputs:
-       environment:
+      environment:
        required: true
        default: 'dev'
        description: Please select the environment for Landing Page
