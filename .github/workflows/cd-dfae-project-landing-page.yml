@@ -51,9 +51,9 @@ jobs:
         working-directory: ${{env.WORKING_DIRECTORY}}
         run: |
           cd html
-          mv ${{env.INDEX_FILE}} ${{steps.LandingDir.outputs.Landing_INDEX_FILE}}
+          mv ${{steps.LandingDir.outputs.Landing_INDEX_FILE}} ${{env.INDEX_FILE}}
           ls -ltr
-           cat index.html |grep  "link-light-blue register-dfa-link"
+          cat index.html |grep  "link-light-blue register-dfa-link"
 
 
 #      - name: Build Image
