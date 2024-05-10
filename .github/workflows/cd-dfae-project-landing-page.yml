@@ -5,10 +5,10 @@ on:
   workflow_dispatch:
     inputs:
       environment:
+       description: Please select the environment for Landing Page
        required: true
        default: 'dev'
-       description: Please select the environment for Landing Page
-       type: Choice
+       type: choice
        options:
        - dev
        - test
