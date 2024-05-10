@@ -28,13 +28,13 @@ jobs:
       - name: Set working directory
         id: LandingDir
         run: |
-          if [[ "${{ github.event.inputs.environment }}" -eq "dev" ]];then
+          if [[ "${{ github.event.inputs.environment }}" == "dev" ]];then
               echo "::set-output name=Landing_INDEX_FILE::project-dev.html"
-          elif [[ "${{ github.event.inputs.environment }}" -eq "test" ]];then
+          elif [[ "${{ github.event.inputs.environment }}" == "test" ]];then
               echo "::set-output name=Landing_INDEX_FILE::project-test.html"
-          elif [[ "${{ github.event.inputs.environment }}" -eq "training" ]];then
+          elif [[ "${{ github.event.inputs.environment }}" == "training" ]];then
               echo "::set-output name=Landing_INDEX_FILE::project-training.html"
-          elif [[ "${{ github.event.inputs.environment }}" -eq "prod" ]];then
+          elif [[ "${{ github.event.inputs.environment }}" == "prod" ]];then
               echo "::set-output name=Landing_INDEX_FILE::prod-index.html"
           fi
 
