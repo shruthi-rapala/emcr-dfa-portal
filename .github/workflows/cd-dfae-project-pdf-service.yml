@@ -5,7 +5,7 @@ name: cd-dfae-project-pdf-service
 on:
   push:
     branches:
-      - 'feature/emcri-96_1'
+      - 'develop'
     paths:
       - "pdf-service/**"
       - ".github/workflows/cd-dfae-project-pdf-service.yml"
