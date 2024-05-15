@@ -19,7 +19,9 @@
 
 FROM registry.access.redhat.com/ubi8/dotnet-80-runtime:8.0-5.20240327145241 AS base
 WORKDIR /opt/app-root/app
+#ENV ASPNETCORE_URLS=http://*:8080
 ENV ASPNETCORE_URLS=http://*:8080
+
 ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
 ENV DOTNET_gcServer=1
 ARG VERSION
@@ -37,22 +39,14 @@ RUN /bin/sh -c "cd /opt     \
     && yum --disableplugin=subscription-manager clean all -y     \
     && popd"
 USER 1001
-
-
 EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build 
-
-
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["pdf-service.csproj", "./"]
 RUN dotnet restore "pdf-service.csproj"
 COPY . .
-RUN pwd
-RUN ls -ltr
 WORKDIR "/src/"
-RUN pwd
-RUN ls -ltr
 RUN dotnet build "pdf-service.csproj" -c Release -o /app/build
 
 FROM build AS publish
@@ -60,5 +54,6 @@ RUN dotnet publish "pdf-service.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /opt/app-root/app
+EXPOSE 8080
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "pdf-service.dll"]
