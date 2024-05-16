@@ -152,6 +152,111 @@
 
         <div class="row">
           <p class="sub-heading" style="font-size: 15px">
+            Applicant type<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Please select the type of applicant that best describes your organization.</mat-label>
+              <mat-select [disabled]="isReadOnly === true" formControlName="applicantSubtype" matInput placeholder="Select applicant subtype" required>
+                <div *ngFor="let option of ApplicantSubCategories ">
+                  <mat-option (click)="onSelectApplicantSubType(option)"
+                    [value]="option.subType">
+                    {{ option.subType }}
+                  </mat-option>
+                </div>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  propertyDamageForm.get('applicantSubtype').invalid &&
+                  propertyDamageForm.get('applicantSubtype').hasError('required') &&
+                  propertyDamageForm.get('applicantSubtype').touched
+                "
+              >
+                Applicant type is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <div class="row" *ngIf="showSubTypeOtherDetails == true">
+          <!--<p class="sub-heading" style="font-size: 15px">
+            Please describe your organization
+          </p>-->
+          <div class="col-md-8">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="subtypeOtherDetails"
+                placeholder="Please describe your organization"
+                [rows]="5"
+                style="resize:none"
+                maxlength="200"
+                (keyup)="calcRemainingChars()"></textarea>
+              <mat-hint>{{ remainingLength }} characters remaining.</mat-hint>
+            </mat-form-field><br/>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="showSubSubTypeCategories == true">
+          <p class="sub-heading" style="font-size: 15px">
+            Type of Other Local Government Body<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-8">
+            <mat-form-field appearance="outline">
+              <mat-select [disabled]="isReadOnly === true" formControlName="applicantSubSubtype" matInput placeholder="Please select the type of Other Local Government Body">
+                <div *ngFor="let option of ApplicantSubSubCategories | keyvalue: originalOrder">
+                  <mat-option style="height: unset !important;"
+                    [value]="option.key">
+                    {{ option.value }}
+                  </mat-option>
+                </div>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  propertyDamageForm.get('applicantSubSubtype').invalid &&
+                  propertyDamageForm.get('applicantSubSubtype').hasError('required') &&
+                  propertyDamageForm.get('applicantSubSubtype').touched
+                "
+              >
+                Type of Other Local Government Body is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div><br/>
+
+        <div class="row">
+          <div class="col-md-4">
+            <p class="sub-heading" style="font-size: 15px">
+              Estimated %
+            </p>
+            <mat-form-field appearance="outline">
+              <input
+                formControlName="estimatedPercent"
+                matInput
+                readonly
+                placeholder="Estimated %"
+                maxlength="100"/>
+            </mat-form-field>
+          </div>
+        </div><br/>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="sub-heading" style="font-size: 15px">
+              DFA comments
+            </p>
+            <mat-form-field appearance="outline">
+              <textarea matInput
+                formControlName="subtypeDFAComment"
+                placeholder="DFA comments"
+                [rows]="5"
+                style="resize:none"
+                readonly
+                ></textarea>
+            </mat-form-field>
+        </div></div><br/>
+
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
             If there was opportunity to receive guidance and support in assessing your damaged infrastructure, would you like to receive this support?<span style="color:red" >*</span>
           </p>
           <mat-radio-group

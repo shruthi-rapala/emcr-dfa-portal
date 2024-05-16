@@ -175,6 +175,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_causeofdamagelandslide2, opts => opts.MapFrom(s => s.propertyDamage.landslideDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageother2, opts => opts.MapFrom(s => s.propertyDamage.otherDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.otherDamageText))
+                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.applicantSubtype))
+                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.applicantSubSubtype))
+                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.subtypeOtherDetails))
+                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.subtypeDFAComment))
+                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.estimatedPercent))
                 .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.propertyDamage.damageFromDate))
                 .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.propertyDamage.damageToDate));
 
@@ -221,6 +226,13 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.floodDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.Yes ? true : (s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
+
+                .ForMember(d => d.applicantSubtype, opts => opts.MapFrom(s => GetEnumDescription(ApplicantSubtypeCategories.OtherLocalGovernmentBody)))
+                .ForMember(d => d.applicantSubSubtype, opts => opts.MapFrom(s => ApplicantSubtypeSubCategories.BoardofVariance))
+                .ForMember(d => d.subtypeOtherDetails, opts => opts.MapFrom(s => "Test 123"))
+                .ForMember(d => d.estimatedPercent, opts => opts.MapFrom(s => "95"))
+                .ForMember(d => d.subtypeDFAComment, opts => opts.MapFrom(s => "Comment 4 OtherLocalGovernmentBody"))
+
                 .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamage) ? DateTime.Parse(s.dfa_dateofdamage).ToString("o") + "Z" : s.dfa_dateofdamage))
                 .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto));
 

@@ -7,7 +7,7 @@ import {
   Validators,
   FormGroup
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -23,7 +23,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption } from 'src/app/core/api/models';
+import { ApplicantOption, ApplicantSubtypeSubCategories } from 'src/app/core/api/models';
 import { MatTableModule } from '@angular/material/table';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
@@ -31,6 +31,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TextMaskModule } from 'angular2-text-mask';
 import { ApplicationService, OtherContactService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @Component({
@@ -45,7 +46,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   formCreationService: FormCreationService;
   otherContactsForm: UntypedFormGroup;
   otherContactsForm$: Subscription;
-  remainingLength: number = 2000;
+  remainingLength: number = 200;
   todayDate = new Date().toISOString();
   public ApplicantOptions = ApplicantOption;
   isResidentialTenant: boolean = false;
@@ -67,6 +68,10 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   otherContactText = 'New Other Contact';
   showOtherContactForm: boolean = false;
   vieworedit: string = "";
+  ApplicantSubCategories = [];
+  ApplicantSubSubCategories = ApplicantSubtypeSubCategories;
+  showSubTypeOtherDetails: boolean = false;
+  showSubSubTypeCategories: boolean = false;
   readonly phoneMask = [
     /\d/,
     /\d/,
@@ -117,14 +122,18 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       this.propertyDamageForm.controls.stormDamage.disable();
       this.propertyDamageForm.controls.otherDamage.disable();
       this.propertyDamageForm.controls.wildfireDamage.disable();
-      //this.propertyDamageForm.controls.guidanceSupport.disable();
+      this.propertyDamageForm.controls.subtypeOtherDetails.disable();
+      this.propertyDamageForm.controls.estimatedPercent.disable();
+      this.propertyDamageForm.controls.subtypeDFAComment.disable();
     } else {
       this.propertyDamageForm.controls.floodDamage.enable();
       this.propertyDamageForm.controls.landslideDamage.enable();
       this.propertyDamageForm.controls.stormDamage.enable();
       this.propertyDamageForm.controls.wildfireDamage.enable();
       this.propertyDamageForm.controls.otherDamage.enable();
-      //this.propertyDamageForm.controls.guidanceSupport.enable();
+      this.propertyDamageForm.controls.subtypeOtherDetails.enable();
+      this.propertyDamageForm.controls.estimatedPercent.enable();
+      this.propertyDamageForm.controls.subtypeDFAComment.enable();
     }
   }
 
@@ -143,7 +152,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
           otherDamageText: null,
           stormDamage: null,
           wildfireDamage: null,
-          guidanceSupport: null
+          guidanceSupport: null,
+          applicantSubtype: null
         }
         //this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
         //  if (application) {
@@ -245,6 +255,28 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
         }
       });
 
+    //this.propertyDamageForm
+    //  .get('applicantSubtype')
+    //  .valueChanges.pipe(distinctUntilChanged())
+    //  .subscribe((value) => {
+    //    if (value === 'Other Local Government Body') {
+    //      this.propertyDamageForm.get('applicantSubSubtype').setValidators([Validators.required]);
+    //      this.propertyDamageForm.get('subtypeOtherDetails').setValidators(null);
+    //      this.propertyDamageForm.get('subtypeOtherDetails').setValue(null);
+    //    }
+    //    else if (value === 'Other') {
+    //      this.propertyDamageForm.get('subtypeOtherDetails').setValidators([Validators.required]);
+    //      this.propertyDamageForm.get('applicantSubSubtype').setValidators(null);
+    //      this.propertyDamageForm.get('applicantSubSubtype').setValue(null);
+    //    }
+    //    else {
+    //      this.propertyDamageForm.get('applicantSubSubtype').setValidators(null);
+    //      this.propertyDamageForm.get('subtypeOtherDetails').setValidators(null);
+    //      this.propertyDamageForm.get('applicantSubSubtype').setValue(null);
+    //      this.propertyDamageForm.get('subtypeOtherDetails').setValue(null);
+    //    }
+    //  });
+
     this.propertyDamageForm
       .get('damageFromDate')
       .valueChanges.pipe(distinctUntilChanged())
@@ -262,14 +294,63 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
           this.propertyDamageForm.get('damageToDate').reset();
         }
       });
+
+    this.applicationService.applicationGetApplicantSubTypes().subscribe({
+      next: (applicantsubtypes) => {
+        this.ApplicantSubCategories = applicantsubtypes;
+
+      },
+      error: (error) => {
+        //console.error(error);
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      }
+    });
+
     this.getPropertyDamageForApplication(this.dfaApplicationMainDataService.getApplicationId());
     this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+    
 
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
       this.propertyDamageForm.disable();
     }
 
     //this.otherContactsForm.get('onlyOtherContact').setValue(this.onlyOtherContact);
+  }
+
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
+  }
+
+  calcRemainingChars() {
+    this.remainingLength = 200 - this.propertyDamageForm.get('subtypeOtherDetails').value?.length;
+  }
+
+  onSelectApplicantSubType(objSelected) {
+    this.propertyDamageForm.get('estimatedPercent').setValue('' + objSelected.estimatePercent);
+    this.propertyDamageForm.get('subtypeDFAComment').setValue(objSelected.dfaComment);
+
+    if (objSelected.subType == 'Other') {
+      this.showSubSubTypeCategories = false;
+      this.showSubTypeOtherDetails = true;
+      this.propertyDamageForm.get('subtypeOtherDetails').setValidators([Validators.required]);
+      this.propertyDamageForm.get('applicantSubSubtype').setValidators(null);
+      this.propertyDamageForm.get('applicantSubSubtype').setValue(null);
+    }
+    else if (objSelected.subType == 'Other Local Government Body') {
+      this.showSubTypeOtherDetails = false;
+      this.showSubSubTypeCategories = true;
+      this.propertyDamageForm.get('applicantSubSubtype').setValidators([Validators.required]);
+      this.propertyDamageForm.get('subtypeOtherDetails').setValidators(null);
+      this.propertyDamageForm.get('subtypeOtherDetails').setValue(null);
+    }
+    else {
+      this.showSubSubTypeCategories = false;
+      this.showSubTypeOtherDetails = false;
+      this.propertyDamageForm.get('applicantSubSubtype').setValidators(null);
+      this.propertyDamageForm.get('subtypeOtherDetails').setValidators(null);
+      this.propertyDamageForm.get('applicantSubSubtype').setValue(null);
+      this.propertyDamageForm.get('subtypeOtherDetails').setValue(null);
+    }
   }
 
   getPropertyDamageForApplication(applicationId: string) {
@@ -280,7 +361,14 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
           //if (dfaApplicationMain.notifyUser == true) {
           //  //this.notifyAddressChange();
           //}
+          //debugger
           this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);
+          
+          var objSelected = this.ApplicantSubCategories.filter(m => m.subType == dfaApplicationMain.propertyDamage.applicantSubtype);
+          if (objSelected && objSelected.length > 0) {
+            this.onSelectApplicantSubType(objSelected[0]);
+          }
+          
         },
         error: (error) => {
           //console.error(error);
@@ -403,16 +491,25 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   }
 
   deleteOtherContactRow(index: number): void {
+    this.otherContactsDeletedData = [];
     this.otherContactsData[index].deleteFlag = true;
     var elementtoberemoved = this.otherContactsData[index];
     
-    //if (elementtoberemoved.id) {
-    //  this.otherContactsDeletedData.push(elementtoberemoved);
-    //}
+    if (elementtoberemoved.id) {
+      this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+      var actualElements = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
+      this.otherContactsData = actualElements;
+    }
+    else {
+      this.otherContactsData.splice(index, 1);
+      this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+      var actualElements = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
+      this.otherContactsData = actualElements;
+      //this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+    }
 
-    this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
-    var actualElements = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
-    this.otherContactsData = actualElements;
+    //this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+    
 
     //this.otherContactsData.splice(index, 1);
     this.otherContactsDataSource.next(this.otherContactsData);
@@ -428,6 +525,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   }
 
   confirmDeleteOtherContactRow(index: number): void {
+    
     var actualElementsCheck = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
     var appId = this.dfaApplicationMainDataService.getApplicationId()
 
@@ -479,7 +577,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     DirectivesModule,
     MatTableModule,
     CustomPipeModule,
-    TextMaskModule
+    TextMaskModule,
+    MatSelectModule
   ],
   declarations: [PropertyDamageComponent]
 })

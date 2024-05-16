@@ -26,6 +26,13 @@ mat-form-field {
     margin-top: 15px;
 }
 
+::ng-deep .mat-select-panel .mat-option {
+  height: unset !important;
+}
+
+::ng-deep span.mat-option-text {
+  white-space: normal !important;
+}
 
 .mat-header-cell {
   font-weight: 700;

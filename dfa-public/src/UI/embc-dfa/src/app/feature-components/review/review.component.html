@@ -6,7 +6,7 @@
     <ng-container *ngTemplateOutlet="dfaApplicationMain"></ng-container>
   </div>
 
-  <ng-template #profile>
+  <!--<ng-template #profile>
     <div id="personalDetail">
       <p *ngIf="showHeading" class="review-heading review-profile-head">Review & Submit</p>
        <p>
@@ -137,7 +137,7 @@
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
           <div class="col-md-6 card-heading">Primary Address</div>
-          <div class="col-md-2">
+          <div class="col-md-2">-->
             <!--<button
               class="edit-image"
               mat-icon-button
@@ -151,7 +151,7 @@
                 width="35"
               />
             </button>-->
-          </div>
+          <!--</div>
         </div>
         <hr />
         <div class="row info-detail">
@@ -332,7 +332,7 @@
             </button>
           </div>
         </div>
-        <hr />
+        <hr />-->
         <!--<div class="row info-detail">-->
 
           <!--<div class="col-md-9">
@@ -343,7 +343,7 @@
             </p>
           </div>-->
         <!--</div>-->
-        <div class="row info-detail">
+        <!--<div class="row info-detail">
           <div class="col-md-3">Cellular Telephone Number:</div>
           <div class="col-md-3">
             {{
@@ -400,388 +400,14 @@
       </mat-card-content>
     </div>
 
-  </ng-template>
+  </ng-template>-->
+
   <ng-template #dfaApplicationMain>
     <div id="dfaApplicationMain">
       <p *ngIf="showHeading" class="sub-heading" style="font-size: 20px">Review</p>
        <p>
         Please check that your application information is correct before submitting. Missing required fields marked in red.
       </p>
-
-      <!--- Application Type & Insurance -->
-      <mat-card-content class="contentStyle mat-elevation-z8">
-        <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Application & Insurance</div>
-        </div>
-        <hr />
-        <div class="row info-detail">
-          <div class="col-md-3">Application Type:</div>
-          <div class="col-md-3">
-            <p class="no-bottom-margin">
-              <span
-                >{{
-                  (formCreationService.appTypeInsuranceForm$ | async)?.value
-                    ?.applicantOption
-                }}</span
-              >
-              <span *ngIf="isSmallBusinessOwner"
-              > -- {{
-                (formCreationService.appTypeInsuranceForm$ | async)?.value
-                ?.smallBusinessOption
-              }}</span>
-              <span *ngIf="isFarmOwner"
-              > -- {{
-                (formCreationService.appTypeInsuranceForm$ | async)?.value
-                ?.farmOption
-              }}</span>
-            </p>
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3">Do You Have Insurance?:</div>
-          <div class="col-md-3">
-            <p class="no-bottom-margin">
-              <span
-                >{{
-                  insuranceOptionName
-                }}</span
-              ></p>
-          </div>
-        </div>
-      </mat-card-content>
-
-      <!-- Damaged Property Address -->
-      <mat-card-content class="contentStyle mat-elevation-z8">
-        <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Damaged Property</div>
-          <div class="col-md-2" *ngIf="allowEdit">
-            <button
-              class="edit-image"
-              mat-icon-button
-              aria-label="Edit"
-              (click)="navigateToStep(0)"
-            >
-              <img src="/assets/images/edit.svg" height="35" width="35" />
-              <img
-                src="/assets/images/edit_onhover.svg"
-                height="35"
-                width="35"
-              />
-            </button>
-          </div>
-        </div>
-        <hr />
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">Damaged property address same as the primary address?:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .isPrimaryAndDamagedAddressSame == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .isPrimaryAndDamagedAddressSame == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1} || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.addressLine1.invalid">Address Line One:</span></div>
-          <div class="col-md-3">
-            <p class="no-bottom-margin">
-              <span  [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.addressLine1 || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.addressLine1.invalid}"
-                >{{
-                  (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.addressLine1 ?  (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.addressLine1 : "Enter required information"
-                }}</span
-              >
-            </p>
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info' :  (formCreationService.damagedPropertyAddressForm$ | async)?.controls.addressLine2.invalid}">Address Line Two:</span></div>
-          <div class="col-md-3">
-            <p class="no-bottom-margin">
-              <span [ngClass]="{'missing-info' :  (formCreationService.damagedPropertyAddressForm$ | async)?.controls.addressLine2.invalid}"
-                >{{
-                  (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.addressLine2
-                }}</span
-              >
-            </p>
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.community || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.community.invalid}">City:</span></div>
-          <div class="col-md-3">
-            <p>
-              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.community || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.community.invalid}">{{
-                  (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.community ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                    ?.community : "Enter required information"
-                }}
-              </span>
-            </p>
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.stateProvince || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.stateProvince.invalid}">Province:</span></div>
-          <div class="col-md-3">
-            <p>
-              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.stateProvince || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.stateProvince.invalid}">{{
-                (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                  ?.stateProvince
-              }}</span>
-            </p>
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.postalCode || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.postalCode.invalid}">Postal Code:</span></div>
-          <div class="col-md-3">
-            <p>
-              <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.postalCode || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.postalCode.invalid}">{{
-                (formCreationService.damagedPropertyAddressForm$ | async).value
-                  ?.postalCode ? formatPostalCode((formCreationService.damagedPropertyAddressForm$ | async).value
-                  ?.postalCode) : "Enter required information"
-              }}</span>
-            </p>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isSmallBusinessOwner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessManagedByAllOwnersOnDayToDayBasis}">Business managed by all owners day to day:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessManagedByAllOwnersOnDayToDayBasis}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .businessManagedByAllOwnersOnDayToDayBasis == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .businessManagedByAllOwnersOnDayToDayBasis == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isSmallBusinessOwner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.grossRevenues100002000000BeforeDisaster}">Gross revenues more than $10,000 but less than $2 million:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.grossRevenues100002000000BeforeDisaster}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .grossRevenues100002000000BeforeDisaster == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .grossRevenues100002000000BeforeDisaster == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isSmallBusinessOwner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.employLessThan50EmployeesAtAnyOneTime}">Employ less than 50 employees:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.employLessThan50EmployeesAtAnyOneTime}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .employLessThan50EmployeesAtAnyOneTime == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .employLessThan50EmployeesAtAnyOneTime == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isFarmOwner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperation}">Developing or established agricultural operation:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperation}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .farmoperation == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .farmoperation == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isFarmOwner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.ownedandoperatedbya}">Owned and operated by a farmer:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.ownedandoperatedbya}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .ownedandoperatedbya == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .ownedandoperatedbya == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isFarmOwner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperationderivesthatpersonsmajorincom}">Farm operation is the means by which the owner(s) derives majority of income:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperationderivesthatpersonsmajorincom}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .farmoperationderivesthatpersonsmajorincom == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .farmoperationderivesthatpersonsmajorincom == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isCharitableOrganization">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityProvidesCommunityBenefit}">Charity provides community benefit/service:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityProvidesCommunityBenefit}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityProvidesCommunityBenefit == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityProvidesCommunityBenefit == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isCharitableOrganization">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityExistsAtLeast12Months}">Charity has existed for at least 12 months:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityExistsAtLeast12Months}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityExistsAtLeast12Months == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityExistsAtLeast12Months == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isCharitableOrganization">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityRegistered}">Charity registered under BC Societies Act:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityRegistered}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityRegistered == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityRegistered == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isSmallBusinessOwner || isFarmOwner || isCharitableOrganization">
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isSmallBusinessOwner">Business legal name:</span>
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isFarmOwner">Farm legal name:</span>
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}" *ngIf="isCharitableOrganization">Charitable organization legal name:</span>
-          </div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessLegalName || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.businessLegalName.invalid}">
-              {{
-                (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                  .businessLegalName ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                  .businessLegalName : "Enter required information"
-              }}
-            </span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isHomeowner || isResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">Occupied as Primary Residence during event:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .occupyAsPrimaryResidence == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .occupyAsPrimaryResidence == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'false'))}">Losses Total More Than $1000?:</span></div>
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'false'))}">
-            {{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .lossesExceed1000 === 'true'
-                ? 'Yes'
-                :  ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .lossesExceed1000 == 'false' ? 'No' : 'Make a selection')
-            }}
-          </span></div>
-        </div>
-        <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.onAFirstNationsReserve}">On a First Nations Reserve:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.onAFirstNationsReserve}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .onAFirstNationsReserve == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .onAFirstNationsReserve == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.damagedPropertyAddressForm$ | async)?.value.onAFirstNationsReserve === 'true'">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.firstNationsReserve || (formCreationService.damagedPropertyAddressForm$ | async)?.controls?.firstNationsReserve.invalid}">First Nations Reserve:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.firstNationsReserve || (formCreationService.damagedPropertyAddressForm$ | async)?.controls?.firstNationsReserve.invalid}">
-              {{
-                (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                  .firstNationsReserve ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                  .firstNationsReserve : "Enter required information"
-              }}
-            </span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isHomeowner || isResidentialTenant">
-          <div class="col-md-3">Manufactured Home:</div>
-          <div class="col-md-3">
-            {{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .manufacturedHome == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .manufacturedHome == 'false' ? 'No' : '')
-            }}
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isHomeowner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">Eligible for a BC Home Owner Grant for this Property:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .eligibleForHomeOwnerGrant == 'true'
-                ? 'Yes'
-                : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .eligibleForHomeOwnerGrant == 'false' ? 'No' : 'Make a selection')
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordGivenNames.invalid}">Landlord First Name:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordGivenNames || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordGivenNames.invalid}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .landlordGivenNames ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .landlordGivenNames : "Enter required information"
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordSurname.invalid}">Landlord Last Name:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordSurname || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordSurname.invalid}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .landlordSurname ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .landlordSurname : "Enter required information"
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordPhone.invalid}">Landlord Phone:</span></div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.landlordPhone || (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordPhone.invalid}">{{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .landlordPhone ? (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .landlordPhone : "Enter required information"
-            }}</span>
-          </div>
-        </div>
-        <div class="row info-detail" *ngIf="isResidentialTenant">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordEmail.invalid}">Landlord Email:</span></div>
-          <div class="col-md-3"><span [ngClass]="{'missing-info': (formCreationService.damagedPropertyAddressForm$ | async)?.controls.landlordEmail.invalid}">
-            {{
-              (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .landlordEmail
-            }}</span>
-          </div>
-        </div>
-      </mat-card-content>
 
       <!-- Cause of Damage -->
       <mat-card-content class="contentStyle mat-elevation-z8">
@@ -792,7 +418,7 @@
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(1)"
+              (click)="navigateToStep(0)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -838,6 +464,17 @@
           </div>
         </div>
         <div class="row info-detail">
+          <div class="col-md-3">Wildfire Damage?:</div>
+          <div class="col-md-3">
+            {{
+              (formCreationService.propertyDamageForm$ | async)?.value
+                .wildfireDamage === true
+                ? 'Yes'
+                : 'No'
+            }}
+          </div>
+        </div>
+        <div class="row info-detail">
           <div class="col-md-3">Other Damage?:</div>
           <div class="col-md-3">
             {{
@@ -877,53 +514,98 @@
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.briefDescription || (formCreationService.propertyDamageForm$ | async)?.controls.briefDescription.invalid}">Brief Description:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.briefDescription || (formCreationService.propertyDamageForm$ | async)?.controls.briefDescription.invalid}">{{
-              (formCreationService.propertyDamageForm$ | async)?.value
-                .briefDescription ? (formCreationService.propertyDamageForm$ | async)?.value
-                .briefDescription : 'Enter required information'
-            }}</span>
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.applicantSubtype || (formCreationService.propertyDamageForm$ | async)?.controls.applicantSubtype.invalid}">Applicant Type:</span>
+          </div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.applicantSubtype || (formCreationService.propertyDamageForm$ | async)?.controls.applicantSubtype.invalid}">
+              {{
+                (formCreationService.propertyDamageForm$ | async)?.value
+                  .applicantSubtype ? (formCreationService.propertyDamageForm$ | async)?.value
+                  .applicantSubtype : "Enter required information"
+              }}
+            </span>
           </div>
         </div>
-        <div class="row info-detail" *ngIf="isResidentialTenant || isHomeowner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'false'))}">Were You Evacuated?:</span></div>
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'false'))}">
-            {{
-              (formCreationService.propertyDamageForm$ | async)?.value
-                .wereYouEvacuated === 'true' ?
-                ((formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned ? ('Yes, returned ' + (((formCreationService.propertyDamageForm$ | async)?.value
-                .dateReturned) | date: "MM/dd/yyyy")) : 'Yes')
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .wereYouEvacuated == 'false' ? 'No' : 'Make a selection')
-            }}
-          </span></div>
+        <div class="row info-detail" *ngIf="(formCreationService.propertyDamageForm$ | async)?.value.applicantSubtype == 'Other'">
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.subtypeOtherDetails || (formCreationService.propertyDamageForm$ | async)?.controls.subtypeOtherDetails.invalid}">Describe organization:</span>
+          </div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.subtypeOtherDetails || (formCreationService.propertyDamageForm$ | async)?.controls.subtypeOtherDetails.invalid}">
+              {{
+                (formCreationService.propertyDamageForm$ | async)?.value
+                  .subtypeOtherDetails ? (formCreationService.propertyDamageForm$ | async)?.value
+                  .subtypeOtherDetails : "Enter required information"
+              }}
+            </span>
+          </div>
         </div>
-        <div class="row info-detail" *ngIf="isResidentialTenant || isHomeowner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'false'))}">Residing In Residence?:</span></div>
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'false'))}">
-            {{
-              (formCreationService.propertyDamageForm$ | async)?.value
-                .residingInResidence === 'true'
-                ? 'Yes'
-                : ((formCreationService.propertyDamageForm$ | async)?.value
-                .residingInResidence == 'false' ? 'No' : 'Make a selection')
-            }}
-          </span></div>
+        <div class="row info-detail" *ngIf="(formCreationService.propertyDamageForm$ | async)?.value.applicantSubtype == 'Other Local Government Body'">
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.applicantSubSubtype || (formCreationService.propertyDamageForm$ | async)?.controls.applicantSubSubtype.invalid}">Type of Other Local Government Body:</span>
+          </div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.applicantSubSubtype || (formCreationService.propertyDamageForm$ | async)?.controls.applicantSubSubtype.invalid}">
+              {{
+                (formCreationService.propertyDamageForm$ | async)?.value
+                  .applicantSubSubtype ? (formCreationService.propertyDamageForm$ | async)?.value
+                  .applicantSubSubtype : "Enter required information"
+              }}
+            </span>
+          </div>
         </div>
-      </mat-card-content>
-
-      <!-- Occupants -->
-      <mat-card-content class="contentStyle mat-elevation-z8">
+        <div class="row info-detail" >
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.estimatedPercent || (formCreationService.propertyDamageForm$ | async)?.controls.estimatedPercent.invalid}">Estimated %:</span>
+          </div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.estimatedPercent || (formCreationService.propertyDamageForm$ | async)?.controls.estimatedPercent.invalid}">
+              {{
+                (formCreationService.propertyDamageForm$ | async)?.value
+                  .estimatedPercent ? (formCreationService.propertyDamageForm$ | async)?.value
+                  .estimatedPercent : "Enter required information"
+              }}
+            </span>
+          </div>
+        </div>
+        <div class="row info-detail" >
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.subtypeDFAComment || (formCreationService.propertyDamageForm$ | async)?.controls.subtypeDFAComment.invalid}">DFA comments:</span>
+          </div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.subtypeDFAComment || (formCreationService.propertyDamageForm$ | async)?.controls.subtypeDFAComment.invalid}">
+              {{
+                (formCreationService.propertyDamageForm$ | async)?.value
+                  .subtypeDFAComment ? (formCreationService.propertyDamageForm$ | async)?.value
+                  .subtypeDFAComment : "Enter required information"
+              }}
+            </span>
+          </div>
+        </div>
+        <div class="row info-detail" >
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.guidanceSupport || (formCreationService.propertyDamageForm$ | async)?.controls.guidanceSupport.invalid}">Receive guidance and support:</span>
+          </div>
+          <div class="col-md-3">
+            <span [ngClass]="{'missing-info': !(formCreationService.propertyDamageForm$ | async)?.value?.guidanceSupport || (formCreationService.propertyDamageForm$ | async)?.controls.guidanceSupport.invalid}">
+              {{
+                (formCreationService.propertyDamageForm$ | async)?.value
+                  .guidanceSupport ? ((formCreationService.propertyDamageForm$ | async)?.value
+                  .guidanceSupport === 'true' ? "Yes" : "No") : "Enter required information"
+              }}
+            </span>
+          </div>
+        </div>
+        <br /><br />
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Occupants, Secondary Applicants and Contacts</div>
+          <div class="col-md-6 card-heading">Occupants</div>
           <div class="col-md-2" *ngIf="allowEdit">
             <button
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(2)"
+              (click)="navigateToStep(0)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -935,94 +617,7 @@
           </div>
         </div>
         <hr />
-        <div class="row info-detail" *ngIf="(isHomeowner || isResidentialTenant) && (formCreationService.fullTimeOccupantsForm$ | async)?.value?.fullTimeOccupants?.length > 0">
-          <b>Full Time Occupants</b>
-          <table mat-table [dataSource]="fullTimeOccupantsDataSource">
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Name</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.firstName }}&nbsp; {{element.lastName }}
-              </td>
-            </ng-container>
 
-            <!-- Relationship Column -->
-            <ng-container matColumnDef="relationship">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>Relationship</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.relationship}}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="fullTimeOccupantsColumnsToDisplay"></tr>
-            <tr
-              mat-row
-              *matRowDef="let element; columns: fullTimeOccupantsColumnsToDisplay"
-              class="example-element-row"
-            ></tr>
-          </table>
-        </div>
-        <div class="row info-detail" *ngIf="(isHomeowner || isResidentialTenant) && (formCreationService.fullTimeOccupantsForm$ | async)?.value?.fullTimeOccupants?.length == 0">
-          <span style="color:red">At least one full time occupant is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.secondaryApplicantsForm$ | async)?.value?.secondaryApplicants?.length > 0">
-          <b>Secondary Applicants</b>
-          <table mat-table [dataSource]="secondaryApplicantsDataSource">
-            <!-- Applicant Type Column -->
-            <ng-container matColumnDef="applicantType">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>Type</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.applicantType }}
-              </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>Name</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.firstName }}&nbsp; {{element.lastName }}
-              </td>
-            </ng-container>
-
-            <!-- Phone Column -->
-            <ng-container matColumnDef="phoneNumber">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Phone</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.phoneNumber | phoneFormat }}
-              </td>
-            </ng-container>
-
-            <!-- Email Column -->
-            <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Email</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.email}}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="secondaryApplicantsColumnsToDisplay"></tr>
-            <tr
-              mat-row
-              *matRowDef="let element; columns: secondaryApplicantsColumnsToDisplay"
-              class="example-element-row"
-            ></tr>
-          </table>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.secondaryApplicantsForm$ | async)?.value?.secondaryApplicants?.length == 0">
-          <span>No secondary applicants.</span>
-        </div>
         <div class="row info-detail" *ngIf="(formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0">
           <b>Other Contacts</b>
           <table mat-table [dataSource]="otherContactsDataSource">
@@ -1069,412 +664,6 @@
         </div>
       </mat-card-content>
 
-      <!-- Clean up Log -->
-      <mat-card-content class="contentStyle mat-elevation-z8">
-        <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">&nbsp;Clean Up Log</div>
-          <div class="col-md-2" *ngIf="allowEdit">
-            <button
-              class="edit-image"
-              mat-icon-button
-              aria-label="Edit"
-              (click)="navigateToStep(3)"
-            >
-              <img src="/assets/images/edit.svg" height="35" width="35" />
-              <img
-                src="/assets/images/edit_onhover.svg"
-                height="35"
-                width="35"
-              />
-            </button>
-          </div>
-        </div>
-        <hr />
-        <div class="row info-detail" *ngIf="(formCreationService.cleanUpLogItemsForm$ | async)?.value?.cleanuplogs?.length > 0">
-          <b>Clean Up Log</b>
-          <table mat-table [dataSource]="cleanUpWorkDataSource">
-            <!-- Date Column -->
-            <ng-container matColumnDef="date" style="width:40%">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>Date</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.date | date : "yyyy/MM/dd" }}
-              </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name" style="width:40%">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>Name</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.name }}
-              </td>
-            </ng-container>
-
-            <!-- Hours Column -->
-            <ng-container matColumnDef="hours" style="width:40%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Hours</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.hours}}
-              </td>
-            </ng-container>
-
-             <!-- Description Column -->
-            <ng-container matColumnDef="description" style="width:40%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Description</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.description}}
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="cleanUpWorkColumnsToDisplay"></tr>
-            <tr
-              mat-row
-              *matRowDef="let element; columns: cleanUpWorkColumnsToDisplay"
-              class="example-element-row"
-            ></tr>
-          </table>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.cleanUpLogItemsForm$ | async)?.value?.cleanuplogs?.length == 0">
-          <span>No clean up logs.</span>
-        </div>
-        <div class="row info-detail" *ngIf="cleanUpWorkFileDataSource?.data?.length > 0">
-          <b>Receipts and Invoices</b>
-          <table mat-table [dataSource]="cleanUpWorkFileDataSource">
-           <!-- File Name Column -->
-           <ng-container matColumnDef="fileName" style="width:40%">
-            <th mat-header-cell *matHeaderCellDef >
-              <b>File Name</b>
-            </th>
-            <td *matCellDef="let elementFile" mat-cell>
-              {{ elementFile.fileName }}
-            </td>
-          </ng-container>
-
-          <!-- File Description Column -->
-          <ng-container matColumnDef="fileDescription" style="width:40%">
-            <th mat-header-cell *matHeaderCellDef>
-              <b>File Description</b>
-            </th>
-            <td *matCellDef="let elementFile" mat-cell>
-              {{ elementFile.fileDescription}}
-            </td>
-          </ng-container>
-
-           <!-- Date Column -->
-          <ng-container matColumnDef="fileDate" style="width:40%">
-            <th mat-header-cell *matHeaderCellDef >
-              <b>Date</b>
-            </th>
-            <td *matCellDef="let elementFile" mat-cell>
-              {{ elementFile.uploadedDate | date : "yyyy/MM/dd" }}
-            </td>
-          </ng-container>
-            <tr mat-header-row *matHeaderRowDef="cleanUpWorkFileColumnsToDisplay"></tr>
-            <tr
-              mat-row
-              *matRowDef="let element; columns: cleanUpWorkFileColumnsToDisplay"
-              class="example-element-row"
-            ></tr>
-          </table>
-        </div>
-        <div class="row info-detail" *ngIf="cleanUpWorkFileDataSource?.data?.length == 0">
-          <span>No receipts or invoices supplied.</span>
-        </div>
-      </mat-card-content>
-
-      <!-- Damaged Items By Room -->
-      <mat-card-content class="contentStyle mat-elevation-z8">
-        <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Damaged Items By Room</div>
-          <div class="col-md-2" *ngIf="allowEdit">
-            <button
-              class="edit-image"
-              mat-icon-button
-              aria-label="Edit"
-              (click)="navigateToStep(4)"
-            >
-              <img src="/assets/images/edit.svg" height="35" width="35" />
-              <img
-                src="/assets/images/edit_onhover.svg"
-                height="35"
-                width="35"
-              />
-            </button>
-          </div>
-        </div>
-        <hr />
-        <div class="row info-detail" *ngIf="(formCreationService.damagedRoomsForm$ | async)?.value?.damagedRooms?.length > 0">
-          <b>Damaged Rooms</b>
-          <table mat-table [dataSource]="damagedRoomsDataSource">
-            <!-- Room Type Column -->
-            <ng-container matColumnDef="roomType" style="width:20%">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>Room</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.roomType === RoomTypes.Other ? element.otherRoomType : element.roomType }}
-              </td>
-            </ng-container>
-
-            <!-- Description Column -->
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Damaged Items</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.description}}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="damagedRoomsColumnsToDisplay"></tr>
-            <tr
-              mat-row
-              *matRowDef="let element; columns: damagedRoomsColumnsToDisplay"
-              class="example-element-row"
-            ></tr>
-          </table>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.damagedRoomsForm$ | async)?.value?.damagedRooms?.length == 0">
-          <span>No damaged rooms listed.</span>
-        </div>
-        <div class="row info-detail" *ngIf="damagePhotosDataSource?.data?.length > 0">
-          <b>Damage Photos</b>
-          <table mat-table [dataSource]="damagePhotosDataSource">
-             <!-- File Name Column -->
-             <ng-container matColumnDef="fileName" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>File Name</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.fileName }}
-              </td>
-            </ng-container>
-
-            <!-- Description Column -->
-            <ng-container matColumnDef="fileDescription" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>File Description</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.fileDescription}}
-              </td>
-            </ng-container>
-
-            <!-- UploadedDate Column -->
-            <ng-container matColumnDef="uploadedDate" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Date Uploaded</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="damagePhotosColumnsToDisplay"></tr>
-            <tr
-              mat-row
-              *matRowDef="let element; columns: damagePhotosColumnsToDisplay"
-              class="example-element-row"
-            ></tr>
-          </table>
-        </div>
-        <div class="row info-detail" *ngIf="damagePhotosDataSource?.data?.length == 0">
-          <span>No damage photos supplied.</span>
-        </div>
-      </mat-card-content>
-
-      <!-- Required Documents -->
-      <mat-card-content class="contentStyle mat-elevation-z8">
-        <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Required Documents</div>
-          <div class="col-md-2" *ngIf="allowEdit">
-            <button
-              class="edit-image"
-              mat-icon-button
-              aria-label="Edit"
-              (click)="navigateToStep(5)"
-            >
-              <img src="/assets/images/edit.svg" height="35" width="35" />
-              <img
-                src="/assets/images/edit_onhover.svg"
-                height="35"
-                width="35"
-              />
-            </button>
-          </div>
-        </div>
-        <hr />
-        <div class="row info-detail" *ngIf="requiredDocumentsDataSource?.data?.length > 0">
-          <b>Required Documents</b>
-          <table mat-table [dataSource]="requiredDocumentsDataSource">
-             <!-- File Name Column -->
-             <ng-container matColumnDef="fileName" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>File Name</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.fileName }}
-              </td>
-            </ng-container>
-
-            <!-- Description Column -->
-            <ng-container matColumnDef="fileDescription" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>File Description</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.fileDescription}}
-              </td>
-            </ng-container>
-
-            <!-- Type Column -->
-            <ng-container matColumnDef="fileType" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>File Type</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.fileType}}
-              </td>
-            </ng-container>
-
-            <!-- UploadedDate Column -->
-            <ng-container matColumnDef="uploadedDate" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Date Uploaded</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="requiredDocumentsColumnsToDisplay"></tr>
-            <tr
-              mat-row
-              *matRowDef="let element; columns: requiredDocumentsColumnsToDisplay"
-              class="example-element-row"
-            ></tr>
-          </table>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noInsuranceTemplate')">
-          <span style="color:red">Insurance template is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noRentalAgreement')">
-          <span style="color:red">Proof of tenancy is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noIdentification')">
-          <span style="color:red">Identification is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noT1GeneralIncomeTaxReturn')">
-          <span style="color:red">A T1 general income tax return is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noFinancialStatements')">
-          <span style="color:red">Financial statements required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noT2CorporateIncomeTaxReturn')">
-          <span style="color:red">A T2 corporate income tax return is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noProofOfOwnership')">
-          <span style="color:red">Proof of ownership is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noT776')">
-          <span style="color:red">A T776 statement of real estate rentals is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noResidentialTenancyAgreement')">
-          <span style="color:red">A residential tenancy agreement is required.</span>
-        </div>
-        <div class="row info-detail"  *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noDirectorsListing')">
-          <span style="color:red">A listing of directors is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noRegistrationProof')">
-          <span style="color:red">Proof of the organization's registration is required.</span>
-        </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noStructureAndPurpose')">
-          <span style="color:red">A statement outlining structure and purpose is required.</span>
-        </div>
-      </mat-card-content>
-
-      <!-- Supporting Documents -->
-      <mat-card-content class="contentStyle mat-elevation-z8">
-        <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Supporting Documents</div>
-          <div class="col-md-2" *ngIf="allowEdit">
-            <button
-              class="edit-image"
-              mat-icon-button
-              aria-label="Edit"
-              (click)="navigateToStep(5)"
-            >
-              <img src="/assets/images/edit.svg" height="35" width="35" />
-              <img
-                src="/assets/images/edit_onhover.svg"
-                height="35"
-                width="35"
-              />
-            </button>
-          </div>
-        </div>
-        <hr />
-        <div class="row info-detail" *ngIf="supportingDocumentsDataSource?.data?.length > 0">
-          <b>Supporting Documents</b>
-          <table mat-table [dataSource]="supportingDocumentsDataSource">
-             <!-- File Name Column -->
-             <ng-container matColumnDef="fileName" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef >
-                <b>File Name</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.fileName }}
-              </td>
-            </ng-container>
-
-            <!-- Description Column -->
-            <ng-container matColumnDef="fileDescription" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>File Description</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.fileDescription}}
-              </td>
-            </ng-container>
-
-            <!-- Type Column -->
-            <ng-container matColumnDef="fileType" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>File Type</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.fileType}}
-              </td>
-            </ng-container>
-
-            <!-- UploadedDate Column -->
-            <ng-container matColumnDef="uploadedDate" style="width:25%">
-              <th mat-header-cell *matHeaderCellDef>
-                <b>Date Uploaded</b>
-              </th>
-              <td *matCellDef="let element" mat-cell>
-                {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="supportingDocumentsColumnsToDisplay"></tr>
-            <tr
-              mat-row
-              *matRowDef="let element; columns: supportingDocumentsColumnsToDisplay"
-              class="example-element-row"
-            ></tr>
-          </table>
-        </div>
-        <div class="row info-detail" *ngIf="supportingDocumentsDataSource?.data?.length == 0">
-          <span>No supporting documents.</span>
-        </div>
-      </mat-card-content>
     </div>
   </ng-template>
 </mat-card>

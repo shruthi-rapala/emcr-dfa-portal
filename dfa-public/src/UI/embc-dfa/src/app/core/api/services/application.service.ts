@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { ApplicantSubtypes } from '../models/applicant-subtypes';
 import { CurrentApplication } from '../models/current-application';
 import { DfaApplicationMain } from '../models/dfa-application-main';
 import { DfaApplicationStart } from '../models/dfa-application-start';
@@ -231,7 +232,7 @@ export class ApplicationService extends BaseService {
      * The application Id.
      */
     applicationId?: string;
-  }): Observable<StrictHttpResponse<DfaApplicationStart>> {
+  }): Observable<StrictHttpResponse<DfaApplicationMain>> {
 
     const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetApplicationMainPath, 'get');
     if (params) {
@@ -244,7 +245,7 @@ export class ApplicationService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<DfaApplicationStart>;
+        return r as StrictHttpResponse<DfaApplicationMain>;
       })
     );
   }
@@ -265,10 +266,10 @@ export class ApplicationService extends BaseService {
      * The application Id.
      */
     applicationId?: string;
-  }): Observable<DfaApplicationStart> {
+  }): Observable<DfaApplicationMain> {
 
     return this.applicationGetApplicationMain$Response(params).pipe(
-      map((r: StrictHttpResponse<DfaApplicationStart>) => r.body as DfaApplicationStart)
+      map((r: StrictHttpResponse<DfaApplicationMain>) => r.body as DfaApplicationMain)
     );
   }
 
@@ -320,6 +321,57 @@ export class ApplicationService extends BaseService {
 
     return this.applicationGetDfaApplications$Response(params).pipe(
       map((r: StrictHttpResponse<Array<CurrentApplication>>) => r.body as Array<CurrentApplication>)
+    );
+  }
+
+  /**
+   * Path part for operation applicationGetApplicantSubTypes
+   */
+  static readonly ApplicationGetApplicantSubTypesPath = '/api/applications/applicantsubtypes';
+
+  /**
+   * Get the applicant subtype records.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `applicationGetApplicantSubTypes()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetApplicantSubTypes$Response(params?: {
+  }): Observable<StrictHttpResponse<Array<ApplicantSubtypes>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetApplicantSubTypesPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ApplicantSubtypes>>;
+      })
+    );
+  }
+
+  /**
+   * Get the applicant subtype records.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `applicationGetApplicantSubTypes$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetApplicantSubTypes(params?: {
+  }): Observable<Array<ApplicantSubtypes>> {
+
+    return this.applicationGetApplicantSubTypes$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ApplicantSubtypes>>) => r.body as Array<ApplicantSubtypes>)
     );
   }
 
