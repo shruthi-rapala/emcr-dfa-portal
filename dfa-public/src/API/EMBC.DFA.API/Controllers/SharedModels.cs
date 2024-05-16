@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
@@ -316,6 +317,77 @@ namespace EMBC.DFA.API.Controllers
     }
 
     /// <summary>
+    /// Applicant Subtype Categories
+    /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum ApplicantSubtypeCategories
+    {
+        [Description("First Nations Community")]
+        FirstNationCommunity,
+
+        [Description("Municipality")]
+        Municipality,
+
+        [Description("Regional District")]
+        RegionalDistrict,
+
+        [Description("Other Local Government Body")]
+        OtherLocalGovernmentBody,
+
+        [Description("Other")]
+        Other
+    }
+
+    /// <summary>
+    /// Applicant Subtype Sub Categories
+    /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum ApplicantSubtypeSubCategories
+    {
+        [EnumMember(Value = "an improvement district as defined in the Local Government Act")]
+        ImprovementDistrict,
+
+        [EnumMember(Value = "a local area as defined in the Local Services Act")]
+        LocalArea,
+
+        [EnumMember(Value = "a greater board as defined in the Community Charter or any incorporated board that provides similar services and is incorporated by letters patent")]
+        GreaterBoard,
+
+        [EnumMember(Value = "a board of variance established under Division 15 of Part 14 of the Local Government Act or section 572 of the Vancouver Charter")]
+        BoardofVariance,
+
+        [EnumMember(Value = "the trust council, the executive committee, a local trust committee and the Islands Trust Conservancy, as these are defined in the Islands Trust Act")]
+        TrustCouncil,
+
+        [EnumMember(Value = "the Okanagan Basin Water Board")]
+        OkanaganBasinWaterBoard,
+
+        [EnumMember(Value = "a water users' community as defined in section 1 (1) of the Water Users' Communities Act")]
+        WaterUsersCommunity,
+
+        [EnumMember(Value = "the Okanagan-Kootenay Sterile Insect Release Board")]
+        OkanaganKootenaySterileInsectReleaseBoard,
+
+        [EnumMember(Value = "a municipal police board established under section 23 of the Police Act")]
+        MunicipalPoliceBoard,
+
+        [EnumMember(Value = "a library board as defined in the Library Act")]
+        LibraryBoard,
+
+        [EnumMember(Value = "any board, committee, commission, panel, agency or corporation that is created or owned by a body referred to in paragraphs (a) to (m) and all the members or officers of which are appointed or chosen by or under the authority of that body")]
+        Any,
+
+        [EnumMember(Value = "a board of trustees established under section 37 of the Cremation, Interment and Funeral Services Act")]
+        BoardofTrustees,
+
+        [EnumMember(Value = "the South Coast British Columbia Transportation Authority")]
+        SouthCoast,
+
+        [EnumMember(Value = "the Park Board referred to in section 485 of the Vancouver Charter")]
+        ParkBoard,
+    }
+
+    /// <summary>
     /// Damaged Property Address
     /// </summary>
     public class DamagedPropertyAddress
@@ -363,6 +435,11 @@ namespace EMBC.DFA.API.Controllers
         public string? damageFromDate { get; set; }
         public string? damageToDate { get; set; }
         public bool? guidanceSupport { get; set; }
+        public string? applicantSubtype { get; set; }
+        public ApplicantSubtypeSubCategories? applicantSubSubtype { get; set; }
+        public string? estimatedPercent { get; set; }
+        public string? subtypeOtherDetails { get; set; }
+        public string? subtypeDFAComment { get; set; }
     }
 
     /// <summary>

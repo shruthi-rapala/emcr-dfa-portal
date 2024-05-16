@@ -84,11 +84,11 @@ export class ComponentCreationService {
     
     {
       component: 'property-damage',
-      nextButtonLabel: 'Next - Occupants',
+      nextButtonLabel: 'Next - Review & Submit',
       backButtonLabel: 'Go Back & Edit',
       isLast: true,
       loadWrapperButton: false,
-      lastStep: 1,
+      lastStep: 0,
       stepName: 'Application Details'
     }
 

@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
@@ -168,7 +170,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("appmain/byId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DFAApplicationStart>> GetApplicationMain(
+        public async Task<ActionResult<DFAApplicationMain>> GetApplicationMain(
             [FromQuery]
             [Required]
             Guid applicationId)
@@ -198,6 +200,70 @@ namespace EMBC.DFA.API.Controllers
             var profileId = profile.Id;
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
+        }
+
+        /// <summary>
+        /// Get the applicant subtype records
+        /// </summary>
+        /// <returns>applicant subtype records</returns>
+        [HttpGet("applicantsubtypes")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<ApplicantSubtypes>> GetApplicantSubTypes()
+        {
+            var lstApplicantSubtypes = new List<ApplicantSubtypes>()
+            {
+                new ApplicantSubtypes()
+                {
+                    ID = "1",
+                    SubType = GetEnumDescription(ApplicantSubtypeCategories.FirstNationCommunity),
+                    DFAComment = "Comment 1 FirstNationCommunity",
+                    EstimatePercent = 90,
+                },
+                new ApplicantSubtypes()
+                {
+                    ID = "2",
+                    SubType = GetEnumDescription(ApplicantSubtypeCategories.Municipality),
+                    DFAComment = "Comment 2 Municipality",
+                    EstimatePercent = 90,
+                },
+                new ApplicantSubtypes()
+                {
+                    ID = "3",
+                    SubType = GetEnumDescription(ApplicantSubtypeCategories.RegionalDistrict),
+                    DFAComment = "Comment 3 RegionalDistrict",
+                    EstimatePercent = 90,
+                },
+                new ApplicantSubtypes()
+                {
+                    ID = "4",
+                    SubType = GetEnumDescription(ApplicantSubtypeCategories.OtherLocalGovernmentBody),
+                    DFAComment = "Comment 4 OtherLocalGovernmentBody",
+                    EstimatePercent = 95,
+                },
+                new ApplicantSubtypes()
+                {
+                    ID = "5",
+                    SubType = GetEnumDescription(ApplicantSubtypeCategories.Other),
+                    DFAComment = "Comment Other",
+                    EstimatePercent = 95,
+                }
+            };
+            return Ok(lstApplicantSubtypes);
+        }
+
+        public static string GetEnumDescription(System.Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+
+            if (attributes != null && attributes.Any())
+            {
+                return attributes.First().Description;
+            }
+
+            return value.ToString();
         }
     }
 
@@ -248,6 +314,14 @@ namespace EMBC.DFA.API.Controllers
         public bool? wildfireDamage { get; set; }
         public bool? otherDamage { get; set; }
         public string? otherDamageText { get; set; }
+    }
+
+    public class ApplicantSubtypes
+    {
+        public string ID { get; set; }
+        public string SubType { get; set; }
+        public int EstimatePercent { get; set; }
+        public string DFAComment { get; set; }
     }
 
     public class StatusBar

@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType } from 'src/app/core/api/models';
+import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ApplicantSubtypeSubCategories } from 'src/app/core/api/models';
 
 export class DamagedPropertyAddress {
   addressLine1?: null | string;
@@ -267,6 +267,12 @@ export class PropertyDamage {
   stormDamage?: null | boolean;
   wildfireDamage?: null | boolean;
   guidanceSupport?: null | boolean;
+  applicantSubtype?: null | string;
+  applicantSubtypeId?: null | string;
+  applicantSubSubtype?: ApplicantSubtypeSubCategories;
+  estimatedPercent?: null | string;
+  subtypeOtherDetails?: null | string;
+  subtypeDFAComment?: null | string;
 
   constructor(
     floodDamage?: null | boolean,
@@ -278,7 +284,13 @@ export class PropertyDamage {
     otherDamageText?: null | string,
     damageFromDate?: null | Date,
     damageToDate?: null | Date,
-  ) {}
+    applicantSubSubtype?: ApplicantSubtypeSubCategories,
+    applicantSubtypeId?: null | string,
+    applicantSubtype?: null | string,
+    estimatedPercent?: null | string,
+    subtypeOtherDetails?: null | string,
+    subtypeDFAComment?: null | string
+  ) { }
 }
 
 export class PropertyDamageForm {
@@ -291,6 +303,11 @@ export class PropertyDamageForm {
   otherDamageText = new UntypedFormControl();
   damageFromDate = new UntypedFormControl();
   damageToDate = new UntypedFormControl();
+  applicantSubtype = new UntypedFormControl();
+  applicantSubSubtype = new UntypedFormControl();
+  estimatedPercent = new UntypedFormControl();
+  subtypeOtherDetails = new UntypedFormControl();
+  subtypeDFAComment = new UntypedFormControl();
 
   constructor(
     propertyDamage: PropertyDamage,
@@ -342,6 +359,31 @@ export class PropertyDamageForm {
       this.damageToDate.setValue(propertyDamage.damageToDate);
     }
     this.damageToDate.setValidators(null);
+
+    if (propertyDamage.applicantSubtype) {
+      this.applicantSubtype.setValue(propertyDamage.applicantSubtype);
+    }
+    this.applicantSubtype.setValidators(null);
+
+    if (propertyDamage.applicantSubSubtype) {
+      this.applicantSubSubtype.setValue(propertyDamage.applicantSubSubtype);
+    }
+    this.applicantSubSubtype.setValidators(null);
+
+    if (propertyDamage.estimatedPercent) {
+      this.estimatedPercent.setValue(propertyDamage.estimatedPercent);
+    }
+    this.estimatedPercent.setValidators(null);
+
+    if (propertyDamage.subtypeOtherDetails) {
+      this.subtypeOtherDetails.setValue(propertyDamage.subtypeOtherDetails);
+    }
+    this.subtypeOtherDetails.setValidators(null);
+
+    if (propertyDamage.subtypeDFAComment) {
+      this.subtypeDFAComment.setValue(propertyDamage.subtypeDFAComment);
+    }
+    this.subtypeDFAComment.setValidators(null);
   }
 }
 

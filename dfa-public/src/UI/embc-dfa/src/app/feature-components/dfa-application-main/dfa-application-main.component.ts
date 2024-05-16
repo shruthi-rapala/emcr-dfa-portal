@@ -79,7 +79,7 @@ export class DFAApplicationMainComponent
     private router: Router,
     private componentService: ComponentCreationService,
     private route: ActivatedRoute,
-    private formCreationService: FormCreationService,
+    public formCreationService: FormCreationService,
     private cd: ChangeDetectorRef,
     private alertService: AlertService,
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
@@ -100,6 +100,7 @@ export class DFAApplicationMainComponent
   }
 
   ngOnInit(): void {
+    this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     let applicationId = this.route.snapshot.paramMap.get('id');
 
     if (applicationId) {
@@ -111,7 +112,7 @@ export class DFAApplicationMainComponent
     this.steps = this.componentService.createDFAApplicationMainSteps();
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
     this.editstep = this.dfaApplicationMainDataService.getEditStep();
-    this.showStepper = false;
+    //this.showStepper = true;
     this.dfaApplicationMainHeading = 'Application Details'
   }
 
@@ -173,10 +174,13 @@ export class DFAApplicationMainComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
-    
-    if (isLast && component === 'review') {
+    if (isLast && component === 'property-damage') {
+      this.setFormData(component);
       this.dfaApplicationMainStepper.selected.completed = true;
-      this.submitFile();
+      //this.submitFile();
+      this.form$.unsubscribe();
+      stepper.next();
+      this.form.markAllAsTouched();
     } else {
       this.setFormData(component);
       let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
@@ -189,6 +193,9 @@ export class DFAApplicationMainComponent
           case 'property-damage':
             if (this.form.valid) stepper.selected.completed = true;
             else stepper.selected.completed = false;
+            break;
+          case 'review':
+            stepper.selected.completed = true;
             break;
           default:
             break;
@@ -237,35 +244,6 @@ export class DFAApplicationMainComponent
    */
   setFormData(component: string): void {
     switch (component) {
-      case 'damaged-property-address':
-        this.dfaApplicationMainDataService.damagedPropertyAddress.addressLine1 = this.form.get('addressLine1').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.addressLine2 = this.form.get('addressLine2').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.community = this.form.get('community').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.firstNationsReserve = this.form.get('firstNationsReserve').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordEmail = this.form.get('landlordEmail').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordGivenNames = this.form.get('landlordGivenNames').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordPhone = this.form.get('landlordPhone').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.landlordSurname = this.form.get('landlordSurname').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.postalCode = this.form.get('postalCode').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.stateProvince = this.form.get('stateProvince').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.eligibleForHomeOwnerGrant = this.form.get('eligibleForHomeOwnerGrant').value == 'true' ? true : (this.form.get('eligibleForHomeOwnerGrant').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.isPrimaryAndDamagedAddressSame = this.form.get('isPrimaryAndDamagedAddressSame').value == 'true' ? true : (this.form.get('isPrimaryAndDamagedAddressSame').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.manufacturedHome = this.form.get('manufacturedHome').value == 'true' ? true : (this.form.get('manufacturedHome').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.occupyAsPrimaryResidence = this.form.get('occupyAsPrimaryResidence').value == 'true' ? true : (this.form.get('occupyAsPrimaryResidence').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.onAFirstNationsReserve = this.form.get('onAFirstNationsReserve').value == 'true' ? true : (this.form.get('onAFirstNationsReserve').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.businessLegalName = this.form.get('businessLegalName').value;
-        this.dfaApplicationMainDataService.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis = this.form.get('businessManagedByAllOwnersOnDayToDayBasis').value == 'true' ? true : (this.form.get('businessManagedByAllOwnersOnDayToDayBasis').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.employLessThan50EmployeesAtAnyOneTime = this.form.get('employLessThan50EmployeesAtAnyOneTime').value == 'true' ? true : (this.form.get('employLessThan50EmployeesAtAnyOneTime').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.lossesExceed1000 = this.form.get('lossesExceed1000').value == 'true' ? true : (this.form.get('lossesExceed1000').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.farmoperation = this.form.get('farmoperation').value == 'true' ? true : (this.form.get('farmoperation').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.ownedandoperatedbya = this.form.get('ownedandoperatedbya').value == 'true' ? true : (this.form.get('ownedandoperatedbya').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.farmoperationderivesthatpersonsmajorincom = this.form.get('farmoperationderivesthatpersonsmajorincom').value == 'true' ? true : (this.form.get('farmoperationderivesthatpersonsmajorincom').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.grossRevenues100002000000BeforeDisaster = this.form.get('grossRevenues100002000000BeforeDisaster').value == 'true' ? true : (this.form.get('grossRevenues100002000000BeforeDisaster').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.charityRegistered = this.form.get('charityRegistered').value == 'true' ? true : (this.form.get('charityRegistered').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.charityExistsAtLeast12Months = this.form.get('charityExistsAtLeast12Months').value == 'true' ? true : (this.form.get('charityExistsAtLeast12Months').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.charityProvidesCommunityBenefit = this.form.get('charityProvidesCommunityBenefit').value == 'true' ? true : (this.form.get('charityExistsAtLeast12Months').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.damagedPropertyAddress.isDamagedAddressVerified = this.form.get('isDamagedAddressVerified').value == 'true' ? true : (this.form.get('isDamagedAddressVerified').value == 'false' ? false : null);
-        break;
       case 'property-damage':
         this.dfaApplicationMainDataService.propertyDamage.damageFromDate = this.form.get('damageFromDate').value;
         this.dfaApplicationMainDataService.propertyDamage.damageToDate = this.form.get('damageToDate').value;
@@ -276,26 +254,15 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.propertyDamage.stormDamage = this.form.get('stormDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.wildfireDamage = this.form.get('wildfireDamage').value;
         this.dfaApplicationMainDataService.propertyDamage.guidanceSupport = this.form.get('guidanceSupport').value == 'true' ? true : (this.form.get('guidanceSupport').value == 'false' ? false : null);
+        this.dfaApplicationMainDataService.propertyDamage.applicantSubtype = this.form.get('applicantSubtype').value;
+        this.dfaApplicationMainDataService.propertyDamage.applicantSubSubtype = this.form.get('applicantSubSubtype').value;
+        this.dfaApplicationMainDataService.propertyDamage.estimatedPercent = this.form.get('estimatedPercent').value;
+        this.dfaApplicationMainDataService.propertyDamage.subtypeDFAComment = this.form.get('subtypeDFAComment').value;
+        this.dfaApplicationMainDataService.propertyDamage.subtypeOtherDetails = this.form.get('subtypeOtherDetails').value;
         //this.dfaApplicationMainDataService.otherContacts = 
         //this.otherContactsForm.get('otherContact').getRawValue()
         break;
       case 'occupants':
-        break;
-      case 'clean-up-log':
-        this.dfaApplicationMainDataService.cleanUpLog.haveInvoicesOrReceiptsForCleanupOrRepairs = this.form.get('haveInvoicesOrReceiptsForCleanupOrRepairs').value == 'true' ? true : (this.form.get('haveInvoicesOrReceiptsForCleanupOrRepairs').value == 'false' ? false : null);
-        break;
-      case 'damaged-items-by-room':
-        break;
-      case 'supporting-documents':
-        this.dfaApplicationMainDataService.supportingDocuments.hasCopyOfARentalAgreementOrLease = this.form.get('hasCopyOfARentalAgreementOrLease').value == true ? true : (this.form.get('hasCopyOfARentalAgreementOrLease').value == 'false' ? false : null);
-        break;
-      case 'sign-and-submit':
-        this.dfaApplicationMainDataService.signAndSubmit.applicantSignature.dateSigned = this.form.get('applicantSignature').get('dateSigned').value;
-        this.dfaApplicationMainDataService.signAndSubmit.applicantSignature.signature = this.form.get('applicantSignature').get('signature').value;
-        this.dfaApplicationMainDataService.signAndSubmit.applicantSignature.signedName = this.form.get('applicantSignature').get('signedName').value;
-        this.dfaApplicationMainDataService.signAndSubmit.secondaryApplicantSignature.dateSigned = this.form.get('secondaryApplicantSignature').get('dateSigned').value;
-        this.dfaApplicationMainDataService.signAndSubmit.secondaryApplicantSignature.signature = this.form.get('secondaryApplicantSignature').get('signature').value;
-        this.dfaApplicationMainDataService.signAndSubmit.secondaryApplicantSignature.signedName = this.form.get('secondaryApplicantSignature').get('signedName').value;
         break;
       default:
         break;
@@ -364,7 +331,7 @@ export class DFAApplicationMainComponent
           //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
           let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-
+          
           this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
             this.isSubmitted = !this.isSubmitted;
             this.alertService.clearAlert();
