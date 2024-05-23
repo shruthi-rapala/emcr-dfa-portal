@@ -45,5 +45,7 @@ export { ProfileName } from './models/profile-name';
 export { AddressDataConflict } from './models/address-data-conflict';
 export { InviteRequest } from './models/invite-request';
 export { InviteToken } from './models/invite-token';
+export { CurrentProject } from './models/current-project';
+export { ProjectStatusBar } from './models/project-status-bar';
 export { SecondaryApplicant } from './models/secondary-applicant';
 export { SecondaryApplicantTypeOption } from './models/secondary-applicant-type-option';

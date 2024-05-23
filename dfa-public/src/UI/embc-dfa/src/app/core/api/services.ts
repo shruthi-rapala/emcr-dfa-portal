@@ -7,4 +7,5 @@ export { EligibilityService } from './services/eligibility.service';
 export { FullTimeOccupantService } from './services/full-time-occupant.service';
 export { OtherContactService } from './services/other-contact.service';
 export { ProfileService } from './services/profile.service';
+export { ProjectService } from './services/project.service';
 export { SecondaryApplicantService } from './services/secondary-applicant.service';

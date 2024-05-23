@@ -1,0 +1,173 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using AutoMapper;
+using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
+using EMBC.DFA.API.Services;
+using EMBC.Utilities.Messaging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+
+namespace EMBC.DFA.API.Controllers
+{
+    [Route("api/projects")]
+    [ApiController]
+    [Authorize]
+    public class ProjectController : ControllerBase
+    {
+        private readonly IHostEnvironment env;
+        private readonly IMessagingClient messagingClient;
+        private readonly IMapper mapper;
+        private readonly IConfigurationHandler handler;
+
+        public ProjectController(
+            IHostEnvironment env,
+            IMessagingClient messagingClient,
+            IMapper mapper,
+            IConfigurationHandler handler)
+        {
+            this.env = env;
+            this.messagingClient = messagingClient;
+            this.mapper = mapper;
+            this.handler = handler;
+        }
+
+        private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+        /// <summary>
+        /// get dfa applications
+        /// </summary>
+        /// <param name="applicationId">The application Id.</param>
+        /// <returns>list of dfa applications</returns>
+        [HttpGet("dfaprojects")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<CurrentProject>>> GetDFAProjects(string applicationId = "807d7779-2113-ef11-b84d-00505683fbf4")
+        {
+            var userId = currentUserId;
+            var profile = await handler.HandleGetUser(userId);
+            if (profile == null) return NotFound(userId);
+            var profileId = profile.Id;
+            //var lstProjects = await handler.HandleApplicationList(profileId);
+
+            var lstProjects = new List<CurrentProject>()
+            {
+                new CurrentProject()
+                {
+                    ProjectId = "1",
+                    ProjectName = "Damaged pond",
+                    ProjectNumber = "1.0",
+                    SiteLocation = "1700 Block Fir Street",
+                    EstimatedCompletionDate = "(pending claim information)",
+                    Deadline18Month = "(pending claim information)",
+                    EMCRApprovedAmount = "(pending claim information)",
+                    Status = "Submitted",
+                    Stage = "Pending"
+                },
+                new CurrentProject()
+                {
+                    ProjectId = "2",
+                    ProjectName = "Overland flooding - Road",
+                    ProjectNumber = "2.0",
+                    SiteLocation = "145 Block Fir Street",
+                    EstimatedCompletionDate = "(pending claim information)",
+                    Deadline18Month = "(pending claim information)",
+                    EMCRApprovedAmount = "(pending claim information)",
+                    Status = "Decision Made",
+                    Stage = "Approved"
+                },
+                new CurrentProject()
+                {
+                    ProjectId = "3",
+                    ProjectName = "Overland flooding - Road",
+                    ProjectNumber = "3.0",
+                    SiteLocation = "2200 Block Fir Street",
+                    EstimatedCompletionDate = "(pending claim information)",
+                    Deadline18Month = "(pending claim information)",
+                    EMCRApprovedAmount = "(pending claim information)",
+                    Status = "Decision Made",
+                    Stage = "Ineligible"
+                },
+                new CurrentProject()
+                {
+                    ProjectId = "4",
+                    ProjectName = "Storm damage",
+                    ProjectNumber = "4.0",
+                    SiteLocation = "334 Block Fir Street",
+                    EstimatedCompletionDate = "(pending claim information)",
+                    Deadline18Month = "(pending claim information)",
+                    EMCRApprovedAmount = "(pending claim information)",
+                    Status = "Approval Pending",
+                    Stage = "In Progress"
+                },
+                new CurrentProject()
+                {
+                    ProjectId = "5",
+                    ProjectName = "Storm damage",
+                    ProjectNumber = "5.0",
+                    SiteLocation = "654 Block Fir Street",
+                    EstimatedCompletionDate = "(pending claim information)",
+                    Deadline18Month = "(pending claim information)",
+                    EMCRApprovedAmount = "(pending claim information)",
+                    Status = "Draft",
+                    Stage = string.Empty
+                }
+            };
+
+            return Ok(lstProjects);
+        }
+
+        public static string GetEnumDescription(System.Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+
+            if (attributes != null && attributes.Any())
+            {
+                return attributes.First().Description;
+            }
+
+            return value.ToString();
+        }
+    }
+
+    public class CurrentProject
+    {
+        public string ProjectId { get; set; }
+        public string ProjectNumber { get; set; }
+        public string ProjectName { get; set; }
+        public string SiteLocation { get; set; }
+        public string EstimatedCompletionDate { get; set; }
+        public string EMCRApprovedAmount { get; set; }
+        public string Deadline18Month { get; set; }
+        public string Status { get; set; }
+        public string Stage { get; set; }
+        public List<ProjectStatusBar> StatusBar { get; set; }
+        public string StatusLastUpdated { get; set; }
+        public bool IsErrorInStatus { get; set; }
+        public bool IsHidden { get; set; } = true;
+        public string StatusColor { get; set; }
+    }
+
+    public class ProjectStatusBar
+    {
+        public string Status { get; set; }
+        public string Stage { get; set; }
+        public bool IsCompleted { get; set; }
+        public bool CurrentStep { get; set; }
+        public bool IsFinalStep { get; set; }
+        public bool IsErrorInStatus { get; set; }
+        public string StatusColor { get; set; }
+    }
+}
