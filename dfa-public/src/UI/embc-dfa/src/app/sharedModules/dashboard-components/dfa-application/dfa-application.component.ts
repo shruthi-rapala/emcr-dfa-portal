@@ -163,6 +163,19 @@ export class DfaApplicationComponent implements OnInit {
     this.router.navigate(['/dfa-application-main/'+applItem.applicationId]);
   }
 
+  ViewProjects(applItem: ApplicationExtended): void {
+    this.dfaApplicationMainDataService.setApplicationId(applItem.applicationId);
+    this.dfaApplicationStartDataService.setApplicationId(applItem.applicationId);
+
+    if (applItem.currentApplication === true) {
+      this.dfaApplicationMainDataService.setViewOrEdit('view');
+    } else if (applItem.currentApplication === false) {
+      this.dfaApplicationMainDataService.setViewOrEdit('viewOnly');
+    }
+
+    this.router.navigate(['/dfa-application/' + applItem.applicationId + '/projects']);
+  }
+
   EditApplication(applicationId: string, tabId: string): void {
     this.dfaApplicationMainDataService.setApplicationId(applicationId);
     this.dfaApplicationStartDataService.setApplicationId(applicationId);

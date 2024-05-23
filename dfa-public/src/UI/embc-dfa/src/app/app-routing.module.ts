@@ -46,6 +46,22 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'dfa-application/:id/projects',
+    loadChildren: () =>
+      import(
+        './feature-components/dfa-project/dfa-project.module'
+      ).then((m) => m.DFAProjectModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'dfa-application/:id/project/:projId',
+    loadChildren: () =>
+      import(
+        './feature-components/dfa-project/dfa-project.module'
+      ).then((m) => m.DFAProjectModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'dfa-prescreening',
     loadChildren: () =>
       import(
