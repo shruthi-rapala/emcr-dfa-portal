@@ -24,7 +24,7 @@ const routes: Routes = [{
         import(
           'src/app/sharedModules/project-dashboard-components/project/project.module'
         ).then((m) => m.DFADashProjectModule),
-      data: { flow: 'dfa-project-dashboard', apptype: 'past' }
+      data: { flow: 'dfa-project-dashboard', apptype: 'closed' }
     },
   ]
 }];
