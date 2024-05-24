@@ -68,11 +68,12 @@ namespace EMBC.DFA.API.Controllers
                     ProjectName = "Damaged pond",
                     ProjectNumber = "1.0",
                     SiteLocation = "1700 Block Fir Street",
-                    EstimatedCompletionDate = "(pending claim information)",
-                    Deadline18Month = "(pending claim information)",
+                    EstimatedCompletionDate = "2025-03-06T07:00:00.0000000Z",
+                    Deadline18Month = "2025-07-12T07:00:00.0000000Z",
                     EMCRApprovedAmount = "(pending claim information)",
                     Status = "Submitted",
-                    Stage = "Pending"
+                    Stage = "Pending",
+                    CreatedDate = "2024-03-06T07:00:00.0000000Z"
                 },
                 new CurrentProject()
                 {
@@ -80,11 +81,12 @@ namespace EMBC.DFA.API.Controllers
                     ProjectName = "Overland flooding - Road",
                     ProjectNumber = "2.0",
                     SiteLocation = "145 Block Fir Street",
-                    EstimatedCompletionDate = "(pending claim information)",
-                    Deadline18Month = "(pending claim information)",
+                    EstimatedCompletionDate = "2025-01-06T07:00:00.0000000Z",
+                    Deadline18Month = "2025-11-22T07:00:00.0000000Z",
                     EMCRApprovedAmount = "(pending claim information)",
                     Status = "Decision Made",
-                    Stage = "Approved"
+                    Stage = "Approved",
+                    CreatedDate = "2024-01-06T07:00:00.0000000Z"
                 },
                 new CurrentProject()
                 {
@@ -92,11 +94,12 @@ namespace EMBC.DFA.API.Controllers
                     ProjectName = "Overland flooding - Road",
                     ProjectNumber = "3.0",
                     SiteLocation = "2200 Block Fir Street",
-                    EstimatedCompletionDate = "(pending claim information)",
-                    Deadline18Month = "(pending claim information)",
+                    EstimatedCompletionDate = "2024-12-06T07:00:00.0000000Z",
+                    Deadline18Month = "2025-11-06T07:00:00.0000000Z",
                     EMCRApprovedAmount = "(pending claim information)",
                     Status = "Decision Made",
-                    Stage = "Ineligible"
+                    Stage = "Ineligible",
+                    CreatedDate = "2023-11-06T07:00:00.0000000Z"
                 },
                 new CurrentProject()
                 {
@@ -104,11 +107,12 @@ namespace EMBC.DFA.API.Controllers
                     ProjectName = "Storm damage",
                     ProjectNumber = "4.0",
                     SiteLocation = "334 Block Fir Street",
-                    EstimatedCompletionDate = "(pending claim information)",
-                    Deadline18Month = "(pending claim information)",
+                    EstimatedCompletionDate = "2024-08-06T07:00:00.0000000Z",
+                    Deadline18Month = "2025-08-06T07:00:00.0000000Z",
                     EMCRApprovedAmount = "(pending claim information)",
                     Status = "Approval Pending",
-                    Stage = "In Progress"
+                    Stage = "In Progress",
+                    CreatedDate = "2024-02-06T07:00:00.0000000Z"
                 },
                 new CurrentProject()
                 {
@@ -116,12 +120,26 @@ namespace EMBC.DFA.API.Controllers
                     ProjectName = "Storm damage",
                     ProjectNumber = "5.0",
                     SiteLocation = "654 Block Fir Street",
-                    EstimatedCompletionDate = "(pending claim information)",
-                    Deadline18Month = "(pending claim information)",
+                    EstimatedCompletionDate = "2024-11-06T07:00:00.0000000Z",
+                    Deadline18Month = "2025-06-06T07:00:00.0000000Z",
                     EMCRApprovedAmount = "(pending claim information)",
                     Status = "Draft",
-                    Stage = string.Empty
-                }
+                    Stage = string.Empty,
+                    CreatedDate = "2024-05-23T07:00:00.0000000Z"
+                },
+                new CurrentProject()
+                {
+                    ProjectId = "6",
+                    ProjectName = "Overland flooding - Road",
+                    ProjectNumber = "6.0",
+                    SiteLocation = "403 Block Fir Street",
+                    EstimatedCompletionDate = "2024-05-06T07:00:00.0000000Z",
+                    Deadline18Month = "2025-10-06T07:00:00.0000000Z",
+                    EMCRApprovedAmount = "(pending claim information)",
+                    Status = "Decision Made",
+                    Stage = "Ineligible",
+                    CreatedDate = "2024-04-06T07:00:00.0000000Z"
+                },
             };
 
             return Ok(lstProjects);
@@ -148,6 +166,7 @@ namespace EMBC.DFA.API.Controllers
         public string ProjectNumber { get; set; }
         public string ProjectName { get; set; }
         public string SiteLocation { get; set; }
+        public string CreatedDate { get; set; }
         public string EstimatedCompletionDate { get; set; }
         public string EMCRApprovedAmount { get; set; }
         public string Deadline18Month { get; set; }

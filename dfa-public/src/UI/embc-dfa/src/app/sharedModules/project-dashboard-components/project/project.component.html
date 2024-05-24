@@ -1,9 +1,9 @@
-<div class="content-container" style="padding-bottom: 100px; padding-top: 20px;" *ngIf="lstFilteredProjects.length > 0">
+<div class="content-container" style="padding-bottom: 100px; padding-top: 20px;">
   <div class="row filterStage">
     <div class="col-md-2 ">
-      <mat-select placeholder="Filter by stage" class="boxborder" [(value)]="stageSelected" (selectionChange)="ApplyFilter(1)">
+      <mat-select placeholder="Filter by stage" class="boxborder" [(value)]="stageSelected" (selectionChange)="ApplyFilter(1,null)">
         <mat-option value="All">
-          All
+          All Projects
         </mat-option>
         <mat-option *ngIf="apptype == 'current'" value="Draft">
           Draft
@@ -24,7 +24,10 @@
     </div>
 
     <div class="col-md-2">
-      <mat-select placeholder="Filter by days" class="boxborder">
+      <mat-select placeholder="Filter by days" class="boxborder" [(value)]="filterbydaysSelected" (selectionChange)="ApplyFilter(2,null)">
+        <mat-option value="-1">
+          All Projects
+        </mat-option>
         <mat-option value="30">
           Last 30 days
         </mat-option>
@@ -41,7 +44,7 @@
     </div>
 
     <div class="col-md-2 ">
-      <mat-select placeholder="Sort by" class="boxborder">
+      <mat-select placeholder="Sort by" class="boxborder" [(value)]="sortfieldSelected" (selectionChange)="ApplyFilter(3,null)">
         <mat-option value="projectnumber">
           Project Number
         </mat-option>
@@ -62,7 +65,9 @@
 
     <div class="col-md-3 searchDiv">
       <input
+        #searchBox
         id="searchBox"
+        (keyup)="ApplyFilter(4,searchBox.value)"
         class="boxborder"
         matInput
         placeholder="Search"

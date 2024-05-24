@@ -14,6 +14,7 @@ import { CurrentApplication, CurrentProject } from 'src/app/core/api/models';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
+
 export class DfaDashProjectComponent implements OnInit {
 
   addNewItem(value: number) {
@@ -47,7 +48,10 @@ export class DfaDashProjectComponent implements OnInit {
   private sixtyOneDaysAgo: number;
   public isLoading: boolean = true;
   public color: string = "'#169BD5";
+  public searchTextInput: string = '';
   public stageSelected: string = '';
+  public sortfieldSelected: string = '';
+  public filterbydaysSelected: number;
 
   constructor(
     private profileDataService: ProfileDataService,
@@ -170,29 +174,55 @@ export class DfaDashProjectComponent implements OnInit {
     this.lstFilteredProjects = this.lstProjects;
   }
 
-  ApplyFilter(type: number): void {
-    switch (type) {
-      case 1:
-        if (this.stageSelected == 'All') {
-          this.lstFilteredProjects = this.lstProjects;
-        }
-        else if (this.stageSelected == 'Approved') {
-          this.lstFilteredProjects = this.lstProjects.filter(m => m.status.toLowerCase() == 'decision made' && m.stage.toLowerCase() == 'approved');
-        } else if (this.stageSelected == 'Closed') {
-          this.lstFilteredProjects = this.lstProjects.filter(m => m.status.toLowerCase() == 'decision made' && m.stage.toLowerCase() != 'approved');
-        }
-        else {
-          this.lstFilteredProjects = this.lstProjects.filter(m => m.status.toLowerCase().indexOf(this.stageSelected.toLowerCase()) > -1);
-        }
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
-      default:
+  ApplyFilter(type: number, searchText: string): void {
+    var lstProjectsFilterting = this.lstProjects;
+
+    if (searchText != null){
+      this.searchTextInput = searchText;
     }
+
+    if (this.stageSelected != '' && this.stageSelected != null) {
+
+      if (this.stageSelected == 'All') {
+        lstProjectsFilterting = lstProjectsFilterting;
+      }
+      else if (this.stageSelected == 'Approved') {
+        lstProjectsFilterting = lstProjectsFilterting.filter(m => m.status.toLowerCase() == 'decision made' && m.stage.toLowerCase() == 'approved');
+      } else if (this.stageSelected == 'Closed') {
+        lstProjectsFilterting = lstProjectsFilterting.filter(m => m.status.toLowerCase() == 'decision made' && m.stage.toLowerCase() != 'approved');
+      }
+      else {
+        lstProjectsFilterting = lstProjectsFilterting.filter(m => m.status.toLowerCase().indexOf(this.stageSelected.toLowerCase()) > -1);
+      }
+    }
+
+    if (this.filterbydaysSelected && this.filterbydaysSelected != -1) {
+      var backdate = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * this.filterbydaysSelected));
+      lstProjectsFilterting = lstProjectsFilterting.filter(m => (backdate <= new Date(m.createdDate)));
+    }
+
+    if (this.sortfieldSelected != '' && this.sortfieldSelected != null) {
+      if (this.sortfieldSelected == 'projectname') {
+        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.projectName > b.projectName) ? 1 : ((b.projectName > a.projectName) ? -1 : 0))
+      } else if (this.sortfieldSelected == 'projectnumber') {
+        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.projectNumber > b.projectNumber) ? 1 : ((b.projectNumber > a.projectNumber) ? -1 : 0))
+      } else if (this.sortfieldSelected == 'sitelocation') {
+        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.siteLocation > b.siteLocation) ? 1 : ((b.siteLocation > a.siteLocation) ? -1 : 0))
+      } else if (this.sortfieldSelected == 'completiondate') {
+        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (new Date(a.estimatedCompletionDate) > new Date(b.estimatedCompletionDate)) ? 1 : (new Date(b.estimatedCompletionDate) > new Date(a.estimatedCompletionDate) ? -1 : 0))
+      } else if (this.sortfieldSelected == '18monthdeadline') {
+        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (new Date(a.deadline18Month) > new Date(b.deadline18Month)) ? 1 : (new Date(b.deadline18Month) > new Date(a.deadline18Month) ? -1 : 0))
+      }
+    }
+    
+    if (this.searchTextInput != null) {
+      lstProjectsFilterting = lstProjectsFilterting.filter(m => m.projectName.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
+        || m.projectNumber.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
+        || m.siteLocation.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1);
+    }
+
+    this.lstFilteredProjects = lstProjectsFilterting;
+        
   }
 
   ViewProject(applItem: ProjectExtended): void {

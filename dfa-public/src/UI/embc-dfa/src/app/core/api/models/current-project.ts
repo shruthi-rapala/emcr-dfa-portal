@@ -2,6 +2,7 @@
 /* eslint-disable */
 import { ProjectStatusBar } from './project-status-bar';
 export interface CurrentProject {
+  createdDate?: string;
   deadline18Month?: string;
   emcrApprovedAmount?: string;
   estimatedCompletionDate?: string;
