@@ -14,6 +14,7 @@ using AutoMapper;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using EMBC.Utilities.Messaging;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -107,6 +108,9 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> UpdateApplication(DFAApplicationMain application)
         {
+            var e2 = ((ApplicantSubtypeCategories)System.Enum.Parse(typeof(ApplicantSubtypeCategories), "FirstNationCommunity")).ToString();
+            var e3 = ((EstimatedPercent)System.Enum.Parse(typeof(EstimatedPercent), "FirstNationCommunity")).ToString();
+
             if (application == null) return BadRequest("Application details cannot be empty.");
             var dfa_appcontact = await handler.HandleGetUser(currentUserId);
             application.ProfileVerification = new ProfileVerification() { profileId = dfa_appcontact.Id };
@@ -216,40 +220,52 @@ namespace EMBC.DFA.API.Controllers
                 new ApplicantSubtypes()
                 {
                     ID = "1",
-                    SubType = GetEnumDescription(ApplicantSubtypeCategories.FirstNationCommunity),
-                    DFAComment = "Comment 1 FirstNationCommunity",
-                    EstimatePercent = 90,
+                    SubType = GetEnumMemberAttrValue(ApplicantSubtypeCategories.FirstNationCommunity),
+                    DFAComment = string.Empty,
+                    EstimatePercent = Convert.ToInt32(EstimatedPercent.FirstNationCommunity),
                 },
                 new ApplicantSubtypes()
                 {
                     ID = "2",
-                    SubType = GetEnumDescription(ApplicantSubtypeCategories.Municipality),
-                    DFAComment = "Comment 2 Municipality",
-                    EstimatePercent = 90,
+                    SubType = GetEnumMemberAttrValue(ApplicantSubtypeCategories.Municipality),
+                    DFAComment = string.Empty,
+                    EstimatePercent = Convert.ToInt32(EstimatedPercent.FirstNationCommunity),
                 },
                 new ApplicantSubtypes()
                 {
                     ID = "3",
-                    SubType = GetEnumDescription(ApplicantSubtypeCategories.RegionalDistrict),
-                    DFAComment = "Comment 3 RegionalDistrict",
-                    EstimatePercent = 90,
+                    SubType = GetEnumMemberAttrValue(ApplicantSubtypeCategories.RegionalDistrict),
+                    DFAComment = string.Empty,
+                    EstimatePercent = Convert.ToInt32(EstimatedPercent.RegionalDistrict),
                 },
                 new ApplicantSubtypes()
                 {
                     ID = "4",
-                    SubType = GetEnumDescription(ApplicantSubtypeCategories.OtherLocalGovernmentBody),
-                    DFAComment = "Comment 4 OtherLocalGovernmentBody",
-                    EstimatePercent = 95,
+                    SubType = GetEnumMemberAttrValue(ApplicantSubtypeCategories.OtherLocalGovernmentBody),
+                    DFAComment = string.Empty,
+                    EstimatePercent = Convert.ToInt32(EstimatedPercent.OtherLocalGovernmentBody),
                 },
                 new ApplicantSubtypes()
                 {
                     ID = "5",
-                    SubType = GetEnumDescription(ApplicantSubtypeCategories.Other),
-                    DFAComment = "Comment Other",
-                    EstimatePercent = 95,
+                    SubType = GetEnumMemberAttrValue(ApplicantSubtypeCategories.Other),
+                    DFAComment = string.Empty,
+                    EstimatePercent = Convert.ToInt32(EstimatedPercent.Other),
                 }
             };
             return Ok(lstApplicantSubtypes);
+        }
+
+        /// <summary>
+        /// Get the applicant subtype records
+        /// </summary>
+        /// <returns>applicant subtype records</returns>
+        [HttpGet("applicantsubsubtypes")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<ApplicantSubtypeSubCategories> GetApplicantSubSubTypes()
+        {
+            return Ok(null);
         }
 
         public static string GetEnumDescription(System.Enum value)
@@ -264,6 +280,19 @@ namespace EMBC.DFA.API.Controllers
             }
 
             return value.ToString();
+        }
+
+        public string GetEnumMemberAttrValue<T>(T enumVal)
+        {
+            var enumType = typeof(T);
+            var memInfo = enumType.GetMember(enumVal.ToString());
+            var attr = memInfo.FirstOrDefault()?.GetCustomAttributes(false).OfType<EnumMemberAttribute>().FirstOrDefault();
+            if (attr != null)
+            {
+                return attr.Value;
+            }
+
+            return null;
         }
     }
 

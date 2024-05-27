@@ -141,7 +141,7 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  navigateToDFAPrescreening(): void {
+  navigateToDFAApplicationCreate(): void {
     this.dfaApplicationMainDataService.setApplicationId(null);
     this.dfaApplicationMainDataService.setViewOrEdit('add');
     var profileId = this.profileDataService.getProfileId();
