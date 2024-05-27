@@ -1,12 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
-import { ApplicantSubtypeSubCategories } from './applicant-subtype-sub-categories';
 
 /**
  * Property Damage
  */
 export interface PropertyDamage {
-  applicantSubSubtype?: null | ApplicantSubtypeSubCategories;
+  applicantSubSubtype?: null | string;
   applicantSubtype?: null | string;
   damageFromDate?: null | string;
   damageToDate?: null | string;

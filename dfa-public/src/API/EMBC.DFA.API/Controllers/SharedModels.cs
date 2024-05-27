@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
@@ -322,20 +323,42 @@ namespace EMBC.DFA.API.Controllers
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ApplicantSubtypeCategories
     {
-        [Description("First Nations Community")]
+        [EnumMember(Value = "First Nations Community")]
         FirstNationCommunity,
 
-        [Description("Municipality")]
+        [EnumMember(Value = "Municipality")]
         Municipality,
 
-        [Description("Regional District")]
+        [EnumMember(Value = "Regional District")]
         RegionalDistrict,
 
-        [Description("Other Local Government Body")]
+        [EnumMember(Value = "Other Local Government Body")]
         OtherLocalGovernmentBody,
 
-        [Description("Other")]
+        [EnumMember(Value = "Other")]
         Other
+    }
+
+    /// <summary>
+    /// Applicant Subtype Categories
+    /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum EstimatedPercent
+    {
+        [EnumMember(Value = "First Nations Community")]
+        FirstNationCommunity = 90,
+
+        [EnumMember(Value = "Municipality")]
+        Municipality = 90,
+
+        [EnumMember(Value = "Regional District")]
+        RegionalDistrict = 90,
+
+        [EnumMember(Value = "Other Local Government Body")]
+        OtherLocalGovernmentBody = 95,
+
+        [EnumMember(Value = "Other")]
+        Other = 95
     }
 
     /// <summary>
@@ -436,7 +459,7 @@ namespace EMBC.DFA.API.Controllers
         public string? damageToDate { get; set; }
         public bool? guidanceSupport { get; set; }
         public string? applicantSubtype { get; set; }
-        public ApplicantSubtypeSubCategories? applicantSubSubtype { get; set; }
+        public string? applicantSubSubtype { get; set; }
         public string? estimatedPercent { get; set; }
         public string? subtypeOtherDetails { get; set; }
         public string? subtypeDFAComment { get; set; }

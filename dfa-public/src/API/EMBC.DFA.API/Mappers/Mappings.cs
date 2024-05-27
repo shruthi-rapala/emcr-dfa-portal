@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Linq;
 using EMBC.DFA.API;
@@ -12,6 +13,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.VisualBasic;
 using static StackExchange.Redis.Role;
+using Enum = System.Enum;
 
 namespace EMBC.DFA.API.Mappers
 {
@@ -175,11 +177,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_causeofdamagelandslide2, opts => opts.MapFrom(s => s.propertyDamage.landslideDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageother2, opts => opts.MapFrom(s => s.propertyDamage.otherDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.otherDamageText))
-                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.applicantSubtype))
-                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.applicantSubSubtype))
-                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.subtypeOtherDetails))
-                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.subtypeDFAComment))
-                //.ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.estimatedPercent))
+                .ForMember(d => d.dfa_applicantsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeOptionSet(s.propertyDamage.applicantSubtype)))
+                .ForMember(d => d.dfa_applicantlocalgovsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeSubOptionSet(s.propertyDamage.applicantSubSubtype)))
+                .ForMember(d => d.dfa_applicantothercomments, opts => opts.MapFrom(s => s.propertyDamage.subtypeOtherDetails))
+                .ForMember(d => d.dfa_dfaapplicantsubtypecomments, opts => opts.MapFrom(s => s.propertyDamage.subtypeDFAComment))
+                .ForMember(d => d.dfa_estimated, opts => opts.MapFrom(s => s.propertyDamage.estimatedPercent))
                 .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.propertyDamage.damageFromDate))
                 .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.propertyDamage.damageToDate));
 
@@ -227,11 +229,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.Yes ? true : (s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
 
-                .ForMember(d => d.applicantSubtype, opts => opts.MapFrom(s => GetEnumDescription(ApplicantSubtypeCategories.OtherLocalGovernmentBody)))
-                .ForMember(d => d.applicantSubSubtype, opts => opts.MapFrom(s => ApplicantSubtypeSubCategories.BoardofVariance))
-                .ForMember(d => d.subtypeOtherDetails, opts => opts.MapFrom(s => "Test 123"))
-                .ForMember(d => d.estimatedPercent, opts => opts.MapFrom(s => "95"))
-                .ForMember(d => d.subtypeDFAComment, opts => opts.MapFrom(s => "Comment 4 OtherLocalGovernmentBody"))
+                .ForMember(d => d.applicantSubtype, opts => opts.MapFrom(s => GetEnumDescription((ApplicantSubtypeCategoriesOptionSet)s.dfa_applicantsubtype).ToString()))
+                .ForMember(d => d.applicantSubSubtype, opts => opts.MapFrom(s => GetEnumDescription((ApplicantSubtypeSubCategoriesOptionSet)s.dfa_applicantlocalgovsubtype).ToString()))
+                .ForMember(d => d.subtypeOtherDetails, opts => opts.MapFrom(s => s.dfa_applicantothercomments))
+                .ForMember(d => d.estimatedPercent, opts => opts.MapFrom(s => s.dfa_estimated))
+                .ForMember(d => d.subtypeDFAComment, opts => opts.MapFrom(s => s.dfa_dfaapplicantsubtypecomments))
 
                 .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamage) ? DateTime.Parse(s.dfa_dateofdamage).ToString("o") + "Z" : s.dfa_dateofdamage))
                 .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto));
@@ -535,6 +537,122 @@ namespace EMBC.DFA.API.Mappers
             else return RoomType.Other;
         }
 
+        public ApplicantSubtypeCategories ConvertStringToApplicantSubType(string subtype)
+        {
+            ApplicantSubtypeCategories roomType = ApplicantSubtypeCategories.Other;
+
+            if (System.Enum.TryParse(subtype, out roomType)) return roomType;
+            else return ApplicantSubtypeCategories.Other;
+        }
+
+        public ApplicantSubtypeCategoriesOptionSet ConvertStringToApplicantSubTypeOptionSet(string subtype)
+        {
+            switch (subtype)
+            {
+                case "First Nations Community":
+                    {
+                        return ApplicantSubtypeCategoriesOptionSet.FirstNationCommunity;
+                    }
+                case "Municipality":
+                    {
+                        return ApplicantSubtypeCategoriesOptionSet.Municipality;
+                    }
+                case "Regional District":
+                    {
+                        return ApplicantSubtypeCategoriesOptionSet.RegionalDistrict;
+                    }
+                case "Other Local Government Body":
+                    {
+                        return ApplicantSubtypeCategoriesOptionSet.OtherLocalGovernmentBody;
+                    }
+                case "Other":
+                    {
+                        return ApplicantSubtypeCategoriesOptionSet.Other;
+                    }
+                default:
+                    {
+                        return ApplicantSubtypeCategoriesOptionSet.FirstNationCommunity;
+                    }
+            }
+        }
+
+        public ApplicantSubtypeSubCategoriesOptionSet ConvertStringToApplicantSubTypeSub(string subtype)
+        {
+            ApplicantSubtypeSubCategories subType = ApplicantSubtypeSubCategories.Any;
+            System.Enum.TryParse(subtype, out subType);
+            //if (System.Enum.TryParse(subtype, out subType)) System.Enum.Parse(subType, subtype);
+            //else subType = ApplicantSubtypeSubCategories.Any;
+
+            return ConvertStringToApplicantSubTypeSubOptionSet(subtype);
+        }
+
+        public ApplicantSubtypeSubCategoriesOptionSet ConvertStringToApplicantSubTypeSubOptionSet(string subtype)
+        {
+            switch (subtype)
+            {
+                case "an improvement district as defined in the Local Government Act":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.ImprovementDistrict;
+                    }
+                case "a local area as defined in the Local Services Act":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.LocalArea;
+                    }
+                case "a greater board as defined in the Community Charter or any incorporated board that provides similar services and is incorporated by letters patent":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.GreaterBoard;
+                    }
+                case "a board of variance established under Division 15 of Part 14 of the Local Government Act or section 572 of the Vancouver Charter":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.BoardofVariance;
+                    }
+                case "the trust council, the executive committee, a local trust committee and the Islands Trust Conservancy, as these are defined in the Islands Trust Act":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.TrustCouncil;
+                    }
+                case "the Okanagan Basin Water Board":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.OkanaganBasinWaterBoard;
+                    }
+                case "a water users' community as defined in section 1 (1) of the Water Users' Communities Act":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.WaterUsersCommunity;
+                    }
+                case "the Okanagan-Kootenay Sterile Insect Release Board":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.OkanaganKootenaySterileInsectReleaseBoard;
+                    }
+                case "a municipal police board established under section 23 of the Police Act":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.MunicipalPoliceBoard;
+                    }
+                case "a library board as defined in the Library Act":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.LibraryBoard;
+                    }
+                case "any board, committee, commission, panel, agency or corporation that is created or owned by a body referred to in paragraphs (a) to (m) and all the members or officers of which are appointed or chosen by or under the authority of that body":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.Any;
+                    }
+                case "a board of trustees established under section 37 of the Cremation, Interment and Funeral Services Act":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.BoardofTrustees;
+                    }
+                case "the South Coast British Columbia Transportation Authority":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.SouthCoast;
+                    }
+                case "the Park Board referred to in section 485 of the Vancouver Charter":
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.ParkBoard;
+                    }
+                default:
+                    {
+                        return ApplicantSubtypeSubCategoriesOptionSet.ImprovementDistrict;
+                    }
+            }
+        }
+
         public static string GetEnumDescription(System.Enum value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
@@ -547,6 +665,28 @@ namespace EMBC.DFA.API.Mappers
             }
 
             return value.ToString();
+        }
+
+        public string GetEnumMemberValue<T>(T value)
+    where T : struct, IConvertible
+        {
+            return typeof(T)
+                .GetTypeInfo()
+                .DeclaredMembers
+                .SingleOrDefault(x => x.Name == value.ToString())
+                ?.GetCustomAttribute<EnumMemberAttribute>(false)
+                ?.Value;
+        }
+
+        public static string GetEnumMemberByValue<T>(T value)
+    where T : struct, IConvertible
+        {
+            return typeof(T)
+                .GetTypeInfo()
+                .DeclaredMembers
+                .SingleOrDefault(x => x.Name == value.ToString())
+                ?.GetCustomAttribute<EnumMemberAttribute>(false)
+                ?.Value;
         }
     }
 }

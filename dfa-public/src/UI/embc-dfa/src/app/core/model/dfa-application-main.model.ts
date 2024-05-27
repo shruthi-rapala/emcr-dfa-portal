@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ApplicantSubtypeSubCategories } from 'src/app/core/api/models';
+import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType } from 'src/app/core/api/models';
 
 export class DamagedPropertyAddress {
   addressLine1?: null | string;
@@ -269,7 +269,7 @@ export class PropertyDamage {
   guidanceSupport?: null | boolean;
   applicantSubtype?: null | string;
   applicantSubtypeId?: null | string;
-  applicantSubSubtype?: ApplicantSubtypeSubCategories;
+  applicantSubSubtype?: null | string;
   estimatedPercent?: null | string;
   subtypeOtherDetails?: null | string;
   subtypeDFAComment?: null | string;
@@ -284,7 +284,7 @@ export class PropertyDamage {
     otherDamageText?: null | string,
     damageFromDate?: null | Date,
     damageToDate?: null | Date,
-    applicantSubSubtype?: ApplicantSubtypeSubCategories,
+    applicantSubSubtype?: null | string,
     applicantSubtypeId?: null | string,
     applicantSubtype?: null | string,
     estimatedPercent?: null | string,
