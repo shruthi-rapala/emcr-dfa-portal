@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoginService } from './core/services/login.service';
 import { BootstrapService } from './core/services/bootstrap.service';
-import { OAuthModule } from 'angular-oauth2-oidc';
+import { AuthModule, OidcSecurityService } from 'angular-auth-oidc-client';
 import { APP_BASE_HREF } from '@angular/common';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
@@ -34,7 +34,6 @@ describe('AppComponent', () => {
       imports: [
         HttpClientTestingModule,
         RouterTestingModule,
-        OAuthModule.forRoot(),
         NgIdleKeepaliveModule.forRoot(),
         MatDialogModule
       ],

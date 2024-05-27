@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockOutageService } from 'src/app/unit-tests/mockOutage.service';
 import { OutageComponent } from './outage.component';
 import { OutageService } from './outage.service';
-import { OAuthModule } from 'angular-oauth2-oidc';
 
 describe('OutageComponent', () => {
   let component: OutageComponent;
@@ -19,7 +18,6 @@ describe('OutageComponent', () => {
         MatDialogModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        OAuthModule.forRoot()
       ],
       declarations: [OutageComponent],
       providers: [

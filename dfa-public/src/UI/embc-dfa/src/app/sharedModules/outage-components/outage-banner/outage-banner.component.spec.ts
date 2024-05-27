@@ -3,7 +3,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { OAuthModule } from 'angular-oauth2-oidc';
 import { OutageComponent } from 'src/app/feature-components/outage/outage.component';
 import { OutageService } from 'src/app/feature-components/outage/outage.service';
 import { MockOutageService } from 'src/app/unit-tests/mockOutage.service';
@@ -21,7 +20,6 @@ describe('OutageBannerComponent', () => {
         MatDialogModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        OAuthModule.forRoot()
       ],
       declarations: [OutageBannerComponent],
       providers: [

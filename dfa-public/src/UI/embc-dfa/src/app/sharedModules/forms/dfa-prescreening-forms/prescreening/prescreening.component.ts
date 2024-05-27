@@ -13,10 +13,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Address, ApplicantOption, InsuranceOption, DisasterEvent, Profile } from 'src/app/core/api/models';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import * as globalConst from '../../../../core/services/globalConstants';
@@ -92,15 +92,21 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       this.prescreeningForm.updateValueAndValidity();
     })
 
-    if (this.loginService.isLoggedIn() == true) {
-      this.isLoggedIn = true;
-      this.getProfileAddress();
-    } else {
-      this.prescreeningForm.controls.isPrimaryAndDamagedAddressSame.setValidators(null);
-      this.prescreeningForm.controls.profileId.setValidators(null);
-      this.prescreeningForm.updateValueAndValidity();
-    }
-
+    // 2024-05-27 EMCRI-21 waynezen: re-written logic to handle Async isLoggedIn return
+    this.loginService.isLoggedIn()
+      .pipe(
+        map(isAuth => {
+          if (isAuth == true) {
+            this.isLoggedIn = true;
+            this.getProfileAddress();
+          }
+          else {
+            this.prescreeningForm.controls.isPrimaryAndDamagedAddressSame.setValidators(null);
+            this.prescreeningForm.controls.profileId.setValidators(null);
+            this.prescreeningForm.updateValueAndValidity();
+          }
+        }));
+    
     this.getOpenDisasterEvents();
 
     this.prescreeningForm

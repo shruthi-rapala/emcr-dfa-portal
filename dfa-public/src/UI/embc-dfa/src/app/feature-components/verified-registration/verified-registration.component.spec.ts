@@ -14,7 +14,6 @@ import { MockTimeoutService } from 'src/app/unit-tests/mockTimeout.service';
 import { MockExpiry } from 'src/app/unit-tests/mockExpiry.service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { MatDialogModule } from '@angular/material/dialog';
-import { OAuthModule } from 'angular-oauth2-oidc';
 
 describe('VerifiedRegistrationComponent', () => {
   let app: VerifiedRegistrationComponent;
@@ -31,7 +30,6 @@ describe('VerifiedRegistrationComponent', () => {
         RouterTestingModule,
         NgIdleKeepaliveModule.forRoot(),
         MatDialogModule,
-        OAuthModule.forRoot()
       ],
       providers: [
         UntypedFormBuilder,

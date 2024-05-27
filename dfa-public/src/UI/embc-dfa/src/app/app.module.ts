@@ -9,7 +9,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker'
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { ApiModule } from './core/api/api.module';
-import { OAuthModule } from 'angular-oauth2-oidc';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { OutageBannerComponent } from './sharedModules/outage-components/outage-banner/outage-banner.component';
@@ -39,14 +38,6 @@ import { AuthConfigModule } from './auth/auth-config.module';
     CoreModule,
     ApiModule.forRoot({ rootUrl: '.' }),
     NgIdleKeepaliveModule.forRoot(),
-    OAuthModule.forRoot({
-      resourceServer: {
-        sendAccessToken: true,
-        customUrlValidation: (url) =>
-          url.toLowerCase().includes('/api/') &&
-          !url.toLowerCase().endsWith('/configuration')
-      }
-    }),
     LayoutModule,
     ButtonsModule,
     MatIconModule,

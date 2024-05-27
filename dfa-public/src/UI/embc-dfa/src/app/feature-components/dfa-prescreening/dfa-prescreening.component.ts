@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as globalConst from '../../core/services/globalConstants';
 import { MatStepper } from '@angular/material/stepper';
 import { Subscription } from 'rxjs';
+import { map } from "rxjs/operators";
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { DFAPrescreeningDataService } from './dfa-prescreening-data.service';
 import { ApplicantOption } from 'src/app/core/api/models';
@@ -71,7 +72,14 @@ export class DFAPrescreeningComponent
         this.dfaPrescreeningForm = prescreening;
       });
 
-    this.isLoggedIn = this.loginService.isLoggedIn();
+    //    this.isLoggedIn = this.loginService.isLoggedIn();
+
+    // 2024-05-27 EMCRI-21 waynezen: re-written logic to handle Async isLoggedIn return
+    this.loginService.isLoggedIn()
+      .pipe(
+        map(isAuth => {
+          this.isLoggedIn = isAuth;
+        }));
   }
 
   ngAfterViewChecked(): void {
