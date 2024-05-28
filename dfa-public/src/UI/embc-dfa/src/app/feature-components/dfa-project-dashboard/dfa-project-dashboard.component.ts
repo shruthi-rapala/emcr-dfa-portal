@@ -61,7 +61,7 @@ export class DFAProjectComponent
 
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('id');
-    this.applicationNumber = 'Application_' + this.appId;
+    this.applicationNumber = 'Application';
     var applicationId = '807d7779-2113-ef11-b84d-00505683fbf4'; //this.dfaApplicationMainDataService.getApplicationId();
 
     this.appSessionService.currentApplicationsCount.subscribe((n: number) => {
