@@ -49,7 +49,7 @@ const routes: Routes = [
     path: 'dfa-application/:id/projects',
     loadChildren: () =>
       import(
-        './feature-components/dfa-project/dfa-project.module'
+        './feature-components/dfa-project-dashboard/dfa-project-dashboard.module'
       ).then((m) => m.DFAProjectModule),
     canActivate: [AuthGuard]
   },
@@ -57,7 +57,7 @@ const routes: Routes = [
     path: 'dfa-application/:id/project/:projId',
     loadChildren: () =>
       import(
-        './feature-components/dfa-project/dfa-project.module'
+        './feature-components/dfa-project-dashboard/dfa-project-dashboard.module'
       ).then((m) => m.DFAProjectModule),
     canActivate: [AuthGuard]
   },
@@ -77,6 +77,22 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'dfa-project-main',
+    loadChildren: () =>
+      import(
+        './feature-components/dfa-project-main/dfa-project-main.module'
+      ).then((m) => m.DFAProjectMainModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'dfa-project-main/:id',
+    loadChildren: () =>
+      import(
+        './feature-components/dfa-project-main/dfa-project-main.module'
+      ).then((m) => m.DFAProjectMainModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'invite-error',
     loadChildren: () =>
       import('./feature-components/invite-error/invite-error.module').then(
@@ -93,7 +109,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy', scrollPositionRestoration: 'top' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
