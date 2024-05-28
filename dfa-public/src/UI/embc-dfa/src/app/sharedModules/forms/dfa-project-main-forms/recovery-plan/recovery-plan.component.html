@@ -1,0 +1,292 @@
+<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+  <mat-card-content>
+
+    <form [formGroup]="recoveryPlanForm">
+      <div class="col-12 content-container infoText" >
+        <div class="row">
+          <div class="infoIconCol">
+            <div class="material-icons infoIconStyle">info</div>
+          </div>
+          <div class="col-md-11">
+            <span class="page-subheadbold">Please review and complete the form below. As this account is linked to your BC Services Card, certain fields are not editable.</span><br />
+                Required fields are marked with a red asterisk *
+          </div>
+          <div class="col-md-6"></div>
+      
+          </div>
+          <div class="col-md-6"></div>
+      </div>
+      <br/>
+      <ng-container>
+        <div class="row">
+          <div class="col-md-3">
+            <p class="sub-heading" style="font-size: 15px">
+              Project Number<span style="color:red" >*</span>
+            </p>
+            <mat-form-field appearance="outline">
+              <input
+                formControlName="projectNumber"
+                matInput
+                required
+                placeholder="Project Number"
+                maxlength="100"/>
+            </mat-form-field>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-8">
+            <p class="sub-heading" style="font-size: 15px">
+              Project Name<span style="color:red" >*</span>
+            </p>
+            <mat-form-field appearance="outline">
+              <input
+                formControlName="projectName"
+                matInput
+                required
+                placeholder="Project Name"
+                maxlength="100"/>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Are the dates of damage the same dates provided on the application?<span style="color:red" >*</span>
+          </p>
+          <mat-radio-group
+            formControlName="isdamagedDateSameAsApplication"
+            class="primary-radio-group horizontal-radio-group"
+            required
+            aria-label="Select an option">
+            <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+          </mat-radio-group><br/><br/><br/>
+        </div>
+
+        <div class="row" *ngIf="showDates == true">
+          <p class="sub-heading" style="font-size: 15px">
+            What is this site location's date(s) of damage?:<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" >
+              <mat-label>From date</mat-label>
+              <input matInput
+                [matDatepicker]="fromPicker"
+                [readonly]="isReadOnly === true"
+                formControlName="sitelocationdamageFromDate"
+                [max]="recoveryPlanForm.get('sitelocationdamageToDate').value ? recoveryPlanForm.get('sitelocationdamageToDate').value : todayDate"
+                required >
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="fromPicker" [disabled]="isReadOnly === true"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #fromPicker [disabled]="isReadOnly === true"
+              ></mat-datepicker>
+              <mat-error
+                *ngIf="
+                recoveryPlanForm.get('sitelocationdamageFromDate').invalid &&
+                recoveryPlanForm.get('sitelocationdamageFromDate').hasError('required')
+              "
+              >
+                From date is required</mat-error
+              >
+              <mat-error
+              *ngIf="
+              recoveryPlanForm.get('sitelocationdamageFromDate').invalid &&
+              recoveryPlanForm.get('sitelocationdamageFromDate').hasError('matDatepickerMax')
+            "
+            >
+              From date cannot be in the future or after to date</mat-error
+            >
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>To date</mat-label>
+              <input matInput
+                [matDatepicker]="toPicker"
+                formControlName="sitelocationdamageToDate"
+                [readonly]="isReadOnly === true"
+                [min]="recoveryPlanForm.get('sitelocationdamageFromDate').value ? recoveryPlanForm.get('sitelocationdamageFromDate').value : '2000-01-01'"
+                [max]="todayDate"
+                required>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="toPicker" [disabled]="isReadOnly === true"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #toPicker [disabled]="isReadOnly === true"
+              ></mat-datepicker>
+              <mat-error
+                *ngIf="
+                recoveryPlanForm.get('sitelocationdamageToDate').invalid &&
+                recoveryPlanForm.get('sitelocationdamageToDate').hasError('required')
+              "
+              >
+                To date is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                recoveryPlanForm.get('sitelocationdamageToDate').invalid &&
+                recoveryPlanForm.get('sitelocationdamageToDate').hasError('matDatepickerMin')
+              "
+              >
+                To date cannot be before from date</mat-error
+              >
+              <mat-error
+                *ngIf="
+                recoveryPlanForm.get('sitelocationdamageToDate').invalid &&
+                recoveryPlanForm.get('sitelocationdamageToDate').hasError('matDatepickerMax')
+              "
+              >
+                To date cannot be a future date</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row" >
+          <p class="sub-heading" style="font-size: 15px">
+            Why is this site location's date(s) of damage different from dates provided on the application?<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="differentDamageDatesReason"
+                placeholder="Why is this site location's date(s) of damage different from dates provided on the application?"
+                [rows]="5"
+                required
+                style="resize:none"
+                maxlength="200"></textarea>
+              <!--<mat-hint>{{ remainingLength }} characters remaining.</mat-hint>-->
+            </mat-form-field><br/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <p class="sub-heading" style="font-size: 15px">
+              Site Location<span style="color:red" >*</span>
+            </p>
+            <mat-form-field appearance="outline">
+              <input
+                formControlName="siteLocation"
+                required
+                matInput
+                placeholder="Site Location"
+                maxlength="100"/>
+            </mat-form-field>
+          </div>
+        </div>
+        <br />
+        <div>
+          <p class="sub-heading" style="font-size: 18px; font-weight: bold;">
+            Damage Description
+          </p>
+        </div>
+
+        <div class="row" >
+          <p class="sub-heading" style="font-size: 15px">
+            What infrastructure was damaged?<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="infraDamageDetails"
+                placeholder="What infrastructure was damaged?"
+                [rows]="5"
+                required
+                style="resize:none"
+                maxlength="200"></textarea>
+            </mat-form-field><br/>
+          </div>
+        </div>
+        <div class="row" >
+          <p class="sub-heading" style="font-size: 15px">
+            What caused the damage?<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="causeofDamageDetails"
+                placeholder="What caused the damage?"
+                [rows]="5"
+                required
+                style="resize:none"
+                maxlength="200"></textarea>
+            </mat-form-field><br/>
+          </div>
+        </div>
+        <br />
+        <div class="row" >
+          <p class="sub-heading" style="font-size: 15px">
+            Describe the damage<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="describeDamageDetails"
+                placeholder="Describe the damage"
+                [rows]="5"
+                required
+                style="resize:none"
+                maxlength="200"></textarea>
+            </mat-form-field><br/>
+          </div>
+        </div>
+
+        <div class="row" >
+          <p class="sub-heading" style="font-size: 15px">
+            Describe the materials, including quantities and measurements, of the damaged infrastructure<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="describeDamagedInfrastructure"
+                placeholder="Describe the materials, including quantities and measurements, of the damaged infrastructure"
+                [rows]="5"
+                required
+                style="resize:none"
+                maxlength="200"></textarea>
+            </mat-form-field><br/>
+          </div>
+        </div>
+        <br />
+        <div>
+          <p class="sub-heading" style="font-size: 18px; font-weight: bold;">
+            Repair Work Description
+          </p>
+        </div>
+
+        <div class="row" >
+          <p class="sub-heading" style="font-size: 15px">
+            Describe the repair work<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="repairWorkDetails"
+                placeholder="Describe the repair work"
+                [rows]="5"
+                required
+                style="resize:none"
+                maxlength="200"></textarea>
+            </mat-form-field><br/>
+          </div>
+        </div>
+        <div class="row" >
+          <p class="sub-heading" style="font-size: 15px">
+            Describe the materials, including quantities and measurements, to repair damaged infrastructure<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="repairDamagedInfrastructure"
+                placeholder="Describe the materials, including quantities and measurements, to repair damaged infrastructure"
+                [rows]="5"
+                style="resize:none"
+                required
+                maxlength="200"></textarea>
+            </mat-form-field><br/>
+          </div>
+        </div>
+      </ng-container>
+      
+    </form>
+    
+  </mat-card-content>
+</mat-card>
