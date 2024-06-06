@@ -10,7 +10,10 @@
 //@import '~@bcgov/bootstrap-theme/dist/scss/common';
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+
+// 2024-05-24 EMCRI-21 waynezen: fixed paths changed for bootstrap?
+@import 'node_modules/bootstrap/scss/bootstrap';
+
 
 @import '@angular/material/theming';
 

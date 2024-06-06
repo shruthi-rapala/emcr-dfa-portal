@@ -32,6 +32,7 @@ import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAPrescreeningDataService } from 'src/app/feature-components/dfa-prescreening/dfa-prescreening-data.service';
+import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { LoginService } from 'src/app/core/services/login.service';
 
 @Component({
@@ -64,6 +65,7 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private eligibilityService: EligibilityService,
     private prescreeningDataService: DFAPrescreeningDataService,
+    private oidcSecurityService: OidcSecurityService,
     private loginService: LoginService
   ) {
     this.formBuilder = formBuilder;
@@ -92,21 +94,19 @@ export default class PrescreeningComponent implements OnInit, OnDestroy {
       this.prescreeningForm.updateValueAndValidity();
     })
 
-    // 2024-05-27 EMCRI-21 waynezen: re-written logic to handle Async isLoggedIn return
-    this.loginService.isLoggedIn()
-      .pipe(
-        map(isAuth => {
-          if (isAuth == true) {
-            this.isLoggedIn = true;
-            this.getProfileAddress();
-          }
-          else {
-            this.prescreeningForm.controls.isPrimaryAndDamagedAddressSame.setValidators(null);
-            this.prescreeningForm.controls.profileId.setValidators(null);
-            this.prescreeningForm.updateValueAndValidity();
-          }
-        }));
-    
+    // 2024-05-27 EMCRI-217 waynezen: use new BCeID async Auth
+    this.oidcSecurityService.isAuthenticated().subscribe(isAuth => {
+      if (isAuth == true) {
+        this.isLoggedIn = true;
+        this.getProfileAddress();
+      }
+      else {
+        this.prescreeningForm.controls.isPrimaryAndDamagedAddressSame.setValidators(null);
+        this.prescreeningForm.controls.profileId.setValidators(null);
+        this.prescreeningForm.updateValueAndValidity();
+      }
+    });
+
     this.getOpenDisasterEvents();
 
     this.prescreeningForm

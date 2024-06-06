@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
       //this.environment = await this.configService.loadEnvironmentBanner();
       this.environment = null;
       await this.bootstrapService.init();
-      await this.loginService.tryLogin();
+      // await this.loginService.tryLogin();
     } catch (error) {
       this.isLoading = false;
       if (error.status === 400 || error.status === 404) {

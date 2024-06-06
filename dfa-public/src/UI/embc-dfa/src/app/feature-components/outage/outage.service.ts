@@ -17,6 +17,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import * as globalConst from 'src/app/core/services/globalConstants';
 import { Router } from '@angular/router';
 import { CacheService } from 'src/app/core/services/cache.service';
+import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { LoginService } from 'src/app/core/services/login.service';
 import { ConfigService } from 'src/app/core/services/config.service';
 
@@ -46,6 +47,7 @@ export class OutageService {
     public configService: ConfigService,
     public alertService: AlertService,
     public router: Router,
+    private oidcSecurityService: OidcSecurityService,
     public loginService: LoginService,
     public cacheService: CacheService,
     private zone: NgZone
@@ -224,7 +226,9 @@ export class OutageService {
   }
 
   public async signOut(): Promise<void> {
-    await this.loginService.logout();
+    // 2024-06-05 EMCRI-217 waynezen: use new BCeID async Auth
+    await this.oidcSecurityService.logoffAndRevokeTokens();
+
     this.cacheService.clear();
     localStorage.clear();
   }

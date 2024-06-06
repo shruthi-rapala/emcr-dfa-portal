@@ -23,7 +23,12 @@ import { ScriptService } from "./core/services/scriptServices";
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY } from '@angular/material/autocomplete';
 import { MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+import { Configuration } from './configuration';
+import { OidcSecurityService, EventTypes, PublicEventsService } from 'angular-auth-oidc-client';
 import { AuthConfigModule } from './auth/auth-config.module';
+import { LoginService } from './core/services/login.service';
+
 
 @NgModule({
   declarations: [AppComponent, OutageBannerComponent, OutageDialogComponent],
@@ -48,6 +53,27 @@ import { AuthConfigModule } from './auth/auth-config.module';
     MatIconModule
   ],
   providers: [
+    // 2024-05-27 EMCRI-217 waynezen: use new BCeID async Auth
+    LoginService,
+    {
+      provide: Configuration,
+      useFactory: (authService: OidcSecurityService) => new Configuration(
+        {
+          basePath: '',//environment.apiUrl,
+          accessToken: authService.getAccessToken.bind(authService),
+          credentials: {
+            'Bearer': () => {
+              var token: string = authService.getAccessToken.bind(authService);
+              if (token) {
+                return 'Bearer ' + token;
+              }
+              return undefined;
+            }
+          }
+        }),
+      deps: [OidcSecurityService],
+      multi: false
+    },
     {
       provide: APP_BASE_HREF,
       useFactory: (s: PlatformLocation) => {

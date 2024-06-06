@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './core/services/auth.guard';
+//import { AuthGuard } from './core/services/auth.guard';
+import { AutoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
+// 2024-05-27 EMCRI-217 waynezen: replace AuthGuard with built-in from angular-auth-oidc-client
 const routes: Routes = [
   {
     path: '',
@@ -19,7 +21,7 @@ const routes: Routes = [
       import(
         './feature-components/verified-registration/verified-registration.module'
       ).then((m) => m.VerifiedRegistrationModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'dfa-application-start',
@@ -27,7 +29,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-application-start/dfa-application-start.module'
       ).then((m) => m.DFAApplicationStartModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'dfa-application-main',
@@ -35,7 +37,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-application-main/dfa-application-main.module'
       ).then((m) => m.DFAApplicationMainModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'dfa-application-main/:id',
@@ -43,7 +45,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-application-main/dfa-application-main.module'
       ).then((m) => m.DFAApplicationMainModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'dfa-prescreening',
@@ -58,7 +60,7 @@ const routes: Routes = [
       import(
         './feature-components/dashboard/dashboard.module'
       ).then((m) => m.DashboardModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'invite-error',
@@ -77,7 +79,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  // 2024-05-28 EMCRI-217 waynezen: relativeLinkResolution no longer supported in Angular v15
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
