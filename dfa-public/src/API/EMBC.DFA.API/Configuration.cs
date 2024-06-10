@@ -40,7 +40,7 @@ namespace EMBC.DFA.API
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
-            // 2024-05-27 EMCRI-217 waynezen:
+            // 2024-06-10 EMCRI-217 waynezen: imported from EMBC.Responders
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -97,16 +97,16 @@ namespace EMBC.DFA.API
                  };
              });
 
+            // 2024-05-27 EMCRI-217 waynezen: imported from EMBC.Responders
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
                 {
-                    policy
-                    .RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes("jwt")
-                    .RequireClaim("scope", "dfa-portal-api");
+                    policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                        .RequireAuthenticatedUser()
+                        .RequireClaim("user_role")
+                        .RequireClaim("user_team");
                 });
-
                 options.DefaultPolicy = options.GetPolicy(JwtBearerDefaults.AuthenticationScheme) ?? null!;
             });
 
