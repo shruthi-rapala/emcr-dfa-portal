@@ -40,46 +40,39 @@ namespace EMBC.DFA.API
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
+            // 2024-05-27 EMCRI-217 waynezen:
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    RequireSignedTokens = true,
+                    RequireAudience = true,
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromSeconds(60),
+                    NameClaimType = ClaimTypes.Upn,
+                    RoleClaimType = ClaimTypes.Role,
+                    ValidateActor = true,
+                    ValidateIssuerSigningKey = true,
+                };
 
-            services.AddAuthentication()
-             //JWT tokens handling
-             .AddJwtBearer("jwt", options =>
-             {
-                 options.BackchannelHttpHandler = new HttpClientHandler
-                 {
-                     ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                 };
+                configurationServices.Configuration.GetSection("jwt").Bind(options);
 
-                 configuration.GetSection("auth:jwt").Bind(options);
-                 options.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     ValidateAudience = false
-                 };
-
-                 // if token does not contain a dot, it is a reference token, forward to introspection auth scheme
-                 options.ForwardDefaultSelector = ctx =>
-                 {
-                     var authHeader = (string)ctx.Request.Headers["Authorization"];
-                     if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer ")) return null;
-                     return authHeader.Substring("Bearer ".Length).Trim().Contains('.') ? null : "introspection";
-                 };
-                 options.Events = new JwtBearerEvents
-                 {
-                     OnTokenValidated = async ctx =>
-                     {
-                         await Task.CompletedTask;
-                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
-                         var userInfo = ctx.Principal.FindFirstValue("userInfo");
-                         logger.LogDebug("{0}", userInfo);
-                     },
-                     OnAuthenticationFailed = async ctx =>
-                     {
-                         await Task.CompletedTask;
-                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
-                         logger.LogError(ctx.Exception, "JWT authantication failed");
-                     }
-                 };
-             })
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = async c =>
+                    {
+                        var userService = c.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                        c.Principal = await userService.GetPrincipal(c.Principal);
+                    }
+                };
+                options.Validate();
+            })
              //reference tokens handling
              .AddOAuth2Introspection("introspection", options =>
              {

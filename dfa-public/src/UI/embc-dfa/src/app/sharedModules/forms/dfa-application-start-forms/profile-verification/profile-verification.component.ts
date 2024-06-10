@@ -85,6 +85,14 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    // TODO: EMCRI-217 waynezen debug remove
+    alert('profile-verification.component');
+    
+    this.profileService.profileGetProfileWithUpdatedBcsc().subscribe(profile => {
+    console.log('getProfileWithUpdatedBCSC.id: ' + profile?.id)
+    });
+
     this.profileVerificationForm$ = this.formCreationService
       .getProfileVerificationForm()
       .subscribe((profileVerification) => {

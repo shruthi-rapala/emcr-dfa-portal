@@ -28,7 +28,7 @@ namespace EMBC.DFA.API.Controllers
 {
     [Route("api/profiles")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ProfileController : ControllerBase
     {
         private readonly IHostEnvironment env;

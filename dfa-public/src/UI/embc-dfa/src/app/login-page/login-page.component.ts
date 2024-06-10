@@ -22,19 +22,6 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
     this.formCreationService.clearProfileData();
   
-    this.loginService.getLogoutStatus.subscribe((data) => {
-      if (data !== null || data !== '')
-      {
-        if(data === 'BCeID Login'){
-          this.login();
-        }
-        else
-          if(data === 'Logout'){
-            this.logout();
-          }
-      }
-    })
-
     this.oidcSecurityService.checkAuth().subscribe(
       ({ isAuthenticated}) => {
         if (isAuthenticated === true)
