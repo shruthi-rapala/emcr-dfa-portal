@@ -19,22 +19,22 @@ export class DFAProjectMainMappingService {
   }
 
   setExistingDFAProjectMain(dfaProjectMain: DfaProjectMain): void {
-    //this.setPropertyDamageDetails(dfaProjectMain);
+    this.setProjectDetails(dfaProjectMain);
   }
 
-  //private setPropertyDamageDetails(dfaApplicationMain: DfaApplicationMain): void {
-  //  let formGroup: UntypedFormGroup;
-  //  this.formCreationService
-  //    .getPropertyDamageForm()
-  //    .pipe(first())
-  //    .subscribe((propertyDamage) => {
-  //      propertyDamage.setValue({
-  //        ...dfaApplicationMain.propertyDamage,
-  //        guidanceSupport: dfaApplicationMain.propertyDamage.guidanceSupport === true ? 'true' : (dfaApplicationMain.propertyDamage.guidanceSupport === false ? 'false' : null),
-  //      });
-  //      formGroup = propertyDamage;
-  //    });
-  //  this.dfaApplicationMainDataService.propertyDamage = dfaApplicationMain.propertyDamage;
-  //}
+  private setProjectDetails(dfaProjectMain: DfaProjectMain): void {
+    let formGroup: UntypedFormGroup;
+    this.formCreationService
+      .getRecoveryPlanForm()
+      .pipe(first())
+      .subscribe((project) => {
+        project.setValue({
+          ...dfaProjectMain.project,
+          isdamagedDateSameAsApplication: dfaProjectMain.project.isdamagedDateSameAsApplication === true ? 'true' : (dfaProjectMain.project.isdamagedDateSameAsApplication === false ? 'false' : null),
+        });
+        formGroup = project;
+      });
+    this.dfaProjectMainDataService.recoveryPlan = dfaProjectMain.project;
+  }
 
 }

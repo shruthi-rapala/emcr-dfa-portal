@@ -211,7 +211,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
 
   initCleanUpWorkFiles(): void {
     this.cleanUpWorkFilesForm.get('cleanupFileUpload').reset();
-    this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
+    //this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.requiredDocumentType').setValue(null);
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
     this.showCleanUpWorkFileForm = !this.showCleanUpWorkFileForm;
@@ -259,7 +259,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     }
     this.isLoading = true;
     this.cleanUpWorkFilesForm.get('cleanupFileUpload.uploadedDate').setValue(new Date());
-    this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
+    //this.cleanUpWorkFilesForm.get('cleanupFileUpload.fileType').setValue(this.FileCategories.Cleanup);
     if (this.cleanUpWorkFilesForm.get('cleanupFileUpload').status === 'VALID') {
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
 
@@ -361,12 +361,12 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
       next: (result) => {
         fileUploads[index] = element;
         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-        if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value?.filter(x => x.fileType == FileCategory.Cleanup).length === 0) {
-          this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('false');
-          this.cleanUpWorkFilesForm
-            .get('addNewFileUploadIndicator')
-            .setValue(false);
-        }
+        //if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value?.filter(x => x.fileType == FileCategory.Cleanup).length === 0) {
+        //  this.cleanUpLogForm.get('haveInvoicesOrReceiptsForCleanupOrRepairs').setValue('false');
+        //  this.cleanUpWorkFilesForm
+        //    .get('addNewFileUploadIndicator')
+        //    .setValue(false);
+        //}
       },
       error: (error) => {
         console.error(error);

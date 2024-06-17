@@ -252,5 +252,20 @@ export class CustomValidationService {
       }
       return null;
     };
+  } 
+
+  isRequired(control: AbstractControl): ValidatorFn {
+
+    return (controls: AbstractControl) => {
+      //const control = controls.get(controlName);
+
+      if (control.invalid == true) {
+        control.setErrors({ isRequired: true });
+        return { isRequired: true };
+      }
+      else {
+        return null;
+      }
+    };
   }
 }

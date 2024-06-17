@@ -5,6 +5,7 @@ import { DFAProjectMainDataService } from './dfa-project-main-data.service';
 import { DfaProjectMain, FileUpload } from 'src/app/core/model/dfa-project-main.model';
 import { Observable } from 'rxjs';
 import { ApplicationService } from 'src/app/core/api/services';
+import { ProjectService } from 'src/app/core/api/services';
 
 @Injectable({ providedIn: 'root' })
 export class DFAProjectMainService {
@@ -17,10 +18,11 @@ export class DFAProjectMainService {
   constructor(
     private dfaApplicationMainMapping: DFAProjectMainMappingService,
     private dfaApplicationMainDataService: DFAProjectMainDataService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private projectService: ProjectService
   ) {}
 
-  //public upsertProject(updatedProject: DfaProjectMain): Observable<string> {
-  //  return this.applicationService.applicationUpdateApplication({ body: updatedProject });
-  //}
+  public upsertProject(updatedProject: DfaProjectMain): Observable<string> {
+    return this.projectService.projectUpsertProject({ body: updatedProject });
+  }
 }

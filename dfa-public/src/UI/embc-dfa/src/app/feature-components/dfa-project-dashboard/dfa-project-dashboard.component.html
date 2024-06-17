@@ -38,12 +38,12 @@
     </div>
   <div class="col-12 content-container appDetailHeader" >
     <div class="row">
-      <div class="col-md-6"><b>Case Number - </b><a href="javascript:void(0)">CA5566-999</a> </div>
-      <div class="col-md-6"><b>Date of Damage (From) - </b>2023/05/01</div>
+      <div class="col-md-6"><b>Case Number - </b><a href="javascript:void(0)">{{caseNumber}}</a> </div>
+      <div class="col-md-6"><b>Date of Damage (From) - </b>{{dateOfDamageFrom | date : 'MM/dd/yyyy'}}</div>
     </div>
     <div class="row">
-      <div class="col-md-6"><b>Cause of Damage - </b>Flood</div>
-      <div class="col-md-6"><b>Date of Damage (To) - </b>2023/05/06</div>
+      <div class="col-md-6"><b>Cause of Damage - </b>{{causeOfDamage}}</div>
+      <div class="col-md-6"><b>Date of Damage (To) - </b>{{dateOfDamageTo | date : 'MM/dd/yyyy'}}</div>
     </div>
   </div>
     <div class="container" style="padding-bottom: 100px; padding-top: 30px;">

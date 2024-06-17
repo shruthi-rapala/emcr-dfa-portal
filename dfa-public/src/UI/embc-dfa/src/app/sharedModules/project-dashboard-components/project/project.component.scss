@@ -99,6 +99,16 @@ i.material-icons {
   cursor: pointer;
 }
 
+.no-project {
+  background: #F6F9FC 0% 0% no-repeat padding-box;
+  padding-bottom: 50px;
+  padding-top: 50px;
+  border: 1px dashed grey;
+  display: flex;
+  justify-content: center;
+  margin-top: -50px;
+}
+
 .labelStyle {
   text-align: center;
   width: 5%;

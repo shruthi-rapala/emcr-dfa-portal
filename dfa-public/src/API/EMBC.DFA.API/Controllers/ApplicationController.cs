@@ -207,6 +207,21 @@ namespace EMBC.DFA.API.Controllers
         }
 
         /// <summary>
+        /// get dfa applications
+        /// </summary>
+        /// <returns>list of dfa applications</returns>
+        /// <param name="applicationId">The application Id.</param>
+        [HttpGet("dfaapplicationbyID")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<CurrentApplication>> GetApplicationDetailsForProject([FromQuery]
+            [Required]
+            Guid applicationId)
+        {
+            var lstApplications = await handler.HandleApplicationDetails(Convert.ToString(applicationId));
+            return Ok(lstApplications);
+        }
+
+        /// <summary>
         /// Get the applicant subtype records
         /// </summary>
         /// <returns>applicant subtype records</returns>
@@ -331,6 +346,7 @@ namespace EMBC.DFA.API.Controllers
         public string DamagedAddress { get; set; }
         public string CaseNumber { get; set; }
         public string DateOfDamage { get; set; }
+        public string DateOfDamageTo { get; set; }
         public string PrimaryApplicantSignedDate { get; set; }
         public string DateFileClosed { get; set; }
         public string Status { get; set; }

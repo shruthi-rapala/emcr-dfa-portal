@@ -10,6 +10,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { FileCategory, FileUpload, RequiredDocumentType } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
+import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 
 @Component({
   selector: 'app-dfa-attachment',
@@ -35,15 +36,21 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   showFileUpload: boolean = false;
   FileCategories = FileCategory;
   RequiredDocumentTypes = RequiredDocumentType;
+  isdisabled: string = 'true';
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private dfaProjectMainDataService: DFAProjectMainDataService,
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
+
+    this.dfaProjectMainDataService.changeDisableFileUpload.subscribe((isdisabled) => {
+      this.isdisabled = isdisabled;
+    });
   }
 
   onToggleSideNote() {

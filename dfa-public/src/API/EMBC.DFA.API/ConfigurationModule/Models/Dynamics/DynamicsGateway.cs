@@ -327,7 +327,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon",
                         "dfa_applicationstatusportal", "dfa_causeofdamageflood2", "dfa_causeofdamagestorm2",
                         "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageloss",
-                        "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra"
+                        "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto"
                     },
                     Filter = $"_dfa_applicant_value eq {profileId}"
                     //Expand = new CRMExpandOptions[]
@@ -386,6 +386,77 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 //            }).AsEnumerable();
 
                 return lstApps;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+        public async Task<dfa_appapplication> GetApplicationDetailsAsync(string appId)
+        {
+            try
+            {
+                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_eventid", "dfa_id", "dfa_eventname", "dfa_eventtype"
+                    }
+                });
+
+                var lstCases = await api.GetList<dfa_incident>("incidents", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "incidentid", "ticketnumber", "dfa_datefileclosed"
+                    }
+                });
+
+                var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_appapplicationid", "dfa_applicanttype",
+                        "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext",
+                        "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon",
+                        "dfa_applicationstatusportal", "dfa_causeofdamageflood2", "dfa_causeofdamagestorm2",
+                        "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageloss",
+                        "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto"
+                    },
+                    Filter = $"dfa_appapplicationid eq {appId}"
+                });
+
+                //where objAppEvent != null && (objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
+                //                 || objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())
+                var lstApps = (from objApp in list.List
+                               join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
+                               from objAppEvent in appEvent.DefaultIfEmpty()
+                               join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
+                               from objCaseEvent in appCase.DefaultIfEmpty()
+                               select new dfa_appapplication
+                               {
+                                   dfa_appapplicationid = objApp.dfa_appapplicationid,
+                                   dfa_applicanttype = objApp.dfa_applicanttype,
+                                   dfa_dateofdamage = objApp.dfa_dateofdamage,
+                                   dfa_dateofdamageto = objApp.dfa_dateofdamageto,
+                                   dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                                   dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                                   //dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
+                                   dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
+                                   dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
+                                   dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
+                                   dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
+                                   createdon = objApp.createdon,
+                                   dfa_causeofdamageflood2 = objApp.dfa_causeofdamageflood2,
+                                   dfa_causeofdamagelandslide2 = objApp.dfa_causeofdamagelandslide2,
+                                   dfa_causeofdamageloss = objApp.dfa_causeofdamageloss,
+                                   dfa_causeofdamageother2 = objApp.dfa_causeofdamageother2,
+                                   dfa_causeofdamagestorm2 = objApp.dfa_causeofdamagestorm2,
+                                   dfa_causeofdamagewildfire2 = objApp.dfa_causeofdamagewildfire2,
+                                   dfa_receiveguidanceassessingyourinfra = objApp.dfa_receiveguidanceassessingyourinfra
+                               }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
+
+                return lstApps.FirstOrDefault();
             }
             catch (System.Exception ex)
             {
@@ -734,7 +805,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                // TODO: Retrieve appropriate geographical information
                 var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
                 {
                     Select = new[]
@@ -784,6 +854,101 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
 
             return lstEffectedRegionCommunties.List;
+        }
+
+        public async Task<string> UpsertProject(dfa_project_params project)
+        {
+            try
+            {
+                var jsonVal = JsonConvert.SerializeObject(project);
+                var result = await api.ExecuteAction("dfa_DFAPortalCreateProject", project);
+
+                if (result != null)
+                {
+                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to update/delete application {ex.Message}", ex);
+            }
+
+            return string.Empty;
+        }
+
+        public async Task<dfa_projectmain_retrieve> GetProjectMainById(Guid projectId)
+        {
+            var list = await api.GetList<dfa_projectmain_retrieve>("dfa_projects", new CRMGetListOptions
+            {
+                // TODO Update list of fields
+                Select = new[]
+                {
+                    "dfa_projectnumber", "dfa_projectname", "dfa_dateofdamagesameasapplication",
+                    "dfa_dateofdamageto", "dfa_dateofdamagefrom",
+                    "dfa_sitelocation", "dfa_descriptionofdamagedinfrastructure", "dfa_descriptionofdamagewithmaterial",
+                    "dfa_descriptionofmaterialneededtorepair",
+                    "dfa_descriptionofrepairwork", "dfa_descriptionofthecauseofdamage",
+                    "dfa_projectbusinessprocessstages",
+                    "dfa_estimatedcompletiondateofproject",
+                    "dfa_estimatedcost", "dfa_dateofdamagedifferencereason",
+                    "dfa_projectid"
+                },
+                Filter = $"dfa_projectid eq {projectId}"
+            });
+
+            return list.List.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<dfa_project>> GetProjectListAsync(string applicationId)
+        {
+            try
+            {
+                //var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                //{
+                //    Select = new[]
+                //    {
+                //        "dfa_eventid", "dfa_id", "dfa_eventname", "dfa_eventtype"
+                //    }
+                //});
+
+                var list = await api.GetList<dfa_project>("dfa_projects", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_projectnumber", "dfa_projectname",
+                        "dfa_sitelocation",
+                        "dfa_estimatedcompletiondateofproject",
+                        "dfa_approvedcost", "dfa_18monthdeadline", "statuscode",
+                        "dfa_projectid", "createdon", "dfa_projectbusinessprocessstages",
+                        "dfa_projectbusinessprocesssubstages"
+                    },
+                    Filter = $"dfa_projectid eq {applicationId}"
+                });
+
+                //where objAppEvent != null && (objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
+                //                 || objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())
+                var lstApps = (from objApp in list.List
+                               select new dfa_project
+                               {
+                                   dfa_projectid = objApp.dfa_projectid,
+                                   dfa_projectnumber = objApp.dfa_projectnumber,
+                                   dfa_projectname = objApp.dfa_projectname,
+                                   dfa_sitelocation = objApp.dfa_sitelocation,
+                                   dfa_estimatedcompletiondateofproject = objApp.dfa_estimatedcompletiondateofproject,
+                                   //dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
+                                   dfa_approvedcost = objApp.dfa_approvedcost,
+                                   dfa_18monthdeadline = objApp.dfa_18monthdeadline,
+                                   createdon = objApp.createdon,
+                                   statuscode = objApp.statuscode,
+                                   dfa_projectbusinessprocessstages = objApp.dfa_projectbusinessprocessstages,
+                               }).AsEnumerable().OrderByDescending(m => m.createdon);
+
+                return lstApps;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
         }
     }
 }

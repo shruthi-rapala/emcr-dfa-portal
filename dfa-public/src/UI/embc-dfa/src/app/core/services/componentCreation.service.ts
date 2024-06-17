@@ -98,12 +98,23 @@ export class ComponentCreationService {
 
     {
       component: 'recovery-plan',
+      nextButtonLabel: 'Next - Upload Documents',
+      backButtonLabel: 'Go Back',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: -1,
+      stepName: 'Recovery Plan',
+      editable: true
+    },
+    {
+      component: 'supporting-documents-project',
       nextButtonLabel: 'Next - Review & Submit',
-      backButtonLabel: 'Go Back & Edit',
-      isLast: true,
+      backButtonLabel: 'Go Back',
+      isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
-      stepName: 'Recovery Plan'
+      stepName: 'Upload Documents',
+      editable: false
     }
 
   ];

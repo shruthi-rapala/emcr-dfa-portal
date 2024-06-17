@@ -87,10 +87,10 @@ export class AttachmentService extends BaseService {
   /**
    * Path part for operation attachmentGetAttachments
    */
-  static readonly AttachmentGetAttachmentsPath = '/api/attachments/byApplicationId';
+  static readonly AttachmentGetAttachmentsPath = '/api/attachments/byProjectIdId';
 
   /**
-   * Get a list of attachments by application Id.
+   * Get a list of attachments by project Id.
    *
    *
    *
@@ -102,14 +102,14 @@ export class AttachmentService extends BaseService {
   attachmentGetAttachments$Response(params?: {
 
     /**
-     * The application Id.
+     * The project Id.
      */
-    applicationId?: string;
+    projectId?: string;
   }): Observable<StrictHttpResponse<Array<FileUpload>>> {
 
     const rb = new RequestBuilder(this.rootUrl, AttachmentService.AttachmentGetAttachmentsPath, 'get');
     if (params) {
-      rb.query('applicationId', params.applicationId, {});
+      rb.query('projectId', params.projectId, {});
     }
 
     return this.http.request(rb.build({
@@ -124,7 +124,7 @@ export class AttachmentService extends BaseService {
   }
 
   /**
-   * Get a list of attachments by application Id.
+   * Get a list of attachments by project Id.
    *
    *
    *
@@ -136,9 +136,9 @@ export class AttachmentService extends BaseService {
   attachmentGetAttachments(params?: {
 
     /**
-     * The application Id.
+     * The project Id.
      */
-    applicationId?: string;
+    projectId?: string;
   }): Observable<Array<FileUpload>> {
 
     return this.attachmentGetAttachments$Response(params).pipe(

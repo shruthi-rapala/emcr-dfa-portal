@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { CurrentApplication, CurrentProject } from 'src/app/core/api/models';
+import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 
 @Component({
   selector: 'app-dfadashboard-project',
@@ -23,7 +24,7 @@ export class DfaDashProjectComponent implements OnInit {
 
   items = [
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Draft", stage: "", statusColor: "#639DD4" , isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Draft", stage: "", statusColor: "#639DD4", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "Submitted", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
@@ -60,6 +61,7 @@ export class DfaDashProjectComponent implements OnInit {
     private appSessionService: AppSessionService,
     private router: Router,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
+    private dFAProjectMainDataService: DFAProjectMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private route: ActivatedRoute
   ) {
@@ -98,6 +100,10 @@ export class DfaDashProjectComponent implements OnInit {
                 if (objApp.stage == 'Ineligible' || objApp.stage == 'Withdrwan') {
                   objApp.statusColor = '#E25E63';
                 }
+
+                if (objApp.status.toLowerCase() == 'draft') {
+                  objApp.statusColor = '#639DD4';
+                }
               }
 
               if (isFound == false) {
@@ -117,7 +123,7 @@ export class DfaDashProjectComponent implements OnInit {
 
             lstDataModified.push(objApp);
           })
-
+          
           this.mapData(lstDataModified);
         }
             //this.mapData(lstData);
@@ -158,16 +164,16 @@ export class DfaDashProjectComponent implements OnInit {
           || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
         )
       {
-          x.currentProject = false;
-      } else x.currentProject = true;
+          x.openProject = false;
+      } else x.openProject = true;
     })
     if (this.apptype === "current") {
       this.lstProjects = this.lstProjects
-        .filter(x => x.currentProject === true);
+        .filter(x => x.openProject === true);
       this.appSessionService.currentProjectsCount?.emit(this.lstProjects.length);
     } else {
       this.lstProjects = this.lstProjects
-        .filter(x => x.currentProject === false);
+        .filter(x => x.openProject === false);
       this.appSessionService.pastProjectsCount?.emit(this.lstProjects.length);
     }
 
@@ -226,20 +232,24 @@ export class DfaDashProjectComponent implements OnInit {
   }
 
   ViewProject(applItem: ProjectExtended): void {
-    //this.dfaApplicationMainDataService.setApplicationId(applItem.applicationId);
-    //this.dfaApplicationStartDataService.setApplicationId(applItem.applicationId);
+    this.dFAProjectMainDataService.setProjectId(applItem.projectId);
+    //this.dFAProjectMainDataService.setApplicationId(applItem.applicationId);
     
-    ////if (applItem.primaryApplicantSignedDate == null && applItem.currentApplication != false) {
-    ////  this.dfaApplicationMainDataService.setViewOrEdit('update');
-    ////}
-    ////else
-    //if(applItem.currentApplication === true) {
-    //  this.dfaApplicationMainDataService.setViewOrEdit('view');
-    //} else if (applItem.currentApplication === false) {
-    //  this.dfaApplicationMainDataService.setViewOrEdit('viewOnly');
+    //if (applItem.primaryApplicantSignedDate == null && applItem.currentApplication != false) {
+    //  this.dfaApplicationMainDataService.setViewOrEdit('update');
     //}
+    //else
+    if (applItem.openProject === true) {
+      if (applItem.status.toLowerCase() == 'draft') {
+        this.dFAProjectMainDataService.setViewOrEdit('updateproject');
+      } else {
+        this.dFAProjectMainDataService.setViewOrEdit('viewOnly');
+      }
+    } else if (applItem.openProject === false) {
+      this.dFAProjectMainDataService.setViewOrEdit('viewOnly');
+    }
 
-    //this.router.navigate(['/dfa-application-main/'+applItem.applicationId]);
+    this.router.navigate(['/dfa-project-main/'+applItem.projectId]);
   }
 
   //ViewProjects(applItem: ProjectExtended): void {
@@ -255,16 +265,15 @@ export class DfaDashProjectComponent implements OnInit {
   //  this.router.navigate(['/dfa-application/' + applItem.applicationId + '/projects']);
   //}
 
-  //EditProject(applicationId: string, tabId: string): void {
-  //  this.dfaApplicationMainDataService.setApplicationId(applicationId);
-  //  this.dfaApplicationStartDataService.setApplicationId(applicationId);
+  //EditProject(applicationId: string): void {
+  //  this.dFAProjectMainDataService.setProjectId(applItem.projectId);
   //  this.dfaApplicationMainDataService.setViewOrEdit('edit');
-  //  this.dfaApplicationMainDataService.setEditStep(tabId);
+  //  //this.dfaApplicationMainDataService.setEditStep(tabId);
   //  this.router.navigate(['/dfa-application-main/'+applicationId]);
   //}
 
 }
 
 export interface ProjectExtended extends CurrentProject {
-  currentProject: boolean;
+  openProject: boolean;
 }

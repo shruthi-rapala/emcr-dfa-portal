@@ -5,9 +5,10 @@ import {
   AfterViewInit,
   AfterViewChecked,
   ChangeDetectorRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ElementRef
 } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCreationService } from '../../core/services/componentCreation.service';
 import * as globalConst from '../../core/services/globalConstants';
@@ -25,6 +26,7 @@ import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-
 import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 import { DFAProjectMainMappingService } from './dfa-project-main-mapping.service';
+import RecoveryPlanComponent from '../../sharedModules/forms/dfa-project-main-forms/recovery-plan/recovery-plan.component';
 
 @Component({
   selector: 'app-dfa-project-main',
@@ -35,6 +37,9 @@ export class DFAProjectMainComponent
   implements OnInit, AfterViewInit, AfterViewChecked
 {
   @ViewChild('dfaProjectMainStepper') dfaProjectMainStepper: MatStepper;
+  @ViewChild(RecoveryPlanComponent) recPlan: RecoveryPlanComponent;
+  @ViewChild('backtodash') backtodash: ElementRef;
+
   isEditable = true;
   steps: Array<ComponentMetaDataModel> = new Array<ComponentMetaDataModel>();
   showStep = false;
@@ -54,6 +59,8 @@ export class DFAProjectMainComponent
   ninetyDayDeadline: string;
   daysToApply: number;
   showStepper: boolean = false;
+  selectedStepIndex: number;
+  prevStepIndex: number;
 
   constructor(
     private router: Router,
@@ -70,6 +77,7 @@ export class DFAProjectMainComponent
     private dfaProjectMainMapping: DFAProjectMainMappingService,
   ) {
     const navigation = this.router.getCurrentNavigation();
+    
     if (navigation !== null) {
       if (navigation.extras.state !== undefined) {
         const state = navigation.extras.state as { stepIndex: number };
@@ -80,20 +88,24 @@ export class DFAProjectMainComponent
   }
 
   ngOnInit(): void {
+    
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    let applicationId = this.route.snapshot.paramMap.get('id');
-
-    if (applicationId) {
-      this.dfaProjectMainDataService.setApplicationId(applicationId);
+    let projectId = this.dfaProjectMainDataService.getProjectId();
+    
+    if (projectId) {
+      this.dfaProjectMainDataService.setProjectId(projectId);
+      this.getFileUploadsForProject(projectId);
     }
-    this.formCreationService.clearPropertyDamageData();
-    this.formCreationService.clearOtherContactsData();
+    this.formCreationService.clearRecoveryPlanData();
+    //this.formCreationService.clearOtherContactsData();
 
     this.steps = this.componentService.createDFAProjectMainSteps();
     this.vieworedit = this.dfaProjectMainDataService.getViewOrEdit();
     this.editstep = this.dfaProjectMainDataService.getEditStep();
+    
     //this.showStepper = true;
     this.dfaProjectMainHeading = 'Project Details'
+
   }
 
 
@@ -103,7 +115,26 @@ export class DFAProjectMainComponent
   }
 
   ngAfterViewInit(): void {
-    
+    //this.recPlan.setFocus();
+    //debugger
+    //this.projectName.nativeElement.focus();
+    this.formCreationService.recoveryPlanForm.value.markAsUntouched();
+
+    this.dfaProjectMainStepper.steps.forEach((step, idx) => {
+      //if (idx == 1 && this.formCreationService.recoveryPlanForm.value.get('projectNumber').invalid) {
+      //  step.editable = false;
+      //}
+      
+      step.select = () => {
+        this.selectedStepIndex = idx;
+        
+        switch (idx) {
+          case 1:
+            this.setFormData('recovery-plan')
+            break;
+        }
+      };
+    });
   }
 
   navigateToStep(stepIndex: number) {
@@ -115,7 +146,8 @@ export class DFAProjectMainComponent
    *
    * @param index step index
    */
-  currentStep(index: number): void {
+  currentStep(index: number, stepper: MatStepper): void {
+    this.prevStepIndex = index;
     this.loadStepForm(index);
     this.cd.detectChanges();
   }
@@ -128,6 +160,20 @@ export class DFAProjectMainComponent
    */
   stepChanged(event: any, stepper: MatStepper): void {
     stepper.selected.interacted = false;
+    
+    if (event.previouslySelectedIndex == 0) {
+      this.setFormData('recovery-plan');
+    }
+
+    this.dfaProjectMainDataService.setCurrentStepSelected(event.selectedIndex);
+    /*stepper.steps.toArray()[1].editable = false;*/
+    //if ((this.form.get('projectNumber').invalid == true || this.form.get('projectName').invalid == true)) {
+    //  stepper.steps.toArray()[1].editable = false;
+    //  this.cd.detectChanges();
+    //}
+    //else {
+
+    //}
   }
 
   /**
@@ -154,6 +200,7 @@ export class DFAProjectMainComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
+    
     if (isLast && component === 'property-damage') {
       this.setFormData(component);
       this.dfaProjectMainStepper.selected.completed = true;
@@ -161,61 +208,84 @@ export class DFAProjectMainComponent
       this.form$.unsubscribe();
       stepper.next();
       this.form.markAllAsTouched();
-    } else {
-      this.setFormData(component);
-      let project = this.dfaProjectMainDataService.createDFAProjectMainDTO();
-      this.dfaProjectMainMapping.mapDFAProjectMain(project);
+    } else if (component === 'recovery-plan') {
+      if (this.form.get('projectNumber').invalid == true && this.form.get('projectName').invalid == true) {
 
-      //this.dfaProjectMainService.upsertApplication(application).subscribe(x => {
+        this.form.addValidators([ValidateProjectMandatoryFields.isRequired(this.form.get('projectNumber'))]);
+        this.form.get('projectNumber').markAsTouched();
+        this.form.get('projectNumber').updateValueAndValidity();
 
-      //  // determine if step is complete
-      //  switch (component) {
-      //    case 'property-damage':
-      //      if (this.form.valid) stepper.selected.completed = true;
-      //      else stepper.selected.completed = false;
-      //      break;
-      //    case 'review':
-      //      stepper.selected.completed = true;
-      //      break;
-      //    default:
-      //      break;
-      //  }
-      //  this.form$.unsubscribe();
-      //  stepper.next();
-      //  this.form.markAllAsTouched();
-      //},
-      //error => {
-      //  console.error(error);
-      //  document.location.href = 'https://dfa.gov.bc.ca/error.html';
-      //});
+        //this.form.addValidators([ValidateProjectMandatoryFields.isRequired(this.form.get('projectName'))]);
+        //this.form.get('projectName').markAsTouched();
+        //this.form.get('projectName').updateValueAndValidity();
+        document.getElementById("backtodash").scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      } else {
+        this.form.get('projectNumber').setErrors(null);
+        this.form.get('projectNumber').markAsTouched();
+        this.form.get('projectNumber').updateValueAndValidity();
+        this.setFormData(component);
+        let project = this.dfaProjectMainDataService.createDFAProjectMainDTO();
+        this.dfaProjectMainMapping.mapDFAProjectMain(project);
+        //this.form$.unsubscribe();
+        //stepper.next();
+        //this.form.markAllAsTouched();
+        //this.dfaProjectMainService.upsertProject(project).subscribe(x => {
+
+        //  // determine if step is complete
+        //  //switch (component) {
+        //  //  case 'property-damage':
+        //  //    if (this.form.valid) stepper.selected.completed = true;
+        //  //    else stepper.selected.completed = false;
+        //  //    break;
+        //  //  case 'review':
+        //  //    stepper.selected.completed = true;
+        //  //    break;
+        //  //  default:
+        //  //    break;
+        //  //}
+        //  this.form$.unsubscribe();
+        //  stepper.next();
+        //  this.form.markAllAsTouched();
+        //},
+        //  error => {
+        //    console.error(error);
+        //    document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //  });
+      }
+
+      this.form$.unsubscribe();
+      stepper.next();
+      this.form.markAllAsTouched();
+    }
+    else {
+      this.form$.unsubscribe();
+      stepper.next();
+      this.form.markAllAsTouched();
     }
   }
 
-  //requiredDocumentsSupplied(): boolean {
-    //let isInsuranceTemplateUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "InsuranceTemplate" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isTenancyProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "TenancyAgreement" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isIdentificationUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "Identification" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isT1GeneralIncomeTaxReturnUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T1GeneralIncomeTaxReturn" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isFinancialStatementsUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "FinancialStatements" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isT776Uploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T776" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isResidentialTenancyAgreementUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "ResidentialTenancyAgreement" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isT2CorporateIncomeTaxReturnUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "T2CorporateIncomeTaxReturn" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isProofOfOwnershipUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "ProofOfOwnership" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isDirectorsListingUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "DirectorsListing" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isRegistrationProofUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "RegistrationProof" && x.deleteFlag == false).length >= 1 ? true : false;
-    //let isStructureAndPurposeUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "StructureAndPurpose" && x.deleteFlag == false).length >= 1 ? true : false;
+  saveAsDraft(): void {
+    this.setFormData('recovery-plan');
+    let project = this.dfaProjectMainDataService.createDFAProjectMainDTO();
 
-    //if (isInsuranceTemplateUploaded == true
-    //  && (this.isResidentialTenant == true ? (isIdentificationUploaded == true && isTenancyProofUploaded == true) : true)
-    //  && ((this.isSmallBusinessOwner == true  && this.isGeneral == true) ? (isT1GeneralIncomeTaxReturnUploaded == true && isFinancialStatementsUploaded == true) : true )
-    //  && ((this.isSmallBusinessOwner == true  && this.isCorporate == true) ? (isT2CorporateIncomeTaxReturnUploaded == true && isFinancialStatementsUploaded == true && isProofOfOwnershipUploaded) : true )
-    //  && ((this.isSmallBusinessOwner == true  && this.isLandlord == true) ? (isT1GeneralIncomeTaxReturnUploaded == true && isT776Uploaded == true && isResidentialTenancyAgreementUploaded == true) : true )
-    //  && ((this.isFarmOwner == true  && this.isGeneral == true) ? (isT1GeneralIncomeTaxReturnUploaded == true && isFinancialStatementsUploaded == true) : true )
-    //  && ((this.isFarmOwner == true  && this.isCorporate == true) ? (isT2CorporateIncomeTaxReturnUploaded == true && isFinancialStatementsUploaded == true && isProofOfOwnershipUploaded) : true )
-    //  && ((this.isCharitableOrganization == true) ? (isDirectorsListingUploaded == true && isRegistrationProofUploaded == true && isStructureAndPurposeUploaded) : true )
-    //  ) return true;
-    //else return false;
-  //}
+    this.dfaProjectMainService.upsertProject(project).subscribe(x => {
+      //this.saveAndBackToDashboard();
+    },
+      error => {
+        console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      });
+  }
+
+  requiredDocumentsSupplied(): boolean {
+    let isPreEventUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "PreEvent" && x.deleteFlag == false).length >= 1 ? true : false;
+    let isPostEventUploaded = this.formCreationService.fileUploadsForm.getValue().getRawValue()?.fileUploads.filter(x => x.requiredDocumentType === "PostEvent" && x.deleteFlag == false).length >= 1 ? true : false;
+   
+    if (isPreEventUploaded == true
+      && isPostEventUploaded) return true;
+    else return false;
+  }
 
   /**
    * Sets the form data to the DTO services
@@ -223,8 +293,26 @@ export class DFAProjectMainComponent
    * @param component Name of the component
    */
   setFormData(component: string): void {
+    
     switch (component) {
-      case 'property-damage':
+      case 'recovery-plan':
+        this.dfaProjectMainDataService.recoveryPlan.projectName = this.form.get('projectName').value;
+        this.dfaProjectMainDataService.recoveryPlan.projectNumber = this.form.get('projectNumber').value;
+        this.dfaProjectMainDataService.recoveryPlan.projectStatus = this.form.get('projectStatus').value;
+        this.dfaProjectMainDataService.recoveryPlan.isdamagedDateSameAsApplication = this.form.get('isdamagedDateSameAsApplication').value == 'true' ? true : (this.form.get('isdamagedDateSameAsApplication').value == 'false' ? false : null);
+        this.dfaProjectMainDataService.recoveryPlan.sitelocationdamageFromDate = this.form.get('sitelocationdamageFromDate').value;
+        this.dfaProjectMainDataService.recoveryPlan.sitelocationdamageToDate = this.form.get('sitelocationdamageToDate').value;
+        this.dfaProjectMainDataService.recoveryPlan.differentDamageDatesReason = this.form.get('differentDamageDatesReason').value;
+        this.dfaProjectMainDataService.recoveryPlan.siteLocation = this.form.get('siteLocation').value;
+        this.dfaProjectMainDataService.recoveryPlan.infraDamageDetails = this.form.get('infraDamageDetails').value;
+        this.dfaProjectMainDataService.recoveryPlan.causeofDamageDetails = this.form.get('causeofDamageDetails').value;
+        this.dfaProjectMainDataService.recoveryPlan.describeDamageDetails = this.form.get('describeDamageDetails').value;
+        this.dfaProjectMainDataService.recoveryPlan.describeDamagedInfrastructure = this.form.get('describeDamagedInfrastructure').value;
+        this.dfaProjectMainDataService.recoveryPlan.repairWorkDetails = this.form.get('repairWorkDetails').value;
+        this.dfaProjectMainDataService.recoveryPlan.repairDamagedInfrastructure = this.form.get('repairDamagedInfrastructure').value;
+        this.dfaProjectMainDataService.recoveryPlan.estimatedCompletionDate = this.form.get('estimatedCompletionDate').value;
+        this.dfaProjectMainDataService.recoveryPlan.estimateCostIncludingTax = this.form.get('estimateCostIncludingTax').value;
+
         break;
       case 'occupants':
         break;
@@ -239,15 +327,24 @@ export class DFAProjectMainComponent
    * @param index Step index
    */
   loadStepForm(index: number): void {
+    
     switch (index) {
       case 0:
         this.form$ = this.formCreationService
-          .getPropertyDamageForm()
-          .subscribe((propertyDamage) => {
-            this.form = propertyDamage;
+          .getRecoveryPlanForm()
+          .subscribe((recoveryPlanForm) => {
+            this.form = recoveryPlanForm;
           });
 
         break;
+      case 1:
+        this.form$ = this.formCreationService
+          .getSupportingDocumentsForm()
+          .subscribe((supportingDocuments) => {
+            this.form = supportingDocuments;
+          });
+        break;
+
     }
   }
 
@@ -256,7 +353,7 @@ export class DFAProjectMainComponent
   }
 
   returnToDashboard() {
-    this.dfaProjectMainDataService.setApplicationId(null);
+    //this.dfaProjectMainDataService.setApplicationId(null);
     this.router.navigate(['/verified-registration/dashboard']);
   }
 
@@ -283,7 +380,15 @@ export class DFAProjectMainComponent
           //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
           //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           this.setFormData(this.steps[this.dfaProjectMainStepper.selectedIndex]?.component.toString());
-          let application = this.dfaProjectMainDataService.createDFAProjectMainDTO();
+          let project = this.dfaProjectMainDataService.createDFAProjectMainDTO();
+
+          this.dfaProjectMainService.upsertProject(project).subscribe(x => {
+            //this.saveAndBackToDashboard();
+          },
+            error => {
+              console.error(error);
+              document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            });
           
           //this.dfaProjectMainService.upsertApplication(application).subscribe(x => {
           //  this.isSubmitted = !this.isSubmitted;
@@ -301,8 +406,24 @@ export class DFAProjectMainComponent
       });
   }
 
+  public getFileUploadsForProject(projectId: string) {
+
+    this.fileUploadsService.attachmentGetAttachments({ projectId: projectId }).subscribe({
+      next: (attachments) => {
+        // initialize list of file uploads
+        this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(attachments);
+
+      },
+      error: (error) => {
+        console.error(error);
+        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      }
+    });
+  }
+
   BackToDashboard(): void {
-    this.router.navigate(['/dfa-dashboard']);
+    var appId = this.dfaProjectMainDataService.getApplicationId();
+    this.router.navigate(['/dfa-application/' + appId + '/projects']);
   }
 
   notifyAddressChange(): void {
@@ -321,5 +442,22 @@ export class DFAProjectMainComponent
 
         //}
       });
+  }
+}
+
+export class ValidateProjectMandatoryFields {
+  static isRequired(control: AbstractControl): ValidatorFn {
+
+    return (controls: AbstractControl) => {
+      //const control = controls.get(controlName);
+
+      if (control.invalid == true) { 
+        control.setErrors({ isRequired: true });
+        return { isRequired: true };
+      }
+      else {
+        return null;
+      }
+    };
   }
 }

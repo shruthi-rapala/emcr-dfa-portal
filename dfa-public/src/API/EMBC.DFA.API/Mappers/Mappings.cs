@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -11,7 +12,9 @@ using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualBasic;
+using YamlDotNet.Core.Tokens;
 using static StackExchange.Redis.Role;
 using Enum = System.Enum;
 
@@ -321,7 +324,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
             CreateMap<dfa_appdocumentlocation, FileUpload>()
-                .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
+                .ForMember(d => d.projectId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdocumentlocationsid))
                 .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_name))
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
@@ -338,14 +341,30 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
             CreateMap<FileUpload, SubmissionEntity>()
-                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.applicationId))
+                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.projectId))
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
                 .ForMember(d => d.dfa_requireddocumenttype, opts => opts.MapFrom(s => s.requiredDocumentType)) // TODO map required file type
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => s.fileType));
 
+            CreateMap<dfa_project, CurrentProject>()
+                .ForMember(d => d.Deadline18Month, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_18monthdeadline).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_18monthdeadline).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.ProjectNumber, opts => opts.MapFrom(s => s.dfa_projectnumber))
+                .ForMember(d => d.ProjectId, opts => opts.MapFrom(s => s.dfa_projectid))
+                //.ForMember(d => d.Status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) ? GetEnumDescription((ProjectStages)Convert.ToInt32(s.dfa_projectbusinessprocessstages)) : null))
+                //.ForMember(d => d.Stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_projectbusinessprocesssubstages) ? GetEnumDescription((ProjectSubStages)Convert.ToInt32(s.dfa_projectbusinessprocesssubstages)) : null))
+                .ForMember(d => d.Status, opts => opts.MapFrom(s => Convert.ToString(ProjectStages.Submitted)))
+                .ForMember(d => d.Stage, opts => opts.MapFrom(s => Convert.ToString(ProjectSubStages.Pending)))
+                //.ForMember(d => d.Stage, opts => opts.MapFrom(s => s.dfa_projectbusinessprocessstages))
+                .ForMember(d => d.ProjectName, opts => opts.MapFrom(s => s.dfa_projectname))
+                .ForMember(d => d.SiteLocation, opts => opts.MapFrom(s => s.dfa_sitelocation))
+                .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => s.dfa_approvedcost == null ? 0 : s.dfa_approvedcost))
+                .ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => s.createdon))
+                .ForMember(d => d.EstimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
+
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
+                .ForMember(d => d.DateOfDamageTo, opts => opts.MapFrom(s => s.dfa_dateofdamageto))
                 .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_applicanttype) ? GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.dfa_applicanttype)) : null))
                 .ForMember(d => d.PrimaryApplicantSignedDate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_primaryapplicantsigneddate) ? null : s.dfa_primaryapplicantsigneddate))
                 .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => s.dfa_casenumber))
@@ -430,43 +449,86 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<Address, ESS.Shared.Contracts.Events.Address>()
                 .ReverseMap()
                 ;
+
+            CreateMap<DFAProjectMain, dfa_project_params>()
+                .ForMember(d => d.dfa_projectname, opts => opts.MapFrom(s => s.Project.projectName))
+                .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.ApplicationId))
+                .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.dfa_projectbusinessprocessstages, opts => opts.MapFrom(s => s.Project.projectStatus == null ? Convert.ToInt32(ProjectStages.Draft) : Convert.ToInt32(s.Project.projectStatus)))
+                //.ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
+                .ForMember(d => d.dfa_projectnumber, opts => opts.MapFrom(s => s.Project.projectNumber))
+                .ForMember(d => d.dfa_dateofdamagesameasapplication, opts => opts.MapFrom(s => s.Project.isdamagedDateSameAsApplication))
+                .ForMember(d => d.dfa_dateofdamagefrom, opts => opts.MapFrom(s => Convert.ToDateTime(s.Project.sitelocationdamageFromDate)))
+                .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => Convert.ToDateTime(s.Project.sitelocationdamageToDate)))
+                .ForMember(d => d.dfa_dateofdamagedifferencereason, opts => opts.MapFrom(s => s.Project.differentDamageDatesReason))
+                .ForMember(d => d.dfa_sitelocation, opts => opts.MapFrom(s => s.Project.siteLocation))
+                .ForMember(d => d.dfa_descriptionofthecauseofdamage, opts => opts.MapFrom(s => s.Project.causeofDamageDetails))
+                .ForMember(d => d.dfa_descriptionofdamagedinfrastructure, opts => opts.MapFrom(s => s.Project.infraDamageDetails))
+                .ForMember(d => d.dfa_descriptionofdamage, opts => opts.MapFrom(s => s.Project.describeDamageDetails))
+                .ForMember(d => d.dfa_descriptionofdamagewithmaterial, opts => opts.MapFrom(s => s.Project.describeDamagedInfrastructure))
+                .ForMember(d => d.dfa_descriptionofrepairwork, opts => opts.MapFrom(s => s.Project.repairWorkDetails))
+                .ForMember(d => d.dfa_descriptionofmaterialneededtorepair, opts => opts.MapFrom(s => s.Project.repairDamagedInfrastructure))
+                .ForMember(d => d.dfa_estimatedcompletiondateofproject, opts => opts.MapFrom(s => Convert.ToDateTime(s.Project.estimatedCompletionDate)))
+                .ForMember(d => d.dfa_estimatedcost, opts => opts.MapFrom(s => Convert.ToInt32(s.Project.estimateCostIncludingTax)));
+
+            CreateMap<dfa_projectmain_retrieve, RecoveryPlan>()
+                .ForMember(d => d.projectNumber, opts => opts.MapFrom(s => s.dfa_projectnumber))
+                .ForMember(d => d.projectName, opts => opts.MapFrom(s => s.dfa_projectname))
+                .ForMember(d => d.describeDamagedInfrastructure, opts => opts.MapFrom(s => s.dfa_descriptionofdamagewithmaterial))
+                .ForMember(d => d.repairWorkDetails, opts => opts.MapFrom(s => s.dfa_descriptionofrepairwork))
+                .ForMember(d => d.projectStatus, opts => opts.MapFrom(s => 222710001)) //hardcoded - need to replace with s.dfa_projectbusinessprocessstages
+                .ForMember(d => d.causeofDamageDetails, opts => opts.MapFrom(s => s.dfa_descriptionofthecauseofdamage))
+                .ForMember(d => d.describeDamageDetails, opts => opts.MapFrom(s => s.dfa_descriptionofdamage))
+                .ForMember(d => d.differentDamageDatesReason, opts => opts.MapFrom(s => s.dfa_dateofdamagedifferencereason))
+                .ForMember(d => d.infraDamageDetails, opts => opts.MapFrom(s => s.dfa_descriptionofdamagedinfrastructure))
+                .ForMember(d => d.repairDamagedInfrastructure, opts => opts.MapFrom(s => s.dfa_descriptionofmaterialneededtorepair))
+                .ForMember(d => d.siteLocation, opts => opts.MapFrom(s => s.dfa_sitelocation))
+                .ForMember(d => d.estimateCostIncludingTax, opts => opts.MapFrom(s => Convert.ToString(s.dfa_estimatedcost)))
+                .ForMember(d => d.sitelocationdamageFromDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_dateofdamagefrom).ToString("o")))
+                .ForMember(d => d.sitelocationdamageToDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_dateofdamageto).ToString("o")))
+                .ForMember(d => d.isdamagedDateSameAsApplication, opts => opts.MapFrom(s => s.dfa_dateofdamagesameasapplication))
+                .ForMember(d => d.estimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("o")));
+                //.ForMember(d => d.estimatedCompletionDate, opts => opts.MapFrom(s => s.dfa_estimatedcompletiondateofproject));
+                //.ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                //.ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                //.ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageother2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                //.ForMember(d => d.floodDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                //.ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.Yes ? true : (s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                //.ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
+
+            //.ForMember(d => d.applicantSubtype, opts => opts.MapFrom(s => GetEnumDescription((ApplicantSubtypeCategoriesOptionSet)s.dfa_applicantsubtype).ToString()))
+            //.ForMember(d => d.applicantSubSubtype, opts => opts.MapFrom(s => GetEnumDescription((ApplicantSubtypeSubCategoriesOptionSet)s.dfa_applicantlocalgovsubtype).ToString()))
+            //.ForMember(d => d.subtypeOtherDetails, opts => opts.MapFrom(s => s.dfa_applicantothercomments))
+            //.ForMember(d => d.estimatedPercent, opts => opts.MapFrom(s => s.dfa_estimated))
+            //.ForMember(d => d.subtypeDFAComment, opts => opts.MapFrom(s => s.dfa_dfaapplicantsubtypecomments))
+
+            //.ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamage) ? DateTime.Parse(s.dfa_dateofdamage).ToString("o") + "Z" : s.dfa_dateofdamage))
+            //.ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto));
         }
 
         public FileCategory ConvertStringToFileCategory(string documenttype)
         {
             switch (documenttype)
             {
-                case "Cleanup":
+                case "Pre Event Condition":
                     {
-                        return FileCategory.Cleanup;
+                        return FileCategory.PreEvent;
                     }
-                case "Appeal":
+                case "Post Event Condition":
                     {
-                        return FileCategory.Appeal;
+                        return FileCategory.PostEvent;
                     }
-                case "Financial":
+                case "Reports":
                     {
-                        return FileCategory.Financial;
+                        return FileCategory.Reports;
                     }
-                case "Insurance":
+                case "Additional Supporting Documents":
                     {
-                        return FileCategory.Insurance;
-                    }
-                case "Third party consent":
-                    {
-                        return FileCategory.ThirdPartyConsent;
-                    }
-                case "Tenancy proof":
-                    {
-                        return FileCategory.TenancyProof;
-                    }
-                case "Damage photo":
-                    {
-                        return FileCategory.DamagePhoto;
+                        return FileCategory.AdditionalDocuments;
                     }
                 default:
                     {
-                        return FileCategory.Unknown;
+                        return FileCategory.AdditionalDocuments;
                     }
             }
         }
@@ -474,57 +536,17 @@ namespace EMBC.DFA.API.Mappers
         {
             switch (requireddocumenttype)
             {
-                case "Identification":
+                case "Pre Event Condition":
                     {
-                        return RequiredDocumentType.Identification;
+                        return RequiredDocumentType.PreEvent;
                     }
-                case "Insurance Template":
+                case "Post Event Condition":
                     {
-                        return RequiredDocumentType.InsuranceTemplate;
-                    }
-                case "Tenancy Agreement":
-                    {
-                        return RequiredDocumentType.TenancyAgreement;
-                    }
-                case "Residential Tenancy Agreement":
-                    {
-                        return RequiredDocumentType.ResidentialTenancyAgreement;
-                    }
-                case "T1 General Income Tax Return":
-                    {
-                        return RequiredDocumentType.T1GeneralIncomeTaxReturn;
-                    }
-                case "T2 Corporate Income Tax Return":
-                    {
-                        return RequiredDocumentType.T2CorporateIncomeTaxReturn;
-                    }
-                case "Financial Statements":
-                    {
-                        return RequiredDocumentType.FinancialStatements;
-                    }
-                case "Proof of Ownership":
-                    {
-                        return RequiredDocumentType.ProofOfOwnership;
-                    }
-                case "T776 Statement of Real Estate Rentals":
-                    {
-                        return RequiredDocumentType.T776;
-                    }
-                case "Directors Listing":
-                    {
-                        return RequiredDocumentType.DirectorsListing;
-                    }
-                case "Registration Proof":
-                    {
-                        return RequiredDocumentType.RegistrationProof;
-                    }
-                case "Structure and Purpose":
-                    {
-                        return RequiredDocumentType.StructureAndPurpose;
+                        return RequiredDocumentType.PostEvent;
                     }
                 default:
                     {
-                        return RequiredDocumentType.Unknown;
+                        return RequiredDocumentType.PreEvent;
                     }
             }
         }

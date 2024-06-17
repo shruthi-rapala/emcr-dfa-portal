@@ -167,12 +167,12 @@ export class ReviewComponent implements OnInit {
         _fileUploadsFormArray.value?.filter(x =>
           (x.requiredDocumentType !== null && x.requiredDocumentType !== '' && x.requiredDocumentType !== undefined)
           && x.deleteFlag === false);
-      this.damagePhotosDataSource.data =
-        _fileUploadsFormArray.value?.filter(x =>
-          x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false)
-      this.cleanUpWorkFileDataSource.data =
-        _fileUploadsFormArray?.value?.filter(x =>
-          x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false)
+      //this.damagePhotosDataSource.data =
+      //  _fileUploadsFormArray.value?.filter(x =>
+      //    x.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false)
+      //this.cleanUpWorkFileDataSource.data =
+      //  _fileUploadsFormArray?.value?.filter(x =>
+      //    x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false)
     })
   }
 

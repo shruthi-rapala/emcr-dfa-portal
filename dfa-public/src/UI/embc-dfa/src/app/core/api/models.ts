@@ -23,6 +23,9 @@ export { ApplicantSubtypeSubCategories } from './models/applicant-subtype-sub-ca
 export { FileUpload } from './models/file-upload';
 export { FileCategory } from './models/file-category';
 export { RequiredDocumentType } from './models/required-document-type';
+export { DfaProjectMain } from './models/dfa-project-main';
+export { RecoveryPlan } from './models/recovery-plan';
+export { ProjectStageOptionSet } from './models/project-stage-option-set';
 export { CleanUpLogItem } from './models/clean-up-log-item';
 export { Configuration } from './models/configuration';
 export { OidcOptions } from './models/oidc-options';

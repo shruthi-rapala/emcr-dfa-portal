@@ -142,14 +142,14 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
     this.damagedRoomsForm.get('damagedRoom').updateValueAndValidity();
     this.getDamagedRoomsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
-    this.damagePhotosForm
-      .get('addNewFileUploadIndicator')
-      .valueChanges.subscribe((value) => this.updateDamagePhotoOnVisibility());
-     const _damagePhotosFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
-     _damagePhotosFormArray.valueChanges
-       .pipe(
-         mapTo(_damagePhotosFormArray.getRawValue())
-         ).subscribe(data => this.damagePhotosDataSource.data = _damagePhotosFormArray.getRawValue()?.filter(x => x.fileType ===Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false));
+    //this.damagePhotosForm
+    //  .get('addNewFileUploadIndicator')
+    //  .valueChanges.subscribe((value) => this.updateDamagePhotoOnVisibility());
+    // const _damagePhotosFormArray = this.formCreationService.fileUploadsForm.value.get('fileUploads');
+    // _damagePhotosFormArray.valueChanges
+    //   .pipe(
+    //     mapTo(_damagePhotosFormArray.getRawValue())
+    //     ).subscribe(data => this.damagePhotosDataSource.data = _damagePhotosFormArray.getRawValue()?.filter(x => x.fileType ===Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)] && x.deleteFlag === false));
 
     this.initDamagePhoto();
 
@@ -291,7 +291,7 @@ export default class DamagedItemsByRoomComponent implements OnInit, OnDestroy {
   initDamagePhoto(): void {
     this.damagePhotosForm.get('damagePhotoFileUpload').reset();
     this.damagePhotosForm.get('damagePhotoFileUpload.modifiedBy').setValue("Applicant");
-    this.damagePhotosForm.get('damagePhotoFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]);
+    //this.damagePhotosForm.get('damagePhotoFileUpload.fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]);
     this.damagePhotosForm.get('damagePhotoFileUpload.requiredDocumentType').setValue(null);
     this.showDamagePhotoForm = !this.showDamagePhotoForm;
     this.damagePhotosForm.get('addNewFileUploadIndicator').setValue(true);
