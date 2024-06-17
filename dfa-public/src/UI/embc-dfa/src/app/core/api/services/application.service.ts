@@ -326,6 +326,68 @@ export class ApplicationService extends BaseService {
   }
 
   /**
+   * Path part for operation applicationGetApplicationDetailsForProject
+   */
+  static readonly ApplicationGetApplicationDetailsForProjectPath = '/api/applications/dfaapplicationbyID';
+
+  /**
+   * get dfa applications.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `applicationGetApplicationDetailsForProject()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetApplicationDetailsForProject$Response(params?: {
+
+    /**
+     * The application Id.
+     */
+    applicationId?: string;
+  }): Observable<StrictHttpResponse<CurrentApplication>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetApplicationDetailsForProjectPath, 'get');
+    if (params) {
+      rb.query('applicationId', params.applicationId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<CurrentApplication>;
+      })
+    );
+  }
+
+  /**
+   * get dfa applications.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `applicationGetApplicationDetailsForProject$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetApplicationDetailsForProject(params?: {
+
+    /**
+     * The application Id.
+     */
+    applicationId?: string;
+  }): Observable<CurrentApplication> {
+
+    return this.applicationGetApplicationDetailsForProject$Response(params).pipe(
+      map((r: StrictHttpResponse<CurrentApplication>) => r.body as CurrentApplication)
+    );
+  }
+
+  /**
    * Path part for operation applicationGetApplicantSubTypes
    */
   static readonly ApplicationGetApplicantSubTypesPath = '/api/applications/applicantsubtypes';

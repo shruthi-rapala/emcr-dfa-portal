@@ -6,13 +6,14 @@ import {
 } from '@angular/forms';
 import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType } from 'src/app/core/api/models';
+import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ProjectStageOptionSet } from 'src/app/core/api/models';
 
 
 export class RecoveryPlan {
   sitelocationdamageFromDate?: null | string;
   sitelocationdamageToDate?: null | string;
   projectNumber?: null | string;
+  projectStatus?: null | ProjectStageOptionSet;
   projectName?: null | string;
   isdamagedDateSameAsApplication?: null | boolean;
   differentDamageDatesReason?: null | string;
@@ -27,9 +28,10 @@ export class RecoveryPlan {
   estimateCostIncludingTax?: null | string;
 
   constructor(
-    sitelocationdamageFromDate?: null | Date,
-    sitelocationdamageToDate?: null | Date,
+    sitelocationdamageFromDate?: null | string,
+    sitelocationdamageToDate?: null | string,
     projectNumber?: null | string,
+    projectStatus?: null | ProjectStageOptionSet,
     projectName?: null | string,
     isdamagedDateSameAsApplication?: null | boolean,
     differentDamageDatesReason?: null | string,
@@ -50,6 +52,7 @@ export class RecoveryPlanForm {
   sitelocationdamageToDate = new UntypedFormControl();
   projectNumber = new UntypedFormControl();
   projectName = new UntypedFormControl();
+  projectStatus = new UntypedFormControl();
   isdamagedDateSameAsApplication = new UntypedFormControl();
   differentDamageDatesReason = new UntypedFormControl();
   siteLocation = new UntypedFormControl();
@@ -80,12 +83,19 @@ export class RecoveryPlanForm {
     if (recoveryPlan.projectNumber) {
       this.projectNumber.setValue(recoveryPlan.projectNumber);
     }
-    this.projectNumber.setValidators(null);
+    this.projectNumber.setValidators([customValidator
+      .isRequired(this.projectNumber)
+      .bind(customValidator)]);
 
     if (recoveryPlan.projectName) {
       this.projectName.setValue(recoveryPlan.projectName);
     }
     this.projectName.setValidators(null);
+
+    if (recoveryPlan.projectStatus) {
+      this.projectStatus.setValue(recoveryPlan.projectStatus);
+    }
+    this.projectStatus.setValidators(null);
 
     if (recoveryPlan.isdamagedDateSameAsApplication) {
       this.isdamagedDateSameAsApplication.setValue(recoveryPlan.isdamagedDateSameAsApplication);
@@ -2055,6 +2065,6 @@ export class SupportingDocumentsForm {
  **/
 export interface DfaProjectMain {
   id?: string;
-  appid?: string;
-  deleteFlag?: boolean;
+  applicationId?: string;
+  project?: RecoveryPlan;
 }

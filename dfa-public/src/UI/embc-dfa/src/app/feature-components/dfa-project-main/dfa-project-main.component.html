@@ -1,29 +1,21 @@
 <div class="container container-frame">
-  <div class="row" *ngIf="(vieworedit === 'add' || vieworedit === 'update') && ninetyDayDeadline" >
-    <div class="col-8">&nbsp;</div>
-    <div class="col-4" style="float:right;"
-        matTooltip="You have until midnight on the day displayed to submit your application for DFA."
-        matTooltipPosition="above">
-        <span class="sub-heading" style="float:right;">Submit application before midnight on: {{ninetyDayDeadline | date: "MM/dd/yyyy"}}</span><br/>
-        <span class="sub-heading" style="color:#941372; float:right;" *ngIf="daysToApply>0">{{ daysToApply }} day(s) remaining to apply</span>
-        <span class="sub-heading" style="color:#941372; float:right;" *ngIf="daysToApply==0">DUE MIDNIGHT TODAY</span>
-        <span class="sub-heading" style="color:#941372; float:right;" *ngIf="daysToApply<0">{{ -1 - daysToApply }} DAY(S) OVERDUE</span>
-    </div>
-  </div>
+  
   <div class="row heading-container">
     <div class="col-8">
       <span class="page-heading">{{ dfaProjectMainHeading }}</span>
     </div>
     <br />
-    <div class="col-4" *ngIf="vieworedit === 'add' || vieworedit === 'update'" >
+    <div class="col-4" *ngIf="vieworedit === 'addproject' || vieworedit === 'updateproject'" >
       <button
-        class="button-p save-button col-4"
+        #backtodash
+        id="backtodash"
+        class="button-p nextNsave col-4"
         style="height: 40px !important; vertical-align: middle; width: 220px; margin-top: 15px"
-        (click)="saveAndBackToDashboard()"
+        (click)="BackToDashboard()"
         mat-stroked-button
         type="button"
         >
-         Back to Dashboard
+         Back to Project Dashboard
          <app-loader
           [strokeWidth]="3"
           [diameter]="25"
@@ -32,13 +24,13 @@
     </div>
     <div class="col-4" *ngIf="vieworedit === 'view' || vieworedit === 'edit' || vieworedit === 'viewOnly'" >
       <button
-        class="button-p save-button col-4"
+        class="button-p nextNsave col-4"
         style="height:40px !important; vertical-align: middle; width:220px;"
         (click)="BackToDashboard()"
         mat-stroked-button
         type="button"
         >
-         Back to Dashboard
+         Back to Project Dashboard
          <app-loader
           [strokeWidth]="3"
           [diameter]="25"
@@ -49,14 +41,15 @@
   </div>
 
   <mat-horizontal-stepper
+                          [selectedIndex]="selectedStepIndex"
     class="stepper-style"
     labelPosition="bottom"
-    (animationDone)="currentStep(dfaApplicationMainStepper?.selectedIndex)"
-    (selectionChange)="stepChanged($event, dfaApplicationMainStepper)"
-    #dfaApplicationMainStepper
+    (animationDone)="currentStep(dfaProjectMainStepper?.selectedIndex, dfaProjectMainStepper)"
+    (selectionChange)="stepChanged($event, dfaProjectMainStepper)"
+    #dfaProjectMainStepper
     [linear]="false"
   >
-    <mat-step *ngFor="let step of steps" [stepControl]="form">
+    <mat-step *ngFor="let step of steps" [stepControl]="form" >
       <ng-template matStepLabel>{{ step.stepName }}</ng-template>
       <app-component-wrapper
         [componentName]="step.component"
@@ -64,24 +57,47 @@
       ></app-component-wrapper>
       <br />
       <div class="row justify-content-between resp-style">
-          <div class="col-md-6"></div>
-        <div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'update'">
+          <!--<div class="col-md-6"></div>-->
+        <div class="col-md-6" *ngIf="vieworedit === 'addproject' || vieworedit === 'updateproject'">
           <button
-            class="button-s"
-            [hidden]="step.component === 'property-damage'"
+            class="button-s projectbutton"
+            [hidden]="step.component === 'recovery-plan'"
             mat-button
             type="button"
-            (click)="goBack(dfaApplicationMainStepper, step.lastStep)"
+            (click)="goBack(dfaProjectMainStepper, step.lastStep)"
           >
             {{ step.backButtonLabel }}
           </button>
-        </div>
-        <div class="col-md-12">
           <button
+            class="button-s projectbutton"
+            mat-button
+            type="button"
+            (click)="saveAsDraft()"
+          >
+            Save Project as Draft
+          </button>
+          <!--<button
+            class="button-s projectbutton"
+            [hidden]="step.component !== 'recovery-plan'"
+            mat-button
+            type="button"
+            (click)="goBack(dfaProjectMainStepper, step.lastStep)"
+          >
+            Clear Answers
+          </button>-->
+          <!--<button
+            class="button-s projectbutton"
+            mat-button
+            type="button"
+          >
+            Discard this Project
+          </button>-->
+        </div>
+        <div class="col-md-6">
+          <!--<button
             *ngIf="
-              currentFlow === 'verified-registration' &&
-                step.component === 'property-damage' &&
-                  vieworedit === 'add'
+                step.component === 'recovery-plan' &&
+                  vieworedit === 'addproject'
             "
             class="button-p"
             mat-stroked-button
@@ -89,14 +105,14 @@
             (click)="goForward(dfaApplicationMainStepper, step.isLast, step.component)"
           >
             Next - Review Submission
-          </button>
-          <div class="col-md-12" *ngIf="!isSubmitted
+          </button>-->
+          <!--<div class="col-md-12" *ngIf="!isSubmitted
                 && (formCreationService.propertyDamageForm$ | async)?.valid
                 && ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)
                 && vieworedit === 'view'
-                ">
+                ">-->
             <!--<div class="col-md-6">-->
-            <button
+            <!--<button
               class="button-p save-button"
               mat-stroked-button
               type="button"
@@ -104,16 +120,15 @@
             >
               Submit
             </button>
-          </div>
-          <!--<button
-            *ngIf="!(currentFlow === 'verified-registration' && (step.component === 'review' || step.component === 'supporting-documents'))"
-            class="button-p"
+          </div>-->
+          <button *ngIf="vieworedit === 'addproject' || vieworedit === 'updateproject'"
+            class="button-p nextNsave"
             mat-stroked-button
             type="button"
-            (click)="goForward(dfaApplicationMainStepper, step.isLast, step.component)"
+            (click)="goForward(dfaProjectMainStepper, step.isLast, step.component)"
           >
             {{ step.nextButtonLabel }}
-          </button>-->
+          </button>
           
           
         </div>
@@ -122,37 +137,55 @@
         submit the final signed version, all fields marked with a <b><span style="color:red;">*</span></b> must be completed.</label>-->
       </div>
     </mat-step>
-    <mat-step *ngIf="vieworedit === 'add'">
+
+    <mat-step *ngIf="vieworedit == 'addproject' || vieworedit === 'updateproject'">
       <ng-template matStepLabel>Review</ng-template>
-      <app-review
+      <app-review-project
         [type]="type"
         [showHeading]="true"
         [parentPageName]="parentPageName"
         [currentFlow]="currentFlow"
         [allowEdit]="true"
-        (stepToNavigate)="navigateToStep($event)"
       >
-      </app-review>
+      </app-review-project>
       <br />
 
       <div class="row justify-content-between resp-style">
         <div class="col-md-6" style="padding-left: 28px;">
           <button
-            class="button-s"
+            class="button-s projectbutton"
             mat-button
             type="button"
-            (click)="dfaApplicationMainStepper.previous()"
+            (click)="dfaProjectMainStepper.previous()"
           >
-            <span>Go Back</span><span *ngIf="vieworedit === 'add' || vieworedit === 'update'"> & Edit</span>
+            Go Back<!--<span *ngIf="vieworedit === 'addproject' || vieworedit === 'updateproject'"> & Edit</span>-->
           </button>
+
+          <button
+            class="button-s projectbutton"
+            mat-button
+            type="button"
+            (click)="saveAsDraft()"
+          >
+            Save Project as Draft
+          </button>
+          <!--<button
+            class="button-s projectbutton"
+            mat-button
+            type="button"
+          >
+            Discard this Project
+          </button>-->
         </div>
-        <div class="col-md-6" *ngIf="!isSubmitted
+        <!--<div class="col-md-6" *ngIf="!isSubmitted
            && (formCreationService.propertyDamageForm$ | async)?.valid
            && ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)
-           ">
-        <!--<div class="col-md-6">-->
-        <button
-          class="button-p save-button"
+           ">-->
+        <div class="col-md-6">
+        <button *ngIf="(formCreationService.recoveryPlanForm$ | async)?.valid
+                && (formCreationService.supportingDocumentsForm$ | async)?.valid
+                && requiredDocumentsSupplied()"
+          class="button-p nextNsave"
           mat-stroked-button
           type="button"
           (click)="submitFile()"
@@ -160,59 +193,9 @@
           Submit
         </button>
       </div>
-        <br/><br/>
-        <div class="col-md-12" style="padding: 28px 16px 16px 28px;">
-          <p class="infoHeader">Information Viewable at Any Time by DFA Staff</p>
-          <p>
-            Information collected on this application form may be viewable by Disaster Financial Assistance Staff whether the application has been submitted or not.
-          </p>
-        </div>
       </div>
     </mat-step>
-    <!--<mat-step *ngIf="currentFlow === 'verified-registration'">
-      <ng-template matStepLabel>Sign & Submit</ng-template>
-      <app-component-wrapper
-        componentName="sign-and-submit"
-        [folderPath]="dfaApplicationMainFolderPath"
-      ></app-component-wrapper>
-      <br />
-      <div class="row justify-content-between resp-style">
-        <div class="col-md-6">
-          <button *ngIf="isSubmitted === false"
-            class="button-s"
-            mat-button
-            type="button"
-            (click)="dfaApplicationMainStepper.previous()"
-          >
-            Go Back<span *ngIf="vieworedit === 'add' || vieworedit === 'update'"> & Edit</span>
-          </button>
-          <button *ngIf="isSubmitted === true"
-            class="button-s"
-            mat-button
-            type="button"
-            (click)="returnToDashboard()"
-          >
-            Return to Dashboard
-          </button>
-        </div>
-        <div class="col-md-6" *ngIf="!isSubmitted
-             && (formCreationService.propertyDamageForm$ | async)?.valid
-             ">
-          <button
-            class="button-p save-button"
-            mat-stroked-button
-            type="button"
-            (click)="submitFile()"
-          >
-            Submit
-          </button>
-        </div>
-        <div class="col-md-6" *ngIf="!isSubmitted
-            && !(formCreationService.propertyDamageForm$ | async)?.valid">
-          <span style="color:red">Enter all required information before submitting.</span>
-        </div>
-      </div>
-    </mat-step>-->
+
     <ng-template matStepperIcon="edit" let-index="index">
       {{ index + 1 }}
     </ng-template>

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -35,6 +38,8 @@ namespace EMBC.DFA.API.Controllers
             this.handler = handler;
         }
 
+        private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
         /// <summary>
         /// Create / update / delete a file attachment
         /// </summary>
@@ -50,38 +55,48 @@ namespace EMBC.DFA.API.Controllers
             if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
             if (fileUpload.id == null && fileUpload.deleteFlag == true) return BadRequest("FileUpload id cannot be empty on delete");
 
-            if (fileUpload.deleteFlag == true)
+            if (fileUpload.project != null &&
+                (fileUpload.project.Id == Guid.Empty || fileUpload.project.Id.ToString() == string.Empty))
             {
-                var parms = new dfa_DFAActionDeleteDocuments_parms();
-                if (fileUpload.id != null) parms.AppDocID = (Guid)fileUpload.id;
-                var result = await handler.DeleteFileUploadAsync(parms);
-                return Ok(result);
+                var dfa_appcontact = await handler.HandleGetUser(currentUserId);
+                //var mappedProject = mapper.Map<dfa_project_params>(fileUpload.project);
+                //var result = await handler.HandleProjectCreateUpdate(mappedProject);
             }
-            else
-            {
-                var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
-                var submissionEntity = mapper.Map<SubmissionEntity>(fileUpload);
-                submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
-                submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
-                var result = await handler.HandleFileUploadAsync(submissionEntity);
-                return Ok(result);
-            }
+
+            //if (fileUpload.deleteFlag == true)
+            //{
+            //    var parms = new dfa_DFAActionDeleteDocuments_parms();
+            //    if (fileUpload.id != null) parms.AppDocID = (Guid)fileUpload.id;
+            //    var result = await handler.DeleteFileUploadAsync(parms);
+            //    return Ok(result);
+            //}
+            //else
+            //{
+            //    var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
+            //    var submissionEntity = mapper.Map<SubmissionEntity>(fileUpload);
+            //    submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
+            //    submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
+            //    var result = await handler.HandleFileUploadAsync(submissionEntity);
+            //    return Ok(result);
+            //}
+
+            return Ok(null);
         }
 
         /// <summary>
-        /// Get a list of attachments by application Id
+        /// Get a list of attachments by project Id
         /// </summary>
         /// <returns> FileUploads </returns>
-        /// <param name="applicationId">The application Id.</param>
-        [HttpGet("byApplicationId")]
+        /// <param name="projectId">The project Id.</param>
+        [HttpGet("byProjectIdId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<FileUpload>>> GetAttachments(
             [FromQuery]
             [Required]
-            Guid applicationId)
+            Guid projectId)
         {
-            IEnumerable<dfa_appdocumentlocation> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(applicationId);
+            IEnumerable<dfa_appdocumentlocation> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(projectId);
             IEnumerable<FileUpload> fileUploads = new FileUpload[] { };
             if (dfa_appdocumentlocations != null)
             {
@@ -104,7 +119,7 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class FileUpload
     {
-        public Guid applicationId { get; set; }
+        public Guid projectId { get; set; }
         public Guid? id { get; set; }
         public string? fileName { get; set; }
         public string? fileDescription { get; set; }
@@ -116,5 +131,6 @@ namespace EMBC.DFA.API.Controllers
         public string? contentType { get; set; }
         public int? fileSize { get; set; }
         public bool deleteFlag { get; set; }
+        public DFAProjectMain project { get; set; }
     }
 }

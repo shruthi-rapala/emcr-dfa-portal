@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using Org.BouncyCastle.Asn1.Mozilla;
 
 namespace EMBC.DFA.API.Controllers
@@ -212,29 +213,17 @@ namespace EMBC.DFA.API.Controllers
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum FileCategory
     {
-        [EnumMember(Value = "Insurance")]
-        Insurance,
+        [EnumMember(Value = "Pre Event Condition")]
+        PreEvent,
 
-        [EnumMember(Value = "Financial")]
-        Financial,
+        [EnumMember(Value = "Post Event Condition")]
+        PostEvent,
 
-        [EnumMember(Value = "Third party consent")]
-        ThirdPartyConsent,
+        [EnumMember(Value = "Reports")]
+        Reports,
 
-        [EnumMember(Value = "Tenancy proof")]
-        TenancyProof,
-
-        [EnumMember(Value = "Damage photo")]
-        DamagePhoto,
-
-        [EnumMember(Value = "Cleanup")]
-        Cleanup,
-
-        [EnumMember(Value = "Appeal")]
-        Appeal,
-
-        [EnumMember(Value = "Unknown")]
-        Unknown
+        [EnumMember(Value = "Additional Supporting Documents")]
+        AdditionalDocuments
     }
 
     /// <summary>
@@ -243,44 +232,11 @@ namespace EMBC.DFA.API.Controllers
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum RequiredDocumentType
     {
-        [EnumMember(Value = "Identification")] // Tenancy Proof for Residential Tenant
-        Identification,
+        [EnumMember(Value = "Pre Event Condition")]
+        PreEvent,
 
-        [EnumMember(Value = "Insurance Template")] // Insurance Category for Homeowner, Residential Tenant, Small Business General or Sole or Corporate Company or Landlord, Farm General or Sole or Corporate, Charity
-        InsuranceTemplate,
-
-        [EnumMember(Value = "Tenancy Agreement")] // Tenancy proof for Residential Tenant
-        TenancyAgreement,
-
-        [EnumMember(Value = "Residential Tenancy Agreement")] // Tenancy proof for Small Business Landlord
-        ResidentialTenancyAgreement,
-
-        [EnumMember(Value = "T1 General Income Tax Return")] // Financial for Small Business General or Sole or Landlord, Farm General or Sole
-        T1GeneralIncomeTaxReturn,
-
-        [EnumMember(Value = "T2 Corporate Income Tax Return")] // Financial for Small Business Corporate Company, Farm Corporate
-        T2CorporateIncomeTaxReturn,
-
-        [EnumMember(Value = "Financial Statements")] // Financial for Small Business General or Sole or Corporate Company, Farm General or Sole or Corporate
-        FinancialStatements,
-
-        [EnumMember(Value = "Proof of Ownership")] // Financial for Small Business Corporate Company, Farm Corporate
-        ProofOfOwnership,
-
-        [EnumMember(Value = "T776 Statement of Real Estate Rentals")] // Financial for Small Business Landlord
-        T776,
-
-        [EnumMember(Value = "Directors Listing")] // Financial for Charity
-        DirectorsListing,
-
-        [EnumMember(Value = "Registration Proof")] // Financial for Charity
-        RegistrationProof,
-
-        [EnumMember(Value = "Structure and Purpose")] // Financial for Charity
-        StructureAndPurpose,
-
-        [EnumMember(Value = "Unknown")] // Unknown
-        Unknown
+        [EnumMember(Value = "Post Event Condition")]
+        PostEvent,
     }
 
     /// <summary>
@@ -489,5 +445,32 @@ namespace EMBC.DFA.API.Controllers
         public SignatureBlock? applicantSignature { get; set; }
         public SignatureBlock? secondaryApplicantSignature { get; set; }
         public string? ninetyDayDeadline { get; set; }
+    }
+
+    public class DFAProjectMain
+    {
+        public Guid? Id { get; set; }
+        public string? ApplicationId { get; set; }
+        public RecoveryPlan? Project { get; set; }
+    }
+
+    public class RecoveryPlan
+    {
+        public string? projectName { get; set; }
+        public string? projectNumber { get; set; }
+        public string? sitelocationdamageFromDate { get; set; }
+        public string? sitelocationdamageToDate { get; set; }
+        public bool? isdamagedDateSameAsApplication { get; set; }
+        public string? differentDamageDatesReason { get; set; }
+        public string? siteLocation { get; set; }
+        public string? infraDamageDetails { get; set; }
+        public string? causeofDamageDetails { get; set; }
+        public string? describeDamageDetails { get; set; }
+        public string? describeDamagedInfrastructure { get; set; }
+        public string? repairWorkDetails { get; set; }
+        public string? repairDamagedInfrastructure { get; set; }
+        public string? estimatedCompletionDate { get; set; }
+        public string? estimateCostIncludingTax { get; set; }
+        public ProjectStageOptionSet? projectStatus { get; set; }
     }
 }

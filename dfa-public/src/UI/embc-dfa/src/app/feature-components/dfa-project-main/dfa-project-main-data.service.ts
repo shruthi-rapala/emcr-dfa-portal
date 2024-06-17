@@ -13,9 +13,13 @@ export class DFAProjectMainDataService {
   private _applicationId: string;
   private _projectId: string;
   private _vieworedit: string;
+  private _stepselected: string;
+  private _isdisabled: string;
   private _editstep: string;
   private _requiredDocuments = [];
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
+  public changeDisableFileUpload: EventEmitter<string> = new EventEmitter<string>();
+  public stepSelected: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(
     private cacheService: CacheService,
@@ -75,12 +79,36 @@ export class DFAProjectMainDataService {
     return this._applicationId;
   }
 
+  public setProjectId(projectId: string): void {
+    this._projectId = projectId;
+  }
+
+  public getProjectId(): string {
+    return this._projectId;
+  }
+
   public setViewOrEdit(vieworedit: string): void {
     this._vieworedit = vieworedit;
     this.changeViewOrEdit.emit(vieworedit);
   }
   public getViewOrEdit(): string {
     return this._vieworedit;
+  }
+
+  public setCurrentStepSelected(step: string): void {
+    this._stepselected = step;
+    this.stepSelected.emit(step);
+  }
+  public getCurrentStepSelected(): string {
+    return this._stepselected;
+  }
+
+  public setDisableFileUpload(isdisabled: string): void {
+    this._isdisabled = isdisabled;
+    this.changeDisableFileUpload.emit(isdisabled);
+  }
+  public getDisableFileUpload(): string {
+    return this._isdisabled;
   }
 
   public setEditStep(editstep: string): void {
@@ -93,8 +121,8 @@ export class DFAProjectMainDataService {
    public createDFAProjectMainDTO(): DfaProjectMain {
     return {
       id: this._projectId,
-      appid: this._applicationId,
-      deleteFlag: false
+      applicationId: this._applicationId,
+      project: this._recoveryPlan
     };
   }
 }

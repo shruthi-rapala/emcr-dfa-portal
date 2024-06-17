@@ -101,7 +101,7 @@
     <mat-card class="mat-elevation-z4 content" [ngStyle]="{'border-left': '20px solid ' + applItem.statusColor}" >
       <div style="border-bottom: 1px solid lightgrey; padding-bottom: 15px; display: flex;">
         <div class="col-md-5">
-          <span><b>Project Number -</b></span>
+          <span><b>Project Number - </b></span>
           <span>{{applItem.projectNumber }}</span>
         </div>
         <div class="col-md-4">
@@ -120,6 +120,7 @@
             class="application-button"
             type="button"
             *ngIf="applItem.status != 'Draft'"
+            (click)="ViewProject(applItem)"
           >
             View Project
           </button>
@@ -127,6 +128,7 @@
             class="application-button"
             type="button"
             *ngIf="applItem.status == 'Draft'"
+            (click)="ViewProject(applItem)"
           >
             Complete Project
           </button>
@@ -138,7 +140,7 @@
       <div style="padding-top: 16px; display: flex;" [hidden]="applItem.isHidden">
   
         <div class="col-md-2">
-          <span><b>Sile Location -</b></span>
+          <span><b>Sile Location - </b></span>
         </div>
         <div class="col-md-3">
           <span>{{applItem.siteLocation }}</span>
@@ -162,7 +164,7 @@
           <span><b>18 Month Deadline -</b></span>
         </div>
         <div class="col-md-2">
-          <span id="spnCauseOfDamage">{{ applItem.deadline18Month}}</span>
+          <span id="spnCauseOfDamage">{{ applItem.deadline18Month }}</span>
         </div>
       </div>
       <div style="width: 90%;min-width: 725px;">
@@ -186,8 +188,8 @@
                 <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage != ''">
                   {{item.stage}}
                 </span>
-                <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage == ''" class="material-symbols-outlined" style="color: #FDCB52">
-                  circle
+                <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage == ''" class="material-symbols-outlined" [ngStyle]="{'color': item.status == 'Draft' ? '#639DD4' : '#FDCB52'}">
+                  {{ item.status == 'Draft' ? 'check_circle' : 'circle' }}
                 </span>
                 <span *ngIf="item.isCompleted == false && item.currentStep == false && applItem.isErrorInStatus == false" class="material-symbols-outlined" style="color: #FDCB52">
                   circle
@@ -302,7 +304,7 @@
     </mat-card>
   </div>
 </div>
-<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstFilteredProjects.length == 0 && isLoading == false">
+<div class="content-container no-project" *ngIf="lstFilteredProjects.length == 0 && isLoading == false">
  <div class="heading-container">
     <div class="row">
       <div class="col-md-12">

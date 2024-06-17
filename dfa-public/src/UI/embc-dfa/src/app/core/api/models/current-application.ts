@@ -8,6 +8,7 @@ export interface CurrentApplication {
   damagedAddress?: string;
   dateFileClosed?: string;
   dateOfDamage?: string;
+  dateOfDamageTo?: string;
   eventId?: string;
   floodDamage?: null | boolean;
   isErrorInStatus?: boolean;

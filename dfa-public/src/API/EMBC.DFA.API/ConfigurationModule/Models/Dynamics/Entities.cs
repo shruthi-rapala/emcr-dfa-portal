@@ -176,6 +176,27 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_accountlegalname { get; set; } // optional string
     }
 
+    public class dfa_projectmain_retrieve
+    {
+        public string? dfa_projectid { get; set; }
+        public string? dfa_projectnumber { get; set; }
+        public string? dfa_projectname { get; set; }
+        public DateTime? dfa_dateofdamageto { get; set; }
+        public DateTime? dfa_dateofdamagefrom { get; set; }
+        public string? dfa_sitelocation { get; set; }
+        public string? dfa_dateofdamagedifferencereason { get; set; }
+        public string? dfa_descriptionofdamagedinfrastructure { get; set; }
+        public string? dfa_descriptionofdamagewithmaterial { get; set; }
+        public string? dfa_descriptionofdamage { get; set; }
+        public string? dfa_descriptionofmaterialneededtorepair { get; set; }
+        public string? dfa_descriptionofrepairwork { get; set; }
+        public string? dfa_descriptionofthecauseofdamage { get; set; }
+        public int? dfa_projectbusinessprocessstages { get; set; }
+        public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
+        public int? dfa_estimatedcost { get; set; }
+        public bool? dfa_dateofdamagesameasapplication { get; set; }
+    }
+
     public class dfa_appapplicationmain_retrieve
     {
         public string dfa_appapplicationid { get; set; } // required
@@ -382,6 +403,28 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? _dfa_applicationid_value { get; set; } // optional string for retrieving
     }
 
+    public class dfa_project_params
+    {
+        public string dfa_applicationid { get; set; } // required string
+        public string dfa_projectid { get; set; } // required string
+        public string? dfa_projectnumber { get; set; } // optional string
+        public string? dfa_projectname { get; set; }
+        public DateTime? dfa_dateofdamageto { get; set; }
+        public DateTime? dfa_dateofdamagefrom { get; set; }
+        public string? dfa_sitelocation { get; set; }
+        public string? dfa_descriptionofdamage { get; set; }
+        public string? dfa_descriptionofdamagedinfrastructure { get; set; }
+        public string? dfa_dateofdamagedifferencereason { get; set; }
+        public string? dfa_descriptionofdamagewithmaterial { get; set; }
+        public string? dfa_descriptionofmaterialneededtorepair { get; set; }
+        public string? dfa_descriptionofrepairwork { get; set; }
+        public string? dfa_descriptionofthecauseofdamage { get; set; }
+        public string? dfa_projectbusinessprocessstages { get; set; }
+        public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
+        public int? dfa_estimatedcost { get; set; }
+        public bool? dfa_dateofdamagesameasapplication { get; set; }
+    }
+
     public class dfa_appdamageditems_params
     {
         public Guid dfa_applicationid { get; set; } // required string
@@ -525,11 +568,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         YesBut = 222710001
     }
 
+    public enum ProjectStageOptionSet
+    {
+        [Description("draft")]
+        DRAFT = 222710000,
+
+        [Description("submit")]
+        SUBMIT = 222710001
+    }
+
     public class dfa_appapplication
     {
         public string dfa_appapplicationid { get; set; }
         public string dfa_applicanttype { get; set; }
         public string dfa_dateofdamage { get; set; }
+        public string dfa_dateofdamageto { get; set; }
         public string dfa_damagedpropertystreet1 { get; set; }
         public string dfa_damagedpropertycitytext { get; set; }
         public string _dfa_eventid_value { get; set; }
@@ -562,6 +615,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_eventtype { get; set; }
     }
 
+    public class dfa_project
+    {
+        public string? dfa_projectnumber { get; set; }
+        public string? dfa_projectname { get; set; }
+        public string? dfa_sitelocation { get; set; }
+        public string? dfa_projectbusinessprocessstages { get; set; }
+        public string? statuscode { get; set; }
+        public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
+        public int? dfa_approvedcost { get; set; }
+        public DateTime? dfa_18monthdeadline { get; set; }
+        public DateTime createdon { get; set; }
+        public string? dfa_projectid { get; set; }
+        public string? dfa_projectbusinessprocesssubstages { get; set; }
+    }
+
     public enum EventType
     {
         [Description("Private")]
@@ -572,6 +640,51 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Private & Public")]
         PrivatePublic = 222710002
+    }
+
+    public enum ProjectStages
+    {
+        [Description("Draft")]
+        Draft = 222710000,
+
+        [Description("Submitted")]
+        Submitted = 222710001,
+
+        [Description("Under Review")]
+        UnderReview = 222710002,
+
+        [Description("Approval Pending")]
+        ApprovalPending = 222710003,
+
+        [Description("Decision Made")]
+        DecisionMade = 222710004
+    }
+
+    public enum ProjectSubStages
+    {
+        [Description("Pending")]
+        Pending = 222710000,
+
+        [Description("Received")]
+        Received = 222710001,
+
+        [Description("In Progress")]
+        InProgress = 222710002,
+
+        [Description("Assign to Evaluator")]
+        AssigntoEvaluator = 222710003,
+
+        [Description("Additional info. Required")]
+        AdditionalinfoRequired = 222710004,
+
+        [Description("Approved")]
+        Approved = 222710005,
+
+        [Description("Ineligible")]
+        Ineligible = 222710006,
+
+        [Description("Withdrawn")]
+        Withdrawn = 222710007,
     }
 
     public class dfa_incident

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { DfaProjectMain } from './dfa-project-main';
 import { FileCategory } from './file-category';
 import { RequiredDocumentType } from './required-document-type';
 
@@ -7,7 +8,6 @@ import { RequiredDocumentType } from './required-document-type';
  * File Upload
  */
 export interface FileUpload {
-  applicationId?: string;
   contentType?: null | string;
   deleteFlag?: boolean;
   fileData?: null | string;
@@ -17,6 +17,8 @@ export interface FileUpload {
   fileType?: null | FileCategory;
   id?: null | string;
   modifiedBy?: null | string;
+  project?: DfaProjectMain;
+  projectId?: string;
   requiredDocumentType?: null | RequiredDocumentType;
   uploadedDate?: null | string;
 }

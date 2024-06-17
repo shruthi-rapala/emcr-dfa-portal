@@ -5,7 +5,7 @@ import { DFAProjectComponent } from './dfa-project-dashboard.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { ComponentWrapperModule } from '../../sharedModules/components/component-wrapper/component-wrapper.module';
-import { ReviewModule } from '../review/review.module';
+import { ReviewProjectModule } from '../review-project/review-project.module';
 import { CoreModule } from '../../core/core.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -20,7 +20,7 @@ import { DFAProjectRoutingModule } from './dfa-project-dashboard-routing.module'
     MatStepperModule,
     MatSelectModule,
     ComponentWrapperModule,
-    ReviewModule,
+    ReviewProjectModule,
     CoreModule,
     MatTooltipModule,
     MatTabsModule

@@ -5,12 +5,8 @@
  * File Category Options
  */
 export enum FileCategory {
-  Insurance = 'Insurance',
-  Financial = 'Financial',
-  ThirdPartyConsent = 'Third party consent',
-  TenancyProof = 'Tenancy proof',
-  DamagePhoto = 'Damage photo',
-  Cleanup = 'Cleanup',
-  Appeal = 'Appeal',
-  Unknown = 'Unknown'
+  PreEvent = 'Pre Event Condition',
+  PostEvent = 'Post Event Condition',
+  Reports = 'Reports',
+  AdditionalDocuments = 'Additional Supporting Documents'
 }
