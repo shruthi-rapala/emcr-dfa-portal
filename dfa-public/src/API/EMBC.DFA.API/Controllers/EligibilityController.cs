@@ -36,7 +36,7 @@ namespace EMBC.DFA.API.Controllers
         /// Checking events are present in the system
         /// </summary>
         /// <returns>number of open events</returns>
-        [HttpGet("checkEventsAvailable")]
+        [HttpGet("checkPublicEventsAvailable")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,7 +57,7 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<DisasterEvent>>> GetOpenEvents()
         {
-            var dfa_events = await handler.HandleOpenEventList();
+            var dfa_events = await handler.HandleOpenPublicEventList();
 
             IEnumerable<DisasterEvent> disasterEvents = new DisasterEvent[] { };
             if (dfa_events != null)

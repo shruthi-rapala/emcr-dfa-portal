@@ -34,7 +34,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
         Task<int> GetEventCount();
-        Task<IEnumerable<dfa_event>> GetOpenEventList();
+        Task<IEnumerable<dfa_event>> GetOpenPublicEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> GetEffectedRegionCommunitiesList();
         Task<IEnumerable<dfa_areacommunitieses>> GetCommunitiesAsync();
         Task<string> UpsertProject(dfa_project_params project);
