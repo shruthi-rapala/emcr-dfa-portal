@@ -26,7 +26,7 @@ export class EligibilityService extends BaseService {
   /**
    * Path part for operation eligibilityGetEvents
    */
-  static readonly EligibilityGetEventsPath = '/api/eligibility/checkEventsAvailable';
+  static readonly EligibilityGetEventsPath = '/api/eligibility/checkPublicEventsAvailable';
 
   /**
    * Checking events are present in the system.
