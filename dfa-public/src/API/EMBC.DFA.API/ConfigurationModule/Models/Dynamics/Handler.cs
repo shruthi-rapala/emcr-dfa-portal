@@ -43,7 +43,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
         Task<int> HandleEvents();
-        Task<IEnumerable<dfa_event>> HandleOpenEventList();
+        Task<IEnumerable<dfa_event>> HandleOpenPublicEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList();
         Task<List<AreaCommunity>> HandleGetAreaCommunities();
         Task<dfa_projectmain_retrieve> GetProjectMainAsync(Guid projectId);
@@ -244,9 +244,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             return await listsGateway.GetEventCount();
         }
-        public async Task<IEnumerable<dfa_event>> HandleOpenEventList()
+        public async Task<IEnumerable<dfa_event>> HandleOpenPublicEventList()
         {
-            return await listsGateway.GetOpenEventList();
+            return await listsGateway.GetOpenPublicEventList();
         }
 
         public async Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList()

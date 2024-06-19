@@ -801,7 +801,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<IEnumerable<dfa_event>> GetOpenEventList()
+        public async Task<IEnumerable<dfa_event>> GetOpenPublicEventList()
         {
             try
             {
