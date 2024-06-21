@@ -846,6 +846,7 @@ export class FileUpload {
   fileName?: string;
   fileSize?: number;
   fileType?: FileCategory;
+  fileTypeText?: string;
   requiredDocumentType?: RequiredDocumentType;
   id?: null | string;
   modifiedBy?: string;
@@ -861,6 +862,7 @@ export class FileUploadsForm {
   fileName = new UntypedFormControl();
   fileDescription = new UntypedFormControl();
   fileType = new UntypedFormControl();
+  fileTypeText = new UntypedFormControl();
   requiredDocumentType = new UntypedFormControl();
   uploadedDate = new UntypedFormControl();
   modifiedBy = new UntypedFormControl();
@@ -939,6 +941,9 @@ export class FileUploadsForm {
             )
             .bind(customValidator)
         ]
+      ],
+      fileTypeText: [
+        ''
       ],
       requiredDocumentType: [
         ''
@@ -1062,6 +1067,9 @@ export class FileUploadsForm {
             .bind(customValidator)
         ]
       ],
+      fileTypeText: [
+        ''
+      ],
       requiredDocumentType: [
         ''
       ],
@@ -1183,6 +1191,9 @@ export class FileUploadsForm {
             )
             .bind(customValidator)
         ]
+      ],
+      fileTypeText: [
+        ''
       ],
       requiredDocumentType: [
         ''

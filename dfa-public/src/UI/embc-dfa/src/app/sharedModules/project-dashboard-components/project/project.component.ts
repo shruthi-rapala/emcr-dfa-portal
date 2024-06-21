@@ -45,6 +45,7 @@ export class DfaDashProjectComponent implements OnInit {
   matchStatusFound = false;
   isLinear = true;
   current = 1;
+  appId = null;
   public apptype: string;
   private sixtyOneDaysAgo: number;
   public isLoading: boolean = true;
@@ -71,7 +72,7 @@ export class DfaDashProjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    var applicationId = '807d7779-2113-ef11-b84d-00505683fbf4'; //this.dfaApplicationMainDataService.getApplicationId();
+    var applicationId = this.dFAProjectMainDataService.getApplicationId();
 
     this.projService.projectGetDfaProjects({ applicationId: applicationId }).subscribe({
       next: (lstData) => {
@@ -167,7 +168,8 @@ export class DfaDashProjectComponent implements OnInit {
           x.openProject = false;
       } else x.openProject = true;
     })
-    if (this.apptype === "current") {
+    
+    if (this.apptype === "open") {
       this.lstProjects = this.lstProjects
         .filter(x => x.openProject === true);
       this.appSessionService.currentProjectsCount?.emit(this.lstProjects.length);

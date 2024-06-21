@@ -9,7 +9,6 @@
 
       <!-- Project Details -->
       <mat-card-content class="contentStyle mat-elevation-z8">
-        
         <div class="row info-detail" style="padding-top: 20px;">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.projectNumber || (formCreationService.recoveryPlanForm$ | async)?.controls?.projectNumber.invalid}">Project Number:</span></div>
           <div class="col-md-3">
@@ -20,6 +19,22 @@
                   .projectNumber : "Enter required information"
               }}
             </span>
+          </div>
+          <div class="col-md-4"></div>
+          <div class="col-md-2" *ngIf="allowEdit">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="navigateToStep(0)"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
           </div>
         </div>
 
@@ -268,12 +283,12 @@
             </ng-container>
 
             <!-- Type Column -->
-            <ng-container matColumnDef="fileType" style="width:25%">
+            <ng-container matColumnDef="fileTypeText" style="width:25%">
               <th mat-header-cell *matHeaderCellDef>
                 <b>File Type</b>
               </th>
               <td *matCellDef="let element" mat-cell>
-                {{ element.fileType}}
+                {{ element.fileTypeText}}
               </td>
             </ng-container>
 
@@ -325,12 +340,12 @@
           </ng-container>
 
           <!-- Type Column -->
-          <ng-container matColumnDef="fileType" style="width:25%">
+          <ng-container matColumnDef="fileTypeText" style="width:25%">
             <th mat-header-cell *matHeaderCellDef>
               <b>File Type</b>
             </th>
             <td *matCellDef="let element" mat-cell>
-              {{ element.fileType}}
+              {{ element.fileTypeText}}
             </td>
           </ng-container>
 

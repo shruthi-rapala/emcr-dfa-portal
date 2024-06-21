@@ -351,13 +351,13 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.Deadline18Month, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_18monthdeadline).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_18monthdeadline).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 .ForMember(d => d.ProjectNumber, opts => opts.MapFrom(s => s.dfa_projectnumber))
                 .ForMember(d => d.ProjectId, opts => opts.MapFrom(s => s.dfa_projectid))
-                //.ForMember(d => d.Status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) ? GetEnumDescription((ProjectStages)Convert.ToInt32(s.dfa_projectbusinessprocessstages)) : null))
-                //.ForMember(d => d.Stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_projectbusinessprocesssubstages) ? GetEnumDescription((ProjectSubStages)Convert.ToInt32(s.dfa_projectbusinessprocesssubstages)) : null))
-                .ForMember(d => d.Status, opts => opts.MapFrom(s => Convert.ToString(ProjectStages.Submitted)))
-                .ForMember(d => d.Stage, opts => opts.MapFrom(s => Convert.ToString(ProjectSubStages.Pending)))
+                .ForMember(d => d.Status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) ? GetEnumDescription((ProjectStages)Convert.ToInt32(s.dfa_projectbusinessprocessstages)) : null))
+                .ForMember(d => d.Stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_projectbusinessprocesssubstages) ? GetEnumDescription((ProjectSubStages)Convert.ToInt32(s.dfa_projectbusinessprocesssubstages)) : null))
+                //.ForMember(d => d.Status, opts => opts.MapFrom(s => Convert.ToString(ProjectStages.Submitted)))
+                //.ForMember(d => d.Stage, opts => opts.MapFrom(s => Convert.ToString(ProjectSubStages.Pending)))
                 //.ForMember(d => d.Stage, opts => opts.MapFrom(s => s.dfa_projectbusinessprocessstages))
                 .ForMember(d => d.ProjectName, opts => opts.MapFrom(s => s.dfa_projectname))
-                .ForMember(d => d.SiteLocation, opts => opts.MapFrom(s => s.dfa_sitelocation))
+                .ForMember(d => d.SiteLocation, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_sitelocation) ? "Not Set" : s.dfa_sitelocation))
                 .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => s.dfa_approvedcost == null ? 0 : s.dfa_approvedcost))
                 .ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.EstimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
@@ -484,10 +484,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.repairDamagedInfrastructure, opts => opts.MapFrom(s => s.dfa_descriptionofmaterialneededtorepair))
                 .ForMember(d => d.siteLocation, opts => opts.MapFrom(s => s.dfa_sitelocation))
                 .ForMember(d => d.estimateCostIncludingTax, opts => opts.MapFrom(s => Convert.ToString(s.dfa_estimatedcost)))
-                .ForMember(d => d.sitelocationdamageFromDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_dateofdamagefrom).ToString("o")))
-                .ForMember(d => d.sitelocationdamageToDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_dateofdamageto).ToString("o")))
+                .ForMember(d => d.sitelocationdamageFromDate, opts => opts.MapFrom(s => s.dfa_dateofdamagefrom == null ? null : Convert.ToDateTime(s.dfa_dateofdamagefrom).ToString("o")))
+                .ForMember(d => d.sitelocationdamageToDate, opts => opts.MapFrom(s => s.dfa_dateofdamageto == null ? null : Convert.ToDateTime(s.dfa_dateofdamageto).ToString("o")))
                 .ForMember(d => d.isdamagedDateSameAsApplication, opts => opts.MapFrom(s => s.dfa_dateofdamagesameasapplication))
-                .ForMember(d => d.estimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("o")));
+                .ForMember(d => d.estimatedCompletionDate, opts => opts.MapFrom(s => s.dfa_estimatedcompletiondateofproject == null ? null : Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("o")));
                 //.ForMember(d => d.estimatedCompletionDate, opts => opts.MapFrom(s => s.dfa_estimatedcompletiondateofproject));
                 //.ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 //.ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.No ? false : (bool?)null)))

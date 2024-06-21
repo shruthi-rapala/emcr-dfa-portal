@@ -19,7 +19,7 @@ import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAProjectMainDataService } from './dfa-project-main-data.service';
 import { DFAProjectMainService } from './dfa-project-main.service';
-import { ApplicantOption, FarmOption, SmallBusinessOption } from 'src/app/core/api/models';
+import { ApplicantOption, FarmOption, ProjectStageOptionSet, SmallBusinessOption } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
@@ -88,7 +88,6 @@ export class DFAProjectMainComponent
   }
 
   ngOnInit(): void {
-    
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     let projectId = this.dfaProjectMainDataService.getProjectId();
     
@@ -118,23 +117,23 @@ export class DFAProjectMainComponent
     //this.recPlan.setFocus();
     //debugger
     //this.projectName.nativeElement.focus();
-    this.formCreationService.recoveryPlanForm.value.markAsUntouched();
+    //this.formCreationService.recoveryPlanForm.value.markAsUntouched();
 
-    this.dfaProjectMainStepper.steps.forEach((step, idx) => {
-      //if (idx == 1 && this.formCreationService.recoveryPlanForm.value.get('projectNumber').invalid) {
-      //  step.editable = false;
-      //}
+    //this.dfaProjectMainStepper.steps.forEach((step, idx) => {
+    //  //if (idx == 1 && this.formCreationService.recoveryPlanForm.value.get('projectNumber').invalid) {
+    //  //  step.editable = false;
+    //  //}
       
-      step.select = () => {
-        this.selectedStepIndex = idx;
+    //  step.select = () => {
+    //    this.selectedStepIndex = idx;
         
-        switch (idx) {
-          case 1:
-            this.setFormData('recovery-plan')
-            break;
-        }
-      };
-    });
+    //    switch (idx) {
+    //      case 1:
+    //        this.setFormData('recovery-plan')
+    //        break;
+    //    }
+    //  };
+    //});
   }
 
   navigateToStep(stepIndex: number) {
@@ -266,11 +265,12 @@ export class DFAProjectMainComponent
   }
 
   saveAsDraft(): void {
-    this.setFormData('recovery-plan');
+    this.setFormData(this.steps[this.dfaProjectMainStepper.selectedIndex]?.component.toString());
+    this.dfaProjectMainDataService.recoveryPlan.projectStatus = ProjectStageOptionSet.DRAFT;
     let project = this.dfaProjectMainDataService.createDFAProjectMainDTO();
 
     this.dfaProjectMainService.upsertProject(project).subscribe(x => {
-      //this.saveAndBackToDashboard();
+        this.BackToDashboard();
     },
       error => {
         console.error(error);
@@ -313,8 +313,6 @@ export class DFAProjectMainComponent
         this.dfaProjectMainDataService.recoveryPlan.estimatedCompletionDate = this.form.get('estimatedCompletionDate').value;
         this.dfaProjectMainDataService.recoveryPlan.estimateCostIncludingTax = this.form.get('estimateCostIncludingTax').value;
 
-        break;
-      case 'occupants':
         break;
       default:
         break;
@@ -380,10 +378,12 @@ export class DFAProjectMainComponent
           //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
           //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           this.setFormData(this.steps[this.dfaProjectMainStepper.selectedIndex]?.component.toString());
+          this.dfaProjectMainDataService.recoveryPlan.projectStatus = ProjectStageOptionSet.SUBMIT;
+
           let project = this.dfaProjectMainDataService.createDFAProjectMainDTO();
 
           this.dfaProjectMainService.upsertProject(project).subscribe(x => {
-            //this.saveAndBackToDashboard();
+            this.BackToDashboard();
           },
             error => {
               console.error(error);

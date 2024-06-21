@@ -7,16 +7,16 @@ const routes: Routes = [{
   children: [
     {
       path: '',
-      redirectTo: 'current',
+      redirectTo: 'open',
       pathMatch: 'full'
     },
     {
-      path: 'current',
+      path: 'open',
       loadChildren: () =>
         import(
           'src/app/sharedModules/project-dashboard-components/project/project.module'
         ).then((m) => m.DFADashProjectModule),
-      data: { flow: 'dfa-project-dashboard', apptype: 'current' }
+      data: { flow: 'dfa-project-dashboard', apptype: 'open' }
     },
     {
       path: 'past',

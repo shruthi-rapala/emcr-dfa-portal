@@ -891,7 +891,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_projectbusinessprocessstages",
                     "dfa_estimatedcompletiondateofproject",
                     "dfa_estimatedcost", "dfa_dateofdamagedifferencereason",
-                    "dfa_projectid"
+                    "dfa_projectid", "dfa_projectbusinessprocesssubstages",
+                    "dfa_descriptionofdamage"
                 },
                 Filter = $"dfa_projectid eq {projectId}"
             });
@@ -922,7 +923,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_projectid", "createdon", "dfa_projectbusinessprocessstages",
                         "dfa_projectbusinessprocesssubstages"
                     },
-                    Filter = $"dfa_projectid eq {applicationId}"
+                    Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
 
                 //where objAppEvent != null && (objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
@@ -941,6 +942,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    createdon = objApp.createdon,
                                    statuscode = objApp.statuscode,
                                    dfa_projectbusinessprocessstages = objApp.dfa_projectbusinessprocessstages,
+                                   dfa_projectbusinessprocesssubstages = objApp.dfa_projectbusinessprocesssubstages
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstApps;

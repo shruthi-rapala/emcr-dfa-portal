@@ -52,13 +52,13 @@ namespace EMBC.DFA.API.Controllers
         /// <returns>list of dfa applications</returns>
         [HttpGet("dfaprojects")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<CurrentProject>>> GetDFAProjects(string applicationId = "807d7779-2113-ef11-b84d-00505683fbf4")
+        public async Task<ActionResult<List<CurrentProject>>> GetDFAProjects(string applicationId)
         {
             var userId = currentUserId;
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             var profileId = profile.Id;
-            var lstProjects = await handler.HandleProjectList("9939b88c-2628-ef11-b850-00505683fbf4");
+            var lstProjects = await handler.HandleProjectList(applicationId);
 
             //var lstProjects = new List<CurrentProject>()
             //{
