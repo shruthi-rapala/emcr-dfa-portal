@@ -5,19 +5,19 @@
         <mat-option value="All">
           All Projects
         </mat-option>
-        <mat-option *ngIf="apptype == 'current'" value="Draft">
+        <mat-option *ngIf="apptype == 'open'" value="Draft">
           Draft
         </mat-option>
-        <mat-option *ngIf="apptype == 'current'" value="Submitted">
+        <mat-option *ngIf="apptype == 'open'" value="Submitted">
           Submitted
         </mat-option>
-        <mat-option *ngIf="apptype == 'current'" value="Approval Pending">
+        <mat-option *ngIf="apptype == 'open'" value="Approval Pending">
           Approval Pending
         </mat-option>
-        <mat-option *ngIf="apptype != 'current'" value="Approved">
+        <mat-option *ngIf="apptype != 'open'" value="Approved">
           Approved
         </mat-option>
-        <mat-option *ngIf="apptype != 'current'" value="Closed">
+        <mat-option *ngIf="apptype != 'open'" value="Closed">
           Closed
         </mat-option>
       </mat-select>
@@ -239,68 +239,6 @@
           </div>-->
       </div>
       
-      <!--<div class="row" style="padding-top: 35px;">
-        <button
-          class="col-md-2 application-button"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate || appType != 'current'"
-          
-        >
-          View Application
-        </button>
-
-        <button
-        class="col-md-2 application-button"
-        type="button"
-        *ngIf="!applItem.primaryApplicantSignedDate && appType == 'current'"
-        
-        >
-          Complete Application
-        </button>-->
-
-        <!--<button
-          class="col-md-2 application-button whitebutton"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
-          (click)="EditApplication(applItem.applicationId, '3')"
-        >
-          Add to Clean Up Log
-        </button>
-
-        <button
-          class="col-md-2 application-button whitebutton"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
-          (click)="EditApplication(applItem.applicationId, '4')"
-        >
-          Add to Damaged Items
-        </button>
-
-        <button
-          class="col-md-2 application-button whitebutton"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
-          (click)="EditApplication(applItem.applicationId, '5')"
-        >
-          Add Supporting Docs
-        </button>
-
-        <button
-          class="col-md-2 application-button whitebutton"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
-          (click)="EditApplication(applItem.applicationId, '2')"
-        >
-          Add Other Contacts
-        </button>-->
-
-        <!--<button
-          class="application-button redbutton"
-          type="button"
-        >
-          Delete Application
-        </button>-->
-      <!--</div>-->
     </mat-card>
   </div>
 </div>
