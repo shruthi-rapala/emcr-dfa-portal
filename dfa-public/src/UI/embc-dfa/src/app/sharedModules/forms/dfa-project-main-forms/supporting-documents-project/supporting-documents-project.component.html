@@ -38,6 +38,7 @@
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="PreEvent"
+            fileTypeText="Pre Event Condition"
             excludeFileTypes="[]"
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('prevEventConditionFileUpload')"
@@ -69,6 +70,7 @@
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="PostEvent"
+            fileTypeText="Post Event Condition"
             excludeFileTypes="[]"
             (saveFileUpload)="saveRequiredForm($event)"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('postEventConditionFileUpload')"
@@ -146,12 +148,22 @@
       </ng-container>
 
       <!-- Category Column -->
-      <ng-container matColumnDef="fileType" style="width:25%">
+      <!--<ng-container matColumnDef="fileType" style="width:25%">
         <th mat-header-cell *matHeaderCellDef>
           <b>Category</b>
         </th>
         <td *matCellDef="let element" mat-cell>
           {{ element.fileType }}
+        </td>
+      </ng-container>-->
+
+      <!-- Category Column -->
+      <ng-container matColumnDef="fileTypeText" style="width:25%">
+        <th mat-header-cell *matHeaderCellDef>
+          <b>Category</b>
+        </th>
+        <td *matCellDef="let element" mat-cell>
+          {{ element.fileTypeText }}
         </td>
       </ng-container>
 

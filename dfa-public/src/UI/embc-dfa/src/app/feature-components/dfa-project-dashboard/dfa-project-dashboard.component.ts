@@ -69,11 +69,12 @@ export class DFAProjectComponent
   }
 
   ngOnInit(): void {
+    
     this.appId = this.route.snapshot.paramMap.get('id');
     this.applicationNumber = 'Application';
-    var applicationId = '807d7779-2113-ef11-b84d-00505683fbf4'; //this.dfaApplicationMainDataService.getApplicationId();
-    this.getApplicationDetials(applicationId);
-    this.dfaProjectMainDataService.setApplicationId(applicationId);
+    //var applicationId = this.dfaApplicationMainDataService.getApplicationId();
+    this.getApplicationDetials(this.appId);
+    this.dfaProjectMainDataService.setApplicationId(this.appId);
 
     this.appSessionService.currentApplicationsCount.subscribe((n: number) => {
       this.currentProjectsCount = n;
@@ -84,7 +85,7 @@ export class DFAProjectComponent
       this.tabs[2].count = n ? n.toString() : "0";
     });
 
-    this.projService.projectGetDfaProjects({ applicationId: applicationId }).subscribe({
+    this.projService.projectGetDfaProjects({ applicationId: this.appId }).subscribe({
       next: (lstData) => {
         if (lstData != null) {
           this.countAppData(lstData);
@@ -99,7 +100,7 @@ export class DFAProjectComponent
     this.tabs = [
       {
         label: 'Open Projects',
-        route: 'current',
+        route: 'open',
         activeImage: '/assets/images/past-evac-active.svg',
         inactiveImage: '/assets/images/past-evac.svg',
         count: this.currentProjectsCount.toString()
@@ -151,7 +152,7 @@ export class DFAProjectComponent
         },
         error: (error) => {
           console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
     }

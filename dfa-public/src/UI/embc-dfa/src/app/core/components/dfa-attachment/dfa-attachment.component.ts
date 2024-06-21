@@ -11,6 +11,7 @@ import { CustomValidationService } from 'src/app/core/services/customValidation.
 import { FileCategory, FileUpload, RequiredDocumentType } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-dfa-attachment',
@@ -24,6 +25,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   @Input() allowedFileTypes: string[];
   @Input() allowedFileExtensionsList: string;
   @Input() fileType: string;
+  @Input() fileTypeText: string;
   @Input() excludeFileTypes: string[];
   @Input() fileUpload: UntypedFormGroup;
   @Output() showSideNote = new EventEmitter<any>();
@@ -79,6 +81,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
       this.fileUpload.reset();
       this.fileUpload.get('modifiedBy').setValue("Applicant");
       if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType); else this.fileUpload.get('fileType').setValue(null);
+      if (this.fileTypeText) this.fileUpload.get('fileTypeText').setValue(this.fileTypeText); else this.fileUpload.get('fileTypeText').setValue(null);
       if (this.requiredDocumentType) this.fileUpload.get('requiredDocumentType').setValue(this.requiredDocumentType); else this.fileUpload.get('requiredDocumentType').setValue(null);
       this.fileUpload.get('deleteFlag').setValue(false);
       this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
@@ -107,6 +110,11 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
     this.showFileUpload = !this.showFileUpload;
     this.cancelFileUpload.emit();
     this.initFileUploadForm();
+  }
+
+  setFileTypeText(event: MatSelectChange): void {
+    var val = event.source.triggerValue;
+    this.fileUpload.get('fileTypeText').setValue(event.source.triggerValue)
   }
 
   updateFileUploadFormOnVisibility(): void {

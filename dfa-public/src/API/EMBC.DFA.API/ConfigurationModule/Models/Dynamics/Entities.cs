@@ -192,6 +192,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_descriptionofrepairwork { get; set; }
         public string? dfa_descriptionofthecauseofdamage { get; set; }
         public int? dfa_projectbusinessprocessstages { get; set; }
+        public int? dfa_projectbusinessprocesssubstages { get; set; }
         public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
         public int? dfa_estimatedcost { get; set; }
         public bool? dfa_dateofdamagesameasapplication { get; set; }

@@ -53,7 +53,7 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
   formCreationService: FormCreationService;
   showSupportingFileForm: boolean = false;
   supportingFilesDataSource = new MatTableDataSource();
-  documentSummaryColumnsToDisplay = [ 'fileName', 'fileDescription', 'fileType', 'uploadedDate', 'icons']
+  documentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate', 'icons']
   documentSummaryDataSource = new MatTableDataSource();
   isLoading: boolean = false;
   isdisabled: string = 'false';

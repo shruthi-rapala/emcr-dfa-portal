@@ -146,6 +146,7 @@
         [parentPageName]="parentPageName"
         [currentFlow]="currentFlow"
         [allowEdit]="true"
+        (stepToNavigate)="navigateToStep($event)"
       >
       </app-review-project>
       <br />

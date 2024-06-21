@@ -28,9 +28,9 @@ export class ReviewProjectComponent implements OnInit {
   cs: any;
   siteKey: string;
   supportingDocumentsDataSource = new MatTableDataSource<FileUpload>();
-  supportingDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
+  supportingDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate'];
   requiredDocumentsDataSource = new MatTableDataSource<FileUpload>();
-  requiredDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileType', 'uploadedDate'];
+  requiredDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate'];
   hideCard = false;
   navigationExtras: NavigationExtras;
   
