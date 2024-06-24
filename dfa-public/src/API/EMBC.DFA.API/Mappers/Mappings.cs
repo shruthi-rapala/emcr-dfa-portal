@@ -173,6 +173,7 @@ namespace EMBC.DFA.API.Mappers
 
             CreateMap<DFAApplicationMain, dfa_appapplicationmain_params>()
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => Convert.ToInt32(ApplicantTypeOptionSet.GovernmentBody)))
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.propertyDamage.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.propertyDamage.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
