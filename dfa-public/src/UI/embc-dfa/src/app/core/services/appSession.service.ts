@@ -6,6 +6,8 @@ export class AppSessionService {
   private editParentPageVal: string;
   public currentApplicationsCount: EventEmitter<number> = new EventEmitter<number>();
   public pastApplicationsCount: EventEmitter<number> = new EventEmitter<number>();
+  public currentProjectsCount: EventEmitter<number> = new EventEmitter<number>();
+  public pastProjectsCount: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private cacheService: CacheService) {}
 

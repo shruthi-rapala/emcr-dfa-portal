@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using Newtonsoft.Json;
@@ -163,11 +164,38 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_dateofdamageto { get; set; } // optional date only
         public string? dfa_appapplicationid { get; set; } // optional string
         public string dfa_appcontactid { get; set; }
+        public int? dfa_applicantsubtype { get; set; }
+        public int? dfa_applicantlocalgovsubtype { get; set; }
+        public string dfa_estimated { get; set; }
+        public string dfa_applicantothercomments { get; set; }
+        public string dfa_dfaapplicantsubtypecomments { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
     {
         public string? dfa_accountlegalname { get; set; } // optional string
+    }
+
+    public class dfa_projectmain_retrieve
+    {
+        public string? dfa_projectid { get; set; }
+        public string? dfa_projectnumber { get; set; }
+        public string? dfa_projectname { get; set; }
+        public DateTime? dfa_dateofdamageto { get; set; }
+        public DateTime? dfa_dateofdamagefrom { get; set; }
+        public string? dfa_sitelocation { get; set; }
+        public string? dfa_dateofdamagedifferencereason { get; set; }
+        public string? dfa_descriptionofdamagedinfrastructure { get; set; }
+        public string? dfa_descriptionofdamagewithmaterial { get; set; }
+        public string? dfa_descriptionofdamage { get; set; }
+        public string? dfa_descriptionofmaterialneededtorepair { get; set; }
+        public string? dfa_descriptionofrepairwork { get; set; }
+        public string? dfa_descriptionofthecauseofdamage { get; set; }
+        public int? dfa_projectbusinessprocessstages { get; set; }
+        public int? dfa_projectbusinessprocesssubstages { get; set; }
+        public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
+        public int? dfa_estimatedcost { get; set; }
+        public bool? dfa_dateofdamagesameasapplication { get; set; }
     }
 
     public class dfa_appapplicationmain_retrieve
@@ -227,6 +255,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_charityprovidescommunitybenefit { get; set; } // optional Option set
         public string? createdon { get; set; } // optional string
         public int? dfa_damagedpropertyaddresscanadapostverified { get; set; }
+        public int? dfa_applicantsubtype { get; set; }
+        public int? dfa_applicantlocalgovsubtype { get; set; }
+        public string dfa_estimated { get; set; }
+        public string dfa_dfaapplicantsubtypecomments { get; set; }
+        public string dfa_applicantothercomments { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord
@@ -371,6 +404,28 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? _dfa_applicationid_value { get; set; } // optional string for retrieving
     }
 
+    public class dfa_project_params
+    {
+        public string dfa_applicationid { get; set; } // required string
+        public string dfa_projectid { get; set; } // required string
+        public string? dfa_projectnumber { get; set; } // optional string
+        public string? dfa_projectname { get; set; }
+        public DateTime? dfa_dateofdamageto { get; set; }
+        public DateTime? dfa_dateofdamagefrom { get; set; }
+        public string? dfa_sitelocation { get; set; }
+        public string? dfa_descriptionofdamage { get; set; }
+        public string? dfa_descriptionofdamagedinfrastructure { get; set; }
+        public string? dfa_dateofdamagedifferencereason { get; set; }
+        public string? dfa_descriptionofdamagewithmaterial { get; set; }
+        public string? dfa_descriptionofmaterialneededtorepair { get; set; }
+        public string? dfa_descriptionofrepairwork { get; set; }
+        public string? dfa_descriptionofthecauseofdamage { get; set; }
+        public string? dfa_projectbusinessprocessstages { get; set; }
+        public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
+        public int? dfa_estimatedcost { get; set; }
+        public bool? dfa_dateofdamagesameasapplication { get; set; }
+    }
+
     public class dfa_appdamageditems_params
     {
         public Guid dfa_applicationid { get; set; } // required string
@@ -378,6 +433,69 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_roomname { get; set; } // required string
         public string dfa_damagedescription { get; set; } // required string
         public bool delete { get; set; } // required boolean
+    }
+
+    public enum ApplicantSubtypeCategoriesOptionSet
+    {
+        [Description("First Nations Community")]
+        FirstNationCommunity = 222710000,
+
+        [Description("Municipality")]
+        Municipality = 222710001,
+
+        [Description("Regional District")]
+        RegionalDistrict = 222710002,
+
+        [Description("Other Local Government Body")]
+        OtherLocalGovernmentBody = 222710003,
+
+        [Description("Other")]
+        Other = 222710004
+    }
+
+    public enum ApplicantSubtypeSubCategoriesOptionSet
+    {
+        [Description("an improvement district as defined in the Local Government Act")]
+        ImprovementDistrict = 222710000,
+
+        [Description("a local area as defined in the Local Services Act")]
+        LocalArea = 222710001,
+
+        [Description("a greater board as defined in the Community Charter or any incorporated board that provides similar services and is incorporated by letters patent")]
+        GreaterBoard = 222710002,
+
+        [Description("a board of variance established under Division 15 of Part 14 of the Local Government Act or section 572 of the Vancouver Charter")]
+        BoardofVariance = 222710003,
+
+        [Description("the trust council, the executive committee, a local trust committee and the Islands Trust Conservancy, as these are defined in the Islands Trust Act")]
+        TrustCouncil = 222710004,
+
+        [Description("the Okanagan Basin Water Board")]
+        OkanaganBasinWaterBoard = 222710005,
+
+        [Description("a water users' community as defined in section 1 (1) of the Water Users' Communities Act")]
+        WaterUsersCommunity = 222710006,
+
+        [Description("the Okanagan-Kootenay Sterile Insect Release Board")]
+        OkanaganKootenaySterileInsectReleaseBoard = 222710007,
+
+        [Description("a municipal police board established under section 23 of the Police Act")]
+        MunicipalPoliceBoard = 222710008,
+
+        [Description("a library board as defined in the Library Act")]
+        LibraryBoard = 222710009,
+
+        [Description("any board, committee, commission, panel, agency or corporation that is created or owned by a body referred to in paragraphs (a) to (m) and all the members or officers of which are appointed or chosen by or under the authority of that body")]
+        Any = 222710010,
+
+        [Description("a board of trustees established under section 37 of the Cremation, Interment and Funeral Services Act")]
+        BoardofTrustees = 222710011,
+
+        [Description("the South Coast British Columbia Transportation Authority")]
+        SouthCoast = 222710012,
+
+        [Description("the Park Board referred to in section 485 of the Vancouver Charter")]
+        ParkBoard = 222710013,
     }
 
     public enum ApplicantTypeOptionSet
@@ -451,11 +569,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         YesBut = 222710001
     }
 
+    public enum ProjectStageOptionSet
+    {
+        [Description("draft")]
+        DRAFT = 222710000,
+
+        [Description("submit")]
+        SUBMIT = 222710001
+    }
+
     public class dfa_appapplication
     {
         public string dfa_appapplicationid { get; set; }
         public string dfa_applicanttype { get; set; }
         public string dfa_dateofdamage { get; set; }
+        public string dfa_dateofdamageto { get; set; }
         public string dfa_damagedpropertystreet1 { get; set; }
         public string dfa_damagedpropertycitytext { get; set; }
         public string _dfa_eventid_value { get; set; }
@@ -488,6 +616,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_eventtype { get; set; }
     }
 
+    public class dfa_project
+    {
+        public string? dfa_projectnumber { get; set; }
+        public string? dfa_projectname { get; set; }
+        public string? dfa_sitelocation { get; set; }
+        public string? dfa_projectbusinessprocessstages { get; set; }
+        public string? statuscode { get; set; }
+        public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
+        public int? dfa_approvedcost { get; set; }
+        public DateTime? dfa_18monthdeadline { get; set; }
+        public DateTime createdon { get; set; }
+        public string? dfa_projectid { get; set; }
+        public string? dfa_projectbusinessprocesssubstages { get; set; }
+    }
+
     public enum EventType
     {
         [Description("Private")]
@@ -498,6 +641,51 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Private & Public")]
         PrivatePublic = 222710002
+    }
+
+    public enum ProjectStages
+    {
+        [Description("Draft")]
+        Draft = 222710000,
+
+        [Description("Submitted")]
+        Submitted = 222710001,
+
+        [Description("Under Review")]
+        UnderReview = 222710002,
+
+        [Description("Approval Pending")]
+        ApprovalPending = 222710003,
+
+        [Description("Decision Made")]
+        DecisionMade = 222710004
+    }
+
+    public enum ProjectSubStages
+    {
+        [Description("Pending")]
+        Pending = 222710000,
+
+        [Description("Received")]
+        Received = 222710001,
+
+        [Description("In Progress")]
+        InProgress = 222710002,
+
+        [Description("Assign to Evaluator")]
+        AssigntoEvaluator = 222710003,
+
+        [Description("Additional info. Required")]
+        AdditionalinfoRequired = 222710004,
+
+        [Description("Approved")]
+        Approved = 222710005,
+
+        [Description("Ineligible")]
+        Ineligible = 222710006,
+
+        [Description("Withdrawn")]
+        Withdrawn = 222710007,
     }
 
     public class dfa_incident

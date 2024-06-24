@@ -326,8 +326,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           else fileUploads = [ fileUpload ];
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.showSupportingFileForm = !this.showSupportingFileForm;
-          if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
-            this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+          //if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
+          //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
           this.isLoading = false;
         },
         error: (error) => {
@@ -372,8 +372,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           if (fileUploads) fileUploads.push(fileUpload);
           else fileUploads = [fileUpload];
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
-            this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+          //if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
+          //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
           this.isLoading = false;
         },
         error: (error) => {
@@ -479,10 +479,10 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
-    } else if (element.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]) {
-      this.dfaApplicationMainService.deleteDamagePhoto.emit(element);
-    } else if (element.fileType === this.FileCategories.Cleanup) {
-      this.dfaApplicationMainService.deleteCleanupLog.emit(element);
+    //} else if (element.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]) {
+    //  this.dfaApplicationMainService.deleteDamagePhoto.emit(element);
+    //} else if (element.fileType === this.FileCategories.Cleanup) {
+    //  this.dfaApplicationMainService.deleteCleanupLog.emit(element);
     } else {
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       let index = fileUploads?.indexOf(element);
@@ -492,13 +492,13 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         next: (result) => {
           fileUploads[index] = element;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          if (fileUploads?.filter(x => x.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])?.length == 0)
-            this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
-          if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
-            this.fileUploadForm
-              .get('addNewFileUploadIndicator')
-              .setValue(false);
-          }
+          //if (fileUploads?.filter(x => x.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])?.length == 0)
+          //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
+          //if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
+          //  this.fileUploadForm
+          //    .get('addNewFileUploadIndicator')
+          //    .setValue(false);
+          //}
         },
         error: (error) => {
           console.error(error);
@@ -511,8 +511,8 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   initRequiredFileForm(formName: string) {
     this.fileUploadForm.get(formName).reset();
     this.fileUploadForm.get(formName).get('modifiedBy').setValue("Applicant");
-    this.fileUploadForm.get(formName).get('fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
-    this.fileUploadForm.get(formName).get('requiredDocumentType').setValue(Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.InsuranceTemplate)]);
+    //this.fileUploadForm.get(formName).get('fileType').setValue(Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.Insurance)]);
+    //this.fileUploadForm.get(formName).get('requiredDocumentType').setValue(Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.InsuranceTemplate)]);
     this.fileUploadForm.get('addNewFileUploadIndicator').setValue(true);
     this.fileUploadForm.get(formName).get('deleteFlag').setValue(false);
     this.fileUploadForm.get(formName).get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());

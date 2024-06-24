@@ -94,6 +94,31 @@ export class ComponentCreationService {
 
   ];
 
+  dfaProjectMainComponents: Array<any> = [
+
+    {
+      component: 'recovery-plan',
+      nextButtonLabel: 'Next - Upload Documents',
+      backButtonLabel: 'Go Back',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: -1,
+      stepName: 'Recovery Plan',
+      editable: true
+    },
+    {
+      component: 'supporting-documents-project',
+      nextButtonLabel: 'Next - Review & Submit',
+      backButtonLabel: 'Go Back',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Upload Documents',
+      editable: false
+    }
+
+  ];
+
     getProfileComponents(): Observable<any> {
     const profile = new Observable((observer) => {
       observer.next(this.dynamicComponents);
@@ -124,6 +149,15 @@ export class ComponentCreationService {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
     for (const comp of this.dfaApplicationMainComponents) {
+      componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
+    }
+    return componentArr;
+  }
+
+  createDFAProjectMainSteps(): Array<ComponentMetaDataModel> {
+    const componentArr: Array<ComponentMetaDataModel> =
+      new Array<ComponentMetaDataModel>();
+    for (const comp of this.dfaProjectMainComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;

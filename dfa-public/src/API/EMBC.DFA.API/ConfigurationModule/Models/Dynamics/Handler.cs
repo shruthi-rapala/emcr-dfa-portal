@@ -25,6 +25,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleApplication(dfa_appapplicationstart_params objApplication, temp_dfa_appapplicationstart_params temp_params);
         Task<string> HandleSignature(dfa_signature objSignature);
         Task<string> HandleApplicationUpdate(dfa_appapplicationmain_params objApplication, temp_dfa_appapplicationmain_params temp_params);
+        Task<string> HandleProjectCreateUpdate(dfa_project_params objProject);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartAsync(Guid applicationId);
         Task<dfa_appapplicationmain_retrieve> GetApplicationMainAsync(Guid applicationId);
         Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems);
@@ -42,9 +43,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
         Task<int> HandleEvents();
-        Task<IEnumerable<dfa_event>> HandleOpenEventList();
+        Task<IEnumerable<dfa_event>> HandleOpenPublicEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList();
         Task<List<AreaCommunity>> HandleGetAreaCommunities();
+        Task<dfa_projectmain_retrieve> GetProjectMainAsync(Guid projectId);
+        Task<List<CurrentProject>> HandleProjectList(string applicationId);
+        Task<CurrentApplication> HandleApplicationDetails(string applicationId);
     }
 
     public class Handler : IConfigurationHandler
@@ -138,11 +142,30 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return dfa_appapplication;
         }
 
+        public async Task<dfa_projectmain_retrieve> GetProjectMainAsync(Guid projectId)
+        {
+            var dfa_project = await listsGateway.GetProjectMainById(projectId);
+            return dfa_project;
+        }
+
+        public async Task<List<CurrentProject>> HandleProjectList(string applicationId)
+        {
+            var lstApps = await listsGateway.GetProjectListAsync(applicationId);
+            var mappedProjects = mapper.Map<List<CurrentProject>>(lstApps);
+            return mappedProjects;
+        }
+
         public async Task<List<CurrentApplication>> HandleApplicationList(string profileId)
         {
             var lstApps = await listsGateway.GetApplicationListAsync(profileId);
             var mappedApps = mapper.Map<List<CurrentApplication>>(lstApps);
             return mappedApps;
+        }
+        public async Task<CurrentApplication> HandleApplicationDetails(string applicationId)
+        {
+            var objApp = await listsGateway.GetApplicationDetailsAsync(applicationId);
+            var mappedApp = mapper.Map<CurrentApplication>(objApp);
+            return mappedApp;
         }
 
         public async Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems)
@@ -221,9 +244,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             return await listsGateway.GetEventCount();
         }
-        public async Task<IEnumerable<dfa_event>> HandleOpenEventList()
+        public async Task<IEnumerable<dfa_event>> HandleOpenPublicEventList()
         {
-            return await listsGateway.GetOpenEventList();
+            return await listsGateway.GetOpenPublicEventList();
         }
 
         public async Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList()
@@ -236,6 +259,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             var lstCommunities = await listsGateway.GetCommunitiesAsync();
             var mappedList = mapper.Map<List<AreaCommunity>>(lstCommunities);
             return mappedList;
+        }
+
+        public async Task<string> HandleProjectCreateUpdate(dfa_project_params objProject)
+        {
+            var result = await listsGateway.UpsertProject(objProject);
+            return result;
         }
     }
 }

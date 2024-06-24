@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Security;
@@ -172,7 +172,6 @@ namespace EMBC.Utilities.Messaging.Grpc
                         if (options.AuthorizationEnabled && !string.IsNullOrEmpty(opts.MetadataAddress))
                         {
                             // load the oidc config from the oauth server
-                            // EMCRI-217 waynezen TODO remove
                             //opts.OidcConfig = OpenIdConnectConfigurationRetriever.GetAsync(opts.MetadataAddress, CancellationToken.None).GetAwaiter().GetResult();
                         }
                         else

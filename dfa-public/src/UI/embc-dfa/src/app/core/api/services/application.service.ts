@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { ApplicantSubtypeSubCategories } from '../models/applicant-subtype-sub-categories';
 import { ApplicantSubtypes } from '../models/applicant-subtypes';
 import { CurrentApplication } from '../models/current-application';
 import { DfaApplicationMain } from '../models/dfa-application-main';
@@ -325,6 +326,68 @@ export class ApplicationService extends BaseService {
   }
 
   /**
+   * Path part for operation applicationGetApplicationDetailsForProject
+   */
+  static readonly ApplicationGetApplicationDetailsForProjectPath = '/api/applications/dfaapplicationbyID';
+
+  /**
+   * get dfa applications.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `applicationGetApplicationDetailsForProject()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetApplicationDetailsForProject$Response(params?: {
+
+    /**
+     * The application Id.
+     */
+    applicationId?: string;
+  }): Observable<StrictHttpResponse<CurrentApplication>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetApplicationDetailsForProjectPath, 'get');
+    if (params) {
+      rb.query('applicationId', params.applicationId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<CurrentApplication>;
+      })
+    );
+  }
+
+  /**
+   * get dfa applications.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `applicationGetApplicationDetailsForProject$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetApplicationDetailsForProject(params?: {
+
+    /**
+     * The application Id.
+     */
+    applicationId?: string;
+  }): Observable<CurrentApplication> {
+
+    return this.applicationGetApplicationDetailsForProject$Response(params).pipe(
+      map((r: StrictHttpResponse<CurrentApplication>) => r.body as CurrentApplication)
+    );
+  }
+
+  /**
    * Path part for operation applicationGetApplicantSubTypes
    */
   static readonly ApplicationGetApplicantSubTypesPath = '/api/applications/applicantsubtypes';
@@ -372,6 +435,57 @@ export class ApplicationService extends BaseService {
 
     return this.applicationGetApplicantSubTypes$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ApplicantSubtypes>>) => r.body as Array<ApplicantSubtypes>)
+    );
+  }
+
+  /**
+   * Path part for operation applicationGetApplicantSubSubTypes
+   */
+  static readonly ApplicationGetApplicantSubSubTypesPath = '/api/applications/applicantsubsubtypes';
+
+  /**
+   * Get the applicant subtype records.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `applicationGetApplicantSubSubTypes()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetApplicantSubSubTypes$Response(params?: {
+  }): Observable<StrictHttpResponse<ApplicantSubtypeSubCategories>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetApplicantSubSubTypesPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ApplicantSubtypeSubCategories>;
+      })
+    );
+  }
+
+  /**
+   * Get the applicant subtype records.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `applicationGetApplicantSubSubTypes$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetApplicantSubSubTypes(params?: {
+  }): Observable<ApplicantSubtypeSubCategories> {
+
+    return this.applicationGetApplicantSubSubTypes$Response(params).pipe(
+      map((r: StrictHttpResponse<ApplicantSubtypeSubCategories>) => r.body as ApplicantSubtypeSubCategories)
     );
   }
 

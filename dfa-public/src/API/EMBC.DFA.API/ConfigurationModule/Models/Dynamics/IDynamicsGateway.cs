@@ -18,6 +18,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> UpdateApplication(dfa_appapplicationmain_params application, temp_dfa_appapplicationmain_params temp_params);
         Task<dfa_appapplicationstart_retrieve> GetApplicationStartById(Guid applicationId);
         Task<dfa_appapplicationmain_retrieve> GetApplicationMainById(Guid applicationId);
+        Task<dfa_appapplication> GetApplicationDetailsAsync(string appId);
         Task<IEnumerable<dfa_appdamageditems_retrieve>> GetDamagedItemsListAsync(Guid applicationId);
         Task<string> UpsertDeleteDamagedItemAsync(dfa_appdamageditems_params objDamagedItems);
         Task<string> UpsertDeleteSecondaryApplicantAsync(dfa_appsecondaryapplicant_params objSecondaryApplicant);
@@ -33,8 +34,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
         Task<int> GetEventCount();
-        Task<IEnumerable<dfa_event>> GetOpenEventList();
+        Task<IEnumerable<dfa_event>> GetOpenPublicEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> GetEffectedRegionCommunitiesList();
         Task<IEnumerable<dfa_areacommunitieses>> GetCommunitiesAsync();
+        Task<string> UpsertProject(dfa_project_params project);
+        Task<dfa_projectmain_retrieve> GetProjectMainById(Guid projectId);
+        Task<IEnumerable<dfa_project>> GetProjectListAsync(string applicationId);
     }
 }

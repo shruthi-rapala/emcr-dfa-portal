@@ -13,6 +13,7 @@ import { EligibilityService } from './services/eligibility.service';
 import { FullTimeOccupantService } from './services/full-time-occupant.service';
 import { OtherContactService } from './services/other-contact.service';
 import { ProfileService } from './services/profile.service';
+import { ProjectService } from './services/project.service';
 import { SecondaryApplicantService } from './services/secondary-applicant.service';
 
 /**
@@ -32,6 +33,7 @@ import { SecondaryApplicantService } from './services/secondary-applicant.servic
     FullTimeOccupantService,
     OtherContactService,
     ProfileService,
+    ProjectService,
     SecondaryApplicantService,
     ApiConfiguration
   ],
