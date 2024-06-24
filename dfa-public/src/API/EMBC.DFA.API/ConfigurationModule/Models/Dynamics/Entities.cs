@@ -153,6 +153,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
     public class dfa_appapplicationmain_params
     {
+        public int? dfa_applicanttype { get; set; }
         public int? dfa_causeofdamageflood2 { get; set; } // optional boolean
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal boolean
         public int? dfa_receiveguidanceassessingyourinfra { get; set; } // optoinal boolean
