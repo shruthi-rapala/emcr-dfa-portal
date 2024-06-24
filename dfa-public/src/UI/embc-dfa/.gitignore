@@ -47,6 +47,3 @@ debug.log
 .DS_Store
 Thumbs.db
 
-
-# ng-openapi-gen Generated Dynamics 365 Models 
-src/app/core/api/models/*.ts
