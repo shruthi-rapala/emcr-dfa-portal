@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -455,6 +456,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.ApplicationId))
                 .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => s.Id))
                 .ForMember(d => d.dfa_projectbusinessprocessstages, opts => opts.MapFrom(s => s.Project.projectStatus == null ? Convert.ToInt32(ProjectStages.Draft) : Convert.ToInt32(s.Project.projectStatus)))
+                .ForMember(d => d.dfa_projectbusinessprocesssubstages, opts => opts.MapFrom(s => s.Project.projectStatus != null && s.Project.projectStatus.Value == ProjectStageOptionSet.SUBMIT ? Convert.ToInt32(ProjectSubStages.Pending) : (int?)null))
                 //.ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_projectnumber, opts => opts.MapFrom(s => s.Project.projectNumber))
                 .ForMember(d => d.dfa_dateofdamagesameasapplication, opts => opts.MapFrom(s => s.Project.isdamagedDateSameAsApplication))
