@@ -40,74 +40,12 @@ namespace EMBC.DFA.API
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
-            // 2024-06-10 EMCRI-217 waynezen: imported from EMBC.Responders
-            services.AddAuthentication(options =>
+            // 2024-06-25 EMCRI-217 waynezen: imported from CSRS.Api
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = true,
-                    ValidateIssuer = true,
-                    RequireSignedTokens = true,
-                    RequireAudience = true,
-                    RequireExpirationTime = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromSeconds(60),
-                    NameClaimType = ClaimTypes.Upn,
-                    RoleClaimType = ClaimTypes.Role,
-                    ValidateActor = true,
-                    ValidateIssuerSigningKey = true,
-                };
-
-                configurationServices.Configuration.GetSection("jwt").Bind(options);
-
-                options.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = async c =>
-                    {
-                        var userService = c.HttpContext.RequestServices.GetRequiredService<IUserService>();
-                        c.Principal = await userService.GetPrincipal(c.Principal);
-                    }
-                };
-                options.Validate();
-            })
-             //reference tokens handling
-             .AddOAuth2Introspection("introspection", options =>
-             {
-                 options.EnableCaching = true;
-                 options.CacheDuration = TimeSpan.FromMinutes(20);
-                 configuration.GetSection("auth:introspection").Bind(options);
-                 options.Events = new OAuth2IntrospectionEvents
-                 {
-                     OnTokenValidated = async ctx =>
-                     {
-                         await Task.CompletedTask;
-                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<OAuth2IntrospectionEvents>();
-                         var userInfo = ctx.Principal?.FindFirst("userInfo");
-                         logger.LogDebug("{0}", userInfo);
-                     },
-                     OnAuthenticationFailed = async ctx =>
-                     {
-                         await Task.CompletedTask;
-                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
-                         logger.LogError(ctx?.Result?.Failure, "Introspection authantication failed");
-                     }
-                 };
-             });
-
-            // 2024-05-27 EMCRI-217 waynezen: imported from EMBC.Responders
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
-                {
-                    policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                        .RequireAuthenticatedUser()
-                        .RequireClaim("user_role")
-                        .RequireClaim("user_team");
-                });
-                options.DefaultPolicy = options.GetPolicy(JwtBearerDefaults.AuthenticationScheme) ?? null!;
+                options.Authority = configuration["Jwt:Authority"];
+                options.Audience = configuration["Jwt:Audience"];
             });
 
             services.Configure<OpenApiDocumentMiddlewareSettings>(options =>
