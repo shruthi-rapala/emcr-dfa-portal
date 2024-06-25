@@ -53,7 +53,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-project-dashboard/dfa-project-dashboard.module'
       ).then((m) => m.DFAProjectModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'dfa-application/:id/project/:projId',
@@ -61,7 +61,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-project-dashboard/dfa-project-dashboard.module'
       ).then((m) => m.DFAProjectModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'dfa-prescreening',
@@ -84,7 +84,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-project-main/dfa-project-main.module'
       ).then((m) => m.DFAProjectMainModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'dfa-project-main/:id',
@@ -92,7 +92,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-project-main/dfa-project-main.module'
       ).then((m) => m.DFAProjectMainModule),
-    canActivate: [AuthGuard]
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'invite-error',

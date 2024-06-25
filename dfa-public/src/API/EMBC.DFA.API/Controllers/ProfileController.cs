@@ -16,7 +16,6 @@ using EMBC.DFA.API.Services;
 using EMBC.ESS.Shared.Contracts;
 using EMBC.ESS.Shared.Contracts.Events;
 using EMBC.ESS.Shared.Contracts.Teams;
-using EMBC.Utilities.Messaging;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,11 +27,10 @@ namespace EMBC.DFA.API.Controllers
 {
     [Route("api/profiles")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ProfileController : ControllerBase
     {
         private readonly IHostEnvironment env;
-        private readonly IMessagingClient messagingClient;
         private readonly IMapper mapper;
         private readonly IEvacuationSearchService evacuationSearchService;
         private readonly IProfileInviteService profileInviteService;
@@ -42,14 +40,12 @@ namespace EMBC.DFA.API.Controllers
 
         public ProfileController(
             IHostEnvironment env,
-            IMessagingClient messagingClient,
             IMapper mapper,
             IEvacuationSearchService evacuationSearchService,
             IProfileInviteService profileInviteService,
             IConfigurationHandler handler)
         {
             this.env = env;
-            this.messagingClient = messagingClient;
             this.mapper = mapper;
             this.evacuationSearchService = evacuationSearchService;
             this.profileInviteService = profileInviteService;
@@ -226,12 +222,11 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [AllowAnonymous]
-        public async Task<IActionResult> Invite(InviteRequest request)
+        [Obsolete("Messaging API removed")]
+        // 2024-06-24 EMCRI-282 waynezen: Function obsolete due to removed Messaging API
+        public IActionResult Invite(InviteRequest request)
         {
-            var file = (await messagingClient.Send(new EvacuationFilesQuery { FileId = request.FileId })).Items.SingleOrDefault();
-            if (file == null) return NotFound(request.FileId);
-            await messagingClient.Send(new InviteRegistrantCommand { RegistrantId = file.PrimaryRegistrantId, Email = request.Email });
-            return Ok();
+            return BadRequest();
         }
 
         [HttpPost("current/join")]

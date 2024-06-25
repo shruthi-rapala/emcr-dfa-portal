@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using EMBC.ESS.Shared.Contracts.Teams;
 using EMBC.Utilities.Caching;
-using EMBC.Utilities.Messaging;
 using Microsoft.AspNetCore.Http;
 
 namespace EMBC.DFA.API;
@@ -20,7 +19,6 @@ public interface IUserService
 // 2024-05-27 EMCRI-217 waynezen: imported from EMBC.Responders
 public class UserService : IUserService
 {
-    private readonly IMessagingClient messagingClient;
     private readonly IHttpContextAccessor httpContext;
     private readonly ICache cache;
 
@@ -28,13 +26,14 @@ public class UserService : IUserService
 
     private static string GetCurrentUserName(ClaimsPrincipal principal) => principal.FindFirstValue("bceid_username");
 
-    public UserService(IMessagingClient messagingClient, ICache cache, IHttpContextAccessor httpContext)
+    public UserService(ICache cache, IHttpContextAccessor httpContext)
     {
-        this.messagingClient = messagingClient ?? throw new ArgumentNullException(nameof(messagingClient));
         this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         this.httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
     }
 
+    [Obsolete("Messaging API removed")]
+    // 2024-06-24 EMCRI-282 waynezen: Function obsolete due to removed Messaging API
     public async Task<ClaimsPrincipal> GetPrincipal(ClaimsPrincipal sourcePrincipal = null)
     {
         if (sourcePrincipal == null) sourcePrincipal = currentPrincipal;
@@ -54,10 +53,10 @@ public class UserService : IUserService
         return new ClaimsPrincipal(new ClaimsIdentity(sourcePrincipal.Identity, sourcePrincipal.Claims.Concat(essClaims)));
     }
 
+    // 2024-06-24 EMCRI-282 waynezen: Function obsolete due to removed Messaging API
     public async Task<TeamMember> GetTeamMember(string? userName = null)
     {
-        if (string.IsNullOrEmpty(userName)) userName = GetCurrentUserName(currentPrincipal);
-
-        return (await messagingClient.Send(new TeamMembersQuery { UserName = userName, IncludeActiveUsersOnly = true })).TeamMembers.SingleOrDefault();
+        TeamMember teamMember = null;
+        return await Task.FromResult(teamMember);
     }
 }
