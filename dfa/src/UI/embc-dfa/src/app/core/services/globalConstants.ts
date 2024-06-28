@@ -221,7 +221,7 @@ export const fileTooLargeMessage = 'Attachment file size must not be more than 2
 export const fileTypeMessage = 'Invalid file type.';
 export const fileNameFormat = /^[\w,\s-_()]+\.[A-Za-z]{3,4}$/;
 export const invalidFileNameMessage =
-  'File name must not contain the following characters: ~ " . # % & * : < > ? /  { | }. Leading and trailing spaces are not allowed. The maximum file size is 25MB.';
+  'File name must not contain the following characters: ~ " . # % & * : < > ? /  { | }. Leading and trailing spaces are not allowed.';
   export const allowedFileTypes = [
     'application/pdf',
     'image/jpg',
