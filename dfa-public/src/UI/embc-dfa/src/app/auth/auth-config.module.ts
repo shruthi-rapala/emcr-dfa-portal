@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { AuthModule, LogLevel, StsConfigHttpLoader, StsConfigLoader } from 'angular-auth-oidc-client';
+import { AuthModule, LogLevel, PassedInitialConfig, StsConfigHttpLoader, StsConfigLoader } from 'angular-auth-oidc-client';
 import { map } from 'rxjs/operators';
 
 export const httpLoaderFactory = (httpClient: HttpClient) => {
   const config$ = httpClient.get<any>(`assets/config/oidc.json`).pipe(
     map((customConfig: any) => {
       return {
-        configId: customConfig.configId,
+        //configId: customConfig.configId,
         authority: customConfig.authority,
         redirectUrl: customConfig.redirectUrl,
         postLogoutRedirectUri: customConfig.postLogoutRedirectUri,
@@ -17,6 +17,11 @@ export const httpLoaderFactory = (httpClient: HttpClient) => {
         silentRenew: customConfig.silentRenew,
         useRefreshToken: customConfig.useRefreshToken,
         renewTimeBeforeTokenExpiresInSeconds: customConfig.renewTimeBeforeTokenExpiresInSeconds,
+        secureRoutes: ['/api'],
+        historyCleanupOff: true,
+        // LogLevel: None = 0, Debug = 1, Warn = 2, Error = 3
+        logLevel: Number.isInteger(parseInt(customConfig.log_level)) ? parseInt(customConfig.log_level) : LogLevel.None,
+
       };
     })
   );

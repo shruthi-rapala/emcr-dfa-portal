@@ -5,58 +5,96 @@ using System.Threading.Tasks;
 using EMBC.ESS.Shared.Contracts.Teams;
 using EMBC.Utilities.Caching;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace EMBC.DFA.API;
 
-// 2024-05-27 EMCRI-217 waynezen: imported from EMBC.Responders
+// 2024-07-02 EMCRI-363 waynezen: created
 public interface IUserService
 {
-    Task<ClaimsPrincipal> GetPrincipal(ClaimsPrincipal sourcePrincipal = null);
-
-    Task<TeamMember> GetTeamMember(string userName = null);
+    /// <summary>
+    /// Gets the BCeID Guid from the current user.
+    /// </summary>
+    /// <returns>The user's BCeID Guid or <see cref="Guid.Empty"/> if not set.</returns>
+    string GetBCeIDUserId();
+    string GetBCeIDBusinessId();
 }
 
 // 2024-05-27 EMCRI-217 waynezen: imported from EMBC.Responders
 public class UserService : IUserService
 {
-    private readonly IHttpContextAccessor httpContext;
-    private readonly ICache cache;
+    private readonly IHttpContextAccessor httpContextAccessor;
+    private readonly ILogger<UserService> logger;
 
-    private ClaimsPrincipal currentPrincipal => httpContext.HttpContext?.User;
-
-    private static string GetCurrentUserName(ClaimsPrincipal principal) => principal.FindFirstValue("bceid_username");
-
-    public UserService(ICache cache, IHttpContextAccessor httpContext)
+    public UserService(IHttpContextAccessor httpContextAccessor, ILogger<UserService> logger)
     {
-        this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
-        this.httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
+        this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    [Obsolete("Messaging API removed")]
-    // 2024-06-24 EMCRI-282 waynezen: Function obsolete due to removed Messaging API
-    public async Task<ClaimsPrincipal> GetPrincipal(ClaimsPrincipal sourcePrincipal = null)
+    public string GetBCeIDBusinessId()
     {
-        if (sourcePrincipal == null) sourcePrincipal = currentPrincipal;
-        var userName = GetCurrentUserName(sourcePrincipal);
+        var principal = GetPrincipal();
+        var userid = GetClaim(principal, "bceid_business_guid");
 
-        var cacheKey = $"user:{userName}";
-        var teamMember = await cache.GetOrSet(cacheKey, async () => await GetTeamMember(userName), TimeSpan.FromMinutes(10));
-        if (teamMember == null) return sourcePrincipal;
-
-        Claim[] essClaims =
+        if (Guid.TryParse(userid.Value, out Guid id))
         {
-            new Claim("user_id", teamMember.Id),
-            new Claim("user_role", teamMember.Role),
-            new Claim("user_team", teamMember.TeamId)
-        };
+            return id.ToString("d"); // format with dashes : xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        }
 
-        return new ClaimsPrincipal(new ClaimsIdentity(sourcePrincipal.Identity, sourcePrincipal.Claims.Concat(essClaims)));
+        logger.LogInformation($"Current user's bceid_business_guid cannot be parsed as a valid guid: {userid?.Value}");
+
+        return string.Empty;
     }
 
-    // 2024-06-24 EMCRI-282 waynezen: Function obsolete due to removed Messaging API
-    public async Task<TeamMember> GetTeamMember(string? userName = null)
+    public string GetBCeIDUserId()
     {
-        TeamMember teamMember = null;
-        return await Task.FromResult(teamMember);
+        var principal = GetPrincipal();
+        var userid = GetClaim(principal, "bceid_user_guid");
+
+        if (Guid.TryParse(userid.Value, out Guid id))
+        {
+            return id.ToString("d"); // format with dashes : xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        }
+
+        logger.LogInformation($"Current user's bceid_user_guid cannot be parsed as a valid guid: {userid?.Value}");
+
+        return string.Empty;
+    }
+
+    private ClaimsPrincipal GetPrincipal()
+    {
+        ClaimsPrincipal result = null;
+
+        var context = httpContextAccessor.HttpContext;
+        if (context is null)
+        {
+            logger.LogInformation("HttpContext is null. Service may be been called outside of a api request");
+            return result;
+        }
+
+        result = context.User;
+        return result;
+    }
+
+    private Claim? GetClaim(ClaimsPrincipal principal, string claimName)
+    {
+        Claim? result = null;
+
+        if (principal != null)
+        {
+            Claim? userid = principal.Claims.SingleOrDefault(_ => _.Type == claimName);
+            if (userid is null)
+            {
+                logger.LogInformation($"Current user does not have a {claimName} claim");
+                return result;
+            }
+            else
+            {
+                result = userid;
+            }
+        }
+
+        return result;
     }
 }

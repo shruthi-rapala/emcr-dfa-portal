@@ -35,6 +35,7 @@ namespace EMBC.DFA.API.Controllers
         private readonly IEvacuationSearchService evacuationSearchService;
         private readonly IProfileInviteService profileInviteService;
         private readonly IConfigurationHandler handler;
+        private readonly IUserService userService;
 
         private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
 
@@ -43,13 +44,17 @@ namespace EMBC.DFA.API.Controllers
             IMapper mapper,
             IEvacuationSearchService evacuationSearchService,
             IProfileInviteService profileInviteService,
-            IConfigurationHandler handler)
+            IConfigurationHandler handler,
+            IUserService userService)
         {
             this.env = env;
             this.mapper = mapper;
             this.evacuationSearchService = evacuationSearchService;
             this.profileInviteService = profileInviteService;
             this.handler = handler;
+
+            // 2024-07-02 EMCRI-363 waynezen: added DI for new BCeID UserService
+            this.userService = userService;
         }
 
         /// <summary>
@@ -121,7 +126,9 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Profile>> GetProfileWithUpdatedBCSC()
         {
-            var userId = currentUserId;
+            var businessId = userService.GetBCeIDBusinessId();
+            var userId = userService.GetBCeIDUserId();
+
             var appContactProfile = await handler.HandleGetUser(userId);
 
             // get BCSC profile

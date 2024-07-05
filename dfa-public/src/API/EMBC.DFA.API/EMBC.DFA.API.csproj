@@ -21,6 +21,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Authentication\AuthenticationExtensions.cs" />
+      <Compile Remove="Authentication\IOAuthApiClient.cs" />
+      <Compile Remove="Authentication\ITokenService.cs" />
+      <Compile Remove="Authentication\OAuthApiClient.cs" />
+      <Compile Remove="Authentication\OAuthAuthorizationException.cs" />
+      <Compile Remove="Authentication\OAuthError.cs" />
+      <Compile Remove="Authentication\OAuthHandler.cs" />
+      <Compile Remove="Authentication\Token.cs" />
+      <Compile Remove="Authentication\TokenService.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>
 
@@ -43,5 +55,6 @@
 
     <ItemGroup>
       <Folder Include="ConfigurationModule\ViewModels\" />
+      <Folder Include="Authentication\" />
     </ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
@@ -41,11 +43,90 @@ namespace EMBC.DFA.API
                 opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
             // 2024-06-25 EMCRI-217 waynezen: imported from CSRS.Api
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //.AddJwtBearer(options =>
+            //{
+            //    options.Authority = configuration["Jwt:Authority"];
+            //    options.Audience = configuration["Jwt:Audience"];
+            //});
+
+            authJwtSection authJwt = new authJwtSection();
+            configuration.GetSection("auth:jwt").Bind(authJwt);
+
+            services.AddAuthentication()
+             //JWT tokens handling
+             .AddJwtBearer("jwt", options =>
+             {
+                 options.BackchannelHttpHandler = new HttpClientHandler
+                 {
+                     ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                 };
+
+                 configuration.GetSection("auth:jwt").Bind(options);
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateAudience = false
+                 };
+
+                 // if token does not contain a dot, it is a reference token, forward to introspection auth scheme
+                 options.ForwardDefaultSelector = ctx =>
+                 {
+                     var authHeader = (string)ctx.Request.Headers["Authorization"];
+                     if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer ")) return null;
+                     return authHeader.Substring("Bearer ".Length).Trim().Contains('.') ? null : "introspection";
+                 };
+                 options.Events = new JwtBearerEvents
+                 {
+                     OnTokenValidated = async ctx =>
+                     {
+                         await Task.CompletedTask;
+                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
+                         var userInfo = ctx.Principal.FindFirstValue("userInfo");
+                         logger.LogDebug("{0}", userInfo);
+                     },
+                     OnAuthenticationFailed = async ctx =>
+                     {
+                         await Task.CompletedTask;
+                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
+                         logger.LogError(ctx.Exception, "JWT authantication failed");
+                     }
+                 };
+             })
+             //reference tokens handling
+             .AddOAuth2Introspection("introspection", options =>
+             {
+                 options.EnableCaching = true;
+                 options.CacheDuration = TimeSpan.FromMinutes(20);
+                 configuration.GetSection("auth:introspection").Bind(options);
+                 options.Events = new OAuth2IntrospectionEvents
+                 {
+                     OnTokenValidated = async ctx =>
+                     {
+                         await Task.CompletedTask;
+                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<OAuth2IntrospectionEvents>();
+                         var userInfo = ctx.Principal?.FindFirst("userInfo");
+                         logger.LogDebug("{0}", userInfo);
+                     },
+                     OnAuthenticationFailed = async ctx =>
+                     {
+                         await Task.CompletedTask;
+                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
+                         logger.LogError(ctx?.Result?.Failure, "Introspection authantication failed");
+                     }
+                 };
+             });
+
+            services.AddAuthorization(options =>
             {
-                options.Authority = configuration["Jwt:Authority"];
-                options.Audience = configuration["Jwt:Audience"];
+                options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
+                {
+                    policy
+                    .RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes("jwt")
+                    .RequireClaim("scope", authJwt.scope);
+                });
+
+                options.DefaultPolicy = options.GetPolicy(JwtBearerDefaults.AuthenticationScheme) ?? null!;
             });
 
             services.Configure<OpenApiDocumentMiddlewareSettings>(options =>
@@ -74,8 +155,22 @@ namespace EMBC.DFA.API
                     BearerFormat = "paste token here",
                     In = OpenApiSecurityApiKeyLocation.Header
                 });
-
                 document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("bearer token"));
+
+                //document.AddSecurity("oauth2", new OpenApiSecurityScheme
+                //{
+                //    Type = OpenApiSecuritySchemeType.OAuth2,
+                //    Flows = new OpenApiOAuthFlows
+                //    {
+                //        AuthorizationCode = new OpenApiOAuthFlow
+                //        {
+                //            AuthorizationUrl = "https://localhost:5000/connect/authorize",
+                //            TokenUrl = "https://localhost:5000/connect/token",
+                //            Scopes = new Dictionary<string, string> { { "api1", "Demo API - full access" } }
+                //        }
+                //    }
+                //});
+
                 //document.GenerateAbstractProperties = true;
             });
 
@@ -83,6 +178,10 @@ namespace EMBC.DFA.API
             services.AddTransient<IProfileInviteService, ProfileInviteService>();
             services.AddTransient<IConfigurationHandler, Handler>();
             services.AddTransient<IDynamicsGateway, DynamicsGateway>();
+
+            // 2024-07-02 EMCRI-363 waynezen: added
+            services.AddTransient<IUserService, UserService>();
+
             services.Configure<ADFSTokenProviderOptions>(configuration.GetSection("Dynamics:ADFS"));
             services.AddADFSTokenProvider();
             services.AddHttpClient("captcha");
@@ -135,5 +234,11 @@ namespace EMBC.DFA.API
             app.UseAuthentication();
             app.UseAuthorization();
         }
+    }
+
+    public class authJwtSection
+    {
+        public string authority { get; set; }
+        public string scope { get; set; }
     }
 }
