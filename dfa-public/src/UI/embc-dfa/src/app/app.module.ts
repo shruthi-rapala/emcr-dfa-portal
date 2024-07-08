@@ -91,7 +91,7 @@ import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor
     },
     ScriptService,
     // 2024-07-04 EMCRI-217 waynezen: send BCeID Access_token along with API calls
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, 
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, 
     { provide: HTTP_INTERCEPTORS, useClass: BceidAuthInterceptor, multi: true }, 
   ],
   bootstrap: [AppComponent]
