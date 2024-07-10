@@ -385,7 +385,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class SubmissionEntity
     {
         public IEnumerable<AttachmentEntity> documentCollection { get; set; }
-        public string dfa_appapplicationid { get; set; }
+        public string dfa_projectid { get; set; }
         public string dfa_description { get; set; } // pass in description
         public string dfa_modifiedby { get; set; } // pass in modified by
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)

@@ -238,7 +238,7 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
       //this.dfaProjectMainMapping.mapDFAProjectMain(project);
 
       fileUpload.project = project;
-      this.attachmentsService.attachmentUpsertDeleteAttachment({ body: fileUpload }).subscribe({
+      this.attachmentsService.attachmentUpsertDeleteProjectAttachment({ body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
           if (fileUploads) fileUploads.push(fileUpload);
@@ -274,7 +274,7 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
 
     fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     if (fileUploads?.filter(x => x.requiredDocumentType === fileUpload.requiredDocumentType).length > 0) {
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+      this.attachmentsService.attachmentUpsertDeleteProjectAttachment({body: fileUpload }).subscribe({
         next: (result) => {
           let requiredDocumentTypeFoundIndex = fileUploads.findIndex(x => x.requiredDocumentType === fileUpload.requiredDocumentType);
           fileUploads[requiredDocumentTypeFoundIndex] = fileUpload;
@@ -288,7 +288,7 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
         }
       });
     } else {
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+      this.attachmentsService.attachmentUpsertDeleteProjectAttachment({body: fileUpload }).subscribe({
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
           if (fileUploads) fileUploads.push(fileUpload);

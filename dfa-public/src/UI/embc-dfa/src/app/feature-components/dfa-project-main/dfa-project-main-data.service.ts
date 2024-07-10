@@ -12,6 +12,7 @@ export class DFAProjectMainDataService {
   private _isSubmitted: boolean = false;
   private _applicationId: string;
   private _projectId: string;
+  private _claimId: string;
   private _vieworedit: string;
   private _stepselected: string;
   private _isdisabled: string;
@@ -85,6 +86,14 @@ export class DFAProjectMainDataService {
 
   public getProjectId(): string {
     return this._projectId;
+  }
+
+  public setClaimId(claimId: string): void {
+    this._claimId = claimId;
+  }
+
+  public getClaimId(): string {
+    return this._claimId;
   }
 
   public setViewOrEdit(vieworedit: string): void {

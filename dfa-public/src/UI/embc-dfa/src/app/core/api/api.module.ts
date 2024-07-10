@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ApplicationService } from './services/application.service';
 import { AttachmentService } from './services/attachment.service';
+import { ClaimService } from './services/claim.service';
 import { CleanUpLogItemService } from './services/clean-up-log-item.service';
 import { ConfigurationService } from './services/configuration.service';
 import { DamagedRoomService } from './services/damaged-room.service';
@@ -26,6 +27,7 @@ import { SecondaryApplicantService } from './services/secondary-applicant.servic
   providers: [
     ApplicationService,
     AttachmentService,
+    ClaimService,
     CleanUpLogItemService,
     ConfigurationService,
     DamagedRoomService,

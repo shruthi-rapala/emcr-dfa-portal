@@ -1,5 +1,6 @@
 export { ApplicationService } from './services/application.service';
 export { AttachmentService } from './services/attachment.service';
+export { ClaimService } from './services/claim.service';
 export { CleanUpLogItemService } from './services/clean-up-log-item.service';
 export { ConfigurationService } from './services/configuration.service';
 export { DamagedRoomService } from './services/damaged-room.service';

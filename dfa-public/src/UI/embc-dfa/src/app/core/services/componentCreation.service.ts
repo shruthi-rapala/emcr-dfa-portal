@@ -119,6 +119,41 @@ export class ComponentCreationService {
 
   ];
 
+  dfaClaimMainComponents: Array<any> = [
+
+    {
+      component: 'recovery-claim',
+      nextButtonLabel: 'Next - Add Invoices',
+      backButtonLabel: 'Go Back',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: -1,
+      stepName: 'Claim Submission',
+      editable: true
+    },
+    {
+      component: 'dfa-invoice-dashboard',
+      nextButtonLabel: 'Next - Upload Documents',
+      backButtonLabel: 'Go Back',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: -1,
+      stepName: 'Add Invoices',
+      editable: true
+    },
+    {
+      component: 'supporting-documents-claim',
+      nextButtonLabel: 'Next - Review & Submit',
+      backButtonLabel: 'Go Back',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Upload Documents',
+      editable: false
+    }
+
+  ];
+
     getProfileComponents(): Observable<any> {
     const profile = new Observable((observer) => {
       observer.next(this.dynamicComponents);
@@ -158,6 +193,15 @@ export class ComponentCreationService {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
     for (const comp of this.dfaProjectMainComponents) {
+      componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
+    }
+    return componentArr;
+  }
+
+  createDFAClaimMainSteps(): Array<ComponentMetaDataModel> {
+    const componentArr: Array<ComponentMetaDataModel> =
+      new Array<ComponentMetaDataModel>();
+    for (const comp of this.dfaClaimMainComponents) {
       componentArr.push(Object.assign(new ComponentMetaDataModel(), comp));
     }
     return componentArr;
