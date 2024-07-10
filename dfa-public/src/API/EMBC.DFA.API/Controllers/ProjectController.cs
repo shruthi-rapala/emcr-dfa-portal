@@ -188,6 +188,21 @@ namespace EMBC.DFA.API.Controllers
             return Ok(dfaProjectMain);
         }
 
+        /// <summary>
+        /// get dfa project details
+        /// </summary>
+        /// <returns>project details</returns>
+        /// <param name="projectId">The project Id.</param>
+        [HttpGet("dfaprojectbyID")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<CurrentProject>> GetProjectDetailsForClaim([FromQuery]
+            [Required]
+            Guid projectId)
+        {
+            var objProject = await handler.HandleProjectDetails(Convert.ToString(projectId));
+            return Ok(objProject);
+        }
+
         public static string GetEnumDescription(System.Enum value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());

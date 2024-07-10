@@ -343,7 +343,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
             CreateMap<FileUpload, SubmissionEntity>()
-                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.projectId))
+                .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => "0c4a691d-9835-ef11-b850-00505683fbf4")) // s.projectId
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
                 .ForMember(d => d.dfa_requireddocumenttype, opts => opts.MapFrom(s => s.requiredDocumentType)) // TODO map required file type

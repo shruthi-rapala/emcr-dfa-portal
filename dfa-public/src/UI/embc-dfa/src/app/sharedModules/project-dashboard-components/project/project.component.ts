@@ -9,6 +9,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { CurrentApplication, CurrentProject } from 'src/app/core/api/models';
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
+import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 
 @Component({
   selector: 'app-dfadashboard-project',
@@ -63,6 +64,7 @@ export class DfaDashProjectComponent implements OnInit {
     private router: Router,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dFAProjectMainDataService: DFAProjectMainDataService,
+    private dfaClaimMainDataService: DFAClaimMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private route: ActivatedRoute
   ) {
@@ -233,6 +235,19 @@ export class DfaDashProjectComponent implements OnInit {
         
   }
 
+  ViewClaims(applItem: ProjectExtended): void {
+    this.dFAProjectMainDataService.setProjectId(applItem.projectId);
+    this.dfaClaimMainDataService.setProjectId(applItem.projectId);
+
+    if (applItem.openProject === true) {
+      this.dFAProjectMainDataService.setViewOrEdit('view');
+    } else if (applItem.openProject === false) {
+      this.dFAProjectMainDataService.setViewOrEdit('viewOnly');
+    }
+
+    this.router.navigate(['/dfa-project/' + applItem.projectId + '/claims']);
+  }
+
   ViewProject(applItem: ProjectExtended): void {
     this.dFAProjectMainDataService.setProjectId(applItem.projectId);
     //this.dFAProjectMainDataService.setApplicationId(applItem.applicationId);
@@ -253,26 +268,6 @@ export class DfaDashProjectComponent implements OnInit {
 
     this.router.navigate(['/dfa-project-main/'+applItem.projectId]);
   }
-
-  //ViewProjects(applItem: ProjectExtended): void {
-  //  this.dfaApplicationMainDataService.setApplicationId(applItem.applicationId);
-  //  this.dfaApplicationStartDataService.setApplicationId(applItem.applicationId);
-
-  //  if (applItem.currentApplication === true) {
-  //    this.dfaApplicationMainDataService.setViewOrEdit('view');
-  //  } else if (applItem.currentApplication === false) {
-  //    this.dfaApplicationMainDataService.setViewOrEdit('viewOnly');
-  //  }
-
-  //  this.router.navigate(['/dfa-application/' + applItem.applicationId + '/projects']);
-  //}
-
-  //EditProject(applicationId: string): void {
-  //  this.dFAProjectMainDataService.setProjectId(applItem.projectId);
-  //  this.dfaApplicationMainDataService.setViewOrEdit('edit');
-  //  //this.dfaApplicationMainDataService.setEditStep(tabId);
-  //  this.router.navigate(['/dfa-application-main/'+applicationId]);
-  //}
 
 }
 

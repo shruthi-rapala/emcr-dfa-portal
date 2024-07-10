@@ -19,6 +19,7 @@ import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress,
   CleanUpLogForm, SignAndSubmitForm, SupportingDocumentsForm, CleanUpLog, CleanUpLogItemsForm, SecondaryApplicant, FileUploadsForm, FullTimeOccupant, OtherContact, CleanUpLogItem, FileUpload, DamagedRoom  } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import { RecoveryPlan, RecoveryPlanForm } from '../model/dfa-project-main.model';
+import { RecoveryClaim, RecoveryClaimForm } from '../model/dfa-claim-main.model';
 
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
@@ -279,6 +280,19 @@ export class FormCreationService {
 
   recoveryPlanForm$: Observable<UntypedFormGroup | undefined> =
     this.recoveryPlanForm.asObservable();
+
+  recoveryClaimForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+        new RecoveryClaimForm(
+          new RecoveryClaim(),
+          this.customValidator
+        )
+      )
+    );
+
+  recoveryClaimForm$: Observable<UntypedFormGroup | undefined> =
+    this.recoveryClaimForm.asObservable();
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -639,6 +653,25 @@ export class FormCreationService {
       this.formBuilder.group(
         new RecoveryPlanForm(
           new RecoveryPlan(),
+          this.customValidator
+        )
+      )
+    );
+  }
+
+  getRecoveryClaimForm(): Observable<UntypedFormGroup> {
+    return this.recoveryClaimForm$;
+  }
+
+  setRecoveryClaimForm(recoveryClaimForm: UntypedFormGroup): void {
+    this.recoveryClaimForm.next(recoveryClaimForm);
+  }
+
+  clearRecoveryClaimData(): void {
+    this.recoveryClaimForm.next(
+      this.formBuilder.group(
+        new RecoveryClaimForm(
+          new RecoveryClaim(),
           this.customValidator
         )
       )

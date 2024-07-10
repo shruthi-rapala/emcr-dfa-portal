@@ -49,6 +49,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<dfa_projectmain_retrieve> GetProjectMainAsync(Guid projectId);
         Task<List<CurrentProject>> HandleProjectList(string applicationId);
         Task<CurrentApplication> HandleApplicationDetails(string applicationId);
+        Task<CurrentProject> HandleProjectDetails(string projectId);
     }
 
     public class Handler : IConfigurationHandler
@@ -166,6 +167,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             var objApp = await listsGateway.GetApplicationDetailsAsync(applicationId);
             var mappedApp = mapper.Map<CurrentApplication>(objApp);
             return mappedApp;
+        }
+
+        public async Task<CurrentProject> HandleProjectDetails(string projectId)
+        {
+            var objProject = await listsGateway.GetProjectDetailsAsync(projectId);
+            var mappedProject = mapper.Map<CurrentProject>(objProject);
+            return mappedProject;
         }
 
         public async Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems)

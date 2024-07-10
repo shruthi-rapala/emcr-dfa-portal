@@ -454,6 +454,13 @@ namespace EMBC.DFA.API.Controllers
         public RecoveryPlan? Project { get; set; }
     }
 
+    public class DFAClaimMain
+    {
+        public Guid? Id { get; set; }
+        public string? ApplicationId { get; set; }
+        public RecoveryPlan? Project { get; set; }
+    }
+
     public class RecoveryPlan
     {
         public string? projectName { get; set; }

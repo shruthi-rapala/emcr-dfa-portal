@@ -111,9 +111,10 @@
         <div class="col-md-3" style="display: flex; justify-content: flex-end">
           <button
             class="application-button"
-            type="button"
-            *ngIf="applItem.stage == 'Approved'"
-          >
+            (click)="ViewClaims(applItem)"
+            type="button" >
+            <!--*ngIf="applItem.stage == 'Approved'"-->
+          
             Submit Claims
           </button>
           <button
