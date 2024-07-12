@@ -17,7 +17,7 @@ export const httpLoaderFactory = (httpClient: HttpClient) => {
         silentRenew: customConfig.silentRenew,
         useRefreshToken: customConfig.useRefreshToken,
         renewTimeBeforeTokenExpiresInSeconds: customConfig.renewTimeBeforeTokenExpiresInSeconds,
-        secureRoutes: ['/api'],
+        // secureRoutes: ['/api'],
         historyCleanupOff: true,
         // LogLevel: None = 0, Debug = 1, Warn = 2, Error = 3
         logLevel: Number.isInteger(parseInt(customConfig.log_level)) ? parseInt(customConfig.log_level) : LogLevel.None,

@@ -127,7 +127,12 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<Profile>> GetProfileWithUpdatedBCSC()
         {
             var businessId = userService.GetBCeIDBusinessId();
-            var userId = userService.GetBCeIDUserId();
+            //var userId = userService.GetBCeIDUserId();
+            var userData = userService.GetJWTokenData();
+
+            // 2024-07-11 EMCRI-440 waynezen: get contact information
+            // hard-coded for now
+            var userId = "45b9d9af-7a90-4b06-9ffc-9783603f7866";
 
             var appContactProfile = await handler.HandleGetUser(userId);
 

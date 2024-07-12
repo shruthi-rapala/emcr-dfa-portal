@@ -20,7 +20,6 @@ export class BceidAuthInterceptor implements HttpInterceptor {
    *  Must manually set the Bearer token.
   */
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
     if (req.url.includes("/api")) {
       return this.oidcSecurityService.checkAuth().pipe(
         first(),
