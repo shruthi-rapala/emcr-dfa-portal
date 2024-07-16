@@ -9,7 +9,9 @@ mat-form-field {
 }
 
 .primary-radio-button {
-    margin: 5px;
+  margin-top: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
 }
 
 .highlight {
@@ -23,7 +25,8 @@ mat-form-field {
 }
 
 .horizontal-radio-group {
-  display: flex; flex-direction: row;
+  display: flex; 
+  flex-direction: row;
   margin: 15px 0;
 }
 
