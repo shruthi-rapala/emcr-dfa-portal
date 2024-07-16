@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -22,17 +23,19 @@ namespace EMBC.DFA.API.Controllers
         private readonly IMessagingClient messagingClient;
         private readonly IMapper mapper;
         private readonly IConfigurationHandler handler;
-
+        private readonly ILogger logger;
         public AttachmentController(
             IHostEnvironment env,
             IMessagingClient messagingClient,
             IMapper mapper,
-            IConfigurationHandler handler)
+            IConfigurationHandler handler,
+            ILoggerFactory factory)
         {
             this.env = env;
             this.messagingClient = messagingClient;
             this.mapper = mapper;
             this.handler = handler;
+            logger = factory.CreateLogger<AttachmentController>();
         }
 
         /// <summary>
@@ -63,7 +66,15 @@ namespace EMBC.DFA.API.Controllers
                 var submissionEntity = mapper.Map<SubmissionEntity>(fileUpload);
                 submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
                 submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
-                var result = await handler.HandleFileUploadAsync(submissionEntity);
+                string result = "Submitted";
+                try
+                {
+                    result = await handler.HandleFileUploadAsync(submissionEntity);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Error uploading file");
+                }
                 return Ok(result);
             }
         }
