@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "https://dev.loginproxy.gov.bc.ca",
+    "target": "http://localhost:5020/",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

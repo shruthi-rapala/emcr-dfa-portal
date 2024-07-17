@@ -22,11 +22,13 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
     this.formCreationService.clearProfileData();
   
+    console.log('login page component!');
+
     this.oidcSecurityService.checkAuth().subscribe(
       ({ isAuthenticated}) => {
         if (isAuthenticated === true)
         {
-          this.router.navigate(['/dfa-application-start']);
+          this.router.navigate(['/dfa-dashboard']);
         }
         else
         {

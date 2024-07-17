@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EMBC.DFA.API.Services
 {
-    // 2024-07-02 EMCRI-363 waynezen: created
+    // 2024-07-02 EMCRI-440 waynezen: created
     public interface IUserService
     {
         /// <summary>
@@ -174,7 +174,7 @@ namespace EMBC.DFA.API.Services
 
             if (principal != null)
             {
-                Claim? claim = principal.Claims.SingleOrDefault(_ => _.Type == claimName);
+                Claim? claim = principal.FindFirst(_ => _.Type == claimName);
                 if (claim is null)
                 {
                     logger.LogInformation($"Current user does not have a {claimName} claim");

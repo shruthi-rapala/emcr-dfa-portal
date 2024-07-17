@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
+// 2024-07-12 EMCRI-440 waynezen: created
 namespace EMBC.DFA.API.ConfigurationModule.Models.AuthModels
 {
+    /// <summary>
+    /// Use reflection to populate this class with values from JWT access_token.
+    /// Property names should be exactly the same as the corresponding Principal Claim -
+    /// except in the case where a [Description] attribute is used.
+    /// </summary>
     public class BceidUserData
     {
         public string sid { get; set; }
@@ -17,7 +23,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.AuthModels
         public string given_name { get; set; }
         public string display_name { get; set; }
         public string family_name { get; set; }
-        [Description("emailaddress")]
+        [Description("emailaddress: use special logic to get ClaimTypes.Email")]
         public string emailaddress { get; set; }
     }
 }

@@ -66,7 +66,9 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Profile>> GetProfile()
         {
-            var userId = currentUserId;
+            // 2024-07-11 EMCRI-440 waynezen: get contact information
+            var userId = userService.GetBCeIDUserId();
+
             //var profile = mapper.Map<Profile>(await evacuationSearchService.GetRegistrantByUserId(userId));
             //var profile = null;
             //if (profile == null)
@@ -77,8 +79,9 @@ namespace EMBC.DFA.API.Controllers
             var profile = await handler.HandleGetUser(userId);
             if (profile == null)
             {
-                //try get BCSC profile
-                profile = GetUserFromPrincipal();
+                // get BCeID profile
+                var userData = userService.GetJWTokenData();
+                profile = mapper.Map<Profile>(userData);
             }
             else
             {
@@ -126,18 +129,12 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Profile>> GetProfileWithUpdatedBCSC()
         {
-            var businessId = userService.GetBCeIDBusinessId();
-            //var userId = userService.GetBCeIDUserId();
-            var userData = userService.GetJWTokenData();
-
             // 2024-07-11 EMCRI-440 waynezen: get contact information
-            // hard-coded for now
-            var userId = "45b9d9af-7a90-4b06-9ffc-9783603f7866";
-
+            var userId = userService.GetBCeIDUserId();
             var appContactProfile = await handler.HandleGetUser(userId);
 
-            // get BCSC profile
-            //var bcscProfile = GetUserFromPrincipal();
+            // get BCeID profile
+            var userData = userService.GetJWTokenData();
 
             //// update appContact details from BCSC login
             //appContactProfile.ContactDetails.Email = bcscProfile.ContactDetails.Email;
