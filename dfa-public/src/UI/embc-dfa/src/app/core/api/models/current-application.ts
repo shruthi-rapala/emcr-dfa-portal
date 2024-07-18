@@ -9,6 +9,7 @@ export interface CurrentApplication {
   dateFileClosed?: string;
   dateOfDamage?: string;
   dateOfDamageTo?: string;
+  eligibleGST?: null | boolean;
   eventId?: string;
   floodDamage?: null | boolean;
   isErrorInStatus?: boolean;

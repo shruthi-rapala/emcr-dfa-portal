@@ -381,6 +381,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 != null && s.dfa_causeofdamagelandslide2 == (int?)YesNoOptionSet.Yes ? true : false))
                 .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 != null && s.dfa_causeofdamageother2 == (int?)YesNoOptionSet.Yes ? true : false))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
+                .ForMember(d => d.eligibleGST, opts => opts.MapFrom(s => s.dfa_eligiblegst))
                 .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()

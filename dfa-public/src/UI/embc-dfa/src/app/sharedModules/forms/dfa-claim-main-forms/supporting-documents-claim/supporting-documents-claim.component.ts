@@ -35,6 +35,7 @@ import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-com
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 import { DFAProjectMainDataService } from '../../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAProjectMainMappingService } from '../../../../feature-components/dfa-project-main/dfa-project-main-mapping.service';
+import { DFAClaimMainDataService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 
 @Component({
   selector: 'app-supporting-documents-claim',
@@ -53,7 +54,7 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
   formCreationService: FormCreationService;
   showSupportingFileForm: boolean = false;
   supportingFilesDataSource = new MatTableDataSource();
-  documentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate', 'icons']
+  documentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate']
   documentSummaryDataSource = new MatTableDataSource();
   isLoading: boolean = false;
   isdisabled: string = 'false';
@@ -86,18 +87,19 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
     private cd: ChangeDetectorRef,
     private dialog: MatDialog,
     private dfaProjectMainDataService: DFAProjectMainDataService,
+    private dfaClaimMainDataService: DFAClaimMainDataService,
     private dfaProjectMainMapping: DFAProjectMainMappingService,
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
 
-    this.vieworedit = this.dfaProjectMainDataService.getViewOrEdit();
+    this.vieworedit = this.dfaClaimMainDataService.getViewOrEdit();
 
-    this.dfaProjectMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+    this.dfaClaimMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.vieworedit = vieworedit;
     });
 
-    this.dfaProjectMainDataService.changeDisableFileUpload.subscribe((isdisabled) => {
+    this.dfaClaimMainDataService.changeDisableFileUpload.subscribe((isdisabled) => {
       this.isformUploaddisabled = isdisabled;
     });
 

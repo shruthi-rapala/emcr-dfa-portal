@@ -20,6 +20,7 @@ import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress,
 import { CustomValidationService } from './customValidation.service';
 import { RecoveryPlan, RecoveryPlanForm } from '../model/dfa-project-main.model';
 import { RecoveryClaim, RecoveryClaimForm } from '../model/dfa-claim-main.model';
+import { Invoice, InvoiceForm } from '../model/dfa-invoice.model';
 
 @Injectable({ providedIn: 'root' })
 export class FormCreationService {
@@ -293,6 +294,19 @@ export class FormCreationService {
 
   recoveryClaimForm$: Observable<UntypedFormGroup | undefined> =
     this.recoveryClaimForm.asObservable();
+
+  invoiceForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+        new InvoiceForm(
+          new Invoice(),
+          this.customValidator
+        )
+      )
+    );
+
+  invoiceForm$: Observable<UntypedFormGroup | undefined> =
+    this.invoiceForm.asObservable();
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -672,6 +686,25 @@ export class FormCreationService {
       this.formBuilder.group(
         new RecoveryClaimForm(
           new RecoveryClaim(),
+          this.customValidator
+        )
+      )
+    );
+  }
+
+  getInvoiceForm(): Observable<UntypedFormGroup> {
+    return this.invoiceForm$;
+  }
+
+  setInvoiceForm(invoiceForm: UntypedFormGroup): void {
+    this.invoiceForm.next(invoiceForm);
+  }
+
+  clearInvoiceData(): void {
+    this.invoiceForm.next(
+      this.formBuilder.group(
+        new InvoiceForm(
+          new Invoice(),
           this.customValidator
         )
       )

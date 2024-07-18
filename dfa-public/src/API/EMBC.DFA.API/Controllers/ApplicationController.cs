@@ -358,6 +358,7 @@ namespace EMBC.DFA.API.Controllers
         public bool? stormDamage { get; set; }
         public bool? wildfireDamage { get; set; }
         public bool? otherDamage { get; set; }
+        public bool? eligibleGST { get; set; }
         public string? otherDamageText { get; set; }
     }
 

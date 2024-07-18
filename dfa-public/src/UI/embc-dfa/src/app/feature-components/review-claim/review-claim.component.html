@@ -10,13 +10,12 @@
       <!-- Claim Details -->
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row info-detail" style="padding-top: 20px;">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.claimNumber || (formCreationService.recoveryClaimForm$ | async)?.controls?.claimNumber.invalid}">Claim Number:</span></div>
+          <div class="col-md-3"><span>Claim Number:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.claimNumber || (formCreationService.recoveryClaimForm$ | async)?.controls?.claimNumber.invalid}">
+            <span>
               {{
-                (formCreationService.recoveryClaimForm$ | async)?.value
-                  .claimNumber ? (formCreationService.recoveryClaimForm$ | async)?.value
-                  .claimNumber : "Enter required information"
+                recoveryPlanFormAbstract
+                  .claimNumber
               }}
             </span>
           </div>
@@ -39,13 +38,12 @@
         </div>
 
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.isFirstClaimApproved || (formCreationService.recoveryClaimForm$ | async)?.controls?.isFirstClaimApproved.invalid}">First Claim:</span></div>
+          <div class="col-md-3"><span>First Claim:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.isFirstClaimApproved || (formCreationService.recoveryClaimForm$ | async)?.controls?.isFirstClaimApproved.invalid}">
+            <span>
               {{
-                (formCreationService.recoveryClaimForm$ | async)?.value
-                  .isFirstClaimApproved ? (formCreationService.recoveryClaimForm$ | async)?.value
-                  .isFirstClaimApproved === 'true' ? "Yes" : "No" : "Enter required information"
+                recoveryPlanFormAbstract
+                  .isFirstClaimApproved === 'true' ? "Yes" : "No"
               }}
             </span>
           </div>
@@ -53,39 +51,37 @@
 
         
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.isThisFinalClaim || (formCreationService.recoveryClaimForm$ | async)?.controls?.isThisFinalClaim.invalid}">Final Claim:</span></div>
+          <div class="col-md-3"><span>Final Claim:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.isThisFinalClaim || (formCreationService.recoveryClaimForm$ | async)?.controls?.isThisFinalClaim.invalid}">
+            <span>
               {{
                 (formCreationService.recoveryClaimForm$ | async)?.value
-                  .isThisFinalClaim ? (formCreationService.recoveryClaimForm$ | async)?.value
-                  .isThisFinalClaim === 'true' ? "Yes" : "No" : "Enter required information"
+                  .isThisFinalClaim === 'true' ? "Yes" : ((formCreationService.recoveryClaimForm$ | async)?.value
+  .isThisFinalClaim === 'false' ? "No" : "")
               }}
             </span>
           </div>
         </div>
 
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.totalInvoicesBeingClaimed || (formCreationService.recoveryClaimForm$ | async)?.controls?.totalInvoicesBeingClaimed.invalid}">Total Net Invoices being Claimed:</span></div>
+          <div class="col-md-3"><span>Total Net Invoices being Claimed:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.totalInvoicesBeingClaimed || (formCreationService.recoveryClaimForm$ | async)?.controls?.totalInvoicesBeingClaimed.invalid}">
+            <span>
               {{
-                (formCreationService.recoveryClaimForm$ | async)?.value
-                  .totalInvoicesBeingClaimed ? (formCreationService.recoveryClaimForm$ | async)?.value
-                  .totalInvoicesBeingClaimed : "Enter required information"
+                recoveryPlanFormAbstract
+                  .totalInvoicesBeingClaimed
               }}
             </span>
           </div>
         </div>
 
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.claimPST || (formCreationService.recoveryClaimForm$ | async)?.controls?.claimPST.invalid}">Claim PST:</span></div>
+          <div class="col-md-3"><span>Claim PST:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.claimPST || (formCreationService.recoveryClaimForm$ | async)?.controls?.claimPST.invalid}">
+            <span>
               {{
-                (formCreationService.recoveryClaimForm$ | async)?.value
-                  .claimPST ? (formCreationService.recoveryClaimForm$ | async)?.value
-                  .claimPST : "Enter required information"
+                recoveryPlanFormAbstract
+                  .claimPST
               }}
             </span>
           </div>
@@ -93,13 +89,12 @@
 
         
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.claimGrossGST || (formCreationService.recoveryClaimForm$ | async)?.controls?.claimGrossGST.invalid}">Claim Gross GST:</span></div>
+          <div class="col-md-3"><span>Claim Gross GST:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.claimGrossGST || (formCreationService.recoveryClaimForm$ | async)?.controls?.claimGrossGST.invalid}">
+            <span>
               {{
-                (formCreationService.recoveryClaimForm$ | async)?.value
-                  .claimGrossGST ? (formCreationService.recoveryClaimForm$ | async)?.value
-                  .claimGrossGST : "Enter required information"
+                recoveryPlanFormAbstract
+                  .claimGrossGST
               }}
             </span>
           </div>
@@ -107,24 +102,22 @@
 
         
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.totalActualClaim || (formCreationService.recoveryClaimForm$ | async)?.controls?.totalActualClaim.invalid}">Total Actual Claim:</span></div>
+          <div class="col-md-3"><span>Total Actual Claim:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.recoveryClaimForm$ | async)?.value?.totalActualClaim || (formCreationService.recoveryClaimForm$ | async)?.controls?.totalActualClaim.invalid}">
+            <span>
               {{
-                (formCreationService.recoveryClaimForm$ | async)?.value
-                  .totalActualClaim ? (formCreationService.recoveryClaimForm$ | async)?.value
-                  .totalActualClaim : "Enter required information"
+                recoveryPlanFormAbstract
+                  .totalActualClaim
               }}
             </span>
           </div>
         </div>
-
         
       </mat-card-content>
 
       <mat-card-content class="contentStyle mat-elevation-z8">
         <div class="row justify-content-between">
-          <div class="col-md-6 card-heading">Supporting Documents</div>
+          <div class="col-md-6 card-heading">Invoices</div>
           <div class="col-md-2" *ngIf="allowEdit">
             <button
               class="edit-image"
@@ -142,9 +135,87 @@
           </div>
         </div>
         <hr />
+
+        <table mat-table [dataSource]="invoiceSummaryDataSource" *ngIf="invoiceSummaryDataSource?.data?.length > 0" style="width:80%">
+          <!-- Invoice Number Column -->
+          <ng-container matColumnDef="invoiceNumber">
+            <th mat-header-cell *matHeaderCellDef style="width:20%">
+              <b>Invoice Number</b>
+            </th>
+            <td *matCellDef="let element" mat-cell>
+              {{ element.invoiceNumber }}
+            </td>
+          </ng-container>
+
+          <!-- Vendor Name -->
+          <ng-container matColumnDef="vendorName">
+            <th mat-header-cell *matHeaderCellDef style="width:25%">
+              <b>Vendor Name</b>
+            </th>
+            <td *matCellDef="let element" mat-cell>
+              {{ element.vendorName}}
+            </td>
+          </ng-container>
+
+          <!-- Invoice Date Column -->
+          <ng-container matColumnDef="invoiceDate">
+            <th mat-header-cell *matHeaderCellDef style="width:20%">
+              <b>Invoice Date</b>
+            </th>
+            <td *matCellDef="let element" mat-cell>
+              {{ element.invoiceDate | date:"dd-MMM-yyyy" }}
+            </td>
+          </ng-container>
+
+            <!-- Total Claim Column -->
+            <ng-container matColumnDef="totalBeingClaimed">
+            <th mat-header-cell *matHeaderCellDef style="width:20%">
+              <b>Total being Claimed</b>
+            </th>
+            <td *matCellDef="let element" mat-cell>
+              ${{ element.totalBeingClaimed | number }}
+            </td>
+          </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="invoiceSummaryColumnsToDisplay"></tr>
+        <tr
+          mat-row
+          *matRowDef="let element; columns: invoiceSummaryColumnsToDisplay"
+          class="example-element-row"
+        ></tr>
+      </table>
+
+        <div class="row info-detail" *ngIf="invoiceSummaryDataSource?.data?.length == 0">
+                    <span style="color:red">Invoice is required.</span>
+        </div>
+
+      </mat-card-content>
+
+      <mat-card-content class="contentStyle mat-elevation-z8">
+        <div class="row justify-content-between">
+          <div class="col-md-6 card-heading">Supporting Documents</div>
+          <div class="col-md-2" *ngIf="allowEdit">
+            <button
+              class="edit-image"
+              mat-icon-button
+              aria-label="Edit"
+              (click)="navigateToStep(2)"
+            >
+              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img
+                src="/assets/images/edit_onhover.svg"
+                height="35"
+                width="35"
+              />
+            </button>
+          </div>
+          
+        </div>
+        <hr />
         <div class="row info-detail" *ngIf="requiredDocumentsDataSource?.data?.length > 0">
           <b>Required Documents</b>
-          <table mat-table [dataSource]="requiredDocumentsDataSource">
+          <br /><br />
+          <table mat-table [dataSource]="requiredDocumentsDataSource" style="width:80%">
              <!-- File Name Column -->
              <ng-container matColumnDef="fileName" style="width:25%">
               <th mat-header-cell *matHeaderCellDef >
@@ -156,7 +227,7 @@
             </ng-container>
 
             <!-- Description Column -->
-            <ng-container matColumnDef="fileDescription" style="width:25%">
+            <ng-container matColumnDef="fileDescription" style="width:45%">
               <th mat-header-cell *matHeaderCellDef>
                 <b>File Description</b>
               </th>
@@ -166,7 +237,7 @@
             </ng-container>
 
             <!-- Type Column -->
-            <ng-container matColumnDef="fileTypeText" style="width:25%">
+            <ng-container matColumnDef="fileTypeText" style="width:20%">
               <th mat-header-cell *matHeaderCellDef>
                 <b>File Type</b>
               </th>
@@ -176,7 +247,7 @@
             </ng-container>
 
             <!-- UploadedDate Column -->
-            <ng-container matColumnDef="uploadedDate" style="width:25%">
+            <ng-container matColumnDef="uploadedDate" style="width:10%">
               <th mat-header-cell *matHeaderCellDef>
                 <b>Date Uploaded</b>
               </th>
@@ -201,6 +272,7 @@
         </div>
         <div class="row info-detail" *ngIf="supportingDocumentsDataSource?.data?.length > 0">
           <b>Supporting Documents(Optional)</b>
+          <br />
           <table mat-table [dataSource]="supportingDocumentsDataSource">
            <!-- File Name Column -->
            <ng-container matColumnDef="fileName" style="width:25%">

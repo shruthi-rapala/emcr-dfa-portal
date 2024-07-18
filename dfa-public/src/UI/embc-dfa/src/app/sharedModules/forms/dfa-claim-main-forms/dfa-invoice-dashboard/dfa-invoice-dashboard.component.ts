@@ -24,7 +24,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption, ApplicantSubtypeSubCategories } from 'src/app/core/api/models';
+import { ApplicantOption, ApplicantSubtypeSubCategories, CurrentInvoice } from 'src/app/core/api/models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
@@ -40,6 +40,9 @@ import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/
 import { DashTabModel } from '../../../../feature-components/dashboard/dashboard.component';
 import { Routes, RouterModule, ActivatedRoute } from '@angular/router';
 import { ProjectExtended } from '../../../project-dashboard-components/project/project.component';
+import InvoiceComponent from '../invoice/invoice.component';
+import { DFADeleteConfirmInvoiceDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-invoice-dialog/dfa-confirm-delete-invoice.component';
+import { Invoice } from '../../../../core/model/dfa-invoice.model';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -57,15 +60,15 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
 })
 export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
   //@ViewChild('projectName') projectName: ElementRef;
-  lstInvoices: ProjectExtended[] = [];
-  lstFilteredInvoices: ProjectExtended[] = [];
+  lstInvoices: CurrentInvoice[] = [];
+  lstFilteredInvoices: CurrentInvoice[] = [];
   tabs: DashTabModel[];
   currentProjectsCount = 0;
   closedProjectsCount = 0;
   message: string = '';
-  recoveryPlanForm: UntypedFormGroup;
+  recoveryClaimForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
-  recoveryPlanForm$: Subscription;
+  recoveryClaimForm$: Subscription;
   formCreationService: FormCreationService;
   remainingLength: number = 200;
   todayDate = new Date().toISOString();
@@ -80,8 +83,11 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
   public stageSelected: string = '';
   public sortfieldSelected: string = '';
   public filterbydaysSelected: number;
-  documentSummaryColumnsToDisplay = ['invoicenumber', 'vendorname', 'invoicedate', 'totalclaim', 'icons']
-  documentSummaryDataSource = new MatTableDataSource();
+  documentSummaryColumnsToDisplay = ['invoiceNumber', 'vendorName', 'invoiceDate', 'totalBeingClaimed', 'icons']
+  documentSummaryDataSource = new MatTableDataSource<Invoice>();
+  documentSummaryDataSourceFiltered = new MatTableDataSource<Invoice>();
+  noInvoiceText = 'To begin adding invoices, click the "+ Add Invoice" button.';
+  
   readonly phoneMask = [
     /\d/,
     /\d/,
@@ -116,13 +122,13 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
     this.isReadOnly = (dfaProjectMainDataService.getViewOrEdit() === 'view'
       || dfaProjectMainDataService.getViewOrEdit() === 'edit'
       || dfaProjectMainDataService.getViewOrEdit() === 'viewOnly');
-    this.setViewOrEditControls();
+    //this.setViewOrEditControls();
 
     this.dfaProjectMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.isReadOnly = (vieworedit === 'view'
         || vieworedit === 'edit'
         || vieworedit === 'viewOnly');
-      this.setViewOrEditControls();
+      //this.setViewOrEditControls();
     })
     this.apptype = this.route.snapshot.data["apptype"];
 
@@ -139,29 +145,11 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
     //this.projectName.nativeElement.focus();
   }
 
-  setViewOrEditControls() {
-    if (!this.recoveryPlanForm) return;
-    if (this.isReadOnly) {
-      this.hideHelp = true;
-      this.recoveryPlanForm.controls.estimatedCompletionDate.disable();
-    } else {
-      this.recoveryPlanForm.controls.estimatedCompletionDate.enable();
-    }
-  }
-
   ngOnInit(): void {
-    this.recoveryPlanForm$ = this.formCreationService
-      .getRecoveryPlanForm()
-      .subscribe((recoveryPlan) => {
-        this.recoveryPlanForm = recoveryPlan;
-        this.setViewOrEditControls();
-        this.dfaProjectMainDataService.recoveryPlan = {
-          sitelocationdamageFromDate: null,
-          sitelocationdamageToDate: null,
-          projectName: null,
-          projectNumber: null,
-          isdamagedDateSameAsApplication: null
-        }
+    this.recoveryClaimForm$ = this.formCreationService
+      .getRecoveryClaimForm()
+      .subscribe((recoveryClaim) => {
+        this.recoveryClaimForm = recoveryClaim;
         //this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
         //if (this.propertyDamageForm.get('otherDamage').value === 'true') {
         //  this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required, Validators.maxLength(100)]);
@@ -173,11 +161,24 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       });
 
     this.documentSummaryDataSource.data = [
-      { invoicenumber: 'IN.001', vendorname: 'ABC Company', invoicedate: '03-JUL-2013', totalclaim: '$22,200' },
-      { invoicenumber: 'IN.002', vendorname: 'Brick & Co.', invoicedate: '04-JUL-2013', totalclaim: '$18,900' },
-      { invoicenumber: 'IN.003', vendorname: 'Home Depot', invoicedate: '15-JUL-2013', totalclaim: '$35,675' }
+      //{ invoiceNumber: 'IN.001', vendorName: 'ABC Company', invoiceDate: '03-JUL-2024', totalBeingClaimed: '20000' },
+      //{ invoiceNumber: 'IN.002', vendorName: 'Brick & Co.', invoiceDate: '04-JUL-2013', totalBeingClaimed: '18000' },
+      //{ invoiceNumber: 'IN.003', vendorName: 'Home Depot', invoiceDate: '15-JUL-2013', totalBeingClaimed: '37000' }
 
     ];
+
+    //this.recoveryClaimForm.controls.totalInvoicesBeingClaimed.disable();
+    //this.recoveryClaimForm.controls.claimPST.disable();
+    //this.recoveryClaimForm.controls.claimGrossGST.disable();
+    //this.recoveryClaimForm.controls.totalActualClaim.disable();
+
+    this.SummaryClaimCalc();
+
+    this.documentSummaryDataSourceFiltered.data = this.documentSummaryDataSource.data;
+    this.formCreationService.recoveryClaimForm.value.get('invoices').setValue(this.documentSummaryDataSource.data);
+    this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
+
+    this.invoicesCount = this.documentSummaryDataSource.data.length;
 
     let projectId = this.dfaProjectMainDataService.getProjectId();
 
@@ -200,7 +201,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
     })
 
     if (this.dfaProjectMainDataService.getViewOrEdit() == 'viewOnly') {
-      this.recoveryPlanForm.disable();
+      this.recoveryClaimForm.disable();
     }
     else {
       setTimeout(
@@ -231,12 +232,37 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
 
   }
 
+  SummaryClaimCalc() {
+    var sumOfNetInvoiceBeingClaimed = this.documentSummaryDataSource.data.reduce((acc, val) => {
+      return acc + Number(val.netInvoiceBeingClaimed);
+    }, 0);
+
+    var sumOfClaimPST = this.documentSummaryDataSource.data.reduce((acc, val) => {
+      return acc + Number(val.PST);
+    }, 0);
+
+    var sumOfClaimGrossGST = this.documentSummaryDataSource.data.reduce((acc, val) => {
+      return acc + Number(val.grossGST);
+    }, 0);
+
+    var sumOfTotalActualClaim = this.documentSummaryDataSource.data.reduce((acc, val) => {
+      return acc + Number(val.actualInvoiceTotal);
+    }, 0);
+
+    this.formCreationService.recoveryClaimForm.value.get('totalInvoicesBeingClaimed').setValue(sumOfNetInvoiceBeingClaimed);
+    this.formCreationService.recoveryClaimForm.value.get('claimPST').setValue(sumOfClaimPST);
+    this.formCreationService.recoveryClaimForm.value.get('claimGrossGST').setValue(sumOfClaimGrossGST);
+    this.formCreationService.recoveryClaimForm.value.get('totalActualClaim').setValue(sumOfTotalActualClaim);
+    
+    this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
+  }
+
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
   }
 
   calcRemainingChars() {
-    this.remainingLength = 200 - this.recoveryPlanForm.get('subtypeOtherDetails').value?.length;
+    this.remainingLength = 200 - this.recoveryClaimForm.get('subtypeOtherDetails').value?.length;
   }
 
   selectDamageDates(choice: any) {
@@ -249,49 +275,45 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
   }
 
   ApplyFilter(type: number, searchText: string): void {
+    
+    this.lstInvoices = this.documentSummaryDataSource.data;
     var lstInvoicesFilterting = this.lstInvoices;
 
     if (searchText != null) {
       this.searchTextInput = searchText;
     }
-
-    if (this.stageSelected != '' && this.stageSelected != null) {
-
-      if (this.stageSelected == 'All') {
-        lstInvoicesFilterting = lstInvoicesFilterting;
-      }
-      else if (this.stageSelected == 'Approved') {
-        lstInvoicesFilterting = lstInvoicesFilterting.filter(m => m.status.toLowerCase() == 'decision made' && m.stage.toLowerCase() == 'approved');
-      } else if (this.stageSelected == 'Closed') {
-        lstInvoicesFilterting = lstInvoicesFilterting.filter(m => m.status.toLowerCase() == 'decision made' && m.stage.toLowerCase() != 'approved');
-      }
-      else {
-        lstInvoicesFilterting = lstInvoicesFilterting.filter(m => m.status.toLowerCase().indexOf(this.stageSelected.toLowerCase()) > -1);
-      }
-    }
-
+    
     if (this.filterbydaysSelected && this.filterbydaysSelected != -1) {
       var backdate = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * this.filterbydaysSelected));
-      lstInvoicesFilterting = lstInvoicesFilterting.filter(m => (backdate <= new Date(m.createdDate)));
+      lstInvoicesFilterting = lstInvoicesFilterting.filter(m => (backdate <= new Date(m.invoiceDate)));
     }
 
     if (this.sortfieldSelected != '' && this.sortfieldSelected != null) {
-      if (this.sortfieldSelected == 'claimnumber') {
-        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (a.projectName > b.projectName) ? 1 : ((b.projectName > a.projectName) ? -1 : 0))
-      } else if (this.sortfieldSelected == 'submitteddate') {
-        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (a.projectNumber > b.projectNumber) ? 1 : ((b.projectNumber > a.projectNumber) ? -1 : 0))
+      if (this.sortfieldSelected == 'vendorname') {
+        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (a.vendorName > b.vendorName) ? 1 : ((b.vendorName > a.vendorName) ? -1 : 0))
+      } else if (this.sortfieldSelected == 'invoicenumber') {
+        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (a.invoiceNumber > b.invoiceNumber) ? 1 : ((b.invoiceNumber > a.invoiceNumber) ? -1 : 0))
+      } else if (this.sortfieldSelected == 'totaleligible') {
+        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (a.totalBeingClaimed > b.totalBeingClaimed) ? 1 : ((b.totalBeingClaimed > a.totalBeingClaimed) ? -1 : 0))
       } else if (this.sortfieldSelected == 'claimpaiddate') {
-        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (new Date(a.estimatedCompletionDate) > new Date(b.estimatedCompletionDate)) ? 1 : (new Date(b.estimatedCompletionDate) > new Date(a.estimatedCompletionDate) ? -1 : 0))
+        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (new Date(a.invoiceDate) > new Date(b.invoiceDate)) ? 1 : (new Date(b.invoiceDate) > new Date(a.invoiceDate) ? -1 : 0))
       }
     }
 
     if (this.searchTextInput != null) {
-      lstInvoicesFilterting = lstInvoicesFilterting.filter(m => m.projectName.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
-        || m.projectNumber.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
-        || m.siteLocation.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1);
+      lstInvoicesFilterting = lstInvoicesFilterting.filter(m => m.vendorName.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
+       );
     }
 
-    this.lstFilteredInvoices = lstInvoicesFilterting;
+    //this.lstFilteredInvoices = lstInvoicesFilterting;
+    this.documentSummaryDataSourceFiltered.data = lstInvoicesFilterting;
+
+    if (this.documentSummaryDataSourceFiltered.data.length <= 0) {
+      this.noInvoiceText = 'No invoices found matching the filter condition.';
+    }
+    else {
+      this.noInvoiceText = 'To begin adding invoices, click the "+ Add Invoice" button.';
+    }
 
   }
 
@@ -332,11 +354,81 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
    * Returns the control of the form
    */
   get propertyDamageFormControl(): { [key: string]: AbstractControl } {
-    return this.recoveryPlanForm.controls;
+    return this.recoveryClaimForm.controls;
   }
 
   ngOnDestroy(): void {
-    this.recoveryPlanForm$.unsubscribe();
+    this.recoveryClaimForm$.unsubscribe();
+  }
+
+  editInvoiceRow(element, index): void {
+    this.openInvoiceCreatePopup(element, index);
+  }
+
+  confirmDeleteInvoiceRow(index: number): void {
+    this.dialog
+      .open(DFADeleteConfirmInvoiceDialogComponent, {
+        data: {
+          content: "Are you certain you wish to proceed with deleting the invoice?"
+        },
+        width: '500px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          //this.deleteOtherContactRow(index);
+          this.documentSummaryDataSource.data.splice(index, 1);
+          let cloned = this.documentSummaryDataSource.data.slice()
+          this.documentSummaryDataSource.data = cloned;
+          this.documentSummaryDataSourceFiltered.data = this.documentSummaryDataSource.data;
+          this.invoicesCount = this.documentSummaryDataSource.data.length;
+          this.SummaryClaimCalc();
+          this.formCreationService.recoveryClaimForm.value.get('invoices').setValue(this.documentSummaryDataSource.data);
+          this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
+        }
+      });
+  }
+
+  openInvoiceCreatePopup(objInvoice, index): void {
+    this.dialog
+      .open(InvoiceComponent, {
+        data: {
+          content: objInvoice
+        },
+        height: '750px',
+        width: '1000px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        //debugger;
+        if (result.event === 'confirm') {
+          if (result.invData) {
+            var objInv = result.invData;
+            //this.documentSummaryDataSource.data.push(
+            //  { invoiceNumber: objInv.invoiceNumber, vendorName: objInv.vendorName, invoiceDate: objInv.invoiceDate, totalBeingClaimed: objInv.totalBeingClaimed }
+            //);
+            if (index != null) {
+              this.documentSummaryDataSource.data.splice(index, 1, objInv);
+            }
+            else {
+              this.documentSummaryDataSource.data.push(objInv);
+            }
+
+            let cloned = this.documentSummaryDataSource.data.slice()
+            this.documentSummaryDataSource.data = cloned;
+            this.documentSummaryDataSourceFiltered.data = this.documentSummaryDataSource.data;
+            this.invoicesCount = this.documentSummaryDataSource.data.length;
+            this.SummaryClaimCalc();
+            this.formCreationService.recoveryClaimForm.value.get('invoices').setValue(this.documentSummaryDataSource.data);
+            this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
+          }
+        }
+        //(this.formCreationService.invoiceForm$ | async)?.value
+        
+        //}
+      });
   }
 
   setHelpText(inputSelection, tooltip: MatTooltip): void {
@@ -344,48 +436,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       case 1:
         this.message = "Project number\r\n\r\nThe project number is the unique project identifier that your organization assigned to the project's site location where damage has occurred.\r\nThe project identifier may be a number, letter, or any combination of letters and numbers.\r\nThis project number is specific to the site and is often referred to when discussing the location.";
         break;
-      case 2:
-        this.message = "Project name\r\n\r\nThe project name is the unique name that your organization assigned to the the project's site location where damage has occurred.\r\nThis project name is specific to the site and may also referenced when discussing the location.";
-        break;
-      case 3:
-        this.message = "Are the dates of damage the same dates provided on the application?";
-        break;
-      case 4:
-        this.message = "What is this site location's date(s) of damage:\r\n\r\nFrom date";
-        break;
-      case 5:
-        this.message = "What is this site location's date(s) of damage:\r\n\r\nTo date";
-        break;
-      case 6:
-        this.message = "Why is this site location's date(s) of damage different from dates provided on the application?";
-        break;
-      case 7:
-        this.message = "Site location\r\n\r\nInclude the address of the building, road, bridge, dam, river, breakwater, wharf, dyke, levee, drainage facility, parking lot, or culvert that was damaged.";
-        break;
-      case 8:
-        this.message = "What infrastructure was damaged?\r\n\r\nInclude the name or type of building, road, bridge, dam, river, breakwater, wharf, dyke, levee, drainage facility, parking lot, or culvert that was damaged.\r\nThis is referred to as the infrastructure in later questions.";
-        break;
-      case 9:
-        this.message = "What caused the damage?\r\n\r\nProvide a brief explanation of how the damage was caused.";
-        break;
-      case 10:
-        this.message = "Describe the damage\r\n\r\nDescribe what part(s) of the infrastructure were damaged.";
-        break;
-      case 11:
-        this.message = "Describe the materials, including quantities and measurements, of the damaged infrastructure\r\n\r\nFor the damaged infrastructure provide a clear detailed description of what was damaged including the type of materials, quantities, and measurements that were damaged.";
-        break;
-      case 12:
-        this.message = "Describe the repair work\r\n\r\nDescribe what needs to be done to restore the infrastructure to pre - event condition.";
-        break;
-      case 13:
-        this.message = "Describe the materials, including quantities and measurements, to repair damaged infrastructure\r\nProvide a clear detailed description of the materials, quantities and measurements that are required to repair the damage.";
-        break;
-      case 14:
-        this.message = "Estimated completion date (month/year)\r\n\r\nProvide the date you expect to complete the project.\r\nIf you don't have an exact date, select the last day of the expected month and year.";
-        break;
-      case 15:
-        this.message = "Estimate or actual cost of total project (include taxes)\r\n\r\nA total cost of all activities associated with the overall project.";
-        break;
+      
       default:
         this.message = "Click on any field in the form to view detailed information " +
           "about what information is required and tips on how to fill " +

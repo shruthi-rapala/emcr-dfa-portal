@@ -34,6 +34,7 @@
         class="button-s add-invoice-button"
         mat-button
         type="button"
+        (click)="openInvoiceCreatePopup(null, null);"
       >
         + Add Invoice
       </button>
@@ -99,51 +100,51 @@
   </div>
 </div>
 
-  <table mat-table [dataSource]="documentSummaryDataSource" *ngIf="documentSummaryDataSource.data.length > 0" style="width:100%">
+  <table mat-table [dataSource]="documentSummaryDataSourceFiltered" *ngIf="documentSummaryDataSourceFiltered.data.length > 0" style="width:100%">
     <!-- Invoice Number Column -->
-    <ng-container matColumnDef="invoicenumber" style="width:25%">
-      <th mat-header-cell *matHeaderCellDef >
+    <ng-container matColumnDef="invoiceNumber">
+      <th mat-header-cell *matHeaderCellDef style="width:20%">
         <b>Invoice Number</b>
       </th>
       <td *matCellDef="let element" mat-cell>
-        {{ element.invoicenumber }}
+        {{ element.invoiceNumber }}
       </td>
     </ng-container>
 
     <!-- Vendor Name -->
-    <ng-container matColumnDef="vendorname" style="width:25%">
-      <th mat-header-cell *matHeaderCellDef>
+    <ng-container matColumnDef="vendorName">
+      <th mat-header-cell *matHeaderCellDef style="width:25%">
         <b>Vendor Name</b>
       </th>
       <td *matCellDef="let element" mat-cell>
-        {{ element.vendorname}}
+        {{ element.vendorName}}
       </td>
     </ng-container>
 
     <!-- Invoice Date Column -->
-    <ng-container matColumnDef="invoicedate" style="width:25%">
-      <th mat-header-cell *matHeaderCellDef>
+    <ng-container matColumnDef="invoiceDate">
+      <th mat-header-cell *matHeaderCellDef style="width:20%">
         <b>Invoice Date</b>
       </th>
       <td *matCellDef="let element" mat-cell>
-        {{ element.invoicedate | date:"dd-MMM-yyyy" }}
+        {{ element.invoiceDate | date:"dd-MMM-yyyy" }}
       </td>
     </ng-container>
 
       <!-- Total Claim Column -->
-      <ng-container matColumnDef="totalclaim" style="width:25%">
-      <th mat-header-cell *matHeaderCellDef>
+      <ng-container matColumnDef="totalBeingClaimed">
+      <th mat-header-cell *matHeaderCellDef style="width:20%">
         <b>Total being Claimed</b>
       </th>
       <td *matCellDef="let element" mat-cell>
-        {{ element.totalclaim }}
+        ${{ element.totalBeingClaimed | number }}
       </td>
     </ng-container>
 
     <!-- Delete Icon Column -->
-    <ng-container matColumnDef="icons" style="width:25%">
-      <th mat-header-cell *matHeaderCellDef>
-        &nbsp;
+    <ng-container matColumnDef="icons">
+      <th mat-header-cell *matHeaderCellDef style="width:15%">
+        <b>Action</b>
       </th>
       <td *matCellDef="let element; let index = index" mat-cell>
         <button
@@ -151,7 +152,7 @@
           *ngIf="vieworedit !== 'viewOnly'"
           mat-icon-button
           aria-label="Edit"
-          (click)="editDamagedRoomRow(element, index)"
+          (click)="editInvoiceRow(element, index)"
         >
           <img src="/assets/images/edit.svg" height="35" width="35" />
           <img
@@ -164,7 +165,7 @@
           class="delete-image"
           mat-icon-button
           aria-label="Remove"
-          (click)="confirmDeleteDocumentSummaryRow(element)"
+          (click)="confirmDeleteInvoiceRow(index)"
         >
           <img src="/assets/images/delete.svg" height="35" width="35" />
           <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>
@@ -183,12 +184,10 @@
   </table>
 
 </div>
-<div class="content-container no-project" style="display:none" >
- <div class="heading-container">
+<div class="content-container no-invoices" *ngIf="documentSummaryDataSourceFiltered.data.length <= 0" >
     <div class="row">
       <div class="col-md-12">
-        <span class="page-heading"> No Invoices</span> <br />
+        <span class="no-invoices-text"> {{noInvoiceText}} </span> <br />
       </div>
     </div>
-  </div>
 </div>

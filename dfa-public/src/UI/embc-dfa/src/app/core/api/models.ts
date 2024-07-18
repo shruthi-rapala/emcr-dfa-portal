@@ -46,6 +46,7 @@ export { RoomType } from './models/room-type';
 export { DisasterEvent } from './models/disaster-event';
 export { EffectedRegionCommunity } from './models/effected-region-community';
 export { FullTimeOccupant } from './models/full-time-occupant';
+export { CurrentInvoice } from './models/current-invoice';
 export { ProfileDataConflict } from './models/profile-data-conflict';
 export { DateOfBirthDataConflict } from './models/date-of-birth-data-conflict';
 export { NameDataConflict } from './models/name-data-conflict';

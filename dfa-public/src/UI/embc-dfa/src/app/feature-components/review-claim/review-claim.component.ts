@@ -10,6 +10,7 @@ import { ApplicantOption, FarmOption, FileCategory, FileUpload, InsuranceOption,
 import { MatTableDataSource } from '@angular/material/table';
 import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
 import { UntypedFormGroup } from '@angular/forms';
+import { Invoice } from '../../core/model/dfa-invoice.model';
 
 @Component({
   selector: 'app-review-claim',
@@ -31,9 +32,11 @@ export class ReviewClaimComponent implements OnInit {
   supportingDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate'];
   requiredDocumentsDataSource = new MatTableDataSource<FileUpload>();
   requiredDocumentsColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate'];
+  invoiceSummaryColumnsToDisplay = ['invoiceNumber', 'vendorName', 'invoiceDate', 'totalBeingClaimed']
+  invoiceSummaryDataSource = new MatTableDataSource<Invoice>();
   hideCard = false;
   navigationExtras: NavigationExtras;
-  
+  recoveryPlanFormAbstract: [];
 
   constructor(
     private router: Router,
@@ -46,19 +49,28 @@ export class ReviewClaimComponent implements OnInit {
 
   ngOnInit(): void {
     this.navigationExtras = { state: { parentPageName: this.parentPageName } };
-    if (this.currentFlow === 'verified-registration') {
-      this.captchaPassed.emit({
-        type: CaptchaResponseType.success
-      });
-    }
+    //if (this.currentFlow === 'verified-registration') {
+    //  this.captchaPassed.emit({
+    //    type: CaptchaResponseType.success
+    //  });
+    //}
 
-    //// subscribe to changes in full time occupants
-    //const _fullTimeOccupantsFormArray = this.formCreationService.fullTimeOccupantsForm.value.get('fullTimeOccupants');
-    //_fullTimeOccupantsFormArray.valueChanges
-    //  .pipe(
-    //    mapTo(_fullTimeOccupantsFormArray.getRawValue())
-    //    ).subscribe(data => this.fullTimeOccupantsDataSource.data =  _fullTimeOccupantsFormArray.getRawValue());
+    const recoveryClaimForm = this.formCreationService.recoveryClaimForm.value;
+    this.recoveryPlanFormAbstract = recoveryClaimForm.getRawValue();
 
+    // subscribe to changes in claim invoices fields
+    recoveryClaimForm.valueChanges
+      .pipe(
+        mapTo(recoveryClaimForm.getRawValue())
+      ).subscribe(data => this.recoveryPlanFormAbstract = recoveryClaimForm.getRawValue());
+
+    // subscribe to changes in full time occupants
+    const _invoiceFormArray = this.formCreationService.recoveryClaimForm.value.get('invoices');
+    _invoiceFormArray.valueChanges
+      .pipe(
+        mapTo(_invoiceFormArray.getRawValue())
+    ).subscribe(data => this.invoiceSummaryDataSource.data = _invoiceFormArray.getRawValue());
+    debugger
     //// subscribe to changes in secondary applicants
     //const _secondaryApplicantsFormArray = this.formCreationService.secondaryApplicantsForm.value.get('secondaryApplicants');
     //_secondaryApplicantsFormArray.valueChanges

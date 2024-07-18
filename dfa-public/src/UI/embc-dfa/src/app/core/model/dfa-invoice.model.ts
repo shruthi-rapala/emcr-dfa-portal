@@ -7,113 +7,137 @@ import {
 import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
 import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ProjectStageOptionSet } from 'src/app/core/api/models';
-import { Invoice } from './dfa-invoice.model';
 
 
-export class RecoveryClaim {
-  claimNumber?: null | string;
-  claimStatus?: null | ProjectStageOptionSet;
-  isFirstClaimApproved?: null | boolean;
-  isThisFinalClaim?: null | boolean;
-  totalInvoicesBeingClaimed?: null | string;
-  claimPST?: null | string;
-  claimGrossGST?: null | string;
-  totalActualClaim?: null | string;
-  invoices?: null | Invoice[];
-  
+export class Invoice {
+  invoiceNumber?: null | string;
+  vendorName?: null | string;
+  invoiceDate?: null | string;
+  isGoodsReceivedonInvoiceDate?: null | boolean;
+  goodsReceivedDate?: null | string;
+  purposeOfGoodsServiceReceived?: null | string;
+  isClaimforPartofTotalInvoice?: null | boolean;
+  reasonClaimingPartofTotalInvoice?: null | string;
+  netInvoiceBeingClaimed?: null | string;
+  PST?: null | string;
+  grossGST?: null | string;
+  actualInvoiceTotal?: null | string;
+  eligibleGST?: null | string;
+  totalBeingClaimed?: null | string;
 
   constructor(
-    claimNumber?: null | string,
-    claimStatus?: null | ProjectStageOptionSet,
-    isFirstClaimApproved?: null | boolean,
-    isThisFinalClaim?: null | boolean,
-    totalInvoicesBeingClaimed?: null | string,
-    claimPST?: null | string,
-    claimGrossGST?: null | string,
-    totalActualClaim?: null | string,
-    invoices?: null | Invoice[]
+    invoiceNumber?: null | string,
+    vendorName?: null | string,
+    invoiceDate?: null | string,
+    isGoodsReceivedonInvoiceDate?: null | boolean,
+    goodsReceivedDate?: null | string,
+    purposeOfGoodsServiceReceived?: null | string,
+    isClaimforPartofTotalInvoice?: null | boolean,
+    reasonClaimingPartofTotalInvoice?: null | string,
+    netInvoiceBeingClaimed?: null | string,
+    PST?: null | string,
+    grossGST?: null | string,
+    actualInvoiceTotal?: null | string,
+    eligibleGST?: null | string,
+    totalBeingClaimed?: null | string,
+
   ) { }
 }
 
-export class RecoveryClaimForm {
-  claimNumber = new UntypedFormControl();
-  claimStatus = new UntypedFormControl();
-  isFirstClaimApproved = new UntypedFormControl();
-  isThisFinalClaim = new UntypedFormControl();
-  totalInvoicesBeingClaimed = new UntypedFormControl();
-  claimPST = new UntypedFormControl();
-  claimGrossGST = new UntypedFormControl();
-  totalActualClaim = new UntypedFormControl();
-  invoices = new UntypedFormControl();
+export class InvoiceForm {
+  invoiceNumber = new UntypedFormControl();
+  vendorName = new UntypedFormControl();
+  invoiceDate = new UntypedFormControl();
+  isGoodsReceivedonInvoiceDate = new UntypedFormControl();
+  goodsReceivedDate = new UntypedFormControl();
+  purposeOfGoodsServiceReceived = new UntypedFormControl();
+  isClaimforPartofTotalInvoice = new UntypedFormControl();
+  reasonClaimingPartofTotalInvoice = new UntypedFormControl();
+  netInvoiceBeingClaimed = new UntypedFormControl();
+  PST = new UntypedFormControl();
+  grossGST = new UntypedFormControl();
+  actualInvoiceTotal = new UntypedFormControl();
+  eligibleGST = new UntypedFormControl();
+  totalBeingClaimed = new UntypedFormControl();
 
   constructor(
-    recoveryClaim: RecoveryClaim,
+    invoice: Invoice,
     customValidator: CustomValidationService
   ) {
     
-    if (recoveryClaim.claimNumber) {
-      this.claimNumber.setValue(recoveryClaim.claimNumber);
+    if (invoice.invoiceNumber) {
+      this.invoiceNumber.setValue(invoice.invoiceNumber);
+    }
+    this.invoiceNumber.setValidators(null);
+
+    if (invoice.vendorName) {
+      this.vendorName.setValue(invoice.vendorName);
+    }
+    this.vendorName.setValidators(null);
+
+    if (invoice.invoiceDate) {
+      this.invoiceDate.setValue(invoice.invoiceDate);
+    }
+    this.invoiceDate.setValidators(null);
+
+    if (invoice.isGoodsReceivedonInvoiceDate) {
+      this.isGoodsReceivedonInvoiceDate.setValue(invoice.isGoodsReceivedonInvoiceDate);
+    }
+    this.isGoodsReceivedonInvoiceDate.setValidators(null);
+
+    if (invoice.goodsReceivedDate) {
+      this.goodsReceivedDate.setValue(invoice.goodsReceivedDate);
+    }
+    this.goodsReceivedDate.setValidators(null);
+
+    if (invoice.purposeOfGoodsServiceReceived) {
+      this.purposeOfGoodsServiceReceived.setValue(invoice.purposeOfGoodsServiceReceived);
+    }
+    this.purposeOfGoodsServiceReceived.setValidators(null);
+
+    if (invoice.isClaimforPartofTotalInvoice) {
+      this.isClaimforPartofTotalInvoice.setValue(invoice.isClaimforPartofTotalInvoice);
+    }
+    this.isClaimforPartofTotalInvoice.setValidators(null);
+
+    if (invoice.reasonClaimingPartofTotalInvoice) {
+      this.reasonClaimingPartofTotalInvoice.setValue(invoice.reasonClaimingPartofTotalInvoice);
+    }
+    this.reasonClaimingPartofTotalInvoice.setValidators(null);
+
+    if (invoice.netInvoiceBeingClaimed) {
+      this.netInvoiceBeingClaimed.setValue(invoice.netInvoiceBeingClaimed);
+    }
+    this.netInvoiceBeingClaimed.setValidators(null);
+
+    if (invoice.PST) {
+      this.PST.setValue(invoice.PST);
+    }
+    this.PST.setValidators(null);
+
+    if (invoice.grossGST) {
+      this.grossGST.setValue(invoice.grossGST);
+    }
+    this.grossGST.setValidators(null);
+
+    if (invoice.actualInvoiceTotal) {
+      this.actualInvoiceTotal.setValue(invoice.actualInvoiceTotal);
+    }
+    this.actualInvoiceTotal.setValidators(null);
+
+    if (invoice.eligibleGST) {
+      this.eligibleGST.setValue(invoice.eligibleGST);
     }
     else {
-      this.claimNumber.setValue(0);
+      this.eligibleGST.setValue(0);
     }
-    this.claimNumber.setValidators(null);
+    this.eligibleGST.setValidators(null);
 
-    if (recoveryClaim.claimStatus) {
-      this.claimStatus.setValue(recoveryClaim.claimStatus);
+    if (invoice.totalBeingClaimed) {
+      this.totalBeingClaimed.setValue(invoice.totalBeingClaimed);
     }
-    this.claimStatus.setValidators(null);
-
-    if (recoveryClaim.isFirstClaimApproved) {
-      this.isFirstClaimApproved.setValue(recoveryClaim.isFirstClaimApproved);
-    }
-    else {
-      this.isFirstClaimApproved.setValue('false');
-    }
-    this.isFirstClaimApproved.setValidators(null);
-
-    if (recoveryClaim.isThisFinalClaim) {
-      this.isThisFinalClaim.setValue(recoveryClaim.isThisFinalClaim);
-    }
-    this.isThisFinalClaim.setValidators(null);
-
-    if (recoveryClaim.totalInvoicesBeingClaimed) {
-      this.totalInvoicesBeingClaimed.setValue(recoveryClaim.totalInvoicesBeingClaimed);
-    }
-    else {
-      this.totalInvoicesBeingClaimed.setValue(0);
-    }
-    this.totalInvoicesBeingClaimed.setValidators(null);
-
-    if (recoveryClaim.claimPST) {
-      this.claimPST.setValue(recoveryClaim.claimPST);
-    }
-    else {
-      this.claimPST.setValue(0);
-    }
-    this.claimPST.setValidators(null);
-
-    if (recoveryClaim.claimGrossGST) {
-      this.claimGrossGST.setValue(recoveryClaim.claimGrossGST);
-    }
-    else {
-      this.claimGrossGST.setValue(0);
-    }
-    this.claimGrossGST.setValidators(null);
-
-    if (recoveryClaim.totalActualClaim) {
-      this.totalActualClaim.setValue(recoveryClaim.totalActualClaim);
-    }
-    else {
-      this.totalActualClaim.setValue(0);
-    }
-    this.totalActualClaim.setValidators(null);
-
-    if (recoveryClaim.invoices) {
-      this.invoices.setValue(recoveryClaim.invoices);
-    }
-    this.invoices.setValidators(null);
-
+    this.totalBeingClaimed.setValidators(null);
+    
   }
 }
 
@@ -2026,9 +2050,9 @@ export class SupportingDocumentsForm {
 /**
  * DFA Application Main
  **/
-export interface DfaClaimMain {
+export interface DfaInvoiceMain {
   id?: string;
   applicationId?: string;
-  claim?: RecoveryClaim;
-  invoices?: Invoice[];
+  claimId?: string;
+  invoice?: Invoice;
 }

@@ -421,7 +421,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon",
                         "dfa_applicationstatusportal", "dfa_causeofdamageflood2", "dfa_causeofdamagestorm2",
                         "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageloss",
-                        "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto"
+                        "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto",
+                        "dfa_eligiblegst"
                     },
                     Filter = $"dfa_appapplicationid eq {appId}"
                 });
@@ -453,7 +454,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_causeofdamageother2 = objApp.dfa_causeofdamageother2,
                                    dfa_causeofdamagestorm2 = objApp.dfa_causeofdamagestorm2,
                                    dfa_causeofdamagewildfire2 = objApp.dfa_causeofdamagewildfire2,
-                                   dfa_receiveguidanceassessingyourinfra = objApp.dfa_receiveguidanceassessingyourinfra
+                                   dfa_receiveguidanceassessingyourinfra = objApp.dfa_receiveguidanceassessingyourinfra,
+                                   dfa_eligiblegst = objApp.dfa_eligiblegst
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
                 return lstApps.FirstOrDefault();
