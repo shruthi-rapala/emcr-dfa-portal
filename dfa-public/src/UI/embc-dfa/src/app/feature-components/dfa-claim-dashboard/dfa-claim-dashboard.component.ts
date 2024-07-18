@@ -52,6 +52,7 @@ export class DFAClaimComponent
   causeOfDamage = '';
   dateOfDamageFrom = '';
   dateOfDamageTo = '';
+  eligibleGST = false;
 
   projNumber = '';
   projName = '';
@@ -91,10 +92,10 @@ export class DFAClaimComponent
       this.currentProjectsCount = n;
       this.tabs[0].count = n ? n.toString() : "0";
     });
-    this.appSessionService.currentProjectsCount.subscribe((n: number) => {
-      this.closedProjectsCount = n;
-      this.tabs[2].count = n ? n.toString() : "0";
-    });
+    //this.appSessionService.currentProjectsCount.subscribe((n: number) => {
+    //  this.closedProjectsCount = n;
+    //  this.tabs[2].count = n ? n.toString() : "0";
+    //});
 
     //this.projService.projectGetDfaProjects({ applicationId: this.appId }).subscribe({
     //  next: (lstData) => {
@@ -134,6 +135,7 @@ export class DFAClaimComponent
   }
 
   navigateToDFAClaimCreate(): void {
+    this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
     this.dfaClaimMainDataService.setClaimId(null);
     this.dfaClaimMainDataService.setViewOrEdit('addclaim');
     this.router.navigate(['/dfa-claim-main']);
@@ -160,6 +162,7 @@ export class DFAClaimComponent
       this.applicationService.applicationGetApplicationDetailsForProject({ applicationId: applicationId }).subscribe({
         next: (dfaApplicationMain) => {
           if (dfaApplicationMain) {
+            this.eligibleGST = dfaApplicationMain.eligibleGST;
             this.dateOfDamageFrom = dfaApplicationMain.dateOfDamage;
             this.dateOfDamageTo = dfaApplicationMain.dateOfDamageTo;
             this.caseNumber = dfaApplicationMain.caseNumber ? dfaApplicationMain.caseNumber : "Not Generated";

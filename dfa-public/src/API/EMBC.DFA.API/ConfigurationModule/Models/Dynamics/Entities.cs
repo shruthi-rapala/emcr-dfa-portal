@@ -603,6 +603,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_causeofdamageother2 { get; set; }
         public int? dfa_receiveguidanceassessingyourinfra { get; set; }
         public string? dfa_causeofdamageloss { get; set; }
+        public bool? dfa_eligiblegst { get; set; }
     }
 
     public class dfa_event

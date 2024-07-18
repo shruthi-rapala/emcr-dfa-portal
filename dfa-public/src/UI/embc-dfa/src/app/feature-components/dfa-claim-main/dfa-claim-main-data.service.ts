@@ -3,16 +3,20 @@ import { CacheService } from 'src/app/core/services/cache.service';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { DfaClaimMain, FileUpload, RecoveryClaim } from '../../core/model/dfa-claim-main.model';
+import { DfaInvoiceMain, Invoice } from '../../core/model/dfa-invoice.model';
 
 @Injectable({ providedIn: 'root' })
 export class DFAClaimMainDataService {
   private _recoveryClaim: RecoveryClaim;
+  private _invoice: Invoice;
   private _fileUploads = [];
   private _dfaClaimMain: DfaClaimMain;
+  private _dfaInvoiceMain: DfaInvoiceMain;
   private _isSubmitted: boolean = false;
   private _applicationId: string;
   private _projectId: string;
   private _claimId: string;
+  private _eligibleGST: boolean;
   private _vieworedit: string;
   private _stepselected: string;
   private _isdisabled: string;
@@ -29,14 +33,21 @@ export class DFAClaimMainDataService {
   ) {
   }
 
-  public get recoveryPlan(): RecoveryClaim {
+  public get invoice(): Invoice {
+    return this._invoice;
+  }
+
+  public set invoice(value: Invoice) {
+    this._invoice = value;
+  }
+
+  public get recoveryClaim(): RecoveryClaim {
     return this._recoveryClaim;
   }
 
-  public set recoveryPlan(value: RecoveryClaim) {
+  public set recoveryClaim(value: RecoveryClaim) {
     this._recoveryClaim = value;
   }
-
 
   public get requiredDocuments(): Array<string> {
     return this._requiredDocuments;
@@ -72,6 +83,16 @@ export class DFAClaimMainDataService {
     this.cacheService.set('dfa-claim-main', dfaClaimMain);
   }
 
+  public setDFAInvoiceMain(dfaInvoiceMain: DfaInvoiceMain): void {
+    this._dfaInvoiceMain = dfaInvoiceMain;
+    this.cacheService.set('dfa-invoice-main', dfaInvoiceMain);
+  }
+
+  public createInvoiceMain(dfaInvoiceMain: DfaInvoiceMain): void {
+    this._dfaInvoiceMain = dfaInvoiceMain;
+    this.cacheService.set('dfa-invoice-main', dfaInvoiceMain);
+  }
+
   public setApplicationId(applicationId: string): void {
     this._applicationId = applicationId;
   }
@@ -94,6 +115,14 @@ export class DFAClaimMainDataService {
 
   public getClaimId(): string {
     return this._claimId;
+  }
+
+  public setEligibleGST(eligibleGST: boolean): void {
+    this._eligibleGST = eligibleGST;
+  }
+
+  public getEligibleGST(): boolean {
+    return this._eligibleGST;
   }
 
   public setViewOrEdit(vieworedit: string): void {
@@ -132,6 +161,15 @@ export class DFAClaimMainDataService {
       id: this._projectId,
       applicationId: this._applicationId,
       claim: this._recoveryClaim
+    };
+  }
+
+  public createDFAInvoiceDTO(): DfaInvoiceMain {
+    return {
+      id: this._projectId,
+      applicationId: this._applicationId,
+      claimId: this._claimId,
+      invoice: this._invoice
     };
   }
 }

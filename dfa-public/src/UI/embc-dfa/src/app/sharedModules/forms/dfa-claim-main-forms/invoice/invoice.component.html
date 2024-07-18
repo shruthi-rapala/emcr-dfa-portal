@@ -1,0 +1,334 @@
+<mat-card class="card-align recoveryPlan" style="border:none;" [class.mat-elevation-z0]="true">
+  <mat-card-content>
+    <form [formGroup]="invoiceForm">
+      <h1>{{addeditInvoiceText}} Invoice</h1>
+      <button type="button"
+          #tooltip="matTooltip" [hidden]="hideHelp"
+      (mouseenter)="$event.stopImmediatePropagation()"
+      (click)="tooltip.show()"
+      class="help-button"
+      matTooltipClass="tooltip-custom"
+      [matTooltip]="message || ''">
+      <span class="ques">?</span>&nbsp; HELP
+    </button>
+      <!--<mat-form-field class="example-user-input">
+        <mat-label>Tooltip message</mat-label>
+        <input style="display:none" value="test test test value" matInput [formControl]="message">
+      </mat-form-field>-->
+      <!--<button (click)="tooltip.toggle()" mat-raised-button #tooltip="matTooltip"
+        matTooltip="Info about the action"
+        matTooltipPosition="right"
+        aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
+        Action
+      </button>-->
+      <ng-container>
+        <div class="row">
+          <div class="col-md-7">
+            <div class="row">
+              <div class="col-md-12">
+                <p  style="font-size: 15px">
+                  Vendor Name<span style="color:red" >*</span>
+                </p>
+                <mat-form-field appearance="outline">
+                  <input
+                         #vendorName
+                    formControlName="vendorName"
+                    matInput
+                    required
+                    maxlength="100"/>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p  style="font-size: 15px">
+                  Invoice Number<span style="color:red" >*</span>
+                </p>
+                <mat-form-field appearance="outline" class="mat-form-round">
+                  <input
+                    id="invoiceNumber"
+                    formControlName="invoiceNumber"
+                    matInput
+                    required
+                    maxlength="100"/>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <p  style="font-size: 15px">
+                  Invoice Date<span style="color:red" >*</span>
+                </p>
+                <mat-form-field appearance="outline" >
+                  <mat-label>Invoice Date</mat-label>
+                  <input matInput
+                    (focusin)="setHelpText(1, tooltip)"
+                    [matDatepicker]="invoiceDatePicker"
+                    [readonly]="isReadOnly === true"
+                    formControlName="invoiceDate"
+                    required >
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle matSuffix [for]="invoiceDatePicker" [disabled]="isReadOnly === true"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #invoiceDatePicker [disabled]="isReadOnly === true"
+                  ></mat-datepicker>
+                  <mat-error
+                    *ngIf="
+                    invoiceForm.get('invoiceDate').invalid &&
+                    invoiceForm.get('invoiceDate').hasError('required')
+                  "
+                  >
+                    Invoice date is required</mat-error
+                  >
+                  
+                </mat-form-field>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p  style="font-size: 15px">
+                  Is the date that the goods or services were received the same as the invoice date?<span style="color:red" >*</span>
+                </p>
+                <mat-radio-group
+                  formControlName="isGoodsReceivedonInvoiceDate"
+                  class="primary-radio-group horizontal-radio-group"
+                  required
+                  aria-label="Select an option">
+                  <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group><br/>
+              </div>
+            </div>
+            <div class="row" [hidden]="(formCreationService.invoiceForm$ | async)?.value
+  .isGoodsReceivedonInvoiceDate != 'false'">
+              <p  style="font-size: 15px">
+                Select the date that the goods or services were received<span style="color:red" >*</span>
+              </p>
+              <div class="col-md-6">
+                
+                <mat-form-field appearance="outline" >
+                  <input matInput
+                    [matDatepicker]="goodsReceivedDatePicker"
+                    [readonly]="isReadOnly === true"
+                    formControlName="goodsReceivedDate"
+                    required >
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle matSuffix [for]="goodsReceivedDatePicker" [disabled]="isReadOnly === true"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #goodsReceivedDatePicker [disabled]="isReadOnly === true"
+                  ></mat-datepicker>
+                  <mat-error
+                    *ngIf="
+                    invoiceForm.get('goodsReceivedDate').invalid &&
+                    invoiceForm.get('goodsReceivedDate').hasError('required')
+                  "
+                  >
+                    Date is required</mat-error
+                  >
+    
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row" >
+              <p  style="font-size: 15px">
+                Purpose of goods or services received<span style="color:red" >*</span>
+              </p>
+              <div class="col-md-12">
+                <mat-form-field appearance="outline">
+                  <textarea [disabled]="isReadOnly" matInput
+                    formControlName="purposeOfGoodsServiceReceived"
+                    [rows]="4"
+                    required
+                    style="resize:none"
+                    maxlength="200"></textarea>
+                  <!--<mat-hint>{{ remainingLength }} characters remaining.</mat-hint>-->
+                </mat-form-field><br/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <p  style="font-size: 15px">
+                  Are you claiming only a portion or part of the total invoice amount?<span style="color:red" >*</span>
+                </p>
+                <mat-radio-group
+                  formControlName="isClaimforPartofTotalInvoice"
+                  class="primary-radio-group horizontal-radio-group"
+                  required
+                  (change)="selectDamageDates($event)"
+                  aria-label="Select an option">
+                  <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group><br/>
+              </div>
+            </div>
+
+            <div class="row" [hidden]="(formCreationService.invoiceForm$ | async)?.value
+  .isClaimforPartofTotalInvoice != 'true'" >
+              <p  style="font-size: 15px">
+                Please state why you are claiming only a portion of the total invoice<span style="color:red" >*</span>
+              </p>
+              <div class="col-md-12">
+                <mat-form-field appearance="outline">
+                  <textarea [disabled]="isReadOnly" matInput
+                    (focusin)="setHelpText(2, tooltip)"
+                    formControlName="reasonClaimingPartofTotalInvoice"
+                    [rows]="4"
+                    required
+                    style="resize:none"
+                    maxlength="200"></textarea>
+                  <!--<mat-hint>{{ remainingLength }} characters remaining.</mat-hint>-->
+                </mat-form-field><br/>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-md-5" >
+            <div class="invoice-box">
+              <div class="row">
+                <div class="col-md-12 costCurrency">
+                  <p  style="font-size: 15px; margin-bottom: 10px !important">
+                    Net invoiced being claimed (excluding taxes)<span style="color:red" >*</span>
+                  </p>
+                  <mat-form-field appearance="outline" class="mat-form-round">
+    
+                    <div class="searchDiv">
+                      <input
+                        (focusin)="setHelpText(3, tooltip)"
+                        #currencyBoxnetInvoiceBeingClaimed
+                        id="currencyBoxnetInvoiceBeingClaimed"
+                        formControlName="netInvoiceBeingClaimed"
+                        matInput
+                             (keypress)="numericOnly($event);"
+                             (keyup)="CalculateInvoice($event);"
+                        maxlength="100"/>
+                      <span class="currencyText">CA$</span>
+                    </div>
+    
+                  </mat-form-field>
+                </div>  
+              </div>
+
+              <div class="row pst-box">
+                <div class="col-md-7 aln-txt">
+                  <p  style="font-size: 15px">
+                    PST
+                  </p>
+                  
+                </div>
+                <div class="col-md-5 inputCurrency">
+                  $&nbsp;<mat-form-field appearance="outline" style="height: 30px !important">
+                    <input
+                      #PST
+                      (focusin)="setHelpText(4, tooltip)"
+                      formControlName="PST"
+                      matInput
+                      (keypress)="numericOnly($event);"
+                      (keyup)="CalculateInvoice($event);"
+                      maxlength="100"/>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-7 aln-txt">
+                  <p  style="font-size: 15px">
+                    Gross GST
+                  </p>
+                </div>
+                <div class="col-md-5 inputCurrency">
+                  $&nbsp;<mat-form-field appearance="outline" style="height: 30px !important">
+                    <input
+                            #grossGST
+                      (focusin)="setHelpText(5, tooltip)"
+                      formControlName="grossGST"
+                      matInput
+                      (keypress)="numericOnly($event);"
+                      (keyup)="CalculateInvoice($event);"
+                      maxlength="100"/>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-7 aln-txt">
+                  <p  style="font-size: 15px">
+                    <b>Actual Invoice Total</b>
+                  </p>
+                    <input
+                           #PST
+                      formControlName="actualInvoiceTotal"
+                      type="hidden"
+                      required
+                      maxlength="100"/>
+                </div>
+                <div class="col-md-5">
+                  <p class="currency-invoice" style="padding-right: 17px; padding-top: 5px;">
+                    <b>
+                    $&nbsp;{{ (formCreationService.invoiceForm$ | async)?.value
+  .actualInvoiceTotal | number }}
+                      </b>
+                  </p>
+                </div>
+              </div>
+
+              <div class="row pst-box">
+                <div class="col-md-7 aln-txt">
+                  <p  style="font-size: 15px">
+                    PST
+                  </p>
+                </div>
+                <div class="col-md-5">
+                  <p class="currency-invoice" style="padding-right: 17px;">
+                    $&nbsp;{{(formCreationService.invoiceForm$ | async)?.value
+  .PST | number }}
+                  </p>
+                </div>
+                <div class="col-md-7 aln-txt">
+                  <p  style="font-size: 15px">
+                    Eligible GST
+                  </p>
+                </div>
+                <div class="col-md-5 inputCurrency">
+                  $&nbsp;<mat-form-field appearance="outline" style="height: 30px !important">
+                    <input
+                      (focusin)="setHelpText(6, tooltip)"
+                            #eligibleGST
+                      formControlName="eligibleGST"
+                      matInput
+                      (keypress)="numericOnly($event);"
+                      (keyup)="CalculateInvoice($event);"
+                      maxlength="100"/>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-7 aln-txt">
+                  <p  style="font-size: 15px">
+                    <b>Total being Claimed</b>
+                  </p>
+                    <input
+                      (focusin)="setHelpText(7, tooltip)"
+                           #PST
+                      formControlName="totalBeingClaimed"
+                      type="hidden"
+                      required
+                      maxlength="100"/>
+                </div>
+                <div class="col-md-5">
+                  <p class="currency-invoice" style="padding-right: 17px; padding-top: 5px;">
+                    <b>
+                    $&nbsp;{{ (formCreationService.invoiceForm$ | async)?.value
+  .totalBeingClaimed | number }}
+                      </b>
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row">
+        <div class="col-md-9">
+          </div>
+        <div class="col-md-3">
+          <button class="button-s cancel" type="button" (click)="cancel()">Cancel</button>
+          <button class="button-p add-invoice" (click)="AddInvoice()">{{addeditInvoiceText}}</button>
+        </div>
+      </div>
+    </form>
+    
+  </mat-card-content>
+</mat-card>

@@ -41,6 +41,14 @@ table {
   box-shadow: none;
 }
 
+tr.mat-header-row {
+  background: #38598A 0% 0% no-repeat !important;
+}
+
+th.mat-header-cell {
+    color: white;
+}
+
 .mat-table {
   overflow: auto;
   width: 100%;
@@ -306,13 +314,18 @@ i.material-icons {
   cursor: pointer;
 }
 
-.no-project {
+.no-invoices{
   background: #F6F9FC 0% 0% no-repeat padding-box;
-  padding-bottom: 50px;
-  padding-top: 50px;
+  padding-bottom: 80px;
+  padding-top: 80px;
   border: 1px dashed grey;
   display: flex;
   justify-content: center;
+}
+
+.no-invoices-text {
+  font-size: 20px;
+  color: #606060;
 }
 
 .labelStyle {

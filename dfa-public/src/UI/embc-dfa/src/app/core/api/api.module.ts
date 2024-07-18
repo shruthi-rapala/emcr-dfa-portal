@@ -12,6 +12,7 @@ import { ConfigurationService } from './services/configuration.service';
 import { DamagedRoomService } from './services/damaged-room.service';
 import { EligibilityService } from './services/eligibility.service';
 import { FullTimeOccupantService } from './services/full-time-occupant.service';
+import { InvoiceService } from './services/invoice.service';
 import { OtherContactService } from './services/other-contact.service';
 import { ProfileService } from './services/profile.service';
 import { ProjectService } from './services/project.service';
@@ -33,6 +34,7 @@ import { SecondaryApplicantService } from './services/secondary-applicant.servic
     DamagedRoomService,
     EligibilityService,
     FullTimeOccupantService,
+    InvoiceService,
     OtherContactService,
     ProfileService,
     ProjectService,

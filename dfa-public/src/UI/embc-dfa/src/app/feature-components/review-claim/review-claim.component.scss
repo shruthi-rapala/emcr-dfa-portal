@@ -45,3 +45,17 @@
 .card-heading {
   padding-top: 15px;
 }
+
+.example-element-row {
+  height: 51px !important;
+  border: 1px solid;
+  border-color: rgb(204, 204, 204);
+}
+
+tr.mat-header-row {
+  background: #38598A 0% 0% no-repeat !important;
+}
+
+th.mat-header-cell {
+  color: white;
+}

@@ -5,6 +5,7 @@ import { DfaApplicationMain, FullTimeOccupant, SecondaryApplicant, OtherContact,
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { DfaClaimMain } from '../../core/model/dfa-claim-main.model';
 import { DFAClaimMainDataService } from './dfa-claim-main-data.service';
+import { DfaInvoiceMain } from '../../core/model/dfa-invoice.model';
 
 @Injectable({ providedIn: 'root' })
 export class DFAClaimMainMappingService {
@@ -13,28 +14,52 @@ export class DFAClaimMainMappingService {
     private dfaClaimMainDataService: DFAClaimMainDataService,
   ) { }
 
-  mapDFAProjectMain(dfaClaimMain: DfaClaimMain): void {
+  mapDFAClaimMain(dfaClaimMain: DfaClaimMain): void {
     this.dfaClaimMainDataService.setDFAClaimMain(dfaClaimMain);
-    this.setExistingDFAProjectMain(dfaClaimMain);
+    this.setExistingDFAClaimMain(dfaClaimMain);
   }
 
-  setExistingDFAProjectMain(dfaClaimMain: DfaClaimMain): void {
-    this.setProjectDetails(dfaClaimMain);
+  setExistingDFAClaimMain(dfaClaimMain: DfaClaimMain): void {
+    this.setClaimDetails(dfaClaimMain);
   }
 
-  private setProjectDetails(dfaClaimMain: DfaClaimMain): void {
+  private setClaimDetails(dfaClaimMain: DfaClaimMain): void {
     let formGroup: UntypedFormGroup;
     this.formCreationService
-      .getRecoveryPlanForm()
+      .getRecoveryClaimForm()
       .pipe(first())
-      .subscribe((project) => {
-        project.setValue({
+      .subscribe((claim) => {
+        claim.setValue({
           ...dfaClaimMain.claim,
           //isdamagedDateSameAsApplication: dfaClaimMain.project.isdamagedDateSameAsApplication === true ? 'true' : (dfaClaimMain.claim. === false ? 'false' : null),
         });
-        formGroup = project;
+        formGroup = claim;
       });
-    this.dfaClaimMainDataService.recoveryPlan = dfaClaimMain.claim;
+    this.dfaClaimMainDataService.recoveryClaim = dfaClaimMain.claim;
+  }
+
+  mapDFAInvoiceMain(dfaInvoiceMain: DfaInvoiceMain): void {
+    this.dfaClaimMainDataService.setDFAInvoiceMain(dfaInvoiceMain);
+    this.setExistingDFAInvoiceMain(dfaInvoiceMain);
+  }
+
+  setExistingDFAInvoiceMain(dfaInvoiceMain: DfaInvoiceMain): void {
+    this.setInvoiceDetails(dfaInvoiceMain);
+  }
+
+  private setInvoiceDetails(dfaInvoiceMain: DfaInvoiceMain): void {
+    let formGroup: UntypedFormGroup;
+    this.formCreationService
+      .getInvoiceForm()
+      .pipe(first())
+      .subscribe((invoice) => {
+        invoice.setValue({
+          ...dfaInvoiceMain.invoice
+          //isdamagedDateSameAsApplication: dfaClaimMain.project.isdamagedDateSameAsApplication === true ? 'true' : (dfaClaimMain.claim. === false ? 'false' : null),
+        });
+        formGroup = invoice;
+      });
+    this.dfaClaimMainDataService.invoice = dfaInvoiceMain.invoice;
   }
 
 }

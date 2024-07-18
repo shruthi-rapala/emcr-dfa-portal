@@ -225,7 +225,7 @@ export class DFAClaimMainComponent
         this.form.get('projectNumber').updateValueAndValidity();
         this.setFormData(component);
         let project = this.dfaClaimMainDataService.createDFAClaimMainDTO();
-        this.dfaClaimMainMapping.mapDFAProjectMain(project);
+        this.dfaClaimMainMapping.mapDFAClaimMain(project);
         //this.form$.unsubscribe();
         //stepper.next();
         //this.form.markAllAsTouched();
@@ -266,7 +266,7 @@ export class DFAClaimMainComponent
 
   saveAsDraft(): void {
     this.setFormData(this.steps[this.dfaClaimMainStepper.selectedIndex]?.component.toString());
-    this.dfaClaimMainDataService.recoveryPlan.claimStatus = ProjectStageOptionSet.DRAFT;
+    this.dfaClaimMainDataService.recoveryClaim.claimStatus = ProjectStageOptionSet.DRAFT;
     let project = this.dfaClaimMainDataService.createDFAClaimMainDTO();
 
     this.dfaClaimMainService.upsertClaim(project).subscribe(x => {
@@ -378,7 +378,7 @@ export class DFAClaimMainComponent
           //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
           //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           this.setFormData(this.steps[this.dfaClaimMainStepper.selectedIndex]?.component.toString());
-          this.dfaClaimMainDataService.recoveryPlan.claimStatus = ProjectStageOptionSet.SUBMIT;
+          this.dfaClaimMainDataService.recoveryClaim.claimStatus = ProjectStageOptionSet.SUBMIT;
 
           let project = this.dfaClaimMainDataService.createDFAClaimMainDTO();
 
