@@ -3,7 +3,8 @@ import { TabModel } from 'src/app/core/model/tab.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { ApplicationService as Service } from '../../core/api/services/application.service';
-import { ProfileService } from '../profile/profile.service';
+import { ProfileService } from 'src/app/core/api/services';
+import { ContactService } from 'src/app/core/api/services';
 import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
 import { tap } from 'rxjs/internal/operators/tap';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
@@ -33,6 +34,7 @@ export class DashboardComponent implements OnInit {
   sixtyOneDaysAgo: number = 0;
   tabs: DashTabModel[];
   openDisasterEvents: DisasterEvent[];
+  businessName = "";
 
   constructor(
     private router: Router,
@@ -40,7 +42,8 @@ export class DashboardComponent implements OnInit {
     public formCreationService: FormCreationService,
     private appService: Service,
     private eligibilityService: EligibilityService,
-    private profService: ProfileService,
+    private profileService: ProfileService,
+    private contactService: ContactService,
     private profileDataService: ProfileDataService,
     private appSessionService: AppSessionService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
@@ -52,7 +55,19 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
     this.isLoading = true;
-    this.profService.getProfile();
+    
+    // this.profileService.profileGetProfile().subscribe(profile => {
+    //   console.log('subscribed to profileGetProfile: ' + profile.id);
+
+    //   });
+    
+      this.contactService.contactGetDashboardContactInfo().subscribe(contact => {
+        console.log('subscribed to profileGetProfile: ' + contact.userId);
+  
+        this.businessName = contact.legalName;
+
+        });
+  
     this.eventService.eligibilityGetEvents().subscribe({
       next: (count: number) => {
         this.hasActiveEvents = count > 0;
@@ -61,25 +76,27 @@ export class DashboardComponent implements OnInit {
         document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
-    //alert(this.appSessionService.appNumber);
+
+    // TODO: EMCRI-440 waynezen debug remove 
+    console.log('dfa-dashboard component!');
+
     //this.currentApplicationsCount = this.appSessionService.appNumber;
+
     this.appSessionService.currentApplicationsCount.subscribe((n: number) => {
       this.currentApplicationsCount = n;
       this.tabs[0].count = n ? n.toString() : "0";
     });
     this.appSessionService.pastApplicationsCount.subscribe((n: number) => {
         this.pastApplicationsCount = n;
-        this.tabs[2].count = n ? n.toString() : "0";
+        this.tabs[1].count = n ? n.toString() : "0";
     });
-
-    
 
     this.appService.applicationGetDfaApplications().subscribe({
       next: (lstData) => {
         if (lstData != null) {
           this.countAppData(lstData);
-          this.tabs[0].count =this.currentApplicationsCount.toString();
-          this.tabs[2].count = this.pastApplicationsCount.toString();
+          this.tabs[0].count = this.currentApplicationsCount.toString();
+          this.tabs[1].count = this.pastApplicationsCount.toString();
         }
       },
       error: (error) => {
@@ -88,16 +105,24 @@ export class DashboardComponent implements OnInit {
 
     this.eligibilityService.eligibilityGetEvents().subscribe(eventsCount => {
       this.eventsCount = eventsCount.toString();
-      this.tabs[1].count = eventsCount.toString();
+      this.tabs[2].count = eventsCount.toString();
     })
+
 
     this.tabs = [
     {
-      label: 'Current Applications',
+      label: 'Open Applications',
       route: 'current',
       activeImage: '/assets/images/past-evac-active.svg',
       inactiveImage: '/assets/images/past-evac.svg',
       count: this.currentApplicationsCount.toString()
+    },
+    {
+      label: 'Closed Applications',
+      route: 'past',
+      activeImage: '/assets/images/past-evac-active.svg',
+      inactiveImage: '/assets/images/past-evac.svg',
+      count: this.pastApplicationsCount.toString()
     },
     {
       label: 'DFA Events',
@@ -106,24 +131,11 @@ export class DashboardComponent implements OnInit {
       inactiveImage: '/assets/images/curr-evac.svg',
       count: this.eventsCount
     },
-    {
-      label: 'Past Applications',
-      route: 'past',
-      activeImage: '/assets/images/past-evac-active.svg',
-      inactiveImage: '/assets/images/past-evac.svg',
-      count: this.pastApplicationsCount.toString()
-    },
-    {
-      label: 'Profile',
-      route: 'profile',
-      activeImage: '/assets/images/profile-active.svg',
-      inactiveImage: '/assets/images/profile.svg',
-      count: ""
-    }
   ];
 
   this.isLoading = false;
   }
+
 
   countAppData(lstApp: Object): void {
     var res = JSON.parse(JSON.stringify(lstApp));
@@ -156,3 +168,4 @@ export interface DashTabModel {
   inactiveImage?: string | null;
   count: string;
 }
+

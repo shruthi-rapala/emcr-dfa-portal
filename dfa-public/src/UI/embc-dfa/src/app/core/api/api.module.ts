@@ -8,6 +8,7 @@ import { ApplicationService } from './services/application.service';
 import { AttachmentService } from './services/attachment.service';
 import { CleanUpLogItemService } from './services/clean-up-log-item.service';
 import { ConfigurationService } from './services/configuration.service';
+import { ContactService } from './services/contact.service';
 import { DamagedRoomService } from './services/damaged-room.service';
 import { EligibilityService } from './services/eligibility.service';
 import { FullTimeOccupantService } from './services/full-time-occupant.service';
@@ -28,6 +29,7 @@ import { SecondaryApplicantService } from './services/secondary-applicant.servic
     AttachmentService,
     CleanUpLogItemService,
     ConfigurationService,
+    ContactService,
     DamagedRoomService,
     EligibilityService,
     FullTimeOccupantService,

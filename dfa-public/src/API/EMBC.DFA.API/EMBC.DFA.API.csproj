@@ -44,10 +44,13 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="System.ServiceModel.Http" Version="4.6.0" />
+        <PackageReference Include="System.ServiceModel.Security" Version="4.6.0" />
         <PackageReference Include="Xrm.Tools.CRMWebAPI" Version="1.0.25" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\EMBC.BCeID\EMBC.Gov.BCeID.csproj" />
       <ProjectReference Include="..\EMBC.ESS.Shared.Contracts\EMBC.ESS.Shared.Contracts.csproj" />
       <ProjectReference Include="..\EMBC.Utilities.Caching\EMBC.Utilities.Caching.csproj" />
       <ProjectReference Include="..\EMBC.Utilities.Hosting\EMBC.Utilities.Hosting.csproj" />

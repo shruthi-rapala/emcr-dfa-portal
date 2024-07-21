@@ -28,7 +28,8 @@ export class LoginPageComponent implements OnInit {
       ({ isAuthenticated}) => {
         if (isAuthenticated === true)
         {
-          this.router.navigate(['/dfa-dashboard']);
+          // this.router.navigate(['/dfa-dashboard']);
+          this.router.navigate(['/dfa-collection-notice']);
         }
         else
         {

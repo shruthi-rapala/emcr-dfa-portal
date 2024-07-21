@@ -3,25 +3,35 @@
     <div class="row">
       <div class="col-md-12">
         <span class="page-heading">
-          100 Mile Test community
-          </span> <br />
+          {{this.businessName}}
+        </span>
       </div>
     </div>
   </div>
-  <div class="col-12 content-container" >
+  <br>
+  <div class="col-12 content-container">
     <div class="row">
       <div class="col-md-6">
-        <span class="page-subheadbold">This page is for Indigenous communities or local governments.</span><br />
-            If you are a homeowner, residential tenant, small business, farm, or charitable organization your process is different: <a target="_blank" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">DFA process for individuals, small businesses, farms, and charitable organizations.</a>
+  
+        <div class="important-message">
+          <div class="align-w-icon">
+            <div class="material-icons dashbd-infoIconStyle">info</div>
+            <span class="page-subheadbold">This page is for Indigenous Governing Body and Local Government.</span>
+          </div>
+          &nbsp;&nbsp; If you are a homeowner, residential tenant, small business, farmer, or a charitable organization your process is
+          different:
+          <a target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">DFA
+            process for individuals, small businesses, farms, and charitable organizations.</a>
+        </div>
       </div>
-      <div class="col-md-6"></div>
+      <!-- <div class="col-md-6"></div> -->
       <div class="col-md-6">
         
         <button *ngIf="hasActiveEvents == true"
               class="button-p notice-button left-align"
               mat-button
-              (click)="navigateToDFAApplicationCreate()"
-            >
+              (click)="navigateToDFAApplicationCreate()">
               Create New Application
         </button>
 
@@ -32,14 +42,12 @@
             <a target="_blank" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">Financial assistance in a disaster</a>
             for more information
           </b>
-       </div>
-         
-        
+       </div>        
       </div>
       <div class="col-md-6"></div>
     </div>
     <div class="container" style="padding-bottom: 100px; padding-top: 30px;">
-      <!--<app-alert></app-alert>-->
+      <!-- <app-alert></app-alert> -->
 
       <nav mat-tab-nav-bar dynamicHeight>
         <a
@@ -61,18 +69,19 @@
             height="15"
             width="15"
           />
-          <!--&nbsp;&nbsp; {{ tabItem.label }}-->
+
           &nbsp;&nbsp; {{ tabItem.label != "Profile" ? tabItem.label + " (" + tabItem.count + ")" : tabItem.label }}
         </a>
       </nav>
-      <router-outlet></router-outlet>
-      <app-loader
+      <!-- <router-outlet></router-outlet> -->
+      <!-- <app-loader
         class="spinner"
         [showLoader]="isLoading"
         strokeWidth="10"
         diameter="50"
       >
-      </app-loader>
+      </app-loader> -->
+      
 </div>
   </div>
 

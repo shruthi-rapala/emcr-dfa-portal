@@ -71,6 +71,14 @@ const routes: Routes = [
       ).then((m) => m.DFAPrescreeningModule),
   },
   {
+    path: 'dfa-collection-notice',
+    loadChildren: () =>
+      import(
+        './feature-components/collection-notice/collection-notice.module'
+      ).then((m) => m.CollectionNoticeModule),
+    canActivate: [AutoLoginPartialRoutesGuard]
+  },
+  {
     path: 'dfa-dashboard',
     loadChildren: () =>
       import(

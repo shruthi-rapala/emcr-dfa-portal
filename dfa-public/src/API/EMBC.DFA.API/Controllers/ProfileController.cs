@@ -264,6 +264,8 @@ namespace EMBC.DFA.API.Controllers
         public string IsMailingAddressSameAsPrimaryAddress { get; set; }
 
         public string? BCServiceCardId { get; set; }
+        // 2024-07-17 EMCRI-440 waynezen; added
+        public string BCeIDUserGuid { get; set; }
 
         public string? lastUpdatedDateBCSC { get; set; }
         public bool? isMailingAddressVerified { get; set; }

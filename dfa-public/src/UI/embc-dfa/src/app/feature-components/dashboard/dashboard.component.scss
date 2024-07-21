@@ -75,3 +75,20 @@
   top: 50%;
   left: 50%;
 }
+
+.dashbd-infoIconStyle {
+  font-size: 20px;
+  color: mediumblue;
+}
+
+.important-message {
+  border: 2px solid mediumblue;
+  border-radius: 20px;
+  background-color: #d4e9f1;
+  padding: 10px;
+}
+
+.align-w-icon {
+  display: flex;
+  align-items: center;
+}

@@ -28,7 +28,8 @@ export class CollectionNoticeComponent implements OnInit {
    * navigates to the next page
    */
   submitNotice(): void {
-    const navigationPath = '/' + this.currentFlow + '/create-profile';
-    this.router.navigate([navigationPath]);
+
+    // 2024-07-20 EMCRI-301 waynezen; next stop: the dashboard page!
+    this.router.navigate(['/dfa-dashboard']);
   }
 }

@@ -4,20 +4,10 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Linq;
-using EMBC.DFA.API;
-using EMBC.DFA.API.ConfigurationModule.Models;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
-using Google.Protobuf.WellKnownTypes;
-using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualBasic;
-using YamlDotNet.Core.Tokens;
-using static StackExchange.Redis.Role;
-using Enum = System.Enum;
+using bceid = EMBC.Gov.BCeID;
 
 namespace EMBC.DFA.API.Mappers
 {
@@ -507,8 +497,10 @@ namespace EMBC.DFA.API.Mappers
             //.ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto));
 
             // 2024-07-16 EMCRI-440 waynezen
-            CreateMap<BceidUserData, Profile>()
-                .ForMember(d => d.ContactDetails.Email, opts => opts.MapFrom(s => s.emailaddress))
+            CreateMap<BceidUserData, bceid.BCeIDBusiness>()
+                .ForMember(d => d.userId, opts => opts.MapFrom(s => s.bceid_username))
+                .ForMember(d => d.legalName, opts => opts.MapFrom(s => s.bceid_business_name))
+                .ForMember(d => d.contactEmail, opts => opts.MapFrom(s => s.emailaddress))
                 ;
         }
 
