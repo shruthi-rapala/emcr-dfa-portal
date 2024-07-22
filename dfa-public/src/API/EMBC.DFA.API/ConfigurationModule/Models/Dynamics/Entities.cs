@@ -153,6 +153,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
     public class dfa_appapplicationmain_params
     {
+        public int? dfa_applicanttype { get; set; }
         public int? dfa_causeofdamageflood2 { get; set; } // optional boolean
         public int? dfa_causeofdamagestorm2 { get; set; } // optoinal boolean
         public int? dfa_receiveguidanceassessingyourinfra { get; set; } // optoinal boolean
@@ -384,7 +385,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class SubmissionEntity
     {
         public IEnumerable<AttachmentEntity> documentCollection { get; set; }
-        public string dfa_appapplicationid { get; set; }
+        public string dfa_projectid { get; set; }
         public string dfa_description { get; set; } // pass in description
         public string dfa_modifiedby { get; set; } // pass in modified by
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
@@ -423,6 +424,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_projectbusinessprocessstages { get; set; }
         public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
         public int? dfa_estimatedcost { get; set; }
+        public string? dfa_projectbusinessprocesssubstages { get; set; }
         public bool? dfa_dateofdamagesameasapplication { get; set; }
     }
 
@@ -601,6 +603,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_causeofdamageother2 { get; set; }
         public int? dfa_receiveguidanceassessingyourinfra { get; set; }
         public string? dfa_causeofdamageloss { get; set; }
+        public bool? dfa_eligiblegst { get; set; }
     }
 
     public class dfa_event

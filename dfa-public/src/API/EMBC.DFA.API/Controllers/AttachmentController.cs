@@ -48,6 +48,23 @@ namespace EMBC.DFA.API.Controllers
         [RequestSizeLimit(36700160)]
         public async Task<ActionResult<string>> UpsertDeleteAttachment(FileUpload fileUpload)
         {
+            var dfa_appcontact = await handler.HandleGetUser(currentUserId);
+
+            return Ok(null);
+        }
+
+        /// <summary>
+        /// Create / update / delete a file attachment
+        /// </summary>
+        /// <param name="fileUpload">The attachment information</param>
+        /// <returns>file upload id</returns>
+        [HttpPost("projectdocument")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [RequestSizeLimit(36700160)]
+        public async Task<ActionResult<string>> UpsertDeleteProjectAttachment(FileUpload fileUpload)
+        {
             if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
             if (fileUpload.id == null && fileUpload.deleteFlag == true) return BadRequest("FileUpload id cannot be empty on delete");
 
@@ -55,28 +72,28 @@ namespace EMBC.DFA.API.Controllers
                 (fileUpload.project.Id == Guid.Empty || fileUpload.project.Id.ToString() == string.Empty))
             {
                 var dfa_appcontact = await handler.HandleGetUser(currentUserId);
-                //var mappedProject = mapper.Map<dfa_project_params>(fileUpload.project);
-                //var result = await handler.HandleProjectCreateUpdate(mappedProject);
+                var mappedProject = mapper.Map<dfa_project_params>(fileUpload.project);
+                var result = await handler.HandleProjectCreateUpdate(mappedProject);
             }
 
-            //if (fileUpload.deleteFlag == true)
-            //{
-            //    var parms = new dfa_DFAActionDeleteDocuments_parms();
-            //    if (fileUpload.id != null) parms.AppDocID = (Guid)fileUpload.id;
-            //    var result = await handler.DeleteFileUploadAsync(parms);
-            //    return Ok(result);
-            //}
-            //else
-            //{
-            //    var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
-            //    var submissionEntity = mapper.Map<SubmissionEntity>(fileUpload);
-            //    submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
-            //    submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
-            //    var result = await handler.HandleFileUploadAsync(submissionEntity);
-            //    return Ok(result);
-            //}
+            if (fileUpload.deleteFlag == true)
+            {
+                var parms = new dfa_DFAActionDeleteDocuments_parms();
+                if (fileUpload.id != null) parms.AppDocID = (Guid)fileUpload.id;
+                var result = await handler.DeleteFileUploadAsync(parms);
+                return Ok(result);
+            }
+            else
+            {
+                var mappedFileUpload = mapper.Map<AttachmentEntity>(fileUpload);
+                var submissionEntity = mapper.Map<SubmissionEntity>(fileUpload);
+                submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
+                submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
+                var result = await handler.HandleFileUploadAsync(submissionEntity);
+                return Ok(result);
+            }
 
-            return Ok(null);
+            //return Ok(null);
         }
 
         /// <summary>

@@ -111,9 +111,10 @@
         <div class="col-md-3" style="display: flex; justify-content: flex-end">
           <button
             class="application-button"
-            type="button"
-            *ngIf="applItem.stage == 'Approved'"
-          >
+            (click)="ViewClaims(applItem)"
+            type="button" >
+            <!--*ngIf="applItem.stage == 'Approved'"-->
+          
             Submit Claims
           </button>
           <button
@@ -167,7 +168,7 @@
           <span id="spnCauseOfDamage">{{ applItem.deadline18Month }}</span>
         </div>
       </div>
-      <div style="width: 90%;min-width: 725px;">
+      <div style="width: 90%; min-width: 725px; display: flex; flex-direction: column;">
         <div class="col-md-3" style="margin-top: 20px;">
           <span *ngIf="applItem.isErrorInStatus == true" style="color: red;">Error in displaying status<br /></span>
         </div>

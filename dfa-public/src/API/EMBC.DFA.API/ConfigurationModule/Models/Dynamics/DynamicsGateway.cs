@@ -421,7 +421,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon",
                         "dfa_applicationstatusportal", "dfa_causeofdamageflood2", "dfa_causeofdamagestorm2",
                         "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageloss",
-                        "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto"
+                        "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto",
+                        "dfa_eligiblegst"
                     },
                     Filter = $"dfa_appapplicationid eq {appId}"
                 });
@@ -453,7 +454,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_causeofdamageother2 = objApp.dfa_causeofdamageother2,
                                    dfa_causeofdamagestorm2 = objApp.dfa_causeofdamagestorm2,
                                    dfa_causeofdamagewildfire2 = objApp.dfa_causeofdamagewildfire2,
-                                   dfa_receiveguidanceassessingyourinfra = objApp.dfa_receiveguidanceassessingyourinfra
+                                   dfa_receiveguidanceassessingyourinfra = objApp.dfa_receiveguidanceassessingyourinfra,
+                                   dfa_eligiblegst = objApp.dfa_eligiblegst
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
                 return lstApps.FirstOrDefault();
@@ -946,6 +948,42 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstApps;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+
+        public async Task<dfa_project> GetProjectDetailsAsync(string projectId)
+        {
+            try
+            {
+                var list = await api.GetList<dfa_project>("dfa_projects", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_projectnumber", "dfa_projectname",
+                        "dfa_sitelocation",
+                        "dfa_estimatedcompletiondateofproject",
+                        "dfa_approvedcost", "dfa_18monthdeadline", "statuscode",
+                        "dfa_projectid", "createdon", "dfa_projectbusinessprocessstages",
+                        "dfa_projectbusinessprocesssubstages"
+                    },
+                    Filter = $"dfa_projectid eq {projectId}"
+                });
+
+                var lstApps = (from objApp in list.List
+                               select new dfa_project
+                               {
+                                   dfa_projectid = objApp.dfa_projectid,
+                                   dfa_projectnumber = objApp.dfa_projectnumber,
+                                   dfa_projectname = objApp.dfa_projectname,
+                                   dfa_sitelocation = objApp.dfa_sitelocation,
+                                   dfa_18monthdeadline = objApp.dfa_18monthdeadline,
+                               }).AsEnumerable().OrderByDescending(m => m.createdon);
+
+                return lstApps.FirstOrDefault();
             }
             catch (System.Exception ex)
             {

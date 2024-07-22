@@ -209,4 +209,66 @@ export class ProjectService extends BaseService {
     );
   }
 
+  /**
+   * Path part for operation projectGetProjectDetailsForClaim
+   */
+  static readonly ProjectGetProjectDetailsForClaimPath = '/api/projects/dfaprojectbyID';
+
+  /**
+   * get dfa project details.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `projectGetProjectDetailsForClaim()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  projectGetProjectDetailsForClaim$Response(params?: {
+
+    /**
+     * The project Id.
+     */
+    projectId?: string;
+  }): Observable<StrictHttpResponse<CurrentProject>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ProjectService.ProjectGetProjectDetailsForClaimPath, 'get');
+    if (params) {
+      rb.query('projectId', params.projectId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<CurrentProject>;
+      })
+    );
+  }
+
+  /**
+   * get dfa project details.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `projectGetProjectDetailsForClaim$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  projectGetProjectDetailsForClaim(params?: {
+
+    /**
+     * The project Id.
+     */
+    projectId?: string;
+  }): Observable<CurrentProject> {
+
+    return this.projectGetProjectDetailsForClaim$Response(params).pipe(
+      map((r: StrictHttpResponse<CurrentProject>) => r.body as CurrentProject)
+    );
+  }
+
 }

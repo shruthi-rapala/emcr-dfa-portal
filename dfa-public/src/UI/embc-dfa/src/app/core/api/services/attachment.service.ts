@@ -85,6 +85,68 @@ export class AttachmentService extends BaseService {
   }
 
   /**
+   * Path part for operation attachmentUpsertDeleteProjectAttachment
+   */
+  static readonly AttachmentUpsertDeleteProjectAttachmentPath = '/api/attachments/projectdocument';
+
+  /**
+   * Create / update / delete a file attachment.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `attachmentUpsertDeleteProjectAttachment()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  attachmentUpsertDeleteProjectAttachment$Response(params: {
+
+    /**
+     * The attachment information
+     */
+    body: FileUpload
+  }): Observable<StrictHttpResponse<string>> {
+
+    const rb = new RequestBuilder(this.rootUrl, AttachmentService.AttachmentUpsertDeleteProjectAttachmentPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
+  }
+
+  /**
+   * Create / update / delete a file attachment.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `attachmentUpsertDeleteProjectAttachment$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  attachmentUpsertDeleteProjectAttachment(params: {
+
+    /**
+     * The attachment information
+     */
+    body: FileUpload
+  }): Observable<string> {
+
+    return this.attachmentUpsertDeleteProjectAttachment$Response(params).pipe(
+      map((r: StrictHttpResponse<string>) => r.body as string)
+    );
+  }
+
+  /**
    * Path part for operation attachmentGetAttachments
    */
   static readonly AttachmentGetAttachmentsPath = '/api/attachments/byProjectIdId';

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -163,6 +164,7 @@ namespace EMBC.DFA.API.Mappers
 
             CreateMap<DFAApplicationMain, dfa_appapplicationmain_params>()
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => Convert.ToInt32(ApplicantTypeOptionSet.GovernmentBody)))
                 .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.propertyDamage.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.propertyDamage.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
@@ -332,7 +334,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
             CreateMap<FileUpload, SubmissionEntity>()
-                .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.projectId))
+                .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => "0c4a691d-9835-ef11-b850-00505683fbf4")) // s.projectId
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
                 .ForMember(d => d.dfa_requireddocumenttype, opts => opts.MapFrom(s => s.requiredDocumentType)) // TODO map required file type
@@ -370,6 +372,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 != null && s.dfa_causeofdamagelandslide2 == (int?)YesNoOptionSet.Yes ? true : false))
                 .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 != null && s.dfa_causeofdamageother2 == (int?)YesNoOptionSet.Yes ? true : false))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
+                .ForMember(d => d.eligibleGST, opts => opts.MapFrom(s => s.dfa_eligiblegst))
                 .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
@@ -446,6 +449,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_applicationid, opts => opts.MapFrom(s => s.ApplicationId))
                 .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => s.Id))
                 .ForMember(d => d.dfa_projectbusinessprocessstages, opts => opts.MapFrom(s => s.Project.projectStatus == null ? Convert.ToInt32(ProjectStages.Draft) : Convert.ToInt32(s.Project.projectStatus)))
+                .ForMember(d => d.dfa_projectbusinessprocesssubstages, opts => opts.MapFrom(s => s.Project.projectStatus != null && s.Project.projectStatus.Value == ProjectStageOptionSet.SUBMIT ? Convert.ToInt32(ProjectSubStages.Pending) : (int?)null))
                 //.ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_projectnumber, opts => opts.MapFrom(s => s.Project.projectNumber))
                 .ForMember(d => d.dfa_dateofdamagesameasapplication, opts => opts.MapFrom(s => s.Project.isdamagedDateSameAsApplication))

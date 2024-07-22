@@ -64,6 +64,22 @@ const routes: Routes = [
     canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
+    path: 'dfa-project/:id/claims',
+    loadChildren: () =>
+      import(
+        './feature-components/dfa-claim-dashboard/dfa-claim-dashboard.module'
+      ).then((m) => m.DFAClaimModule),
+    canActivate: [AuthGuard]
+  },
+  //{
+  //  path: 'dfa-claim/invoices',
+  //  loadChildren: () =>
+  //    import(
+  //      './sharedModules/forms/dfa-claim-main-forms/dfa-invoice-dashboard/dfa-invoice-dashboard.module'
+  //    ).then((m) => m.DFAInvoiceModule),
+  //  canActivate: [AuthGuard]
+  //},
+  {
     path: 'dfa-prescreening',
     loadChildren: () =>
       import(
@@ -93,6 +109,22 @@ const routes: Routes = [
         './feature-components/dfa-project-main/dfa-project-main.module'
       ).then((m) => m.DFAProjectMainModule),
     canActivate: [AutoLoginPartialRoutesGuard]
+  },
+  {
+    path: 'dfa-claim-main',
+    loadChildren: () =>
+      import(
+        './feature-components/dfa-claim-main/dfa-claim-main.module'
+      ).then((m) => m.DFAClaimMainModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'dfa-claim-main/:id',
+    loadChildren: () =>
+      import(
+        './feature-components/dfa-claim-main/dfa-claim-main.module'
+      ).then((m) => m.DFAClaimMainModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'invite-error',

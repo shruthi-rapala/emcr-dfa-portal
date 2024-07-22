@@ -25,6 +25,7 @@ import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-
 import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
+import { DFAApplicationSubmissionMsgDialogComponent } from '../../core/components/dialog-components/dfa-application-submission-msg-dialog/dfa-application-submission-msg.component';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -338,7 +339,8 @@ export class DFAApplicationMainComponent
             this.dfaApplicationMainDataService.isSubmitted = true;
             this.dfaApplicationMainDataService.setViewOrEdit('view');
             this.vieworedit = 'view';
-            this.returnToDashboard();
+            //this.returnToDashboard();
+            this.MessageAfterSubmission();
           },
           error => {
             console.error(error);
@@ -367,6 +369,22 @@ export class DFAApplicationMainComponent
         //if (result === 'confirm') {
 
         //}
+      });
+  }
+
+  MessageAfterSubmission(): void {
+    this.dialog
+      .open(DFAApplicationSubmissionMsgDialogComponent, {
+        data: {
+          content: globalConst.notifyBCSCAddressChangeBody
+        },
+        height: '700px',
+        width: '1000px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        this.BackToDashboard();
       });
   }
 }
