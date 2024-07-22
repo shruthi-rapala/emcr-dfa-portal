@@ -56,16 +56,10 @@ export class DashboardComponent implements OnInit {
     this.currentFlow = this.route.snapshot.data.flow;
     this.isLoading = true;
     
-    // this.profileService.profileGetProfile().subscribe(profile => {
-    //   console.log('subscribed to profileGetProfile: ' + profile.id);
-
-    //   });
-    
+      // 2024-07-22 EMCRI-440 waynezen; use new ContactService to get Business Name from Keycloak access token
       this.contactService.contactGetDashboardContactInfo().subscribe(contact => {
-        console.log('subscribed to profileGetProfile: ' + contact.userId);
-  
+        
         this.businessName = contact.legalName;
-
         });
   
     this.eventService.eligibilityGetEvents().subscribe({
