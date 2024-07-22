@@ -1,4 +1,4 @@
-﻿
+
 
 <!DOCTYPE html>
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -642,7 +642,7 @@ a:hover {
 
     .fontweight90 {
         font-weight: bold;
-		text-align: center;
+        text-align: center;
     }
 }
 
@@ -656,7 +656,7 @@ a:hover {
 		return response.json();
 	}).then(data => {
 
-		if (data > 0) {
+		if (data == true) {
 			document.getElementById('secAreEvacuated').style.display = 'block';
 		}
 		else {
@@ -692,7 +692,6 @@ a:hover {
 				</div>
 			</div>
 		</section>
-
 		<section id="secAreEvacuated" class="are-evacuated"  style="display:none;">
 			<div class="container --are-evacuated-cols">
 				<div class="are-evacuated-description">
@@ -715,8 +714,8 @@ a:hover {
 							</td>
 						</tr>
 					</table>
-
-					<p class="fontweight90">Applications must be submitted within 90 days of the disaster being declared eligible.</p>
+					
+					<p class="fontweight90">Applications must be submitted within 90 days of the disaster being declared eligible.</pclass="fontweight90">
 				</div>
 				<!--<div id="divCheckEligibilityButton" class="are-evacuated-registration center">-->
 					<!--<a class="btn btn--dark-blue btn--strong" href="">Check Eligible Events</a>-->
