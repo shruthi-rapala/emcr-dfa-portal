@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, Inject } from '@angular/core';
 import { DialogContent } from 'src/app/core/model/dialog-content.model';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProfileService } from 'src/app/core/api/services';
 
 @Component({

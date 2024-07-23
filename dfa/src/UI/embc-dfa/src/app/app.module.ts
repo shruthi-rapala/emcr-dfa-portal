@@ -21,9 +21,9 @@ import { ButtonsModule } from "@progress/kendo-angular-buttons";
 import { ICON_SETTINGS } from "@progress/kendo-angular-icons";
 import { MatIconModule } from '@angular/material/icon';
 import { ScriptService } from "./core/services/scriptServices";
-import { MAT_LEGACY_AUTOCOMPLETE_SCROLL_STRATEGY as MAT_AUTOCOMPLETE_SCROLL_STRATEGY } from '@angular/material/legacy-autocomplete';
-import { MAT_LEGACY_SELECT_SCROLL_STRATEGY_PROVIDER as MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/legacy-select';
-import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY } from '@angular/material/autocomplete';
+import { MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [AppComponent, OutageBannerComponent, OutageDialogComponent],

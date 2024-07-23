@@ -5,30 +5,30 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { distinctUntilChanged, mapTo } from 'rxjs/operators';
-import { MatLegacyTableModule as MatTableModule, MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
 import { FileCategory, SecondaryApplicantTypeOption } from 'src/app/core/api/models';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { AttachmentService, CleanUpLogItemService } from 'src/app/core/api/services';
 import { CoreModule } from 'src/app/core/core.module';
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 import { DFACleanuplogDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-cleanuplog-delete-dialog/dfa-cleanuplog-delete.component';
 

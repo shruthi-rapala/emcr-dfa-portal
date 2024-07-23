@@ -6,8 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule, KeyValue } from '@angular/common';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -16,17 +16,17 @@ import { CustomValidationService } from 'src/app/core/services/customValidation.
 import { distinctUntilChanged, mapTo } from 'rxjs/operators';
 import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
 import { DamagedRoom, FileCategory, RoomType } from 'src/app/core/api/models';
-import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from 'src/app/core/core.module';
 import { DFAApplicationMainService } from 'src/app/feature-components/dfa-application-main/dfa-application-main.service';
 import * as constant from 'src/app/core/services/globalConstants'; // referenced in html
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { AttachmentService, DamagedRoomService } from 'src/app/core/api/services';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 

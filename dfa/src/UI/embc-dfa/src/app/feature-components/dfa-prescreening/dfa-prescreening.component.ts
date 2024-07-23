@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { DFAPrescreeningDataService } from './dfa-prescreening-data.service';
 import { ApplicantOption } from 'src/app/core/api/models';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmPrescreeningDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-prescreening-dialog/dfa-confirm-prescreening-dialog.component';
 import { LoginService } from 'src/app/core/services/login.service';
 import { HttpClient } from '@angular/common/http';

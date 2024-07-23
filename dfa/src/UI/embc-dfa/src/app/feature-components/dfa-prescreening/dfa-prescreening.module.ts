@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DFAPrescreeningRoutingModule } from './dfa-prescreening-routing.module';
 import { DFAPrescreeningComponent } from './dfa-prescreening.component';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 import { ComponentWrapperModule } from '../../sharedModules/components/component-wrapper/component-wrapper.module';
 import { ReviewModule } from '../review/review.module';
 import { CoreModule } from '../../core/core.module';

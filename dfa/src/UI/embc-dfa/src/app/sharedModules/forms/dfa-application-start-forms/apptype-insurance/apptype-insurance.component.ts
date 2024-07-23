@@ -7,10 +7,10 @@ import {
   ValidatorFn,
   FormGroup,
 } from '@angular/forms';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule, KeyValue } from '@angular/common';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { Router } from '@angular/router';
@@ -21,8 +21,8 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { SmallBusinessOption, ApplicantOption, SignatureBlock, InsuranceOption, FarmOption } from 'src/app/core/api/models';
 import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import * as globalConst from '../../../../core/services/globalConstants';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
+import { MatDialog } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 import { CoreModule } from 'src/app/core/core.module';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 
