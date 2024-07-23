@@ -10,7 +10,7 @@
 //@import '~@bcgov/bootstrap-theme/dist/scss/common';
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 
 @import '@angular/material/theming';
 
@@ -19,16 +19,15 @@
 @font-face {
   font-family: 'LiberationMono';
   src: url('/assets/LiberationMono-Regular.woff2') format('woff2'),
-    /* Super Modern Browsers */ url('/assets/LiberationMono-Regular.woff')
-      format('woff'),
-    /* Pretty Modern Browsers */ url('/assets/LiberationMono-Regular.ttf')
-      format('truetype'); /* Safari, Android, iOS */
+    /* Super Modern Browsers */
+    url('/assets/LiberationMono-Regular.woff') format('woff'),
+    /* Pretty Modern Browsers */
+    url('/assets/LiberationMono-Regular.ttf') format('truetype');
+  /* Safari, Android, iOS */
 }
 
-$custom-typography: mat.define-typography-config(
-  $font-family: $font-family-sans-serif,
-  $body-1: mat.define-typography-level(15px, 1.6, 400)
-);
+$custom-typography: mat.define-typography-config($font-family: $font-family-sans-serif,
+    $body-1: mat.define-typography-level(15px, 1.6, 400));
 
 @include mat.all-component-typographies($custom-typography);
 
@@ -41,6 +40,7 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
 }
@@ -97,16 +97,10 @@ footer nav {
   top: 40px !important;
 }
 
-.mat-stepper-label-position-bottom
-  .mat-horizontal-stepper-header:not(:first-child)::before,
-[dir='rtl']
-  .mat-stepper-label-position-bottom
-  .mat-horizontal-stepper-header:not(:last-child)::before,
-.mat-stepper-label-position-bottom
-  .mat-horizontal-stepper-header:not(:last-child)::after,
-[dir='rtl']
-  .mat-stepper-label-position-bottom
-  .mat-horizontal-stepper-header:not(:first-child)::after {
+.mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before,
+[dir='rtl'] .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::before,
+.mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::after,
+[dir='rtl'] .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::after {
   border-top-width: 2px !important;
 }
 
@@ -171,6 +165,7 @@ footer nav {
   height: 55px;
   font-weight: normal;
 }
+
 .button-p {
   @extend .button-style;
   background-color: #234075;
@@ -263,19 +258,14 @@ mat-card {
 .mat-form-field-appearance-outline .mat-form-field-outline-end {
   border-radius: 0px !important;
 }
+
 .mat-form-field-appearance-outline .mat-form-field-outline-gap {
   border-radius: 0px !important;
 }
 
-.mat-form-field-appearance-outline
-  .mat-form-field-outline-thick
-  .mat-form-field-outline-start,
-.mat-form-field-appearance-outline
-  .mat-form-field-outline-thick
-  .mat-form-field-outline-end,
-.mat-form-field-appearance-outline
-  .mat-form-field-outline-thick
-  .mat-form-field-outline-gap {
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-end,
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-gap {
   border-width: 1px !important;
 }
 
@@ -312,9 +302,7 @@ mat-card {
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle,
-.mat-radio-button.mat-accent
-  .mat-radio-ripple
-  .mat-ripple-element:not(.mat-radio-persistent-ripple),
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
 .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
   background-color: #169bd5 !important;
@@ -365,6 +353,7 @@ mat-card {
   background-color: #cccccc !important;
   min-width: 250px !important;
 }
+
 .mat-tab-label,
 .mat-tab-link {
   color: black !important;
