@@ -1,29 +1,34 @@
 <div class="container container-frame">
-  <div class="heading-container">
-    <div class="row">
-      <div class="col-md-12">
-        <span class="page-heading">
-          100 Mile Test community
-          </span> <br />
-      </div>
+
+  <div class="row heading-container">
+    <div class="col-md-12">
+      <span class="page-heading">{{ businessName }}</span>
     </div>
   </div>
-  <div class="col-12 content-container" >
+
+  <br />
+
+  <div class="col-12 content-container">
     <div class="row">
-      <div class="col-md-6">
-        <span class="page-subheadbold">This page is for Indigenous communities or local governments.</span><br />
-            If you are a homeowner, residential tenant, small business, farm, or charitable organization your process is different: <a target="_blank" href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">DFA process for individuals, small businesses, farms, and charitable organizations.</a>
+      <div class="col-md-12 important-message">
+        <div class="align-w-icon">
+          <div class="material-icons dashbd-infoIconStyle">info</div>
+          <div class="page-subheadbold">This page is for Indigenous communities or local governments.</div>
+        </div>
+          <p>If you are a homeowner, residential tenant, small business, farm, or charitable organization your process is
+          different: <a target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance">DFA
+            process for individuals, small businesses, farms, and charitable organizations.</a>
+          </p>
       </div>
       <div class="col-md-6"></div>
-      <div class="col-md-6">
-        
-        <button *ngIf="hasActiveEvents == true"
-              class="button-p notice-button left-align"
-              mat-button
-              (click)="navigateToDFAApplicationCreate()"
-            >
-              Create New Application
-        </button>
+      <div class="row">
+        <div class="col-md-6">
+          <button *ngIf="hasActiveEvents == true" class="button-p notice-button left-align"
+            (click)="navigateToDFAApplicationCreate()">
+            Create New Application
+          </button>
+        </div>
 
         <div *ngIf="hasActiveEvents == false">
           <br />
@@ -65,7 +70,7 @@
           &nbsp;&nbsp; {{ tabItem.label != "Profile" ? tabItem.label + " (" + tabItem.count + ")" : tabItem.label }}
         </a>
       </nav>
-      <router-outlet></router-outlet>
+      <!-- <router-outlet></router-outlet> -->
       <app-loader
         class="spinner"
         [showLoader]="isLoading"

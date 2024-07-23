@@ -69,7 +69,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-claim-dashboard/dfa-claim-dashboard.module'
       ).then((m) => m.DFAClaimModule),
-    canActivate: [AuthGuard]
+      canActivate: [AutoLoginPartialRoutesGuard]
   },
   //{
   //  path: 'dfa-claim/invoices',
@@ -116,7 +116,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-claim-main/dfa-claim-main.module'
       ).then((m) => m.DFAClaimMainModule),
-    canActivate: [AuthGuard]
+      canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'dfa-claim-main/:id',
@@ -124,7 +124,7 @@ const routes: Routes = [
       import(
         './feature-components/dfa-claim-main/dfa-claim-main.module'
       ).then((m) => m.DFAClaimMainModule),
-    canActivate: [AuthGuard]
+      canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: 'invite-error',
