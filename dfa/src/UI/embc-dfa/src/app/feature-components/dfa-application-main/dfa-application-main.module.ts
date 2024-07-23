@@ -4,11 +4,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DFAApplicationMainRoutingModule } from './dfa-application-main-routing.module';
 import { DFAApplicationMainComponent } from './dfa-application-main.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { ComponentWrapperModule } from '../../sharedModules/components/component-wrapper/component-wrapper.module';
 import { ReviewModule } from '../review/review.module';
 import { CoreModule } from '../../core/core.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 @NgModule({
   declarations: [DFAApplicationMainComponent],

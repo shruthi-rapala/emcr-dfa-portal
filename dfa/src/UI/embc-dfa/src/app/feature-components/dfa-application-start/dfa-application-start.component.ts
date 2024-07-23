@@ -18,7 +18,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationStartDataService } from './dfa-application-start-data.service';
 import { DFAApplicationStartService } from './dfa-application-start.service';
 import { InsuranceOption, SignatureBlock } from 'src/app/core/api/models';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DFAApplicationAlertDialogComponent } from 'src/app/core/components/dialog-components/dfa-application-alert-dialog/dfa-application-alert.component';
 import { ProfileService } from 'src/app/core/api/services';
 import { DFAPrescreeningDataService } from '../dfa-prescreening/dfa-prescreening-data.service';

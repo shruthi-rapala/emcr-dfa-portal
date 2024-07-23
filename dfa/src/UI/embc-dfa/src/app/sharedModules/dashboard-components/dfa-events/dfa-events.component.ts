@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Router } from '@angular/router';
 import { DisasterEvent, EffectedRegionCommunity } from 'src/app/core/api/models';
 import { EligibilityService } from 'src/app/core/api/services';

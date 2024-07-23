@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { TabModel } from 'src/app/core/model/tab.model';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DialogComponent } from 'src/app/core/components/dialog/dialog.component';
 import * as globalConst from '../../../core/services/globalConstants';
 
