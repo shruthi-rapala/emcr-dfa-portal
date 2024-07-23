@@ -57,7 +57,7 @@ jobs:
           echo DOCKER_REPOSITORY=${{ env.DOCKER_REPOSITORY }}
           echo VERSION=$VERSION          
  
-          copy html/index.test.html html/index.html
+          cp html/index.test.html html/index.html
 
           tar -czh . | docker build --load --tag ${{ env.DOCKER_REPOSITORY }}:test --build-arg VERSION=$VERSION -
           docker tag ${{ env.DOCKER_REPOSITORY }}:test ${{ env.DOCKER_REPOSITORY }}:$VERSION
