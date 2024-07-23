@@ -17,6 +17,11 @@
   min-width: 320px !important;
 }
 
+.signOut-button {
+  color: rgb(252, 186, 25) !important;
+  --mdc-theme-text-primary-on-background:  rgb(252, 186, 25);
+}
+
 .mat-mdc-menu-item {
   color: #ffffff !important;
 }
@@ -94,9 +99,7 @@ header mat-toolbar {
   border-bottom: 2px solid #fcba19;
 }
 
-.signOut-button {
-  color: rgb(252, 186, 25) !important;
-}
+
 
 .signOut-button:hover {
   text-decoration: underline;

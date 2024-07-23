@@ -169,29 +169,34 @@ footer nav {
   font-weight: normal;
 }
 
-.button-p {
+.mat-mdc-button-base.mat-mdc-button-base.button-p {
   @extend .button-style;
   background-color: #234075;
   color: #ffffff;
   float: right;
+  --mdc-text-button-label-text-color: #fff;
+  --mdc-outlined-button-label-text-color: #fff;
 }
 
-.button-s {
+.mat-mdc-button-base.button-s,
+.mat-mdc-outlined-button:not(:disabled).button-s {
   @extend .button-style;
-  border: 1px solid #b5b5b5 !important;
+  border: 1px solid #b5b5b5;
   color: #606060;
-  background-color: #ffffff !important;
+  background-color: #ffffff;
+
+  --mdc-outlined-button-outline-color: #b5b5b5;
 }
 
-.button-p:hover {
+.mat-mdc-button-base.button-p:hover {
   background-color: #169bd5;
 }
 
-.button-s:hover {
+.mat-mdc-button-base.button-s:hover {
   background-color: #e5e5e5;
 }
 
-.button-p:disabled {
+.mat-mdc-button-base.button-p:disabled {
   background-color: #EFEFEF;
   color: #3a3a3a !important;
 }
@@ -205,12 +210,12 @@ button:focus {
 }
 
 @media screen and (max-width: 768px) {
-  .resp-style .button-p {
+  .resp-style .mat-mdc-button-base.button-p {
     width: 100% !important;
     float: none;
   }
 
-  .resp-style .button-s {
+  .resp-style .mat-mdc-button-base.button-s {
     margin-bottom: 10px;
     width: 100% !important;
   }
