@@ -20,7 +20,7 @@ import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicantOption, InsuranceOption, Address, SmallBusinessOption, FarmOption } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { TextMaskModule } from 'angular2-text-mask';
+// import { TextMaskModule } from 'angular2-text-mask';
 import { MatInputModule } from '@angular/material/input';
 import { ApplicationService, ProfileService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
@@ -188,7 +188,7 @@ export default class ApplicationDetailsComponent implements OnInit, OnDestroy {
     FormsModule,
     MatCardModule,
     MatFormFieldModule,
-    TextMaskModule,
+    // TextMaskModule,
     MatRadioModule,
     MatInputModule,
     MatButtonModule,

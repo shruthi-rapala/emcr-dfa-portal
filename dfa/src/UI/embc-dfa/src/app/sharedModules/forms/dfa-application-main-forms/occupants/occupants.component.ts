@@ -17,7 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { TextMaskModule } from 'angular2-text-mask';
+// import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { ApplicantOption, SecondaryApplicantTypeOption } from 'src/app/core/api/models';
 import { MatSelectModule } from '@angular/material/select';
@@ -605,7 +605,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    TextMaskModule,
+    // TextMaskModule,
     CustomPipeModule,
     MatSelectModule,
     MatInputModule,

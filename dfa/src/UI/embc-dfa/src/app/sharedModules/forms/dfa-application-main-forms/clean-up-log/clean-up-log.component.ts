@@ -17,7 +17,7 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { TextMaskModule } from 'angular2-text-mask';
+// import { TextMaskModule } from 'angular2-text-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
 import { FileCategory, SecondaryApplicantTypeOption } from 'src/app/core/api/models';
@@ -384,7 +384,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    TextMaskModule,
+    // TextMaskModule,
     CustomPipeModule,
     MatSelectModule,
     MatInputModule,

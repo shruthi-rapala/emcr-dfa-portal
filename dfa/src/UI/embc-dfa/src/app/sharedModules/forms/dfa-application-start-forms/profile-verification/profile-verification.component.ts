@@ -24,7 +24,7 @@ import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-a
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
-import { TextMaskModule } from 'angular2-text-mask';
+// import { TextMaskModule } from 'angular2-text-mask';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { ErrorStateMatcher } from '@angular/material/core';
 
@@ -344,7 +344,7 @@ export default class ProfileVerificationComponent implements OnInit, OnDestroy {
     FormsModule,
     MatCardModule,
     MatFormFieldModule,
-    TextMaskModule,
+    // TextMaskModule,
     MatRadioModule,
     MatInputModule,
     MatButtonModule,
