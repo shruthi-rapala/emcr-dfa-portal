@@ -23,8 +23,7 @@ information and to verify that the information provided by you is accurate.
                 matInput
                 placeholder="Cellular Telephone Number"
                 required
-                />
-                <!-- [textMask]="{ mask: phoneMask, keepCharPositions: true }" -->
+                [imask]="phoneMask" />
               <mat-error
                 *ngIf="
                   contactFormControl.cellPhoneNumber.invalid &&
@@ -55,8 +54,8 @@ information and to verify that the information provided by you is accurate.
                 formControlName="residencePhone"
                 matInput
                 placeholder="Residence Telephone Number"
-                />
-                <!-- [textMask]="{ mask: phoneMask, keepCharPositions: true }" -->
+                [imask]="phoneMask" />
+              
               <mat-error
                 *ngIf="
                   contactFormControl.residencePhone.invalid &&
@@ -71,8 +70,7 @@ information and to verify that the information provided by you is accurate.
                 formControlName="alternatePhone"
                 matInput
                 placeholder="Alternate Telephone Number"
-                />
-                <!-- [textMask]="{ mask: phoneMask, keepCharPositions: true }" -->
+                [imask]="phoneMask" />
               <mat-error
                 *ngIf="
                   contactFormControl.alternatePhone.invalid &&

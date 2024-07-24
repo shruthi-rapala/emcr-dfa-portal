@@ -26,12 +26,13 @@ import { DFAEligibilityDialogComponent } from 'src/app/core/components/dialog-co
 import { MatDialog } from '@angular/material/dialog';
 import { Profile, ApplicantOption, Address } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-// import { TextMaskModule } from 'angular2-text-mask';
+
 import { MatInputModule } from '@angular/material/input';
 import { ApplicationService, ProfileService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
 import { DialogContent } from 'src/app/core/model/dialog-content.model';
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
+import { IMaskModule } from 'angular-imask';
 
 
 @Component({
@@ -46,20 +47,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
   formCreationService: FormCreationService;
   private _profileAddress: Address;
   public ApplicantOptions = ApplicantOption;
-  readonly phoneMask = [
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/
-  ];
+  readonly phoneMask = "000-000-0000";
   isResidentialTenant: boolean = false;
   isHomeowner: boolean = false;
   isSmallBusinessOwner: boolean = false;
@@ -622,7 +610,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
     FormsModule,
     MatCardModule,
     MatFormFieldModule,
-    // TextMaskModule,
+    IMaskModule,
     MatRadioModule,
     MatInputModule,
     MatButtonModule,

@@ -403,7 +403,7 @@
                 matInput required
                 [readonly]="isReadOnly == true"
                 placeholder="Contact Telephone"
-                [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                [imask]="phoneMask" />
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordPhone').invalid &&
@@ -504,7 +504,7 @@
                 matInput 
                 [readonly]="isReadOnly == true"
                 placeholder="Contact Telephone"
-                [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                [imask]="phoneMask" />
               <mat-error
                 *ngIf="
                   damagedPropertyAddressForm.get('landlordPhone2').invalid &&

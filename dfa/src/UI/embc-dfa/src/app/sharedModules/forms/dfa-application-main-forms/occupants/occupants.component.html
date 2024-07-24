@@ -379,7 +379,8 @@
                       <input formControlName="phoneNumber"
                         matInput required
                         placeholder="Applicant phone"
-                        [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                        [imask]="phoneMask"
+                        />
                       <mat-error
                         *ngIf="
                           secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
@@ -641,7 +642,7 @@
                         matInput
                         required
                         placeholder="Contact phone"
-                        [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                        [imask]="phoneMask"/>
                         <mat-error
                         *ngIf="
                           otherContactsForm.get('otherContact').controls.phoneNumber.invalid &&

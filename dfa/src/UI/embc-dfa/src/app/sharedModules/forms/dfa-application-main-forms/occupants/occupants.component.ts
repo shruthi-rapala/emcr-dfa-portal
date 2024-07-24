@@ -17,7 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-// import { TextMaskModule } from 'angular2-text-mask';
+
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { ApplicantOption, SecondaryApplicantTypeOption } from 'src/app/core/api/models';
 import { MatSelectModule } from '@angular/material/select';
@@ -27,6 +27,7 @@ import { DFADeleteConfirmDialogComponent } from 'src/app/core/components/dialog-
 import { MatDialog } from '@angular/material/dialog';
 import { SecondaryApplicantWarningDialogComponent } from '../../../../core/components/dialog-components/secondary-applicant-warning-dialog/secondary-applicant-warning-dialog.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { IMaskModule } from 'angular-imask';
 
 @Component({
   selector: 'app-occupants',
@@ -73,20 +74,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   onlyOtherContact: boolean = false;
   disableOnlyOtherContact: boolean = false;
   hideOtherContactButton: boolean = false;
-  readonly phoneMask = [
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/
-  ];
+  readonly phoneMask = "000-000-0000";
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -605,7 +593,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    // TextMaskModule,
+    IMaskModule,
     CustomPipeModule,
     MatSelectModule,
     MatInputModule,

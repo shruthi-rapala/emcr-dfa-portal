@@ -386,8 +386,8 @@
                     formControlName="cellPhoneNumber"
                     matInput
                     placeholder="Cellular Telephone Number"
+                    [imask]="phoneMask"
                     />
-                    <!-- [textMask]="{ mask: phoneMask, keepCharPositions: true }" -->
                   <mat-error
                     *ngIf="
                       profileVerificationForm.get('profile.contactDetails.cellPhoneNumber').invalid &&
@@ -419,8 +419,8 @@
                     formControlName="residencePhone"
                     matInput
                     placeholder="Residence Telephone Number"
+                    [imask]="phoneMask"
                     />
-                    <!-- [textMask]="{ mask: phoneMask, keepCharPositions: true }" -->
                   <mat-error
                     *ngIf="
                       profileVerificationForm.get('profile.contactDetails.residencePhone').invalid &&
@@ -451,8 +451,8 @@
                     formControlName="alternatePhone"
                     matInput
                     placeholder="Alternate Telephone Number"
+                    [imask]="phoneMask"
                     />
-                    <!-- [textMask]="{ mask: phoneMask, keepCharPositions: true }" -->
                   <mat-error
                     *ngIf="
                       profileVerificationForm.get('profile.contactDetails.alternatePhone').invalid &&
