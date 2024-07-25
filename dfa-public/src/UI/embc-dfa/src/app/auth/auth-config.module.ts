@@ -13,6 +13,11 @@ export const httpLoaderFactory = (httpClient: HttpClient) => {
         postLogoutRedirectUri: customConfig.postLogoutRedirectUri,
         clientId: customConfig.clientId,
         scope: customConfig.scope, // 'openid profile offline_access ' + your scopes
+        autoUserInfo: customConfig.auto_userinfo,
+        customParamsAuthRequest: {
+            prompt: customConfig.prompt,
+            kc_idp_hint: customConfig.kc_idp_hint,
+        },
         responseType: customConfig.responseType,
         silentRenew: customConfig.silentRenew,
         useRefreshToken: customConfig.useRefreshToken,

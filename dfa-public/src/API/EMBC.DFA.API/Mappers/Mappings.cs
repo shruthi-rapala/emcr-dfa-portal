@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
@@ -501,10 +502,12 @@ namespace EMBC.DFA.API.Mappers
             //.ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto));
 
             // 2024-07-16 EMCRI-440 waynezen
+
             CreateMap<BceidUserData, bceid.BCeIDBusiness>()
                 .ForMember(d => d.userId, opts => opts.MapFrom(s => s.bceid_username))
                 .ForMember(d => d.legalName, opts => opts.MapFrom(s => s.bceid_business_name))
                 .ForMember(d => d.contactEmail, opts => opts.MapFrom(s => s.emailaddress))
+                .ForMember(d => d.individualFirstname, opts => opts.MapFrom(s => s.display_name))
                 ;
         }
 

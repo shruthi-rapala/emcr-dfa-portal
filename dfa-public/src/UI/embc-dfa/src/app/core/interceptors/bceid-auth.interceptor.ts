@@ -21,8 +21,8 @@ export class BceidAuthInterceptor implements HttpInterceptor {
   */
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (req.url.includes("/api")) {
-      return this.oidcSecurityService.checkAuth().pipe(
-        first(),
+      return this.oidcSecurityService.checkAuth()
+        .pipe(first(),
         mergeMap((isAuthenticated) => {
           if (isAuthenticated) {
             return this.oidcSecurityService.getAccessToken().pipe(

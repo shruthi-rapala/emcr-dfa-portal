@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormCreationService } from '../core/services/formCreation.service';
 import { LoginService } from '../core/services/login.service';
 import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -10,6 +11,9 @@ import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'ang
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent implements OnInit {
+
+  isAuthenticated = false;
+
   constructor(
     private oidcSecurityService: OidcSecurityService,
     private router: Router,
@@ -24,22 +28,19 @@ export class LoginPageComponent implements OnInit {
   
     console.log('login page component!');
 
-    this.oidcSecurityService.checkAuth().subscribe(
-      ({ isAuthenticated}) => {
-        if (isAuthenticated === true)
+    this.oidcSecurityService.checkAuth()
+      .pipe(first())
+      .subscribe((response) => {
+        if (response?.isAuthenticated == true)
         {
           this.router.navigate(['/dfa-dashboard']);
         }
         else
         {
-          this.router.navigate(['/']);
+          this.router.navigate(['/registration-method']);
         }
-
-        this.loginService.currentUser(isAuthenticated);
       });
-
-  }
-
+  }  
   verifyUser(): void {
 
     // TODO: EMCRI-217 waynezen finish
@@ -54,7 +55,7 @@ export class LoginPageComponent implements OnInit {
 
   logout() {
 
-    this.oidcSecurityService.logoffAndRevokeTokens();
+    this.oidcSecurityService.logoff();
   }
 
 

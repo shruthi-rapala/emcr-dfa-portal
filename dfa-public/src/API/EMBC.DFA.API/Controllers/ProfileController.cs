@@ -64,6 +64,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("current")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Obsolete]
         public async Task<ActionResult<Profile>> GetProfile()
         {
             // 2024-07-11 EMCRI-440 waynezen: get contact information
@@ -127,6 +128,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("currentWithBCSCUpdates")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Obsolete]
         public async Task<ActionResult<Profile>> GetProfileWithUpdatedBCSC()
         {
             // 2024-07-11 EMCRI-440 waynezen: get contact information

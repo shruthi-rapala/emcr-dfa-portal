@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
@@ -38,16 +39,25 @@ namespace EMBC.DFA.API.Controllers
         }
 
         [HttpGet("dashboard")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bceid.BCeIDBusiness> GetDashboardContactInfo()
         {
-            var userData = userService.GetJWTokenData();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userData = userService.GetJWTokenData();
 
-            if (userData == null) return NotFound("Authentication missing");
+                if (userData == null) return NotFound("Authentication missing");
 
-            var bceidData = mapper.Map<bceid.BCeIDBusiness>(userData);
-            return Ok(bceidData);
+                var bceidData = mapper.Map<bceid.BCeIDBusiness>(userData);
+                return Ok(bceidData);
+            }
+            else
+            {
+                Debug.WriteLine("No Authentication!");
+                return Ok(null);
+            }
         }
     }
 }

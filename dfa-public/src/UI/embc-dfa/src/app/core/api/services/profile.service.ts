@@ -39,6 +39,8 @@ export class ProfileService extends BaseService {
    * To access only the response body, use `profileGetProfile()` instead.
    *
    * This method doesn't expect any request body.
+   *
+   * @deprecated
    */
   profileGetProfile$Response(params?: {
   }): Observable<StrictHttpResponse<Profile>> {
@@ -67,6 +69,8 @@ export class ProfileService extends BaseService {
    * To access the full response (for headers, for example), `profileGetProfile$Response()` instead.
    *
    * This method doesn't expect any request body.
+   *
+   * @deprecated
    */
   profileGetProfile(params?: {
   }): Observable<Profile> {
@@ -152,6 +156,8 @@ export class ProfileService extends BaseService {
    * To access only the response body, use `profileGetProfileWithUpdatedBcsc()` instead.
    *
    * This method doesn't expect any request body.
+   *
+   * @deprecated
    */
   profileGetProfileWithUpdatedBcsc$Response(params?: {
   }): Observable<StrictHttpResponse<Profile>> {
@@ -180,6 +186,8 @@ export class ProfileService extends BaseService {
    * To access the full response (for headers, for example), `profileGetProfileWithUpdatedBcsc$Response()` instead.
    *
    * This method doesn't expect any request body.
+   *
+   * @deprecated
    */
   profileGetProfileWithUpdatedBcsc(params?: {
   }): Observable<Profile> {

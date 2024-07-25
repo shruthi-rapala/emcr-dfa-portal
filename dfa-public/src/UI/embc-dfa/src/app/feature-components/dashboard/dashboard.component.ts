@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { TabModel } from 'src/app/core/model/tab.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
@@ -12,6 +12,8 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { Observable, Subject } from 'rxjs';
 import { EligibilityService } from '../../core/api/services/eligibility.service';
 import { DisasterEvent } from 'src/app/core/api/models';
+import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
+
 //import {
 //  DfaAppapplication
 //} from 'src/app/core/api/models';
@@ -36,6 +38,9 @@ export class DashboardComponent implements OnInit {
   openDisasterEvents: DisasterEvent[];
   businessName = "";
 
+  private readonly oidcSecurityService = inject(OidcSecurityService);
+  protected readonly authenticated = this.oidcSecurityService.isAuthenticated$;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -56,13 +61,14 @@ export class DashboardComponent implements OnInit {
     this.currentFlow = this.route.snapshot.data.flow;
     this.isLoading = true;
     
-      // 2024-07-22 EMCRI-440 waynezen; use new ContactService to get Business Name from Keycloak access token
-      this.contactService.contactGetDashboardContactInfo().subscribe(contact => {
-        
+    // 2024-07-22 EMCRI-440 waynezen; use new ContactService to get Business Name from Keycloak access token
+    this.contactService.contactGetDashboardContactInfo().subscribe(contact => {
+      if (contact) {
         this.businessName = contact.legalName;
-        });
-  
-    this.eventService.eligibilityGetEvents().subscribe({
+      }
+    });
+
+        this.eventService.eligibilityGetEvents().subscribe({
       next: (count: number) => {
         this.hasActiveEvents = count > 0;
       },
