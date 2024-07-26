@@ -247,4 +247,11 @@ export const notifyBCSCAddressChangeBody: DialogContent = {
   cancelButton: 'Close'
 }
 
+export const confirmCreateClaimBody: DialogContent = {
+  text: '<br/>Are you sure you want to create a new claim?<br/><br/>' +
+    'Once you proceed, a new claim will be created with auto generated claim number.<br/><br/><br/>',
+  confirmButton: 'Yes, I want to proceed.',
+  cancelButton: 'No, I don\'t want to create a new claim.'
+}
+
 

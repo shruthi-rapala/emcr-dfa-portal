@@ -454,13 +454,6 @@ namespace EMBC.DFA.API.Controllers
         public RecoveryPlan? Project { get; set; }
     }
 
-    public class DFAClaimMain
-    {
-        public Guid? Id { get; set; }
-        public string? ApplicationId { get; set; }
-        public RecoveryPlan? Project { get; set; }
-    }
-
     public class RecoveryPlan
     {
         public string? projectName { get; set; }
@@ -479,5 +472,18 @@ namespace EMBC.DFA.API.Controllers
         public string? estimatedCompletionDate { get; set; }
         public string? estimateCostIncludingTax { get; set; }
         public ProjectStageOptionSet? projectStatus { get; set; }
+    }
+
+    public class DFAClaimMain
+    {
+        public Guid? Id { get; set; }
+        public string? ApplicationId { get; set; }
+        public string? ProjectId { get; set; }
+        public RecoveryClaim? Claim { get; set; }
+    }
+
+    public class RecoveryClaim
+    {
+        public string? claimNumber { get; set; }
     }
 }

@@ -743,24 +743,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId)
+        public async Task<IEnumerable<dfa_projectdocumentlocation>> GetProjectDocumentLocationsListAsync(Guid projectId)
         {
             try
             {
-                var applicationIdString = applicationId.ToString();
-                var list = await api.GetList<dfa_appdocumentlocation>("dfa_appdocumentlocationses", new CRMGetListOptions
+                var projectIdString = projectId.ToString();
+                var list = await api.GetList<dfa_projectdocumentlocation>("dfa_projectdocumentlocations", new CRMGetListOptions
                 {
                     Select = new[]
                     {
-                        "dfa_appdocumentlocationsid", "_dfa_applicationid_value", "dfa_name", "dfa_description", "createdon", "dfa_documenttype", "dfa_modifiedby", "dfa_requireddocumenttype"
-                    }, Filter = $"_dfa_applicationid_value eq {applicationIdString}"
+                        "dfa_projectdocumentlocationid", "_dfa_projectid_value", "dfa_name", "dfa_description", "createdon", "dfa_documenttype", "dfa_modifiedby", "dfa_requireddocumenttype"
+                    }, Filter = $"_dfa_projectid_value eq {projectIdString}"
                 });
 
-                // TODO: delete this loop and replace with actual retrieval of required document type above
-                //list.List.ForEach(item =>
-                //{
-                //    if (item.dfa_documenttype == "Insurance") item.dfa_requireddocumenttype = "Insurance Template";
-                //});
                 return list.List;
             }
             catch (System.Exception ex)
@@ -989,6 +984,76 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             {
                 throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
             }
+        }
+
+        public async Task<IEnumerable<dfa_projectclaim>> GetClaimListAsync(string projectId)
+        {
+            try
+            {
+                //var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                //{
+                //    Select = new[]
+                //    {
+                //        "dfa_eventid", "dfa_id", "dfa_eventname", "dfa_eventtype"
+                //    }
+                //});
+
+                var list = await api.GetList<dfa_projectclaim>("dfa_projectclaims", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_name", "dfa_claimreceivedbyemcrdate",
+                        "dfa_isfirstclaim",
+                        "dfa_finalclaim",
+                        "dfa_totaloftotaleligible", "dfa_totalapproved", "dfa_lessfirst1000",
+                        "dfa_totalpaid", "dfa_Claimpaiddate"
+                    },
+                    Filter = $"dfa_projectclaimid eq {projectId}"
+                });
+
+                //where objAppEvent != null && (objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
+                //                 || objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())
+                var lstClaims = (from objClaim in list.List
+                               select new dfa_projectclaim
+                               {
+                                   dfa_name = objClaim.dfa_name,
+                                   dfa_claimreceivedbyemcrdate = objClaim.dfa_claimreceivedbyemcrdate,
+                                   dfa_isfirstclaim = objClaim.dfa_isfirstclaim,
+                                   dfa_finalclaim = objClaim.dfa_finalclaim,
+                                   dfa_totaloftotaleligible = objClaim.dfa_totaloftotaleligible,
+                                   dfa_totalapproved = objClaim.dfa_totalapproved,
+                                   dfa_lessfirst1000 = objClaim.dfa_lessfirst1000,
+                                   dfa_totalpaid = objClaim.dfa_totalpaid,
+                                   dfa_Claimpaiddate = objClaim.dfa_Claimpaiddate,
+                                   dfa_projectclaimid = objClaim.dfa_projectclaimid,
+                               }).AsEnumerable().OrderByDescending(m => m.dfa_claimreceivedbyemcrdate);
+
+                return lstClaims;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+
+        public async Task<string> UpsertClaim(dfa_claim_params claim)
+        {
+            try
+            {
+                var jsonVal = JsonConvert.SerializeObject(claim);
+                var result = await api.ExecuteAction("dfa_DFAPortalCreateRecoveryClaim", claim);
+
+                if (result != null)
+                {
+                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to update/delete application {ex.Message}", ex);
+            }
+
+            return string.Empty;
         }
     }
 }

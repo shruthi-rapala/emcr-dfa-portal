@@ -99,13 +99,13 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     this.isReadOnly = (dfaProjectMainDataService.getViewOrEdit() === 'view'
       || dfaProjectMainDataService.getViewOrEdit() === 'edit'
       || dfaProjectMainDataService.getViewOrEdit() === 'viewOnly');
-    this.setViewOrEditControls();
+    //this.setViewOrEditControls();
 
     this.dfaProjectMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.isReadOnly = (vieworedit === 'view'
       || vieworedit === 'edit'
         || vieworedit === 'viewOnly');
-      this.setViewOrEditControls();
+      //this.setViewOrEditControls();
     })
 
     this.vieworedit = dfaProjectMainDataService.getViewOrEdit();

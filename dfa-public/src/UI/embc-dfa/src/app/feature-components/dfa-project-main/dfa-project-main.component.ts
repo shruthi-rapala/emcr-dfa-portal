@@ -96,6 +96,7 @@ export class DFAProjectMainComponent
       this.getFileUploadsForProject(projectId);
     }
     this.formCreationService.clearRecoveryPlanData();
+    this.formCreationService.clearFileUploadsData();
     //this.formCreationService.clearOtherContactsData();
 
     this.steps = this.componentService.createDFAProjectMainSteps();
@@ -408,11 +409,11 @@ export class DFAProjectMainComponent
 
   public getFileUploadsForProject(projectId: string) {
 
-    this.fileUploadsService.attachmentGetAttachments({ projectId: projectId }).subscribe({
+    this.fileUploadsService.attachmentGetProjectAttachments({ projectId: projectId }).subscribe({
       next: (attachments) => {
         // initialize list of file uploads
         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(attachments);
-
+        debugger
       },
       error: (error) => {
         console.error(error);

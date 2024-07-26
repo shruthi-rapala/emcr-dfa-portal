@@ -23,9 +23,9 @@ export class AttachmentService extends BaseService {
   }
 
   /**
-   * Path part for operation attachmentUpsertDeleteAttachment
+   * Path part for operation attachmentDeleteProjectAttachment
    */
-  static readonly AttachmentUpsertDeleteAttachmentPath = '/api/attachments';
+  static readonly AttachmentDeleteProjectAttachmentPath = '/api/attachments';
 
   /**
    * Create / update / delete a file attachment.
@@ -33,11 +33,11 @@ export class AttachmentService extends BaseService {
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `attachmentUpsertDeleteAttachment()` instead.
+   * To access only the response body, use `attachmentDeleteProjectAttachment()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  attachmentUpsertDeleteAttachment$Response(params: {
+  attachmentDeleteProjectAttachment$Response(params: {
 
     /**
      * The attachment information
@@ -45,7 +45,7 @@ export class AttachmentService extends BaseService {
     body: FileUpload
   }): Observable<StrictHttpResponse<string>> {
 
-    const rb = new RequestBuilder(this.rootUrl, AttachmentService.AttachmentUpsertDeleteAttachmentPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, AttachmentService.AttachmentDeleteProjectAttachmentPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
@@ -67,11 +67,11 @@ export class AttachmentService extends BaseService {
    *
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `attachmentUpsertDeleteAttachment$Response()` instead.
+   * To access the full response (for headers, for example), `attachmentDeleteProjectAttachment$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  attachmentUpsertDeleteAttachment(params: {
+  attachmentDeleteProjectAttachment(params: {
 
     /**
      * The attachment information
@@ -79,7 +79,7 @@ export class AttachmentService extends BaseService {
     body: FileUpload
   }): Observable<string> {
 
-    return this.attachmentUpsertDeleteAttachment$Response(params).pipe(
+    return this.attachmentDeleteProjectAttachment$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
@@ -147,9 +147,9 @@ export class AttachmentService extends BaseService {
   }
 
   /**
-   * Path part for operation attachmentGetAttachments
+   * Path part for operation attachmentGetProjectAttachments
    */
-  static readonly AttachmentGetAttachmentsPath = '/api/attachments/byProjectIdId';
+  static readonly AttachmentGetProjectAttachmentsPath = '/api/attachments/byProjectIdId';
 
   /**
    * Get a list of attachments by project Id.
@@ -157,11 +157,11 @@ export class AttachmentService extends BaseService {
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `attachmentGetAttachments()` instead.
+   * To access only the response body, use `attachmentGetProjectAttachments()` instead.
    *
    * This method doesn't expect any request body.
    */
-  attachmentGetAttachments$Response(params?: {
+  attachmentGetProjectAttachments$Response(params?: {
 
     /**
      * The project Id.
@@ -169,7 +169,7 @@ export class AttachmentService extends BaseService {
     projectId?: string;
   }): Observable<StrictHttpResponse<Array<FileUpload>>> {
 
-    const rb = new RequestBuilder(this.rootUrl, AttachmentService.AttachmentGetAttachmentsPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, AttachmentService.AttachmentGetProjectAttachmentsPath, 'get');
     if (params) {
       rb.query('projectId', params.projectId, {});
     }
@@ -191,11 +191,11 @@ export class AttachmentService extends BaseService {
    *
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `attachmentGetAttachments$Response()` instead.
+   * To access the full response (for headers, for example), `attachmentGetProjectAttachments$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  attachmentGetAttachments(params?: {
+  attachmentGetProjectAttachments(params?: {
 
     /**
      * The project Id.
@@ -203,7 +203,7 @@ export class AttachmentService extends BaseService {
     projectId?: string;
   }): Observable<Array<FileUpload>> {
 
-    return this.attachmentGetAttachments$Response(params).pipe(
+    return this.attachmentGetProjectAttachments$Response(params).pipe(
       map((r: StrictHttpResponse<Array<FileUpload>>) => r.body as Array<FileUpload>)
     );
   }

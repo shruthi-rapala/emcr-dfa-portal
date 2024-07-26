@@ -166,10 +166,13 @@
            && (formCreationService.propertyDamageForm$ | async)?.valid
            && ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)
            ">-->
+        <!--        && (formCreationService.supportingDocumentsForm$ | async)?.valid-->
+                <!--&& requiredDocumentsSupplied()"-->
+
         <div class="col-md-6">
-        <button *ngIf="(formCreationService.recoveryPlanForm$ | async)?.valid
-                && (formCreationService.supportingDocumentsForm$ | async)?.valid
-                && requiredDocumentsSupplied()"
+        <button *ngIf="(formCreationService.recoveryClaimForm$ | async)?.valid
+                && invoiceSummaryDataSource?.data?.length > 0
+                "
           class="button-p nextNsave"
           mat-stroked-button
           type="button"

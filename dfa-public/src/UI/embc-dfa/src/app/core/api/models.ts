@@ -29,6 +29,7 @@ export { ProjectStageOptionSet } from './models/project-stage-option-set';
 export { CurrentClaim } from './models/current-claim';
 export { ClaimStatusBar } from './models/claim-status-bar';
 export { DfaClaimMain } from './models/dfa-claim-main';
+export { RecoveryClaim } from './models/recovery-claim';
 export { CurrentProject } from './models/current-project';
 export { ProjectStatusBar } from './models/project-status-bar';
 export { CleanUpLogItem } from './models/clean-up-log-item';

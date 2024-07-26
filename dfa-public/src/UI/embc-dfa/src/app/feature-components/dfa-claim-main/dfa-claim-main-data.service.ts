@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { DfaClaimMain, FileUpload, RecoveryClaim } from '../../core/model/dfa-claim-main.model';
+import { DfaClaimMain, FileUploadClaim, RecoveryClaim } from '../../core/model/dfa-claim-main.model';
 import { DfaInvoiceMain, Invoice } from '../../core/model/dfa-invoice.model';
 
 @Injectable({ providedIn: 'root' })
@@ -57,10 +57,10 @@ export class DFAClaimMainDataService {
     this._requiredDocuments = value;
   }
 
-  public get fileUploads(): Array<FileUpload> {
+  public get fileUploads(): Array<FileUploadClaim> {
     return this._fileUploads;
   }
-  public set fileUploads(value: Array<FileUpload>) {
+  public set fileUploads(value: Array<FileUploadClaim>) {
     this._fileUploads = value;
   }
 
@@ -158,7 +158,8 @@ export class DFAClaimMainDataService {
 
    public createDFAClaimMainDTO(): DfaClaimMain {
     return {
-      id: this._projectId,
+      id: this._claimId,
+      projectId: this._projectId,
       applicationId: this._applicationId,
       claim: this._recoveryClaim
     };

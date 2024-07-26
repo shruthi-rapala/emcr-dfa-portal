@@ -101,7 +101,7 @@ namespace EMBC.DFA.API.Controllers
             var dfa_project = await handler.GetProjectMainAsync(projectId);
             DFAClaimMain dfaClaimMain = new DFAClaimMain();
             dfaClaimMain.Id = projectId;
-            dfaClaimMain.Project = mapper.Map<RecoveryPlan>(dfa_project);
+            //dfaClaimMain.Project = mapper.Map<RecoveryPlan>(dfa_project);
 
             return Ok(dfaClaimMain);
         }
