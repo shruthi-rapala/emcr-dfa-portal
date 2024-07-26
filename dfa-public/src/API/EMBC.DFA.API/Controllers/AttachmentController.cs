@@ -50,11 +50,14 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [RequestSizeLimit(36700160)]
-        public async Task<ActionResult<string>> UpsertDeleteAttachment(FileUpload fileUpload)
+        public async Task<ActionResult<string>> DeleteProjectAttachment(FileUpload fileUpload)
         {
-            var dfa_appcontact = await handler.HandleGetUser(currentUserId);
+            var parms = new dfa_DFAActionDeleteDocuments_parms();
+            if (fileUpload.id != null) parms.AppDocID = (Guid)fileUpload.id;
+            var result = await handler.DeleteFileUploadAsync(parms);
+            return Ok(result);
 
-            return Ok(null);
+            //return Ok(null);
         }
 
         /// <summary>
@@ -78,6 +81,7 @@ namespace EMBC.DFA.API.Controllers
                 var dfa_appcontact = await handler.HandleGetUser(currentUserId);
                 var mappedProject = mapper.Map<dfa_project_params>(fileUpload.project);
                 var result = await handler.HandleProjectCreateUpdate(mappedProject);
+                fileUpload.project.Id = new Guid(result);
             }
 
             if (fileUpload.deleteFlag == true)
@@ -108,18 +112,18 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("byProjectIdId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<FileUpload>>> GetAttachments(
+        public async Task<ActionResult<IEnumerable<FileUpload>>> GetProjectAttachments(
             [FromQuery]
             [Required]
             Guid projectId)
         {
-            IEnumerable<dfa_appdocumentlocation> dfa_appdocumentlocations = await handler.GetFileUploadsAsync(projectId);
+            IEnumerable<dfa_projectdocumentlocation> dfa_projectdocumentlocations = await handler.GetProjectFileUploadsAsync(projectId);
             IEnumerable<FileUpload> fileUploads = new FileUpload[] { };
-            if (dfa_appdocumentlocations != null)
+            if (dfa_projectdocumentlocations != null)
             {
-                foreach (dfa_appdocumentlocation dfa_appdocumentlocation in dfa_appdocumentlocations)
+                foreach (dfa_projectdocumentlocation dfa_projectdocumentlocation in dfa_projectdocumentlocations)
                 {
-                    FileUpload fileUpload = mapper.Map<FileUpload>(dfa_appdocumentlocation);
+                    FileUpload fileUpload = mapper.Map<FileUpload>(dfa_projectdocumentlocation);
                     fileUploads = fileUploads.Append<FileUpload>(fileUpload);
                 }
                 return Ok(fileUploads);
@@ -136,11 +140,12 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class FileUpload
     {
-        public Guid projectId { get; set; }
+        public Guid? projectId { get; set; }
         public Guid? id { get; set; }
         public string? fileName { get; set; }
         public string? fileDescription { get; set; }
         public FileCategory? fileType { get; set; }
+        public string? fileTypeText { get; set; }
         public RequiredDocumentType? requiredDocumentType { get; set; }
         public string? uploadedDate { get; set; }
         public string? modifiedBy { get; set; }
@@ -148,6 +153,6 @@ namespace EMBC.DFA.API.Controllers
         public string? contentType { get; set; }
         public int? fileSize { get; set; }
         public bool deleteFlag { get; set; }
-        public DFAProjectMain project { get; set; }
+        public DFAProjectMain? project { get; set; }
     }
 }

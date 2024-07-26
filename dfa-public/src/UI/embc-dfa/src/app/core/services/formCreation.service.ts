@@ -16,10 +16,10 @@ import { DfaPrescreening, DfaPrescreeningForm } from '../model/dfa-prescreening.
 import { InsuranceOption } from 'src/app/core/api/models';
 import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress, PropertyDamage, SignAndSubmit, SupportingDocuments, DamagedRoomsForm,
   FullTimeOccupantsForm, SecondaryApplicantsForm, OtherContactsForm,
-  CleanUpLogForm, SignAndSubmitForm, SupportingDocumentsForm, CleanUpLog, CleanUpLogItemsForm, SecondaryApplicant, FileUploadsForm, FullTimeOccupant, OtherContact, CleanUpLogItem, FileUpload, DamagedRoom  } from '../model/dfa-application-main.model';
+  CleanUpLogForm, SignAndSubmitForm, SupportingDocumentsForm, CleanUpLog, CleanUpLogItemsForm, SecondaryApplicant, FullTimeOccupant, OtherContact, CleanUpLogItem, DamagedRoom  } from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
-import { RecoveryPlan, RecoveryPlanForm } from '../model/dfa-project-main.model';
-import { RecoveryClaim, RecoveryClaimForm } from '../model/dfa-claim-main.model';
+import { FileUpload, FileUploadsForm, RecoveryPlan, RecoveryPlanForm } from '../model/dfa-project-main.model';
+import { FileUploadClaim, FileUploadsClaimForm, RecoveryClaim, RecoveryClaimForm } from '../model/dfa-claim-main.model';
 import { Invoice, InvoiceForm } from '../model/dfa-invoice.model';
 
 @Injectable({ providedIn: 'root' })
@@ -229,6 +229,20 @@ export class FormCreationService {
 
   fileUploadsForm$: Observable<UntypedFormGroup | undefined> =
     this.fileUploadsForm.asObservable();
+
+  fileUploadsClaimForm: BehaviorSubject<UntypedFormGroup | undefined> =
+    new BehaviorSubject(
+      this.formBuilder.group(
+        new FileUploadsClaimForm(
+          new Array<FileUploadClaim>(),
+          this.customValidator,
+          this.formBuilder
+        )
+      )
+    );
+
+  fileUploadsClaimForm$: Observable<UntypedFormGroup | undefined> =
+    this.fileUploadsClaimForm.asObservable();
 
   damagedRoomsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
@@ -610,6 +624,26 @@ export class FormCreationService {
       this.formBuilder.group(
         new FileUploadsForm(
           new Array<FileUpload>(),
+          this.customValidator,
+          this.formBuilder
+        )
+      )
+    );
+  }
+
+  getClaimFileUploadsForm(): Observable<UntypedFormGroup> {
+    return this.fileUploadsClaimForm$;
+  }
+
+  setClaimFileUploadsForm(fileUploadsClaimForm: UntypedFormGroup): void {
+    this.fileUploadsClaimForm.next(fileUploadsClaimForm);
+  }
+
+  clearClaimFileUploadsData(): void {
+    this.fileUploadsClaimForm.next(
+      this.formBuilder.group(
+        new FileUploadsClaimForm(
+          new Array<FileUploadClaim>(),
           this.customValidator,
           this.formBuilder
         )

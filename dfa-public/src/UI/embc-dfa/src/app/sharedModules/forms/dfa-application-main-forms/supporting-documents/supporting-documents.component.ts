@@ -319,23 +319,23 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     if (this.fileUploadForm.get('supportingFilesFileUpload').status === 'VALID') {
       this.isLoading = true;
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
-        next: (fileUploadId) => {
-          fileUpload.id = fileUploadId;
-          if (fileUploads) fileUploads.push(fileUpload);
-          else fileUploads = [ fileUpload ];
-          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          this.showSupportingFileForm = !this.showSupportingFileForm;
-          //if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
-          //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error(error);
-          this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });
+      //this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+      //  next: (fileUploadId) => {
+      //    fileUpload.id = fileUploadId;
+      //    if (fileUploads) fileUploads.push(fileUpload);
+      //    else fileUploads = [ fileUpload ];
+      //    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+      //    this.showSupportingFileForm = !this.showSupportingFileForm;
+      //    //if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
+      //    //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+      //    this.isLoading = false;
+      //  },
+      //  error: (error) => {
+      //    console.error(error);
+      //    this.isLoading = false;
+      //    document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      //  }
+      //});
     } else {
       this.fileUploadForm.get('supportingFilesFileUpload').markAllAsTouched();
     }
@@ -352,36 +352,36 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     if (fileUploads?.filter(x => x.requiredDocumentType === fileUpload.requiredDocumentType).length > 0) {
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
-        next: (result) => {
-          let requiredDocumentTypeFoundIndex = fileUploads.findIndex(x => x.requiredDocumentType === fileUpload.requiredDocumentType);
-          fileUploads[requiredDocumentTypeFoundIndex] = fileUpload;
-          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error(error);
-          this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });
+      //this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+      //  next: (result) => {
+      //    let requiredDocumentTypeFoundIndex = fileUploads.findIndex(x => x.requiredDocumentType === fileUpload.requiredDocumentType);
+      //    fileUploads[requiredDocumentTypeFoundIndex] = fileUpload;
+      //    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+      //    this.isLoading = false;
+      //  },
+      //  error: (error) => {
+      //    console.error(error);
+      //    this.isLoading = false;
+      //    document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      //  }
+      //});
     } else {
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
-        next: (fileUploadId) => {
-          fileUpload.id = fileUploadId;
-          if (fileUploads) fileUploads.push(fileUpload);
-          else fileUploads = [fileUpload];
-          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          //if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
-          //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error(error);
-          this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });
+      //this.attachmentsService.attachmentUpsertDeleteAttachment({body: fileUpload }).subscribe({
+      //  next: (fileUploadId) => {
+      //    fileUpload.id = fileUploadId;
+      //    if (fileUploads) fileUploads.push(fileUpload);
+      //    else fileUploads = [fileUpload];
+      //    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+      //    //if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
+      //    //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+      //    this.isLoading = false;
+      //  },
+      //  error: (error) => {
+      //    console.error(error);
+      //    this.isLoading = false;
+      //    document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      //  }
+      //});
     }
   }
 
@@ -428,57 +428,57 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let foundIndex = fileUploads.findIndex(x => x.requiredDocumentType === element.requiredDocumentType);
       element.deleteFlag = true;
       element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
-        next: (result) => {
-          fileUploads.splice(foundIndex, 1);
-          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          switch (element.requiredDocumentType) {
-            case "InsuranceTemplate":
-              this.initRequiredFileForm("insuranceTemplateFileUpload");
-              break;
-            case "Identification":
-              this.initRequiredFileForm("identificationFileUpload");
-              break;
-            case "TenancyAgreement":
-              this.initRequiredFileForm("rentalAgreementFileUpload");
-              break;
-            case "ResidentialTenancyAgreement":
-              this.initRequiredFileForm("tenancyAgreementFileUpload");
-              break;
-            case "T1GeneralIncomeTaxReturn":
-              this.initRequiredFileForm("T1IncomeTaxReturnFileUpload");
-              break;
-            case "T2CorporateIncomeTaxReturm":
-              this.initRequiredFileForm("T2IncomeTaxReturnFileUpload");
-              break;
-            case "FinancialStatements":
-              this.initRequiredFileForm("financialStatementsFileUpload");
-              break;
-            case "ProofOfOwnership":
-              this.initRequiredFileForm("proofOfOwnershipFileUpload");
-              break;
-            case "T776":
-              this.initRequiredFileForm("T776FileUpload");
-              break;
-            case "DirectorsListing":
-              this.initRequiredFileForm("directorsListingFileUpload");
-              break;
-            case "RegistrationProof":
-              this.initRequiredFileForm("registrationProofFileUpload");
-              break;
-            case "StructureAndPurpose":
-              this.initRequiredFileForm("structureAndPurposeFileUpload");
-              break;
-            default:
-              break;
-            }
-          this.fileUploadForm.updateValueAndValidity();
-        },
-        error: (error) => {
-          console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });
+      //this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
+      //  next: (result) => {
+      //    fileUploads.splice(foundIndex, 1);
+      //    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+      //    switch (element.requiredDocumentType) {
+      //      case "InsuranceTemplate":
+      //        this.initRequiredFileForm("insuranceTemplateFileUpload");
+      //        break;
+      //      case "Identification":
+      //        this.initRequiredFileForm("identificationFileUpload");
+      //        break;
+      //      case "TenancyAgreement":
+      //        this.initRequiredFileForm("rentalAgreementFileUpload");
+      //        break;
+      //      case "ResidentialTenancyAgreement":
+      //        this.initRequiredFileForm("tenancyAgreementFileUpload");
+      //        break;
+      //      case "T1GeneralIncomeTaxReturn":
+      //        this.initRequiredFileForm("T1IncomeTaxReturnFileUpload");
+      //        break;
+      //      case "T2CorporateIncomeTaxReturm":
+      //        this.initRequiredFileForm("T2IncomeTaxReturnFileUpload");
+      //        break;
+      //      case "FinancialStatements":
+      //        this.initRequiredFileForm("financialStatementsFileUpload");
+      //        break;
+      //      case "ProofOfOwnership":
+      //        this.initRequiredFileForm("proofOfOwnershipFileUpload");
+      //        break;
+      //      case "T776":
+      //        this.initRequiredFileForm("T776FileUpload");
+      //        break;
+      //      case "DirectorsListing":
+      //        this.initRequiredFileForm("directorsListingFileUpload");
+      //        break;
+      //      case "RegistrationProof":
+      //        this.initRequiredFileForm("registrationProofFileUpload");
+      //        break;
+      //      case "StructureAndPurpose":
+      //        this.initRequiredFileForm("structureAndPurposeFileUpload");
+      //        break;
+      //      default:
+      //        break;
+      //      }
+      //    this.fileUploadForm.updateValueAndValidity();
+      //  },
+      //  error: (error) => {
+      //    console.error(error);
+      //    document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      //  }
+      //});
     //} else if (element.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.DamagePhoto)]) {
     //  this.dfaApplicationMainService.deleteDamagePhoto.emit(element);
     //} else if (element.fileType === this.FileCategories.Cleanup) {
@@ -488,23 +488,23 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
       let index = fileUploads?.indexOf(element);
       element.deleteFlag = true;
       element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
-        next: (result) => {
-          fileUploads[index] = element;
-          this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
-          //if (fileUploads?.filter(x => x.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])?.length == 0)
-          //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
-          //if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
-          //  this.fileUploadForm
-          //    .get('addNewFileUploadIndicator')
-          //    .setValue(false);
-          //}
-        },
-        error: (error) => {
-          console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });
+      //this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
+      //  next: (result) => {
+      //    fileUploads[index] = element;
+      //    this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+      //    //if (fileUploads?.filter(x => x.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])?.length == 0)
+      //    //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
+      //    //if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
+      //    //  this.fileUploadForm
+      //    //    .get('addNewFileUploadIndicator')
+      //    //    .setValue(false);
+      //    //}
+      //  },
+      //  error: (error) => {
+      //    console.error(error);
+      //    document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      //  }
+      //});
     }
   }
 

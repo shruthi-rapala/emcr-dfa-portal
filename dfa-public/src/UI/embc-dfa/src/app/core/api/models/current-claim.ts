@@ -4,6 +4,7 @@ import { ClaimStatusBar } from './claim-status-bar';
 export interface CurrentClaim {
   applicationId?: string;
   claimId?: string;
+  claimNumber?: string;
   createdDate?: string;
   deadline18Month?: string;
   emcrApprovedAmount?: string;
@@ -12,7 +13,6 @@ export interface CurrentClaim {
   isHidden?: boolean;
   projectId?: string;
   projectName?: string;
-  projectNumber?: string;
   siteLocation?: string;
   stage?: string;
   status?: string;

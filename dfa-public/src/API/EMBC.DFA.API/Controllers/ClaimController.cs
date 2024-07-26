@@ -156,10 +156,10 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> UpsertClaim(DFAClaimMain claim)
         {
-            if (claim == null) return BadRequest("Project details cannot be empty.");
+            if (claim == null) return BadRequest("Claim details cannot be empty.");
             var dfa_appcontact = await handler.HandleGetUser(currentUserId);
-            var mappedProject = mapper.Map<dfa_project_params>(claim);
-            var result = await handler.HandleProjectCreateUpdate(mappedProject);
+            var mappedClaim = mapper.Map<dfa_claim_params>(claim);
+            var result = await handler.HandleClaimCreateUpdate(mappedClaim);
 
             return Ok(result);
         }
@@ -172,7 +172,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("appmain/byId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DFAClaimMain>> GetProjectMain(
+        public async Task<ActionResult<DFAClaimMain>> GetClaimMain(
             [FromQuery]
             [Required]
             Guid projectId)
@@ -183,7 +183,7 @@ namespace EMBC.DFA.API.Controllers
             var dfa_project = await handler.GetProjectMainAsync(projectId);
             DFAClaimMain dfaClaimMain = new DFAClaimMain();
             dfaClaimMain.Id = projectId;
-            dfaClaimMain.Project = mapper.Map<RecoveryPlan>(dfa_project);
+            //dfaClaimMain.Project = mapper.Map<RecoveryPlan>(dfa_project);
 
             return Ok(dfaClaimMain);
         }
@@ -223,7 +223,7 @@ namespace EMBC.DFA.API.Controllers
         public string ApplicationId { get; set; }
         public string ProjectId { get; set; }
         public string ClaimId { get; set; }
-        public string ProjectNumber { get; set; }
+        public string ClaimNumber { get; set; }
         public string ProjectName { get; set; }
         public string SiteLocation { get; set; }
         public string CreatedDate { get; set; }

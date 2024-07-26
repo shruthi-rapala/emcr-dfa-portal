@@ -15,10 +15,11 @@ export interface FileUpload {
   fileName?: null | string;
   fileSize?: null | number;
   fileType?: null | FileCategory;
+  fileTypeText?: null | string;
   id?: null | string;
   modifiedBy?: null | string;
-  project?: DfaProjectMain;
-  projectId?: string;
+  project?: null | DfaProjectMain;
+  projectId?: null | string;
   requiredDocumentType?: null | RequiredDocumentType;
   uploadedDate?: null | string;
 }

@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
-import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, PropertyDamage, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, FileUpload, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
+import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, PropertyDamage, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { DFAApplicationStartService } from '../dfa-application-start/dfa-application-start.service';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -78,13 +78,6 @@ export class DFAApplicationMainDataService {
   }
   public set damagedRooms(value: Array<DamagedRoom>) {
     this._damagedRooms = value;
-  }
-
-  public get fileUploads(): Array<FileUpload> {
-    return this._fileUploads;
-  }
-  public set fileUploads(value: Array<FileUpload>) {
-    this._fileUploads = value;
   }
 
   public getDFAApplicationMain(): DfaApplicationMain {

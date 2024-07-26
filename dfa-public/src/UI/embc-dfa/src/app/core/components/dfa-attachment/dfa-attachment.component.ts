@@ -84,7 +84,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
       if (this.fileTypeText) this.fileUpload.get('fileTypeText').setValue(this.fileTypeText); else this.fileUpload.get('fileTypeText').setValue(null);
       if (this.requiredDocumentType) this.fileUpload.get('requiredDocumentType').setValue(this.requiredDocumentType); else this.fileUpload.get('requiredDocumentType').setValue(null);
       this.fileUpload.get('deleteFlag').setValue(false);
-      this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+      //this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
       this.fileUpload.get('id').setValue(null);
       this.fileUpload.updateValueAndValidity();
     }

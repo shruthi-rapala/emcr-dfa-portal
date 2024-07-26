@@ -360,10 +360,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool delete { get; set; } // required enum
     }
 
-    public class dfa_appdocumentlocation
+    public class dfa_projectdocumentlocation
     {
-        public Guid? dfa_appdocumentlocationsid { get; set; } // optional string
-        public Guid _dfa_applicationid_value { get; set; } // application id
+        public Guid? dfa_projectdocumentlocationid { get; set; } // optional string
+        public Guid _dfa_projectid_value { get; set; } // application id
         public string dfa_name { get; set; } // file name
         public string dfa_description { get; set; } // file description
         public string createdon { get; set; } // uploaded date
@@ -426,6 +426,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_estimatedcost { get; set; }
         public string? dfa_projectbusinessprocesssubstages { get; set; }
         public bool? dfa_dateofdamagesameasapplication { get; set; }
+    }
+
+    public class dfa_claim_params
+    {
+        public string dfa_recoveryplanid { get; set; } // required string
+        public bool? dfa_finalclaim { get; set; }
+        public string? dfa_projectclaimid { get; set; }
     }
 
     public class dfa_appdamageditems_params
@@ -617,6 +624,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_90daydeadlinenew { get; set; }
         public string dfa_eventname { get; set; }
         public string dfa_eventtype { get; set; }
+    }
+
+    public class dfa_projectclaim
+    {
+        public string? dfa_name { get; set; }
+        public string? dfa_claimreceivedbyemcrdate { get; set; }
+        public string? dfa_isfirstclaim { get; set; }
+        public string? dfa_finalclaim { get; set; }
+        public string? dfa_totaloftotaleligible { get; set; }
+        public string? dfa_totalapproved { get; set; }
+        public string? dfa_lessfirst1000 { get; set; }
+        public string? dfa_totalpaid { get; set; }
+        public string? dfa_Claimpaiddate { get; set; }
+        public string? dfa_projectclaimid { get; set; }
     }
 
     public class dfa_project
