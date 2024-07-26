@@ -59,7 +59,12 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
   formBuilder: UntypedFormBuilder;
   recoveryPlanForm$: Subscription;
   formCreationService: FormCreationService;
-  remainingLength: number = 200;
+  remainingLengthInfrastructure: number = 2000;
+  remainingLengthCauseDamage: number = 2000;
+  remainingLengthDescribeDamage: number = 2000;
+  remainingLengthDescribeDamagedInfrastructure: number = 2000;
+  remainingLengthDescribeRepair: number = 2000;
+  remainingLengthDescribeRepairMaterial: number = 2000;
   todayDate = new Date().toISOString();
   vieworedit: string = "";
   isReadOnly: boolean = false;
@@ -198,8 +203,28 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
     return 0;
   }
 
-  calcRemainingChars() {
-    this.remainingLength = 200 - this.recoveryPlanForm.get('subtypeOtherDetails').value?.length;
+  calcRemainingCharsInfrastructure() {
+    this.remainingLengthInfrastructure = 2000 - this.recoveryPlanForm.get('infraDamageDetails').value?.length;
+  }
+
+  calcRemainingCharsCauseDamage() {
+    this.remainingLengthCauseDamage = 2000 - this.recoveryPlanForm.get('causeofDamageDetails').value?.length;
+  }
+
+  calcRemainingCharsDescribeDamage() {
+    this.remainingLengthDescribeDamage = 2000 - this.recoveryPlanForm.get('describeDamageDetails').value?.length;
+  }
+
+  calcRemainingCharsDescribeDamagedInfrastructure() {
+    this.remainingLengthDescribeDamagedInfrastructure = 2000 - this.recoveryPlanForm.get('describeDamagedInfrastructure').value?.length;
+  }
+
+  calcRemainingCharsDescribeRepair() {
+    this.remainingLengthDescribeRepair = 2000 - this.recoveryPlanForm.get('repairWorkDetails').value?.length;
+  }
+
+  calcRemainingCharsDescribeRepairMaterial() {
+    this.remainingLengthDescribeRepairMaterial = 2000 - this.recoveryPlanForm.get('repairDamagedInfrastructure').value?.length;
   }
 
   selectDamageDates(choice: any) {
@@ -224,6 +249,13 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
             this.showDates = true;
           }
           this.dfaProjectMainMapping.mapDFAProjectMain(dfaProjectMain);
+
+          this.calcRemainingCharsCauseDamage();
+          this.calcRemainingCharsDescribeDamage();
+          this.calcRemainingCharsDescribeDamagedInfrastructure();
+          this.calcRemainingCharsDescribeRepair();
+          this.calcRemainingCharsDescribeRepairMaterial();
+          this.calcRemainingCharsInfrastructure();
           
         },
         error: (error) => {
