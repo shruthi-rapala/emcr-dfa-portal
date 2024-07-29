@@ -11,5 +11,5 @@
     "silentRenew": true,
     "useRefreshToken": true,
     "renewTimeBeforeTokenExpiresInSeconds": 30,
-    "log_level": 1
+    "log_level": 0
 }

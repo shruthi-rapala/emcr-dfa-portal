@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormCreationService } from '../core/services/formCreation.service';
 import { LoginService } from '../core/services/login.service';
-import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
-import { first } from 'rxjs';
+import { LoginResponse } from 'angular-auth-oidc-client';
+import { first, last } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -15,48 +15,42 @@ export class LoginPageComponent implements OnInit {
   isAuthenticated = false;
 
   constructor(
-    private oidcSecurityService: OidcSecurityService,
     private router: Router,
     private formCreationService: FormCreationService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    //private oidcSecurityService: OidcSecurityService
   ) {
 
   }
 
   ngOnInit(): void {
-    this.formCreationService.clearProfileData();
-  
-    console.log('login page component!');
+    //this.formCreationService.clearProfileData();
+    console.debug('[DFA] login page component!');
 
-    this.oidcSecurityService.checkAuth()
-      .pipe(first())
-      .subscribe((response) => {
-        if (response?.isAuthenticated == true)
-        {
-          this.router.navigate(['/dfa-dashboard']);
-        }
-        else
-        {
-          this.router.navigate(['/registration-method']);
-        }
-      });
-  }  
+   // 2024-07-28 EMCRI-507 waynezen; 
+   this.loginService
+    .checkAuth()
+    .pipe(first())
+    .subscribe((response: LoginResponse) => {
+
+        console.debug('[DFA] login-page isAuthenticated: ' + response?.isAuthenticated);
+        if (response?.isAuthenticated)
+          {
+            this.router.navigate(['/dfa-dashboard']);
+          }
+          else
+          {
+            this.router.navigate(['/']);
+          }
+    });
+  } 
+
   verifyUser(): void {
-
-    // TODO: EMCRI-217 waynezen finish
-    alert('verifyUser');
-
   }
 
   login() {
 
-    this.oidcSecurityService.authorize();
+    this.loginService.authorize();
   }
-
-  logout() {
-
-    this.oidcSecurityService.logoff();
-  }
-
 
 }

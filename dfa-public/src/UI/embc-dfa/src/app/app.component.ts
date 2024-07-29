@@ -1,5 +1,6 @@
 import { OnInit, Renderer2 } from '@angular/core';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertService } from './core/services/alert.service';
 import * as globalConst from './core/services/globalConstants';
 import { BootstrapService } from './core/services/bootstrap.service';
@@ -8,6 +9,7 @@ import { ConfigService } from './core/services/config.service';
 import { EnvironmentInformation } from './core/model/environment-information.model';
 import { OutageService } from './feature-components/outage/outage.service';
 import { ScriptService } from "./core/services/scriptServices";
+//import { OidcSecurityService, LoginResponse } from 'angular-auth-oidc-client';
 
 const SCRIPT_PATH = 'http://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js?key=ea53-hg74-kb59-ym41';
 
@@ -24,12 +26,13 @@ export class AppComponent implements OnInit {
 
   constructor(
     public outageService: OutageService,
+    public router: Router,
     private alertService: AlertService,
     private bootstrapService: BootstrapService,
     private loginService: LoginService,
     private configService: ConfigService,
     private renderer: Renderer2,
-    private scriptService: ScriptService
+    private scriptService: ScriptService,
   ) {}
 
   public async ngOnInit(): Promise<void> {

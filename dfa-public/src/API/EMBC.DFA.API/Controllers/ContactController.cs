@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
+using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -39,7 +40,6 @@ namespace EMBC.DFA.API.Controllers
         }
 
         [HttpGet("dashboard")]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bceid.BCeIDBusiness> GetDashboardContactInfo()
@@ -52,6 +52,29 @@ namespace EMBC.DFA.API.Controllers
 
                 var bceidData = mapper.Map<bceid.BCeIDBusiness>(userData);
                 return Ok(bceidData);
+            }
+            else
+            {
+                Debug.WriteLine("No Authentication!");
+                return Ok(null);
+            }
+        }
+
+        /// <summary>
+        /// If user isn't authenticated, return NULL
+        /// </summary>
+        /// <returns>NULL if user isn't authenticated</returns>
+        [HttpGet("login")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<BceidUserData> GetLoginInfo()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userData = userService.GetJWTokenData();
+
+                return Ok(userData);
             }
             else
             {

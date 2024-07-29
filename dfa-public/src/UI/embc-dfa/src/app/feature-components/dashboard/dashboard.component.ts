@@ -5,14 +5,13 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { ApplicationService as Service } from '../../core/api/services/application.service';
 import { ProfileService } from 'src/app/core/api/services';
 import { ContactService } from 'src/app/core/api/services';
-import { ProfileDataService } from 'src/app/feature-components/profile/profile-data.service';
 import { tap } from 'rxjs/internal/operators/tap';
 import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { Observable, Subject } from 'rxjs';
+import { first, mergeMap, Observable, Subject } from 'rxjs';
 import { EligibilityService } from '../../core/api/services/eligibility.service';
 import { DisasterEvent } from 'src/app/core/api/models';
-import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
+import { LoginService } from '../../core/services/login.service';
 
 //import {
 //  DfaAppapplication
@@ -37,9 +36,7 @@ export class DashboardComponent implements OnInit {
   tabs: DashTabModel[];
   openDisasterEvents: DisasterEvent[];
   businessName = "";
-
-  private readonly oidcSecurityService = inject(OidcSecurityService);
-  protected readonly authenticated = this.oidcSecurityService.isAuthenticated$;
+  noApplicationsText = 'No active applications, click the "Create a New Application" button to begin';
 
   constructor(
     private router: Router,
@@ -47,9 +44,8 @@ export class DashboardComponent implements OnInit {
     public formCreationService: FormCreationService,
     private appService: Service,
     private eligibilityService: EligibilityService,
-    private profileService: ProfileService,
+    private loginService: LoginService,
     private contactService: ContactService,
-    private profileDataService: ProfileDataService,
     private appSessionService: AppSessionService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private eventService: EligibilityService,
@@ -60,15 +56,15 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow;
     this.isLoading = true;
-    
+
     // 2024-07-22 EMCRI-440 waynezen; use new ContactService to get Business Name from Keycloak access token
-    this.contactService.contactGetDashboardContactInfo().subscribe(contact => {
-      if (contact) {
-        this.businessName = contact.legalName;
+    this.contactService.contactGetLoginInfo().subscribe(loginInfo => {
+      if (loginInfo) {
+        this.businessName = loginInfo?.bceid_business_name;
       }
     });
 
-        this.eventService.eligibilityGetEvents().subscribe({
+    this.eventService.eligibilityGetEvents().subscribe({
       next: (count: number) => {
         this.hasActiveEvents = count > 0;
       },
@@ -77,8 +73,6 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    // TODO: EMCRI-440 waynezen debug remove 
-    console.log('dfa-dashboard component!');
 
     //this.currentApplicationsCount = this.appSessionService.appNumber;
 
@@ -87,8 +81,8 @@ export class DashboardComponent implements OnInit {
       this.tabs[0].count = n ? n.toString() : "0";
     });
     this.appSessionService.pastApplicationsCount.subscribe((n: number) => {
-        this.pastApplicationsCount = n;
-        this.tabs[1].count = n ? n.toString() : "0";
+      this.pastApplicationsCount = n;
+      this.tabs[1].count = n ? n.toString() : "0";
     });
 
     this.appService.applicationGetDfaApplications().subscribe({
@@ -108,32 +102,31 @@ export class DashboardComponent implements OnInit {
       this.tabs[2].count = eventsCount.toString();
     })
 
-
     this.tabs = [
-    {
-      label: 'Open Applications',
-      route: 'current',
-      activeImage: '/assets/images/past-evac-active.svg',
-      inactiveImage: '/assets/images/past-evac.svg',
-      count: this.currentApplicationsCount.toString()
-    },
-    {
-      label: 'Closed Applications',
-      route: 'past',
-      activeImage: '/assets/images/past-evac-active.svg',
-      inactiveImage: '/assets/images/past-evac.svg',
-      count: this.pastApplicationsCount.toString()
-    },
-    {
-      label: 'DFA Events',
-      route: 'eventlist',
-      activeImage: '/assets/images/curr-evac-active.svg',
-      inactiveImage: '/assets/images/curr-evac.svg',
-      count: this.eventsCount
-    },
-  ];
+      {
+        label: 'Open Applications',
+        route: 'current',
+        activeImage: '/assets/images/past-evac-active.svg',
+        inactiveImage: '/assets/images/past-evac.svg',
+        count: this.currentApplicationsCount.toString()
+      },
+      {
+        label: 'Closed Applications',
+        route: 'past',
+        activeImage: '/assets/images/past-evac-active.svg',
+        inactiveImage: '/assets/images/past-evac.svg',
+        count: this.pastApplicationsCount.toString()
+      },
+      {
+        label: 'DFA Events',
+        route: 'eventlist',
+        activeImage: '/assets/images/curr-evac-active.svg',
+        inactiveImage: '/assets/images/curr-evac.svg',
+        count: this.eventsCount
+      },
+    ];
 
-  this.isLoading = false;
+    this.isLoading = false;
   }
 
 
@@ -156,7 +149,10 @@ export class DashboardComponent implements OnInit {
   navigateToDFAApplicationCreate(): void {
     this.dfaApplicationMainDataService.setApplicationId(null);
     this.dfaApplicationMainDataService.setViewOrEdit('add');
-    var profileId = this.profileDataService.getProfileId();
+
+    // 2024-07-22 EMCRI-301 waynezen; TODO fix 
+    // var profileId = this.profileDataService.getProfileId();
+
     this.router.navigate(['/dfa-application-main']);
   }
 

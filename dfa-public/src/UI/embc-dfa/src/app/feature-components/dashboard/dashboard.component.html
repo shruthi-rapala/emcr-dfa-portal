@@ -59,6 +59,16 @@
     <app-loader class="spinner" [showLoader]="isLoading" strokeWidth="10" diameter="50">
     </app-loader>
   </div>
+
+  <div class="content-container no-applications" *ngIf="this.currentApplicationsCount <= 0" >
+    <div class="row">
+      <div class="col-md-12">
+        <span class="no-applications-text"> {{noApplicationsText}} </span> <br />
+      </div>
+    </div>
+</div>
+
+
 </div>
 
 

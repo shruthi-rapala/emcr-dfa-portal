@@ -1,32 +1,57 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, first, Observable, ReplaySubject, switchMap, mergeMap, tap, map, of } from 'rxjs';
+import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Injectable({
   providedIn: 'root'
 })
-// 2024-05-27 EMCRI-217 waynezen: re-write to use new BCeID async Auth
+// 2024-07-26 EMCRI-507 waynezen: re-write to centralize oidcSecurityService calls
 export class LoginService  {
 
-  private logoutStatus:BehaviorSubject<string> = new BehaviorSubject<string>('');
-  private currentStatus:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private currentPortalUser: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private _isAuth: boolean | null = null;
+  private _accesstoken: string = null;
 
-  getLogoutStatus = this.logoutStatus.asObservable();
-  getCurrentStatus = this.currentStatus.asObservable();
-  getCurrentPortalUser = this.currentPortalUser.asObservable();
-
-  constructor() { }
-
-  logoutUser(status){
-    this.logoutStatus.next(status);
+  constructor(private oidcSecurityService: OidcSecurityService) {
+    console.debug("[DFA] loginService: constructor");
   }
 
-  currentUser(status){
-    this.currentStatus.next(status);
+  public checkAuth(): Observable<LoginResponse> {
+    return this.oidcSecurityService.checkAuth()
+      .pipe(
+        tap((response: LoginResponse) => { 
+          console.debug('[DFA] loginService called oidcSecurityService.checkAuth() isAuthenticated: ' + response?.isAuthenticated);
+          this._isAuth = response?.isAuthenticated;
+          this._accesstoken = response.accessToken;
+
+          if (response?.isAuthenticated) {
+            this._isAuth = true;
+          }
+        }));
   }
 
-  emitCurrentPortalUser(user) {
-    this.currentPortalUser.next(user);
+  public authorize() : void {
+    console.debug("[DFA] loginService authorize");
+    this._isAuth = false;
+    this.oidcSecurityService.authorize();
+  }
+
+  public isAuthenticated(): boolean {
+    console.debug('[DFA] loginService isAuthenticated: ' + this._isAuth);
+    return this._isAuth;
+  }
+
+  public getAccessToken(): Observable<string> {
+    if (this._isAuth) {
+      return this.oidcSecurityService.getAccessToken()
+        .pipe(
+          tap((response: string) => {
+            if (response) {
+              //console.debug('[DFA] loginService returning access_token: ' + response);
+              this._accesstoken = response;
+            }
+          }));
+    }
   }
 
 }
+  
