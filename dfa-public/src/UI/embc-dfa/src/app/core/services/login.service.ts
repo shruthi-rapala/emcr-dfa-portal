@@ -21,7 +21,7 @@ export class LoginService  {
         tap((response: LoginResponse) => { 
           console.debug('[DFA] loginService called oidcSecurityService.checkAuth() isAuthenticated: ' + response?.isAuthenticated);
           this._isAuth = response?.isAuthenticated;
-          this._accesstoken = response.accessToken;
+          this._accesstoken = response?.accessToken;
 
           if (response?.isAuthenticated) {
             this._isAuth = true;
@@ -41,7 +41,6 @@ export class LoginService  {
   }
 
   public getAccessToken(): Observable<string> {
-    if (this._isAuth) {
       return this.oidcSecurityService.getAccessToken()
         .pipe(
           tap((response: string) => {
@@ -51,7 +50,5 @@ export class LoginService  {
             }
           }));
     }
-  }
-
 }
   

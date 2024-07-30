@@ -58,6 +58,8 @@ export class DashboardComponent implements OnInit {
     this.isLoading = true;
 
     // 2024-07-22 EMCRI-440 waynezen; use new ContactService to get Business Name from Keycloak access token
+    console.debug('[DFA] dashboard loading');
+    
     this.contactService.contactGetLoginInfo().subscribe(loginInfo => {
       if (loginInfo) {
         this.businessName = loginInfo?.bceid_business_name;
@@ -69,6 +71,7 @@ export class DashboardComponent implements OnInit {
         this.hasActiveEvents = count > 0;
       },
       error: (error) => {
+        console.debug('[DFA] dashboard error: ' + "eventService.eligibilityGetEvents"); 
         document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });

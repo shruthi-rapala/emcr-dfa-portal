@@ -22,25 +22,31 @@ export class BceidAuthInterceptor implements HttpInterceptor {
   */
 
 
-  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes("/api")) {
-      console.debug('[DFA] bceid-auth.interceptor');
+      if (this.loginService?.isAuthenticated) {
+        return this.loginService.getAccessToken().pipe(
+          first(),
+          mergeMap((token) => {
 
-      return this.loginService.getAccessToken().pipe(
-        first(),
-        mergeMap((token) => {
-
-          if (token) {
-            const headers = req.headers
-              .set('Authorization', `Bearer ${token}`)
-            const authReq = req.clone({ headers });
-            return next.handle(authReq);
-          }
-          return next.handle(req);
-        })
-      );
+            if (token) {
+              console.debug('[DFA] bceid-auth.interceptor: authenticated!');
+              const headers = req.headers
+                .set('Authorization', `Bearer ${token}`)
+              const authReq = req.clone({ headers });
+              return next.handle(authReq);
+            }
+            console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
+            return next.handle(req);
+          })
+        );
+      }
+      console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
+      return next.handle(req);
     }
+    console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
     return next.handle(req);
-  }
 
+  }
+    
 }
