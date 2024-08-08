@@ -1,5 +1,5 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -8,6 +8,7 @@ import { OutageService } from 'src/app/feature-components/outage/outage.service'
 import { MockOutageService } from 'src/app/unit-tests/mockOutage.service';
 
 import { OutageBannerComponent } from './outage-banner.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('OutageBannerComponent', () => {
   let component: OutageBannerComponent;
@@ -16,21 +17,20 @@ describe('OutageBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule,
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
-      declarations: [OutageBannerComponent],
-      providers: [
+    declarations: [OutageBannerComponent],
+    imports: [MatDialogModule,
+        RouterTestingModule],
+    providers: [
         OutageComponent,
         {
-          provide: OutageService,
-          useClass: MockOutageService
+            provide: OutageService,
+            useClass: MockOutageService
         },
-        { provide: APP_BASE_HREF, useValue: '/' }
-      ]
-    }).compileComponents();
+        { provide: APP_BASE_HREF, useValue: '/' },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
   });
 
   beforeEach(() => {

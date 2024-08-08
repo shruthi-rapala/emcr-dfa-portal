@@ -1,7 +1,13 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 //import { AuthGuard } from './core/services/auth.guard';
 import { AutoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { DashboardModule } from './sharedModules/components/dashboard/dashboard.module';
+import { LoginPageModule } from './login-page/login-page.module';
+//import { GlobalErrorhandler } from './global-errorhandler';
+import { EligibilityService } from './core/api/services/eligibility.service'
+import { ContactService } from './core/api/services/contact.service';
 
 // 2024-05-27 EMCRI-217 waynezen: replace AuthGuard with built-in from angular-auth-oidc-client
 const routes: Routes = [
@@ -12,8 +18,11 @@ const routes: Routes = [
   },
   {
     path: 'registration-method',
+    // resolve: {},
+    // component: LoginPageComponent,
+
     loadChildren: () =>
-      import('./login-page/login-page.module').then((m) => m.LoginPageModule)
+     import('./login-page/login-page.module').then((m) => m.LoginPageModule)
   },
   {
     path: 'verified-registration',
@@ -88,6 +97,7 @@ const routes: Routes = [
   },
   {
     path: 'dfa-dashboard',
+    //component: DashboardModule,
     loadChildren: () =>
       import(
         './feature-components/dashboard/dashboard.module'
@@ -139,12 +149,24 @@ const routes: Routes = [
       import('./feature-components/outage/outage.module').then(
         (m) => m.OutageModule
       )
-  }
+  },
+  // {
+  //   path: 'api/contacts/login',
+  //   component: EligibilityService,
+  //   pathMatch: 'full'
+  // },
+  // {
+  //   path: 'api/eligibility/checkPublicEventsAvailable',
+  //   component: EligibilityService,
+  //   pathMatch: 'full'
+  // }
+
 ];
 
 @NgModule({
   // 2024-05-28 EMCRI-217 waynezen: relativeLinkResolution no longer supported in Angular v15
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  //providers: [{provide: ErrorHandler, useClass: GlobalErrorhandler }]
 })
 export class AppRoutingModule {}

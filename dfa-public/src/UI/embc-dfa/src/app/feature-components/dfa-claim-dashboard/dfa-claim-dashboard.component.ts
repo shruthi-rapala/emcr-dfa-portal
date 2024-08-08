@@ -30,7 +30,8 @@ import { DFAProjectMainDataService } from 'src/app/feature-components/dfa-projec
 import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { ProjectService } from 'src/app/core/api/services';
 import { ApplicationExtended } from '../../sharedModules/dashboard-components/dfa-application/dfa-application.component';
-import * as moment from 'moment';
+// 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18
+import moment from 'moment';
 import { DFAClaimMainDataService } from '../dfa-claim-main/dfa-claim-main-data.service';
 
 @Component({

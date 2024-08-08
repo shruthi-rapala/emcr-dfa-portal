@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { OutageInformation } from 'src/app/core/api/models/outage-information';
-import * as moment from 'moment';
+// 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18
+import moment from 'moment';
 import { OutageDialogComponent } from 'src/app/sharedModules/outage-components/outage-dialog/outage-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 // import { ConfigurationService } from 'src/app/core/api/services';

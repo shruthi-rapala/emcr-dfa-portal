@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit {
     console.debug('[DFA] header.component about to call middle-tier API. isAuthenticated: ' + this.loginService?.isAuthenticated());
 
     // 2024-07-22 EMCRI-440 waynezen; use new ContactService to get Business Name from Keycloak access token
+    /*
     this.contactService.contactGetLoginInfo().subscribe(loginInfo => {
       if (loginInfo) {
         console.debug("[DFA] header.component: got names");
@@ -38,6 +39,8 @@ export class HeaderComponent implements OnInit {
         this.lastName = loginInfo?.name;
       }
     });
+    */
+
   }
 
   homeButton(): void { }

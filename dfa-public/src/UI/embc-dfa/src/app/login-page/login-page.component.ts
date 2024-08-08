@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormCreationService } from '../core/services/formCreation.service';
+//import { FormCreationService } from '../core/services/formCreation.service';
 import { LoginService } from '../core/services/login.service';
 import { LoginResponse } from 'angular-auth-oidc-client';
 import { first, last } from 'rxjs';
@@ -12,28 +12,26 @@ import { first, last } from 'rxjs';
 })
 export class LoginPageComponent implements OnInit {
 
-  isAuthenticated = false;
-
   constructor(
     private router: Router,
-    private formCreationService: FormCreationService,
+//  private formCreationService: FormCreationService,
     private loginService: LoginService,
-    //private oidcSecurityService: OidcSecurityService
   ) {
 
+    console.debug('[DFA] login-page constructor');
   }
 
   ngOnInit(): void {
     //this.formCreationService.clearProfileData();
     console.debug('[DFA] login page component!');
 
-   // 2024-07-28 EMCRI-507 waynezen; 
+  // 2024-07-28 EMCRI-507 waynezen; 
    this.loginService
     .checkAuth()
     .pipe(first())
     .subscribe((response: LoginResponse) => {
 
-        console.debug('[DFA] login-page isAuthenticated: ' + response?.isAuthenticated);
+        console.debug('[DFA] login-page isAuthenticated123: ' + response?.isAuthenticated);
         if (response?.isAuthenticated)
           {
             this.router.navigate(['/dfa-dashboard']);

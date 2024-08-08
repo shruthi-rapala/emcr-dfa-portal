@@ -17,7 +17,9 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { TextMaskModule } from 'angular2-text-mask';
+// 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - TextMaskModule not compatible
+//import { TextMaskModule } from 'angular2-text-mask';
+import { NgxMaskDirective, NgxMaskPipe, NgxMaskService, provideNgxMask } from 'ngx-mask';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { FileUpload } from 'src/app/core/model/dfa-application-main.model';
 import { FileCategory, SecondaryApplicantTypeOption } from 'src/app/core/api/models';
@@ -384,7 +386,8 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    TextMaskModule,
+    // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - new text mask provider
+    NgxMaskDirective, NgxMaskPipe,
     CustomPipeModule,
     MatSelectModule,
     MatInputModule,
@@ -393,6 +396,7 @@ export default class CleanUpLogComponent implements OnInit, OnDestroy {
     DirectivesModule,
     MatDatepickerModule
   ],
-  declarations: [CleanUpLogComponent]
+  declarations: [CleanUpLogComponent],
+  providers: [ provideNgxMask() ],
 })
 class CleanUpLogModule {}
