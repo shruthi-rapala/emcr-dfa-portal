@@ -75,15 +75,6 @@ namespace EMBC.DFA.API.Controllers
             if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
             if (fileUpload.id == null && fileUpload.deleteFlag == true) return BadRequest("FileUpload id cannot be empty on delete");
 
-            if (fileUpload.project != null &&
-                (fileUpload.project.Id == Guid.Empty || fileUpload.project.Id.ToString() == string.Empty))
-            {
-                var dfa_appcontact = await handler.HandleGetUser(currentUserId);
-                var mappedProject = mapper.Map<dfa_project_params>(fileUpload.project);
-                var result = await handler.HandleProjectCreateUpdate(mappedProject);
-                fileUpload.project.Id = new Guid(result);
-            }
-
             if (fileUpload.deleteFlag == true)
             {
                 var parms = new dfa_DFAActionDeleteDocuments_parms();

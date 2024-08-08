@@ -30,13 +30,16 @@ import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TextMaskModule } from 'angular2-text-mask';
-import { ApplicationService, OtherContactService, ProjectService } from 'src/app/core/api/services';
+import { ApplicationService, ClaimService, OtherContactService, ProjectService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAProjectMainDataService } from '../../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAProjectMainMappingService } from '../../../../feature-components/dfa-project-main/dfa-project-main-mapping.service';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import { DFAClaimMainDataService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
+import { DFAClaimMainMappingService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-mapping.service';
+import { ActivatedRoute } from '@angular/router';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -85,12 +88,16 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
+    private route: ActivatedRoute,
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
     public dfaProjectMainDataService: DFAProjectMainDataService,
+    public dfaClaimMainDataService: DFAClaimMainDataService,
     private applicationService: ApplicationService,
     private projectService: ProjectService,
+    private claimService: ClaimService,
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
     private dfaProjectMainMapping: DFAProjectMainMappingService,
+    private dfaClaimMainMapping: DFAClaimMainMappingService,
     private otherContactsService: OtherContactService,
     public dialog: MatDialog
   ) {
@@ -140,10 +147,10 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
         this.setDisableInputFields()
       });
 
-    let projectId = this.dfaProjectMainDataService.getProjectId();
+    let claimId = this.route.snapshot.paramMap.get('id'); //this.dfaClaimMainDataService.getClaimId();
 
-    if (projectId) {
-      this.getRecoveryPlan(projectId);
+    if (claimId) {
+      this.getRecoveryClaim(claimId);
     }
 
     this.dfaProjectMainDataService.stepSelected.subscribe((stepSelected) => {
@@ -208,14 +215,11 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     }
   }
 
-  getRecoveryPlan(projectId: string) {
-    if (projectId) {
-      this.projectService.projectGetProjectMain({ projectId: projectId }).subscribe({
-        next: (dfaProjectMain) => {
-          if (dfaProjectMain && dfaProjectMain.project && dfaProjectMain.project.isdamagedDateSameAsApplication == false) {
-            this.showDates = true;
-          }
-          this.dfaProjectMainMapping.mapDFAProjectMain(dfaProjectMain);
+  getRecoveryClaim(claimId: string) {
+    if (claimId) {
+      this.claimService.claimGetClaimMain({ claimId: claimId }).subscribe({
+        next: (dfaClaimMain) => {
+          this.dfaClaimMainMapping.mapDFAClaimMain(dfaClaimMain);
           
         },
         error: (error) => {

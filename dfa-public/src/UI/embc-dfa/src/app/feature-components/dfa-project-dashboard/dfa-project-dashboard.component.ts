@@ -17,7 +17,7 @@ import { Subscription, distinctUntilChanged, mapTo } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 //import { DFAProjectService } from './dfa-project.service';
-import { ApplicantOption, CurrentApplication, FarmOption, SmallBusinessOption } from 'src/app/core/api/models';
+import { ApplicantOption, CurrentApplication, FarmOption, ProjectStageOptionSet, SmallBusinessOption } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
@@ -30,6 +30,8 @@ import { DFAProjectMainDataService } from 'src/app/feature-components/dfa-projec
 import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { ProjectService } from 'src/app/core/api/services';
 import { ApplicationExtended } from '../../sharedModules/dashboard-components/dfa-application/dfa-application.component';
+import { DFAConfirmProjectCreateDialogComponent } from '../../core/components/dialog-components/dfa-confirm-project-create-dialog/dfa-confirm-project-create-dialog.component';
+import { DFAProjectMainService } from '../dfa-project-main/dfa-project-main.service';
 
 
 @Component({
@@ -63,6 +65,7 @@ export class DFAProjectComponent
     private appSessionService: AppSessionService,
     private projService: ProjectService,
     private applicationService: ApplicationService,
+    private dfaProjectMainService: DFAProjectMainService,
   ) {
     
 
@@ -117,9 +120,45 @@ export class DFAProjectComponent
   }
 
   navigateToDFAProjectCreate(): void {
-    this.dfaProjectMainDataService.setProjectId(null);
-    this.dfaProjectMainDataService.setViewOrEdit('addproject');
-    this.router.navigate(['/dfa-project-main']);
+    this.confirmCreateProject()
+  }
+
+  confirmCreateProject(): void {
+    var contentDialog = globalConst.confirmCreateProjectBody;
+
+    this.dialog
+      .open(DFAConfirmProjectCreateDialogComponent, {
+        data: {
+          content: contentDialog
+        },
+        height: '350px',
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+
+          this.dfaProjectMainDataService.setApplicationId(this.appId);
+          this.dfaProjectMainDataService.setProjectId(null);
+          this.dfaProjectMainDataService.recoveryPlan = null;
+          //this.dfaProjectMainDataService.recoveryPlan.projectStatus = ProjectStageOptionSet.DRAFT;
+          let objClaimDTO = this.dfaProjectMainDataService.createDFAProjectMainDTO();
+
+          this.dfaProjectMainService.upsertProject(objClaimDTO).subscribe(id => {
+            
+            if (id) {
+              this.dfaProjectMainDataService.setProjectId(id);
+              this.dfaProjectMainDataService.setViewOrEdit('addproject');
+              this.router.navigate(['/dfa-project-main/' + id]);
+            }
+          },
+            error => {
+              console.error(error);
+              //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            });
+        }
+      });
   }
 
   countAppData(lstApp: Object): void {

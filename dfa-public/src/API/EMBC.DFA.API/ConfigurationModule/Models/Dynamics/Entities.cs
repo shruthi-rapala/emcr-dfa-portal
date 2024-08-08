@@ -199,6 +199,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_dateofdamagesameasapplication { get; set; }
     }
 
+    public class dfa_claim_retrieve
+    {
+        public string? dfa_projectclaimid { get; set; }
+        public string? dfa_name { get; set; }
+        public string? dfa_isfirstclaim { get; set; }
+        public string? dfa_finalclaim { get; set; }
+        public string? createdon { get; set; }
+    }
+
     public class dfa_appapplicationmain_retrieve
     {
         public string dfa_appapplicationid { get; set; } // required

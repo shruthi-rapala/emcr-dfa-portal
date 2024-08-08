@@ -1055,5 +1055,37 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
             return string.Empty;
         }
+
+        public async Task<dfa_claim_retrieve> GetClaimDetailsAsync(string claimId)
+        {
+            try
+            {
+                var list = await api.GetList<dfa_claim_retrieve>("dfa_projectclaims", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_name", "dfa_projectclaimid", "dfa_isfirstclaim",
+                        "dfa_finalclaim", "createdon"
+                    },
+                    Filter = $"dfa_projectclaimid eq {claimId}"
+                });
+
+                var lstApps = (from objApp in list.List
+                               select new dfa_claim_retrieve
+                               {
+                                   dfa_name = objApp.dfa_name,
+                                   dfa_projectclaimid = objApp.dfa_projectclaimid,
+                                   dfa_isfirstclaim = objApp.dfa_isfirstclaim,
+                                   dfa_finalclaim = objApp.dfa_finalclaim,
+                                   createdon = objApp.createdon,
+                               }).AsEnumerable().OrderByDescending(m => m.createdon);
+
+                return lstApps.FirstOrDefault();
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
     }
 }

@@ -365,6 +365,12 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.EstimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
 
+            CreateMap<dfa_claim_retrieve, RecoveryClaim>()
+                .ForMember(d => d.claimNumber, opts => opts.MapFrom(s => s.dfa_name))
+                //.ForMember(d => d.claimId, opts => opts.MapFrom(s => s.dfa_projectclaimid))
+                .ForMember(d => d.isThisFinalClaim, opts => opts.MapFrom(s => s.dfa_finalclaim))
+                .ForMember(d => d.isFirstClaimApproved, opts => opts.MapFrom(s => s.dfa_isfirstclaim));
+
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
                 .ForMember(d => d.DateOfDamageTo, opts => opts.MapFrom(s => s.dfa_dateofdamageto))

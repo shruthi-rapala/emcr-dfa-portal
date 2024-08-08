@@ -43,5 +43,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_project>> GetProjectListAsync(string applicationId);
         Task<IEnumerable<dfa_projectclaim>> GetClaimListAsync(string projectId);
         Task<string> UpsertClaim(dfa_claim_params claim);
+        Task<dfa_claim_retrieve> GetClaimDetailsAsync(string claimId);
     }
 }
