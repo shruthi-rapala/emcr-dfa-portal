@@ -204,27 +204,33 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
   }
 
   calcRemainingCharsInfrastructure() {
-    this.remainingLengthInfrastructure = 2000 - this.recoveryPlanForm.get('infraDamageDetails').value?.length;
+    if (this.recoveryPlanForm.get('infraDamageDetails').value)
+      this.remainingLengthInfrastructure = 2000 - this.recoveryPlanForm.get('infraDamageDetails').value?.length;
   }
 
   calcRemainingCharsCauseDamage() {
-    this.remainingLengthCauseDamage = 2000 - this.recoveryPlanForm.get('causeofDamageDetails').value?.length;
+    if (this.recoveryPlanForm.get('causeofDamageDetails').value)
+      this.remainingLengthCauseDamage = 2000 - this.recoveryPlanForm.get('causeofDamageDetails').value?.length;
   }
 
   calcRemainingCharsDescribeDamage() {
-    this.remainingLengthDescribeDamage = 2000 - this.recoveryPlanForm.get('describeDamageDetails').value?.length;
+    if (this.recoveryPlanForm.get('describeDamageDetails').value)
+      this.remainingLengthDescribeDamage = 2000 - this.recoveryPlanForm.get('describeDamageDetails').value?.length;
   }
 
   calcRemainingCharsDescribeDamagedInfrastructure() {
-    this.remainingLengthDescribeDamagedInfrastructure = 2000 - this.recoveryPlanForm.get('describeDamagedInfrastructure').value?.length;
+    if (this.recoveryPlanForm.get('describeDamagedInfrastructure').value)
+      this.remainingLengthDescribeDamagedInfrastructure = 2000 - this.recoveryPlanForm.get('describeDamagedInfrastructure').value?.length;
   }
 
   calcRemainingCharsDescribeRepair() {
-    this.remainingLengthDescribeRepair = 2000 - this.recoveryPlanForm.get('repairWorkDetails').value?.length;
+    if (this.recoveryPlanForm.get('repairWorkDetails').value)
+      this.remainingLengthDescribeRepair = 2000 - this.recoveryPlanForm.get('repairWorkDetails').value?.length;
   }
 
   calcRemainingCharsDescribeRepairMaterial() {
-    this.remainingLengthDescribeRepairMaterial = 2000 - this.recoveryPlanForm.get('repairDamagedInfrastructure').value?.length;
+    if (this.recoveryPlanForm.get('repairDamagedInfrastructure').value)
+      this.remainingLengthDescribeRepairMaterial = 2000 - this.recoveryPlanForm.get('repairDamagedInfrastructure').value?.length;
   }
 
   selectDamageDates(choice: any) {
@@ -249,7 +255,7 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
             this.showDates = true;
           }
           this.dfaProjectMainMapping.mapDFAProjectMain(dfaProjectMain);
-
+          
           this.calcRemainingCharsCauseDamage();
           this.calcRemainingCharsDescribeDamage();
           this.calcRemainingCharsDescribeDamagedInfrastructure();

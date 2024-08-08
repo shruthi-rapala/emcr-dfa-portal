@@ -93,13 +93,13 @@ export class DFAClaimMainComponent
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    let projectId = this.dfaClaimMainDataService.getProjectId();
+    let claimId = this.dfaClaimMainDataService.getClaimId();
     
-    if (projectId) {
-      this.dfaClaimMainDataService.setProjectId(projectId);
-      this.getFileUploadsForProject(projectId);
+    if (claimId) {
+      this.dfaClaimMainDataService.setClaimId(claimId);
+      //this.getFileUploadsForClaim(claimId);
     }
-    this.formCreationService.clearRecoveryPlanData();
+    this.formCreationService.clearRecoveryClaimData();
     this.formCreationService.clearClaimFileUploadsData();
 
     this.steps = this.componentService.createDFAClaimMainSteps();

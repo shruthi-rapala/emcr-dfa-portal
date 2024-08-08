@@ -484,6 +484,20 @@ namespace EMBC.DFA.API.Controllers
 
     public class RecoveryClaim
     {
-        public string? claimNumber { get; set; }
+        public string claimNumber { get; set; }
+        public ProjectStageOptionSet claimStatus { get; set; }
+        public bool isFirstClaimApproved { get; set; }
+        public bool isThisFinalClaim { get; set; }
+        public string totalInvoicesBeingClaimed { get; set; }
+        public string claimPST { get; set; }
+        public string claimGrossGST { get; set; }
+        public string totalActualClaim { get; set; }
+        public Invoice[] invoices { get; set; }
+    }
+
+    public class Invoice
+    {
+        public string InvoiceId { get; set; }
+        public string InvoiceNumber { get; set; }
     }
 }

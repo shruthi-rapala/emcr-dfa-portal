@@ -166,21 +166,20 @@ export class DFAClaimComponent
           this.dfaClaimMainDataService.setApplicationId(this.appId);
           let objClaimDTO = this.dfaClaimMainDataService.createDFAClaimMainDTO();
 
-          this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
-          this.dfaClaimMainDataService.setClaimId(null);
-          this.dfaClaimMainDataService.setViewOrEdit('addclaim');
-          this.router.navigate(['/dfa-claim-main']);
+          this.dfaClaimMainService.upsertClaim(objClaimDTO).subscribe(id => {
+            if (id) {
+              this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
+              this.dfaClaimMainDataService.setClaimId(null);
+              this.dfaClaimMainDataService.setViewOrEdit('addclaim');
 
-          //this.dfaClaimMainService.upsertClaim(objClaimDTO).subscribe(x => {
-          //  this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
-          //  this.dfaClaimMainDataService.setClaimId(null);
-          //  this.dfaClaimMainDataService.setViewOrEdit('addclaim');
-          //  this.router.navigate(['/dfa-claim-main']);
-          //},
-          //  error => {
-          //    console.error(error);
-          //    //document.location.href = 'https://dfa.gov.bc.ca/error.html';
-          //  });
+              this.dfaClaimMainDataService.setClaimId(id);
+              this.router.navigate(['/dfa-claim-main/' + id]);
+            }
+          },
+            error => {
+              console.error(error);
+              //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            });
         }
       });
   }

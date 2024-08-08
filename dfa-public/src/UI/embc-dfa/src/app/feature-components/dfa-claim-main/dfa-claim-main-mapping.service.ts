@@ -31,7 +31,8 @@ export class DFAClaimMainMappingService {
       .subscribe((claim) => {
         claim.setValue({
           ...dfaClaimMain.claim,
-          //isdamagedDateSameAsApplication: dfaClaimMain.project.isdamagedDateSameAsApplication === true ? 'true' : (dfaClaimMain.claim. === false ? 'false' : null),
+          isFirstClaimApproved: dfaClaimMain.claim.isFirstClaimApproved === true ? 'true' : (dfaClaimMain.claim.isFirstClaimApproved === false ? 'false' : null),
+          isThisFinalClaim: dfaClaimMain.claim.isThisFinalClaim === true ? 'true' : (dfaClaimMain.claim.isThisFinalClaim === false ? 'false' : null),
         });
         formGroup = claim;
       });

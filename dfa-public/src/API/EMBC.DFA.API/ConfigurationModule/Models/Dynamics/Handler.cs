@@ -51,6 +51,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<CurrentApplication> HandleApplicationDetails(string applicationId);
         Task<CurrentProject> HandleProjectDetails(string projectId);
         Task<string> HandleClaimCreateUpdate(dfa_claim_params objClaim);
+        Task<List<CurrentClaim>> HandleClaimList(string projectId);
+        Task<RecoveryClaim> HandleClaimDetails(string claimId);
     }
 
     public class Handler : IConfigurationHandler
@@ -175,6 +177,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             var objProject = await listsGateway.GetProjectDetailsAsync(projectId);
             var mappedProject = mapper.Map<CurrentProject>(objProject);
             return mappedProject;
+        }
+
+        public async Task<RecoveryClaim> HandleClaimDetails(string claimId)
+        {
+            var objClaim = await listsGateway.GetClaimDetailsAsync(claimId);
+            var mappedClaim = mapper.Map<RecoveryClaim>(objClaim);
+            return mappedClaim;
         }
 
         public async Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems)

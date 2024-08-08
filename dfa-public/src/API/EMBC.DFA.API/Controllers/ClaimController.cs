@@ -58,91 +58,9 @@ namespace EMBC.DFA.API.Controllers
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             var profileId = profile.Id;
-            var lstProjects = await handler.HandleProjectList(projectId);
+            var lstClaims = await handler.HandleClaimList(projectId);
 
-            //var lstProjects = new List<CurrentProject>()
-            //{
-            //    new CurrentProject()
-            //    {
-            //        ProjectId = "a75d9eed-2e24-ef11-b850-00505683fbf4",
-            //        ProjectName = "Damaged pond",
-            //        ProjectNumber = "1.0",
-            //        SiteLocation = "1700 Block Fir Street",
-            //        EstimatedCompletionDate = "2025-03-06T07:00:00.0000000Z",
-            //        Deadline18Month = "2025-07-12T07:00:00.0000000Z",
-            //        EMCRApprovedAmount = "(pending claim information)",
-            //        Status = "Submitted",
-            //        Stage = "Pending",
-            //        CreatedDate = "2024-03-06T07:00:00.0000000Z"
-            //    },
-            //    new CurrentProject()
-            //    {
-            //        ProjectId = "2",
-            //        ProjectName = "Overland flooding - Road",
-            //        ProjectNumber = "2.0",
-            //        SiteLocation = "145 Block Fir Street",
-            //        EstimatedCompletionDate = "2025-01-06T07:00:00.0000000Z",
-            //        Deadline18Month = "2025-11-22T07:00:00.0000000Z",
-            //        EMCRApprovedAmount = "(pending claim information)",
-            //        Status = "Decision Made",
-            //        Stage = "Approved",
-            //        CreatedDate = "2024-01-06T07:00:00.0000000Z"
-            //    },
-            //    new CurrentProject()
-            //    {
-            //        ProjectId = "3",
-            //        ProjectName = "Overland flooding - Road",
-            //        ProjectNumber = "3.0",
-            //        SiteLocation = "2200 Block Fir Street",
-            //        EstimatedCompletionDate = "2024-12-06T07:00:00.0000000Z",
-            //        Deadline18Month = "2025-11-06T07:00:00.0000000Z",
-            //        EMCRApprovedAmount = "(pending claim information)",
-            //        Status = "Decision Made",
-            //        Stage = "Ineligible",
-            //        CreatedDate = "2023-11-06T07:00:00.0000000Z"
-            //    },
-            //    new CurrentProject()
-            //    {
-            //        ProjectId = "4",
-            //        ProjectName = "Storm damage",
-            //        ProjectNumber = "4.0",
-            //        SiteLocation = "334 Block Fir Street",
-            //        EstimatedCompletionDate = "2024-08-06T07:00:00.0000000Z",
-            //        Deadline18Month = "2025-08-06T07:00:00.0000000Z",
-            //        EMCRApprovedAmount = "(pending claim information)",
-            //        Status = "Approval Pending",
-            //        Stage = "In Progress",
-            //        CreatedDate = "2024-02-06T07:00:00.0000000Z"
-            //    },
-            //    new CurrentProject()
-            //    {
-            //        ProjectId = "5",
-            //        ProjectName = "Storm damage",
-            //        ProjectNumber = "5.0",
-            //        SiteLocation = "654 Block Fir Street",
-            //        EstimatedCompletionDate = "2024-11-06T07:00:00.0000000Z",
-            //        Deadline18Month = "2025-06-06T07:00:00.0000000Z",
-            //        EMCRApprovedAmount = "(pending claim information)",
-            //        Status = "Draft",
-            //        Stage = string.Empty,
-            //        CreatedDate = "2024-05-23T07:00:00.0000000Z"
-            //    },
-            //    new CurrentProject()
-            //    {
-            //        ProjectId = "6",
-            //        ProjectName = "Overland flooding - Road",
-            //        ProjectNumber = "6.0",
-            //        SiteLocation = "403 Block Fir Street",
-            //        EstimatedCompletionDate = "2024-05-06T07:00:00.0000000Z",
-            //        Deadline18Month = "2025-10-06T07:00:00.0000000Z",
-            //        EMCRApprovedAmount = "(pending claim information)",
-            //        Status = "Decision Made",
-            //        Stage = "Ineligible",
-            //        CreatedDate = "2024-04-06T07:00:00.0000000Z"
-            //    },
-            //};
-
-            return Ok(lstProjects);
+            return Ok(lstClaims);
         }
 
         /// <summary>
@@ -168,22 +86,22 @@ namespace EMBC.DFA.API.Controllers
         /// Get project main by Id
         /// </summary>
         /// <returns> DFAProjectMain</returns>
-        /// <param name="projectId">The project Id.</param>
-        [HttpGet("appmain/byId")]
+        /// <param name="claimId">The claim Id.</param>
+        [HttpGet("appmain/byClaimId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<DFAClaimMain>> GetClaimMain(
             [FromQuery]
             [Required]
-            Guid projectId)
+            Guid claimId)
         {
             var userId = currentUserId;
             var appContactProfile = await handler.HandleGetUser(userId);
 
-            var dfa_project = await handler.GetProjectMainAsync(projectId);
+            var dfa_claim = await handler.HandleClaimDetails(claimId.ToString());
             DFAClaimMain dfaClaimMain = new DFAClaimMain();
-            dfaClaimMain.Id = projectId;
-            //dfaClaimMain.Project = mapper.Map<RecoveryPlan>(dfa_project);
+            dfaClaimMain.Id = claimId;
+            dfaClaimMain.Claim = dfa_claim;
 
             return Ok(dfaClaimMain);
         }
@@ -224,8 +142,8 @@ namespace EMBC.DFA.API.Controllers
         public string ProjectId { get; set; }
         public string ClaimId { get; set; }
         public string ClaimNumber { get; set; }
-        public string ProjectName { get; set; }
-        public string SiteLocation { get; set; }
+        public string FirstClaim { get; set; }
+        public string FinalClaim { get; set; }
         public string CreatedDate { get; set; }
         public string EstimatedCompletionDate { get; set; }
         public string EMCRApprovedAmount { get; set; }

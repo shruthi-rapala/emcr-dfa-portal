@@ -151,7 +151,7 @@ export class ClaimService extends BaseService {
   /**
    * Path part for operation claimGetClaimMain
    */
-  static readonly ClaimGetClaimMainPath = '/api/claims/appmain/byId';
+  static readonly ClaimGetClaimMainPath = '/api/claims/appmain/byClaimId';
 
   /**
    * Get project main by Id.
@@ -166,14 +166,14 @@ export class ClaimService extends BaseService {
   claimGetClaimMain$Response(params?: {
 
     /**
-     * The project Id.
+     * The claim Id.
      */
-    projectId?: string;
+    claimId?: string;
   }): Observable<StrictHttpResponse<DfaClaimMain>> {
 
     const rb = new RequestBuilder(this.rootUrl, ClaimService.ClaimGetClaimMainPath, 'get');
     if (params) {
-      rb.query('projectId', params.projectId, {});
+      rb.query('claimId', params.claimId, {});
     }
 
     return this.http.request(rb.build({
@@ -200,9 +200,9 @@ export class ClaimService extends BaseService {
   claimGetClaimMain(params?: {
 
     /**
-     * The project Id.
+     * The claim Id.
      */
-    projectId?: string;
+    claimId?: string;
   }): Observable<DfaClaimMain> {
 
     return this.claimGetClaimMain$Response(params).pipe(

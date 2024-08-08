@@ -9,11 +9,11 @@ export interface CurrentClaim {
   deadline18Month?: string;
   emcrApprovedAmount?: string;
   estimatedCompletionDate?: string;
+  finalClaim?: string;
+  firstClaim?: string;
   isErrorInStatus?: boolean;
   isHidden?: boolean;
   projectId?: string;
-  projectName?: string;
-  siteLocation?: string;
   stage?: string;
   status?: string;
   statusBar?: Array<ClaimStatusBar>;
