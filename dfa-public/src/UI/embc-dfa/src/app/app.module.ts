@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker'
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { ApiModule } from './core/api/api.module';
 import { CommonModule, APP_BASE_HREF, PlatformLocation } from '@angular/common';
@@ -68,7 +68,7 @@ import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor
         // 2024-07-04 EMCRI-217 waynezen: send BCeID Access_token along with API calls
         // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, 
         { provide: HTTP_INTERCEPTORS, useClass: BceidAuthInterceptor, multi: true },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withFetch()),
     ] })
 
 

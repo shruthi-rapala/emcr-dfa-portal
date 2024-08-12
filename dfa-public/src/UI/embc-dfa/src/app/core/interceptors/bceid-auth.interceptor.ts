@@ -26,10 +26,11 @@ export class BceidAuthInterceptor implements HttpInterceptor {
 
             if (token) {
               console.debug('[DFA] bceid-auth.interceptor: authenticated!');
-              const headers = req.headers
-                .set('Authorization', `Bearer ${token}`)
-              const authReq = req.clone({ headers });
-              return next.handle(authReq);
+              req = req.clone({
+                setHeaders: { 'Authorization': `Bearer ${token}` }
+              });
+
+              return next.handle(req);
             }
             console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
             return next.handle(req);

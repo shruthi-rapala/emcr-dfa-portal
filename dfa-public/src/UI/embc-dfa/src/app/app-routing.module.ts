@@ -18,9 +18,6 @@ const routes: Routes = [
   },
   {
     path: 'registration-method',
-    // resolve: {},
-    // component: LoginPageComponent,
-
     loadChildren: () =>
      import('./login-page/login-page.module').then((m) => m.LoginPageModule)
   },

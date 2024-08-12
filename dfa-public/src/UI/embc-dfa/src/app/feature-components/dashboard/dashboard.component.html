@@ -4,7 +4,7 @@
       <span class="page-heading">{{ this.businessName }}</span>
     </div>
     <div class="col-md-6">
-      <button *ngIf="hasActiveEvents == true" class="button-p save-button" mat-button
+      <button *ngIf="hasActiveEvents == true" class="button-p" mat-button
         (click)="navigateToDFAApplicationCreate()">
         Create a New Application
       </button>
@@ -46,7 +46,7 @@
   <div class="container" style="padding-bottom: 100px; padding-top: 30px;">
     <!--<app-alert></app-alert>-->
 
-    <nav mat-tab-nav-bar dynamicHeight>
+    <nav mat-tab-nav-bar dynamicHeight [tabPanel]="tabPanel">
       <a mat-tab-link *ngFor="let tabItem of tabs" [routerLink]="tabItem.route" routerLinkActive="active-tab"
         class="tabHead">
         <img class="inactive-curr" [src]="tabItem.inactiveImage" height="15" width="15" />
@@ -55,7 +55,10 @@
         &nbsp;&nbsp; {{ tabItem.label != "Profile" ? tabItem.label + " (" + tabItem.count + ")" : tabItem.label }}
       </a>
     </nav>
-    <!-- <router-outlet></router-outlet> -->
+    <mat-tab-nav-panel #tabPanel>
+      <router-outlet></router-outlet>
+    </mat-tab-nav-panel>
+    
     <app-loader class="spinner" [showLoader]="isLoading" strokeWidth="10" diameter="50">
     </app-loader>
   </div>

@@ -29,15 +29,19 @@ namespace EMBC.DFA.API.Controllers
         private readonly IHostEnvironment env;
         private readonly IMapper mapper;
         private readonly IConfigurationHandler handler;
+        // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
+        private readonly IUserService userService;
 
         public ApplicationController(
             IHostEnvironment env,
             IMapper mapper,
-            IConfigurationHandler handler)
+            IConfigurationHandler handler,
+            IUserService userService)
         {
             this.env = env;
             this.mapper = mapper;
             this.handler = handler;
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
@@ -156,8 +160,11 @@ namespace EMBC.DFA.API.Controllers
             dfaApplicationStart.OtherPreScreeningQuestions = mapper.Map<OtherPreScreeningQuestions>(dfa_appapplication);
 
             // Fill in profile
-            var userId = currentUserId;
-            var profile = await handler.HandleGetUser(userId);
+            // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
+            var userData = userService.GetJWTokenData();
+            if (userData == null) return NotFound();
+
+            var profile = await handler.HandleGetUser(userData.bceid_user_guid.ToString());
             dfaApplicationStart.ProfileVerification.profile = profile;
             return Ok(dfaApplicationStart);
         }
@@ -175,8 +182,11 @@ namespace EMBC.DFA.API.Controllers
             [Required]
             Guid applicationId)
         {
-            var userId = currentUserId;
-            var appContactProfile = await handler.HandleGetUser(userId);
+            // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
+            var userData = userService.GetJWTokenData();
+            if (userData == null) return NotFound();
+
+            var appContactProfile = await handler.HandleGetUser(userData.bceid_user_guid.ToString());
 
             var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
@@ -194,10 +204,11 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CurrentApplication>>> GetDFAApplications()
         {
-            var userId = currentUserId;
-            var profile = await handler.HandleGetUser(userId);
-            if (profile == null) return NotFound(userId);
-            var profileId = profile.Id;
+            // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
+            var userData = userService.GetJWTokenData();
+
+            if (userData == null) return NotFound();
+            var profileId = userData.bceid_user_guid.ToString();
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }

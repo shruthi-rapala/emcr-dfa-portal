@@ -197,22 +197,23 @@ namespace EMBC.DFA.API
             });
             services.AddCors(opts => opts.AddDefaultPolicy(policy =>
             {
-            //policy.AllowAnyHeader();
-            //policy.AllowAnyMethod();
-            //policy.AllowAnyOrigin();
+                // 2024-08-11 EMCRI-216 waynezen; Very important to AllowAnyHeader - otherwise CORS problems
+                policy.AllowAnyHeader();
+                //policy.AllowAnyMethod();
+                //policy.AllowAnyOrigin();
 
-            //policy.WithOrigins("https://dfa-portal-dev.apps.silver.devops.gov.bc.ca",
-            //                "https://dfa-landing-page-dev.apps.silver.devops.gov.bc.ca");
+                //policy.WithOrigins("https://dfa-portal-dev.apps.silver.devops.gov.bc.ca",
+                //                "https://dfa-landing-page-dev.apps.silver.devops.gov.bc.ca");
 
-            //try to get array of origins from section array
-            var corsOrigins = configuration.GetSection("cors:origins").GetChildren().Select(c => c.Value).ToArray();
-            // try to get array of origins from value
-            if (!corsOrigins.Any()) corsOrigins = configuration.GetValue("cors:origins", string.Empty).Split(',');
-            corsOrigins = corsOrigins.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
-            if (corsOrigins.Any())
-            {
-                policy.WithOrigins(corsOrigins);
-            }
+                //try to get array of origins from section array
+                var corsOrigins = configuration.GetSection("cors:origins").GetChildren().Select(c => c.Value).ToArray();
+                // try to get array of origins from value
+                if (!corsOrigins.Any()) corsOrigins = configuration.GetValue("cors:origins", string.Empty).Split(',');
+                corsOrigins = corsOrigins.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
+                if (corsOrigins.Any())
+                {
+                    policy.WithOrigins(corsOrigins);
+                }
             }));
         }
 

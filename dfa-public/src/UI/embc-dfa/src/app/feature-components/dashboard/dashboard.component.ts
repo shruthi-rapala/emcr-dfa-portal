@@ -13,9 +13,7 @@ import { EligibilityService } from '../../core/api/services/eligibility.service'
 import { DisasterEvent } from 'src/app/core/api/models';
 import { LoginService } from '../../core/services/login.service';
 
-//import {
-//  DfaAppapplication
-//} from 'src/app/core/api/models';
+import { DfaApplicationMain } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-dfa-dashboard',
@@ -78,6 +76,9 @@ export class DashboardComponent implements OnInit {
 
 
     //this.currentApplicationsCount = this.appSessionService.appNumber;
+    this.currentApplicationsCount = 0;
+    this.pastApplicationsCount = 0;
+    this.eventsCount = "0";
 
     this.appSessionService.currentApplicationsCount.subscribe((n: number) => {
       this.currentApplicationsCount = n;
@@ -132,7 +133,6 @@ export class DashboardComponent implements OnInit {
     this.isLoading = false;
   }
 
-
   countAppData(lstApp: Object): void {
     var res = JSON.parse(JSON.stringify(lstApp));
     let lstApplications = res;
@@ -150,11 +150,9 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateToDFAApplicationCreate(): void {
+
     this.dfaApplicationMainDataService.setApplicationId(null);
     this.dfaApplicationMainDataService.setViewOrEdit('add');
-
-    // 2024-07-22 EMCRI-301 waynezen; TODO fix 
-    // var profileId = this.profileDataService.getProfileId();
 
     this.router.navigate(['/dfa-application-main']);
   }

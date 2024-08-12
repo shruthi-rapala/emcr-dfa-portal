@@ -54,7 +54,7 @@ export class ComponentWrapperComponent implements OnInit {
 
     return Promise.resolve(
       import(
-        `../../forms/dfa-application-start-forms/profile-verification/profile-verification.component`
+        `../../forms/${this.folderPath}/${this.componentName}/${this.componentName}.component`
       )
     );
   }
