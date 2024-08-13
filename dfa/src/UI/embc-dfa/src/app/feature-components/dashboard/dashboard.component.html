@@ -47,7 +47,7 @@ If you're an Indigenous community or local government your process is different:
     <div class="container" style="padding-bottom: 100px; padding-top: 30px;">
       <!--<app-alert></app-alert>-->
 
-      <nav mat-tab-nav-bar dynamicHeight>
+      <nav mat-tab-nav-bar [tabPanel]="tabPanel" dynamicHeight>
         <a
           mat-tab-link
           *ngFor="let tabItem of tabs"
@@ -71,7 +71,10 @@ If you're an Indigenous community or local government your process is different:
           &nbsp;&nbsp; {{ tabItem.label != "Profile" ? tabItem.label + " (" + tabItem.count + ")" : tabItem.label }}
         </a>
       </nav>
-      <router-outlet></router-outlet>
+      <mat-tab-nav-panel #tabPanel>
+        <router-outlet></router-outlet>
+      </mat-tab-nav-panel>
+      
       <app-loader
         class="spinner"
         [showLoader]="isLoading"

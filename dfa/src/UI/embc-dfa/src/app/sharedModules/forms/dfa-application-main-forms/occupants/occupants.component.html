@@ -1,4 +1,4 @@
-<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+<mat-card appearance="outlined" class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
     <p class="sub-heading" style="font-size: 20px">Occupants, Secondary Applicants and Contacts</p>
@@ -91,7 +91,7 @@
                 + Add full-time occupant
               </button>
 
-              <mat-card *ngIf="showFullTimeOccupantForm">
+              <mat-card appearance="outlined" *ngIf="showFullTimeOccupantForm">
                 <p class="sub-heading" style="font-size: 15px">
                   New full time occupant
                 </p>
@@ -304,7 +304,7 @@
                 + Add secondary applicant
               </button>
 
-              <mat-card *ngIf="showSecondaryApplicantForm">
+              <mat-card appearance="outlined" *ngIf="showSecondaryApplicantForm">
                 <p class="sub-heading" style="font-size: 15px">
                   New secondary applicant
                 </p>
@@ -379,7 +379,8 @@
                       <input formControlName="phoneNumber"
                         matInput required
                         placeholder="Applicant phone"
-                        [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                        [imask]="phoneMask"
+                        />
                       <mat-error
                         *ngIf="
                           secondaryApplicantsForm.get('secondaryApplicant').controls.phoneNumber.invalid &&
@@ -583,7 +584,7 @@
                 + Add Other Contact
               </button>
 
-              <mat-card *ngIf="showOtherContactForm">
+              <mat-card appearance="outlined" *ngIf="showOtherContactForm">
                 <p class="sub-heading" style="font-size: 15px">
                   {{otherContactText}}
                 </p>
@@ -641,7 +642,7 @@
                         matInput
                         required
                         placeholder="Contact phone"
-                        [textMask]="{ mask: phoneMask, keepCharPositions: true }" />
+                        [imask]="phoneMask"/>
                         <mat-error
                         *ngIf="
                           otherContactsForm.get('otherContact').controls.phoneNumber.invalid &&

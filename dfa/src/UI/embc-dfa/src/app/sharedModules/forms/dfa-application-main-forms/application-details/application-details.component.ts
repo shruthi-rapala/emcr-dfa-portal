@@ -20,7 +20,7 @@ import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicantOption, InsuranceOption, Address, SmallBusinessOption, FarmOption } from 'src/app/core/api/models';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { TextMaskModule } from 'angular2-text-mask';
+import {  IMaskModule } from 'angular-imask';
 import { MatInputModule } from '@angular/material/input';
 import { ApplicationService, ProfileService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
@@ -41,21 +41,7 @@ export default class ApplicationDetailsComponent implements OnInit, OnDestroy {
   InsuranceOptions = InsuranceOption;
   SmallBusinessOptions = SmallBusinessOption;
   FarmOptions = FarmOption;
-
-  readonly phoneMask = [
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/
-  ];
+  readonly phoneMask = "000-000-0000";
   isResidentialTenant: boolean = false;
   isHomeowner: boolean = false;
   isSmallBusinessOwner: boolean = false;
@@ -188,7 +174,7 @@ export default class ApplicationDetailsComponent implements OnInit, OnDestroy {
     FormsModule,
     MatCardModule,
     MatFormFieldModule,
-    TextMaskModule,
+    IMaskModule,
     MatRadioModule,
     MatInputModule,
     MatButtonModule,
