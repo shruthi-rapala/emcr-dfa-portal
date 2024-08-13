@@ -42,7 +42,7 @@ import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor
         BrowserAnimationsModule,
         ReactiveFormsModule,
         CoreModule,
-        ApiModule,
+        ApiModule.forRoot({ rootUrl: '.' }),
         NgIdleKeepaliveModule.forRoot(),
         LayoutModule,
         ButtonsModule,
