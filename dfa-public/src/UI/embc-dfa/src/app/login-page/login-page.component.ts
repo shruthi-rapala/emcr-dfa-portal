@@ -18,20 +18,19 @@ export class LoginPageComponent implements OnInit {
     private loginService: LoginService,
   ) {
 
-    console.debug('[DFA] login-page constructor');
+    // console.debug('[DFA] login-page constructor');
   }
 
   ngOnInit(): void {
     //this.formCreationService.clearProfileData();
-    console.debug('[DFA] login page component!');
+    // console.debug('[DFA] login page component!');
 
   // 2024-07-28 EMCRI-507 waynezen; 
    this.loginService
     .checkAuth()
     .pipe(first())
     .subscribe((response: LoginResponse) => {
-
-        console.debug('[DFA] login-page isAuthenticated123: ' + response?.isAuthenticated);
+        // console.debug('[DFA] login-page isAuthenticated123: ' + response?.isAuthenticated);
         if (response?.isAuthenticated)
           {
             this.router.navigate(['/dfa-dashboard']);

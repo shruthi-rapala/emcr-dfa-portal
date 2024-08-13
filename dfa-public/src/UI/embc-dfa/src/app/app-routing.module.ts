@@ -5,7 +5,6 @@ import { AutoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { DashboardModule } from './sharedModules/components/dashboard/dashboard.module';
 import { LoginPageModule } from './login-page/login-page.module';
-//import { GlobalErrorhandler } from './global-errorhandler';
 import { EligibilityService } from './core/api/services/eligibility.service'
 import { ContactService } from './core/api/services/contact.service';
 
@@ -164,6 +163,5 @@ const routes: Routes = [
   // 2024-05-28 EMCRI-217 waynezen: relativeLinkResolution no longer supported in Angular v15
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  //providers: [{provide: ErrorHandler, useClass: GlobalErrorhandler }]
 })
 export class AppRoutingModule {}

@@ -4,6 +4,7 @@ import { FormCreationService } from '../../services/formCreation.service';
 import { CacheService } from '../../services/cache.service';
 import { ContactService } from 'src/app/core/api/services';
 import { LoginService } from '../../../core/services/login.service';
+import { first, map, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -28,28 +29,33 @@ export class HeaderComponent implements OnInit {
 
     this.showLoginMatMenu = false;
 
-    console.debug('[DFA] header.component about to call middle-tier API. isAuthenticated: ' + this.loginService?.isAuthenticated());
+    // console.debug('[DFA] header.component about to call middle-tier API.');
 
-    // 2024-07-22 EMCRI-440 waynezen; use new ContactService to get Business Name from Keycloak access token
-    /*
-    this.contactService.contactGetLoginInfo().subscribe(loginInfo => {
-      if (loginInfo) {
-        console.debug("[DFA] header.component: got names");
-        this.showLoginMatMenu = true;
-        this.lastName = loginInfo?.name;
-      }
-    });
-    */
-
+    // 2024-08-12 EMCRI-487 waynezen; use new ContactService to get Business Name from Keycloak access token
+    this.loginService
+      .isAuthenticated$
+      .subscribe(isAuthenticated => {
+        if (isAuthenticated) {
+          // console.debug("[DFA] header.component: is authenticated");
+          this.contactService.contactGetDashboardContactInfo()
+            .subscribe(loginInfo => {
+              // console.debug("[DFA] header.component: got names");
+              this.showLoginMatMenu = true;
+              this.lastName = loginInfo?.individualSurname;
+              this.firstName = loginInfo?.individualFirstname;    
+            })
+        }
+        else {
+          this.firstName = "<unknown>";
+        }
+      });
   }
 
   homeButton(): void { }
 
   public async signOut(): Promise<void> {
     // 2024-06-05 EMCRI-217 waynezen: use new BCeID async Auth
-    // await this.oidcSecurityService.logoffAndRevokeTokens();
-    this.cacheService.clear();
-    localStorage.clear();
+    this.loginService.logOff();
     this.router.navigate(['/registration-method']);
   }
 }

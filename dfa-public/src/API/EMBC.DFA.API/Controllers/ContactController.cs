@@ -40,6 +40,7 @@ namespace EMBC.DFA.API.Controllers
         }
 
         [HttpGet("dashboard")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bceid.BCeIDBusiness> GetDashboardContactInfo()
@@ -56,7 +57,7 @@ namespace EMBC.DFA.API.Controllers
             else
             {
                 Debug.WriteLine("No Authentication!");
-                return Ok(null);
+                return NotFound();
             }
         }
 

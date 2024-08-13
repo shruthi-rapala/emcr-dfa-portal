@@ -50,7 +50,7 @@ export class ComponentWrapperComponent implements OnInit {
    */
   loadComponent(): Promise<any> {
 
-    console.debug("[DFA] component-wrapper: folderPath=" + this.folderPath + ", componentName=" + this.componentName);
+    // console.debug("[DFA] component-wrapper: folderPath=" + this.folderPath + ", componentName=" + this.componentName);
 
     return Promise.resolve(
       import(

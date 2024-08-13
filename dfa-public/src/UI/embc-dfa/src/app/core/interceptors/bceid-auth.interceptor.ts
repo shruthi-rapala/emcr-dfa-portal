@@ -19,28 +19,28 @@ export class BceidAuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes("/api")) {
-      if (this.loginService?.isAuthenticated) {
+      if (this.loginService?.isAuthenticated$) {
         return this.loginService.getAccessToken().pipe(
           first(),
           mergeMap((token) => {
 
             if (token) {
-              console.debug('[DFA] bceid-auth.interceptor: authenticated!');
+              // console.debug('[DFA] bceid-auth.interceptor: authenticated!');
               req = req.clone({
                 setHeaders: { 'Authorization': `Bearer ${token}` }
               });
 
               return next.handle(req);
             }
-            console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
+            // console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
             return next.handle(req);
           })
         );
       }
-      console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
+      // console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
       return next.handle(req);
     }
-    console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
+    // console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
     return next.handle(req);
 
   }
