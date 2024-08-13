@@ -38,7 +38,7 @@
     "eslint-plugin-deprecation": "~3.0.0",
     "moment": "^2.29.4",
     "ng-recaptcha-2": "^14.0.0",
-    "ngx-markdown": "^17.2.1",
+    "ngx-markdown": "^18.0.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.8"
