@@ -57,7 +57,7 @@ namespace EMBC.DFA.API.Controllers
             else
             {
                 Debug.WriteLine("No Authentication!");
-                return NotFound();
+                return Ok();
             }
         }
 

@@ -25,22 +25,22 @@ export class BceidAuthInterceptor implements HttpInterceptor {
           mergeMap((token) => {
 
             if (token) {
-              // console.debug('[DFA] bceid-auth.interceptor: authenticated!');
+              console.log('[DFA] bceid-auth.interceptor: authenticated! token: ' + token);
               req = req.clone({
                 setHeaders: { 'Authorization': `Bearer ${token}` }
               });
 
               return next.handle(req);
             }
-            // console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
+            console.log('[DFA] bceid-auth.interceptor: not authenticated!');
             return next.handle(req);
           })
         );
       }
-      // console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
+      console.log('[DFA] bceid-auth.interceptor: not authenticated!');
       return next.handle(req);
     }
-    // console.debug('[DFA] bceid-auth.interceptor: not authenticated!');
+    console.log('[DFA] bceid-auth.interceptor: not authenticated!');
     return next.handle(req);
 
   }
