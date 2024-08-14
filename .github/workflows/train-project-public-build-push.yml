@@ -3,11 +3,11 @@ name: train-project-public-build-push.yml
 on:
   push:
     branches:
-       - train
+       - project-training
 
     paths:
       - "dfa-public/src/**"
-      - ".github/workflows/test-project-public-build-push.yml"
+      - ".github/workflows/train-project-public-build-push.yml"
   workflow_dispatch:
 env:
   UI_IMAGE_NAME: dfa-portal-ui-public
