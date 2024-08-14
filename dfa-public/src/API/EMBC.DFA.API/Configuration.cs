@@ -68,7 +68,8 @@ namespace EMBC.DFA.API
                  configuration.GetSection("auth:jwt").Bind(options);
                  options.TokenValidationParameters = new TokenValidationParameters
                  {
-                     ValidateAudience = false
+                     ValidateAudience = false,
+                     ValidateIssuer = false
                  };
 
                  // if token does not contain a dot, it is a reference token, forward to introspection auth scheme
@@ -95,7 +96,7 @@ namespace EMBC.DFA.API
                          var issuer = oidcConfig["issuer"];
 
                          var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
-                         logger.LogError(ctx.Exception, $"JWT authantication failed: clientId={clientId}, issuer={issuer}");
+                         logger.LogError(ctx.Exception, $"JWT authantication failed: clientId={clientId}, issuer={issuer}, jwt:authority={options.Authority}");
                      }
                  };
              })
