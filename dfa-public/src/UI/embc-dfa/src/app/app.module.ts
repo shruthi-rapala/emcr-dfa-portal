@@ -28,6 +28,7 @@ import { LoginService } from './core/services/login.service';
 import { map } from 'rxjs';
 import { AuthConfigModule } from './auth/auth-config.module';
 import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor'
+import { environment } from '../environments/environment';
 
 @NgModule({ declarations: [AppComponent, OutageBannerComponent, OutageDialogComponent],
     exports: [
@@ -42,7 +43,8 @@ import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor
         BrowserAnimationsModule,
         ReactiveFormsModule,
         CoreModule,
-        ApiModule.forRoot({ rootUrl: '.' }),
+        // 2024-08-14 EMCRI-216 waynezen; upgrade to Angular 18
+        ApiModule.forRoot({ rootUrl: environment.apiBaseUrl }),
         NgIdleKeepaliveModule.forRoot(),
         LayoutModule,
         ButtonsModule,
@@ -74,4 +76,5 @@ import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor
 
 export class AppModule { }
 export class MaterialModule { }
+
 
