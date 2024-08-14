@@ -5,5 +5,5 @@ export const environment = {
   httpRetryNumber: 3,
   httpRetryDelayInSeconds: 5,
   // 2024-08-14 EMCRI-216 waynezen; upgrade to Angular 18
-  apiBaseUrl: 'https://dfa-public-sector-dev.apps.silver.devops.gov.bc.ca'
+  apiBaseUrl: '.'
 };
