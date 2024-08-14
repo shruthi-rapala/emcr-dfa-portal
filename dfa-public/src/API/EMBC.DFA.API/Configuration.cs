@@ -53,6 +53,9 @@ namespace EMBC.DFA.API
             authJwtSection authJwt = new authJwtSection();
             configuration.GetSection("auth:jwt").Bind(authJwt);
 
+            // 2024-08-14 EMCRI-216 waynezen: add extra diagnostics
+            var oidcConfig = configuration.GetSection("auth:oidc");
+
             services.AddAuthentication()
              //JWT tokens handling
              .AddJwtBearer("jwt", options =>
@@ -87,8 +90,12 @@ namespace EMBC.DFA.API
                      OnAuthenticationFailed = async ctx =>
                      {
                          await Task.CompletedTask;
+
+                         var clientId = oidcConfig["clientId"];
+                         var issuer = oidcConfig["issuer"];
+
                          var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
-                         logger.LogError(ctx.Exception, "JWT authantication failed");
+                         logger.LogError(ctx.Exception, $"JWT authantication failed: clientId={clientId}, issuer={issuer}");
                      }
                  };
              })
