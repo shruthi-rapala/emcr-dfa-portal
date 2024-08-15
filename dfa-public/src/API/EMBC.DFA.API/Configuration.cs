@@ -66,6 +66,7 @@ namespace EMBC.DFA.API
                  };
 
                  configuration.GetSection("auth:jwt").Bind(options);
+
                  options.TokenValidationParameters = new TokenValidationParameters
                  {
                      ValidateAudience = false,
