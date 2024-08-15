@@ -453,6 +453,7 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.damagedPropertyAddress.isDamagedAddressVerified = this.form.get('isDamagedAddressVerified').value == 'true' ? true : (this.form.get('isDamagedAddressVerified').value == 'false' ? false : null);
         break;
       case 'property-damage':
+        if (!this.dfaApplicationMainDataService.propertyDamage) this.dfaApplicationMainDataService.propertyDamage = {};
         this.dfaApplicationMainDataService.propertyDamage.briefDescription = this.form.get('briefDescription').value;
         this.dfaApplicationMainDataService.propertyDamage.damageFromDate = this.form.get('damageFromDate').value;
         this.dfaApplicationMainDataService.propertyDamage.damageToDate = this.form.get('damageToDate').value;
