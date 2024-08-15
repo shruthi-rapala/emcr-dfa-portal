@@ -28,15 +28,19 @@ namespace EMBC.DFA.API.Controllers
         private readonly IHostEnvironment env;
         private readonly IMapper mapper;
         private readonly IConfigurationHandler handler;
+        // 2024-08-15 EMCRI-595 waynezen; BCeID Authentication
+        private readonly IUserService userService;
 
         public ClaimController(
             IHostEnvironment env,
             IMapper mapper,
-            IConfigurationHandler handler)
+            IConfigurationHandler handler,
+            IUserService userService)
         {
             this.env = env;
             this.mapper = mapper;
             this.handler = handler;
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);

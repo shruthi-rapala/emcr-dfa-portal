@@ -84,6 +84,10 @@ namespace EMBC.DFA.API.Controllers
                 var userData = userService.GetJWTokenData();
                 profile = mapper.Map<Profile>(userData);
             }
+
+            // 2024-08-15 EMCRI-595 waynezen; TODO: once the BCeID Web Service is working, get & compare information
+
+            /*
             else
             {
                 var profileBCSC = GetUserFromPrincipal();
@@ -116,6 +120,7 @@ namespace EMBC.DFA.API.Controllers
                     var contactId = await handler.HandleContact(mappedProfile);
                 }
             }
+            */
 
             if (profile == null) return NotFound(userId);
             return Ok(profile);
@@ -132,19 +137,24 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<Profile>> GetProfileWithUpdatedBCSC()
         {
             // 2024-07-11 EMCRI-440 waynezen: get contact information
-            var userId = userService.GetBCeIDBusinessId();
-            var appContactProfile = await handler.HandleGetUser(userId);
+            var profile = await handler.HandleGetUser(currentUserId);
 
-            // get BCeID profile
-            var userData = userService.GetJWTokenData();
+            if (profile == null)
+            {
+                // get BCeID profile
+                var userData = userService.GetJWTokenData();
+                profile = mapper.Map<Profile>(userData);
+            }
 
-            //// update appContact details from BCSC login
-            //appContactProfile.ContactDetails.Email = bcscProfile.ContactDetails.Email;
-            //appContactProfile.PersonalDetails.FirstName = bcscProfile.PersonalDetails.FirstName;
-            //appContactProfile.PersonalDetails.LastName = bcscProfile.PersonalDetails.LastName;
-            //appContactProfile.PrimaryAddress = bcscProfile.PrimaryAddress;
+            // 2024-08-15 EMCRI-595 waynezen; TODO: once the BCeID Web Service is working, get & compare information
+            /*
+            appContactProfile.ContactDetails.Email = bcscProfile.ContactDetails.Email;
+            appContactProfile.PersonalDetails.FirstName = bcscProfile.PersonalDetails.FirstName;
+            appContactProfile.PersonalDetails.LastName = bcscProfile.PersonalDetails.LastName;
+            appContactProfile.PrimaryAddress = bcscProfile.PrimaryAddress;
+            */
 
-            return Ok(appContactProfile);
+            return Ok(profile);
         }
 
         /// <summary>
@@ -171,7 +181,7 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> AddContact(Profile profile)
         {
-            profile.BCServiceCardId = currentUserId;
+            profile.BCeIDBusinessGuid = currentUserId;
             var mappedProfile = mapper.Map<dfa_appcontact>(profile);
             if (profile == null) return BadRequest("Profile details cannot be empty!");
 
@@ -265,9 +275,10 @@ namespace EMBC.DFA.API.Controllers
 
         public string IsMailingAddressSameAsPrimaryAddress { get; set; }
 
+        [Obsolete]
         public string? BCServiceCardId { get; set; }
         // 2024-07-17 EMCRI-440 waynezen; added
-        public string BCeIDUserGuid { get; set; }
+        public string BCeIDBusinessGuid { get; set; }
 
         public string? lastUpdatedDateBCSC { get; set; }
         public bool? isMailingAddressVerified { get; set; }
