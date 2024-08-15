@@ -32,7 +32,7 @@ import { MatDialog } from '@angular/material/dialog';
 // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - TextMaskModule not compatible
 //import { TextMaskModule } from 'angular2-text-mask';
 import { NgxMaskDirective, NgxMaskPipe, NgxMaskService, provideNgxMask } from 'ngx-mask';
-import { ApplicationService, OtherContactService, ProjectService } from 'src/app/core/api/services';
+import { ApplicationService, ClaimService, OtherContactService, ProjectService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
 import { MatSelectModule } from '@angular/material/select';
 import { DFAProjectMainDataService } from '../../../../feature-components/dfa-project-main/dfa-project-main-data.service';
