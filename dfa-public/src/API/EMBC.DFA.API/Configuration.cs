@@ -66,10 +66,10 @@ namespace EMBC.DFA.API
                  };
 
                  configuration.GetSection("auth:jwt").Bind(options);
+
                  options.TokenValidationParameters = new TokenValidationParameters
                  {
                      ValidateAudience = false,
-                     ValidateIssuer = false
                  };
 
                  // if token does not contain a dot, it is a reference token, forward to introspection auth scheme
