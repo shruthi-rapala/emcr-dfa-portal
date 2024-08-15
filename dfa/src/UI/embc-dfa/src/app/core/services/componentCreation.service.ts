@@ -87,19 +87,63 @@ export class ComponentCreationService {
       backButtonLabel: 'Return to Dashboard',
       isLast: false,
       loadWrapperButton: false,
-      lastStep: -1,
+      lastStep: -2,
       stepName: 'Application Details'
     },   
     {
-      component: 'property-damage',
-      nextButtonLabel: 'Next - Review & Submit',
+      component: 'damaged-property-address',
+      nextButtonLabel: 'Next - Cause of Damage',
       backButtonLabel: 'Go Back & Edit',
-      isLast: true,
+      isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
       stepName: 'Damaged Property'
+    },
+    {
+      component: 'property-damage',
+      nextButtonLabel: 'Next - Occupants',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Cause of Damage'
+    },
+    {
+      component: 'occupants',
+      nextButtonLabel: 'Next - Clean Up Log',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Occupants'
+    },
+    {
+      component: 'clean-up-log',
+      nextButtonLabel: 'Next - Damaged Items By Room',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Clean Up Log'
+    },
+    {
+      component: 'damaged-items-by-room',
+      nextButtonLabel: 'Next - Supporting Documents',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Damaged Items By Room'
+    },
+    {
+      component: 'supporting-documents',
+      nextButtonLabel: 'Next - Review',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Supporting Documents'
     }
-
   ];
 
   dfaProjectMainComponents: Array<any> = [

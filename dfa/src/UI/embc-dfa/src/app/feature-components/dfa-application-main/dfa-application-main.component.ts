@@ -345,6 +345,9 @@ export class DFAApplicationMainComponent
 
         // determine if step is complete
         switch (component) {
+          case 'application-details':
+            stepper.selected.completed = true;
+            break;
           case 'damaged-property-address':
             if (this.form.valid) stepper.selected.completed = true;
             else stepper.selected.completed = false;
