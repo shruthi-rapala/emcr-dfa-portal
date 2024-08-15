@@ -37,7 +37,7 @@ namespace EMBC.DFA.API.Controllers
         private readonly IConfigurationHandler handler;
         private readonly IUserService userService;
 
-        private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        private string currentUserId => userService.GetBCeIDBusinessId();
 
         public ProfileController(
             IHostEnvironment env,
@@ -68,7 +68,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<Profile>> GetProfile()
         {
             // 2024-07-11 EMCRI-440 waynezen: get contact information
-            var userId = userService.GetBCeIDUserId();
+            var userId = userService.GetBCeIDBusinessId();
 
             //var profile = mapper.Map<Profile>(await evacuationSearchService.GetRegistrantByUserId(userId));
             //var profile = null;
@@ -132,7 +132,7 @@ namespace EMBC.DFA.API.Controllers
         public async Task<ActionResult<Profile>> GetProfileWithUpdatedBCSC()
         {
             // 2024-07-11 EMCRI-440 waynezen: get contact information
-            var userId = userService.GetBCeIDUserId();
+            var userId = userService.GetBCeIDBusinessId();
             var appContactProfile = await handler.HandleGetUser(userId);
 
             // get BCeID profile

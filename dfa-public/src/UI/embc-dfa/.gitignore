@@ -49,4 +49,4 @@ Thumbs.db
 
 
 # ng-openapi-gen Generated Dynamics 365 Models 
-# /src/app/core/api/models/*.ts
+!src/app/core/api/*

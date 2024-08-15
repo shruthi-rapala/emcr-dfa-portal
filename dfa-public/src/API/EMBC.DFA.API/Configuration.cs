@@ -69,7 +69,6 @@ namespace EMBC.DFA.API
                  options.TokenValidationParameters = new TokenValidationParameters
                  {
                      ValidateAudience = false,
-                     ValidateIssuer = false
                  };
 
                  // if token does not contain a dot, it is a reference token, forward to introspection auth scheme
