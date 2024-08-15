@@ -96,6 +96,7 @@ export class DFAProjectMainComponent
       this.getFileUploadsForProject(projectId);
     }
     this.formCreationService.clearRecoveryPlanData();
+    this.formCreationService.clearFileUploadsData();
     //this.formCreationService.clearOtherContactsData();
 
     this.steps = this.componentService.createDFAProjectMainSteps();
@@ -356,17 +357,18 @@ export class DFAProjectMainComponent
   }
 
   submitFile(): void {
-    var contentDialog = globalConst.confirmSubmitApplicationBody;
+    var contentDialog = globalConst.confirmSubmitProjectBody;
     var height = '350px';
     if (this.dfaProjectMainDataService.getApplicationId()) {
-      contentDialog = globalConst.confirmUpdateApplicationBody;
+      contentDialog = globalConst.confirmSubmitProjectBody;
       height = '250px';
     }
 
     this.dialog
       .open(DFAConfirmSubmitDialogComponent, {
         data: {
-          content: contentDialog
+          content: contentDialog,
+          header: 'Submit Project Confirmation'
         },
         height: height,
         width: '700px',
@@ -408,11 +410,11 @@ export class DFAProjectMainComponent
 
   public getFileUploadsForProject(projectId: string) {
 
-    this.fileUploadsService.attachmentGetAttachments({ projectId: projectId }).subscribe({
+    this.fileUploadsService.attachmentGetProjectAttachments({ projectId: projectId }).subscribe({
       next: (attachments) => {
         // initialize list of file uploads
         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(attachments);
-
+        
       },
       error: (error) => {
         console.error(error);

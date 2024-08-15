@@ -39,6 +39,9 @@ import { DFAProjectMainDataService } from '../../../../feature-components/dfa-pr
 import { DFAProjectMainMappingService } from '../../../../feature-components/dfa-project-main/dfa-project-main-mapping.service';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import { DFAClaimMainDataService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
+import { DFAClaimMainMappingService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-mapping.service';
+import { ActivatedRoute } from '@angular/router';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -87,12 +90,16 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
+    private route: ActivatedRoute,
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
     public dfaProjectMainDataService: DFAProjectMainDataService,
+    public dfaClaimMainDataService: DFAClaimMainDataService,
     private applicationService: ApplicationService,
     private projectService: ProjectService,
+    private claimService: ClaimService,
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
     private dfaProjectMainMapping: DFAProjectMainMappingService,
+    private dfaClaimMainMapping: DFAClaimMainMappingService,
     private otherContactsService: OtherContactService,
     public dialog: MatDialog
   ) {
@@ -101,13 +108,13 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     this.isReadOnly = (dfaProjectMainDataService.getViewOrEdit() === 'view'
       || dfaProjectMainDataService.getViewOrEdit() === 'edit'
       || dfaProjectMainDataService.getViewOrEdit() === 'viewOnly');
-    this.setViewOrEditControls();
+    //this.setViewOrEditControls();
 
     this.dfaProjectMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.isReadOnly = (vieworedit === 'view'
       || vieworedit === 'edit'
         || vieworedit === 'viewOnly');
-      this.setViewOrEditControls();
+      //this.setViewOrEditControls();
     })
 
     this.vieworedit = dfaProjectMainDataService.getViewOrEdit();
@@ -142,10 +149,10 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
         this.setDisableInputFields()
       });
 
-    let projectId = this.dfaProjectMainDataService.getProjectId();
+    let claimId = this.route.snapshot.paramMap.get('id'); //this.dfaClaimMainDataService.getClaimId();
 
-    if (projectId) {
-      this.getRecoveryPlan(projectId);
+    if (claimId) {
+      this.getRecoveryClaim(claimId);
     }
 
     this.dfaProjectMainDataService.stepSelected.subscribe((stepSelected) => {
@@ -210,14 +217,11 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     }
   }
 
-  getRecoveryPlan(projectId: string) {
-    if (projectId) {
-      this.projectService.projectGetProjectMain({ projectId: projectId }).subscribe({
-        next: (dfaProjectMain) => {
-          if (dfaProjectMain && dfaProjectMain.project && dfaProjectMain.project.isdamagedDateSameAsApplication == false) {
-            this.showDates = true;
-          }
-          this.dfaProjectMainMapping.mapDFAProjectMain(dfaProjectMain);
+  getRecoveryClaim(claimId: string) {
+    if (claimId) {
+      this.claimService.claimGetClaimMain({ claimId: claimId }).subscribe({
+        next: (dfaClaimMain) => {
+          this.dfaClaimMainMapping.mapDFAClaimMain(dfaClaimMain);
           
         },
         error: (error) => {

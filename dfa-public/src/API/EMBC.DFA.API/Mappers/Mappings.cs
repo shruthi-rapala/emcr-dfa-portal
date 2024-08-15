@@ -317,11 +317,12 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_appcontactname, opts => opts.MapFrom(s => s.name))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
-            CreateMap<dfa_appdocumentlocation, FileUpload>()
-                .ForMember(d => d.projectId, opts => opts.MapFrom(s => s._dfa_applicationid_value))
-                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_appdocumentlocationsid))
+            CreateMap<dfa_projectdocumentlocation, FileUpload>()
+                .ForMember(d => d.projectId, opts => opts.MapFrom(s => s._dfa_projectid_value))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_projectdocumentlocationid))
                 .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_name))
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategory(s.dfa_documenttype)))
+                .ForMember(d => d.fileTypeText, opts => opts.MapFrom(s => s.dfa_documenttype))
                 .ForMember(d => d.requiredDocumentType, opts => opts.MapFrom(s => ConvertStringToRequiredDocumentType(s.dfa_requireddocumenttype)))
                 .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.dfa_description))
                 .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.createdon))
@@ -330,12 +331,12 @@ namespace EMBC.DFA.API.Mappers
 
             CreateMap<FileUpload, AttachmentEntity>()
                 .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileName))
-                .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_appapplication"))
+                .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_project"))
                 .ForMember(d => d.subject, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.fileDescription) ? s.fileName : s.fileDescription))
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
             CreateMap<FileUpload, SubmissionEntity>()
-                .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => "0c4a691d-9835-ef11-b850-00505683fbf4")) // s.projectId
+                .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => s.project.Id)) // s.projectId
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
                 .ForMember(d => d.dfa_requireddocumenttype, opts => opts.MapFrom(s => s.requiredDocumentType)) // TODO map required file type
@@ -355,6 +356,12 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => s.dfa_approvedcost == null ? 0 : s.dfa_approvedcost))
                 .ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.EstimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
+
+            CreateMap<dfa_claim_retrieve, RecoveryClaim>()
+                .ForMember(d => d.claimNumber, opts => opts.MapFrom(s => s.dfa_name))
+                //.ForMember(d => d.claimId, opts => opts.MapFrom(s => s.dfa_projectclaimid))
+                .ForMember(d => d.isThisFinalClaim, opts => opts.MapFrom(s => s.dfa_finalclaim))
+                .ForMember(d => d.isFirstClaimApproved, opts => opts.MapFrom(s => s.dfa_isfirstclaim));
 
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
@@ -466,6 +473,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_descriptionofmaterialneededtorepair, opts => opts.MapFrom(s => s.Project.repairDamagedInfrastructure))
                 .ForMember(d => d.dfa_estimatedcompletiondateofproject, opts => opts.MapFrom(s => Convert.ToDateTime(s.Project.estimatedCompletionDate)))
                 .ForMember(d => d.dfa_estimatedcost, opts => opts.MapFrom(s => Convert.ToInt32(s.Project.estimateCostIncludingTax)));
+
+            CreateMap<DFAClaimMain, dfa_claim_params>()
+                .ForMember(d => d.dfa_recoveryplanid, opts => opts.MapFrom(s => s.ProjectId));
+                //.ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.ProjectId));
 
             CreateMap<dfa_projectmain_retrieve, RecoveryPlan>()
                 .ForMember(d => d.projectNumber, opts => opts.MapFrom(s => s.dfa_projectnumber))

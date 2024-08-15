@@ -42,6 +42,8 @@ import { DFAConfirmDashboardNavigationDialogComponent } from './components/dialo
 import { SecondaryApplicantWarningDialogComponent } from './components/dialog-components/secondary-applicant-warning-dialog/secondary-applicant-warning-dialog.component';
 import { DFAApplicationSubmissionMsgDialogComponent } from './components/dialog-components/dfa-application-submission-msg-dialog/dfa-application-submission-msg.component';
 import { DFADeleteConfirmInvoiceDialogComponent } from './components/dialog-components/dfa-confirm-delete-invoice-dialog/dfa-confirm-delete-invoice.component';
+import { DFAConfirmClaimCreateDialogComponent } from './components/dialog-components/dfa-confirm-claim-create-dialog/dfa-confirm-claim-create-dialog.component';
+import { DFAConfirmProjectCreateDialogComponent } from './components/dialog-components/dfa-confirm-project-create-dialog/dfa-confirm-project-create-dialog.component';
 
 @NgModule({
   imports: [
@@ -88,7 +90,9 @@ import { DFADeleteConfirmInvoiceDialogComponent } from './components/dialog-comp
     DFAConfirmDashboardNavigationDialogComponent,
     SecondaryApplicantWarningDialogComponent,
     DFAApplicationSubmissionMsgDialogComponent,
-    DFADeleteConfirmInvoiceDialogComponent
+    DFADeleteConfirmInvoiceDialogComponent,
+    DFAConfirmClaimCreateDialogComponent,
+    DFAConfirmProjectCreateDialogComponent
   ],
   exports: [
     AppLoaderComponent,
@@ -115,7 +119,9 @@ import { DFADeleteConfirmInvoiceDialogComponent } from './components/dialog-comp
     DFAConfirmDashboardNavigationDialogComponent,
     SecondaryApplicantWarningDialogComponent,
     DFAApplicationSubmissionMsgDialogComponent,
-    DFADeleteConfirmInvoiceDialogComponent
+    DFADeleteConfirmInvoiceDialogComponent,
+    DFAConfirmClaimCreateDialogComponent,
+    DFAConfirmProjectCreateDialogComponent
   ]
 })
 export class CoreModule {}

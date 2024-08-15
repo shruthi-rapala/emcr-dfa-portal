@@ -40,7 +40,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsAsync(Guid applicationId);
         Task<string> HandleFileUploadAsync(SubmissionEntity submission);
         Task<string> DeleteFileUploadAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms);
-        Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId);
+        Task<IEnumerable<dfa_projectdocumentlocation>> GetProjectFileUploadsAsync(Guid projectId);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
         Task<int> HandleEvents();
         Task<IEnumerable<dfa_event>> HandleOpenPublicEventList();
@@ -50,6 +50,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<List<CurrentProject>> HandleProjectList(string applicationId);
         Task<CurrentApplication> HandleApplicationDetails(string applicationId);
         Task<CurrentProject> HandleProjectDetails(string projectId);
+        Task<string> HandleClaimCreateUpdate(dfa_claim_params objClaim);
+        Task<List<CurrentClaim>> HandleClaimList(string projectId);
+        Task<RecoveryClaim> HandleClaimDetails(string claimId);
     }
 
     public class Handler : IConfigurationHandler
@@ -176,6 +179,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return mappedProject;
         }
 
+        public async Task<RecoveryClaim> HandleClaimDetails(string claimId)
+        {
+            var objClaim = await listsGateway.GetClaimDetailsAsync(claimId);
+            var mappedClaim = mapper.Map<RecoveryClaim>(objClaim);
+            return mappedClaim;
+        }
+
         public async Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems)
         {
             var result = await listsGateway.UpsertDeleteDamagedItemAsync(objDamagedItems);
@@ -243,9 +253,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return result;
         }
 
-        public async Task<IEnumerable<dfa_appdocumentlocation>> GetFileUploadsAsync(Guid applicationId)
+        public async Task<IEnumerable<dfa_projectdocumentlocation>> GetProjectFileUploadsAsync(Guid projectId)
         {
-            return await listsGateway.GetDocumentLocationsListAsync(applicationId);
+            return await listsGateway.GetProjectDocumentLocationsListAsync(projectId);
         }
 
         public async Task<int> HandleEvents()
@@ -272,6 +282,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public async Task<string> HandleProjectCreateUpdate(dfa_project_params objProject)
         {
             var result = await listsGateway.UpsertProject(objProject);
+            return result;
+        }
+
+        public async Task<List<CurrentClaim>> HandleClaimList(string projectId)
+        {
+            var lstApps = await listsGateway.GetClaimListAsync(projectId);
+            var mappedClaims = mapper.Map<List<CurrentClaim>>(lstApps);
+            return mappedClaims;
+        }
+
+        public async Task<string> HandleClaimCreateUpdate(dfa_claim_params objClaim)
+        {
+            var result = await listsGateway.UpsertClaim(objClaim);
             return result;
         }
     }

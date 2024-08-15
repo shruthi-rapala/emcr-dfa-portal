@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { DfaApplicationMain, FullTimeOccupant, SecondaryApplicant, OtherContact, DamagedRoom, FileUpload, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
+import { DfaApplicationMain, FullTimeOccupant, SecondaryApplicant, OtherContact, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { DfaClaimMain } from '../../core/model/dfa-claim-main.model';
 import { DFAClaimMainDataService } from './dfa-claim-main-data.service';
@@ -31,7 +31,8 @@ export class DFAClaimMainMappingService {
       .subscribe((claim) => {
         claim.setValue({
           ...dfaClaimMain.claim,
-          //isdamagedDateSameAsApplication: dfaClaimMain.project.isdamagedDateSameAsApplication === true ? 'true' : (dfaClaimMain.claim. === false ? 'false' : null),
+          isFirstClaimApproved: dfaClaimMain.claim.isFirstClaimApproved === true ? 'true' : (dfaClaimMain.claim.isFirstClaimApproved === false ? 'false' : null),
+          isThisFinalClaim: dfaClaimMain.claim.isThisFinalClaim === true ? 'true' : (dfaClaimMain.claim.isThisFinalClaim === false ? 'false' : null),
         });
         formGroup = claim;
       });

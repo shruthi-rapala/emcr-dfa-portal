@@ -68,7 +68,7 @@ export class InvoiceForm {
     if (invoice.invoiceNumber) {
       this.invoiceNumber.setValue(invoice.invoiceNumber);
     }
-    this.invoiceNumber.setValidators(null);
+    this.invoiceNumber.setValidators(Validators.required);
 
     if (invoice.vendorName) {
       this.vendorName.setValue(invoice.vendorName);

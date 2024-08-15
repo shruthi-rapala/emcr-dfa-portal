@@ -62,6 +62,12 @@ export const confirmUpdateApplicationBody: DialogContent = {
   cancelButton: 'No, I don\'t want to update my application.'
 }
 
+export const confirmSubmitProjectBody: DialogContent = {
+  text: 'Are you sure you want to submit the project?<br/><br/><br/>',
+  confirmButton: 'Yes, I want to submit the project.',
+  cancelButton: 'No, I don\'t want to submit the project now.'
+}
+
 export const confirmPrescreeningBody: DialogContent = {
   text: 'You may be eligible for DFA and may submit an application.' +
   '<br/><br/>Please note that during the application process, information that you provide may make you ineligible for DFA. ',
@@ -245,6 +251,20 @@ export const uneditableApplicationTypeAlert: DialogContent = {
 export const notifyBCSCAddressChangeBody: DialogContent = {
   text: 'A difference in the primary address from BC Services Card has been detected. Please make sure the Damaged property address is correct before proceeding..!',
   cancelButton: 'Close'
+}
+
+export const confirmCreateClaimBody: DialogContent = {
+  text: '<br/>Are you sure you want to create a new claim?<br/><br/>' +
+    'Once you proceed, a new claim will be created with auto generated claim number.<br/><br/><br/>',
+  confirmButton: 'Yes, I want to proceed.',
+  cancelButton: 'No, I don\'t want to create a new claim.'
+}
+
+export const confirmCreateProjectBody: DialogContent = {
+  text: '<br/>Are you sure you want to create a new project?<br/><br/>' +
+    'Once you proceed, a new project will be created.<br/><br/><br/>',
+  confirmButton: 'Yes, I want to proceed.',
+  cancelButton: 'No, I don\'t want to create a new project.'
 }
 
 

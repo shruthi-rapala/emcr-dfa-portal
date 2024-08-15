@@ -170,13 +170,54 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
         this.invoiceForm = invoice;
         //this.setViewOrEditControls();
         //this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
-        //if (this.propertyDamageForm.get('otherDamage').value === 'true') {
-        //  this.propertyDamageForm.get('otherDamageText').setValidators([Validators.required, Validators.maxLength(100)]);
-        //} else {
-        //  this.propertyDamageForm.get('otherDamageText').setValidators([Validators.maxLength(100)]);
-        //}
+        if (this.invoiceForm.get('isGoodsReceivedonInvoiceDate').value === 'false') {
+          this.invoiceForm.get('goodsReceivedDatePicker').setValidators([Validators.required]);
+        } else {
+          this.invoiceForm.get('goodsReceivedDatePicker').setValidators(null);
+        }
+
+        if (this.invoiceForm.get('isClaimforPartofTotalInvoice').value === 'true') {
+          this.invoiceForm.get('reasonClaimingPartofTotalInvoice').setValidators([Validators.required]);
+        } else {
+          this.invoiceForm.get('reasonClaimingPartofTotalInvoice').setValidators(null);
+        }
+
+        this.invoiceForm.updateValueAndValidity();
+
         //this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
         //this.propertyDamageForm.updateValueAndValidity();
+      });
+
+    this.invoiceForm
+      .get('isGoodsReceivedonInvoiceDate')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.invoiceForm.get('isGoodsReceivedonInvoiceDate').reset();
+        } else if (value == 'false') {
+          this.invoiceForm.get('goodsReceivedDate').setValidators([Validators.required]);
+        } else if (value == 'true') {
+          this.invoiceForm.get('goodsReceivedDate').reset();
+          this.invoiceForm.get('goodsReceivedDate').setValidators(null);
+        }
+        this.invoiceForm.get('goodsReceivedDate').updateValueAndValidity();
+        this.invoiceForm.updateValueAndValidity();
+      });
+
+    this.invoiceForm
+      .get('isClaimforPartofTotalInvoice')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.invoiceForm.get('reasonClaimingPartofTotalInvoice').reset();
+        } else if (value == 'true') {
+          this.invoiceForm.get('reasonClaimingPartofTotalInvoice').setValidators([Validators.required]);
+        } else if (value == 'false') {
+          this.invoiceForm.get('reasonClaimingPartofTotalInvoice').reset();
+          this.invoiceForm.get('reasonClaimingPartofTotalInvoice').setValidators(null);
+        }
+        this.invoiceForm.get('reasonClaimingPartofTotalInvoice').updateValueAndValidity();
+        this.invoiceForm.updateValueAndValidity();
       });
 
     if (objInvData != null) {
@@ -290,6 +331,10 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
 
   AddInvoice() {
     var invObj = this.invoiceForm.getRawValue();
+    if (!this.invoiceForm.valid) {
+      this.invoiceForm.markAllAsTouched();
+      return false;
+    }
     this.dialogRef.close({ event: 'confirm', invData: invObj });
     this.formCreationService.clearInvoiceData();
   }

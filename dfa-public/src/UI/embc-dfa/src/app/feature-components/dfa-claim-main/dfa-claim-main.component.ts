@@ -27,6 +27,8 @@ import { DFAClaimMainMappingService } from './dfa-claim-main-mapping.service';
 import RecoveryPlanComponent from '../../sharedModules/forms/dfa-project-main-forms/recovery-plan/recovery-plan.component';
 import { DFAClaimMainDataService } from './dfa-claim-main-data.service';
 import { DFAClaimMainService } from './dfa-claim-main.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { Invoice } from '../../core/model/dfa-invoice.model';
 
 @Component({
   selector: 'app-dfa-claim-main',
@@ -61,6 +63,8 @@ export class DFAClaimMainComponent
   showStepper: boolean = false;
   selectedStepIndex: number;
   prevStepIndex: number;
+  invoiceSummaryDataSource = new MatTableDataSource<Invoice>();
+
 
   constructor(
     private router: Router,
@@ -89,14 +93,14 @@ export class DFAClaimMainComponent
 
   ngOnInit(): void {
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
-    let projectId = this.dfaClaimMainDataService.getProjectId();
+    let claimId = this.dfaClaimMainDataService.getClaimId();
     
-    if (projectId) {
-      this.dfaClaimMainDataService.setProjectId(projectId);
-      this.getFileUploadsForProject(projectId);
+    if (claimId) {
+      this.dfaClaimMainDataService.setClaimId(claimId);
+      //this.getFileUploadsForClaim(claimId);
     }
-    this.formCreationService.clearRecoveryPlanData();
-    //this.formCreationService.clearOtherContactsData();
+    this.formCreationService.clearRecoveryClaimData();
+    this.formCreationService.clearClaimFileUploadsData();
 
     this.steps = this.componentService.createDFAClaimMainSteps();
     this.vieworedit = this.dfaClaimMainDataService.getViewOrEdit();
@@ -104,6 +108,12 @@ export class DFAClaimMainComponent
     
     //this.showStepper = true;
     this.dfaClaimMainHeading = 'Claim Details'
+
+    const _invoiceFormArray = this.formCreationService.recoveryClaimForm.value.get('invoices');
+    _invoiceFormArray.valueChanges
+      .pipe(
+        mapTo(_invoiceFormArray.getRawValue())
+      ).subscribe(data => this.invoiceSummaryDataSource.data = _invoiceFormArray.getRawValue());
 
   }
 
@@ -295,8 +305,8 @@ export class DFAClaimMainComponent
   setFormData(component: string): void {
     
     switch (component) {
-      case 'recovery-plan':
-        //this.dfaClaimMainDataService.recoveryPlan.projectName = this.form.get('projectName').value;
+      case 'recovery-claim':
+        this.dfaClaimMainDataService.recoveryClaim.isThisFinalClaim = this.form.get('isThisFinalClaim').value == 'true' ? true : (this.form.get('isThisFinalClaim').value == 'false' ? false : null);
         //this.dfaClaimMainDataService.recoveryPlan.projectNumber = this.form.get('projectNumber').value;
         //this.dfaClaimMainDataService.recoveryPlan.projectStatus = this.form.get('projectStatus').value;
         //this.dfaClaimMainDataService.recoveryPlan.isdamagedDateSameAsApplication = this.form.get('isdamagedDateSameAsApplication').value == 'true' ? true : (this.form.get('isdamagedDateSameAsApplication').value == 'false' ? false : null);
@@ -408,7 +418,7 @@ export class DFAClaimMainComponent
 
   public getFileUploadsForProject(projectId: string) {
 
-    this.fileUploadsService.attachmentGetAttachments({ projectId: projectId }).subscribe({
+    this.fileUploadsService.attachmentGetProjectAttachments({ projectId: projectId }).subscribe({
       next: (attachments) => {
         // initialize list of file uploads
         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(attachments);

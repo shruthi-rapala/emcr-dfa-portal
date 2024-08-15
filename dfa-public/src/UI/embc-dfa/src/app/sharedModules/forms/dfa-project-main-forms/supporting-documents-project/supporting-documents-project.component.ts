@@ -53,7 +53,7 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
   formCreationService: FormCreationService;
   showSupportingFileForm: boolean = false;
   supportingFilesDataSource = new MatTableDataSource();
-  documentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate', 'icons']
+  documentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate'] //, 'icons'
   documentSummaryDataSource = new MatTableDataSource();
   isLoading: boolean = false;
   isdisabled: string = 'false';
@@ -125,7 +125,6 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
       .getSupportingDocumentsForm()
       .subscribe((supportingDocuments) => {
         this.supportingDocumentsForm = supportingDocuments;
-        this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
       });
 
       this.fileUploadForm$ = this.formCreationService
@@ -230,7 +229,6 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
         this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
         return;
       }
-
     if (this.fileUploadForm.get('supportingFilesFileUpload').status === 'VALID') {
       this.isLoading = true;
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
@@ -350,46 +348,16 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
       let foundIndex = fileUploads.findIndex(x => x.requiredDocumentType === element.requiredDocumentType);
       element.deleteFlag = true;
       element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
+      this.attachmentsService.attachmentDeleteProjectAttachment({body: element}).subscribe({
         next: (result) => {
           fileUploads.splice(foundIndex, 1);
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           switch (element.requiredDocumentType) {
-            case "InsuranceTemplate":
-              this.initRequiredFileForm("insuranceTemplateFileUpload");
+            case "PreEvent":
+              this.initRequiredFileForm("prevEventConditionFileUpload");
               break;
-            case "Identification":
-              this.initRequiredFileForm("identificationFileUpload");
-              break;
-            case "TenancyAgreement":
-              this.initRequiredFileForm("rentalAgreementFileUpload");
-              break;
-            case "ResidentialTenancyAgreement":
-              this.initRequiredFileForm("tenancyAgreementFileUpload");
-              break;
-            case "T1GeneralIncomeTaxReturn":
-              this.initRequiredFileForm("T1IncomeTaxReturnFileUpload");
-              break;
-            case "T2CorporateIncomeTaxReturm":
-              this.initRequiredFileForm("T2IncomeTaxReturnFileUpload");
-              break;
-            case "FinancialStatements":
-              this.initRequiredFileForm("financialStatementsFileUpload");
-              break;
-            case "ProofOfOwnership":
-              this.initRequiredFileForm("proofOfOwnershipFileUpload");
-              break;
-            case "T776":
-              this.initRequiredFileForm("T776FileUpload");
-              break;
-            case "DirectorsListing":
-              this.initRequiredFileForm("directorsListingFileUpload");
-              break;
-            case "RegistrationProof":
-              this.initRequiredFileForm("registrationProofFileUpload");
-              break;
-            case "StructureAndPurpose":
-              this.initRequiredFileForm("structureAndPurposeFileUpload");
+            case "PostEvent":
+              this.initRequiredFileForm("postEventConditionFileUpload");
               break;
             default:
               break;
@@ -410,7 +378,7 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
       let index = fileUploads?.indexOf(element);
       element.deleteFlag = true;
       element.fileData = element?.fileData?.substring(element?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      this.attachmentsService.attachmentUpsertDeleteAttachment({body: element}).subscribe({
+      this.attachmentsService.attachmentDeleteProjectAttachment({body: element}).subscribe({
         next: (result) => {
           fileUploads[index] = element;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
@@ -437,7 +405,7 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
     //this.fileUploadForm.get(formName).get('requiredDocumentType').setValue(Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.InsuranceTemplate)]);
     this.fileUploadForm.get('addNewFileUploadIndicator').setValue(true);
     this.fileUploadForm.get(formName).get('deleteFlag').setValue(false);
-    this.fileUploadForm.get(formName).get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    this.fileUploadForm.get(formName).get('projectId').setValue(this.dfaProjectMainDataService.getProjectId());
     this.fileUploadForm.get(formName).get('id').setValue(null);
     this.fileUploadForm.updateValueAndValidity();
   }

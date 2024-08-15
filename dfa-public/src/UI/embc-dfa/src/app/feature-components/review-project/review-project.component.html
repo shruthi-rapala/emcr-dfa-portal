@@ -90,7 +90,7 @@
           </div>
         </div>
 
-        <div class="row info-detail">
+        <div class="row info-detail" *ngIf="(formCreationService.recoveryPlanForm$ | async)?.value.isdamagedDateSameAsApplication === 'false'">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.differentDamageDatesReason || (formCreationService.recoveryPlanForm$ | async)?.controls?.differentDamageDatesReason.invalid}">Date of Damage Difference Reason:</span></div>
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.differentDamageDatesReason || (formCreationService.recoveryPlanForm$ | async)?.controls?.differentDamageDatesReason.invalid}">

@@ -33,6 +33,8 @@ import { ApplicationExtended } from '../../sharedModules/dashboard-components/df
 // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18
 import moment from 'moment';
 import { DFAClaimMainDataService } from '../dfa-claim-main/dfa-claim-main-data.service';
+import { DFAConfirmClaimCreateDialogComponent } from '../../core/components/dialog-components/dfa-confirm-claim-create-dialog/dfa-confirm-claim-create-dialog.component';
+import { DFAClaimMainService } from '../dfa-claim-main/dfa-claim-main.service';
 
 @Component({
   selector: 'app-dfa-claim-dashboard',
@@ -71,6 +73,7 @@ export class DFAClaimComponent
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dfaProjectMainDataService: DFAProjectMainDataService,
     private dfaClaimMainDataService: DFAClaimMainDataService,
+    private dfaClaimMainService: DFAClaimMainService,
     private appSessionService: AppSessionService,
     private projService: ProjectService,
     private applicationService: ApplicationService,
@@ -136,10 +139,50 @@ export class DFAClaimComponent
   }
 
   navigateToDFAClaimCreate(): void {
-    this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
-    this.dfaClaimMainDataService.setClaimId(null);
-    this.dfaClaimMainDataService.setViewOrEdit('addclaim');
-    this.router.navigate(['/dfa-claim-main']);
+    this.confirmCreateClaim();
+    
+  }
+
+  confirmCreateClaim(): void {
+    var contentDialog = globalConst.confirmCreateClaimBody;
+
+    this.dialog
+      .open(DFAConfirmClaimCreateDialogComponent, {
+        data: {
+          content: contentDialog
+        },
+        height: '350px',
+        width: '700px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          
+          //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+          //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
+          //this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
+          //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+          this.dfaClaimMainDataService.setProjectId(this.projId);
+          this.dfaClaimMainDataService.setApplicationId(this.appId);
+          let objClaimDTO = this.dfaClaimMainDataService.createDFAClaimMainDTO();
+
+          this.dfaClaimMainService.upsertClaim(objClaimDTO).subscribe(id => {
+            if (id) {
+              this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
+              this.dfaClaimMainDataService.setClaimId(null);
+              this.dfaClaimMainDataService.setViewOrEdit('addclaim');
+
+              this.dfaClaimMainDataService.setClaimId(id);
+              this.router.navigate(['/dfa-claim-main/' + id]);
+            }
+          },
+            error => {
+              console.error(error);
+              //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            });
+        }
+      });
   }
 
   countAppData(lstApp: Object): void {

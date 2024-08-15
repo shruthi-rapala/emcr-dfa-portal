@@ -64,13 +64,12 @@ export class ReviewClaimComponent implements OnInit {
         mapTo(recoveryClaimForm.getRawValue())
       ).subscribe(data => this.recoveryPlanFormAbstract = recoveryClaimForm.getRawValue());
 
-    // subscribe to changes in full time occupants
+    // subscribe to changes in invoices
     const _invoiceFormArray = this.formCreationService.recoveryClaimForm.value.get('invoices');
     _invoiceFormArray.valueChanges
       .pipe(
         mapTo(_invoiceFormArray.getRawValue())
     ).subscribe(data => this.invoiceSummaryDataSource.data = _invoiceFormArray.getRawValue());
-    debugger
     //// subscribe to changes in secondary applicants
     //const _secondaryApplicantsFormArray = this.formCreationService.secondaryApplicantsForm.value.get('secondaryApplicants');
     //_secondaryApplicantsFormArray.valueChanges

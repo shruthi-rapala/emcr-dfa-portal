@@ -179,7 +179,7 @@
           </div>
         </div>
 
-        <div class="row" >
+        <div class="row" *ngIf="showDates == true">
           <p  style="font-size: 15px">
             Why is the date(s) of damage for this site different from the dates provided on the application?<span style="color:red" >*</span>
           </p>
@@ -192,7 +192,7 @@
                 [rows]="5"
                 required
                 style="resize:none"
-                maxlength="200"></textarea>
+                maxlength="2000"></textarea>
               <!--<mat-hint>{{ remainingLength }} characters remaining.</mat-hint>-->
             </mat-form-field><br/>
           </div>
@@ -234,7 +234,9 @@
                 [rows]="5"
                 required
                 style="resize:none"
-                maxlength="200"></textarea>
+                (keyup)="calcRemainingCharsInfrastructure()"
+                maxlength="2000"></textarea>
+              <mat-hint>{{ remainingLengthInfrastructure }} characters remaining.</mat-hint>
             </mat-form-field><br/>
           </div>
         </div>
@@ -251,7 +253,9 @@
                 [rows]="5"
                 required
                 style="resize:none"
-                maxlength="200"></textarea>
+                (keyup)="calcRemainingCharsCauseDamage()"
+                maxlength="2000"></textarea>
+              <mat-hint>{{ remainingLengthCauseDamage }} characters remaining.</mat-hint>
             </mat-form-field><br/>
           </div>
         </div>
@@ -268,8 +272,10 @@
                 placeholder="Describe the damage"
                 [rows]="5"
                 required
+                (keyup)="calcRemainingCharsDescribeDamage()"
                 style="resize:none"
-                maxlength="200"></textarea>
+                maxlength="2000"></textarea>
+              <mat-hint>{{ remainingLengthDescribeDamage }} characters remaining.</mat-hint>
             </mat-form-field><br/>
           </div>
         </div>
@@ -286,8 +292,10 @@
                 placeholder="Describe what was damaged (materials, including quantities and measurements) of damaged infrastructure"
                 [rows]="5"
                 required
+                (keyup)="calcRemainingCharsDescribeDamagedInfrastructure()"
                 style="resize:none"
-                maxlength="200"></textarea>
+                maxlength="2000"></textarea>
+              <mat-hint>{{ remainingLengthDescribeDamagedInfrastructure }} characters remaining.</mat-hint>
             </mat-form-field><br/>
           </div>
         </div>
@@ -310,8 +318,10 @@
                 placeholder="Describe the repair work required to restore to pre-event condition"
                 [rows]="5"
                 required
+                (keyup)="calcRemainingCharsDescribeRepair()"
                 style="resize:none"
-                maxlength="200"></textarea>
+                maxlength="2000"></textarea>
+              <mat-hint>{{ remainingLengthDescribeRepair }} characters remaining.</mat-hint>
             </mat-form-field><br/>
           </div>
         </div>
@@ -328,7 +338,9 @@
                 [rows]="5"
                 style="resize:none"
                 required
-                maxlength="200"></textarea>
+                (keyup)="calcRemainingCharsDescribeRepairMaterial()"
+                maxlength="2000"></textarea>
+              <mat-hint>{{ remainingLengthDescribeRepairMaterial }} characters remaining.</mat-hint>
             </mat-form-field><br/>
           </div>
         </div>

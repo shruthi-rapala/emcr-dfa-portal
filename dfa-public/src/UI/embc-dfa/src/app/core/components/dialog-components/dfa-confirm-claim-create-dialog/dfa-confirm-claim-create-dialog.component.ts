@@ -3,24 +3,20 @@ import { DialogContent } from 'src/app/core/model/dialog-content.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-confirm-submit-dialog',
-  templateUrl: './dfa-confirm-submit-dialog.component.html',
-  styleUrls: ['./dfa-confirm-submit-dialog.component.scss']
+  selector: 'app-confirm-claim-create-dialog',
+  templateUrl: './dfa-confirm-claim-create-dialog.component.html',
+  styleUrls: ['./dfa-confirm-claim-create-dialog.component.scss']
 })
-export class DFAConfirmSubmitDialogComponent {
+export class DFAConfirmClaimCreateDialogComponent {
   public content: DialogContent;
-  public header: string = 'Submit Application Confirmation';
   @Input() initDialog: boolean;
   @Output() outputEvent = new EventEmitter<string>();
 
   constructor(
-    public dialogRef: MatDialogRef<DFAConfirmSubmitDialogComponent>,
+    public dialogRef: MatDialogRef<DFAConfirmClaimCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+    ) {
       this.content = this.data.content;
-      if (this.data.header) {
-        this.header = this.data.header;
-      }
     }
 
   cancel() {

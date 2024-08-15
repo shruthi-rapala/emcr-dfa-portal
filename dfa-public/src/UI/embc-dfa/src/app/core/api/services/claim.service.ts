@@ -149,9 +149,9 @@ export class ClaimService extends BaseService {
   }
 
   /**
-   * Path part for operation claimGetProjectMain
+   * Path part for operation claimGetClaimMain
    */
-  static readonly ClaimGetProjectMainPath = '/api/claims/appmain/byId';
+  static readonly ClaimGetClaimMainPath = '/api/claims/appmain/byClaimId';
 
   /**
    * Get project main by Id.
@@ -159,21 +159,21 @@ export class ClaimService extends BaseService {
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `claimGetProjectMain()` instead.
+   * To access only the response body, use `claimGetClaimMain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  claimGetProjectMain$Response(params?: {
+  claimGetClaimMain$Response(params?: {
 
     /**
-     * The project Id.
+     * The claim Id.
      */
-    projectId?: string;
+    claimId?: string;
   }): Observable<StrictHttpResponse<DfaClaimMain>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ClaimService.ClaimGetProjectMainPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, ClaimService.ClaimGetClaimMainPath, 'get');
     if (params) {
-      rb.query('projectId', params.projectId, {});
+      rb.query('claimId', params.claimId, {});
     }
 
     return this.http.request(rb.build({
@@ -193,19 +193,19 @@ export class ClaimService extends BaseService {
    *
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `claimGetProjectMain$Response()` instead.
+   * To access the full response (for headers, for example), `claimGetClaimMain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  claimGetProjectMain(params?: {
+  claimGetClaimMain(params?: {
 
     /**
-     * The project Id.
+     * The claim Id.
      */
-    projectId?: string;
+    claimId?: string;
   }): Observable<DfaClaimMain> {
 
-    return this.claimGetProjectMain$Response(params).pipe(
+    return this.claimGetClaimMain$Response(params).pipe(
       map((r: StrictHttpResponse<DfaClaimMain>) => r.body as DfaClaimMain)
     );
   }

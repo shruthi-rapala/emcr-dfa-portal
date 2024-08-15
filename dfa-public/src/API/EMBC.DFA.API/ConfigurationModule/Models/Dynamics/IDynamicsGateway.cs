@@ -31,7 +31,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_appcleanuplogs_retrieve>> GetCleanUpLogItemsListAsync(Guid applicationId);
         Task<string> InsertDocumentLocationAsync(SubmissionEntity submission);
         Task<string> DeleteDocumentLocationAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms);
-        Task<IEnumerable<dfa_appdocumentlocation>> GetDocumentLocationsListAsync(Guid applicationId);
+        Task<IEnumerable<dfa_projectdocumentlocation>> GetProjectDocumentLocationsListAsync(Guid projectId);
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId);
         Task<int> GetEventCount();
         Task<IEnumerable<dfa_event>> GetOpenPublicEventList();
@@ -41,5 +41,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<dfa_projectmain_retrieve> GetProjectMainById(Guid projectId);
         Task<dfa_project> GetProjectDetailsAsync(string projectId);
         Task<IEnumerable<dfa_project>> GetProjectListAsync(string applicationId);
+        Task<IEnumerable<dfa_projectclaim>> GetClaimListAsync(string projectId);
+        Task<string> UpsertClaim(dfa_claim_params claim);
+        Task<dfa_claim_retrieve> GetClaimDetailsAsync(string claimId);
     }
 }
