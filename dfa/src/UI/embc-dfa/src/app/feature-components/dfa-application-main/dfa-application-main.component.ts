@@ -500,33 +500,42 @@ export class DFAApplicationMainComponent
    * @param index Step index
    */
   loadStepForm(index: number): void {
+    console.log('loadStepForm', this.steps);
     switch (index) {
       case 0:
+        this.form$ = this.formCreationService
+          .getApplicationDetailsForm()
+          .subscribe((applicationDetails) => {
+          this.form = applicationDetails;
+          });
+        break; 
+
+      case 1:
         this.form$ = this.formCreationService
           .getDamagedPropertyAddressForm()
           .subscribe((damagedPropertyAddress) => {
             this.form = damagedPropertyAddress;
           });
         break;
-      case 1:
+      case 2:
         this.form$ = this.formCreationService
           .getPropertyDamageForm()
           .subscribe((propertyDamage) => {
             this.form = propertyDamage;
           });
         break;
-      case 2:
-        this.form$ = null;
       case 3:
+        this.form$ = null;
+      case 4:
         this.form$ = this.formCreationService
           .getCleanUpLogForm()
           .subscribe((cleanUpLog) => {
             this.form = cleanUpLog;
           });
         break;
-      case 4:
-        this.form$ = null;
       case 5:
+        this.form$ = null;
+      case 6:
         this.form$ = this.formCreationService
           .getSupportingDocumentsForm()
           .subscribe((supportingDocuments) => {
