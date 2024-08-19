@@ -75,7 +75,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_isprimaryandsecondaryaddresssame", "dfa_appcontactid",
                         "dfa_bcservicecardid", "dfa_lastdateupdated"
                     },
-                    Filter = $"dfa_bcservicecardid eq '{userId}'"
+                    Filter = $"dfa_bceiduserguid eq '{userId}'"
                 });
 
                 return userObj != null ? userObj.List.LastOrDefault() : null;
