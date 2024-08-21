@@ -55,8 +55,9 @@ export class DFAClaimMainMappingService {
       .pipe(first())
       .subscribe((invoice) => {
         invoice.setValue({
-          ...dfaInvoiceMain.invoice
-          //isdamagedDateSameAsApplication: dfaClaimMain.project.isdamagedDateSameAsApplication === true ? 'true' : (dfaClaimMain.claim. === false ? 'false' : null),
+          ...dfaInvoiceMain.invoice,
+          isGoodsReceivedonInvoiceDate: dfaInvoiceMain.invoice.isGoodsReceivedonInvoiceDate === true ? 'true' : (dfaInvoiceMain.invoice.isGoodsReceivedonInvoiceDate === false ? 'false' : null),
+          isClaimforPartofTotalInvoice: dfaInvoiceMain.invoice.isClaimforPartofTotalInvoice === true ? 'true' : (dfaInvoiceMain.invoice.isClaimforPartofTotalInvoice === false ? 'false' : null),
         });
         formGroup = invoice;
       });

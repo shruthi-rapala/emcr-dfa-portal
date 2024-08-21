@@ -68,6 +68,12 @@ export const confirmSubmitProjectBody: DialogContent = {
   cancelButton: 'No, I don\'t want to submit the project now.'
 }
 
+export const confirmSubmitClaimBody: DialogContent = {
+  text: 'Are you sure you want to submit the claim?<br/><br/><br/>',
+  confirmButton: 'Yes, I want to submit the claim.',
+  cancelButton: 'No, I don\'t want to submit the claim now.'
+}
+
 export const confirmPrescreeningBody: DialogContent = {
   text: 'You may be eligible for DFA and may submit an application.' +
   '<br/><br/>Please note that during the application process, information that you provide may make you ineligible for DFA. ',

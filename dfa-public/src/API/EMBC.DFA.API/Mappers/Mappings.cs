@@ -329,14 +329,39 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.modifiedBy, opts => opts.MapFrom(s => s.dfa_modifiedby))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
+            CreateMap<dfa_projectclaimdocumentlocation, FileUploadClaim>()
+                .ForMember(d => d.claimId, opts => opts.MapFrom(s => s._dfa_projectclaimid_value))
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.dfa_projectclaimdocumentlocationid))
+                .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.dfa_name))
+                .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategoryClaim(s.dfa_documenttype)))
+                .ForMember(d => d.fileTypeText, opts => opts.MapFrom(s => s.dfa_documenttype))
+                .ForMember(d => d.requiredDocumentType, opts => opts.MapFrom(s => ConvertStringToRequiredDocumentTypeClaim(s.dfa_requireddocumenttype)))
+                .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.dfa_description))
+                .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.createdon))
+                .ForMember(d => d.modifiedBy, opts => opts.MapFrom(s => s.dfa_modifiedby))
+                .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
+
             CreateMap<FileUpload, AttachmentEntity>()
                 .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileName))
                 .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_project"))
                 .ForMember(d => d.subject, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.fileDescription) ? s.fileName : s.fileDescription))
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
+            CreateMap<FileUploadClaim, AttachmentEntity>()
+                .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileName))
+                .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_projectclaim"))
+                .ForMember(d => d.subject, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.fileDescription) ? s.fileName : s.fileDescription))
+                .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
+
             CreateMap<FileUpload, SubmissionEntity>()
                 .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => s.project.Id)) // s.projectId
+                .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
+                .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
+                .ForMember(d => d.dfa_requireddocumenttype, opts => opts.MapFrom(s => s.requiredDocumentType)) // TODO map required file type
+                .ForMember(d => d.fileType, opts => opts.MapFrom(s => s.fileType));
+
+            CreateMap<FileUploadClaim, SubmissionEntityClaim>()
+                .ForMember(d => d.dfa_projectclaimid, opts => opts.MapFrom(s => s.claimId)) // s.projectId
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
                 .ForMember(d => d.dfa_modifiedby, opts => opts.MapFrom(s => s.modifiedBy))
                 .ForMember(d => d.dfa_requireddocumenttype, opts => opts.MapFrom(s => s.requiredDocumentType)) // TODO map required file type
@@ -356,6 +381,25 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => s.dfa_approvedcost == null ? 0 : s.dfa_approvedcost))
                 .ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.EstimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
+
+            CreateMap<dfa_projectclaim, CurrentClaim>()
+                .ForMember(d => d.ClaimNumber, opts => opts.MapFrom(s => s.dfa_name))
+                //.ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_claimreceivedbyemcrdate).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_claimreceivedbyemcrdate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.SubmittedDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_claimreceivedbyemcrdate).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_claimreceivedbyemcrdate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.FirstClaim, opts => opts.MapFrom(s => s.dfa_isfirstclaim))
+                .ForMember(d => d.FinalClaim, opts => opts.MapFrom(s => s.dfa_finalclaim))
+                .ForMember(d => d.ClaimTotal, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_claimtotal) ? "CA$ 0" : "CA$ " + s.dfa_claimtotal))
+                .ForMember(d => d.ApprovedClaimTotal, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_totalapproved) || s.dfa_totalapproved == "0" ? "(pending information)" : "CA$ " + s.dfa_totalapproved))
+                .ForMember(d => d.LessFirst1000, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_lessfirst1000) ? "(pending information)" : "CA$ " + s.dfa_lessfirst1000))
+                .ForMember(d => d.ApprovedReimbursePercent, opts => opts.MapFrom(s => "Not implemented"))
+                .ForMember(d => d.EligiblePayable, opts => opts.MapFrom(s => "Not implemented"))
+                .ForMember(d => d.PaidClaimAmount, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_totalpaid) ? "(pending information)" : "CA$ " + s.dfa_totalpaid))
+                .ForMember(d => d.ClaimId, opts => opts.MapFrom(s => s.dfa_projectclaimid))
+                .ForMember(d => d.Status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfstages) ? GetEnumDescription((ClaimStages)Convert.ToInt32(s.dfa_claimbpfstages)) : null))
+                .ForMember(d => d.Stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfsubstages) ?
+                    (Convert.ToInt32(s.dfa_claimbpfstages) == Convert.ToInt32(ClaimStages.Draft) ? null : GetEnumDescription((ClaimSubStages)Convert.ToInt32(s.dfa_claimbpfsubstages)))
+                    : null))
+                .ForMember(d => d.PaidClaimDate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_claimpaiddate) ? "(pending information)" : s.dfa_claimpaiddate));
 
             CreateMap<dfa_claim_retrieve, RecoveryClaim>()
                 .ForMember(d => d.claimNumber, opts => opts.MapFrom(s => s.dfa_name))
@@ -475,8 +519,51 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_estimatedcost, opts => opts.MapFrom(s => Convert.ToInt32(s.Project.estimateCostIncludingTax)));
 
             CreateMap<DFAClaimMain, dfa_claim_params>()
+                .ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.Claim != null ? s.Claim.isThisFinalClaim : (bool?)null))
+                .ForMember(d => d.dfa_projectclaimid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.dfa_claimbpfstages, opts => opts.MapFrom(s => s.Claim.claimStatus == null ? Convert.ToInt32(ClaimStages.Draft) : Convert.ToInt32(s.Claim.claimStatus)))
+                .ForMember(d => d.dfa_claimbpfsubstages, opts => opts.MapFrom(s => s.Claim.claimStatus != null && s.Claim.claimStatus.Value == ClaimStageOptionSet.SUBMIT ? Convert.ToInt32(ClaimSubStages.Pending) : (int?)null))
+
                 .ForMember(d => d.dfa_recoveryplanid, opts => opts.MapFrom(s => s.ProjectId));
-                //.ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.ProjectId));
+            //.ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.ProjectId));
+
+            CreateMap<DFAInvoiceMain, dfa_invoice_params>()
+                .ForMember(d => d.dfa_receiveddatesameasinvoicedate, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.IsGoodsReceivedonInvoiceDate : (bool?)null))
+                .ForMember(d => d.dfa_portionofinvoice, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.IsClaimforPartofTotalInvoice : (bool?)null))
+                .ForMember(d => d.dfa_claim, opts => opts.MapFrom(s => s.ClaimId))
+                .ForMember(d => d.dfa_recoveryinvoiceid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.dfa_purpose, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.PurposeOfGoodsServiceReceived : null))
+                .ForMember(d => d.dfa_invoicenumber, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.InvoiceNumber : null))
+                .ForMember(d => d.dfa_portioninvoicereason, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.ReasonClaimingPartofTotalInvoice : null))
+                .ForMember(d => d.dfa_netinvoicedbeingclaimed, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.NetInvoiceBeingClaimed : null))
+                .ForMember(d => d.dfa_pst, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.PST : null))
+                .ForMember(d => d.dfa_grossgst, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.GrossGST : null))
+                .ForMember(d => d.dfa_eligiblegst, opts => opts.MapFrom(s => s.Invoice != null ? (!string.IsNullOrEmpty(s.Invoice.EligibleGST) ? s.Invoice.EligibleGST : null) : null))
+                .ForMember(d => d.dfa_invoicedate, opts => opts.MapFrom(s => s.Invoice != null ? Convert.ToDateTime(s.Invoice.InvoiceDate) : (DateTime?)null))
+                .ForMember(d => d.dfa_goodsorservicesreceiveddate, opts => opts.MapFrom(s => s.Invoice != null ? Convert.ToDateTime(s.Invoice.GoodsReceivedDate) : (DateTime?)null))
+                .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.Invoice.VendorName));
+
+            CreateMap<dfa_recoveryinvoice, CurrentInvoice>()
+                .ForMember(d => d.IsGoodsReceivedonInvoiceDate, opts => opts.MapFrom(s => s.dfa_receiveddatesameasinvoicedate))
+                .ForMember(d => d.IsClaimforPartofTotalInvoice, opts => opts.MapFrom(s => s.dfa_portionofinvoice))
+                .ForMember(d => d.ClaimId, opts => opts.MapFrom(s => s._dfa_claim_value))
+                .ForMember(d => d.InvoiceId, opts => opts.MapFrom(s => s.dfa_recoveryinvoiceid))
+                .ForMember(d => d.PurposeOfGoodsServiceReceived, opts => opts.MapFrom(s => s.dfa_purpose))
+                .ForMember(d => d.InvoiceNumber, opts => opts.MapFrom(s => s.dfa_invoicenumber))
+                .ForMember(d => d.ReasonClaimingPartofTotalInvoice, opts => opts.MapFrom(s => s.dfa_portioninvoicereason))
+                .ForMember(d => d.NetInvoiceBeingClaimed, opts => opts.MapFrom(s => s.dfa_netinvoicedbeingclaimed))
+                .ForMember(d => d.PST, opts => opts.MapFrom(s => s.dfa_pst))
+                .ForMember(d => d.GrossGST, opts => opts.MapFrom(s => s.dfa_grossgst))
+                .ForMember(d => d.InvoiceDate, opts => opts.MapFrom(s => s.dfa_invoicedate))
+                .ForMember(d => d.GoodsReceivedDate, opts => opts.MapFrom(s => s.dfa_goodsorservicesreceiveddate))
+                .ForMember(d => d.VendorName, opts => opts.MapFrom(s => s.dfa_name))
+                .ForMember(d => d.EligibleGST, opts => opts.MapFrom(s => s.dfa_eligiblegst))
+                .ForMember(d => d.ActualInvoiceTotal, opts => opts.MapFrom(s => s.dfa_actualinvoicetotal))
+                .ForMember(d => d.TotalBeingClaimed, opts => opts.MapFrom(s => s.dfa_totalbeingclaimed));
+
+            CreateMap<DFAInvoiceMain, dfa_invoice_delete_params>()
+                .ForMember(d => d.dfa_recoveryinvoiceid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.delete, opts => opts.MapFrom(s => true));
 
             CreateMap<dfa_projectmain_retrieve, RecoveryPlan>()
                 .ForMember(d => d.projectNumber, opts => opts.MapFrom(s => s.dfa_projectnumber))
@@ -548,6 +635,42 @@ namespace EMBC.DFA.API.Mappers
                     }
             }
         }
+
+        public FileCategoryClaim ConvertStringToFileCategoryClaim(string documenttype)
+        {
+            switch (documenttype)
+            {
+                case "Invoices":
+                    {
+                        return FileCategoryClaim.Invoices;
+                    }
+                case "General Ledger":
+                    {
+                        return FileCategoryClaim.GeneralLedger;
+                    }
+                case "Proof of Payment":
+                    {
+                        return FileCategoryClaim.ProofofPayment;
+                    }
+                case "Contracts":
+                    {
+                        return FileCategoryClaim.Contracts;
+                    }
+                case "Blue Book Rates":
+                    {
+                        return FileCategoryClaim.BlueBookRates;
+                    }
+                case "Additional Supporting Documents":
+                    {
+                        return FileCategoryClaim.AdditionalDocuments;
+                    }
+                default:
+                    {
+                        return FileCategoryClaim.AdditionalDocuments;
+                    }
+            }
+        }
+
         public RequiredDocumentType ConvertStringToRequiredDocumentType(string requireddocumenttype)
         {
             switch (requireddocumenttype)
@@ -563,6 +686,29 @@ namespace EMBC.DFA.API.Mappers
                 default:
                     {
                         return RequiredDocumentType.PreEvent;
+                    }
+            }
+        }
+
+        public RequiredDocumentTypeClaim ConvertStringToRequiredDocumentTypeClaim(string requireddocumenttype)
+        {
+            switch (requireddocumenttype)
+            {
+                case "Invoices":
+                    {
+                        return RequiredDocumentTypeClaim.Invoices;
+                    }
+                case "General Ledger":
+                    {
+                        return RequiredDocumentTypeClaim.GeneralLedger;
+                    }
+                case "Proof of Payment":
+                    {
+                        return RequiredDocumentTypeClaim.ProofofPayment;
+                    }
+                default:
+                    {
+                        return RequiredDocumentTypeClaim.Invoices;
                     }
             }
         }
