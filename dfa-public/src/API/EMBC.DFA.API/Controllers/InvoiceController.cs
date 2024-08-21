@@ -54,10 +54,10 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CurrentInvoice>>> GetDFAInvoices(string claimId)
         {
-            var userId = currentUserId;
-            var profile = await handler.HandleGetUser(userId);
-            if (profile == null) return NotFound(userId);
-            var profileId = profile.Id;
+            //var userId = currentUserId;
+            //var profile = await handler.HandleGetUser(userId);
+            //if (profile == null) return NotFound(userId);
+            //var profileId = profile.Id;
             var lstInvoices = await handler.HandleInvoiceList(claimId);
 
             return Ok(lstInvoices);

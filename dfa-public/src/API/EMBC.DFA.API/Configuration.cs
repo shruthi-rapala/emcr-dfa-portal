@@ -210,6 +210,10 @@ namespace EMBC.DFA.API
                 //policy.AllowAnyMethod();
                 //policy.AllowAnyOrigin();
 
+                // 2024-08-20 EMCRI-434 waynezen; Instead of AllowAnyMethod - only allow select Http methods
+                //policy.AllowAnyMethod();
+                policy.WithMethods("GET", "POST", "PUT");
+
                 //policy.WithOrigins("https://dfa-portal-dev.apps.silver.devops.gov.bc.ca",
                 //                "https://dfa-landing-page-dev.apps.silver.devops.gov.bc.ca");
 
