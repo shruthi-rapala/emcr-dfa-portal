@@ -172,6 +172,8 @@
         <div class="col-md-6">
         <button *ngIf="(formCreationService.recoveryClaimForm$ | async)?.valid
                 && invoiceSummaryDataSource?.data?.length > 0
+                && (formCreationService.supportingDocumentsForm$ | async)?.valid
+                && requiredDocumentsSupplied()
                 "
           class="button-p nextNsave"
           mat-stroked-button

@@ -70,6 +70,7 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
   showDates: boolean = false;
   hideHelp: boolean = true;
   eligibleGST: boolean = false;
+  invoiceId: string = null;
   timerID;
   readonly phoneMask = [
     /\d/,
@@ -132,7 +133,7 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
     let result = patt.test(event.key);
 
     var netInvoice = Number(this.invoiceForm.controls.netInvoiceBeingClaimed.value);
-    var PST = Number(this.invoiceForm.controls.PST.value);
+    var PST = Number(this.invoiceForm.controls.pst.value);
     var GrossGST = Number(this.invoiceForm.controls.grossGST.value);
     var EligibleGST = Number(this.invoiceForm.controls.eligibleGST.value);
 
@@ -157,6 +158,14 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     var passData = this.data;
     var objInvData = passData.content;
+    if (!objInvData) {
+      this.formCreationService.clearInvoiceData();
+    }
+    
+    if (passData.invoiceId) {
+      this.invoiceId = passData.invoiceId;
+    }
+
     this.invoiceForm$ = this.formCreationService
       .getInvoiceForm()
       .subscribe((invoice) => {
@@ -168,10 +177,11 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
         this.invoiceForm = invoice;
         //this.setViewOrEditControls();
         //this.propertyDamageForm.addValidators([this.validateFormCauseOfDamage]);
+        
         if (this.invoiceForm.get('isGoodsReceivedonInvoiceDate').value === 'false') {
-          this.invoiceForm.get('goodsReceivedDatePicker').setValidators([Validators.required]);
+          this.invoiceForm.get('goodsReceivedDate').setValidators([Validators.required]);
         } else {
-          this.invoiceForm.get('goodsReceivedDatePicker').setValidators(null);
+          this.invoiceForm.get('goodsReceivedDate').setValidators(null);
         }
 
         if (this.invoiceForm.get('isClaimforPartofTotalInvoice').value === 'true') {
@@ -224,7 +234,7 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
       this.addeditInvoiceText = "Update";
     }
 
-    let projectId = this.dfaProjectMainDataService.getProjectId();
+    //let projectId = this.dfaProjectMainDataService.getProjectId();
 
     this.eligibleGST = this.dfaClaimMainDataService.getEligibleGST();
 
@@ -234,9 +244,9 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
       this.invoiceForm.controls.eligibleGST.disable();
     }
 
-    if (projectId) {
-      this.getRecoveryPlan(projectId);
-    }
+    //if (projectId) {
+    //  this.getRecoveryPlan(projectId);
+    //}
 
     this.dfaProjectMainDataService.stepSelected.subscribe((stepSelected) => {
       if (stepSelected == "0" && this.dfaProjectMainDataService.getViewOrEdit() != 'viewOnly') {
@@ -323,7 +333,7 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.dialogRef.close('cancel');
+    this.dialogRef.close({ event: 'cancel', invData: null });
     this.formCreationService.clearInvoiceData();
   }
 
@@ -333,8 +343,15 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
       this.invoiceForm.markAllAsTouched();
       return false;
     }
-    this.dialogRef.close({ event: 'confirm', invData: invObj });
+
     this.formCreationService.clearInvoiceData();
+
+    if (this.addeditInvoiceText == 'Update') {
+      this.dialogRef.close({ event: 'update', invData: invObj });
+    }
+    else {
+      this.dialogRef.close({ event: 'confirm', invData: invObj });
+    }
   }
 
   /**

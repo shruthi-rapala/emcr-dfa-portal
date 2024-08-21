@@ -58,26 +58,44 @@ namespace EMBC.DFA.API.Controllers
             var profile = await handler.HandleGetUser(userId);
             if (profile == null) return NotFound(userId);
             var profileId = profile.Id;
-            var lstInvoices = await handler.HandleProjectList(claimId);
+            var lstInvoices = await handler.HandleInvoiceList(claimId);
 
             return Ok(lstInvoices);
         }
 
         /// <summary>
-        /// create or update claim
+        /// create or update invoice
         /// </summary>
-        /// <param name="claim">The claim information</param>
-        /// <returns>claim id</returns>
+        /// <param name="invoice">The invoice information</param>
+        /// <returns>invoice id</returns>
         [HttpPut("update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<string>> UpsertClaim(DFAClaimMain claim)
+        public async Task<ActionResult<string>> UpsertInvoice(DFAInvoiceMain invoice)
         {
-            if (claim == null) return BadRequest("Project details cannot be empty.");
+            if (invoice == null) return BadRequest("Invoice details cannot be empty.");
             var dfa_appcontact = await handler.HandleGetUser(currentUserId);
-            var mappedProject = mapper.Map<dfa_project_params>(claim);
-            var result = await handler.HandleProjectCreateUpdate(mappedProject);
+            var mappedInvoice = mapper.Map<dfa_invoice_params>(invoice);
+            var result = await handler.HandleInvoiceCreateUpdate(mappedInvoice);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// delete invoice
+        /// </summary>
+        /// <param name="invoice">The invoice information</param>
+        /// <returns>invoice id</returns>
+        [HttpPut("delete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<string>> DeleteInvoice(DFAInvoiceMain invoice)
+        {
+            if (invoice == null) return BadRequest("Invoice details cannot be empty.");
+            var invoiceParams = mapper.Map<dfa_invoice_delete_params>(invoice);
+            var result = await handler.HandleInvoiceDelete(invoiceParams);
 
             return Ok(result);
         }
@@ -136,16 +154,12 @@ namespace EMBC.DFA.API.Controllers
         }
     }
 
-    public class CurrentInvoice
+    public class CurrentInvoice : Invoice
     {
         public string ApplicationId { get; set; }
         public string ProjectId { get; set; }
         public string ClaimId { get; set; }
         public string InvoiceId { get; set; }
-        public string InvoiceNumber { get; set; }
-        public string VendorName { get; set; }
-        public string InvoiceDate { get; set; }
-        public string TotalBeingClaimed { get; set; }
         public string Status { get; set; }
         public string StatusLastUpdated { get; set; }
         public bool IsErrorInStatus { get; set; }

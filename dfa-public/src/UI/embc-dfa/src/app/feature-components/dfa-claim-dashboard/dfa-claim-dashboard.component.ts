@@ -164,12 +164,14 @@ export class DFAClaimComponent
           //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
           this.dfaClaimMainDataService.setProjectId(this.projId);
           this.dfaClaimMainDataService.setApplicationId(this.appId);
+          this.dfaClaimMainDataService.setClaimId(null);
+          this.dfaClaimMainDataService.recoveryClaim = null;
+          this.formCreationService.clearRecoveryClaimData();
           let objClaimDTO = this.dfaClaimMainDataService.createDFAClaimMainDTO();
 
           this.dfaClaimMainService.upsertClaim(objClaimDTO).subscribe(id => {
             if (id) {
               this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
-              this.dfaClaimMainDataService.setClaimId(null);
               this.dfaClaimMainDataService.setViewOrEdit('addclaim');
 
               this.dfaClaimMainDataService.setClaimId(id);
@@ -206,6 +208,7 @@ export class DFAClaimComponent
         next: (dfaApplicationMain) => {
           if (dfaApplicationMain) {
             this.eligibleGST = dfaApplicationMain.eligibleGST;
+            this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
             this.dateOfDamageFrom = dfaApplicationMain.dateOfDamage;
             this.dateOfDamageTo = dfaApplicationMain.dateOfDamageTo;
             this.caseNumber = dfaApplicationMain.caseNumber ? dfaApplicationMain.caseNumber : "Not Generated";

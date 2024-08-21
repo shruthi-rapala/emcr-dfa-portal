@@ -221,7 +221,7 @@
                     <input
                       #PST
                       (focusin)="setHelpText(4, tooltip)"
-                      formControlName="PST"
+                      formControlName="pst"
                       matInput
                       (keypress)="numericOnly($event);"
                       (keyup)="CalculateInvoice($event);"
@@ -275,7 +275,7 @@
                 <div class="col-md-5">
                   <p class="currency-invoice" style="padding-right: 17px;">
                     $&nbsp;{{(formCreationService.invoiceForm$ | async)?.value
-  .PST | number }}
+  .pst | number }}
                   </p>
                 </div>
                 <div class="col-md-7 aln-txt">

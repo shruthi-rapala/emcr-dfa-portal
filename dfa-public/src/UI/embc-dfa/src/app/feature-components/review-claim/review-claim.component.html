@@ -188,7 +188,7 @@
         <div class="row info-detail" *ngIf="invoiceSummaryDataSource?.data?.length == 0">
                     <span style="color:red">Invoice is required.</span>
         </div>
-
+        <br />
       </mat-card-content>
 
       <mat-card-content class="contentStyle mat-elevation-z8">
@@ -264,16 +264,19 @@
             ></tr>
           </table>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noPreEventCondition')">
-          <span style="color:red">Previous event condition is required.</span>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsClaimForm$ | async)?.hasError('noinvoices')">
+          <span style="color:red">Invoices are required.</span>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noPostEventCondition')">
-          <span style="color:red">Post event condition is required.</span>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsClaimForm$ | async)?.hasError('nogeneralledger')">
+          <span style="color:red">General Ledger is required.</span>
+        </div>
+        <div class="row info-detail" *ngIf="(formCreationService.fileUploadsClaimForm$ | async)?.hasError('noproofofpayment')">
+          <span style="color:red">Proof of Payment is required.</span>
         </div>
         <div class="row info-detail" *ngIf="supportingDocumentsDataSource?.data?.length > 0">
           <b>Supporting Documents(Optional)</b>
-          <br />
-          <table mat-table [dataSource]="supportingDocumentsDataSource">
+          <br /><br />
+          <table mat-table [dataSource]="supportingDocumentsDataSource" style="width:80%">
            <!-- File Name Column -->
            <ng-container matColumnDef="fileName" style="width:25%">
             <th mat-header-cell *matHeaderCellDef >
