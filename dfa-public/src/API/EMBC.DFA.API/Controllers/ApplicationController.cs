@@ -211,7 +211,7 @@ namespace EMBC.DFA.API.Controllers
             var userData = userService.GetJWTokenData();
 
             if (userData == null) return NotFound();
-            var profileId = userData.bceid_user_guid.ToString();
+            var profileId = "ed762426-1075-ee11-b846-00505683fbf4"; //userData.bceid_user_guid.ToString();
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }
