@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EMBC.Gov.BCeID
 {
-    internal interface IBCeIDBusinessQuery
+    public interface IBCeIDBusinessQuery
     {
         Task<BCeIDBusiness> ProcessBusinessQuery(string guid);
     }
