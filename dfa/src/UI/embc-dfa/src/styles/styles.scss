@@ -416,3 +416,30 @@ mat-card {
 .versions-table {
   width: 100%;
 }
+
+.list-image,
+.close-image,
+.edit-image,
+.delete-image {
+  img:last-of-type {
+    display: none;
+  }
+}
+ 
+.list-image:hover,
+.close-image:hover,
+.edit-image:hover,
+.delete-image:hover {
+  img:last-of-type {
+    display: inline;
+  }
+}
+ 
+.list-image:hover,
+.close-image:hover,
+.edit-image:hover,
+.delete-image:hover {
+  img:first-of-type {
+    display: none;
+  }
+}

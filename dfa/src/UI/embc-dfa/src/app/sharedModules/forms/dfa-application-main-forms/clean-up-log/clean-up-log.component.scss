@@ -73,19 +73,6 @@ table {
   justify-content: flex-end;
 }
 
-
-.delete-image img:last-child {
-  display: none;
-}
-
-.delete-image:hover img:last-child {
-  display: block;
-}
-
-.delete-image:hover img:first-child {
-  display: none;
-}
-
 @media (max-width: 600px) {
   .mobile-label {
     width: 80px;
