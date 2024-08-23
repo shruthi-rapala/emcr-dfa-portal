@@ -45,7 +45,7 @@
             diameter="50"
           >
           </app-loader>
-          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noinvoices')">
+          <mat-card class="row align-card-left" *ngIf="!fileUploadForm.hasError('noinvoices')">
             <p class="sub-heading" style="font-size: 15px">Required invoices has been uploaded.</p>
           </mat-card>
         </div>
@@ -79,7 +79,7 @@
             diameter="50"
           >
           </app-loader>
-          <mat-card class="row" *ngIf="!fileUploadForm.hasError('nogeneralledger')">
+          <mat-card class="row align-card-left" *ngIf="!fileUploadForm.hasError('nogeneralledger')">
             <p class="sub-heading" style="font-size: 15px">Required general ledger has been uploaded.</p>
           </mat-card>
         </div>
@@ -112,7 +112,7 @@
             diameter="50"
           >
           </app-loader>
-          <mat-card class="row" *ngIf="!fileUploadForm.hasError('noproofofpayment')">
+          <mat-card class="row align-card-left" *ngIf="!fileUploadForm.hasError('noproofofpayment')">
             <p class="sub-heading" style="font-size: 15px">Required proof of payment has been uploaded.</p>
           </mat-card>
         </div>
@@ -128,7 +128,7 @@
             isdisabled="isdisabled"
             requiredDocumentType="null"
             title="Other Supporting Documents (Optional)"
-            description="If applicable, you may include additional documents related to your application."
+            description="If applicable, you may include additional documents related to your claim."
             [allowedFileTypes]="allowedFileTypes"
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             excludeFileTypes="['Identification', 'Unknown']"
