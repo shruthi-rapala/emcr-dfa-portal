@@ -180,7 +180,13 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
     let claimId = this.route.snapshot.paramMap.get('id'); //this.dfaClaimMainDataService.getClaimId();
 
     if (claimId) {
-      this.getRecoveryInvoices(claimId);
+      setTimeout(
+        function () {
+          this.getRecoveryInvoices(claimId);
+        }.bind(this),
+        500
+      );
+      
     }
 
     this.dfaProjectMainDataService.stepSelected.subscribe((stepSelected) => {
@@ -360,11 +366,14 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
           this.documentSummaryDataSource.data = lstInvoices;
           this.documentSummaryDataSourceFiltered.data = this.documentSummaryDataSource.data;
           this.invoicesCount = this.documentSummaryDataSource.data.length;
-          this.SummaryClaimCalc();
-
-          this.dfaClaimMainDataService.recoveryClaim.invoices = this.documentSummaryDataSource.data;
+          
           this.formCreationService.recoveryClaimForm.value.get('invoices').setValue(this.documentSummaryDataSource.data);
           this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
+
+          if (this.dfaClaimMainDataService.recoveryClaim) {
+            this.dfaClaimMainDataService.recoveryClaim.invoices = this.documentSummaryDataSource.data;
+            this.SummaryClaimCalc();
+          }
           
           //this.dfaProjectMainMapping.mapDFAProjectMain(dfaProjectMain);
 
