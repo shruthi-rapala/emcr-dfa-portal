@@ -151,7 +151,7 @@ export class DFAClaimComponent
         data: {
           content: contentDialog
         },
-        height: '350px',
+        height: '320px',
         width: '700px',
         disableClose: true
       })

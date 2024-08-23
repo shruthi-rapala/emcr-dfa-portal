@@ -312,7 +312,7 @@ export class DFAClaimMainComponent
 
   submitFile(): void {
     var contentDialog = globalConst.confirmSubmitClaimBody;
-    var height = '280px';
+    var height = '260px';
 
     this.dialog
       .open(DFAConfirmSubmitDialogComponent, {
