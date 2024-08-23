@@ -36,6 +36,7 @@ export class DFAClaimMainMappingService {
         });
         formGroup = claim;
       });
+      
     this.dfaClaimMainDataService.recoveryClaim = dfaClaimMain.claim;
   }
 
