@@ -465,7 +465,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
           content: objInvoice,
           invoiceId: this.dfaClaimMainDataService.getInvoiceId()
         },
-        height: '750px',
+        height: '665px',
         width: '1000px',
         disableClose: true
       })
