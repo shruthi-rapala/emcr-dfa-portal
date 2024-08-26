@@ -192,7 +192,12 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
           this.invoiceForm.get('reasonClaimingPartofTotalInvoice').setValidators(null);
         }
 
+        this.invoiceForm.markAsUntouched();
         this.invoiceForm.updateValueAndValidity();
+
+        
+        this.invoiceForm.get('isClaimforPartofTotalInvoice').markAsUntouched();
+        this.invoiceForm.get('isGoodsReceivedonInvoiceDate').markAsUntouched();
 
         //this.propertyDamageForm.get('otherDamageText').updateValueAndValidity();
         //this.propertyDamageForm.updateValueAndValidity();
@@ -341,6 +346,14 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
 
   AddInvoice() {
     var invObj = this.invoiceForm.getRawValue();
+    this.invoiceForm.get('isGoodsReceivedonInvoiceDate').setValidators([Validators.required]);
+    this.invoiceForm.get('isGoodsReceivedonInvoiceDate').markAsTouched();
+    this.invoiceForm.get('isGoodsReceivedonInvoiceDate').updateValueAndValidity();
+
+    this.invoiceForm.get('isClaimforPartofTotalInvoice').setValidators([Validators.required]);
+    this.invoiceForm.get('isClaimforPartofTotalInvoice').markAsTouched();
+    this.invoiceForm.get('isClaimforPartofTotalInvoice').updateValueAndValidity();
+    
     if (!this.invoiceForm.valid) {
       this.invoiceForm.markAllAsTouched();
       return false;
