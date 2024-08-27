@@ -341,6 +341,11 @@ mat-card {
   border-radius: 0px !important;
 }
 
+.dialog-title{
+  text-align: center; 
+  padding-top: 12px;
+}
+
 /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
 .mat-radio-label {
   white-space: normal !important;
