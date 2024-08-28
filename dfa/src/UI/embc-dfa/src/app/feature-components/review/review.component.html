@@ -470,7 +470,7 @@
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(0)"
+              (click)="navigateToStep(1)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -840,7 +840,7 @@
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(1)"
+              (click)="navigateToStep(2)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -991,7 +991,7 @@
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(2)"
+              (click)="navigateToStep(3)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -1040,6 +1040,13 @@
              ">
           <span style="color:red">At least one full time occupant is required.</span>
         </div>
+
+        <div class="row info-detail" *ngIf="(isHomeowner || isResidentialTenant) &&
+        ((formCreationService.fullTimeOccupantsForm$ | async)?.value?.onlyOccupantInHome == true)">
+         <b>Full Time Occupants</b>
+         <span>No full time occupants, I am the only person in the home</span>
+       </div>
+
         <div class="row info-detail" *ngIf="(formCreationService.secondaryApplicantsForm$ | async)?.value?.secondaryApplicants?.length > 0">
           <b>Secondary Applicants</b>
           <table mat-table [dataSource]="secondaryApplicantsDataSource">
@@ -1092,6 +1099,7 @@
           </table>
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.secondaryApplicantsForm$ | async)?.value?.secondaryApplicants?.length == 0">
+          <b>Secondary Applicants</b>
           <span>No secondary applicants.</span>
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0">
@@ -1139,6 +1147,11 @@
              (formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length == 0">
           <span style="color:red">At least one other contact is required.</span>
         </div>
+
+        <div class="row info-detail" *ngIf="(formCreationService.otherContactsForm$ | async)?.value?.onlyOtherContact == true">
+        <b>Other Contacts</b>
+        <span>I don't have an Other Contact</span>
+        </div>
       </mat-card-content>
 
       <!-- Clean up Log -->
@@ -1150,7 +1163,7 @@
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(3)"
+              (click)="navigateToStep(4)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -1269,7 +1282,7 @@
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(4)"
+              (click)="navigateToStep(5)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -1370,7 +1383,7 @@
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(5)"
+              (click)="navigateToStep(6)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
@@ -1382,6 +1395,11 @@
           </div>
         </div>
         <hr />
+
+        <div class="row info-detail" *ngIf="requiredDocumentsDataSource?.data?.length == 0">
+          <span>No required documents.</span>
+        </div>
+
         <div class="row info-detail" *ngIf="requiredDocumentsDataSource?.data?.length > 0">
           <b>Required Documents</b>
           <table mat-table [dataSource]="requiredDocumentsDataSource">
@@ -1433,6 +1451,8 @@
             ></tr>
           </table>
         </div>
+       
+
         <div class="row info-detail" *ngIf="(formCreationService.fileUploadsForm$ | async)?.hasError('noInsuranceTemplate')">
           <span style="color:red">Insurance template is required.</span>
         </div>
@@ -1480,7 +1500,7 @@
               class="edit-image"
               mat-icon-button
               aria-label="Edit"
-              (click)="navigateToStep(5)"
+              (click)="navigateToStep(6)"
             >
               <img src="/assets/images/edit.svg" height="35" width="35" />
               <img
