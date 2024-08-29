@@ -86,11 +86,11 @@ namespace EMBC.DFA.API
                      OnTokenValidated = async ctx =>
                      {
                          await Task.CompletedTask;
-                         var logger1 = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
+                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
                          var claims = ctx.Principal.Claims;
                          foreach (var claim in claims)
                          {
-                             logger1.LogDebug($"JWT token validated. Claim: {claim.Type}: {claim.Value}");
+                             logger.LogInformation($"JWT token validated. Claim: {claim.Type}: {claim.Value}");
                              Debug.WriteLine($"JWT token validated. Claim: {claim.Type}: {claim.Value}");
                          }
                      },
