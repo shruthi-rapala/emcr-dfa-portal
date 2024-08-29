@@ -1048,7 +1048,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_finalclaim",
                         "dfa_totaloftotaleligible", "dfa_totalapproved", "dfa_lessfirst1000",
                         "dfa_totalpaid", "dfa_claimpaiddate", "dfa_projectclaimid",
-                        "dfa_claimbpfstages", "dfa_claimbpfsubstages", "dfa_claimtotal"
+                        "dfa_claimbpfstages", "dfa_claimbpfsubstages", "dfa_claimtotal",
+                        "createdon", "dfa_costsharing", "dfa_eligiblepayable"
                     },
                     Filter = $"_dfa_recoveryplanid_value eq {projectId}"
                 });
@@ -1070,8 +1071,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_projectclaimid = objClaim.dfa_projectclaimid,
                                    dfa_claimbpfstages = objClaim.dfa_claimbpfstages,
                                    dfa_claimbpfsubstages = objClaim.dfa_claimbpfsubstages,
-                                   dfa_claimtotal = objClaim.dfa_claimtotal
-                               }).AsEnumerable().OrderByDescending(m => m.dfa_claimreceivedbyemcrdate);
+                                   dfa_claimtotal = objClaim.dfa_claimtotal,
+                                   createdon = objClaim.createdon,
+                                   dfa_costsharing = objClaim.dfa_costsharing,
+                                   dfa_eligiblepayable = objClaim.dfa_eligiblepayable,
+                               }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstClaims;
             }
@@ -1118,7 +1122,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_name", "dfa_projectclaimid", "dfa_isfirstclaim",
-                        "dfa_finalclaim", "createdon"
+                        "dfa_finalclaim", "createdon", "dfa_claimreceiveddate",
+                        "dfa_totaleligiblegst", "dfa_totaloftotaleligible", "dfa_totalapproved", "dfa_lessfirst1000",
+                        "dfa_costsharing", "dfa_eligiblepayable", "dfa_totalpaid", "dfa_claimpaiddate"
                     },
                     Filter = $"dfa_projectclaimid eq {claimId}"
                 });
@@ -1131,6 +1137,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_isfirstclaim = objApp.dfa_isfirstclaim,
                                    dfa_finalclaim = objApp.dfa_finalclaim,
                                    createdon = objApp.createdon,
+                                   dfa_claimreceiveddate = objApp.dfa_claimreceiveddate,
+                                   dfa_totaleligiblegst = objApp.dfa_totaleligiblegst,
+                                   dfa_totaloftotaleligible = objApp.dfa_totaloftotaleligible,
+                                   dfa_totalapproved = objApp.dfa_totalapproved,
+                                   dfa_lessfirst1000 = objApp.dfa_lessfirst1000,
+                                   dfa_costsharing = objApp.dfa_costsharing,
+                                   dfa_eligiblepayable = objApp.dfa_eligiblepayable,
+                                   dfa_totalpaid = objApp.dfa_totalpaid,
+                                   dfa_claimpaiddate = objApp.dfa_claimpaiddate
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstApps.FirstOrDefault();
