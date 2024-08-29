@@ -115,7 +115,7 @@
                 applItem.status.toLowerCase() !== 'dfa making mecision' &&
                 applItem.status.toLowerCase() !== 'dfa decision made'
                 "
-          (click)="EditApplication(applItem.applicationId, '3')"
+          (click)="EditApplication(applItem.applicationId, '4')"
         >
           Add to Clean Up Log
         </button>
@@ -130,7 +130,7 @@
                 applItem.status.toLowerCase() !== 'dfa making mecision' &&
                 applItem.status.toLowerCase() !== 'dfa decision made'
                 "
-          (click)="EditApplication(applItem.applicationId, '4')"
+          (click)="EditApplication(applItem.applicationId, '5')"
         >
           Add to Damaged Items
         </button>
@@ -145,7 +145,7 @@
                 applItem.status.toLowerCase() !== 'dfa making mecision' &&
                 applItem.status.toLowerCase() !== 'dfa decision made'
                 "
-          (click)="EditApplication(applItem.applicationId, '5')"
+          (click)="EditApplication(applItem.applicationId, '6')"
         >
           Add Supporting Docs
         </button>
@@ -154,7 +154,7 @@
           class="col-md-2 application-button whitebutton"
           type="button"
           *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
-          (click)="EditApplication(applItem.applicationId, '2')"
+          (click)="EditApplication(applItem.applicationId, '3')"
         >
           Add Other Contacts
         </button>
