@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="bogus" Version="34.0.2" />
     <PackageReference Include="fakeiteasy" Version="7.3.1" />
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0">
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.9.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

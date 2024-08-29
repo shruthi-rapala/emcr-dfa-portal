@@ -39,7 +39,7 @@
     <ItemGroup>
         <PackageReference Include="IdentityModel.AspNetCore.OAuth2Introspection" Version="6.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.*" />
-        <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0">
+        <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.9.2">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
