@@ -116,6 +116,14 @@ namespace EMBC.DFA.API.Controllers
 
             if (application == null) return BadRequest("Application details cannot be empty.");
             var dfa_appcontact = await handler.HandleGetUser(currentUserId);
+
+            /*  2024-08-19 waynezen TODO: remove?
+            if (dfa_appcontact == null)
+            {
+                // get dfa_contact from BCeID Web Service
+            }
+            */
+
             application.ProfileVerification = new ProfileVerification() { profileId = dfa_appcontact.Id };
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);

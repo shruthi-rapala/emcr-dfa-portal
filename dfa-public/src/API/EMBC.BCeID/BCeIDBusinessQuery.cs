@@ -1,24 +1,26 @@
 ﻿using System;
+using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Threading.Tasks;
+using EMBC.Gov.BCeID.Models;
+using Microsoft.Extensions.Options;
+using ServiceReference1;
 
 namespace EMBC.Gov.BCeID
 {
     public class BCeIDBusinessQuery : IBCeIDBusinessQuery
     {
-        private string svcid;
-        private string user;
-        private string password;
-        private string url;
+        private readonly BCeIDWebSvcOptions webSvcOptions;
 
         //private static readonly HttpClient client = new HttpClient();
 
-        public BCeIDBusinessQuery(string svcid, string user, string password, string url)
+        public BCeIDBusinessQuery(IOptions<BCeIDWebSvcOptions> options)
         {
-            this.svcid = svcid;
-            this.user = user;
-            this.password = password;
-            this.url = url;
+            webSvcOptions = options.Value ?? throw new ArgumentNullException(nameof(options));
+            Debug.WriteLine($"{webSvcOptions.svcEndPoint}");
         }
 
         public string NormalizeGuid(string guid)
@@ -28,7 +30,7 @@ namespace EMBC.Gov.BCeID
 
         public async Task<BCeIDBusiness> ProcessBusinessQuery(string guid)
         {
-            if (String.IsNullOrEmpty(url))
+            if (String.IsNullOrEmpty(webSvcOptions.svcEndPoint))
             {
                 return null;
             }
@@ -38,17 +40,17 @@ namespace EMBC.Gov.BCeID
             BasicHttpsBinding binding = new BasicHttpsBinding { MaxReceivedMessageSize = int.MaxValue };
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
             binding.CloseTimeout = new TimeSpan(0, 10, 0);
-            EndpointAddress address = new EndpointAddress(url);
+            EndpointAddress address = new EndpointAddress(webSvcOptions.svcEndPoint);
             var client = new BCeIDServiceSoapClient(binding, address);
 
-            client.ClientCredentials.UserName.UserName = user;
-            client.ClientCredentials.UserName.Password = password;
+            client.ClientCredentials.UserName.UserName = webSvcOptions.serviceAccountName;
+            client.ClientCredentials.UserName.Password = webSvcOptions.serviceAccountPassword;
 
             var n_guid = NormalizeGuid(guid);
 
             // SOAP request and parameters
             var myparams = new AccountDetailRequest();
-            myparams.onlineServiceId = svcid;
+            myparams.onlineServiceId = webSvcOptions.serviceId;
             myparams.requesterUserGuid = n_guid;
             myparams.requesterAccountTypeCode = BCeIDAccountTypeCode.Business;
             myparams.userGuid = n_guid;
@@ -85,6 +87,7 @@ namespace EMBC.Gov.BCeID
                     business.addressProv = account.business.address.province.value;
                     business.addressPostal = account.business.address.postal.value;
                     business.addressCountry = account.business.address.country.value;
+                    business.userId = account.userId.value;
 
                     return business;
                 }
