@@ -569,7 +569,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.VendorName, opts => opts.MapFrom(s => s.dfa_name))
                 .ForMember(d => d.EligibleGST, opts => opts.MapFrom(s => s.dfa_eligiblegst))
                 .ForMember(d => d.ActualInvoiceTotal, opts => opts.MapFrom(s => s.dfa_actualinvoicetotal))
-                .ForMember(d => d.TotalBeingClaimed, opts => opts.MapFrom(s => s.dfa_totalbeingclaimed));
+                .ForMember(d => d.TotalBeingClaimed, opts => opts.MapFrom(s => s.dfa_totalbeingclaimed))
+                .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_emcrapprovedamount) ? "0" : s.dfa_emcrapprovedamount))
+                .ForMember(d => d.EMCRDecision, opts => opts.MapFrom(s => s.dfa_emcrdecision))
+                .ForMember(d => d.EMCRDecisionComments, opts => opts.MapFrom(s => s.dfa_emcrdecisioncomments))
+                .ForMember(d => d.EMCRDecisionDate, opts => opts.MapFrom(s => s.dfa_emcrdecisiondate));
 
             CreateMap<DFAInvoiceMain, dfa_invoice_delete_params>()
                 .ForMember(d => d.dfa_recoveryinvoiceid, opts => opts.MapFrom(s => s.Id))
