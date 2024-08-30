@@ -54,7 +54,7 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
   formCreationService: FormCreationService;
   showSupportingFileForm: boolean = false;
   supportingFilesDataSource = new MatTableDataSource();
-  documentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate', 'icons']
+  documentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate'] //, 'icons'
   claimDocumentSummaryDataSource = new MatTableDataSource();
   isLoading: boolean = false;
   isdisabled: string = 'false';
@@ -140,9 +140,9 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
       this.fileUploadForm.disable();
     }
 
-    if (this.dfaClaimMainDataService.getViewOrEdit() == 'viewOnly' || this.dfaClaimMainDataService.getViewOrEdit() == 'view' ) {
-      this.documentSummaryColumnsToDisplay.pop()
-    }
+    //if (this.dfaClaimMainDataService.getViewOrEdit() == 'viewOnly' || this.dfaClaimMainDataService.getViewOrEdit() == 'view' ) {
+    //  this.documentSummaryColumnsToDisplay.pop()
+    //}
 
   }
 
