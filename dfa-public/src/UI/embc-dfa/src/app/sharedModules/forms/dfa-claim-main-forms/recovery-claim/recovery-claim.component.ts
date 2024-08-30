@@ -105,19 +105,19 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
-    this.isReadOnly = (dfaProjectMainDataService.getViewOrEdit() === 'view'
-      || dfaProjectMainDataService.getViewOrEdit() === 'edit'
-      || dfaProjectMainDataService.getViewOrEdit() === 'viewOnly');
-    //this.setViewOrEditControls();
+    this.isReadOnly = (dfaClaimMainDataService.getViewOrEdit() === 'view'
+      || dfaClaimMainDataService.getViewOrEdit() === 'edit'
+      || dfaClaimMainDataService.getViewOrEdit() === 'viewOnly');
+    this.setViewOrEditControls();
 
-    this.dfaProjectMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+    this.dfaClaimMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.isReadOnly = (vieworedit === 'view'
       || vieworedit === 'edit'
         || vieworedit === 'viewOnly');
-      //this.setViewOrEditControls();
+      this.setViewOrEditControls();
     })
 
-    this.vieworedit = dfaProjectMainDataService.getViewOrEdit();
+    this.vieworedit = dfaClaimMainDataService.getViewOrEdit();
   }
 
   numericOnly(event): boolean {
@@ -134,9 +134,9 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     if (!this.recoveryClaimForm) return;
     if (this.isReadOnly) {
       this.hideHelp = true;
-      this.recoveryClaimForm.controls.estimatedCompletionDate.disable();
+      this.recoveryClaimForm.controls.isThisFinalClaim.disable();
     } else {
-      this.recoveryClaimForm.controls.estimatedCompletionDate.enable();
+      this.recoveryClaimForm.controls.isThisFinalClaim.enable();
     }
   }
 
@@ -145,7 +145,7 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
       .getRecoveryClaimForm()
       .subscribe((recoveryClaim) => {
         this.recoveryClaimForm = recoveryClaim;
-        //this.setViewOrEditControls();
+        this.setViewOrEditControls();
         this.setDisableInputFields()
       });
 
@@ -169,7 +169,7 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
       }
     })
 
-    if (this.dfaProjectMainDataService.getViewOrEdit() == 'viewOnly') {
+    if (this.dfaClaimMainDataService.getViewOrEdit() == 'viewOnly') {
       this.recoveryClaimForm.disable();
     }
     else {
@@ -192,11 +192,21 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
 
   setDisableInputFields() {
     this.recoveryClaimForm.controls.claimNumber.disable();
+    this.recoveryClaimForm.controls.claimReceivedByEMCRDate.disable();
     this.recoveryClaimForm.controls.isFirstClaimApproved.disable();
     this.recoveryClaimForm.controls.totalInvoicesBeingClaimed.disable();
     this.recoveryClaimForm.controls.claimPST.disable();
     this.recoveryClaimForm.controls.claimGrossGST.disable();
     this.recoveryClaimForm.controls.totalActualClaim.disable();
+
+    this.recoveryClaimForm.controls.claimEligibleGST.disable();
+    this.recoveryClaimForm.controls.claimTotal.disable();
+    this.recoveryClaimForm.controls.approvedClaimTotal.disable();
+    this.recoveryClaimForm.controls.firstClaimDeductible1000.disable();
+    this.recoveryClaimForm.controls.approvedReimbursement.disable();
+    this.recoveryClaimForm.controls.eligiblePayable.disable();
+    this.recoveryClaimForm.controls.paidClaimAmount.disable();
+    this.recoveryClaimForm.controls.paidClaimDate.disable();
   }
 
 

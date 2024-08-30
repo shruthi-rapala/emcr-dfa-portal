@@ -19,11 +19,15 @@ export class Invoice {
   isClaimforPartofTotalInvoice?: null | boolean;
   reasonClaimingPartofTotalInvoice?: null | string;
   netInvoiceBeingClaimed?: null | string;
-  PST?: null | string;
+  pst?: null | string;
   grossGST?: null | string;
   actualInvoiceTotal?: null | string;
   eligibleGST?: null | string;
   totalBeingClaimed?: null | string;
+  emcrDecision?: null | string;
+  emcrApprovedAmount?: null | string;
+  emcrDecisionDate?: null | string;
+  emcrDecisionComments?: null | string;
 
   constructor(
     invoiceNumber?: null | string,
@@ -35,12 +39,15 @@ export class Invoice {
     isClaimforPartofTotalInvoice?: null | boolean,
     reasonClaimingPartofTotalInvoice?: null | string,
     netInvoiceBeingClaimed?: null | string,
-    PST?: null | string,
+    pst?: null | string,
     grossGST?: null | string,
     actualInvoiceTotal?: null | string,
     eligibleGST?: null | string,
     totalBeingClaimed?: null | string,
-
+    emcrDecision?: null | string,
+    emcrApprovedAmount?: null | string,
+    emcrDecisionDate?: null | string,
+    emcrDecisionComments?: null | string,
   ) { }
 }
 
@@ -54,11 +61,15 @@ export class InvoiceForm {
   isClaimforPartofTotalInvoice = new UntypedFormControl();
   reasonClaimingPartofTotalInvoice = new UntypedFormControl();
   netInvoiceBeingClaimed = new UntypedFormControl();
-  PST = new UntypedFormControl();
+  pst = new UntypedFormControl();
   grossGST = new UntypedFormControl();
   actualInvoiceTotal = new UntypedFormControl();
   eligibleGST = new UntypedFormControl();
   totalBeingClaimed = new UntypedFormControl();
+  emcrDecision = new UntypedFormControl();
+  emcrApprovedAmount = new UntypedFormControl();
+  emcrDecisionDate = new UntypedFormControl();
+  emcrDecisionComments = new UntypedFormControl();
 
   constructor(
     invoice: Invoice,
@@ -110,10 +121,10 @@ export class InvoiceForm {
     }
     this.netInvoiceBeingClaimed.setValidators(null);
 
-    if (invoice.PST) {
-      this.PST.setValue(invoice.PST);
+    if (invoice.pst) {
+      this.pst.setValue(invoice.pst);
     }
-    this.PST.setValidators(null);
+    this.pst.setValidators(null);
 
     if (invoice.grossGST) {
       this.grossGST.setValue(invoice.grossGST);
@@ -137,6 +148,26 @@ export class InvoiceForm {
       this.totalBeingClaimed.setValue(invoice.totalBeingClaimed);
     }
     this.totalBeingClaimed.setValidators(null);
+
+    if (invoice.emcrDecision) {
+      this.emcrDecision.setValue(invoice.emcrDecision);
+    }
+    this.emcrDecision.setValidators(null);
+
+    if (invoice.emcrApprovedAmount) {
+      this.emcrApprovedAmount.setValue(invoice.emcrApprovedAmount);
+    }
+    this.emcrApprovedAmount.setValidators(null);
+
+    if (invoice.emcrDecisionDate) {
+      this.emcrDecisionDate.setValue(invoice.emcrDecisionDate);
+    }
+    this.emcrDecisionDate.setValidators(null);
+
+    if (invoice.emcrDecisionComments) {
+      this.emcrDecisionComments.setValue(invoice.emcrDecisionComments);
+    }
+    this.emcrDecisionComments.setValidators(null);
     
   }
 }
@@ -2052,7 +2083,6 @@ export class SupportingDocumentsForm {
  **/
 export interface DfaInvoiceMain {
   id?: string;
-  applicationId?: string;
   claimId?: string;
   invoice?: Invoice;
 }

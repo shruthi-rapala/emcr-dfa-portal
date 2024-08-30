@@ -1,3 +1,5 @@
+#CD pipeline for dfa train branch public
+
 name: train-project-public-build-push.yml
 
 on:
@@ -9,6 +11,10 @@ on:
       - "dfa-public/src/**"
       - ".github/workflows/train-project-public-build-push.yml"
   workflow_dispatch:
+concurrency:
+  group: train-build
+  cancel-in-progress: false
+
 env:
   UI_IMAGE_NAME: dfa-portal-ui-public
   API_IMAGE_NAME: dfa-portal-api-public
@@ -44,21 +50,19 @@ jobs:
         run: |
           docker pull ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.UI_IMAGE_NAME}}:${{ env.TEST_IMAGE_TAG }}
           docker pull ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.API_IMAGE_NAME}}:${{ env.TEST_IMAGE_TAG }}
-          docker pull ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.AUTH_IMAGE_NAME}}:${{ env.TEST_IMAGE_TAG }}
+          
       
       - name: Tag to Prod
         id: retag
         run: |
           docker tag ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.UI_IMAGE_NAME}}:${{ env.TEST_IMAGE_TAG }} ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.UI_IMAGE_NAME}}:${{ env.TRAINING_IMAGE_TAG }}
           docker tag ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.API_IMAGE_NAME}}:${{ env.TEST_IMAGE_TAG }} ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.API_IMAGE_NAME}}:${{ env.TRAINING_IMAGE_TAG }}
-          docker tag ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.AUTH_IMAGE_NAME}}:${{ env.TEST_IMAGE_TAG }} ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.AUTH_IMAGE_NAME}}:${{ env.TRAINING_IMAGE_TAG }}
 
       - name: Docker Push to Artifactory
         id: publish
         run: |
           docker push ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.UI_IMAGE_NAME}}:${{ env.TRAINING_IMAGE_TAG }}
           docker push ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.API_IMAGE_NAME}}:${{ env.TRAINING_IMAGE_TAG }}
-          docker push ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.AUTH_IMAGE_NAME}}:${{ env.TRAINING_IMAGE_TAG }}
      
       - name: Checkout ArgoCD Repo
         id: gitops
@@ -80,14 +84,11 @@ jobs:
           # Update the Helm values file with the new image tag and version
           DATETIME=$(date +'%Y-%m-%d %H:%M:%S')  # Get current date and time
           
-          sed -i  "s/apitag: .*/apitag: dev # Image Updated on $DATETIME/" ../deploy/train_public_values.yaml
-          sed -i  "s/apiversion: .*/apiversion: ${{ steps.short_sha.outputs.SHORT_SHA }} # Version Updated on $DATETIME/" ../deploy/train_public_values.yaml
+          sed -i  "s/apipubtag: .*/apipubtag: training # Image Updated on $DATETIME/" ../deploy/train_public_values.yaml
+          sed -i  "s/apipubversion: .*/apipubversion: ${{ steps.short_sha.outputs.SHORT_SHA }} # Version Updated on $DATETIME/" ../deploy/train_public_values.yaml
 
-          sed -i  "s/uitag: .*/uitag: dev # Image Updated on $DATETIME/" ../deploy/train_public_values.yaml
-          sed -i  "s/uiversion: .*/uiversion: ${{ steps.short_sha.outputs.SHORT_SHA }} # Version Updated on $DATETIME/" ../deploy/train_public_values.yaml
-
-          sed -i  "s/authtag: .*/authtag: dev # Image Updated on $DATETIME/" ../deploy/train_public_values.yaml
-          sed -i  "s/authversion: .*/authversion: ${{ steps.short_sha.outputs.SHORT_SHA }} # Version Updated on $DATETIME/" ../deploy/train_public_values.yaml
+          sed -i  "s/uipubtag: .*/uipubtag: training # Image Updated on $DATETIME/" ../deploy/train_public_values.yaml
+          sed -i  "s/uipubversion: .*/uipubversion: ${{ steps.short_sha.outputs.SHORT_SHA }} # Version Updated on $DATETIME/" ../deploy/train_public_values.yaml
 
           # Commit and push the changes
           git config --global user.email "actions@github.com"
@@ -105,5 +106,5 @@ jobs:
 
           git add .
 
-          git commit -m "Update Training API and UI image tag"
+          git commit -m "Update Training Public API and UI image tag"
           git push origin training  # Update the branch name as needed

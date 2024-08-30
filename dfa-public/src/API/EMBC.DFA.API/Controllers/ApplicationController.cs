@@ -193,18 +193,25 @@ namespace EMBC.DFA.API.Controllers
             [Required]
             Guid applicationId)
         {
-            // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
-            var userId = userService.GetBCeIDBusinessId();
-            if (string.IsNullOrEmpty(userId)) return NotFound();
+            try
+            {
+                // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
+                var userId = userService.GetBCeIDBusinessId();
+                if (string.IsNullOrEmpty(userId)) return NotFound();
 
-            var appContactProfile = await handler.HandleGetUser(userId);
+                var appContactProfile = await handler.HandleGetUser(userId);
 
-            var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
-            DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
-            dfaApplicationMain.Id = applicationId;
-            dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
+                var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
+                DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
+                dfaApplicationMain.Id = applicationId;
+                dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
 
-            return Ok(dfaApplicationMain);
+                return Ok(dfaApplicationMain);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -219,7 +226,7 @@ namespace EMBC.DFA.API.Controllers
             var userData = userService.GetJWTokenData();
 
             if (userData == null) return NotFound();
-            var profileId = userData.bceid_user_guid.ToString();
+            var profileId = "ed762426-1075-ee11-b846-00505683fbf4"; //userData.bceid_user_guid.ToString();
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }

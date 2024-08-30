@@ -54,10 +54,10 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CurrentProject>>> GetDFAProjects(string applicationId)
         {
-            var userId = currentUserId;
-            var profile = await handler.HandleGetUser(userId);
-            if (profile == null) return NotFound(userId);
-            var profileId = profile.Id;
+            //var userId = currentUserId;
+            //var profile = await handler.HandleGetUser(userId);
+            //if (profile == null) return NotFound(userId);
+            //var profileId = profile.Id;
             var lstProjects = await handler.HandleProjectList(applicationId);
 
             //var lstProjects = new List<CurrentProject>()

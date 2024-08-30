@@ -6,13 +6,14 @@ import {
 } from '@angular/forms';
 import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ProjectStageOptionSet } from 'src/app/core/api/models';
+import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ProjectStageOptionSet, FileCategoryClaim, RequiredDocumentTypeClaim, ClaimStageOptionSet } from 'src/app/core/api/models';
 import { Invoice } from './dfa-invoice.model';
 
 
 export class RecoveryClaim {
   claimNumber?: null | string;
-  claimStatus?: null | ProjectStageOptionSet;
+  claimReceivedByEMCRDate?: null | string;
+  claimStatus?: null | ClaimStageOptionSet;
   isFirstClaimApproved?: null | boolean;
   isThisFinalClaim?: null | boolean;
   totalInvoicesBeingClaimed?: null | string;
@@ -20,23 +21,41 @@ export class RecoveryClaim {
   claimGrossGST?: null | string;
   totalActualClaim?: null | string;
   invoices?: null | Invoice[];
+  claimEligibleGST?: null | string;
+  claimTotal?: null | string;
+  approvedClaimTotal?: null | string;
+  firstClaimDeductible1000?: null | string;
+  approvedReimbursement?: null | string;
+  eligiblePayable?: null | string;
+  paidClaimAmount?: null | string;
+  paidClaimDate?: null | string;
   
 
   constructor(
     claimNumber?: null | string,
-    claimStatus?: null | ProjectStageOptionSet,
+    claimReceivedByEMCRDate?: null | string,
+    claimStatus?: null | ClaimStageOptionSet,
     isFirstClaimApproved?: null | boolean,
     isThisFinalClaim?: null | boolean,
     totalInvoicesBeingClaimed?: null | string,
     claimPST?: null | string,
     claimGrossGST?: null | string,
     totalActualClaim?: null | string,
-    invoices?: null | Invoice[]
+    invoices?: null | Invoice[],
+    claimEligibleGST?: null | string,
+    claimTotal?: null | string,
+    approvedClaimTotal?: null | string,
+    firstClaimDeductible1000?: null | string,
+    approvedReimbursement?: null | string,
+    eligiblePayable?: null | string,
+    paidClaimAmount?: null | string,
+    paidClaimDate?: null | string
   ) { }
 }
 
 export class RecoveryClaimForm {
   claimNumber = new UntypedFormControl();
+  claimReceivedByEMCRDate = new UntypedFormControl();
   claimStatus = new UntypedFormControl();
   isFirstClaimApproved = new UntypedFormControl();
   isThisFinalClaim = new UntypedFormControl();
@@ -45,6 +64,14 @@ export class RecoveryClaimForm {
   claimGrossGST = new UntypedFormControl();
   totalActualClaim = new UntypedFormControl();
   invoices = new UntypedFormControl();
+  claimEligibleGST = new UntypedFormControl();
+  claimTotal = new UntypedFormControl();
+  approvedClaimTotal = new UntypedFormControl();
+  firstClaimDeductible1000 = new UntypedFormControl();
+  approvedReimbursement = new UntypedFormControl();
+  eligiblePayable = new UntypedFormControl();
+  paidClaimAmount = new UntypedFormControl();
+  paidClaimDate = new UntypedFormControl();
 
   constructor(
     recoveryClaim: RecoveryClaim,
@@ -58,6 +85,11 @@ export class RecoveryClaimForm {
       this.claimNumber.setValue(0);
     }
     this.claimNumber.setValidators(null);
+
+    if (recoveryClaim.claimReceivedByEMCRDate) {
+      this.claimReceivedByEMCRDate.setValue(recoveryClaim.claimReceivedByEMCRDate);
+    }
+    this.claimReceivedByEMCRDate.setValidators(null);
 
     if (recoveryClaim.claimStatus) {
       this.claimStatus.setValue(recoveryClaim.claimStatus);
@@ -114,44 +146,101 @@ export class RecoveryClaimForm {
     }
     this.invoices.setValidators(null);
 
+    if (recoveryClaim.claimEligibleGST) {
+      this.claimEligibleGST.setValue(recoveryClaim.claimEligibleGST);
+    }
+    else {
+      this.claimEligibleGST.setValue(0);
+    }
+    this.claimEligibleGST.setValidators(null);
+
+    if (recoveryClaim.claimTotal) {
+      this.claimTotal.setValue(recoveryClaim.claimTotal);
+    }
+    else {
+      this.claimTotal.setValue(0);
+    }
+    this.claimTotal.setValidators(null);
+
+    if (recoveryClaim.approvedClaimTotal) {
+      this.approvedClaimTotal.setValue(recoveryClaim.approvedClaimTotal);
+    }
+    else {
+      this.approvedClaimTotal.setValue(0);
+    }
+    this.approvedClaimTotal.setValidators(null);
+
+    if (recoveryClaim.firstClaimDeductible1000) {
+      this.firstClaimDeductible1000.setValue(recoveryClaim.firstClaimDeductible1000);
+    }
+    else {
+      this.firstClaimDeductible1000.setValue(0);
+    }
+    this.firstClaimDeductible1000.setValidators(null);
+
+    if (recoveryClaim.approvedReimbursement) {
+      this.approvedReimbursement.setValue(recoveryClaim.approvedReimbursement);
+    }
+    else {
+      this.approvedReimbursement.setValue(0);
+    }
+    this.approvedReimbursement.setValidators(null);
+
+    if (recoveryClaim.eligiblePayable) {
+      this.eligiblePayable.setValue(recoveryClaim.eligiblePayable);
+    }
+    else {
+      this.eligiblePayable.setValue(0);
+    }
+    this.eligiblePayable.setValidators(null);
+
+    if (recoveryClaim.paidClaimAmount) {
+      this.paidClaimAmount.setValue(recoveryClaim.paidClaimAmount);
+    }
+    else {
+      this.paidClaimAmount.setValue(0);
+    }
+    this.paidClaimAmount.setValidators(null);
+
+    if (recoveryClaim.paidClaimDate) {
+      this.paidClaimDate.setValue(recoveryClaim.paidClaimDate);
+    }
+    this.paidClaimDate.setValidators(null);
   }
 }
 
 export class FileUploadClaim {
-  applicationId?: string;
+  claimId?: string;
   contentType?: string;
   deleteFlag?: boolean;
   fileData?: string;
   fileDescription?: string;
   fileName?: string;
   fileSize?: number;
-  fileType?: FileCategory;
-  requiredDocumentType?: RequiredDocumentType;
+  fileType?: FileCategoryClaim;
+  fileTypeText?: string;
+  requiredDocumentType?: RequiredDocumentTypeClaim;
   id?: null | string;
   modifiedBy?: string;
   uploadedDate?: string;
   applicantType?: string;
-  smallBusinessOption?: string;
-  farmOption?: string;
 }
 
 export class FileUploadsClaimForm {
-  applicationId = new UntypedFormControl();
+  claimId = new UntypedFormControl();
   applicantType = new UntypedFormControl();
-  smallBusinessOption = new UntypedFormControl();
-  farmOption = new UntypedFormControl();
   deleteFlag = new UntypedFormControl();
   id = new UntypedFormControl();
   fileName = new UntypedFormControl();
   fileDescription = new UntypedFormControl();
   fileType = new UntypedFormControl();
+  fileTypeText = new UntypedFormControl();
   requiredDocumentType = new UntypedFormControl();
   uploadedDate = new UntypedFormControl();
   modifiedBy = new UntypedFormControl();
   fileData = new UntypedFormControl();
   contentType = new UntypedFormControl();
   fileSize = new UntypedFormControl();
-  cleanupFileUpload: UntypedFormGroup;
   invoiceUpload: UntypedFormGroup;
   generalLedgerUpload: UntypedFormGroup;
   proofOfPaymentUpload: UntypedFormGroup;
@@ -176,7 +265,7 @@ export class FileUploadsClaimForm {
             .bind(customValidator)
         ]
       ],
-      applicationId: [
+      claimId: [
         '',
         [
           customValidator
@@ -226,6 +315,9 @@ export class FileUploadsClaimForm {
             )
             .bind(customValidator)
         ]
+      ],
+      fileTypeText: [
+        ''
       ],
       requiredDocumentType: [
         ''
@@ -298,7 +390,7 @@ export class FileUploadsClaimForm {
             .bind(customValidator)
         ]
       ],
-      applicationId: [
+      claimId: [
         '',
         [
           customValidator
@@ -348,6 +440,9 @@ export class FileUploadsClaimForm {
             )
             .bind(customValidator)
         ]
+      ],
+      fileTypeText: [
+        ''
       ],
       requiredDocumentType: [
         ''
@@ -420,7 +515,7 @@ export class FileUploadsClaimForm {
             .bind(customValidator)
         ]
       ],
-      applicationId: [
+      claimId: [
         '',
         [
           customValidator
@@ -470,6 +565,9 @@ export class FileUploadsClaimForm {
             )
             .bind(customValidator)
         ]
+      ],
+      fileTypeText: [
+        ''
       ],
       requiredDocumentType: [
         ''
@@ -542,7 +640,7 @@ export class FileUploadsClaimForm {
             .bind(customValidator)
         ]
       ],
-      applicationId: [
+      claimId: [
         '',
         [
           customValidator
@@ -591,6 +689,9 @@ export class FileUploadsClaimForm {
             )
             .bind(customValidator)
         ]
+      ],
+      fileTypeText: [
+        ''
       ],
       requiredDocumentType: [
         ''
@@ -679,7 +780,6 @@ export class SupportingDocumentsForm {
  **/
 export interface DfaClaimMain {
   id?: string;
-  applicationId?: string;
   projectId?: string;
   claim?: RecoveryClaim;
 }
