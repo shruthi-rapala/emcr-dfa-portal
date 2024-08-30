@@ -741,6 +741,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_eligiblegst { get; set; }
         public int? dfa_actualinvoicetotal { get; set; }
         public int? dfa_totalbeingclaimed { get; set; }
+        public string? dfa_emcrdecision { get; set; }
+        public string? dfa_emcrapprovedamount { get; set; }
+        public DateTime? dfa_emcrdecisiondate { get; set; }
+        public string? dfa_emcrdecisioncomments { get; set; }
     }
 
     public class dfa_project

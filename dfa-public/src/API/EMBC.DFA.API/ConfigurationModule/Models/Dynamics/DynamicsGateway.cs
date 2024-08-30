@@ -1210,7 +1210,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_invoicenumber", "dfa_invoicedate", "dfa_goodsorservicesreceiveddate",
                         "dfa_receiveddatesameasinvoicedate", "dfa_portionofinvoice", "dfa_portioninvoicereason",
                         "dfa_netinvoicedbeingclaimed", "dfa_pst", "dfa_grossgst", "dfa_eligiblegst",
-                        "createdon", "dfa_actualinvoicetotal", "dfa_totalbeingclaimed"
+                        "createdon", "dfa_actualinvoicetotal", "dfa_totalbeingclaimed", "dfa_emcrdecision",
+                        "dfa_emcrapprovedamount", "dfa_emcrdecisiondate", "dfa_emcrdecisioncomments"
                     },
                     Filter = $"_dfa_claim_value eq {claimId}"
                 });
@@ -1234,7 +1235,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                      dfa_eligiblegst = objInvoice.dfa_eligiblegst,
                                      createdon = objInvoice.createdon,
                                      dfa_totalbeingclaimed = objInvoice.dfa_totalbeingclaimed,
-                                     dfa_actualinvoicetotal = objInvoice.dfa_actualinvoicetotal
+                                     dfa_actualinvoicetotal = objInvoice.dfa_actualinvoicetotal,
+                                     dfa_emcrapprovedamount = objInvoice.dfa_emcrapprovedamount,
+                                     dfa_emcrdecision = objInvoice.dfa_emcrdecision,
+                                     dfa_emcrdecisioncomments = objInvoice.dfa_emcrdecisioncomments,
+                                     dfa_emcrdecisiondate = objInvoice.dfa_emcrdecisiondate
                                  }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstClaims;
