@@ -4,7 +4,7 @@
   <div class="col-md-12" [innerHTML]="content?.text"></div>
 </mat-dialog-content>
 
-<mat-dialog-actions style="display:flex; gap:12px;">
+<mat-dialog-actions style="display:flex; justify-content:space-around">
   <div class="col-md-5">
     <button class="button-s button-width" mat-button (click)="cancel()">
       {{ content?.cancelButton }}
