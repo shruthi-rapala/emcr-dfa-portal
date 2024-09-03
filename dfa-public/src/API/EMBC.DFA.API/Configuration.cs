@@ -245,6 +245,9 @@ namespace EMBC.DFA.API
 
             // 2024-08-19 EMCRI-434 waynezen; configure BCeID Web Services
             var bceidSection = configuration.GetSection("BCeIDWebServices");
+            BCeIDWebSvcOptions bceidWebSvcOptions = new BCeIDWebSvcOptions();
+            bceidSection.Bind(bceidWebSvcOptions);
+
             services.Configure<BCeIDWebSvcOptions>(bceidSection);
             services.AddScoped<IBCeIDBusinessQuery, BCeIDBusinessQuery>();
 
