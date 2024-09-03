@@ -30,5 +30,15 @@ namespace EMBC.Gov.BCeID
 
             return Task.FromResult(bceid);
         }
+
+        public Task<BCeIDBusiness> ProcessBusinessQuery(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BCeIDBusiness> ProcessBusinessQuery(Guid userGuid, string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
