@@ -330,7 +330,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageloss",
                         "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto"
                     },
-                    Filter = $"_dfa_applicant_value eq {profileId}"
+                    Filter = $"_dfa_bceiduser_value eq {profileId}"
                     //Expand = new CRMExpandOptions[]
                     //{
                     //    new CRMExpandOptions()

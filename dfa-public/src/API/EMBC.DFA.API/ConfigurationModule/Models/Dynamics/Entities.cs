@@ -165,6 +165,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_dateofdamageto { get; set; } // optional date only
         public string? dfa_appapplicationid { get; set; } // optional string
         public string dfa_appcontactid { get; set; }
+        public string dfa_portalloggedinuser { get; set; }
         public int? dfa_applicantsubtype { get; set; }
         public int? dfa_applicantlocalgovsubtype { get; set; }
         public string dfa_estimated { get; set; }
