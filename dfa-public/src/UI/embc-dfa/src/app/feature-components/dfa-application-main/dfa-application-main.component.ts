@@ -281,17 +281,11 @@ export class DFAApplicationMainComponent
   loadStepForm(index: number): void {
     switch (index) {
       case 0:
-        // this.form$ = this.formCreationService
-        //   .getPropertyDamageForm()
-        //   .subscribe((propertyDamage) => {
-        //     this.form = propertyDamage;
-        //   });
-
-          this.form$ = this.formCreationService
-          .getCreateApplication1Form()
-          .subscribe((createApplication1) => {
-            this.form = createApplication1;
-          });
+         this.form$ = this.formCreationService
+           .getPropertyDamageForm()
+           .subscribe((propertyDamage) => {
+             this.form = propertyDamage;
+           });
 
         break;
     }
