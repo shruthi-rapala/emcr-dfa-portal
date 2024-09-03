@@ -115,10 +115,12 @@ namespace EMBC.DFA.API.Controllers
             var e3 = ((EstimatedPercent)System.Enum.Parse(typeof(EstimatedPercent), "FirstNationCommunity")).ToString();
 
             if (application == null) return BadRequest("Application details cannot be empty.");
+
             //var dfa_appcontact = await handler.HandleGetUser(currentUserId);
             //currentUserId = "6e0d26eb-376a-ef11-b851-00505683fbf4";
             //application.ProfileVerification = new ProfileVerification() { profileId = currentUserId };
             application.ProfileVerification = new ProfileVerification() { profileId = "6e0d26eb-376a-ef11-b851-00505683fbf4" };
+
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
