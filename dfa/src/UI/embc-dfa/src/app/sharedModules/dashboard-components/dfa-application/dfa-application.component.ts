@@ -106,14 +106,15 @@ export class DfaApplicationComponent implements OnInit {
   }
 
   mapData(lstApp: Object): void {
-    var res = JSON.parse(JSON.stringify(lstApp));
-    this.lstApplications = res;
+
+    this.lstApplications = JSON.parse(JSON.stringify(lstApp));
+        
     this.lstApplications.forEach(x => {
       if (
         (x.status.toLowerCase() === "dfa decision made"
           || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
         &&
-        (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getTime()))) {
+        (x.dateFileClosed && (new Date(x.dateFileClosed).getTime() <= this.sixtyOneDaysAgo))) {        
           x.currentApplication = false;
       } else x.currentApplication = true;
     })
