@@ -90,6 +90,12 @@ footer nav {
   font-weight: normal !important;
 }
 
+.mat-step-text-label {
+  text-overflow: inherit;
+  width: 96px;
+  text-wrap: wrap;
+}
+
 .mat-stepper-horizontal-line {
   border-top-width: 2px !important;
 }
