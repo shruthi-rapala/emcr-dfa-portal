@@ -444,7 +444,7 @@ namespace EMBC.DFA.API.Controllers
     /// <summary>
     /// Property Damage
     /// </summary>
-    public class PropertyDamage
+    public class ApplicationDetails
     {
         public bool? floodDamage { get; set; }
         public bool? landslideDamage { get; set; }

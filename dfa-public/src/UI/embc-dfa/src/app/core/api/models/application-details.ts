@@ -4,7 +4,7 @@
 /**
  * Property Damage
  */
-export interface PropertyDamage {
+export interface ApplicationDetails {
   applicantSubSubtype?: null | string;
   applicantSubtype?: null | string;
   damageFromDate?: null | string;

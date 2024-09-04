@@ -18,22 +18,22 @@ export class DFAApplicationMainMappingService {
   }
 
   setExistingDFAApplicationMain(dfaApplicationMain: DfaApplicationMain): void {
-    this.setPropertyDamageDetails(dfaApplicationMain);
+    this.setApplicationDetails(dfaApplicationMain);
   }
 
-  private setPropertyDamageDetails(dfaApplicationMain: DfaApplicationMain): void {
+  private setApplicationDetails(dfaApplicationMain: DfaApplicationMain): void {
     let formGroup: UntypedFormGroup;
     this.formCreationService
-      .getPropertyDamageForm()
+      .getApplicationDetailsForm()
       .pipe(first())
-      .subscribe((propertyDamage) => {
-        propertyDamage.setValue({
-          ...dfaApplicationMain.propertyDamage,
-          guidanceSupport: dfaApplicationMain.propertyDamage.guidanceSupport === true ? 'true' : (dfaApplicationMain.propertyDamage.guidanceSupport === false ? 'false' : null),
+      .subscribe((applicationDetails) => {
+        applicationDetails.setValue({
+          ...dfaApplicationMain.applicationDetails,
+          guidanceSupport: dfaApplicationMain.applicationDetails.guidanceSupport === true ? 'true' : (dfaApplicationMain.applicationDetails.guidanceSupport === false ? 'false' : null),
         });
-        formGroup = propertyDamage;
+        formGroup = applicationDetails;
       });
-    this.dfaApplicationMainDataService.propertyDamage = dfaApplicationMain.propertyDamage;
+    this.dfaApplicationMainDataService.applicationDetails = dfaApplicationMain.applicationDetails;
   }
 
 }

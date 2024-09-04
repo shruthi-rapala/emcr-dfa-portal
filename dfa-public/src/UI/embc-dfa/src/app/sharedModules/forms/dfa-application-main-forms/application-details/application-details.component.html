@@ -1,7 +1,7 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
 
-    <form [formGroup]="propertyDamageForm">
+    <form [formGroup]="applicationDetailsForm">
       <p class="sub-heading" style="font-size: 20px">Cause of Damage</p>
       <br/>
 
@@ -37,10 +37,10 @@
             >
               Other Damage
             </mat-checkbox>
-            <mat-form-field appearance="outline" [hidden]="propertyDamageForm.get('otherDamage').value !== true" class="col-md-4 topSpace">
+            <mat-form-field appearance="outline" [hidden]="applicationDetailsForm.get('otherDamage').value !== true" class="col-md-4 topSpace">
               <mat-label>Cause of Damage</mat-label>
               <input matInput
-                [required]="propertyDamageForm.get('otherDamage').value === true || propertyDamageForm.get('otherDamage').value === 'true'"
+                [required]="applicationDetailsForm.get('otherDamage').value === true || applicationDetailsForm.get('otherDamage').value === 'true'"
                 type="text"
                 [readonly]="isReadOnly === true"
                 formControlName="otherDamageText"
@@ -50,22 +50,22 @@
               <mat-hint>Maximum length is 100 characters</mat-hint>
               <mat-error
                 *ngIf="
-                propertyDamageForm.get('otherDamageText').invalid &&
-                propertyDamageForm.get('otherDamageText').hasError('required')
+                applicationDetailsForm.get('otherDamageText').invalid &&
+                applicationDetailsForm.get('otherDamageText').hasError('required')
               "
               >
                 Text is required</mat-error
               >
               <mat-error
                 *ngIf="
-                  propertyDamageForm.get('otherDamageText').invalid &&
-                propertyDamageForm.get('otherDamageText').hasError('maxLength')
+                  applicationDetailsForm.get('otherDamageText').invalid &&
+                applicationDetailsForm.get('otherDamageText').hasError('maxLength')
                 "
               >
                 Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
-            <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage') && vieworedit !== 'viewOnly'">
+            <mat-error *ngIf="applicationDetailsForm.hasError('noCauseOfDamage') && vieworedit !== 'viewOnly'">
               <br/>At least one cause of damage is required.
             </mat-error>
           </div>
@@ -82,7 +82,7 @@
                 [matDatepicker]="fromPicker"
                 [readonly]="isReadOnly === true"
                 formControlName="damageFromDate"
-                [max]="propertyDamageForm.get('damageToDate').value ? propertyDamageForm.get('damageToDate').value : todayDate"
+                [max]="applicationDetailsForm.get('damageToDate').value ? applicationDetailsForm.get('damageToDate').value : todayDate"
                 required >
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="fromPicker" [disabled]="isReadOnly === true"
@@ -91,16 +91,16 @@
               ></mat-datepicker>
               <mat-error
                 *ngIf="
-                propertyDamageForm.get('damageFromDate').invalid &&
-                propertyDamageForm.get('damageFromDate').hasError('required')
+                applicationDetailsForm.get('damageFromDate').invalid &&
+                applicationDetailsForm.get('damageFromDate').hasError('required')
               "
               >
                 From date is required</mat-error
               >
               <mat-error
               *ngIf="
-              propertyDamageForm.get('damageFromDate').invalid &&
-              propertyDamageForm.get('damageFromDate').hasError('matDatepickerMax')
+              applicationDetailsForm.get('damageFromDate').invalid &&
+              applicationDetailsForm.get('damageFromDate').hasError('matDatepickerMax')
             "
             >
               From date cannot be in the future or after to date</mat-error
@@ -114,7 +114,7 @@
                 [matDatepicker]="toPicker"
                 formControlName="damageToDate"
                 [readonly]="isReadOnly === true"
-                [min]="propertyDamageForm.get('damageFromDate').value ? propertyDamageForm.get('damageFromDate').value : '2000-01-01'"
+                [min]="applicationDetailsForm.get('damageFromDate').value ? applicationDetailsForm.get('damageFromDate').value : '2000-01-01'"
                 [max]="todayDate"
                 required>
               <mat-hint>MM/DD/YYYY</mat-hint>
@@ -124,24 +124,24 @@
               ></mat-datepicker>
               <mat-error
                 *ngIf="
-                propertyDamageForm.get('damageToDate').invalid &&
-                propertyDamageForm.get('damageToDate').hasError('required')
+                applicationDetailsForm.get('damageToDate').invalid &&
+                applicationDetailsForm.get('damageToDate').hasError('required')
               "
               >
                 To date is required</mat-error
               >
               <mat-error
                 *ngIf="
-                propertyDamageForm.get('damageToDate').invalid &&
-                propertyDamageForm.get('damageToDate').hasError('matDatepickerMin')
+                applicationDetailsForm.get('damageToDate').invalid &&
+                applicationDetailsForm.get('damageToDate').hasError('matDatepickerMin')
               "
               >
                 To date cannot be before from date</mat-error
               >
               <mat-error
                 *ngIf="
-                propertyDamageForm.get('damageToDate').invalid &&
-                propertyDamageForm.get('damageToDate').hasError('matDatepickerMax')
+                applicationDetailsForm.get('damageToDate').invalid &&
+                applicationDetailsForm.get('damageToDate').hasError('matDatepickerMax')
               "
               >
                 To date cannot be a future date</mat-error
@@ -167,9 +167,9 @@
               </mat-select>
               <mat-error
                 *ngIf="
-                  propertyDamageForm.get('applicantSubtype').invalid &&
-                  propertyDamageForm.get('applicantSubtype').hasError('required') &&
-                  propertyDamageForm.get('applicantSubtype').touched
+                  applicationDetailsForm.get('applicantSubtype').invalid &&
+                  applicationDetailsForm.get('applicantSubtype').hasError('required') &&
+                  applicationDetailsForm.get('applicantSubtype').touched
                 "
               >
                 Applicant type is required</mat-error
@@ -212,9 +212,9 @@
               </mat-select>
               <mat-error
                 *ngIf="
-                  propertyDamageForm.get('applicantSubSubtype').invalid &&
-                  propertyDamageForm.get('applicantSubSubtype').hasError('required') &&
-                  propertyDamageForm.get('applicantSubSubtype').touched
+                  applicationDetailsForm.get('applicantSubSubtype').invalid &&
+                  applicationDetailsForm.get('applicantSubSubtype').hasError('required') &&
+                  applicationDetailsForm.get('applicantSubSubtype').touched
                 "
               >
                 Type of Other Local Government Body is required</mat-error

@@ -167,20 +167,20 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.Id))
                 .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => Convert.ToInt32(ApplicantTypeOptionSet.GovernmentBody)))
                 .ForMember(d => d.dfa_portalloggedinuser, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
-                .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.propertyDamage.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
-                .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.propertyDamage.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
-                .ForMember(d => d.dfa_receiveguidanceassessingyourinfra, opts => opts.MapFrom(s => s.propertyDamage.guidanceSupport == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
-                .ForMember(d => d.dfa_causeofdamageflood2, opts => opts.MapFrom(s => s.propertyDamage.floodDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
-                .ForMember(d => d.dfa_causeofdamagelandslide2, opts => opts.MapFrom(s => s.propertyDamage.landslideDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
-                .ForMember(d => d.dfa_causeofdamageother2, opts => opts.MapFrom(s => s.propertyDamage.otherDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
-                .ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.propertyDamage.otherDamageText))
-                .ForMember(d => d.dfa_applicantsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeOptionSet(s.propertyDamage.applicantSubtype)))
-                .ForMember(d => d.dfa_applicantlocalgovsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeSubOptionSet(s.propertyDamage.applicantSubSubtype)))
-                .ForMember(d => d.dfa_applicantothercomments, opts => opts.MapFrom(s => s.propertyDamage.subtypeOtherDetails))
-                .ForMember(d => d.dfa_dfaapplicantsubtypecomments, opts => opts.MapFrom(s => s.propertyDamage.subtypeDFAComment))
-                .ForMember(d => d.dfa_estimated, opts => opts.MapFrom(s => s.propertyDamage.estimatedPercent))
-                .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.propertyDamage.damageFromDate))
-                .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.propertyDamage.damageToDate));
+                .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.applicationDetails.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.applicationDetails.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_receiveguidanceassessingyourinfra, opts => opts.MapFrom(s => s.applicationDetails.guidanceSupport == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamageflood2, opts => opts.MapFrom(s => s.applicationDetails.floodDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamagelandslide2, opts => opts.MapFrom(s => s.applicationDetails.landslideDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamageother2, opts => opts.MapFrom(s => s.applicationDetails.otherDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.applicationDetails.otherDamageText))
+                .ForMember(d => d.dfa_applicantsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeOptionSet(s.applicationDetails.applicantSubtype)))
+                .ForMember(d => d.dfa_applicantlocalgovsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeSubOptionSet(s.applicationDetails.applicantSubSubtype)))
+                .ForMember(d => d.dfa_applicantothercomments, opts => opts.MapFrom(s => s.applicationDetails.subtypeOtherDetails))
+                .ForMember(d => d.dfa_dfaapplicantsubtypecomments, opts => opts.MapFrom(s => s.applicationDetails.subtypeDFAComment))
+                .ForMember(d => d.dfa_estimated, opts => opts.MapFrom(s => s.applicationDetails.estimatedPercent))
+                .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.applicationDetails.damageFromDate))
+                .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.applicationDetails.damageToDate));
 
             CreateMap<dfa_appapplicationmain_retrieve, CleanUpLog>()
                 .ForMember(d => d.haveInvoicesOrReceiptsForCleanupOrRepairs, opts => opts.MapFrom(s => s.dfa_haveinvoicesreceiptsforcleanuporrepairs2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_haveinvoicesreceiptsforcleanuporrepairs2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
@@ -217,7 +217,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.isPrimaryAndDamagedAddressSame, opts => opts.MapFrom(s => s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.isDamagedAddressVerified, opts => opts.MapFrom(s => s.dfa_damagedpropertyaddresscanadapostverified == (int)YesNoOptionSet.Yes ? true : (s.dfa_damagedpropertyaddresscanadapostverified == (int)YesNoOptionSet.No ? false : (bool?)null)));
 
-            CreateMap<dfa_appapplicationmain_retrieve, PropertyDamage>()
+            CreateMap<dfa_appapplicationmain_retrieve, ApplicationDetails>()
                 .ForMember(d => d.stormDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.wildfireDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagewildfire2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
