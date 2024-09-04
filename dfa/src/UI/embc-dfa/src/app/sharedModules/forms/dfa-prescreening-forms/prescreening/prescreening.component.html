@@ -289,6 +289,7 @@
               <div *ngFor="let option of radioInsuranceOptions | keyvalue: originalOrder">
                 <mat-radio-button
                   class="primary-radio-button row"
+                  style="margin: 5px;"
                   [value]="option.key"
                 >
                   {{ option.value }}
