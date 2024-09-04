@@ -651,7 +651,7 @@ a:hover {
 	var apiUrl = 'https://dfa-portal-test.apps.silver.devops.gov.bc.ca/api/eligibility/checkEventsAvailable';
 
 	fetch(apiUrl, {
-		method: "GET", mode: 'cors'
+		method: "GET", mode: 'no-cors'
 	}).then(response => {
 		return response.json();
 	}).then(data => {
