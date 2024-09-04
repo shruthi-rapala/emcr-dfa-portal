@@ -651,7 +651,7 @@ a:hover {
 	var apiUrl = 'https://portal.test.dfa.gov.bc.ca/api/eligibility/checkEventsAvailable';
 
 	fetch(apiUrl, {
-		method: "GET", mode: 'no-cors'
+		method: "GET", mode: 'cors'
 	}).then(response => {
 		return response.json();
 	}).then(data => {
