@@ -14,11 +14,12 @@ import {
 import { AppTypeInsurance, AppTypeInsuranceForm, Consent, ConsentForm, ProfileVerification, ProfileVerificationForm } from '../model/dfa-application-start.model';
 import { DfaPrescreening, DfaPrescreeningForm } from '../model/dfa-prescreening.model';
 import { InsuranceOption } from 'src/app/core/api/models';
-import { PropertyDamageForm, DamagedPropertyAddressForm, DamagedPropertyAddress, PropertyDamage, SignAndSubmit, SupportingDocuments, DamagedRoomsForm,
+import { ApplicationDetailsForm, DamagedPropertyAddressForm, DamagedPropertyAddress, SignAndSubmit, SupportingDocuments, DamagedRoomsForm,
   FullTimeOccupantsForm, SecondaryApplicantsForm, OtherContactsForm,
   CleanUpLogForm, SignAndSubmitForm, SupportingDocumentsForm, CleanUpLog, CleanUpLogItemsForm, SecondaryApplicant, FullTimeOccupant, OtherContact, CleanUpLogItem, DamagedRoom,  
   CreateApplication1Form,
-  CreateApplication1} from '../model/dfa-application-main.model';
+  CreateApplication1,
+  ApplicationDetails} from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import { FileUpload, FileUploadsForm, RecoveryPlan, RecoveryPlanForm } from '../model/dfa-project-main.model';
 import { FileUploadClaim, FileUploadsClaimForm, RecoveryClaim, RecoveryClaimForm } from '../model/dfa-claim-main.model';
@@ -137,18 +138,18 @@ export class FormCreationService {
   damagedPropertyAddressForm$: Observable<UntypedFormGroup | undefined> =
     this.damagedPropertyAddressForm.asObservable();
 
-  propertyDamageForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  applicationDetailsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
-       new PropertyDamageForm(
-         new PropertyDamage(),
+        new ApplicationDetailsForm(
+         new ApplicationDetails(),
          this.customValidator
        )
      )
    );
 
-  propertyDamageForm$: Observable<UntypedFormGroup | undefined> =
-    this.propertyDamageForm.asObservable();
+  applicationDetailsForm$: Observable<UntypedFormGroup | undefined> =
+    this.applicationDetailsForm.asObservable();
 
   // 2024-08-20 EMCRI-613 waynezen; Create Application1
   createApplication1Form: BehaviorSubject<UntypedFormGroup | undefined> =
@@ -491,19 +492,19 @@ export class FormCreationService {
     );
   }
 
-  getPropertyDamageForm(): Observable<UntypedFormGroup> {
-    return this.propertyDamageForm$;
+  getApplicationDetailsForm(): Observable<UntypedFormGroup> {
+    return this.applicationDetailsForm$;
   }
 
-  setPropertyDamageForm(propertyDamageForm: UntypedFormGroup): void {
-    this.propertyDamageForm.next(propertyDamageForm);
+  setApplicationDetailsForm(applicationDetailsForm: UntypedFormGroup): void {
+    this.applicationDetailsForm.next(applicationDetailsForm);
   }
 
-  clearPropertyDamageData(): void {
-    this.propertyDamageForm.next(
+  clearApplicationDetailsData(): void {
+    this.applicationDetailsForm.next(
       this.formBuilder.group(
-        new PropertyDamageForm(
-          new PropertyDamage(),
+        new ApplicationDetailsForm(
+          new ApplicationDetails(),
           this.customValidator
         )
       )
@@ -513,6 +514,10 @@ export class FormCreationService {
   // 2024-08-20 EMCRI-613 waynezen; Create (new) Application
   getCreateApplication1Form(): Observable<UntypedFormGroup> {
     return this.createApplication1Form$;
+  }
+
+  setCreateApplication1Form(createApplication1Form: UntypedFormGroup): void {
+    this.createApplication1Form.next(createApplication1Form);
   }
 
 

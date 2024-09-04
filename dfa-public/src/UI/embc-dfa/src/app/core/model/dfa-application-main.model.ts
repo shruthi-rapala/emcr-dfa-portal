@@ -257,7 +257,7 @@ export class DamagedPropertyAddressForm {
   }
 }
 
-export class PropertyDamage {
+export class ApplicationDetails {
   damageFromDate?: null | string;
   damageToDate?: null | string;
   floodDamage?: null | boolean;
@@ -293,7 +293,7 @@ export class PropertyDamage {
   ) { }
 }
 
-export class PropertyDamageForm {
+export class ApplicationDetailsForm {
   floodDamage = new UntypedFormControl();
   landslideDamage = new UntypedFormControl();
   stormDamage = new UntypedFormControl();
@@ -310,79 +310,79 @@ export class PropertyDamageForm {
   subtypeDFAComment = new UntypedFormControl();
 
   constructor(
-    propertyDamage: PropertyDamage,
+    applicationDetails: ApplicationDetails,
     customValidator: CustomValidationService
   ) {
-    if (propertyDamage.floodDamage) {
-      this.floodDamage.setValue(propertyDamage.floodDamage);
+    if (applicationDetails.floodDamage) {
+      this.floodDamage.setValue(applicationDetails.floodDamage);
     }
     this.floodDamage.setValidators(null);
 
-    if (propertyDamage.landslideDamage) {
-      this.landslideDamage.setValue(propertyDamage.landslideDamage);
+    if (applicationDetails.landslideDamage) {
+      this.landslideDamage.setValue(applicationDetails.landslideDamage);
     }
     this.landslideDamage.setValidators(null);
 
-    if (propertyDamage.stormDamage) {
-      this.stormDamage.setValue(propertyDamage.stormDamage);
+    if (applicationDetails.stormDamage) {
+      this.stormDamage.setValue(applicationDetails.stormDamage);
     }
     this.stormDamage.setValidators(null);
 
-    if (propertyDamage.wildfireDamage) {
-      this.stormDamage.setValue(propertyDamage.wildfireDamage);
+    if (applicationDetails.wildfireDamage) {
+      this.stormDamage.setValue(applicationDetails.wildfireDamage);
     }
     this.wildfireDamage.setValidators(null);
 
-    if (propertyDamage.guidanceSupport) {
-      this.stormDamage.setValue(propertyDamage.guidanceSupport);
+    if (applicationDetails.guidanceSupport) {
+      this.stormDamage.setValue(applicationDetails.guidanceSupport);
     }
     this.guidanceSupport.setValidators(null);
 
-    if (propertyDamage.otherDamage) {
-      this.otherDamage.setValue(propertyDamage.otherDamage);
+    if (applicationDetails.otherDamage) {
+      this.otherDamage.setValue(applicationDetails.otherDamage);
     }
     this.otherDamage.setValidators(null);
 
-    if (propertyDamage.otherDamageText) {
-      this.otherDamageText.setValue(propertyDamage.otherDamageText);
+    if (applicationDetails.otherDamageText) {
+      this.otherDamageText.setValue(applicationDetails.otherDamageText);
     }
     this.otherDamageText.setValidators([customValidator
       .maxLengthValidator(100)
       .bind(customValidator)]);
 
-    if (propertyDamage.damageFromDate) {
-      this.damageFromDate.setValue(propertyDamage.damageFromDate);
+    if (applicationDetails.damageFromDate) {
+      this.damageFromDate.setValue(applicationDetails.damageFromDate);
     }
     this.damageFromDate.setValidators(null);
 
-    if (propertyDamage.damageToDate) {
-      this.damageToDate.setValue(propertyDamage.damageToDate);
+    if (applicationDetails.damageToDate) {
+      this.damageToDate.setValue(applicationDetails.damageToDate);
     }
     this.damageToDate.setValidators(null);
 
-    if (propertyDamage.applicantSubtype) {
-      this.applicantSubtype.setValue(propertyDamage.applicantSubtype);
+    if (applicationDetails.applicantSubtype) {
+      this.applicantSubtype.setValue(applicationDetails.applicantSubtype);
     }
     this.applicantSubtype.setValidators(null);
 
-    if (propertyDamage.applicantSubSubtype) {
-      this.applicantSubSubtype.setValue(propertyDamage.applicantSubSubtype);
+    if (applicationDetails.applicantSubSubtype) {
+      this.applicantSubSubtype.setValue(applicationDetails.applicantSubSubtype);
     }
     this.applicantSubSubtype.setValidators(null);
 
-    if (propertyDamage.estimatedPercent) {
-      this.estimatedPercent.setValue(propertyDamage.estimatedPercent);
+    if (applicationDetails.estimatedPercent) {
+      this.estimatedPercent.setValue(applicationDetails.estimatedPercent);
     }
 
     this.estimatedPercent.setValidators(null);
 
-    if (propertyDamage.subtypeOtherDetails) {
-      this.subtypeOtherDetails.setValue(propertyDamage.subtypeOtherDetails);
+    if (applicationDetails.subtypeOtherDetails) {
+      this.subtypeOtherDetails.setValue(applicationDetails.subtypeOtherDetails);
     }
     this.subtypeOtherDetails.setValidators(null);
 
-    if (propertyDamage.subtypeDFAComment) {
-      this.subtypeDFAComment.setValue(propertyDamage.subtypeDFAComment);
+    if (applicationDetails.subtypeDFAComment) {
+      this.subtypeDFAComment.setValue(applicationDetails.subtypeDFAComment);
     }
     this.subtypeDFAComment.setValidators(null);
   }
@@ -1019,7 +1019,7 @@ export class SignAndSubmitForm {
  **/
 export interface DfaApplicationMain {
   id?: string;
-  propertyDamage?: PropertyDamage;
+  applicationDetails?: ApplicationDetails;
   otherContact?: OtherContact[];
   deleteFlag?: boolean;
 }
