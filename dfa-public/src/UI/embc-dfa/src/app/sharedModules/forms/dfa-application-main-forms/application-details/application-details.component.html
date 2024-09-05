@@ -1,4 +1,18 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+  <div class="col-12 content-container infoText" >
+    <div class="row">
+      <div class="infoIconCol">
+        <div class="material-icons infoIconStyle">info</div>
+      </div>
+      <div class="col-md-11">
+        Please review and complete the form below. Required fields are marked with a red asterisk<span style="color:red" >*</span>
+      </div>
+      <div class="col-md-6"></div>
+
+      </div>
+      <div class="col-md-6"></div>
+  </div>
+  <br/>
   <mat-card-content class="card-content-align">
 
     <form [formGroup]="applicationDetailsForm">
@@ -19,6 +33,18 @@
                 placeholder=""
                 maxlength="100"/>
             </mat-form-field>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-5 content-container infoText" >
+            <div class="row">
+              <div class="infoIconCol">
+                <div class="material-icons infoIconStyle">info</div>
+              </div>
+              <div class="col-md-11">
+                This is the legal name of the organization you are creating the application for. The legal name is from the Business BCeID account your account is associated to. If this isn't the organization you intend to create a DFA application for, please log out and log in with the correct organization. The legal name may only be changed through BCeID.
+              </div>
+
+              </div>
           </div>
         </div><br/>
         
@@ -203,7 +229,7 @@
           </p>
           <div class="col-md-6">
             <mat-form-field appearance="outline">
-              <mat-select [disabled]="isReadOnly === true" formControlName="applicantSubtype" matInput placeholder="Select applicant subtype" required>
+              <mat-select [disabled]="isReadOnly === true" formControlName="applicantSubtype" matInput placeholder="Select the type of governing body" required>
                 <div *ngFor="let option of ApplicantSubCategories ">
                   <mat-option (click)="onSelectApplicantSubType(option)"
                     [value]="option.subType">
