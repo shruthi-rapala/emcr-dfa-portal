@@ -265,6 +265,8 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.applicationDetails.estimatedPercent = this.form.get('estimatedPercent').value;
         this.dfaApplicationMainDataService.applicationDetails.subtypeDFAComment = this.form.get('subtypeDFAComment').value;
         this.dfaApplicationMainDataService.applicationDetails.subtypeOtherDetails = this.form.get('subtypeOtherDetails').value;
+        this.dfaApplicationMainDataService.applicationDetails.legalName = this.form.get('legalName').value;
+        this.dfaApplicationMainDataService.applicationDetails.eventName = this.form.get('eventName').value;
         //this.dfaApplicationMainDataService.otherContacts = 
         //this.otherContactsForm.get('otherContact').getRawValue()
         break;

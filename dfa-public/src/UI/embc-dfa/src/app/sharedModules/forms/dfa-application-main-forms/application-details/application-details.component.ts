@@ -23,7 +23,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption, ApplicantSubtypeSubCategories } from 'src/app/core/api/models';
+import { ApplicantOption, ApplicantSubtypeSubCategories, DisasterEvent } from 'src/app/core/api/models';
 import { MatTableModule } from '@angular/material/table';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
@@ -31,9 +31,11 @@ import { MatDialog } from '@angular/material/dialog';
 // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - TextMaskModule not compatible
 //import { TextMaskModule } from 'angular2-text-mask';
 import { NgxMaskDirective, NgxMaskPipe, NgxMaskService, provideNgxMask } from 'ngx-mask';
-import { ApplicationService, OtherContactService } from 'src/app/core/api/services';
+import { ApplicationService, EligibilityService, OtherContactService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
 import { MatSelectModule } from '@angular/material/select';
+import { DFAEligibilityDialogComponent } from '../../../../core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
+import * as globalConst from '../../../../core/services/globalConstants';
 
 
 @Component({
@@ -74,6 +76,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   ApplicantSubSubCategories = ApplicantSubtypeSubCategories;
   showSubTypeOtherDetails: boolean = false;
   showSubSubTypeCategories: boolean = false;
+  public openDisasterEvents: DisasterEventMatching[] = [];
+  matchingEventsData: DisasterEventMatching[] = [];
   readonly phoneMask = [
     /\d/,
     /\d/,
@@ -97,6 +101,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     private applicationService: ApplicationService,
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
     private otherContactsService: OtherContactService,
+    private eligibilityService: EligibilityService,
     public dialog: MatDialog
   ) {
     this.formBuilder = formBuilder;
@@ -140,13 +145,15 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //this.businessName = this.dfaApplicationMainDataService.getBusiness();
     this.applicationDetailsForm$ = this.formCreationService
       .getApplicationDetailsForm()
-      .subscribe((propertyDamage) => {
-        debugger
-        this.applicationDetailsForm = propertyDamage;
+      .subscribe((applicationDetails) => {
+        applicationDetails.controls.legalName.setValue(this.dfaApplicationMainDataService.getBusiness());
+        this.applicationDetailsForm = applicationDetails;
         this.setViewOrEditControls();
         this.dfaApplicationMainDataService.applicationDetails = {
+          legalName: this.dfaApplicationMainDataService.getBusiness(),
           damageFromDate: null,
           damageToDate: null,
           floodDamage: null,
@@ -158,26 +165,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
           guidanceSupport: null,
           applicantSubtype: null
         }
-        //this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-        //  if (application) {
-        //    this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
-        //    this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
-        //    this.isSmallBusinessOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
-        //    this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
-        //    this.isCharitableOrganization = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.CharitableOrganization)]);
-        //    if (this.isHomeowner || this.isResidentialTenant) {
-        //      this.propertyDamageForm.controls.wereYouEvacuated.setValidators([Validators.required]);
-        //      this.propertyDamageForm.controls.residingInResidence.setValidators([Validators.required]);
-        //    } else if (this.isSmallBusinessOwner || this.isFarmOwner || this.isCharitableOrganization) {
-        //      this.propertyDamageForm.controls.wereYouEvacuated.setValidators(null);
-        //      this.propertyDamageForm.controls.wereYouEvacuated.setValue(null);
-        //      this.propertyDamageForm.controls.dateReturned.setValue(null);
-        //      this.propertyDamageForm.controls.residingInResidence.setValidators(null);
-        //      this.propertyDamageForm.controls.residingInResidence.setValue(null);
-        //    }
-        //  this.propertyDamageForm.updateValueAndValidity();
-        //  }
-        //});
+        
         this.applicationDetailsForm.addValidators([this.validateFormCauseOfDamage]);
         if (this.applicationDetailsForm.get('otherDamage').value === 'true') {
           this.applicationDetailsForm.get('otherDamageText').setValidators([Validators.required, Validators.maxLength(100)]);
@@ -193,6 +181,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       .subscribe((otherContacts) => {
         this.otherContactsForm = otherContacts;
       });
+
+    this.getOpenDisasterEvents();
 
     this.otherContactsForm
       .get('addNewOtherContactIndicator')
@@ -318,6 +308,49 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     }
 
     //this.otherContactsForm.get('onlyOtherContact').setValue(this.onlyOtherContact);
+  }
+
+  getOpenDisasterEvents() {
+    this.eligibilityService.eligibilityGetOpenEvents().subscribe((openDisasterEvents: DisasterEventMatching[]) => {
+      this.openDisasterEvents = openDisasterEvents;
+    })
+  }
+
+  checkDateWithinOpenEvent(): void {
+    
+    //this.openDisasterEvents.forEach(disasterEvent => disasterEvent.matchArea = true);
+
+    // check for date of damage between start date and end date
+    this.openDisasterEvents.forEach(disasterEvent => {
+      if (new Date(new Date(disasterEvent.endDate).toDateString()) >= this.applicationDetailsForm.controls.damageFromDate.value &&
+        new Date(new Date(disasterEvent.startDate).toDateString()) <= this.applicationDetailsForm.controls.damageFromDate.value) {
+        disasterEvent.matchDate = true;
+      } else disasterEvent.matchDate = false;
+    })
+
+    // Matching Events to display
+    this.matchingEventsData = this.openDisasterEvents.filter(disasterEvent => disasterEvent.matchDate == true);
+
+    let countMatchingEvents = this.matchingEventsData.length;
+    if (countMatchingEvents <= 0) {
+      this.dialog
+        .open(DFAEligibilityDialogComponent, {
+          data: {
+            content: globalConst.addressAndDateNotWithinPublicOpenEvent
+          },
+          width: '700px',
+          disableClose: true
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          //if (result === 'cancel') {
+          //  this.cancelPrescreening();
+          //}
+        });
+    } else if (countMatchingEvents == 1) {
+      this.applicationDetailsForm.controls.eventName.setValue(this.matchingEventsData[0].eventId);
+      this.applicationDetailsForm.updateValueAndValidity();
+    }
   }
 
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
@@ -588,3 +621,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
 })
 class PropertyDamageModule {}
 
+export interface DisasterEventMatching extends DisasterEvent {
+  matchArea: boolean;
+  matchDate: boolean;
+}

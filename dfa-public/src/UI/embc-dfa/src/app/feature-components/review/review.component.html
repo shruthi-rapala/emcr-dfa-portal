@@ -551,50 +551,8 @@
             </span>
           </div>
         </div>
-        <div class="row info-detail" >
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.estimatedPercent || (formCreationService.applicationDetailsForm$ | async)?.controls.estimatedPercent.invalid}">Estimated %:</span>
-          </div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.estimatedPercent || (formCreationService.applicationDetailsForm$ | async)?.controls.estimatedPercent.invalid}">
-              {{
-                (formCreationService.applicationDetailsForm$ | async)?.value
-                  .estimatedPercent ? (formCreationService.applicationDetailsForm$ | async)?.value
-                  .estimatedPercent : "Enter required information"
-              }}
-            </span>
-          </div>
-        </div>
-        <!--<div class="row info-detail" >
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.subtypeDFAComment || (formCreationService.applicationDetailsForm$ | async)?.controls.subtypeDFAComment.invalid}">DFA comments:</span>
-          </div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.subtypeDFAComment || (formCreationService.applicationDetailsForm$ | async)?.controls.subtypeDFAComment.invalid}">
-              {{
-                (formCreationService.applicationDetailsForm$ | async)?.value
-                  .subtypeDFAComment ? (formCreationService.applicationDetailsForm$ | async)?.value
-                  .subtypeDFAComment : "Enter required information"
-              }}
-            </span>
-          </div>
-        </div>-->
-        <div class="row info-detail" >
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.guidanceSupport || (formCreationService.applicationDetailsForm$ | async)?.controls.guidanceSupport.invalid}">Receive guidance and support:</span>
-          </div>
-          <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.guidanceSupport || (formCreationService.applicationDetailsForm$ | async)?.controls.guidanceSupport.invalid}">
-              {{
-                (formCreationService.applicationDetailsForm$ | async)?.value
-                  .guidanceSupport ? ((formCreationService.applicationDetailsForm$ | async)?.value
-                  .guidanceSupport === 'true' ? "Yes" : "No") : "Enter required information"
-              }}
-            </span>
-          </div>
-        </div>
         <br /><br />
-        <div class="row justify-content-between">
+        <!--<div class="row justify-content-between">
           <div class="col-md-6 card-heading">Other Contacts</div>
           <div class="col-md-2" *ngIf="allowEdit">
             <button
@@ -603,38 +561,38 @@
               aria-label="Edit"
               (click)="navigateToStep(0)"
             >
-              <img src="/assets/images/edit.svg" height="35" width="35" />
+              <img src="/assets/images/edit.svg" height="35" width="35" />-->
               <!-- 2024-08-26 EMCRI-617 waynezen; UI fixes for Angular upgrade -->
-            </button>
+            <!--</button>
           </div>
         </div>
         <hr />
 
-        <div class="row info-detail" *ngIf="(formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0">
+        <div class="row info-detail" *ngIf="(formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0">-->
           <!--<b>Other Contacts</b>-->
-          <table mat-table [dataSource]="otherContactsDataSource">
+          <!--<table mat-table [dataSource]="otherContactsDataSource">-->
             <!-- Name Column -->
-            <ng-container matColumnDef="name">
+            <!--<ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef >
                 <b>Name</b>
               </th>
               <td *matCellDef="let element" mat-cell>
                 {{ element.firstName }}&nbsp; {{element.lastName }}
               </td>
-            </ng-container>
+            </ng-container>-->
 
             <!-- Phone Column -->
-            <ng-container matColumnDef="phoneNumber">
+            <!--<ng-container matColumnDef="phoneNumber">
               <th mat-header-cell *matHeaderCellDef>
                 <b>Phone</b>
               </th>
               <td *matCellDef="let element" mat-cell>
                 {{ element.phoneNumber | phoneFormat }}
               </td>
-            </ng-container>
+            </ng-container>-->
 
             <!-- Email Column -->
-            <ng-container matColumnDef="email">
+            <!--<ng-container matColumnDef="email">
               <th mat-header-cell *matHeaderCellDef>
                 <b>Email</b>
               </th>
@@ -653,7 +611,7 @@
         </div>
         <div class="row info-detail" *ngIf="(formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length == 0">
           <span style="color:red">At least one other contact is required.</span>
-        </div>
+        </div>-->
       </mat-card-content>
 
     </div>

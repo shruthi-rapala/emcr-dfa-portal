@@ -273,6 +273,9 @@ export class ApplicationDetails {
   estimatedPercent?: null | string;
   subtypeOtherDetails?: null | string;
   subtypeDFAComment?: null | string;
+  legalName?: null | string;
+  eventName?: null | string;
+  
 
   constructor(
     floodDamage?: null | boolean,
@@ -289,7 +292,9 @@ export class ApplicationDetails {
     applicantSubtype?: null | string,
     estimatedPercent?: null | string,
     subtypeOtherDetails?: null | string,
-    subtypeDFAComment?: null | string
+    subtypeDFAComment?: null | string,
+    legalName?: null | string,
+    eventName?: null | string,
   ) { }
 }
 
@@ -308,6 +313,8 @@ export class ApplicationDetailsForm {
   estimatedPercent = new UntypedFormControl();
   subtypeOtherDetails = new UntypedFormControl();
   subtypeDFAComment = new UntypedFormControl();
+  legalName = new UntypedFormControl();
+  eventName = new UntypedFormControl();
 
   constructor(
     applicationDetails: ApplicationDetails,
@@ -385,6 +392,16 @@ export class ApplicationDetailsForm {
       this.subtypeDFAComment.setValue(applicationDetails.subtypeDFAComment);
     }
     this.subtypeDFAComment.setValidators(null);
+
+    if (applicationDetails.legalName) {
+      this.legalName.setValue(applicationDetails.legalName);
+    }
+    this.legalName.setValidators(null);
+
+    if (applicationDetails.eventName) {
+      this.eventName.setValue(applicationDetails.eventName);
+    }
+    this.eventName.setValidators(null);
   }
 }
 
