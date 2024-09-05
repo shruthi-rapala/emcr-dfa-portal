@@ -388,24 +388,40 @@ export class PropertyDamageForm {
   }
 }
 
-// 2024-08-20 EMCRI-613 waynezen; Create Application1
-export class CreateApplication1 {
+// 2024-09-03 EMCRI-663 waynezen; Create Contacts
+export class Contacts {
   legalName?: null | string;
+  doingBusinessAs?: null | string;
+  businessNumber?: null | string;
+  mailingAddress1?: null | string;
+  mailingAddress2?: null | string;
+  city?: null | string;
+  province?: null | string;
+  postalCode?: null | string;
+  primaryContact?: null | string;
 
   constructor(
-    legalName?: null | string) {
-  
-  }
+    legalName?: null | string,
+    doingBusinessAs?: null | string,
+    businessNumber?: null | string,
+    mailingAddress1?: null | string,
+    mailingAddress2?: null | string,
+    city?: null | string,
+    province?: null | string,
+    postalCode?: null | string,
+    primaryContact?: null | string
+  ) { }
 }
 
-export class CreateApplication1Form {
+export class ContactsForm {
   legalName = new UntypedFormControl();
   
+  
   constructor(
-    createApplication1: CreateApplication1,
+    contacts: Contacts,
     customValidator: CustomValidationService) {
-      if (createApplication1.legalName) {
-        this.legalName.setValue(createApplication1.legalName);
+      if (contacts.legalName) {
+        this.legalName.setValue(contacts.legalName);
       }
   }
 }

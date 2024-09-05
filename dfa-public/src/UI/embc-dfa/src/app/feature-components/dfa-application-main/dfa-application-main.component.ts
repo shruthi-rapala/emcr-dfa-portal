@@ -263,8 +263,8 @@ export class DFAApplicationMainComponent
         //this.dfaApplicationMainDataService.otherContacts = 
         //this.otherContactsForm.get('otherContact').getRawValue()
         break;
-        case 'create-application1':
-          // TODO: EMCRI-613 - modify dfaApplicationMainDataService
+        case 'contacts':
+          // TODO: EMCRI-663 - modify dfaApplicationMainDataService
           break;
       case 'occupants':
         break;

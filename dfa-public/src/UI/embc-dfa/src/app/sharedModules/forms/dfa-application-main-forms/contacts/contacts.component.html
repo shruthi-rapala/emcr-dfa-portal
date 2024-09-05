@@ -1,0 +1,29 @@
+<mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
+    <mat-card-content>
+        <form [formGroup]="contactsForm">
+            <ng-container>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="field-label">
+                            Indigenous Governing Body &amp; Local Authority Legal Name
+                        </p>
+                        <mat-form-field appearance="outline">
+                            <input formControlName="legalName" matInput />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="field-label">
+                            Doing Business As (DBA) Name
+                        </p>
+                        <mat-form-field appearance="outline">
+                            <input formControlName="doingBusinessAs" matInput />
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </ng-container>
+        </form>
+    </mat-card-content>
+    </mat-card>

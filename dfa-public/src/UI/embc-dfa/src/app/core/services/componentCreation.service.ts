@@ -81,15 +81,24 @@ export class ComponentCreationService {
   ];
 
   dfaApplicationMainComponents: Array<any> = [
-    // 2024-08-20 EMCRI-613 waynezen; Create Application1
     {
       component: 'property-damage',
+      nextButtonLabel: 'Next - Contacts',
+      backButtonLabel: 'Go Back & Edit',
+      isLast: false,
+      loadWrapperButton: false,
+      lastStep: 0,
+      stepName: 'Application Details'
+    },
+    // 2024-09-03 EMCRI-613 waynezen; Contacts screen; TODO: remove once new Create Application screen complete
+    {
+      component: 'contacts',
       nextButtonLabel: 'Next - Review & Submit',
       backButtonLabel: 'Go Back & Edit',
       isLast: true,
       loadWrapperButton: false,
       lastStep: 0,
-      stepName: 'Application Details'
+      stepName: 'Contacts'
     }
   ];
 

@@ -5,8 +5,7 @@ import {
   AbstractControl,
   FormsModule,
   Validators,
-  FormGroup,
-  FormControl
+  FormGroup
 } from '@angular/forms';
 import { CommonModule, KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -33,23 +32,22 @@ import { NgxMaskDirective, NgxMaskPipe, NgxMaskService, provideNgxMask } from 'n
 import { ApplicationService, OtherContactService } from 'src/app/core/api/services';
 import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-mapping.service';
 import { MatSelectModule } from '@angular/material/select';
+import { ContactService } from 'src/app/core/api/services';
+import { LoginService } from 'src/app/core/services/login.service';
 
 @Component({
-  selector: 'app-create-application1',
-  templateUrl: './create-application1.component.html',
-  styleUrl: './create-application1.component.scss'
+  selector: 'app-contacts',
+  templateUrl: './contacts.component.html',
+  styleUrl: './contacts.component.scss'
 })
-export class CreateApplication1Component implements OnInit, OnDestroy {
-  // createApplication1Form = new FormGroup({
-  //   legalName: new FormControl('')
-  // });
+export default class ContactsComponent implements OnInit, OnDestroy {
+  contactsForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
-  createApplication1Form: UntypedFormGroup;
-  createApplication1Form$: Subscription;
+  contactsForm$: Subscription;
   formCreationService: FormCreationService;
-  isReadOnly: boolean;
-  vieworedit: string;
-
+  isReadOnly: boolean = false;
+  vieworedit: string = "";
+  
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
@@ -57,18 +55,21 @@ export class CreateApplication1Component implements OnInit, OnDestroy {
     public dfaApplicationMainDataService: DFAApplicationMainDataService,
     private applicationService: ApplicationService,
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
+    private otherContactsService: OtherContactService,
+    private contactService: ContactService,
+    private loginService: LoginService,
     public dialog: MatDialog
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
     this.isReadOnly = (dfaApplicationMainDataService.getViewOrEdit() === 'view'
-    || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
-    || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
+      || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
+      || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
     this.setViewOrEditControls();
 
     this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.isReadOnly = (vieworedit === 'view'
-      || vieworedit === 'edit'
+        || vieworedit === 'edit'
         || vieworedit === 'viewOnly');
       this.setViewOrEditControls();
     })
@@ -77,44 +78,57 @@ export class CreateApplication1Component implements OnInit, OnDestroy {
   }
 
   setViewOrEditControls() {
-    if (!this.createApplication1Form) return;
-    if (this.isReadOnly) {
-
-      this.createApplication1Form.controls.legalName.disable();
-    } else {
-      this.createApplication1Form.controls.legalName.enable();
-
-    }
   }
 
   ngOnInit(): void {
-    this.createApplication1Form$ = this.formCreationService
-      .getCreateApplication1Form()
-      .subscribe((createApplication1) => {
-        this.createApplication1Form = createApplication1;
+    this.contactsForm$ = this.formCreationService
+      .getContactsForm()
+      .subscribe((contacts) => {
+        this.contactsForm = contacts;
         this.setViewOrEditControls();
-        // this.dfaApplicationMainDataService.propertyDamage = {
-        //   damageFromDate: null,
-        //   damageToDate: null,
-        //   floodDamage: null,
-        //   landslideDamage: null,
-        //   otherDamage: null,
-        //   otherDamageText: null,
-        //   stormDamage: null,
-        //   wildfireDamage: null,
-        //   guidanceSupport: null,
-        //   applicantSubtype: null
-        // }
-      });
-    }
+        this.dfaApplicationMainDataService.contacts = {
 
-  get createApplication1FormControl(): { [key: string]: AbstractControl } {
-    return this.createApplication1Form.controls;
+        }
+      })
+
+      this.getContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+  };
+
+  getContactsForApplication(applicationId: string) {
+    //if (applicationId) {
+      this.contactService.contactGetDashboardContactInfo()
+      .subscribe(loginInfo => {
+        console.log('[DFA] Contacts: legalName: ' + loginInfo.legalName);
+
+      })
+    //}
   }
-
 
   ngOnDestroy(): void {
-    this.createApplication1Form$.unsubscribe();
+    this.contactsForm$.unsubscribe();
   }
 }
+
+@NgModule({
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    DirectivesModule,
+    MatTableModule,
+    CustomPipeModule,
+    // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - new text mask provider
+    NgxMaskDirective, NgxMaskPipe,
+    MatSelectModule
+  ],
+  declarations: [ContactsComponent]
+})
+class ContactsModule {}
 

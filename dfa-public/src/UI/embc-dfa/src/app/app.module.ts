@@ -27,7 +27,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { LoginService } from './core/services/login.service';
 import { map } from 'rxjs';
 import { AuthConfigModule } from './auth/auth-config.module';
-import { CreateApplication1Module } from '../app/sharedModules/forms/dfa-application-main-forms/create-application1/create-application1.module';
 import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor'
 import { environment } from '../environments/environment';
 
@@ -51,7 +50,6 @@ import { environment } from '../environments/environment';
         ButtonsModule,
         MatIconModule,
         MatAutocompleteModule,
-        CreateApplication1Module,
         AuthConfigModule], providers: [
         {
             provide: APP_BASE_HREF,
