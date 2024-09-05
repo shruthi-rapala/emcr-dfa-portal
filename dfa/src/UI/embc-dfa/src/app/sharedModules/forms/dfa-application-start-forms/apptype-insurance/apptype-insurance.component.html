@@ -58,9 +58,7 @@
                       </ul>
                     </div>
                     <div class="sub-heading radio-extra-label col-md-6" *ngIf="appTypeInsuranceForm.get('applicantOption').value === option.key && option.value === radioApplicantOptions.SmallBusinessOwner">
-                      <br/>
-                      <mat-label class="sub-heading">What type of small business?<span style="color:red" >*</span></mat-label>
-                      <br />
+                      <mat-label class="sub-heading" style="padding-left: 8px;">What type of small business?<span style="color:red" >*</span></mat-label>
                       <mat-radio-group
                         formControlName="smallBusinessOption"
                         class="primary-radio-group"
