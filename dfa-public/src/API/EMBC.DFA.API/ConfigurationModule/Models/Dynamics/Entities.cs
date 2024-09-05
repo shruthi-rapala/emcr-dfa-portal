@@ -168,9 +168,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_portalloggedinuser { get; set; }
         public int? dfa_applicantsubtype { get; set; }
         public int? dfa_applicantlocalgovsubtype { get; set; }
-        public string dfa_estimated { get; set; }
-        public string dfa_applicantothercomments { get; set; }
-        public string dfa_dfaapplicantsubtypecomments { get; set; }
+        public string? dfa_estimated { get; set; }
+        public string? dfa_applicantothercomments { get; set; }
+        public string? dfa_dfaapplicantsubtypecomments { get; set; }
+        public bool? dfa_createdonportal { get; set; }
+        public int? dfa_applicationcasebpfstages { get; set; }
+        public int? dfa_applicationcasebpfsubstages { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
@@ -644,6 +647,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Yes = 222710000,
         No = 222710002,
         YesBut = 222710001
+    }
+
+    public enum ApplicationStageOptionSet
+    {
+        [Description("draft")]
+        DRAFT = 222710000,
+
+        [Description("submit")]
+        SUBMIT = 222710001
     }
 
     public enum ProjectStageOptionSet
