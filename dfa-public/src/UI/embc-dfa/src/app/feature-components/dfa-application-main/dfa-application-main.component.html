@@ -74,6 +74,15 @@
           >
             {{ step.backButtonLabel }}
           </button>
+          &nbsp;
+          <button
+            class="button-s"
+            mat-button
+            type="button"
+            (click)="goBack(dfaApplicationMainStepper, step.lastStep)"
+          >
+            Save Application
+          </button>
         </div>
         <div class="col-md-6">
           <button
@@ -90,7 +99,7 @@
           </button>
         </div>
         <br/>
-        <div class="col-md-12" style="padding: 16px 16px 16px 28px;">
+        <div class="col-md-12" style="padding: 35px 16px 28px 12px;">
           <p class="infoHeader">Information Viewable at Any Time by DFA Staff</p>
           <p>
             Information collected on this application form may be viewable by Disaster Financial Assistance Staff whether the application has been submitted or not.
@@ -122,9 +131,10 @@
             <span>Go Back</span><span *ngIf="vieworedit === 'add' || vieworedit === 'update'"> & Edit</span>
           </button>
         </div>
+        <!--&& ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)-->
         <div class="col-md-6" *ngIf="!isSubmitted
            && (formCreationService.applicationDetailsForm$ | async)?.valid
-           && ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)
+           
            ">
         <!--<div class="col-md-6">-->
         <button
@@ -137,7 +147,7 @@
         </button>
       </div>
         <br/><br/>
-        <div class="col-md-12" style="padding: 28px 16px 16px 28px;">
+        <div class="col-md-12" style="padding: 35px 16px 28px 12px;">
           <p class="infoHeader">Information Viewable at Any Time by DFA Staff</p>
           <p>
             Information collected on this application form may be viewable by Disaster Financial Assistance Staff whether the application has been submitted or not.

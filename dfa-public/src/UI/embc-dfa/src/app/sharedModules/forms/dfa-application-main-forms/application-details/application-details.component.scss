@@ -2,10 +2,14 @@ mat-form-field {
     width: 100%;
 }
 
+.card-content-align {
+    padding: 0 22px;
+}
+
 .primary-radio-group {
-    display: flex;
-    flex-direction: column;
-    margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
 }
 
 .primary-radio-button {
@@ -28,6 +32,10 @@ mat-form-field {
 
 ::ng-deep .mat-select-panel .mat-option {
   height: unset !important;
+}
+
+::ng-deep .mat-mdc-form-field-error-wrapper {
+  padding-left: 0px !important;
 }
 
 ::ng-deep span.mat-option-text {

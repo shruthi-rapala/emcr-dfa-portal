@@ -1,13 +1,139 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
-  <mat-card-content>
+  <mat-card-content class="card-content-align">
 
     <form [formGroup]="applicationDetailsForm">
-      <p class="sub-heading" style="font-size: 20px">Cause of Damage</p>
-      <br/>
-
+      
       <ng-container>
+        <br/>
         <div class="row">
-          <div class="col-md-12 bottomspace">
+          <div class="col-md-6">
+            <p class="sub-heading" style="font-size: 15px">
+              Indigenous Governing Body & Local Authority Legal Name
+            </p>
+            <mat-form-field appearance="outline">
+              <input
+                formControlName="legalName"
+                matInput
+                disabled
+                     readonly
+                placeholder=""
+                maxlength="100"/>
+            </mat-form-field>
+          </div>
+        </div><br/>
+        
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Date(s) of damage?<span style="color:red" >*</span>
+          </p>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline" >
+              <mat-label>From date</mat-label>
+              <input matInput
+                     (dateInput)="checkDateWithinOpenEvent()"
+                [matDatepicker]="fromPicker"
+                [readonly]="isReadOnly === true"
+                formControlName="damageFromDate"
+                [max]="applicationDetailsForm.get('damageToDate').value ? applicationDetailsForm.get('damageToDate').value : todayDate"
+                required >
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="fromPicker" [disabled]="isReadOnly === true"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #fromPicker [disabled]="isReadOnly === true"
+              ></mat-datepicker>
+              <mat-error
+                *ngIf="
+                applicationDetailsForm.get('damageFromDate').invalid &&
+                applicationDetailsForm.get('damageFromDate').hasError('required')
+              "
+              >
+                From date is required</mat-error
+              >
+              <mat-error
+              *ngIf="
+              applicationDetailsForm.get('damageFromDate').invalid &&
+              applicationDetailsForm.get('damageFromDate').hasError('matDatepickerMax')
+            "
+            >
+              From date cannot be in the future or after to date</mat-error
+            >
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-label>To date</mat-label>
+              <input matInput
+                (dateInput)="checkDateWithinOpenEvent()"
+                [matDatepicker]="toPicker"
+                formControlName="damageToDate"
+                [readonly]="isReadOnly === true"
+                [min]="applicationDetailsForm.get('damageFromDate').value ? applicationDetailsForm.get('damageFromDate').value : '2000-01-01'"
+                [max]="todayDate"
+                required>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="toPicker" [disabled]="isReadOnly === true"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #toPicker [disabled]="isReadOnly === true"
+              ></mat-datepicker>
+              <mat-error
+                *ngIf="
+                applicationDetailsForm.get('damageToDate').invalid &&
+                applicationDetailsForm.get('damageToDate').hasError('required')
+              "
+              >
+                To date is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                applicationDetailsForm.get('damageToDate').invalid &&
+                applicationDetailsForm.get('damageToDate').hasError('matDatepickerMin')
+              "
+              >
+                To date cannot be before from date</mat-error
+              >
+              <mat-error
+                *ngIf="
+                applicationDetailsForm.get('damageToDate').invalid &&
+                applicationDetailsForm.get('damageToDate').hasError('matDatepickerMax')
+              "
+              >
+                To date cannot be a future date</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div><br/>
+
+         <div class="row">
+           <p class="sub-heading" style="font-size: 15px">
+             Select a disaster event that matches your community and date of damage<span style="color:red" >*</span>
+           </p>
+           <div class="col-md-6">
+             <mat-form-field appearance="outline">
+                <mat-label>Matching Disaster Event</mat-label>
+                <mat-select formControlName="eventName" matInput placeholder="Matching Disaster Event" required [disabled]="matchingEventsData.length <= 0">
+                  <mat-option *ngFor="let option of matchingEventsData"
+                    [value]="option.eventId">
+                    {{ option.id }}&nbsp;&nbsp;({{option.startDate | date: "MM/dd/yyyy"}} to {{ option.endDate | date: "MM/dd/yyyy"}})
+                  </mat-option>
+                </mat-select>
+                <!--<mat-error
+                  *ngIf="
+                    applicationDetailsForm.get('event').invalid &&
+                    applicationDetailsForm.get('event').hasError('required') &&
+                    applicationDetailsForm.get('event').touched
+                  "
+                >
+                  Disaster Event is required</mat-error
+                >-->
+              </mat-form-field>
+              <div *ngIf="matchingEventsData.length <= 0">
+                <span style="color:red;">No matching disaster events for this date.</span>
+              </div>
+           </div>
+         </div>
+        <br *ngIf="matchingEventsData.length <= 0" />
+        <div class="row">
+          <div class="col-md-6 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Select the cause(s) of damage.<span style="color:red" >*</span>
             </p>
@@ -73,90 +199,10 @@
 
         <div class="row">
           <p class="sub-heading" style="font-size: 15px">
-            Date(s) of damage?<span style="color:red" >*</span>
+            Select the type of governing body that best describes your organization<span style="color:red" >*</span>
           </p>
-          <div class="col-md-4">
-            <mat-form-field appearance="outline" >
-              <mat-label>From date</mat-label>
-              <input matInput
-                [matDatepicker]="fromPicker"
-                [readonly]="isReadOnly === true"
-                formControlName="damageFromDate"
-                [max]="applicationDetailsForm.get('damageToDate').value ? applicationDetailsForm.get('damageToDate').value : todayDate"
-                required >
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="fromPicker" [disabled]="isReadOnly === true"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #fromPicker [disabled]="isReadOnly === true"
-              ></mat-datepicker>
-              <mat-error
-                *ngIf="
-                applicationDetailsForm.get('damageFromDate').invalid &&
-                applicationDetailsForm.get('damageFromDate').hasError('required')
-              "
-              >
-                From date is required</mat-error
-              >
-              <mat-error
-              *ngIf="
-              applicationDetailsForm.get('damageFromDate').invalid &&
-              applicationDetailsForm.get('damageFromDate').hasError('matDatepickerMax')
-            "
-            >
-              From date cannot be in the future or after to date</mat-error
-            >
-            </mat-form-field>
-          </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <mat-form-field appearance="outline">
-              <mat-label>To date</mat-label>
-              <input matInput
-                [matDatepicker]="toPicker"
-                formControlName="damageToDate"
-                [readonly]="isReadOnly === true"
-                [min]="applicationDetailsForm.get('damageFromDate').value ? applicationDetailsForm.get('damageFromDate').value : '2000-01-01'"
-                [max]="todayDate"
-                required>
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="toPicker" [disabled]="isReadOnly === true"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #toPicker [disabled]="isReadOnly === true"
-              ></mat-datepicker>
-              <mat-error
-                *ngIf="
-                applicationDetailsForm.get('damageToDate').invalid &&
-                applicationDetailsForm.get('damageToDate').hasError('required')
-              "
-              >
-                To date is required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                applicationDetailsForm.get('damageToDate').invalid &&
-                applicationDetailsForm.get('damageToDate').hasError('matDatepickerMin')
-              "
-              >
-                To date cannot be before from date</mat-error
-              >
-              <mat-error
-                *ngIf="
-                applicationDetailsForm.get('damageToDate').invalid &&
-                applicationDetailsForm.get('damageToDate').hasError('matDatepickerMax')
-              "
-              >
-                To date cannot be a future date</mat-error
-              >
-            </mat-form-field>
-          </div>
-        </div><br/>
-
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Applicant type<span style="color:red" >*</span>
-          </p>
-          <div class="col-md-4">
-            <mat-form-field appearance="outline">
-              <mat-label>Please select the type of applicant that best describes your organization.</mat-label>
               <mat-select [disabled]="isReadOnly === true" formControlName="applicantSubtype" matInput placeholder="Select applicant subtype" required>
                 <div *ngFor="let option of ApplicantSubCategories ">
                   <mat-option (click)="onSelectApplicantSubType(option)"
@@ -172,7 +218,7 @@
                   applicationDetailsForm.get('applicantSubtype').touched
                 "
               >
-                Applicant type is required</mat-error
+                Type of governing body is required</mat-error
               >
             </mat-form-field>
           </div>
@@ -182,7 +228,7 @@
           <!--<p class="sub-heading" style="font-size: 15px">
             Please describe your organization
           </p>-->
-          <div class="col-md-8">
+          <div class="col-md-6">
             <mat-form-field appearance="outline">
               <textarea [disabled]="isReadOnly" matInput
                 formControlName="subtypeOtherDetails"
@@ -198,9 +244,9 @@
 
         <div class="row" *ngIf="showSubSubTypeCategories == true">
           <p class="sub-heading" style="font-size: 15px">
-            Type of Other Local Government Body<span style="color:red" >*</span>
+            Select the type of other local governing body<span style="color:red" >*</span>
           </p>
-          <div class="col-md-8">
+          <div class="col-md-6">
             <mat-form-field appearance="outline">
               <mat-select [disabled]="isReadOnly === true" formControlName="applicantSubSubtype" matInput placeholder="Please select the type of Other Local Government Body">
                 <div *ngFor="let option of ApplicantSubSubCategories | keyvalue: originalOrder">
@@ -223,296 +269,8 @@
           </div>
         </div><br/>
 
-        <div class="row">
-          <div class="col-md-4">
-            <p class="sub-heading" style="font-size: 15px">
-              Estimated %
-            </p>
-            <mat-form-field appearance="outline">
-              <input
-                formControlName="estimatedPercent"
-                matInput
-                readonly
-                placeholder="Estimated %"
-                maxlength="100"/>
-            </mat-form-field>
-          </div>
-        </div><br/>
-
-        <div class="row" *ngIf="vieworedit !== 'add'">
-          <div class="col-md-8">
-            <p class="sub-heading" style="font-size: 15px">
-              DFA comments
-            </p>
-            <mat-form-field appearance="outline">
-              <textarea matInput
-                formControlName="subtypeDFAComment"
-                placeholder="DFA comments"
-                [rows]="5"
-                style="resize:none"
-                readonly
-                ></textarea>
-            </mat-form-field>
-        </div></div><br/>
-
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            If there was opportunity to receive guidance and support in assessing your damaged infrastructure, would you like to receive this support?<span style="color:red" >*</span>
-          </p>
-          <mat-radio-group
-            formControlName="guidanceSupport"
-            class="primary-radio-group horizontal-radio-group"
-            required
-            aria-label="Select an option">
-            <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-          </mat-radio-group><br/><br/><br/>
-        </div>
       </ng-container>
     </form>
-    <form [formGroup]="otherContactsForm">
-      <div formGroupName="otherContact">
-        <ng-container>
-          <div class="row">
-            <div class="col-md-12">
-              <p class="sub-heading">
-                <b>Other Contact</b><span style="color:red" >*</span>
-              </p>
-              <p>
-                You must provide the name of one other contact person in case the DFA can't reach you. The Ministry of Emergency Management (EMCR) can't and won't speak with the contact
-                about your application. If you don't have an alternate contact, add your own name and contact details.
-              </p>
-
-              <table mat-table [dataSource]="otherContactsDataSource" *ngIf="otherContactsDataSource.getValue().length > 0">
-                <!-- Name Column -->
-                <ng-container matColumnDef="name" style="width:26%">
-                  <th mat-header-cell *matHeaderCellDef >
-                    <b>Name</b>
-                  </th>
-                  <td *matCellDef="let element" mat-cell>
-                    {{ element.firstName }}&nbsp; {{element.lastName }}
-                  </td>
-                </ng-container>
-
-                <!-- Phone Column -->
-                <ng-container matColumnDef="phoneNumber" style="width:27%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <b>Phone</b>
-                  </th>
-                  <td *matCellDef="let element" mat-cell>
-                    {{ element.phoneNumber | phoneFormat }}
-                  </td>
-                </ng-container>
-
-                <!-- Email Column -->
-                <ng-container matColumnDef="email" style="width:27%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <b>Email</b>
-                  </th>
-                  <td *matCellDef="let element" mat-cell>
-                    {{ element.email}}
-                  </td>
-                </ng-container>
-
-                <!-- Delete Icon Column -->
-                <ng-container matColumnDef="deleteIcon" style="width:20%">
-                  <th mat-header-cell *matHeaderCellDef>
-                    &nbsp;
-                  </th>
-                  <td *matCellDef="let element; let index = index" mat-cell>
-                    <button
-                      class="edit-image"
-                      *ngIf="vieworedit !== 'viewOnly'"
-                      mat-icon-button
-                      aria-label="Edit"
-                      (click)="editOtherContactsRow(element, index)"
-                    >
-                      <img src="/assets/images/edit.svg" height="35" width="35" />
-                      <!-- 2024-08-26 EMCRI-617 waynezen; UI fixes for Angular upgrade -->
-                    </button>&nbsp;
-                    <button
-                    class="delete-image"
-                    *ngIf="vieworedit !== 'viewOnly'"
-                    mat-icon-button
-                    aria-label="Remove"
-                    (click)="confirmDeleteOtherContactRow(index)"
-                  >
-                    <img src="/assets/images/delete.svg" height="35" width="35" />
-                    <img
-                      src="/assets/images/delete_onhover.svg"
-                      height="35"
-                      width="35"
-                    />
-                    </button>
-                  </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="otherContactsColumnsToDisplay"></tr>
-                <tr
-                  mat-row
-                  *matRowDef="let element; columns: otherContactsColumnsToDisplay"
-                  class="example-element-row"
-                ></tr>
-
-              </table>
-
-              <div  *ngIf="otherContactsDataSource.getValue().length > 0">
-                <br /><br/>
-              </div>
-
-              <!--<div *ngIf="otherContactsForm.get('otherContacts').invalid && otherContactsForm.get('otherContacts').hasError('required')">
-                <span style="color:red">At least one other contact is required.</span>
-              </div>-->
-
-              <button
-                *ngIf="!showOtherContactForm && vieworedit !== 'viewOnly'"
-                class="family-button"
-                mat-button
-                type="button"
-                (click)="addOtherContact()"
-              >
-                + Add Other Contact
-              </button>
-
-              <mat-card *ngIf="showOtherContactForm">
-                <p class="sub-heading" style="font-size: 15px">
-                  {{otherContactText}}
-                </p>
-                <div class="row">
-                  <div class="col-md-3">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Contact first name</mat-label>
-                      <input formControlName="firstName" matInput placeholder="Contact first name" required maxlength="49"/>
-                      <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.firstName.invalid &&
-                          otherContactsForm.get('otherContact').controls.firstName.hasError('required') &&
-                          otherContactsForm.get('otherContact').controls.firstName.touched
-                        "
-                      >
-                        First Name is required</mat-error
-                      >
-                      <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.firstName.invalid &&
-                          otherContactsForm.get('otherContact').controls.firstName.hasError('maxLength')
-                        "
-                      >
-                        Maximum length is 49 characters</mat-error
-                      >
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Contact last name</mat-label>
-                      <input formControlName="lastName" matInput placeholder="Contact last name" required maxlength="49"/>
-                      <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.lastName.invalid &&
-                          otherContactsForm.get('otherContact').controls.lastName.hasError('required') &&
-                          otherContactsForm.get('otherContact').controls.lastName.touched
-                        "
-                      >
-                        Last Name is required</mat-error
-                      >
-                      <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.lastName.invalid &&
-                          otherContactsForm.get('otherContact').controls.lastName.hasError('maxLength')
-                        "
-                      >
-                        Maximum length is 49 characters</mat-error
-                      >
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Contact phone</mat-label>
-                      <!-- 2024-08-01 EMCRI-216 waynezen; upgrade to Angular 18 - use new ngx-mask -->
-                      <input formControlName="phoneNumber"
-                        matInput
-                        required
-                        placeholder="Contact phone"
-                      />
-                        <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.phoneNumber.invalid &&
-                          otherContactsForm.get('otherContact').controls.phoneNumber.hasError('required') &&
-                          otherContactsForm.get('otherContact').controls.phoneNumber.touched
-                        "
-                      >
-                       Telephone number is required</mat-error
-                      >
-                      <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.phoneNumber.invalid &&
-                          otherContactsForm.get('otherContact').controls.phoneNumber.hasError('incorrectLength')
-                        "
-                      >
-                        Telephone number must have 10 digits</mat-error
-                      >
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Contact email</mat-label>
-                      <input formControlName="email" required matInput placeholder="Contact email" type="email" maxlength="100" />
-                      <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.email.invalid &&
-                          otherContactsForm.get('otherContact').controls.email.hasError('required') &&
-                          otherContactsForm.get('otherContact').controls.email.touched
-                        "
-                      >
-                        Email is required</mat-error
-                      >
-                      <mat-error
-                      *ngIf="
-                        otherContactsForm.get('otherContact').controls.email.invalid
-                      "
-                    >
-                      Invalid email address</mat-error
-                    >
-                      <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.email.invalid &&
-                          otherContactsForm.get('otherContact').controls.email.hasError('maxLength')
-                        "
-                      >
-                        Maximum length is 100 characters</mat-error
-                      >
-                    </mat-form-field>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-3">
-                    <button
-                      class="button-s details-button"
-                      mat-button
-                      type="button"
-                      (click)="cancelOtherContact()"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <div class="col-md-3">
-                    <button
-                      class="family-button details-button save-button"
-                      mat-button
-                      type="button"
-                      (click)="saveOtherContact()"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-
-              </mat-card>
-
-            </div>
-          </div>
-        </ng-container>
-      </div>
-</form>
+    
   </mat-card-content>
 </mat-card>
