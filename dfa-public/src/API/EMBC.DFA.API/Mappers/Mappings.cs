@@ -178,6 +178,9 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_applicantlocalgovsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeSubOptionSet(s.propertyDamage.applicantSubSubtype)))
                 .ForMember(d => d.dfa_applicantothercomments, opts => opts.MapFrom(s => s.propertyDamage.subtypeOtherDetails))
                 .ForMember(d => d.dfa_dfaapplicantsubtypecomments, opts => opts.MapFrom(s => s.propertyDamage.subtypeDFAComment))
+                .ForMember(d => d.dfa_createdonportal, opts => opts.MapFrom(s => true))
+                .ForMember(d => d.dfa_applicationcasebpfstages, opts => opts.MapFrom(s => Convert.ToInt32(ApplicationStageOptionSet.SUBMIT)))
+                //.ForMember(d => d.dfa_applicationcasebpfsubstages, opts => opts.MapFrom(s => Convert.ToInt32(ApplicationStageOptionSet.SUBMIT)))
                 .ForMember(d => d.dfa_estimated, opts => opts.MapFrom(s => s.propertyDamage.estimatedPercent))
                 .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.propertyDamage.damageFromDate))
                 .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.propertyDamage.damageToDate));
