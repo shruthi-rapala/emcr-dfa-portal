@@ -61,10 +61,10 @@
               >
             </mat-form-field>
             <mat-error *ngIf="propertyDamageForm.hasError('noCauseOfDamage')">
-              <br/>At least one cause of damage is required.
+              At least one cause of damage is required.
             </mat-error>
           </div>
-        </div><br/><br/>
+        </div><br/>
 
         <div class="row">
           <p class="sub-heading" style="font-size: 15px">
@@ -146,7 +146,7 @@
               >
             </mat-form-field>
           </div>
-        </div><br/><br/>
+        </div><br/>
 
         <div class="row">
           <p class="sub-heading" style="font-size: 15px">
@@ -175,7 +175,7 @@
                 Maximum length is 2000 characters</mat-error
               >
           </mat-form-field>
-        </div><br/>
+        </div>
 
         <div class="row" *ngIf="isResidentialTenant === true || isHomeowner === true">
           <div class="col-md-12 bottomspace">
@@ -190,7 +190,7 @@
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
             </mat-radio-group>
           </div>
-        </div><br/><br/>
+        </div><br/>
 
         <div class="row" *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true' && (isResidentialTenant === true || isHomeowner === true)">
           <p class="sub-heading" style="font-size: 15px">
@@ -234,10 +234,10 @@
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
             </mat-radio-group>
           </div>
-        </div><br/><br/>
+        </div>
 
         <div class="row">
-          <div class="col-md-12 bottomspace">
+          <div class="col-md-12">
             <p class="sub-heading" style="font-size: 15px">
               In the past, have you submitted a DFA application for the same property?<span style="color:red" >*</span>
             </p>

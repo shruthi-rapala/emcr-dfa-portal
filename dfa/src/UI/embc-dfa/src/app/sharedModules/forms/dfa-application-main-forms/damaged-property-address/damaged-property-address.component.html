@@ -35,11 +35,11 @@
                   [readOnly]="isReadOnly"
                 ></app-bc-address>
               </div>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="padding-top: 24px;">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Excluding luxury/non-essential items and landscaping, do your losses total more than $1,000?<span style="color:red" >*</span>
@@ -52,9 +52,9 @@
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
             </mat-radio-group>
           </div>
-        </div><br/><br/>
+        </div>
         
-        <div class="row" *ngIf="isHomeowner === true || isResidentialTenant === true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isHomeowner === true || isResidentialTenant === true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Did you occupy the damaged property as your principal residence at the time of the event?<span style="color:red" >*</span>
@@ -67,7 +67,6 @@
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
             </mat-radio-group>
             <div *ngIf="damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value != 'false'">
-              <br/><br/>
             </div>
             <div class="row radio-extra-label" *ngIf="damagedPropertyAddressForm.get('occupyAsPrimaryResidence').value == 'false'">
               You must have occupied the property as your principal residence at the time of te event to be eligible for DFA. <br/><br/>
@@ -76,7 +75,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="isSmallBusinessOwner == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isSmallBusinessOwner == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Is your business managed by all owners on a day to day basis?<span style="color:red" >*</span>
@@ -91,7 +90,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="isSmallBusinessOwner == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isSmallBusinessOwner == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Are the gross revenues of the business more than $10,000 but less than $2
@@ -103,11 +102,11 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isSmallBusinessOwner == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isSmallBusinessOwner == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Does the business employ less than 50 employees at any one time?<span style="color:red" >*</span>
@@ -118,11 +117,11 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isFarmOwner == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isFarmOwner == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Is the farm operation identified in the current assessment of the British Columbia Assessment Authority as a developing or established agricultural operation?<span style="color:red" >*</span>
@@ -133,11 +132,11 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isFarmOwner == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isFarmOwner == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Is the farm operation owned and operated by a person(s) who full-time employment is as a farmer?<span style="color:red" >*</span>
@@ -148,11 +147,11 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isFarmOwner == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isFarmOwner == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Is the farm operation the means by which the owner(s) derives the majority of that person’s income?<span style="color:red" >*</span>
@@ -163,11 +162,11 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isCharitableOrganization == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isCharitableOrganization == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Does the charitable/non-profit organization provide a benefit or service to the community?<span style="color:red" >*</span>
@@ -178,11 +177,11 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isCharitableOrganization == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isCharitableOrganization == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Has the charitable/non-profit organization been in existence for at least 12 months?<span style="color:red" >*</span>
@@ -193,11 +192,11 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isCharitableOrganization == true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isCharitableOrganization == true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Is the charitable/non-profit organization registered under the BC <i>Societies Act</i>?<span style="color:red" >*</span>
@@ -208,11 +207,11 @@
               required
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isSmallBusinessOwner === true || isFarmOwner === true || isCharitableOrganization === true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isSmallBusinessOwner === true || isFarmOwner === true || isCharitableOrganization === true">
           <div class="col-md-6 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Provide the {{ accountLegalNameLabel }} legal name.<span style="color:red" >*</span>
@@ -246,11 +245,11 @@
                 {{accountPlaceHolderLabel + ' Legal Name is required'}}</mat-error
               >
             </mat-form-field>
-            <br/><br/>
+            
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="padding-top: 24px;">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Is this address on a First Nations reserve?<span style="color:red" >*</span>
@@ -266,7 +265,7 @@
         </div>
 
         <!-- TODO: drop down list from ERA -->
-        <div class="row" *ngIf="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'">
+        <div class="row" style="padding-top: 24px;" *ngIf="damagedPropertyAddressForm.get('onAFirstNationsReserve').value == 'true'">
           <div class="col-md-6 bottomspace">
             <mat-form-field appearance="outline">
               <mat-label>Name of First Nations Reserve</mat-label>
@@ -296,15 +295,15 @@
                 Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
-            <br/><br/><br/>
+            
           </div>
         </div>
 
         <div *ngIf="damagedPropertyAddressForm.get('onAFirstNationsReserve').value != 'true'">
-          <br/><br/>
+          
         </div>
 
-        <div class="row" *ngIf="isHomeowner === true || isResidentialTenant === true">
+        <div class="row" style="padding-top: 24px;" *ngIf="isHomeowner === true || isResidentialTenant === true">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               Is your home a manufactured home?
@@ -315,11 +314,11 @@
               class="primary-radio-group horizontal-radio-group"
               aria-label="Select an option">
               <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group><br/><br/>
+            </mat-radio-group>
           </div>
         </div>
 
-        <div class="row" *ngIf="isHomeowner">
+        <div class="row" style="padding-top: 24px;" *ngIf="isHomeowner">
           <div class="col-md-12 bottomspace">
             <p class="sub-heading" style="font-size: 15px">
               As the Home Owner, are you eligible for a BC Home Owner Grant for this property?<span style="color:red" >*</span>
@@ -334,7 +333,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="isResidentialTenant">
+        <div class="row" style="padding-top: 24px;" *ngIf="isResidentialTenant">
           <p class="sub-heading" style="font-size: 15px">
            Provide at least one registered building owner and/or landlord name and phone number.<span style="color:red" >*</span>
           </p>
@@ -453,7 +452,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="isResidentialTenant">
+        <div class="row" style="padding-top: 24px;" *ngIf="isResidentialTenant">
           <p class="sub-heading" style="font-size: 15px">
            You may also provide a second registered building owner and/or landlord name and phone number, if applicable.
           </p>
