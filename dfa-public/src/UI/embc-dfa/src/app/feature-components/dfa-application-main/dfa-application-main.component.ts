@@ -107,7 +107,7 @@ export class DFAApplicationMainComponent
     if (applicationId) {
       this.dfaApplicationMainDataService.setApplicationId(applicationId);
     }
-    this.formCreationService.clearPropertyDamageData();
+    this.formCreationService.clearApplicationDetailsData();
     this.formCreationService.clearOtherContactsData();
 
     this.steps = this.componentService.createDFAApplicationMainSteps();
@@ -175,7 +175,8 @@ export class DFAApplicationMainComponent
    * @param component current component name
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
-    if (isLast && component === 'property-damage') {
+    
+    if (component === 'application-details' || component === 'create-application1') {
       this.setFormData(component);
       this.dfaApplicationMainStepper.selected.completed = true;
       //this.submitFile();
@@ -191,7 +192,11 @@ export class DFAApplicationMainComponent
 
         // determine if step is complete
         switch (component) {
-          case 'property-damage':
+          case 'application-details':
+            if (this.form.valid) stepper.selected.completed = true;
+            else stepper.selected.completed = false;
+            break;
+          case 'create-application1':
             if (this.form.valid) stepper.selected.completed = true;
             else stepper.selected.completed = false;
             break;
@@ -245,21 +250,23 @@ export class DFAApplicationMainComponent
    */
   setFormData(component: string): void {
     switch (component) {
-      case 'property-damage':
-        this.dfaApplicationMainDataService.propertyDamage.damageFromDate = this.form.get('damageFromDate').value;
-        this.dfaApplicationMainDataService.propertyDamage.damageToDate = this.form.get('damageToDate').value;
-        this.dfaApplicationMainDataService.propertyDamage.floodDamage = this.form.get('floodDamage').value;
-        this.dfaApplicationMainDataService.propertyDamage.landslideDamage = this.form.get('landslideDamage').value;
-        this.dfaApplicationMainDataService.propertyDamage.otherDamage = this.form.get('otherDamage').value;
-        this.dfaApplicationMainDataService.propertyDamage.otherDamageText = this.form.get('otherDamageText').value;
-        this.dfaApplicationMainDataService.propertyDamage.stormDamage = this.form.get('stormDamage').value;
-        this.dfaApplicationMainDataService.propertyDamage.wildfireDamage = this.form.get('wildfireDamage').value;
-        this.dfaApplicationMainDataService.propertyDamage.guidanceSupport = this.form.get('guidanceSupport').value == 'true' ? true : (this.form.get('guidanceSupport').value == 'false' ? false : null);
-        this.dfaApplicationMainDataService.propertyDamage.applicantSubtype = this.form.get('applicantSubtype').value;
-        this.dfaApplicationMainDataService.propertyDamage.applicantSubSubtype = this.form.get('applicantSubSubtype').value;
-        this.dfaApplicationMainDataService.propertyDamage.estimatedPercent = this.form.get('estimatedPercent').value;
-        this.dfaApplicationMainDataService.propertyDamage.subtypeDFAComment = this.form.get('subtypeDFAComment').value;
-        this.dfaApplicationMainDataService.propertyDamage.subtypeOtherDetails = this.form.get('subtypeOtherDetails').value;
+      case 'application-details':
+        this.dfaApplicationMainDataService.applicationDetails.damageFromDate = this.form.get('damageFromDate').value;
+        this.dfaApplicationMainDataService.applicationDetails.damageToDate = this.form.get('damageToDate').value;
+        this.dfaApplicationMainDataService.applicationDetails.floodDamage = this.form.get('floodDamage').value;
+        this.dfaApplicationMainDataService.applicationDetails.landslideDamage = this.form.get('landslideDamage').value;
+        this.dfaApplicationMainDataService.applicationDetails.otherDamage = this.form.get('otherDamage').value;
+        this.dfaApplicationMainDataService.applicationDetails.otherDamageText = this.form.get('otherDamageText').value;
+        this.dfaApplicationMainDataService.applicationDetails.stormDamage = this.form.get('stormDamage').value;
+        this.dfaApplicationMainDataService.applicationDetails.wildfireDamage = this.form.get('wildfireDamage').value;
+        this.dfaApplicationMainDataService.applicationDetails.guidanceSupport = this.form.get('guidanceSupport').value == 'true' ? true : (this.form.get('guidanceSupport').value == 'false' ? false : null);
+        this.dfaApplicationMainDataService.applicationDetails.applicantSubtype = this.form.get('applicantSubtype').value;
+        this.dfaApplicationMainDataService.applicationDetails.applicantSubSubtype = this.form.get('applicantSubSubtype').value;
+        this.dfaApplicationMainDataService.applicationDetails.estimatedPercent = this.form.get('estimatedPercent').value;
+        this.dfaApplicationMainDataService.applicationDetails.subtypeDFAComment = this.form.get('subtypeDFAComment').value;
+        this.dfaApplicationMainDataService.applicationDetails.subtypeOtherDetails = this.form.get('subtypeOtherDetails').value;
+        this.dfaApplicationMainDataService.applicationDetails.legalName = this.form.get('legalName').value;
+        this.dfaApplicationMainDataService.applicationDetails.eventName = this.form.get('eventName').value;
         //this.dfaApplicationMainDataService.otherContacts = 
         //this.otherContactsForm.get('otherContact').getRawValue()
         break;
@@ -279,13 +286,22 @@ export class DFAApplicationMainComponent
    * @param index Step index
    */
   loadStepForm(index: number): void {
+    
     switch (index) {
       case 0:
          this.form$ = this.formCreationService
-           .getPropertyDamageForm()
-           .subscribe((propertyDamage) => {
-             this.form = propertyDamage;
+           .getApplicationDetailsForm()
+           .subscribe((applicationDetails) => {
+             this.form = applicationDetails;
            });
+
+        break;
+      case 1:
+        this.form$ = this.formCreationService
+          .getCreateApplication1Form()
+          .subscribe((applicationDetails1) => {
+            this.form = applicationDetails1;
+          });
 
         break;
     }
