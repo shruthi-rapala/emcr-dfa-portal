@@ -187,9 +187,10 @@ footer nav {
 
 .button-s {
   @extend .button-style;
-  border: 1px solid #b5b5b5 !important;
-  color: #606060;
+  border: 1px solid #003366 !important;
+  color: #003366 !important;
   background-color: #ffffff !important;
+  font-weight: 500 !important;
 }
 
 .button-p:hover {

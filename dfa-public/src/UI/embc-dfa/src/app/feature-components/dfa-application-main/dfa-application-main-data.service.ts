@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
-import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, PropertyDamage, Contacts, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
+import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, ApplicationDetails, Contacts, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { DFAApplicationStartService } from '../dfa-application-start/dfa-application-start.service';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -10,10 +10,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainDataService {
   private _damagedPropertyAddress: DamagedPropertyAddress;
-  private _propertyDamage: PropertyDamage;
-  // 2024-09-03 EMCRI-663 waynezen; new Contacts form
+  private _applicationDetails: ApplicationDetails;
   private _contacts: Contacts;
-
   private _cleanUpLog: CleanUpLog;
   private _supportingDocuments: SupportingDocuments;
   private _signAndSubmit: SignAndSubmit;
@@ -135,12 +133,12 @@ export class DFAApplicationMainDataService {
     this._signAndSubmit = value;
   }
 
-  public get propertyDamage(): PropertyDamage {
-    return this._propertyDamage;
+  public get applicationDetails(): ApplicationDetails {
+    return this._applicationDetails;
   }
 
-  public set propertyDamage(value: PropertyDamage) {
-    this._propertyDamage = value;
+  public set applicationDetails(value: ApplicationDetails) {
+    this._applicationDetails = value;
   }
 
   // 2024-09-03 EMCRI-663 waynezen; new Contacts form
@@ -206,7 +204,7 @@ export class DFAApplicationMainDataService {
    public createDFAApplicationMainDTO(): DfaApplicationMain {
     return {
       id: this._applicationId,
-      propertyDamage: this._propertyDamage,
+      applicationDetails: this._applicationDetails,
       otherContact: this._otherContacts,
       deleteFlag: false
     };

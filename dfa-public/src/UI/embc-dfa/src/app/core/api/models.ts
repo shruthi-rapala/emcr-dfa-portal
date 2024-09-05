@@ -14,7 +14,7 @@ export { FarmOption } from './models/farm-option';
 export { SignatureBlock } from './models/signature-block';
 export { OtherPreScreeningQuestions } from './models/other-pre-screening-questions';
 export { DfaApplicationMain } from './models/dfa-application-main';
-export { PropertyDamage } from './models/property-damage';
+export { ApplicationDetails } from './models/application-details';
 export { OtherContact } from './models/other-contact';
 export { CurrentApplication } from './models/current-application';
 export { StatusBar } from './models/status-bar';

@@ -82,23 +82,22 @@ export class ComponentCreationService {
 
   dfaApplicationMainComponents: Array<any> = [
     {
-      component: 'property-damage',
-      nextButtonLabel: 'Next - Contacts',
+      component: 'application-details',
+      nextButtonLabel: 'Next - Contact Information',
       backButtonLabel: 'Go Back & Edit',
       isLast: false,
       loadWrapperButton: false,
-      lastStep: 0,
+      lastStep: -1,
       stepName: 'Application Details'
     },
-    // 2024-09-03 EMCRI-613 waynezen; Contacts screen; TODO: remove once new Create Application screen complete
     {
       component: 'contacts',
       nextButtonLabel: 'Next - Review & Submit',
       backButtonLabel: 'Go Back & Edit',
-      isLast: true,
+      isLast: false,
       loadWrapperButton: false,
       lastStep: 0,
-      stepName: 'Contacts'
+      stepName: 'Contact Information'
     }
   ];
 
