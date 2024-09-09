@@ -1,9 +1,11 @@
-import { Component, OnInit, NgModule, Inject, OnDestroy } from '@angular/core';
+import { AppCity } from './../../../../core/api/models/app-city';
+import { Component, OnInit, NgModule, Inject, OnDestroy, Input } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
   AbstractControl,
   FormsModule,
+  ReactiveFormsModule,
   Validators,
   FormGroup
 } from '@angular/forms';
@@ -12,7 +14,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import {MatNativeDateModule} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectivesModule } from '../../../../core/directives/directives.module';
@@ -23,7 +24,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption, ApplicantSubtypeSubCategories } from 'src/app/core/api/models';
+import { ApplicantOption, ApplicantSubtypeSubCategories, AppProvince } from 'src/app/core/api/models';
 import { MatTableModule } from '@angular/material/table';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
@@ -40,13 +41,18 @@ import { LoginService } from 'src/app/core/services/login.service';
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss'
 })
-export default class ContactsComponent implements OnInit, OnDestroy {
+export class ContactsComponent implements OnInit, OnDestroy {
   contactsForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
   contactsForm$: Subscription;
   formCreationService: FormCreationService;
   isReadOnly: boolean = false;
   vieworedit: string = "";
+  appCities: AppCity[];
+  appProvinces: AppProvince[];
+  
+  @Input()
+  primaryContactSearch: string;
   
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -83,52 +89,68 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.contactsForm$ = this.formCreationService
       .getContactsForm()
-      .subscribe((contacts) => {
-        this.contactsForm = contacts;
+      .subscribe((contactDetails) => {
+        contactDetails.controls.legalName.setValue(this.dfaApplicationMainDataService.getBusiness());
+        this.contactsForm = contactDetails;
         this.setViewOrEditControls();
         this.dfaApplicationMainDataService.contacts = {
+          legalName: this.dfaApplicationMainDataService.getBusiness(),
+          doingBusinessAs: null,
+          mailingAddress1: null,
+          mailingAddress2: null,
+          city: null,
+          province: null,
+          postalCode: null,
+          primaryContact: null,      
 
         }
-      })
+      });
 
-      this.getContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+      this.contactService.contactGetAppCities().subscribe({
+        next: (appCities) => {
+          this.appCities = appCities;
+        },
+        error: (error) => {
+          console.error(error);
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        }
+      });  
+      
+      this.contactService.contactGetAppProvinces().subscribe({
+        next: (appProvinces) => {
+          this.appProvinces = appProvinces;
+        },
+        error: (error) => {
+          console.error(error);
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        }
+      });  
+
+      //this.getContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
   };
 
   getContactsForApplication(applicationId: string) {
-    //if (applicationId) {
-      this.contactService.contactGetDashboardContactInfo()
-      .subscribe(loginInfo => {
-        console.log('[DFA] Contacts: legalName: ' + loginInfo.legalName);
+    if (applicationId) {
 
-      })
-    //}
+    }
   }
+
+  onSelectCity(citySelected: AppCity) {
+
+  }
+
+  onSelectProvince(provSelected: AppProvince) {
+
+  }
+
+  searchForContact(primaryContactSearch: string) {
+
+    console.debug("searchForContact: " + primaryContactSearch);
+  }
+
 
   ngOnDestroy(): void {
     this.contactsForm$.unsubscribe();
   }
 }
-
-@NgModule({
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatNativeDateModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    DirectivesModule,
-    MatTableModule,
-    CustomPipeModule,
-    // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - new text mask provider
-    NgxMaskDirective, NgxMaskPipe,
-    MatSelectModule
-  ],
-  declarations: [ContactsComponent]
-})
-class ContactsModule {}
 

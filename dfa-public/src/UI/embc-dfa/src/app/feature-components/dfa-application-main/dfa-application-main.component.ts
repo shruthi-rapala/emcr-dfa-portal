@@ -298,9 +298,9 @@ export class DFAApplicationMainComponent
         break;
       case 1:
         this.form$ = this.formCreationService
-          .getCreateApplication1Form()
-          .subscribe((applicationDetails1) => {
-            this.form = applicationDetails1;
+          .getContactsForm()
+          .subscribe((contactDetails) => {
+            this.form = contactDetails;
           });
 
         break;

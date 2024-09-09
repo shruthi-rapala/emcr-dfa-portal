@@ -151,7 +151,7 @@ export class FormCreationService {
     this.applicationDetailsForm.asObservable();
 
   // 2024-09-03 EMCRI-663 waynezen; Create contacts
-  createContactsForm: BehaviorSubject<UntypedFormGroup | undefined> =
+  contactsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
         new ContactsForm(
@@ -161,8 +161,8 @@ export class FormCreationService {
       )
     );
 
-  createContactsForm$: Observable<UntypedFormGroup | undefined> =
-    this.createContactsForm.asObservable();
+  contactsForm$: Observable<UntypedFormGroup | undefined> =
+    this.contactsForm.asObservable();
 
 
   fullTimeOccupantsForm: BehaviorSubject<UntypedFormGroup | undefined> =
@@ -512,11 +512,11 @@ export class FormCreationService {
 
   // 2024-09-03 EMCRI-663 waynezen; Create Contacts
   getContactsForm(): Observable<UntypedFormGroup> {
-    return this.createContactsForm$;
+    return this.contactsForm$;
   }
 
-  setCreateApplication1Form(createApplication1Form: UntypedFormGroup): void {
-    this.createApplication1Form.next(createApplication1Form);
+  setContactsForm(contactsForm: UntypedFormGroup): void {
+    this.contactsForm.next(contactsForm);
   }
 
 

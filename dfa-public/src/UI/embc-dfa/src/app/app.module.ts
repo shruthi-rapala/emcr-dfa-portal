@@ -1,3 +1,4 @@
+import { Contacts } from './core/model/dfa-application-main.model';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';

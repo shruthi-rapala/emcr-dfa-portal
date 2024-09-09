@@ -123,9 +123,7 @@ namespace EMBC.DFA.API.Controllers
 
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
 
-            // 2024-09-03 EMCRI-663 waynezen; TODO: remove and fix
-            //var result = await handler.HandleApplicationUpdate(mappedApplication, null);
-            var result = "foo";
+            var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
             if (application.OtherContact != null)
             {
