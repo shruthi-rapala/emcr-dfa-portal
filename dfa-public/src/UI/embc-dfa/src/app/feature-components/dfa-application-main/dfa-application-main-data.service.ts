@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
 import { DfaApplicationStart,  } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
-import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, ApplicationDetails, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
+import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, ApplicationDetails, Contacts, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { DFAApplicationStartService } from '../dfa-application-start/dfa-application-start.service';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class DFAApplicationMainDataService {
   private _damagedPropertyAddress: DamagedPropertyAddress;
   private _applicationDetails: ApplicationDetails;
+  private _contacts: Contacts;
   private _cleanUpLog: CleanUpLog;
   private _supportingDocuments: SupportingDocuments;
   private _signAndSubmit: SignAndSubmit;
@@ -138,6 +139,15 @@ export class DFAApplicationMainDataService {
 
   public set applicationDetails(value: ApplicationDetails) {
     this._applicationDetails = value;
+  }
+
+  // 2024-09-03 EMCRI-663 waynezen; new Contacts form
+  public get contacts(): Contacts {
+    return this._contacts;
+  }
+
+  public set contacts(value: Contacts) {
+    this._contacts = value;
   }
 
   public get cleanUpLog(): CleanUpLog {

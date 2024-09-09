@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -83,5 +84,54 @@ namespace EMBC.DFA.API.Controllers
                 return Ok(null);
             }
         }
+
+        [HttpGet("cities")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<AppCity>> GetAppCities()
+        {
+            var lstCities = new List<AppCity>()
+            {
+                new AppCity()
+                {
+                    ID = "1",
+                    City = "Vancouver"
+                },
+                new AppCity()
+                {
+                    ID = "2",
+                    City = "Victoria"
+                }
+            };
+            return Ok(lstCities);
+        }
+
+        [HttpGet("provinces")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<AppProvince>> GetAppProvinces()
+        {
+            var lstCities = new List<AppProvince>()
+            {
+                new AppProvince()
+                {
+                    ID = "1",
+                    Province = "British Columbia"
+                },
+            };
+            return Ok(lstCities);
+        }
+    }
+
+    public class AppCity
+    {
+        public string ID { get; set; }
+        public string City { get; set; }
+    }
+
+    public class AppProvince
+    {
+        public string ID { get; set; }
+        public string Province { get; set; }
     }
 }

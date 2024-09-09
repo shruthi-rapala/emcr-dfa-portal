@@ -1,3 +1,4 @@
+import { Contacts } from './core/model/dfa-application-main.model';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +28,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { LoginService } from './core/services/login.service';
 import { map } from 'rxjs';
 import { AuthConfigModule } from './auth/auth-config.module';
-//import { CreateApplication1Module } from '../app/sharedModules/forms/dfa-application-main-forms/create-application1/create-application1.module';
 import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor'
 import { environment } from '../environments/environment';
 

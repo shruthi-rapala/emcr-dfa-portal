@@ -17,9 +17,8 @@ import { InsuranceOption } from 'src/app/core/api/models';
 import { ApplicationDetailsForm, DamagedPropertyAddressForm, DamagedPropertyAddress, SignAndSubmit, SupportingDocuments, DamagedRoomsForm,
   FullTimeOccupantsForm, SecondaryApplicantsForm, OtherContactsForm,
   CleanUpLogForm, SignAndSubmitForm, SupportingDocumentsForm, CleanUpLog, CleanUpLogItemsForm, SecondaryApplicant, FullTimeOccupant, OtherContact, CleanUpLogItem, DamagedRoom,  
-  CreateApplication1Form,
-  CreateApplication1,
-  ApplicationDetails} from '../model/dfa-application-main.model';
+  ApplicationDetails,
+  ContactsForm, Contacts} from '../model/dfa-application-main.model';
 import { CustomValidationService } from './customValidation.service';
 import { FileUpload, FileUploadsForm, RecoveryPlan, RecoveryPlanForm } from '../model/dfa-project-main.model';
 import { FileUploadClaim, FileUploadsClaimForm, RecoveryClaim, RecoveryClaimForm } from '../model/dfa-claim-main.model';
@@ -151,19 +150,19 @@ export class FormCreationService {
   applicationDetailsForm$: Observable<UntypedFormGroup | undefined> =
     this.applicationDetailsForm.asObservable();
 
-  // 2024-08-20 EMCRI-613 waynezen; Create Application1
-  createApplication1Form: BehaviorSubject<UntypedFormGroup | undefined> =
+  // 2024-09-03 EMCRI-663 waynezen; Create contacts
+  contactsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(
-        new CreateApplication1Form(
-          new CreateApplication1(),
+        new ContactsForm(
+          new Contacts(),
           this.customValidator
         )
       )
     );
 
-  createApplication1Form$: Observable<UntypedFormGroup | undefined> =
-    this.createApplication1Form.asObservable();
+  contactsForm$: Observable<UntypedFormGroup | undefined> =
+    this.contactsForm.asObservable();
 
 
   fullTimeOccupantsForm: BehaviorSubject<UntypedFormGroup | undefined> =
@@ -511,13 +510,13 @@ export class FormCreationService {
     );
   }
 
-  // 2024-08-20 EMCRI-613 waynezen; Create (new) Application
-  getCreateApplication1Form(): Observable<UntypedFormGroup> {
-    return this.createApplication1Form$;
+  // 2024-09-03 EMCRI-663 waynezen; Create Contacts
+  getContactsForm(): Observable<UntypedFormGroup> {
+    return this.contactsForm$;
   }
 
-  setCreateApplication1Form(createApplication1Form: UntypedFormGroup): void {
-    this.createApplication1Form.next(createApplication1Form);
+  setContactsForm(contactsForm: UntypedFormGroup): void {
+    this.contactsForm.next(contactsForm);
   }
 
 

@@ -7,8 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon'
 import { CoreModule } from 'src/app/core/core.module';
 
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 @NgModule({
   declarations: [DfaApplicationComponent],
-  imports: [CommonModule, DFAApplicationRoutingModule, MatButtonModule, MatIconModule, CoreModule]
+  imports: [CommonModule, DFAApplicationRoutingModule, MatButtonModule, MatIconModule, CoreModule, FormsModule, ReactiveFormsModule]
 })
 export class DFADashApplicationModule { }

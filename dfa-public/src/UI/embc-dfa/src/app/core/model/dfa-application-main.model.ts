@@ -412,25 +412,74 @@ export class ApplicationDetailsForm {
   }
 }
 
-// 2024-08-20 EMCRI-613 waynezen; Create Application1
-export class CreateApplication1 {
+// 2024-09-03 EMCRI-663 waynezen; Create Contacts
+export class Contacts {
   legalName?: null | string;
+  doingBusinessAs?: null | string;
+  businessNumber?: null | string;
+  mailingAddress1?: null | string;
+  mailingAddress2?: null | string;
+  city?: null | string;
+  province?: null | string;
+  postalCode?: null | string;
+  primaryContact?: null | string;
 
   constructor(
-    legalName?: null | string) {
-  
-  }
+    legalName?: null | string,
+    doingBusinessAs?: null | string,
+    businessNumber?: null | string,
+    mailingAddress1?: null | string,
+    mailingAddress2?: null | string,
+    city?: null | string,
+    province?: null | string,
+    postalCode?: null | string,
+    primaryContact?: null | string
+  ) { }
 }
 
-export class CreateApplication1Form {
+// 2024-09-09 EMCRI-663 waynezen; new Contacts form
+export class ContactsForm {
   legalName = new UntypedFormControl();
+  doingBusinessAs = new UntypedFormControl();
+  businessNumber = new UntypedFormControl();
+  mailingAddress1 = new UntypedFormControl();
+  mailingAddress2 = new UntypedFormControl();
+  city? = new UntypedFormControl();
+  province = new UntypedFormControl();
+  postalCode = new UntypedFormControl();
+  primaryContact = new UntypedFormControl();
   
   constructor(
-    createApplication1: CreateApplication1,
+    contacts: Contacts,
     customValidator: CustomValidationService) {
-      if (createApplication1.legalName) {
-        this.legalName.setValue(createApplication1.legalName);
-      }
+
+    if (contacts.legalName) {
+      this.legalName.setValue(contacts.legalName);
+    }
+    if (contacts.doingBusinessAs) {
+      this.doingBusinessAs.setValue(contacts.doingBusinessAs);
+    }
+    if (contacts.businessNumber) {
+      this.businessNumber.setValue(contacts.businessNumber);
+    }
+    if (contacts.mailingAddress1) {
+      this.mailingAddress1.setValue(contacts.mailingAddress1);
+    }
+    if (contacts.mailingAddress2) {
+      this.mailingAddress2.setValue(contacts.mailingAddress2);
+    }
+    if (contacts.city) {
+      this.city.setValue(contacts.city);
+    }
+    if (contacts.province) {
+      this.province.setValue(contacts.province);
+    }
+    if (contacts.postalCode) {
+      this.postalCode.setValue(contacts.postalCode);
+    }
+    if (contacts.primaryContact) {
+      this.primaryContact.setValue(contacts.primaryContact);
+    }
   }
 }
 

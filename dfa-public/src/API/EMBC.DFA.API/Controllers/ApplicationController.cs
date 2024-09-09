@@ -122,6 +122,7 @@ namespace EMBC.DFA.API.Controllers
             application.ProfileVerification = new ProfileVerification() { profileId = "6e0d26eb-376a-ef11-b851-00505683fbf4" };
 
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
+
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
             if (application.OtherContact != null)

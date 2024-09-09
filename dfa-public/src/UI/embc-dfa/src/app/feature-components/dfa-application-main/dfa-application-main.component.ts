@@ -271,8 +271,8 @@ export class DFAApplicationMainComponent
         //this.dfaApplicationMainDataService.otherContacts = 
         //this.otherContactsForm.get('otherContact').getRawValue()
         break;
-        case 'create-application1':
-          // TODO: EMCRI-613 - modify dfaApplicationMainDataService
+        case 'contacts':
+          // TODO: EMCRI-663 - modify dfaApplicationMainDataService
           break;
       case 'occupants':
         break;
@@ -299,9 +299,9 @@ export class DFAApplicationMainComponent
         break;
       case 1:
         this.form$ = this.formCreationService
-          .getCreateApplication1Form()
-          .subscribe((applicationDetails1) => {
-            this.form = applicationDetails1;
+          .getContactsForm()
+          .subscribe((contactDetails) => {
+            this.form = contactDetails;
           });
 
         break;
