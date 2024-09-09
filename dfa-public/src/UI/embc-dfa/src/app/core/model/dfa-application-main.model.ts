@@ -430,6 +430,7 @@ export class Contacts {
   ) { }
 }
 
+// 2024-09-09 EMCRI-663 waynezen; new Contacts form
 export class ContactsForm {
   legalName = new UntypedFormControl();
   doingBusinessAs = new UntypedFormControl();
@@ -440,14 +441,38 @@ export class ContactsForm {
   province = new UntypedFormControl();
   postalCode = new UntypedFormControl();
   primaryContact = new UntypedFormControl();
-
   
   constructor(
     contacts: Contacts,
     customValidator: CustomValidationService) {
-      if (contacts.legalName) {
-        this.legalName.setValue(contacts.legalName);
-      }
+
+    if (contacts.legalName) {
+      this.legalName.setValue(contacts.legalName);
+    }
+    if (contacts.doingBusinessAs) {
+      this.doingBusinessAs.setValue(contacts.doingBusinessAs);
+    }
+    if (contacts.businessNumber) {
+      this.businessNumber.setValue(contacts.businessNumber);
+    }
+    if (contacts.mailingAddress1) {
+      this.mailingAddress1.setValue(contacts.mailingAddress1);
+    }
+    if (contacts.mailingAddress2) {
+      this.mailingAddress2.setValue(contacts.mailingAddress2);
+    }
+    if (contacts.city) {
+      this.city.setValue(contacts.city);
+    }
+    if (contacts.province) {
+      this.province.setValue(contacts.province);
+    }
+    if (contacts.postalCode) {
+      this.postalCode.setValue(contacts.postalCode);
+    }
+    if (contacts.primaryContact) {
+      this.primaryContact.setValue(contacts.primaryContact);
+    }
   }
 }
 
