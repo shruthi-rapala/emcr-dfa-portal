@@ -19,7 +19,7 @@
       <button
         class="button-p save-button col-4"
         style="height: 40px !important; vertical-align: middle; width: 220px; margin-top: 15px"
-        (click)="saveAndBackToDashboard()"
+        (click)="returnToDashboard()"
         mat-stroked-button
         type="button"
         >
@@ -79,7 +79,7 @@
             class="button-s"
             mat-button
             type="button"
-            (click)="goBack(dfaApplicationMainStepper, step.lastStep)"
+            (click)="saveAndBackToDashboard()"
           >
             Save Application
           </button>

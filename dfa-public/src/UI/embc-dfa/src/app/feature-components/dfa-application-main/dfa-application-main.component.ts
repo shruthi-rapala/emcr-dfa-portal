@@ -267,6 +267,7 @@ export class DFAApplicationMainComponent
         this.dfaApplicationMainDataService.applicationDetails.subtypeOtherDetails = this.form.get('subtypeOtherDetails').value;
         this.dfaApplicationMainDataService.applicationDetails.legalName = this.form.get('legalName').value;
         this.dfaApplicationMainDataService.applicationDetails.eventName = this.form.get('eventName').value;
+        this.dfaApplicationMainDataService.applicationDetails.eventId = this.form.get('eventId').value;
         //this.dfaApplicationMainDataService.otherContacts = 
         //this.otherContactsForm.get('otherContact').getRawValue()
         break;
@@ -308,16 +309,16 @@ export class DFAApplicationMainComponent
   }
 
   saveAndBackToDashboard() {
-    //this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
-    //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-    //this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
-    //  this.showLoader = !this.showLoader;
-    //  this.returnToDashboard();
-    //},
-    //error => {
-    //  console.error(error);
-    //  document.location.href = 'https://dfa.gov.bc.ca/error.html';
-    //  });
+    this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
+    let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+    this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+      this.showLoader = !this.showLoader;
+      this.returnToDashboard();
+    },
+    error => {
+      console.error(error);
+      document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      });
 
     this.returnToDashboard();
   }

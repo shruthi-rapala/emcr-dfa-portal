@@ -10,6 +10,7 @@ export interface ApplicationDetails {
   damageFromDate?: null | string;
   damageToDate?: null | string;
   estimatedPercent?: null | string;
+  eventId?: null | string;
   eventName?: null | string;
   floodDamage?: null | boolean;
   guidanceSupport?: null | boolean;
