@@ -1,31 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using HandlebarsDotNet;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
 using pdfservice.Models;
 using pdfservice.Utils;
 using Stubble.Core.Builders;
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace pdfservice.Controllers
 {
