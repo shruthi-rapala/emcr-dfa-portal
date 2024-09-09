@@ -35,7 +35,7 @@
             </mat-form-field>
           </div>
           <div class="col-md-1"></div>
-          <div class="col-md-5 content-container infoText" >
+          <div class="col-md-5 content-container infoText legalText" >
             <div class="row">
               <div class="infoIconCol">
                 <div class="material-icons infoIconStyle">info</div>
@@ -136,7 +136,7 @@
            <div class="col-md-6">
              <mat-form-field appearance="outline">
                 <mat-label>Matching Disaster Event</mat-label>
-                <mat-select formControlName="eventName" matInput placeholder="Matching Disaster Event" required [disabled]="matchingEventsData.length <= 0">
+                <mat-select formControlName="eventId" matInput placeholder="Matching Disaster Event" required [disabled]="matchingEventsData.length <= 0">
                   <mat-option *ngFor="let option of matchingEventsData"
                     [value]="option.eventId">
                     {{ option.id }}&nbsp;&nbsp;({{option.startDate | date: "MM/dd/yyyy"}} to {{ option.endDate | date: "MM/dd/yyyy"}})

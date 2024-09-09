@@ -462,6 +462,7 @@ namespace EMBC.DFA.API.Controllers
         public string? subtypeDFAComment { get; set; }
         public string? legalName { get; set; }
         public string? eventName { get; set; }
+        public string? eventId { get; set; }
     }
 
     /// <summary>

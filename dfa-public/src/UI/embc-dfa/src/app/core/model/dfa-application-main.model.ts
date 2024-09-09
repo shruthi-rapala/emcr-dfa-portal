@@ -275,7 +275,7 @@ export class ApplicationDetails {
   subtypeDFAComment?: null | string;
   legalName?: null | string;
   eventName?: null | string;
-  
+  eventId?: null | string;
 
   constructor(
     floodDamage?: null | boolean,
@@ -295,6 +295,7 @@ export class ApplicationDetails {
     subtypeDFAComment?: null | string,
     legalName?: null | string,
     eventName?: null | string,
+    eventId?: null | string,
   ) { }
 }
 
@@ -315,6 +316,7 @@ export class ApplicationDetailsForm {
   subtypeDFAComment = new UntypedFormControl();
   legalName = new UntypedFormControl();
   eventName = new UntypedFormControl();
+  eventId = new UntypedFormControl();
 
   constructor(
     applicationDetails: ApplicationDetails,
@@ -336,12 +338,12 @@ export class ApplicationDetailsForm {
     this.stormDamage.setValidators(null);
 
     if (applicationDetails.wildfireDamage) {
-      this.stormDamage.setValue(applicationDetails.wildfireDamage);
+      this.wildfireDamage.setValue(applicationDetails.wildfireDamage);
     }
     this.wildfireDamage.setValidators(null);
 
     if (applicationDetails.guidanceSupport) {
-      this.stormDamage.setValue(applicationDetails.guidanceSupport);
+      this.guidanceSupport.setValue(applicationDetails.guidanceSupport);
     }
     this.guidanceSupport.setValidators(null);
 
@@ -402,6 +404,11 @@ export class ApplicationDetailsForm {
       this.eventName.setValue(applicationDetails.eventName);
     }
     this.eventName.setValidators(null);
+
+    if (applicationDetails.eventId) {
+      this.eventId.setValue(applicationDetails.eventId);
+    }
+    this.eventId.setValidators(null);
   }
 }
 

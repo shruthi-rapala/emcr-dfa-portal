@@ -330,7 +330,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageloss",
                         "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto"
                     },
-                    Filter = $"_dfa_bceiduser_value eq {profileId}"
+                    Filter = $"_dfa_bceiduser_value eq {profileId} and dfa_createdonportal eq true"
                     //Expand = new CRMExpandOptions[]
                     //{
                     //    new CRMExpandOptions()
@@ -355,7 +355,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_dateofdamage = objApp.dfa_dateofdamage,
                                    dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
                                    dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                                   //dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
+                                   dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
                                    dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
                                    dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
                                    dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
