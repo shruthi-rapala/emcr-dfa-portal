@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -69,7 +70,10 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<bceid.BCeIDBusiness>> GetBCeIDOtherInfo(string userId)
+        public async Task<ActionResult<bceid.BCeIDBusiness>> GetBCeIDOtherInfo(
+            [FromQuery]
+            [Required]
+            string userId)
         {
             try
             {

@@ -432,7 +432,15 @@ export class Contacts {
 
 export class ContactsForm {
   legalName = new UntypedFormControl();
-  
+  doingBusinessAs = new UntypedFormControl();
+  businessNumber = new UntypedFormControl();
+  mailingAddress1 = new UntypedFormControl();
+  mailingAddress2 = new UntypedFormControl();
+  city? = new UntypedFormControl();
+  province = new UntypedFormControl();
+  postalCode = new UntypedFormControl();
+  primaryContact = new UntypedFormControl();
+
   
   constructor(
     contacts: Contacts,

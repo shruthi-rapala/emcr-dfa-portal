@@ -1,3 +1,4 @@
+import { BCeIdBusiness } from './../../../../core/api/models/b-ce-id-business';
 import { AppCity } from './../../../../core/api/models/app-city';
 import { Component, OnInit, NgModule, Inject, OnDestroy, Input } from '@angular/core';
 import {
@@ -12,7 +13,7 @@ import {
 import { CommonModule, KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import {MatNativeDateModule} from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -35,13 +36,14 @@ import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa
 import { MatSelectModule } from '@angular/material/select';
 import { ContactService } from 'src/app/core/api/services';
 import { LoginService } from 'src/app/core/services/login.service';
+import { BCeIdLookupService } from 'src/app/core/api/services/b-ce-id-lookup.service';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss'
 })
-export class ContactsComponent implements OnInit, OnDestroy {
+export default class ContactsComponent implements OnInit, OnDestroy {
   contactsForm: UntypedFormGroup;
   formBuilder: UntypedFormBuilder;
   contactsForm$: Subscription;
@@ -51,8 +53,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   appCities: AppCity[];
   appProvinces: AppProvince[];
   
-  @Input()
-  primaryContactSearch: string;
   
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -64,6 +64,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private otherContactsService: OtherContactService,
     private contactService: ContactService,
     private loginService: LoginService,
+    private bceidLookupService: BCeIdLookupService,
     public dialog: MatDialog
   ) {
     this.formBuilder = formBuilder;
@@ -143,14 +144,46 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   }
 
-  searchForContact(primaryContactSearch: string) {
+  searchForContact() {
 
-    console.debug("searchForContact: " + primaryContactSearch);
+    var userId = this.contactsForm.get('primaryContact')?.value;
+    console.debug("searchForContact parameter: " + userId);
+
+    if (userId) {
+      this.bceidLookupService.bCeIdLookupGetBCeIdOtherInfo({userId}).subscribe((bceidBusiness: BCeIdBusiness) => {
+        if (bceidBusiness) {
+          console.log('Primary contact: ' + bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname);
+
+        }
+      });
+    }
   }
-
 
   ngOnDestroy(): void {
     this.contactsForm$.unsubscribe();
   }
 }
+  
+@NgModule({
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    DirectivesModule,
+    MatTableModule,
+    CustomPipeModule,
+    NgxMaskDirective, NgxMaskPipe,
+    MatSelectModule
+  ],
+  declarations: [ContactsComponent]
+})
+class ContactsModule { }
+
 
