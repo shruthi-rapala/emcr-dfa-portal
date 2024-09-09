@@ -15,19 +15,38 @@
             border: solid 10px #666666;
             padding: 20px 20px;
             */
-            /*
+
             font-family: arial, helvetica;
             margin: 5px 5px;
-
-            */
         }
+
         table {
             border-collapse: collapse;
         }
-        td, th {
+
+        .contacts td, th {
             border: 1px solid #1d1212;
             padding: 0.5rem;
             text-align: left;
+        }
+        td {
+            padding-bottom: 7px;
+            padding-top: 7px;
+        }
+        u {
+            text-decoration: underline;
+        }
+        .record-title {
+            width: 275px;
+            padding-left: 5px;
+        }
+        .contacts {
+            margin: 0 auto;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+        .contacts-container {
+            padding-bottom: 5px;
         }
     </style>
 </head>
@@ -35,126 +54,57 @@
 <body>
     <div class="page">
 
-        <h1 style="color: cornflowerblue">Application &amp; Insurance</h1>
+        <h1 style="color: cornflowerblue">Application Details</h1>
         <br />
-
-        <table>
-            <tr>
-                <td width="25%">
-                    Application Type:
-                </td>
-                <td>
-                    {{applicationType}}
-
-                </td>
-            </tr>
-            <tr>
-                <td width="20%">
-                    Do you have Insurance?
-                </td>
-                <td>
-                    {{hasInsurance}}
-                </td>
-            </tr>
-        </table>
-
-        <hr />
-        <h1 style="color: cornflowerblue">Damaged Property</h1>
+        <div style='width:100%;border:1px solid black;'>
+            <table cellspacing="0" cellpadding="0" style="border: none;">
+                <tr>
+                    <td class="record-title">
+                        Indigenous Governing Body &
+                        Local Authority Legal Name
+                    </td>
+                    <td>
+                        {{IndigenousGoverningBody}}
+                    </td>
+                </tr>
+                <tr> <td class="record-title"> DateofDamageFrom  </td>  <td> {{DateofDamageFrom}}   </td>   </tr>
+                <tr> <td class="record-title"> DateofDamageTo  </td>  <td> {{DateofDamageTo}}   </td>   </tr>
+                <tr> <td class="record-title"> DisasterEvent  </td>  <td> {{DisasterEvent}}   </td>   </tr>
+                <tr> <td class="record-title"> CauseofDamage  </td>  <td> {{CauseofDamage}}   </td>   </tr>
+                <tr> <td class="record-title"> GovernmentType  </td>  <td> {{GovernmentType}}   </td>   </tr>
+                <tr> <td class="record-title"> OtherGoverningBody  </td>  <td> {{OtherGoverningBody}}   </td>   </tr>
+                <tr> <td class="record-title"> DescribeYourOrganization  </td>  <td> {{DescribeYourOrganization}}   </td>   </tr>
+            </table>
+        </div>
         <br />
+        <div style='width:100%;border:1px solid black;'>
+            <table cellspacing="0" cellpadding="0" style="border: none;">
+                <tr> <td class="record-title">Doing Business As (DBA) Name  </td> <td>    {{DoingBusinessAsDBAName}} </td></tr>
+                <tr> <td class="record-title"> Business Number  </td>  <td> {{BusinessNumber}}   </td>   </tr>
 
-        <table>
-            <tr>
-                <td width="25%">
-                    <strong>Address Line One:</strong>
-                </td>
-                <td>
-                    {{dmgAddressLine1}}
-                </td>
-            </tr>
-            <tr>
-                <td width="25%">
-                    <strong>Address Line Two:</strong>
-                </td>
-                <td>
-                    {{dmgAddressLine2}}
-                </td>
-            </tr>
-            <tr>
-                <td width="25%">
-                    <strong>City</strong>
-                </td>
-                <td>
-                    {{dmgCity}}
-                </td>
-            </tr>
-            <tr>
-                <td width="25%">
-                    <strong>Province</strong>
-                </td>
-                <td>
-                    {{dmgProvince}}
-                </td>
-            </tr>
-            <tr>
-                <td width="25%">
-                    <strong>Description</strong>
-                </td>
-                <td>
-                    {{dmgDescription}}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <table style="width: 100%">
-                        <thead>
+                <tr> <td width="50%"> <p><u><strong>Mailing Address</strong></u> </p>  </td>    </tr>
+                <tr> <td class="record-title"> Address Line 1  </td>  <td> {{AddressLine1}}   </td>   </tr>
+                <tr> <td class="record-title"> Address Line 2  </td>  <td> {{AddressLine2}}   </td>   </tr>
+                <tr> <td class="record-title"> City  </td>  <td> {{City}}   </td>   </tr>
+                <tr> <td class="record-title"> Province  </td>  <td> {{Province}}   </td>   </tr>
+                <tr> <td class="record-title"> Postal Code  </td>  <td> {{PostalCode}}   </td>   </tr>
 
-                        </thead>
-                        <tbody>
-                            <tr>
-                                {{#arraysig signatures 0}}
-                                <td width="25%">
-                                    <strong>Signature1</strong>
-                                </td>
-                                <td width="25%">
-                                    <p>
-                                        {{PrintName}}
-                                        {{SignDate}}
-                                    </p>
-                                </td>
-                                {{/arraysig}}
+                <tr> <td width="50%"> <p><u><strong>Primary Contact Details</strong></u> </p>  </td>    </tr>
+                <tr> <td class="record-title"> First Name  </td>  <td> {{FirstName}}   </td>   </tr>
+                <tr> <td class="record-title"> Last Name  </td>  <td> {{LastName}}   </td>   </tr>
+                <tr> <td class="record-title"> Department  </td>  <td> {{Department}}   </td>   </tr>
+                <tr> <td class="record-title"> Business Phone  </td>  <td> {{BusinessPhone}}   </td>   </tr>
+                <tr> <td class="record-title"> Email Address  </td>  <td> {{EmailAddress}}   </td>   </tr>
+                <tr> <td class="record-title"> Cell Phone  </td>  <td> {{CellPhone}}   </td>   </tr>
+                <tr> <td class="record-title"> Job Title  </td>  <td> {{JobTitle}}   </td>   </tr>
+                <tr> <td class="record-title"> Contact Notes  </td>  <td> {{ContactNotes}}   </td>   </tr>
+            </table>
 
-                                {{#arraysig signatures 1}}
-                                <td width="25%">
-                                    <strong>Signature2</strong>
-                                </td>
-                                <td width="25%">
-                                    <p>
-                                        {{PrintName}}
-                                        {{SignDate}}
-                                    </p>
-                                </td>
-                                {{/arraysig}}
-                            </tr>
-                            <tr>
-                                {{#arraysig signatures 0}}
-                                <td colspan="2">
-                                    <img width="200" height="189" src="data:{{SigImageFormat}};base64,{{SigImageDisplay}}"
-                                        alt="signature1">
-                                </td>
-                                {{/arraysig}}
+            <p><u><strong>Additional Contact Details</strong></u> </p>
 
-                                {{#arraysig signatures 1}}
-                                <td colspan="2">
-                                    <img width="200" height="189" src="data:{{SigImageFormat}};base64,{{SigImageDisplay}}"
-                                        alt="signature1">
-                                </td>
-                                {{/arraysig}}
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>  <!--colspan=2-->
-            </tr>
-        </table>
+            {{{ContactsText}}}
+        </div>
+
     </div>
 
 
