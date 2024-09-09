@@ -65,6 +65,7 @@ export class ReviewComponent implements OnInit {
   insuranceOptionName: string = "";
   appTypeInsuranceForm: UntypedFormGroup;
   appTypeInsuranceForm$: Subscription;
+  causeOfDamage: string;
 
   constructor(
     private router: Router,
@@ -117,6 +118,62 @@ export class ReviewComponent implements OnInit {
         type: CaptchaResponseType.success
       });
     }
+
+    var appForm = this.formCreationService.applicationDetailsForm.value;
+    //debugger
+    //if (appForm.controls.floodDamage.value === 'true') {
+    //  this.causeOfDamage = 'Flood Damage, ';
+    //}
+    //if (appForm.controls.landslideDamage.value === 'true') {
+    //  this.causeOfDamage += 'Landslide Damage, ';
+    //}
+    //if (appForm.controls.stormDamage.value === 'true') {
+    //  this.causeOfDamage += 'Storm Damage, ';
+    //}
+    //if (appForm.controls.wildfireDamage.value === 'true') {
+    //  this.causeOfDamage += 'Wildfire Damage, ';
+    //}
+    //if (appForm.controls.otherDamage.value === 'true') {
+    //  this.causeOfDamage += appForm.controls.otherDamage.value + ', ';
+    //}
+
+    //this.causeOfDamage = this.causeOfDamage.slice(0, -1);
+
+    //const _fullTimeOccupantsFormArray = this.formCreationService.applicationDetailsForm.value;
+    appForm.valueChanges
+      .pipe(
+        mapTo(appForm.getRawValue())
+    ).subscribe(data => {
+      
+        this.causeOfDamage = '';
+        if (appForm.controls.floodDamage.value === true) {
+          this.causeOfDamage = 'Flood Damage, ';
+        }
+        if (appForm.controls.landslideDamage.value === true) {
+          this.causeOfDamage += 'Landslide Damage, ';
+        }
+        if (appForm.controls.stormDamage.value === true) {
+          this.causeOfDamage += 'Storm Damage, ';
+        }
+        if (appForm.controls.wildfireDamage.value === true) {
+          this.causeOfDamage += 'Wildfire Damage, ';
+        }
+        if (appForm.controls.otherDamage.value === true) {
+          this.causeOfDamage += appForm.controls.otherDamageText.value + ', ';
+        }
+
+        if (this.causeOfDamage)
+          this.causeOfDamage = this.causeOfDamage.slice(0, -2);
+        }
+    );
+
+    //if (appForm.value.get('fullTimeOccupants') controls.stormDamage.value !== true &&
+    //  appForm.controls.landslideDamage.value !== true &&
+    //  appForm.controls.otherDamage.value !== true &&
+    //  appForm.controls.wildfireDamage.value !== true &&
+    //  appForm.controls.floodDamage.value !== true) {
+    //  return { noCauseOfDamage: true };
+    //}
 
     // subscribe to changes in full time occupants
     const _fullTimeOccupantsFormArray = this.formCreationService.fullTimeOccupantsForm.value.get('fullTimeOccupants');
