@@ -176,7 +176,7 @@ export class DFAApplicationMainComponent
    */
   goForward(stepper: MatStepper, isLast: boolean, component: string): void {
     
-    if (component === 'application-details' || component === 'create-application1') {
+    if (component === 'application-details' || component === 'contacts') {
       this.setFormData(component);
       this.dfaApplicationMainStepper.selected.completed = true;
       //this.submitFile();
@@ -196,7 +196,7 @@ export class DFAApplicationMainComponent
             if (this.form.valid) stepper.selected.completed = true;
             else stepper.selected.completed = false;
             break;
-          case 'create-application1':
+          case 'contacts':
             if (this.form.valid) stepper.selected.completed = true;
             else stepper.selected.completed = false;
             break;
