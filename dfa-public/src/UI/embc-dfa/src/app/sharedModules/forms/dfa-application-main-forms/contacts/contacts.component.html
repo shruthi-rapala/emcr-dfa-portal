@@ -1,129 +1,126 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
-    <mat-card-content>
-        <form [formGroup]="contactsForm">
-            <ng-container>
-                <br/>
-                <div class="row">
-                  <div class="col-md-6">
-                    <p class="sub-heading" style="font-size: 15px">
-                      Indigenous Governing Body & Local Authority Legal Name
-                    </p>
-                    <mat-form-field appearance="outline">
-                      <input
-                        formControlName="legalName"
-                        matInput
-                        disabled
-                             readonly
-                        placeholder=""
-                        maxlength="100"/>
-                    </mat-form-field>
-                  </div>
+  <mat-card-content>
+    <form [formGroup]="contactsForm">
+      <ng-container>
+        <br />
+        <div class="row">
+          <div class="col-md-6">
+            <p class="sub-heading" style="font-size: 15px">
+              Indigenous Governing Body & Local Authority Legal Name
+            </p>
+            <mat-form-field appearance="outline">
+              <input formControlName="legalName" matInput disabled readonly placeholder="" maxlength="100" />
+            </mat-form-field>
+          </div>
+        </div>
+        <br />
+
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Doing Business as (DBA) Name
+          </p>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <input [disabled]="isReadOnly" matInput formControlName="doingBusinessAs" placeholder=""
+                maxlength="200" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Business Number
+          </p>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <input [disabled]="isReadOnly" matInput formControlName="doingBusinessAs" placeholder=""
+                maxlength="200" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Mailing Address<span style="color:red">*</span>
+          </p>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <input [disabled]="isReadOnly" matInput formControlName="mailingAddress1" placeholder=""
+                maxlength="200" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <input [disabled]="isReadOnly" matInput formControlName="mailingAddress2" placeholder="Address Line 2"
+                maxlength="200" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-select [disabled]="isReadOnly === true" formControlName="city" matInput
+                placeholder="Select contact city" required>
+                <div *ngFor="let option of appCities ">
+                  <mat-option (click)="onSelectCity(option)" [value]="option.city">
+                    {{ option.city }}
+                  </mat-option>
                 </div>
-                <br/>
+              </mat-select>
+            </mat-form-field>
+          </div>
 
-                <div class="row">
-                    <p class="sub-heading" style="font-size: 15px">
-                        Doing Business as (DBA) Name
-                    </p>                
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline">
-                            <input [disabled]="isReadOnly" matInput formControlName="doingBusinessAs" placeholder="" maxlength="200" />
-                        </mat-form-field>
-                    </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-select [disabled]="isReadOnly === true" formControlName="province" matInput
+                placeholder="Select contact province" required>
+                <div *ngFor="let option of appProvinces ">
+                  <mat-option (click)="onSelectProvince(option)" [value]="option.province">
+                    {{ option.province }}
+                  </mat-option>
                 </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
 
-                <div class="row">
-                    <p class="sub-heading" style="font-size: 15px">
-                        Business Number
-                    </p>                
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline">
-                            <input [disabled]="isReadOnly" matInput formControlName="doingBusinessAs" placeholder="" maxlength="200" />
-                        </mat-form-field>
-                    </div>
-                </div>
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <input [disabled]="isReadOnly" matInput formControlName="postalCode" placeholder="Postal Code"
+                maxlength="7" />
+            </mat-form-field>
+          </div>
+        </div>
+        <br>
 
-                <div class="row">
-                    <p class="sub-heading" style="font-size: 15px">
-                        Mailing Address<span style="color:red">*</span>
-                    </p>
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline">
-                            <input [disabled]="isReadOnly" matInput formControlName="mailingAddress1" placeholder="" maxlength="200" />
-                        </mat-form-field>
-                    </div>
-                </div>
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Primary Contact<span style="color:red">*</span>
+          </p>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <input [disabled]="isReadOnly" matInput formControlName="primaryContactSearch" id="primaryContactSearch"
+                placeholder="User Id" maxlength="16" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <button class="button-p save-button" mat-stroked-button type="button" (click)="searchForContact()">
+              Search for Contact
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>{{this.dfaApplicationMainDataService.contacts.primaryContactDisplay}}</p>
+          </div>
+        </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline">
-                            <input [disabled]="isReadOnly" matInput formControlName="mailingAddress2" placeholder="Address Line 2" maxlength="200" />
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3">
-                      <mat-form-field appearance="outline">
-                        <mat-select [disabled]="isReadOnly === true" formControlName="city" matInput placeholder="Select contact city" required>
-                          <div *ngFor="let option of appCities ">
-                            <mat-option (click)="onSelectCity(option)"
-                              [value]="option.city">
-                              {{ option.city }}
-                            </mat-option>
-                          </div>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-md-3">
-                        <mat-form-field appearance="outline">
-                            <mat-select [disabled]="isReadOnly === true" formControlName="province" matInput placeholder="Select contact province" required>
-                              <div *ngFor="let option of appProvinces ">
-                                <mat-option (click)="onSelectProvince(option)"
-                                  [value]="option.province">
-                                  {{ option.province }}
-                                </mat-option>
-                              </div>    
-                            </mat-select>
-                          </mat-form-field>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-3">
-                        <mat-form-field appearance="outline">
-                            <input [disabled]="isReadOnly" matInput formControlName="postalCode" placeholder="Postal Code" maxlength="7" />
-                        </mat-form-field>
-                    </div>
-                </div>
-                <br>
-
-                <div class="row">
-                  <p class="sub-heading" style="font-size: 15px">
-                    Primary Contact<span style="color:red">*</span>
-                  </p>
-                  <div class="col-md-6">
-                    <mat-form-field appearance="outline">
-                      <input [disabled]="isReadOnly" matInput formControlName="primaryContact" id="primaryContact" placeholder="User Id" maxlength="16" />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-2">
-                    <button
-                    class="button-p save-button"
-                    mat-stroked-button
-                    type="button"
-                    (click)="searchForContact()"
-                  >
-                    Search for Contact
-                  </button>
-                  </div>
-                </div>
-
-
-
-
-            </ng-container>
-        </form>
-    </mat-card-content>
-    </mat-card>
+      </ng-container>
+    </form>
+  </mat-card-content>
+</mat-card>

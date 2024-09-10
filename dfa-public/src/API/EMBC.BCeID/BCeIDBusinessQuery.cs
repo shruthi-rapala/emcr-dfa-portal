@@ -80,7 +80,8 @@ namespace EMBC.Gov.BCeID
 
             // SOAP request and parameters
             var myparams = new AccountDetailRequest();
-            myparams.userId = userId;
+            // 2024-09-09 EMCRI-663 waynezen; force userId all lower-case
+            myparams.userId = userId.ToLower();
             myparams.accountTypeCode = BCeIDAccountTypeCode.Business;
             myparams.onlineServiceId = webSvcOptions.serviceId;
             myparams.requesterAccountTypeCode = BCeIDAccountTypeCode.Business;

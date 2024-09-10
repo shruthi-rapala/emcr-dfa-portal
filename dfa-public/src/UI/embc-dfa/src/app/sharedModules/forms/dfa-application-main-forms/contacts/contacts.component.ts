@@ -85,6 +85,32 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   }
 
   setViewOrEditControls() {
+    if (!this.contactsForm) return;
+    if (this.isReadOnly) {
+      this.contactsForm.controls.doingBusinessAs.disable();
+      this.contactsForm.controls.businessNumber.disable();
+      this.contactsForm.controls.mailingAddress1.disable();
+      this.contactsForm.controls.mailingAddress2.disable();
+      this.contactsForm.controls.city.disable();
+      this.contactsForm.controls.province.disable();
+      this.contactsForm.controls.postalCode.disable();
+      this.contactsForm.controls.primaryContactSearch.disable();
+      this.contactsForm.controls.primaryContactValidated.disable();
+      this.contactsForm.controls.primaryContactDisplay.disable();
+
+    } else {
+      this.contactsForm.controls.doingBusinessAs.disable();
+      this.contactsForm.controls.businessNumber.enable();
+      this.contactsForm.controls.mailingAddress1.enable();
+      this.contactsForm.controls.mailingAddress2.enable();
+      this.contactsForm.controls.city.enable();
+      this.contactsForm.controls.province.enable();
+      this.contactsForm.controls.postalCode.enable();
+      this.contactsForm.controls.primaryContactSearch.enable();
+      this.contactsForm.controls.primaryContactValidated.enable();
+      this.contactsForm.controls.primaryContactDisplay.enable();
+
+    }
   }
 
   ngOnInit(): void {
@@ -102,8 +128,20 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           city: null,
           province: null,
           postalCode: null,
-          primaryContact: null,      
+          primaryContactSearch: null,
+          primaryContactValidated: false,
+          primaryContactDisplay: null
 
+        }
+      });
+
+
+      this.contactsForm
+      .get('primaryContactSearch')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.contactsForm.get('primaryContactSearch').reset();
         }
       });
 
@@ -127,7 +165,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
       });  
 
-      //this.getContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+      this.getContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
   };
 
   getContactsForApplication(applicationId: string) {
@@ -145,17 +183,35 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   }
 
   searchForContact() {
-
-    var userId = this.contactsForm.get('primaryContact')?.value;
+    var userId = this.contactsForm.get('primaryContactSearch')?.value;
     console.debug("searchForContact parameter: " + userId);
 
     if (userId) {
       this.bceidLookupService.bCeIdLookupGetBCeIdOtherInfo({userId}).subscribe((bceidBusiness: BCeIdBusiness) => {
-        if (bceidBusiness) {
+        if (bceidBusiness && bceidBusiness.isValidResponse) {
           console.log('Primary contact: ' + bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname);
 
+          // found a valid Primary Contact
+          this.dfaApplicationMainDataService.contacts = {
+            primaryContactSearch: bceidBusiness.userId,
+            primaryContactValidated: true,
+            primaryContactDisplay: bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname,
+          }
+          this.contactsForm.get('primaryContactSearch').setValue(bceidBusiness.userId);
         }
+        else {
+          this.dfaApplicationMainDataService.contacts = {
+            primaryContactValidated: false,
+            primaryContactDisplay: '** Not Found **',
+          }
+        }    
       });
+    }
+    else {
+      this.dfaApplicationMainDataService.contacts = {
+        primaryContactValidated: false,
+        primaryContactDisplay: '',
+      }
     }
   }
 

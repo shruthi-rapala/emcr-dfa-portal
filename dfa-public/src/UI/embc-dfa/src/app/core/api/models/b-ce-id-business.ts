@@ -19,7 +19,9 @@ export interface BCeIdBusiness {
   individualMiddlename?: string;
   individualOtherMiddlename?: string;
   individualSurname?: string;
+  isValidResponse?: boolean;
   jurisdictionOfIncorporation?: string;
   legalName?: string;
+  responseErrorMsg?: string;
   userId?: string;
 }

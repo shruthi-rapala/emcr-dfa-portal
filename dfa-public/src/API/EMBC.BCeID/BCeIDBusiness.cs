@@ -6,6 +6,8 @@
     /// </summary>
     public class BCeIDBusiness
     {
+        public bool IsValidResponse { get; set; }
+        public string ResponseErrorMsg { get; set; }
         public string contactEmail { get; set; }
         public string contactPhone { get; set; }
 

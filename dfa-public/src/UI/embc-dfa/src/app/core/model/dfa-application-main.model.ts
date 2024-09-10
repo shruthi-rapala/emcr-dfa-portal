@@ -422,7 +422,10 @@ export class Contacts {
   city?: null | string;
   province?: null | string;
   postalCode?: null | string;
-  primaryContact?: null | string;
+  primaryContactSearch?: null | string;
+  primaryContactValidated?: null | boolean;
+  primaryContactDisplay?: null | string;
+
 
   constructor(
     legalName?: null | string,
@@ -433,7 +436,9 @@ export class Contacts {
     city?: null | string,
     province?: null | string,
     postalCode?: null | string,
-    primaryContact?: null | string
+    primaryContactSearch?: null | string,
+    primaryContactValidated?: null | boolean,
+    primaryContactDisplay?: null | string,
   ) { }
 }
 
@@ -447,8 +452,10 @@ export class ContactsForm {
   city? = new UntypedFormControl();
   province = new UntypedFormControl();
   postalCode = new UntypedFormControl();
-  primaryContact = new UntypedFormControl();
-  
+  primaryContactSearch = new UntypedFormControl();
+  primaryContactValidated = new UntypedFormControl();
+  primaryContactDisplay = new UntypedFormControl();
+
   constructor(
     contacts: Contacts,
     customValidator: CustomValidationService) {
@@ -477,9 +484,16 @@ export class ContactsForm {
     if (contacts.postalCode) {
       this.postalCode.setValue(contacts.postalCode);
     }
-    if (contacts.primaryContact) {
-      this.primaryContact.setValue(contacts.primaryContact);
+    if (contacts.primaryContactSearch) {
+      this.primaryContactSearch.setValue(contacts.primaryContactSearch);
     }
+    if (contacts.primaryContactValidated) {
+      this.primaryContactValidated.setValue(contacts.primaryContactValidated);
+    }
+    if (contacts.primaryContactDisplay) {
+      this.primaryContactDisplay.setValue(contacts.primaryContactDisplay);
+    }
+
   }
 }
 
