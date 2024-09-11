@@ -19,16 +19,41 @@ export class DfaApplicationComponent implements OnInit {
     this.appSessionService.currentApplicationsCount.emit(value);
   }
 
+  //items = [
+  //  { label: "Draft Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+  //  { label: "Submitted Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+  //  { label: "Reviewing Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+  //  { label: "Creating Case File", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+  //  { label: "Checking Criteria", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+  //  { label: "Assessing Damage", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+  //  { label: "Reviewing Damage Report", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+  //  { label: "DFA Making Decision", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+  //  { label: "DFA Decision Made", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
+  //];
+
   items = [
-    { label: "Draft Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Submitted Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Reviewing Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Creating Case File", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Checking Criteria", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Assessing Damage", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Reviewing Damage Report", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "DFA Making Decision", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "DFA Decision Made", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Draft Application", stage: "", statusColor: "#639DD4", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Submitted Application", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Reviewing Application", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Creating Case File", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Case Created", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Case In Progress", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Closed", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+
   ];
   lstApplications: ApplicationExtended[] = [];
   matchStatusFound = false;
@@ -68,12 +93,26 @@ export class DfaApplicationComponent implements OnInit {
             objApp.isErrorInStatus = false;
             objApp.statusBar = JSON.parse(jsonVal);
             objApp.statusBar.forEach(objStatItem => {
-              if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+              if (objApp.status != null && objStatItem.status.toLowerCase() == objApp.status.toLowerCase()) {
                 objStatItem.currentStep = true;
                 isFound = true
                 this.matchStatusFound = true;
-              }
+                if (objApp.stage) {
+                  objStatItem.stage = objApp.stage;
+                }
 
+                objApp.statusColor = objStatItem.statusColor;
+
+                if (objApp.stage == 'Ineligible' || objApp.stage == 'Withdrwan') {
+                  objApp.statusColor = '#E25E63';
+                }
+
+                if (objApp.status.toLowerCase().indexOf('draft') > -1) {
+                  objApp.statusColor = '#639DD4';
+                  objApp.status = 'Draft'
+                }
+              }
+              
               if (isFound == false) {
                 objStatItem.isCompleted = true;
               }
@@ -82,7 +121,7 @@ export class DfaApplicationComponent implements OnInit {
                 if (isFound == false) {
                   objApp.isErrorInStatus = true;
                 }
-                else if (objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+                else if (objStatItem.status.toLowerCase() == objApp.status.toLowerCase()) {
                   objStatItem.isCompleted = true;
                 }
               }
@@ -103,6 +142,14 @@ export class DfaApplicationComponent implements OnInit {
       }
     });
     this.isLoading = false;
+  }
+
+  getItems(lst) {
+    return lst.filter((item) => item.status !== '');
+  }
+
+  getStatusBarItems(lst) {
+    return lst.filter((item) => item.status !== '');
   }
 
   mapData(lstApp: Object): void {

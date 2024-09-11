@@ -372,6 +372,7 @@ namespace EMBC.DFA.API.Controllers
         public string PrimaryApplicantSignedDate { get; set; }
         public string DateFileClosed { get; set; }
         public string Status { get; set; }
+        public string Stage { get; set; }
         public List<StatusBar> StatusBar { get; set; }
         public string StatusLastUpdated { get; set; }
         public bool IsErrorInStatus { get; set; }
@@ -382,6 +383,7 @@ namespace EMBC.DFA.API.Controllers
         public bool? otherDamage { get; set; }
         public bool? eligibleGST { get; set; }
         public string? otherDamageText { get; set; }
+        public string StatusColor { get; set; }
     }
 
     public class ApplicantSubtypes
@@ -394,10 +396,12 @@ namespace EMBC.DFA.API.Controllers
 
     public class StatusBar
     {
-        public string Label { get; set; }
+        public string Status { get; set; }
+        public string Stage { get; set; }
         public bool IsCompleted { get; set; }
         public bool CurrentStep { get; set; }
         public bool IsFinalStep { get; set; }
         public bool IsErrorInStatus { get; set; }
+        public string StatusColor { get; set; }
     }
 }

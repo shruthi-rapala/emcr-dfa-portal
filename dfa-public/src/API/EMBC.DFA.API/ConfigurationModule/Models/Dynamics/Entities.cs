@@ -789,6 +789,36 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         PrivatePublic = 222710002
     }
 
+    public enum ApplicationStages
+    {
+        [Description("Draft")]
+        Draft = 222710000,
+
+        [Description("Submitted")]
+        Submitted = 222710001,
+
+        [Description("Reviewing Application")]
+        ReviewingApplication = 222710002,
+
+        [Description("Creating Case File")]
+        CreatingCaseFile = 222710003,
+
+        [Description("Case Created")]
+        CaseCreated = 222710004,
+
+        [Description("Case In Progress")]
+        CaseInProgress = 222710005,
+
+        [Description("Closed")]
+        Closed = 222710006
+    }
+
+    public enum ApplicationSubStages
+    {
+        [Description("Pending")]
+        Pending = 222710000,
+    }
+
     public enum ProjectStages
     {
         [Description("Draft")]

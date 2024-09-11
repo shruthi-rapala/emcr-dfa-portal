@@ -5,5 +5,7 @@ export interface StatusBar {
   isCompleted?: boolean;
   isErrorInStatus?: boolean;
   isFinalStep?: boolean;
-  label?: string;
+  stage?: string;
+  status?: string;
+  statusColor?: string;
 }
