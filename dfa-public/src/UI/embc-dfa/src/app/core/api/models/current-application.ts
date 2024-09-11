@@ -17,8 +17,10 @@ export interface CurrentApplication {
   otherDamage?: null | boolean;
   otherDamageText?: null | string;
   primaryApplicantSignedDate?: string;
+  stage?: string;
   status?: string;
   statusBar?: Array<StatusBar>;
+  statusColor?: string;
   statusLastUpdated?: string;
   stormDamage?: null | boolean;
   wildfireDamage?: null | boolean;
