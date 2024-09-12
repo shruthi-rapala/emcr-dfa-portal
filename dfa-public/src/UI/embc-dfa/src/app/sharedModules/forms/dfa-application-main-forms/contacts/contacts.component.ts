@@ -1,5 +1,4 @@
-import { BCeIdBusiness } from './../../../../core/api/models/b-ce-id-business';
-import { AppCity } from './../../../../core/api/models/app-city';
+
 import { Component, OnInit, NgModule, Inject, OnDestroy, Input } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -36,7 +35,11 @@ import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa
 import { MatSelectModule } from '@angular/material/select';
 import { ContactService } from 'src/app/core/api/services';
 import { LoginService } from 'src/app/core/services/login.service';
+import { AppCity } from 'src/app/core/api/models/app-city';
 import { BCeIdLookupService } from 'src/app/core/api/services/b-ce-id-lookup.service';
+import { BCeIdBusiness } from 'src/app/core/api/models/b-ce-id-business';
+import { MatIconModule } from '@angular/material/icon'
+import { ContactNotFoundComponent } from './contact-not-found.component';
 
 @Component({
   selector: 'app-contacts',
@@ -52,7 +55,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   vieworedit: string = "";
   appCities: AppCity[];
   appProvinces: AppProvince[];
-  
+  protected showFoundContactMsg = false;
   
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -65,7 +68,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     private contactService: ContactService,
     private loginService: LoginService,
     private bceidLookupService: BCeIdLookupService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -96,10 +99,17 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.postalCode.disable();
       this.contactsForm.controls.primaryContactSearch.disable();
       this.contactsForm.controls.primaryContactValidated.disable();
-      this.contactsForm.controls.primaryContactDisplay.disable();
+      this.contactsForm.controls.pcFirstName.disable();
+      this.contactsForm.controls.pcLastName.disable();
+      this.contactsForm.controls.pcDepartment.disable();
+      this.contactsForm.controls.pcBusinessPhone.disable();
+      this.contactsForm.controls.pcEmail.disable();
+      this.contactsForm.controls.pcCellPhone.disable();
+      this.contactsForm.controls.pcJobTitle.disable();
+      
 
     } else {
-      this.contactsForm.controls.doingBusinessAs.disable();
+      this.contactsForm.controls.doingBusinessAs.enable();
       this.contactsForm.controls.businessNumber.enable();
       this.contactsForm.controls.mailingAddress1.enable();
       this.contactsForm.controls.mailingAddress2.enable();
@@ -108,7 +118,13 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.postalCode.enable();
       this.contactsForm.controls.primaryContactSearch.enable();
       this.contactsForm.controls.primaryContactValidated.enable();
-      this.contactsForm.controls.primaryContactDisplay.enable();
+      this.contactsForm.controls.pcFirstName.enable();
+      this.contactsForm.controls.pcLastName.enable();
+      this.contactsForm.controls.pcDepartment.enable();
+      this.contactsForm.controls.pcBusinessPhone.enable();
+      this.contactsForm.controls.pcEmail.enable();
+      this.contactsForm.controls.pcCellPhone.enable();
+      this.contactsForm.controls.pcJobTitle.enable();
 
     }
   }
@@ -123,6 +139,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         this.dfaApplicationMainDataService.contacts = {
           legalName: this.dfaApplicationMainDataService.getBusiness(),
           doingBusinessAs: null,
+          businessNumber: null,
           mailingAddress1: null,
           mailingAddress2: null,
           city: null,
@@ -130,8 +147,13 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           postalCode: null,
           primaryContactSearch: null,
           primaryContactValidated: false,
-          primaryContactDisplay: null
-
+          pcFirstName: null,
+          pcLastName: null,
+          pcDepartment: null,
+          pcBusinessPhone: null,
+          pcEmail: null,
+          pcCellPhone: null,
+          pcJobTitle: null,
         }
       });
 
@@ -189,29 +211,66 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     if (userId) {
       this.bceidLookupService.bCeIdLookupGetBCeIdOtherInfo({userId}).subscribe((bceidBusiness: BCeIdBusiness) => {
         if (bceidBusiness && bceidBusiness.isValidResponse) {
-          console.log('Primary contact: ' + bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname);
+          console.log('searchForContact: Primary contact: ' + bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname);
 
           // found a valid Primary Contact
           this.dfaApplicationMainDataService.contacts = {
             primaryContactSearch: bceidBusiness.userId,
             primaryContactValidated: true,
-            primaryContactDisplay: bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname,
+            pcFirstName: bceidBusiness.individualFirstname,
+            pcLastName: bceidBusiness.individualSurname,
+            pcDepartment: bceidBusiness.department,
+            pcBusinessPhone: bceidBusiness.contactPhone,
+            pcEmail: bceidBusiness.contactEmail,
+
+
           }
           this.contactsForm.get('primaryContactSearch').setValue(bceidBusiness.userId);
+          this.contactsForm.get('pcFirstName').setValue(bceidBusiness.individualFirstname);
+          this.contactsForm.get('pcLastName').setValue(bceidBusiness.individualSurname);
+          this.contactsForm.get('pcDepartment').setValue(bceidBusiness.department);
+          this.contactsForm.get('pcBusinessPhone').setValue(bceidBusiness.contactPhone);
+          this.contactsForm.get('pcEmail').setValue(bceidBusiness.contactEmail);
+          // TODO: set cell phone and job title with data from Dynamics?
+
+          console.log('searchForContact: set showFoundContactMsg TRUE');
+          this.showFoundContactMsg = true;
         }
         else {
           this.dfaApplicationMainDataService.contacts = {
             primaryContactValidated: false,
-            primaryContactDisplay: '** Not Found **',
           }
+          this.dialog
+            .open(ContactNotFoundComponent, {
+              data: {
+              },
+              width: '350px',
+              disableClose: true
+            });
         }    
       });
     }
     else {
       this.dfaApplicationMainDataService.contacts = {
         primaryContactValidated: false,
-        primaryContactDisplay: '',
+        pcFirstName: '',
+        pcLastName: '',
+        pcDepartment: '',
+        pcBusinessPhone: '',
+        pcEmail: '',
+        pcCellPhone: '',
+        pcJobTitle: '',
       }
+      this.contactsForm.get('primaryContactSearch').setValue('');
+      this.contactsForm.get('pcFirstName').setValue('');
+      this.contactsForm.get('pcLastName').setValue('');
+      this.contactsForm.get('pcDepartment').setValue('');
+      this.contactsForm.get('pcBusinessPhone').setValue('');
+      this.contactsForm.get('pcEmail').setValue('');
+      this.contactsForm.get('pcCellPhone').setValue('');
+      this.contactsForm.get('pcJobTitle').setValue('');
+
+      this.showFoundContactMsg = false;
     }
   }
 
@@ -236,7 +295,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     MatTableModule,
     CustomPipeModule,
     NgxMaskDirective, NgxMaskPipe,
-    MatSelectModule
+    MatSelectModule,
+    MatIconModule
   ],
   declarations: [ContactsComponent]
 })

@@ -8,7 +8,7 @@
             <p class="sub-heading" style="font-size: 15px">
               Indigenous Governing Body & Local Authority Legal Name
             </p>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
               <input formControlName="legalName" matInput disabled readonly placeholder="" maxlength="100" />
             </mat-form-field>
           </div>
@@ -33,7 +33,7 @@
           </p>
           <div class="col-md-6">
             <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="doingBusinessAs" placeholder=""
+              <input [disabled]="isReadOnly" matInput formControlName="businessNumber" placeholder=""
                 maxlength="200" />
             </mat-form-field>
           </div>
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-6">
             <mat-form-field appearance="outline">
               <input [disabled]="isReadOnly" matInput formControlName="mailingAddress2" placeholder="Address Line 2"
@@ -95,7 +95,7 @@
                 maxlength="7" />
             </mat-form-field>
           </div>
-        </div>
+        </div> -->
         <br>
 
         <div class="row">
@@ -115,8 +115,93 @@
           </div>
         </div>
         <div class="row">
+          <div id="foundContactMsg" [class.visible]="showFoundContactMsg" class="noshow">
+            <div class="infoIconStyle">
+              <mat-icon>check_circle</mat-icon>
+            </div>
+            <div class="col-md-11 page-subheadbold">
+              Primary Contact found!
+            </div>        
+          </div>
+        </div>
+        
+        <br>
+
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Primary Contact Details
+          </p>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p>
+              First Name
+            </p>
+            <mat-form-field appearance="fill">
+              <input formControlName="pcFirstName" matInput disabled readonly placeholder="" maxlength="100" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <p>
+              Last Name
+            </p>
+            <mat-form-field appearance="fill">
+              <input formControlName="pcLastName" matInput disabled readonly placeholder="" maxlength="100" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <p>
+              Department
+            </p>
+            <mat-form-field appearance="fill">
+              <input formControlName="pcDepartment" matInput disabled readonly placeholder="" maxlength="100" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <p>
+              Business Phone
+            </p>
+            <mat-form-field appearance="fill">
+              <input formControlName="pcBusinessPhone" matInput disabled readonly placeholder="" maxlength="100" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <p>
+              Email Address
+            </p>
+            <mat-form-field appearance="fill">
+              <input formControlName="pcEmail" matInput disabled readonly placeholder="" maxlength="100" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <p>
+              Cell Phone
+            </p>
+            <mat-form-field appearance="outline">
+              <input formControlName="pcCellPhone" matInput placeholder="" maxlength="100" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <p>
+              Job Title
+            </p>
+            <mat-form-field appearance="outline">
+              <input formControlName="pcJobTitle" matInput placeholder="" maxlength="100" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <p class="sub-heading" style="font-size: 15px">
+            Additional Contacts
+          </p>
           <div class="col-md-6">
-            <p>{{this.dfaApplicationMainDataService.contacts.primaryContactDisplay}}</p>
           </div>
         </div>
 

@@ -424,7 +424,15 @@ export class Contacts {
   postalCode?: null | string;
   primaryContactSearch?: null | string;
   primaryContactValidated?: null | boolean;
-  primaryContactDisplay?: null | string;
+
+  // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
+  pcFirstName?: null | string;  
+  pcLastName?: null | string;
+  pcDepartment?: null | string;
+  pcBusinessPhone?: null | string;
+  pcEmail?: null | string;
+  pcCellPhone?: null | string;
+  pcJobTitle?: null | string;
 
 
   constructor(
@@ -438,7 +446,14 @@ export class Contacts {
     postalCode?: null | string,
     primaryContactSearch?: null | string,
     primaryContactValidated?: null | boolean,
-    primaryContactDisplay?: null | string,
+    
+    pcFirstName?: null | string,
+    pcLastName?: null | string,
+    pcDepartment?: null | string,
+    pcBusinessPhone?: null | string,
+    pcEmail?: null | string,
+  
+  
   ) { }
 }
 
@@ -454,7 +469,16 @@ export class ContactsForm {
   postalCode = new UntypedFormControl();
   primaryContactSearch = new UntypedFormControl();
   primaryContactValidated = new UntypedFormControl();
-  primaryContactDisplay = new UntypedFormControl();
+
+  // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
+  pcFirstName = new UntypedFormControl();
+  pcLastName = new UntypedFormControl();
+  pcDepartment = new UntypedFormControl();
+  pcBusinessPhone = new UntypedFormControl();
+  pcEmail = new UntypedFormControl();
+  pcCellPhone = new UntypedFormControl();
+  pcJobTitle = new UntypedFormControl();
+
 
   constructor(
     contacts: Contacts,
@@ -490,14 +514,29 @@ export class ContactsForm {
     if (contacts.primaryContactValidated) {
       this.primaryContactValidated.setValue(contacts.primaryContactValidated);
     }
-    if (contacts.primaryContactDisplay) {
-      this.primaryContactDisplay.setValue(contacts.primaryContactDisplay);
+    if (contacts.pcFirstName) {
+      this.pcFirstName.setValue(contacts.pcFirstName);
     }
-
+    if (contacts.pcLastName) {
+      this.pcLastName.setValue(contacts.pcLastName);
+    }
+    if (contacts.pcDepartment) {
+      this.pcDepartment.setValue(contacts.pcDepartment);
+    }
+    if (contacts.pcBusinessPhone) { 
+      this.pcBusinessPhone.setValue(contacts.pcBusinessPhone); 
+    }
+    if (contacts.pcEmail) { 
+      this.pcEmail.setValue(contacts.pcEmail); 
+    }
+    if (contacts.pcCellPhone) { 
+      this.pcCellPhone.setValue(contacts.pcCellPhone); 
+    }
+    if (contacts.pcJobTitle) { 
+      this.pcJobTitle.setValue(contacts.pcJobTitle); 
+    }
   }
 }
-
-
 
 export class FullTimeOccupant {
   applicationId?: string;

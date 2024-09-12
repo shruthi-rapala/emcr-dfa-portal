@@ -131,3 +131,26 @@ table {
   margin: 7px;
   padding: 15px;
 }
+
+// mat-form-field:has(input[readonly]) {
+//   background-color: greenyellow;
+// }
+
+.infoIconCol {
+  width: 20px;
+  height: 20px;
+  padding-top: 4px;
+}
+
+.infoIconStyle {
+  font-size: 16px;
+  color: #62A370;
+}
+
+.noshow {
+  display: none;
+
+  &.visible {
+    display: contents;
+  }
+}

@@ -127,6 +127,9 @@ namespace EMBC.Gov.BCeID
             business.addressCountry = account.business.address.country.value;
             business.userId = account.userId.value;
 
+            // 2024-09-10 EMCRI-663 waynezen; added fields
+            business.department = account.contact.department.value;
+
             return business;
         }
 
