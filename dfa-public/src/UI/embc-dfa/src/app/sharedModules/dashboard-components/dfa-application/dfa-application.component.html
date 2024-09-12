@@ -39,7 +39,7 @@
             class="application-button"
             type="button"
             *ngIf="applItem.status.indexOf('Draft') > -1"
-            (click)="ViewApplication(applItem)"
+            (click)="CompleteApplication(applItem)"
           >
             Complete Application
           </button>

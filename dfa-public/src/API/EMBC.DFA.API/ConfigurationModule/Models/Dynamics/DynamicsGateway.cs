@@ -236,7 +236,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_ownedandoperatedbya", "dfa_farmoperation", "dfa_farmoperationderivesthatpersonsmajorincom", "createdon", "_dfa_eventid_value",
                     "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit",
                     "dfa_damagedpropertyaddresscanadapostverified", "dfa_receiveguidanceassessingyourinfra", "dfa_causeofdamagewildfire2",
-                    "dfa_applicantsubtype", "dfa_applicantlocalgovsubtype", "dfa_estimated", "dfa_dfaapplicantsubtypecomments", "dfa_applicantothercomments"
+                    "dfa_applicantsubtype", "dfa_applicantlocalgovsubtype", "dfa_estimated", "dfa_dfaapplicantsubtypecomments", "dfa_applicantothercomments",
+                    "dfa_governmentbodylegalname"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });

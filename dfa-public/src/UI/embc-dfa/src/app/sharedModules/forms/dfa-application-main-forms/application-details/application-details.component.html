@@ -137,7 +137,7 @@
              <mat-form-field appearance="outline">
                 <mat-label>Matching Disaster Event</mat-label>
                 <mat-select formControlName="eventId" matInput placeholder="Matching Disaster Event" required [disabled]="matchingEventsData.length <= 0">
-                  <mat-option *ngFor="let option of matchingEventsData"
+                  <mat-option (click)="selectEvent(option)" *ngFor="let option of matchingEventsData"
                     [value]="option.eventId">
                     {{ option.id }}&nbsp;&nbsp;({{option.startDate | date: "MM/dd/yyyy"}} to {{ option.endDate | date: "MM/dd/yyyy"}})
                   </mat-option>
