@@ -136,7 +136,7 @@
            <div class="col-md-6">
              <mat-form-field appearance="outline">
                 <mat-label>Matching Disaster Event</mat-label>
-                <mat-select formControlName="eventId" matInput placeholder="Matching Disaster Event" required [disabled]="matchingEventsData.length <= 0">
+                <mat-select formControlName="eventId" matInput placeholder="Matching Disaster Event" required [disabled]="matchingEventsData.length <= 0 && vieworedit !== 'viewOnly' && vieworedit !== 'view'">
                   <mat-option (click)="selectEvent(option)" *ngFor="let option of matchingEventsData"
                     [value]="option.eventId">
                     {{ option.id }}&nbsp;&nbsp;({{option.startDate | date: "MM/dd/yyyy"}} to {{ option.endDate | date: "MM/dd/yyyy"}})
@@ -152,7 +152,7 @@
                   Disaster Event is required</mat-error
                 >-->
               </mat-form-field>
-              <div *ngIf="matchingEventsData.length <= 0">
+              <div *ngIf="matchingEventsData.length <= 0 && vieworedit !== 'viewOnly' && vieworedit !== 'view'">
                 <span style="color:red;">No matching disaster events for this date.</span>
               </div>
            </div>
@@ -217,7 +217,7 @@
                 Maximum length is 100 characters</mat-error
               >
             </mat-form-field>
-            <mat-error *ngIf="applicationDetailsForm.hasError('noCauseOfDamage') && vieworedit !== 'viewOnly'">
+            <mat-error *ngIf="applicationDetailsForm.hasError('noCauseOfDamage') && vieworedit !== 'viewOnly' && vieworedit !== 'view'">
               <br/>At least one cause of damage is required.
             </mat-error>
           </div>

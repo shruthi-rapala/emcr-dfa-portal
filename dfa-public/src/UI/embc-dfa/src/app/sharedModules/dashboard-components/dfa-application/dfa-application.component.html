@@ -9,15 +9,15 @@
           <span><b>Case Number - </b></span>
           <span>{{applItem.caseNumber == null ? "To Be Assigned" : applItem.caseNumber }}</span>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <span><b>Date of Damage - </b></span>
-          <span>{{applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
+          <span>{{applItem.dateOfDamage == null ? "To Be Added" : applItem.dateOfDamage | date : "yyyy/MM/dd"}}</span>
         </div>
         <div class="col-md-4 wrap-text">
           <span><b>Cause(s) of Damage - </b></span>
-          <span>{{CombineCauseOfDamages(applItem)}}</span>
+          <span>{{CombineCauseOfDamages(applItem) == '' ? "To Be Added" : CombineCauseOfDamages(applItem)}}</span>
         </div>
-        <div class="col-md-3" style="display: flex; justify-content: flex-end">
+        <div class="col-md-2 button-column">
           <button
             class="application-button"
             *ngIf="applItem.currentApplication !== false"

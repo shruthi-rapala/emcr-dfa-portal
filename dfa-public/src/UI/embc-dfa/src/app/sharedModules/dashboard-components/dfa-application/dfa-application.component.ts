@@ -60,7 +60,7 @@ export class DfaApplicationComponent implements OnInit {
   isLinear = true;
   current = 1;
   public appType: string;
-  private sixtyOneDaysAgo: number;
+  private OneDayAgo: number;
   public isLoading: boolean = true;
   public color: string = "'#169BD5";
 
@@ -75,7 +75,7 @@ export class DfaApplicationComponent implements OnInit {
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.appType = this.route.snapshot.data["apptype"];
-    this.sixtyOneDaysAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 61)).getTime()
+    this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
   }
 
   ngOnInit(): void {
@@ -159,9 +159,10 @@ export class DfaApplicationComponent implements OnInit {
     this.lstApplications.forEach(x => {
       if (
         (x.status.toLowerCase() === "dfa decision made"
-          || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
+          || x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
         &&
-        (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getTime())))
+        (x.dateFileClosed && (this.OneDayAgo >= new Date(x.dateFileClosed).getTime()))
+      )
       {
           x.currentApplication = false;
       } else x.currentApplication = true;

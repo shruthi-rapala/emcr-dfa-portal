@@ -706,6 +706,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_eligiblegst { get; set; }
         public string? dfa_applicationcasebpfstages { get; set; }
         public string? dfa_applicationcasebpfsubstages { get; set; }
+        public string? dfa_bpfcloseddate { get; set; }
     }
 
     public class dfa_event

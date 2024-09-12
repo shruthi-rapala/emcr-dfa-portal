@@ -330,7 +330,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_applicationstatusportal", "dfa_causeofdamageflood2", "dfa_causeofdamagestorm2",
                         "dfa_causeofdamagewildfire2", "dfa_causeofdamagelandslide2", "dfa_causeofdamageloss",
                         "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto",
-                        "dfa_applicationcasebpfstages", "dfa_applicationcasebpfsubstages"
+                        "dfa_applicationcasebpfstages", "dfa_applicationcasebpfsubstages", "dfa_bpfcloseddate"
                     },
                     Filter = $"_dfa_bceiduser_value eq {profileId} and dfa_createdonportal eq true"
                     //Expand = new CRMExpandOptions[]
@@ -360,7 +360,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
                                    dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
                                    dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
-                                   dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
+                                   dfa_datefileclosed = objApp.dfa_bpfcloseddate,
                                    dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
                                    createdon = objApp.createdon,
                                    dfa_causeofdamageflood2 = objApp.dfa_causeofdamageflood2,
@@ -371,7 +371,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_causeofdamagewildfire2 = objApp.dfa_causeofdamagewildfire2,
                                    dfa_receiveguidanceassessingyourinfra = objApp.dfa_receiveguidanceassessingyourinfra,
                                    dfa_applicationcasebpfstages = objApp.dfa_applicationcasebpfstages,
-                                   dfa_applicationcasebpfsubstages = objApp.dfa_applicationcasebpfsubstages
+                                   dfa_applicationcasebpfsubstages = objApp.dfa_applicationcasebpfsubstages,
+                                   dfa_bpfcloseddate = objApp.dfa_bpfcloseddate
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
                 //from objEvent in lstEvents.List
