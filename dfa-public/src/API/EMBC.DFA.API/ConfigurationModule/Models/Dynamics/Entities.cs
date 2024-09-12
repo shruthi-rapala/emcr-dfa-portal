@@ -176,6 +176,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_applicationcasebpfsubstages { get; set; }
         public string? dfa_eventid { get; set; }
         public string? dfa_name { get; set; }
+        public bool? dfa_portalsubmitted { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
@@ -703,6 +704,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_receiveguidanceassessingyourinfra { get; set; }
         public string? dfa_causeofdamageloss { get; set; }
         public bool? dfa_eligiblegst { get; set; }
+        public string? dfa_applicationcasebpfstages { get; set; }
+        public string? dfa_applicationcasebpfsubstages { get; set; }
     }
 
     public class dfa_event

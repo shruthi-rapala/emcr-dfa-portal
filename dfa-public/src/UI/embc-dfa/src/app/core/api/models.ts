@@ -15,6 +15,7 @@ export { SignatureBlock } from './models/signature-block';
 export { OtherPreScreeningQuestions } from './models/other-pre-screening-questions';
 export { DfaApplicationMain } from './models/dfa-application-main';
 export { ApplicationDetails } from './models/application-details';
+export { ApplicationStageOptionSet } from './models/application-stage-option-set';
 export { OtherContact } from './models/other-contact';
 export { CurrentApplication } from './models/current-application';
 export { StatusBar } from './models/status-bar';
