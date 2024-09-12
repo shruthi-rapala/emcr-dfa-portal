@@ -130,6 +130,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       this.applicationDetailsForm.controls.subtypeOtherDetails.disable();
       this.applicationDetailsForm.controls.estimatedPercent.disable();
       this.applicationDetailsForm.controls.subtypeDFAComment.disable();
+      this.applicationDetailsForm.controls.eventId.disable();
     } else {
       this.applicationDetailsForm.controls.floodDamage.enable();
       this.applicationDetailsForm.controls.landslideDamage.enable();
@@ -139,6 +140,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       this.applicationDetailsForm.controls.subtypeOtherDetails.enable();
       this.applicationDetailsForm.controls.estimatedPercent.enable();
       this.applicationDetailsForm.controls.subtypeDFAComment.enable();
+      this.applicationDetailsForm.controls.eventId.enable();
     }
   }
 
@@ -301,7 +303,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
     
 
-    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly' || this.dfaApplicationMainDataService.getViewOrEdit() == 'view') {
       this.applicationDetailsForm.disable();
     }
 
@@ -361,6 +363,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       this.applicationDetailsForm.controls.eventName.setValue(this.matchingEventsData[0].eventName);
       this.applicationDetailsForm.controls.eventName.updateValueAndValidity();
       this.applicationDetailsForm.updateValueAndValidity();
+      
     }
   }
 
@@ -425,8 +428,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
           if (objSelected && objSelected.length > 0) {
             this.onSelectApplicantSubType(objSelected[0]);
           }
-
-
+          
           //this.selectSavedEvent(dfaApplicationMain.applicationDetails);
           
         },

@@ -320,6 +320,7 @@ export class ApplicationDetailsForm {
   legalName = new UntypedFormControl();
   eventName = new UntypedFormControl();
   eventId = new UntypedFormControl();
+  appStatus = new UntypedFormControl();
 
   constructor(
     applicationDetails: ApplicationDetails,
@@ -412,6 +413,11 @@ export class ApplicationDetailsForm {
       this.eventId.setValue(applicationDetails.eventId);
     }
     this.eventId.setValidators(null);
+
+    if (applicationDetails.appStatus) {
+      this.appStatus.setValue(applicationDetails.appStatus);
+    }
+    this.appStatus.setValidators(null);
   }
 }
 
