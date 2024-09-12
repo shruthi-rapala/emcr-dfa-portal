@@ -1,10 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ApplicationStageOptionSet } from './application-stage-option-set';
 
 /**
  * Property Damage
  */
 export interface ApplicationDetails {
+  appStatus?: null | ApplicationStageOptionSet;
   applicantSubSubtype?: null | string;
   applicantSubtype?: null | string;
   damageFromDate?: null | string;

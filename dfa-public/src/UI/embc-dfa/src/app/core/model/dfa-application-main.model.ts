@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType } from 'src/app/core/api/models';
+import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ApplicationStageOptionSet } from 'src/app/core/api/models';
 
 export class DamagedPropertyAddress {
   addressLine1?: null | string;
@@ -276,6 +276,7 @@ export class ApplicationDetails {
   legalName?: null | string;
   eventName?: null | string;
   eventId?: null | string;
+  appStatus?: null | ApplicationStageOptionSet;
 
   constructor(
     floodDamage?: null | boolean,
@@ -296,6 +297,8 @@ export class ApplicationDetails {
     legalName?: null | string,
     eventName?: null | string,
     eventId?: null | string,
+    appStatus?: null | ApplicationStageOptionSet,
+
   ) { }
 }
 
