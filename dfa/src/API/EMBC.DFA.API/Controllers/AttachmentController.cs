@@ -52,6 +52,7 @@ namespace EMBC.DFA.API.Controllers
         {
             if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
             if (fileUpload.id == null && fileUpload.deleteFlag == true) return BadRequest("FileUpload id cannot be empty on delete");
+            bool error = false;
 
             if (fileUpload.deleteFlag == true)
             {
@@ -64,6 +65,7 @@ namespace EMBC.DFA.API.Controllers
                 }
                 catch (Exception ex)
                 {
+                    error = true;
                     logger.LogError(ex, "Error uploading file");
                 }
                 return Ok(result);
@@ -81,9 +83,18 @@ namespace EMBC.DFA.API.Controllers
                 }
                 catch (Exception ex)
                 {
+                    error = true;
                     logger.LogError(ex, "Error uploading file");
                 }
-                return Ok(result);
+
+                if (error)
+                {
+                    return StatusCode(500, "Error uploading file");
+                }
+                else
+                {
+                    return Ok(result);
+                }
             }
         }
 
