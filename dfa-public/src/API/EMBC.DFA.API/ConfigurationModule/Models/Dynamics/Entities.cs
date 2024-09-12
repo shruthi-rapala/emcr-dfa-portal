@@ -285,6 +285,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_estimated { get; set; }
         public string dfa_dfaapplicantsubtypecomments { get; set; }
         public string dfa_applicantothercomments { get; set; }
+        public string dfa_governmentbodylegalname { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord

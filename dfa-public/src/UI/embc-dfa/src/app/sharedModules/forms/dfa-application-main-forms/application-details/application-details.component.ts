@@ -107,13 +107,11 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
     this.isReadOnly = (dfaApplicationMainDataService.getViewOrEdit() === 'view'
-    || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
     || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
     this.setViewOrEditControls();
 
     this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
       this.isReadOnly = (vieworedit === 'view'
-      || vieworedit === 'edit'
         || vieworedit === 'viewOnly');
       this.setViewOrEditControls();
     })
@@ -316,8 +314,14 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     })
   }
 
+  selectEvent(objOption): void {
+
+    this.applicationDetailsForm.controls.eventId.setValue(objOption.eventId);
+    this.applicationDetailsForm.controls.eventName.setValue(objOption.eventName);
+    this.applicationDetailsForm.updateValueAndValidity();
+  }
+
   checkDateWithinOpenEvent(): void {
-    
     //this.openDisasterEvents.forEach(disasterEvent => disasterEvent.matchArea = true);
 
     // check for date of damage between start date and end date
@@ -353,7 +357,9 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
         });
     } else if (countMatchingEvents == 1) {
       this.applicationDetailsForm.controls.eventId.setValue(this.matchingEventsData[0].eventId);
+      this.applicationDetailsForm.controls.eventId.updateValueAndValidity();
       this.applicationDetailsForm.controls.eventName.setValue(this.matchingEventsData[0].eventName);
+      this.applicationDetailsForm.controls.eventName.updateValueAndValidity();
       this.applicationDetailsForm.updateValueAndValidity();
     }
   }
@@ -398,17 +404,30 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     if (applicationId) {
       this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
         next: (dfaApplicationMain) => {
-          //console.log('dfaApplicationMain: ' + JSON.stringify(dfaApplicationMain))
-          //if (dfaApplicationMain.notifyUser == true) {
-          //  //this.notifyAddressChange();
-          //}
-          //debugger
+
+          if (dfaApplicationMain.applicationDetails && dfaApplicationMain.applicationDetails.eventId) {
+            this.openDisasterEvents.forEach(disasterEvent => {
+              if (new Date(new Date(disasterEvent.endDate).toDateString()) >= new Date(new Date(dfaApplicationMain.applicationDetails.damageFromDate).toDateString())  &&
+                new Date(new Date(disasterEvent.startDate).toDateString()) <= new Date(new Date(dfaApplicationMain.applicationDetails.damageFromDate).toDateString())) {
+                disasterEvent.matchDate = true;
+              } else disasterEvent.matchDate = false;
+            })
+
+            this.matchingEventsData = this.openDisasterEvents.filter(disasterEvent => disasterEvent.matchDate == true);
+            if (this.matchingEventsData && this.matchingEventsData.length > 0) {
+              dfaApplicationMain.applicationDetails.eventName = this.matchingEventsData[0].eventName;
+            }
+          }
+
           this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);
           
           var objSelected = this.ApplicantSubCategories.filter(m => m.subType == dfaApplicationMain.applicationDetails.applicantSubtype);
           if (objSelected && objSelected.length > 0) {
             this.onSelectApplicantSubType(objSelected[0]);
           }
+
+
+          //this.selectSavedEvent(dfaApplicationMain.applicationDetails);
           
         },
         error: (error) => {
