@@ -32,6 +32,9 @@
         public string addressCountry { get; set; }
         public string userId { get; set; }
         public string department { get; set; }
+
+        // 2024-09-13 EMCRI-676 waynezen
+        public Guid businessGuid { get; set; }
     }
 }
 

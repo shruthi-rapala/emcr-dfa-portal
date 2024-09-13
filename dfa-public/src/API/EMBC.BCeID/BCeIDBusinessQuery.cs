@@ -129,6 +129,7 @@ namespace EMBC.Gov.BCeID
 
             // 2024-09-10 EMCRI-663 waynezen; added fields
             business.department = account.contact.department.value;
+            business.businessGuid = Guid.Parse(account.business.guid.value.ToString());
 
             return business;
         }

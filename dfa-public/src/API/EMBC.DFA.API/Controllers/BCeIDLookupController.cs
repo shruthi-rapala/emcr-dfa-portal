@@ -95,6 +95,7 @@ namespace EMBC.DFA.API.Controllers
         {
             try
             {
+                // get current logged in user info
                 var userData = userService.GetJWTokenData();
 
                 if (userData == null)
@@ -104,11 +105,18 @@ namespace EMBC.DFA.API.Controllers
                 }
 
                 var userGuid = userData.bceid_user_guid;
+                var orgGuid = userData.bceid_business_guid;
                 var bceidData = await this.bceidQuery.ProcessBusinessQuery(userGuid, userId);
 
                 if (bceidData == null)
                 {
                     var errResponse = new BCeIDBusiness() { IsValidResponse = false, ResponseErrorMsg = "BCeID lookup other not found" };
+                    return Ok(errResponse);
+                }
+                // 2024-09-13 EMCRI-676 waynezen: Don't allow search on BCeID users from a different Organization
+                else if (!orgGuid.Equals(bceidData.businessGuid))
+                {
+                    var errResponse = new BCeIDBusiness() { IsValidResponse = false, ResponseErrorMsg = "Unauthorized lookup outside of Organization" };
                     return Ok(errResponse);
                 }
 
