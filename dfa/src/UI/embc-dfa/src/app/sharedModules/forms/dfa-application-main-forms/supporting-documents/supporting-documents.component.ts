@@ -33,6 +33,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -94,6 +95,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private cd: ChangeDetectorRef,
     private dialog: MatDialog,
+    public _snackBar: MatSnackBar,
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -336,11 +338,26 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
           this.isLoading = false;
+          this._snackBar.open('Successfully uploaded the document', 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 8000,
+          });
         },
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+              'Unable To upload the file. Please retry the upload process.',
+              'Close',
+              {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                duration: 8000,
+              }
+          );
+          
         }
       });
     } else {
@@ -365,11 +382,25 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           fileUploads[requiredDocumentTypeFoundIndex] = fileUpload;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.isLoading = false;
+          this._snackBar.open('Successfully uploaded the document', 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 8000,
+          });
         },
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+         // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to upload the file. Please retry the upload process.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 8000,
+            }
+        );
         }
       });
     } else {
@@ -382,11 +413,25 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
           this.isLoading = false;
+          this._snackBar.open('Successfully uploaded the document', 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 8000,
+          });
         },
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to upload the file. Please retry the upload process.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 8000,
+            }
+        );
         }
       });
     }
