@@ -64,7 +64,7 @@
       ></app-component-wrapper>
       <br />
       <div class="row justify-content-between resp-style">
-        <div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'update'">
+        <div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
           <button
             class="button-s"
             [hidden]="step.component === 'application-details'"
@@ -88,7 +88,7 @@
           <button
             *ngIf="
               currentFlow === 'verified-registration' &&
-                  vieworedit === 'add'
+                  (vieworedit === 'add' || vieworedit === 'edit')
             "
             class="button-p"
             mat-stroked-button
@@ -107,7 +107,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step *ngIf="vieworedit === 'add'">
+    <mat-step *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
       <ng-template matStepLabel>Review</ng-template>
       <app-review
         [type]="type"

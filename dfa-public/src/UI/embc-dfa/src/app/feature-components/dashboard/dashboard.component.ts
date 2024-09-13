@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
   intervalId;
   hasActiveEvents = false;
 
-  sixtyOneDaysAgo: number = 0;
+  OneDayAgo: number = 0;
   tabs: DashTabModel[];
   openDisasterEvents: DisasterEvent[];
   businessName = "";
@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private eventService: EligibilityService,
   ) {
-    this.sixtyOneDaysAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 61)).getTime()
+    this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
   }
 
   ngOnInit(): void {
@@ -141,9 +141,9 @@ export class DashboardComponent implements OnInit {
     lstApplications.forEach(x => {
       if (
         (x.status.toLowerCase() === "dfa decision made"
-        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
+        || x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
         &&
-        (x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getTime()))
+        (x.dateFileClosed && (this.OneDayAgo >= new Date(x.dateFileClosed).getTime()))
       ) {
           this.pastApplicationsCount++;
       } else this.currentApplicationsCount++;

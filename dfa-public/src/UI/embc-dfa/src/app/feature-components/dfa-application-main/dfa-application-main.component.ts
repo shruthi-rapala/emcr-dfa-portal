@@ -18,7 +18,7 @@ import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { DFAApplicationMainDataService } from './dfa-application-main-data.service';
 import { DFAApplicationMainService } from './dfa-application-main.service';
-import { ApplicantOption, FarmOption, SmallBusinessOption } from 'src/app/core/api/models';
+import { ApplicantOption, ApplicationStageOptionSet, FarmOption, SmallBusinessOption } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
@@ -311,6 +311,7 @@ export class DFAApplicationMainComponent
   saveAndBackToDashboard() {
     this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
     let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+    application.applicationDetails.appStatus = ApplicationStageOptionSet.DRAFT;
     this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
       this.showLoader = !this.showLoader;
       this.returnToDashboard();
@@ -353,7 +354,8 @@ export class DFAApplicationMainComponent
           //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
           let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-          
+          application.applicationDetails.appStatus = ApplicationStageOptionSet.SUBMIT;
+
           this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
             this.isSubmitted = !this.isSubmitted;
             this.alertService.clearAlert();

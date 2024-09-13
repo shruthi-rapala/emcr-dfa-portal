@@ -176,6 +176,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_applicationcasebpfsubstages { get; set; }
         public string? dfa_eventid { get; set; }
         public string? dfa_name { get; set; }
+        public bool? dfa_portalsubmitted { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
@@ -285,6 +286,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_estimated { get; set; }
         public string dfa_dfaapplicantsubtypecomments { get; set; }
         public string dfa_applicantothercomments { get; set; }
+        public string dfa_governmentbodylegalname { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord
@@ -702,6 +704,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_receiveguidanceassessingyourinfra { get; set; }
         public string? dfa_causeofdamageloss { get; set; }
         public bool? dfa_eligiblegst { get; set; }
+        public string? dfa_applicationcasebpfstages { get; set; }
+        public string? dfa_applicationcasebpfsubstages { get; set; }
+        public string? dfa_bpfcloseddate { get; set; }
     }
 
     public class dfa_event
@@ -787,6 +792,36 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Private & Public")]
         PrivatePublic = 222710002
+    }
+
+    public enum ApplicationStages
+    {
+        [Description("Draft")]
+        Draft = 222710000,
+
+        [Description("Submitted")]
+        Submitted = 222710001,
+
+        [Description("Reviewing Application")]
+        ReviewingApplication = 222710002,
+
+        [Description("Creating Case File")]
+        CreatingCaseFile = 222710003,
+
+        [Description("Case Created")]
+        CaseCreated = 222710004,
+
+        [Description("Case In Progress")]
+        CaseInProgress = 222710005,
+
+        [Description("Closed")]
+        Closed = 222710006
+    }
+
+    public enum ApplicationSubStages
+    {
+        [Description("Pending")]
+        Pending = 222710000,
     }
 
     public enum ProjectStages
