@@ -14,197 +14,159 @@
           </div>
         </div>
         <br />
-
+    
         <div class="row">
           <p class="sub-heading" style="font-size: 15px">
             Doing Business as (DBA) Name
           </p>
           <div class="col-md-6">
             <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="doingBusinessAs" placeholder=""
-                maxlength="200" />
+              <input [disabled]="isReadOnly" matInput formControlName="doingBusinessAs" placeholder="" maxlength="200" />
             </mat-form-field>
           </div>
-        </div>
-
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Business Number
-          </p>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="businessNumber" placeholder=""
-                maxlength="200" />
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Mailing Address<span style="color:red">*</span>
-          </p>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="mailingAddress1" placeholder=""
-                maxlength="200" />
-            </mat-form-field>
-          </div>
-        </div>
-
-        <!-- <div class="row">
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="mailingAddress2" placeholder="Address Line 2"
-                maxlength="200" />
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-3">
-            <mat-form-field appearance="outline">
-              <mat-select [disabled]="isReadOnly === true" formControlName="city" matInput
-                placeholder="Select contact city" required>
-                <div *ngFor="let option of appCities ">
-                  <mat-option (click)="onSelectCity(option)" [value]="option.city">
-                    {{ option.city }}
-                  </mat-option>
-                </div>
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <div class="col-md-3">
-            <mat-form-field appearance="outline">
-              <mat-select [disabled]="isReadOnly === true" formControlName="province" matInput
-                placeholder="Select contact province" required>
-                <div *ngFor="let option of appProvinces ">
-                  <mat-option (click)="onSelectProvince(option)" [value]="option.province">
-                    {{ option.province }}
-                  </mat-option>
-                </div>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-3">
-            <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="postalCode" placeholder="Postal Code"
-                maxlength="7" />
-            </mat-form-field>
-          </div>
-        </div> -->
-        <br>
-
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Primary Contact<span style="color:red">*</span>
-          </p>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="primaryContactSearch" id="primaryContactSearch"
-                placeholder="User Id" maxlength="16" />
-            </mat-form-field>
-          </div>
-          <div class="col-md-2">
-            <button class="button-p save-button" mat-stroked-button type="button" (click)="searchForContact()">
-              Search for Contact
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div id="foundContactMsg" [class.visible]="showFoundContactMsg" class="noshow">
-            <div class="infoIconStyle">
-              <mat-icon>check_circle</mat-icon>
+          <div class="col-md-1"></div>
+          <div class="col-md-5">
+            <div class="legalText infoText">
+              <!-- <div class="infoIconCol"> -->
+                <mat-icon class="infoIconStyleBlue">info</mat-icon>
+              <!-- </div> -->
+              <span class="iconText">
+                This is the Doing Business As (DBA) name from BCeID. Update if needed or provide a name.
+              </span>
             </div>
-            <div class="col-md-11 page-subheadbold">
-              Primary Contact found!
-            </div>        
           </div>
         </div>
-        
-        <br>
-
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Primary Contact Details
-          </p>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <p>
-              First Name
+    
+          <div class="row">
+            <p class="sub-heading" style="font-size: 15px">
+              Business Number
             </p>
-            <mat-form-field appearance="fill">
-              <input formControlName="pcFirstName" matInput disabled readonly placeholder="" maxlength="100" />
-            </mat-form-field>
+            <div class="col-md-6">
+              <mat-form-field appearance="outline">
+                <input [disabled]="isReadOnly" matInput formControlName="businessNumber" placeholder="" maxlength="200" />
+              </mat-form-field>
+            </div>
           </div>
-          <div class="col-md-4">
-            <p>
-              Last Name
+    
+          <div class="row">
+            <p class="sub-heading" style="font-size: 15px">
+              Mailing Address<span style="color:red">*</span>
             </p>
-            <mat-form-field appearance="fill">
-              <input formControlName="pcLastName" matInput disabled readonly placeholder="" maxlength="100" />
-            </mat-form-field>
+            <div class="col-md-6">
+              <mat-form-field appearance="outline">
+                <input [disabled]="isReadOnly" matInput formControlName="mailingAddress1" placeholder="" maxlength="200" />
+              </mat-form-field>
+            </div>
           </div>
-          <div class="col-md-4">
-            <p>
-              Department
+          <br>
+    
+          <div class="row">
+            <p class="sub-heading" style="font-size: 15px">
+              Primary Contact<span style="color:red">*</span>
             </p>
-            <mat-form-field appearance="fill">
-              <input formControlName="pcDepartment" matInput disabled readonly placeholder="" maxlength="100" />
-            </mat-form-field>
+            <div class="col-md-6">
+              <mat-form-field appearance="outline">
+                <input [disabled]="isReadOnly" matInput formControlName="primaryContactSearch" id="primaryContactSearch"
+                  placeholder="User Id" maxlength="16" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <button class="button-p save-button" mat-stroked-button type="button" (click)="searchForContact()">
+                Search for Contact
+              </button>
+            </div>
           </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4">
-            <p>
-              Business Phone
+          <div class="row">
+            <div id="foundContactMsg" [class.visible]="showFoundContactMsg" class="noshow">
+              <div class="infoIconStyleGreen">
+                <mat-icon>check_circle</mat-icon>
+              </div>
+              <div class="col-md-11 page-subheadbold">
+                Primary Contact found!
+              </div>
+            </div>
+          </div>
+    
+          <br>
+    
+          <div class="row">
+            <p class="sub-heading" style="font-size: 15px">
+              Primary Contact Details
             </p>
-            <mat-form-field appearance="fill">
-              <input formControlName="pcBusinessPhone" matInput disabled readonly placeholder="" maxlength="100" />
-            </mat-form-field>
           </div>
-          <div class="col-md-4">
-            <p>
-              Email Address
+          <div class="row">
+            <div class="col-md-4">
+              <p>
+                First Name
+              </p>
+              <mat-form-field appearance="fill">
+                <input formControlName="pcFirstName" matInput disabled readonly placeholder="" maxlength="100" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <p>
+                Last Name
+              </p>
+              <mat-form-field appearance="fill">
+                <input formControlName="pcLastName" matInput disabled readonly placeholder="" maxlength="100" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <p>
+                Department
+              </p>
+              <mat-form-field appearance="fill">
+                <input formControlName="pcDepartment" matInput disabled readonly placeholder="" maxlength="100" />
+              </mat-form-field>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col-md-4">
+              <p>
+                Business Phone
+              </p>
+              <mat-form-field appearance="fill">
+                <input formControlName="pcBusinessPhone" matInput disabled readonly placeholder="" maxlength="100" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <p>
+                Email Address
+              </p>
+              <mat-form-field appearance="fill">
+                <input formControlName="pcEmail" matInput disabled readonly placeholder="" maxlength="100" />
+              </mat-form-field>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col-md-4">
+              <p>
+                Cell Phone
+              </p>
+              <mat-form-field appearance="outline">
+                <input formControlName="pcCellPhone" matInput placeholder="" maxlength="100" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <p>
+                Job Title
+              </p>
+              <mat-form-field appearance="outline">
+                <input formControlName="pcJobTitle" matInput placeholder="" maxlength="100" />
+              </mat-form-field>
+            </div>
+          </div>
+    
+          <div class="row">
+            <p class="sub-heading" style="font-size: 15px">
+              Additional Contacts
             </p>
-            <mat-form-field appearance="fill">
-              <input formControlName="pcEmail" matInput disabled readonly placeholder="" maxlength="100" />
-            </mat-form-field>
+            <div class="col-md-6">
+            </div>
           </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4">
-            <p>
-              Cell Phone
-            </p>
-            <mat-form-field appearance="outline">
-              <input formControlName="pcCellPhone" matInput placeholder="" maxlength="100" />
-            </mat-form-field>
-          </div>
-          <div class="col-md-4">
-            <p>
-              Job Title
-            </p>
-            <mat-form-field appearance="outline">
-              <input formControlName="pcJobTitle" matInput placeholder="" maxlength="100" />
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Additional Contacts
-          </p>
-          <div class="col-md-6">
-          </div>
-        </div>
-
+    
       </ng-container>
     </form>
   </mat-card-content>

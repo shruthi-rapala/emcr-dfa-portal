@@ -24,7 +24,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption, ApplicantSubtypeSubCategories, AppProvince } from 'src/app/core/api/models';
 import { MatTableModule } from '@angular/material/table';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
@@ -35,7 +34,6 @@ import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa
 import { MatSelectModule } from '@angular/material/select';
 import { ContactService } from 'src/app/core/api/services';
 import { LoginService } from 'src/app/core/services/login.service';
-import { AppCity } from 'src/app/core/api/models/app-city';
 import { BCeIdLookupService } from 'src/app/core/api/services/b-ce-id-lookup.service';
 import { BCeIdBusiness } from 'src/app/core/api/models/b-ce-id-business';
 import { MatIconModule } from '@angular/material/icon'
@@ -53,8 +51,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   formCreationService: FormCreationService;
   isReadOnly: boolean = false;
   vieworedit: string = "";
-  appCities: AppCity[];
-  appProvinces: AppProvince[];
   protected showFoundContactMsg = false;
   
   constructor(
@@ -98,7 +94,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.province.disable();
       this.contactsForm.controls.postalCode.disable();
       this.contactsForm.controls.primaryContactSearch.disable();
-      this.contactsForm.controls.primaryContactValidated.disable();
+      // this.contactsForm.controls.primaryContactValidated.disable();
       this.contactsForm.controls.pcFirstName.disable();
       this.contactsForm.controls.pcLastName.disable();
       this.contactsForm.controls.pcDepartment.disable();
@@ -107,7 +103,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.pcCellPhone.disable();
       this.contactsForm.controls.pcJobTitle.disable();
       
-
     } else {
       this.contactsForm.controls.doingBusinessAs.enable();
       this.contactsForm.controls.businessNumber.enable();
@@ -117,7 +112,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.province.enable();
       this.contactsForm.controls.postalCode.enable();
       this.contactsForm.controls.primaryContactSearch.enable();
-      this.contactsForm.controls.primaryContactValidated.enable();
+      // this.contactsForm.controls.primaryContactValidated.enable();
       this.contactsForm.controls.pcFirstName.enable();
       this.contactsForm.controls.pcLastName.enable();
       this.contactsForm.controls.pcDepartment.enable();
@@ -141,10 +136,10 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           doingBusinessAs: null,
           businessNumber: null,
           mailingAddress1: null,
-          mailingAddress2: null,
-          city: null,
-          province: null,
-          postalCode: null,
+          // mailingAddress2: null,
+          // city: null,
+          // province: null,
+          // postalCode: null,
           primaryContactSearch: null,
           primaryContactValidated: false,
           pcFirstName: null,
@@ -157,8 +152,34 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
       });
 
+    this.contactsForm
+      .get('doingBusinessAs')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.contactsForm.get('doingBusinessAs').reset();
+        }
+      });
 
       this.contactsForm
+      .get('businessNumber')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.contactsForm.get('businessNumber').reset();
+        }
+      });
+
+      this.contactsForm
+      .get('mailingAddress1')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.contactsForm.get('mailingAddress1').reset();
+        }
+      });
+
+    this.contactsForm
       .get('primaryContactSearch')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
@@ -167,41 +188,19 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.contactService.contactGetAppCities().subscribe({
-        next: (appCities) => {
-          this.appCities = appCities;
-        },
-        error: (error) => {
-          console.error(error);
-          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });  
-      
-      this.contactService.contactGetAppProvinces().subscribe({
-        next: (appProvinces) => {
-          this.appProvinces = appProvinces;
-        },
-        error: (error) => {
-          console.error(error);
-          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
-        }
-      });  
+    this.getContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+    //this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
-      this.getContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+
+    if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
+      this.contactsForm.disable();
+    }
   };
 
   getContactsForApplication(applicationId: string) {
     if (applicationId) {
 
     }
-  }
-
-  onSelectCity(citySelected: AppCity) {
-
-  }
-
-  onSelectProvince(provSelected: AppProvince) {
-
   }
 
   searchForContact() {
@@ -233,10 +232,10 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           this.contactsForm.get('pcEmail').setValue(bceidBusiness.contactEmail);
           // TODO: set cell phone and job title with data from Dynamics?
 
-          console.log('searchForContact: set showFoundContactMsg TRUE');
           this.showFoundContactMsg = true;
         }
         else {
+          // invalid BCeID Web Service response
           this.dfaApplicationMainDataService.contacts = {
             primaryContactValidated: false,
           }
@@ -251,6 +250,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       });
     }
     else {
+      // Blank Primary Contact
       this.dfaApplicationMainDataService.contacts = {
         primaryContactValidated: false,
         pcFirstName: '',

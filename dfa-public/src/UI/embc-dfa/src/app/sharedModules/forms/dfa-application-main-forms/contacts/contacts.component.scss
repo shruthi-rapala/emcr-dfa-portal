@@ -136,15 +136,34 @@ table {
 //   background-color: greenyellow;
 // }
 
-.infoIconCol {
-  width: 20px;
-  height: 20px;
-  padding-top: 4px;
+.infoText {
+  background: #F6F9FC 0% 0% no-repeat padding-box;
+  border: 1px solid #003366;
+  border-radius: 10px;
+  height: 56px;
 }
 
-.infoIconStyle {
-  font-size: 16px;
+.legalText {
+  font-family: 'BC Sans';
+  font-size: 14px;
+  color: #313132;
+}
+
+.infoIconCol {
+}
+
+.iconText {
+  position: absolute;
+}
+
+.infoIconStyleGreen {
+  //font-size: 16px;
   color: #62A370;
+}
+
+.infoIconStyleBlue {
+  //font-size: 16px;
+  color: #003366;
 }
 
 .noshow {
