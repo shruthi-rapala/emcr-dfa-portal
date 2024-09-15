@@ -52,7 +52,24 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   isReadOnly: boolean = false;
   vieworedit: string = "";
   protected showFoundContactMsg = false;
-  
+
+  // 2024-09-13 EMCRI-663 waynezen;
+  otherContactsForm: UntypedFormGroup;
+  otherContactsForm$: Subscription;
+  onlyOtherContact: boolean = false;
+  disableOnlyOtherContact: boolean = false;
+  hideOtherContactButton: boolean = false;
+  otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email', 'deleteIcon'];
+  otherContactsDataSource = new BehaviorSubject([]);
+  otherContactsData = [];
+  otherContactsDeletedData = [];
+  otherContactsEditIndex: number;
+  otherContactsRowEdit = false;
+  otherContactsEditFlag = false;
+  otherContactText = 'New Other Contact';
+  showOtherContactForm: boolean = false;
+
+
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
@@ -152,6 +169,16 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
       });
 
+    this.otherContactsForm$ = this.formCreationService
+      .getOtherContactsForm()
+      .subscribe((otherContacts) => {
+        this.otherContactsForm = otherContacts;
+      });
+
+      this.otherContactsForm
+      .get('addNewOtherContactIndicator')
+      .valueChanges.subscribe((value) => this.updateOtherContactOnVisibility());
+
     this.contactsForm
       .get('doingBusinessAs')
       .valueChanges.pipe(distinctUntilChanged())
@@ -188,8 +215,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.getContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
-    //this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+    this.getContactForApplication(this.dfaApplicationMainDataService.getApplicationId());
+    this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
 
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
@@ -197,11 +224,194 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     }
   };
 
-  getContactsForApplication(applicationId: string) {
+  getContactForApplication(applicationId: string) {
     if (applicationId) {
+      this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
+        next: (dfaApplicationMain) => {
 
+          this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);          
+          
+        },
+        error: (error) => {
+          //console.error(error);
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        }
+      });
     }
   }
+
+  getOtherContactsForApplication(applicationId: string) {
+    if (applicationId) {
+      //if (applicationId === undefined) {
+      //  applicationId = this.dfaApplicationMainDataService.getApplicationId();
+      //}
+
+      this.otherContactsService.otherContactGetOtherContacts({ applicationId: applicationId }).subscribe({
+        next: (otherContacts) => {
+          
+          this.otherContactsData = otherContacts;
+          this.otherContactsDataSource.next(this.otherContactsData);
+          this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+          this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+        },
+        error: (error) => {
+          //console.error(error);
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        }
+      });
+    }
+  }
+
+  updateOtherContactOnVisibility(): void {
+    this.otherContactsForm
+      .get('otherContact.firstName')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.lastName')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.phoneNumber')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.email')
+      .updateValueAndValidity();
+  }
+
+  cancelOtherContact(): void {
+    this.showOtherContactForm = !this.showOtherContactForm;
+    this.otherContactsForm.get('addNewOtherContactIndicator').setValue(false);
+    this.otherContactText = 'New Other Contact'
+  }
+
+  validateFormCauseOfDamage(form: FormGroup) {
+    if (form.controls.stormDamage.value !== true &&
+      form.controls.landslideDamage.value !== true &&
+      form.controls.otherDamage.value !== true &&
+      form.controls.floodDamage.value !== true) {
+      return { noCauseOfDamage: true };
+    }
+    return null;
+  }
+
+  saveOtherContact(): void {
+    
+    if (this.otherContactsForm.get('otherContact').status === 'VALID') {
+      if (this.otherContactsEditIndex !== undefined && this.otherContactsRowEdit) {
+        this.otherContactsData[this.otherContactsEditIndex] = this.otherContactsForm.get('otherContact').value;
+        this.otherContactsRowEdit = !this.otherContactsRowEdit;
+        this.otherContactsEditIndex = undefined;
+        this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+
+        var actualElements = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
+        this.otherContactsData = actualElements;
+
+        this.otherContactsDataSource.next(this.otherContactsData);
+        this.otherContactsData = this.otherContactsData.concat(this.otherContactsDeletedData);
+
+        this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+        this.showOtherContactForm = !this.showOtherContactForm;
+        this.otherContactsEditFlag = !this.otherContactsEditFlag;
+      } else {
+        //this.otherContactsForm.get('otherContact').get('id').setValue(otherContactId);
+        this.otherContactsData.push(this.otherContactsForm.get('otherContact').value);
+        this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+
+        var actualElements = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
+        this.otherContactsData = actualElements;
+
+        this.otherContactsDataSource.next(this.otherContactsData);
+        this.otherContactsData = this.otherContactsData.concat(this.otherContactsDeletedData);
+
+        this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+        this.showOtherContactForm = !this.showOtherContactForm;
+      }
+
+      this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+    } else {
+      this.otherContactsForm.get('otherContact').markAllAsTouched();
+    }
+  }
+
+  addOtherContact(): void {
+    this.otherContactText = 'New Other Contact'
+    this.otherContactsForm.get('otherContact').reset();
+    this.showOtherContactForm = !this.showOtherContactForm;
+    this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
+    this.otherContactsForm.get('otherContact.deleteFlag').setValue(false);
+    this.otherContactsForm.get('otherContact.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+  }
+
+  editOtherContactsRow(element, index): void {
+    this.otherContactText = 'Edit Other Contact'
+    this.otherContactsEditIndex = index;
+    this.otherContactsRowEdit = !this.otherContactsRowEdit;
+    this.otherContactsForm.get('otherContact').setValue(element);
+    this.showOtherContactForm = !this.showOtherContactForm;
+    this.otherContactsEditFlag = !this.otherContactsEditFlag;
+    this.otherContactsForm
+      .get('addNewOtherContactIndicator').setValue(true);
+  }
+
+  deleteOtherContactRow(index: number): void {
+    this.otherContactsDeletedData = [];
+    this.otherContactsData[index].deleteFlag = true;
+    var elementtoberemoved = this.otherContactsData[index];
+    
+    if (elementtoberemoved.id) {
+      this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+      var actualElements = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
+      this.otherContactsData = actualElements;
+    }
+    else {
+      this.otherContactsData.splice(index, 1);
+      this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+      var actualElements = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
+      this.otherContactsData = actualElements;
+      //this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+    }
+
+    //this.otherContactsDeletedData = this.otherContactsData.filter((m) => m.deleteFlag == true && m.id);
+    
+
+    //this.otherContactsData.splice(index, 1);
+    this.otherContactsDataSource.next(this.otherContactsData);
+    this.otherContactsData = this.otherContactsData.concat(this.otherContactsDeletedData);
+    this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
+    
+    this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+    if (this.otherContactsData.length === 0) {
+      this.otherContactsForm
+        .get('addNewOtherContactIndicator')
+        .setValue(false);
+    }
+  }
+
+  confirmDeleteOtherContactRow(index: number): void {
+    
+    var actualElementsCheck = this.otherContactsData.filter((m) => !(m.deleteFlag == true && m.id));
+    var appId = this.dfaApplicationMainDataService.getApplicationId()
+
+    if (actualElementsCheck.length == 1 && appId) {
+      this.dialog
+        .open(DFADeleteConfirmDialogComponent, {
+          data: {
+            content: "DFA requires that you have at least one Other Contact.<br/>Please add a new contact before deleting this one."
+          },
+          width: '500px',
+          disableClose: true
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          //if (result === 'confirm') {
+          //  this.deleteOtherContactRow(index);
+          //}
+        });
+    }
+    else {
+      this.deleteOtherContactRow(index);
+    }
+  }
+
 
   searchForContact() {
     var userId = this.contactsForm.get('primaryContactSearch')?.value;
