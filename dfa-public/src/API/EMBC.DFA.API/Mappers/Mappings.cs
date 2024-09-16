@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Controllers;
+using Microsoft.IdentityModel.Tokens;
 using bceid = EMBC.Gov.BCeID;
 
 namespace EMBC.DFA.API.Mappers
@@ -539,7 +540,7 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<DFAClaimMain, dfa_claim_params>()
                 .ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.Claim != null ? s.Claim.isThisFinalClaim : (bool?)null))
                 .ForMember(d => d.dfa_projectclaimid, opts => opts.MapFrom(s => s.Id))
-                .ForMember(d => d.dfa_claimbpfstages, opts => opts.MapFrom(s => s.Claim.claimStatus == null ? Convert.ToInt32(ClaimStages.Draft) : Convert.ToInt32(s.Claim.claimStatus)))
+                .ForMember(d => d.dfa_claimbpfstages, opts => opts.MapFrom(s => s.Claim != null && s.Claim.claimStatus != null ? Convert.ToInt32(s.Claim.claimStatus) : Convert.ToInt32(ClaimStages.Draft)))
                 .ForMember(d => d.dfa_claimbpfsubstages, opts => opts.MapFrom(s => s.Claim.claimStatus != null && s.Claim.claimStatus.Value == ClaimStageOptionSet.SUBMIT ? Convert.ToInt32(ClaimSubStages.Pending) : (int?)null))
                 .ForMember(d => d.dfa_claimreceivedbyemcrdate, opts => opts.MapFrom(s => s.Claim.claimStatus != null && s.Claim.claimStatus.Value == ClaimStageOptionSet.SUBMIT ? DateTime.Now : (DateTime?)null))
                 .ForMember(d => d.dfa_recoveryplanid, opts => opts.MapFrom(s => s.ProjectId));
@@ -579,7 +580,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ActualInvoiceTotal, opts => opts.MapFrom(s => s.dfa_actualinvoicetotal))
                 .ForMember(d => d.TotalBeingClaimed, opts => opts.MapFrom(s => s.dfa_totalbeingclaimed))
                 .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_emcrapprovedamount) ? "0" : s.dfa_emcrapprovedamount))
-                .ForMember(d => d.EMCRDecision, opts => opts.MapFrom(s => s.dfa_emcrdecision))
+                .ForMember(d => d.EMCRDecision, opts => opts.MapFrom(s => s.dfa_emcrdecision != null ? GetEnumDescription((EMCRDecision)s.dfa_emcrdecision) : null))
                 .ForMember(d => d.EMCRDecisionComments, opts => opts.MapFrom(s => s.dfa_emcrdecisioncomments))
                 .ForMember(d => d.EMCRDecisionDate, opts => opts.MapFrom(s => s.dfa_emcrdecisiondate));
 

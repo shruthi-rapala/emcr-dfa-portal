@@ -761,7 +761,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_eligiblegst { get; set; }
         public int? dfa_actualinvoicetotal { get; set; }
         public int? dfa_totalbeingclaimed { get; set; }
-        public string? dfa_emcrdecision { get; set; }
+        public int? dfa_emcrdecision { get; set; }
         public string? dfa_emcrapprovedamount { get; set; }
         public DateTime? dfa_emcrdecisiondate { get; set; }
         public string? dfa_emcrdecisioncomments { get; set; }
@@ -915,6 +915,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Approved with Exclusion")]
         ApprovedwithExclusion = 222710008,
+    }
+
+    public enum EMCRDecision
+    {
+        [Description("Approved Total")]
+        ApprovedTotal = 222710000,
+
+        [Description("Approved Partial")]
+        ApprovedPartial = 222710001,
+
+        [Description("Denied")]
+        Denied = 222710002
     }
 
     public class dfa_incident

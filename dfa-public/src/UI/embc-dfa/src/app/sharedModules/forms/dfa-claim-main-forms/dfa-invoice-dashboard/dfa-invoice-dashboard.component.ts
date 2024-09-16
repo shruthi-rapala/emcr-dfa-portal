@@ -48,6 +48,9 @@ import { Invoice } from '../../../../core/model/dfa-invoice.model';
 import { DFAClaimMainDataService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { DFAClaimMainMappingService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-mapping.service';
 import { DFAClaimMainService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main.service';
+import { InformationDialogComponent } from '../../../../core/components/dialog-components/information-dialog/information-dialog.component';
+import { DialogComponent } from '../../../../core/components/dialog/dialog.component';
+import { DFAGeneralInfoDialogComponent } from '../../../../core/components/dialog-components/dfa-general-info-dialog/dfa-general-info-dialog.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -292,6 +295,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       this.showDates = true;
     }
   }
+  
 
   ApplyFilter(type: number, searchText: string): void {
     
@@ -423,7 +427,24 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
   }
 
   viewEMCRComment(element, index): void {
-    //this.openInvoiceViewPopup(element, index);
+    let emcrComment = 'No comment found for the invoice!';
+    if (element.emcrDecisionComments) {
+      emcrComment = element.emcrDecisionComments;
+    }
+    const content = { text: emcrComment, cancelButton: 'Close', title: 'EMCR Comment' };
+    
+    this.dialog
+      .open(DFAGeneralInfoDialogComponent, {
+        data: {
+          content: content
+        },
+        height: '345px',
+        width: '530px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+      });
   }
 
   editInvoiceRow(element, index): void {
