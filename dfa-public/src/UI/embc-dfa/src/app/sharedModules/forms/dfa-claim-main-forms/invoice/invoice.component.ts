@@ -252,6 +252,8 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
 
       this.hideHelp = true;
       this.isReadOnly = true;
+
+      document.getElementById("invHeadr").scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     //let projectId = this.dfaProjectMainDataService.getProjectId();
@@ -282,6 +284,13 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
       "it out.\r\n" +
       "If you need more guidance, select the field and the " +
       "relevant details will be displayed to assist you.";
+
+    setTimeout(
+      function () {
+        document.getElementById("invHeadr").scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }.bind(this),
+      200
+    );
   }
 
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {

@@ -1,7 +1,8 @@
 <mat-card class="card-align recoveryPlan" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
     <form [formGroup]="invoiceForm">
-      <h1 class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
+      <h1 #invHeadr
+id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
       <button type="button"
           #tooltip="matTooltip" [hidden]="hideHelp"
       (mouseenter)="$event.stopImmediatePropagation()"
