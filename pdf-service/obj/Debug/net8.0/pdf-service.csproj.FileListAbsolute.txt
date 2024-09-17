@@ -76,18 +76,6 @@ C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\libman
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\runtimes\win-x64\native\wkhtmltox.dll
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\runtimes\win-x86\native\wkhtmltox.dll
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\pdf-service.exe
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\cannabis_licence.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\cannabis_marketer_licence.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\catering_event_authorization.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\catering_licence.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\dfa_application_demo.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\liquor_licence.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\manufacturer_licence.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\market_event_authorization.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\sep.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\tua_event_authorization.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\wine_store_licence.mustache
-C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\worker_qualification_letter.mustache
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\pdf-service.deps.json
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\pdf-service.runtimeconfig.json
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\pdf-service.dll
@@ -144,3 +132,4 @@ C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\obj\Debug\net8.0\refint
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\obj\Debug\net8.0\pdf-service.pdb
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\obj\Debug\net8.0\pdf-service.genruntimeconfig.cache
 C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\obj\Debug\net8.0\ref\pdf-service.dll
+C:\Users\271015\source\repos\emcr-dfa-portal\pdf-service\bin\Debug\net8.0\Templates\dfa_application_summary.mustache
