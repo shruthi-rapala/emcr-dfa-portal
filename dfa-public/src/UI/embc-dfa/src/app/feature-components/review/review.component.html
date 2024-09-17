@@ -123,14 +123,81 @@
       <div class="row justify-content-between">
         <div class="col-md-11 card-heading">
           <table cellspacing="0" cellpadding="0" style="border: none;">
-            <tr><td class="record-title"><span> <p>Indigenous Governing Body & Local Authority Legal Name</p> </span></td><td> {{IndigenousGoverningBody}}</td> </tr>
-            <tr> <td class="record-title"> Date of Damage From  </td>  <td> {{DateofDamageFrom}}   </td>   </tr>
-            <tr> <td class="record-title"> Date of Damage To  </td>  <td> {{DateofDamageTo}}   </td>   </tr>
-            <tr> <td class="record-title"> Disaster Event  </td>  <td> {{DisasterEvent}}   </td>   </tr>
-            <tr> <td class="record-title"> Cause of Damage  </td>  <td> {{CauseofDamage}}   </td>   </tr>
-            <tr> <td class="record-title"> Government Type  </td>  <td> {{GovernmentType}}   </td>   </tr>
-            <tr> <td class="record-title"> Other Governing Body  </td>  <td> {{OtherGoverningBody}}   </td>   </tr>
-            <tr> <td class="record-title"> Describe Your Organization  </td>  <td> {{DescribeYourOrganization}}   </td>   </tr>
+            <tr><td class="record-title"><span> <p>Indigenous Governing Body & Local Authority Legal Name</p> </span></td>
+              <td>
+                <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.legalName || (formCreationService.applicationDetailsForm$ | async)?.controls.legalName.invalid}">
+                  {{
+                    (formCreationService.applicationDetailsForm$ | async)?.value
+                      .legalName ? (formCreationService.applicationDetailsForm$ | async)?.value
+                      .legalName : "Enter required information"
+                  }}
+                </span>
+
+              </td> </tr>
+            <tr> <td class="record-title"> Date of Damage From  </td>
+                <td> <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.damageFromDate || !(formCreationService.applicationDetailsForm$ | async)?.value?.damageToDate} ">
+                  {{
+                  (formCreationService.applicationDetailsForm$ | async)?.value
+                    .damageFromDate ? ('Starts ' + ((formCreationService.applicationDetailsForm$ | async).value.damageFromDate | date: "MM/dd/yyyy")) + '. ': 'Enter required start date. '
+                }}
+                </span>
+                </td>   </tr>
+            <tr> <td class="record-title"> Date of Damage To  </td>
+                <td>
+                  <span [ngClass]="{'missing-info':  !(formCreationService.applicationDetailsForm$ | async)?.value?.damageToDate} ">
+                  {{
+                    (formCreationService.applicationDetailsForm$ | async)?.value
+                      .damageToDate ? ('Ends ' + ((formCreationService.applicationDetailsForm$ | async).value.damageToDate | date: "MM/dd/yyyy")) + '. ' : 'Enter required end date.'
+                  }}</span>
+                </td>   </tr>
+            <tr> <td class="record-title"> Disaster Event  </td>  
+              <td> 
+                <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.eventName || (formCreationService.applicationDetailsForm$ | async)?.controls.eventName.invalid}">
+                  {{
+                    (formCreationService.applicationDetailsForm$ | async)?.value
+                      .eventName ? (formCreationService.applicationDetailsForm$ | async)?.value
+                      .eventName : "Enter required information"
+                  }}
+                </span> 
+              </td> 
+              </tr>
+            <tr> <td class="record-title"> Cause of Damage  </td>  <td> 
+              <div class="col-md-3" *ngIf="!(formCreationService.applicationDetailsForm$ | async).hasError('noCauseOfDamage')">
+                {{
+                  causeOfDamage
+                }}
+              </div>
+              <div class="col-md-3" *ngIf="(formCreationService.applicationDetailsForm$ | async).hasError('noCauseOfDamage')">
+                <span style="color:red">At least one cause of damage is required.</span>
+              </div>
+            </td>   </tr>
+            <tr> <td class="record-title"> Government Type  </td>  <td> 
+              <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.applicantSubtype || (formCreationService.applicationDetailsForm$ | async)?.controls.applicantSubtype.invalid}">
+                {{
+                  (formCreationService.applicationDetailsForm$ | async)?.value
+                    .applicantSubtype ? (formCreationService.applicationDetailsForm$ | async)?.value
+                    .applicantSubtype : "Enter required information"
+                }}
+              </span>  
+            </td>   </tr>
+            <tr> <td class="record-title"> Other Governing Body  </td>  <td> 
+              <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.applicantSubSubtype || (formCreationService.applicationDetailsForm$ | async)?.controls.applicantSubSubtype.invalid}">
+                {{
+                  (formCreationService.applicationDetailsForm$ | async)?.value
+                    .applicantSubSubtype ? (formCreationService.applicationDetailsForm$ | async)?.value
+                    .applicantSubSubtype : "Enter required information"
+                }}
+              </span>   
+            </td>   </tr>
+            <tr> <td class="record-title"> Describe Your Organization  </td>  <td> 
+               <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.subtypeOtherDetails || (formCreationService.applicationDetailsForm$ | async)?.controls.subtypeOtherDetails.invalid}">
+              {{
+                (formCreationService.applicationDetailsForm$ | async)?.value
+                  .subtypeOtherDetails ? (formCreationService.applicationDetailsForm$ | async)?.value
+                  .subtypeOtherDetails : "Enter required information"
+              }}
+            </span> 
+           </td>   </tr>
         </table>
         </div>
         <div class="col-md-1" *ngIf="allowEdit">
@@ -154,7 +221,15 @@
         <div class="col-md-11 card-heading">
 
           <table cellspacing="0" cellpadding="0" style="border: none;">
-            <tr> <td class="record-title">Doing Business As (DBA) Name  </td> <td>    {{DoingBusinessAsDBAName}} </td></tr>
+            <tr> <td class="record-title">Doing Business As (DBA) Name  </td> <td>    
+              <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.doingBusinessAs || (formCreationService.applicationDetailsForm$ | async)?.controls.doingBusinessAs.invalid}">
+                {{
+                  (formCreationService.applicationDetailsForm$ | async)?.value
+                    .doingBusinessAs ? (formCreationService.applicationDetailsForm$ | async)?.value
+                    .doingBusinessAs : "Enter required information"
+                }}
+              </span>   
+            </td></tr>
             <tr> <td class="record-title"> Business Number  </td>  <td> {{BusinessNumber}}   </td>   </tr>
 
             <tr> <td width="50%"> <p><u><strong>Mailing Address</strong></u> </p>  </td>    </tr>

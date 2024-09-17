@@ -70,30 +70,6 @@ export class ReviewComponent implements OnInit {
   applicationType: string;
   hasInsurance: string;
 
-  IndigenousGoverningBody:string;
-  DateofDamageFrom:string;
-  DateofDamageTo:string;
-  DisasterEvent:string;
-  CauseofDamage:string;
-  GovernmentType:string;
-  OtherGoverningBody:string;
-  DescribeYourOrganization:string;
-  DoingBusinessAsDBAName:string;
-  BusinessNumber:string;
-  AddressLine1:string;
-  AddressLine2:string;
-  City:string;
-  Province:string;
-  PostalCode:string;
-  FirstName:string;
-  LastName:string;
-  Department:string;
-  BusinessPhone:string;
-  EmailAddress:string;
-  CellPhone:string;
-  JobTitle:string;
-  ContactNotes:string;
-
   contacts:ContactDetails[]= [];
 
   constructor(
