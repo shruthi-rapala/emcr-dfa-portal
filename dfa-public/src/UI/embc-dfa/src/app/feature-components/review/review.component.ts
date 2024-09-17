@@ -10,6 +10,7 @@ import { ApplicantOption, FarmOption, FileCategory, FileUpload, InsuranceOption,
 import { MatTableDataSource } from '@angular/material/table';
 import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
 import { UntypedFormGroup } from '@angular/forms';
+import { ContactDetails } from 'src/app/core/model/profile.model';
 
 @Component({
   selector: 'app-review',
@@ -66,6 +67,34 @@ export class ReviewComponent implements OnInit {
   appTypeInsuranceForm: UntypedFormGroup;
   appTypeInsuranceForm$: Subscription;
   causeOfDamage: string;
+  applicationType: string;
+  hasInsurance: string;
+
+  IndigenousGoverningBody:string;
+  DateofDamageFrom:string;
+  DateofDamageTo:string;
+  DisasterEvent:string;
+  CauseofDamage:string;
+  GovernmentType:string;
+  OtherGoverningBody:string;
+  DescribeYourOrganization:string;
+  DoingBusinessAsDBAName:string;
+  BusinessNumber:string;
+  AddressLine1:string;
+  AddressLine2:string;
+  City:string;
+  Province:string;
+  PostalCode:string;
+  FirstName:string;
+  LastName:string;
+  Department:string;
+  BusinessPhone:string;
+  EmailAddress:string;
+  CellPhone:string;
+  JobTitle:string;
+  ContactNotes:string;
+
+  contacts:ContactDetails[]= [];
 
   constructor(
     private router: Router,
