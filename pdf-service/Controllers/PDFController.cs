@@ -200,7 +200,7 @@ namespace pdfservice.Controllers
                 try
                 {
                     var pdf = _generatePdf.Convert(doc);
-                    return File(pdf, "application/pdf", "test.pdf");
+                    return File(pdf, "application/pdf",$"{pdfApplicationData.LastName},{pdfApplicationData.FirstName}_application_summary.pdf");
                 }
                 catch (Exception e)
                 {
