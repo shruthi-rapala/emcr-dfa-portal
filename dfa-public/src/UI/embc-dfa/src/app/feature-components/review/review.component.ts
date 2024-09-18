@@ -125,6 +125,9 @@ export class ReviewComponent implements OnInit {
     }
 
     var appForm = this.formCreationService.applicationDetailsForm.value;
+    //var contactsForm = this.formCreationService.contactsForm.value;
+    //this.formCreationService.otherContactsForm.value;
+   
     //debugger
     //if (appForm.controls.floodDamage.value === 'true') {
     //  this.causeOfDamage = 'Flood Damage, ';
