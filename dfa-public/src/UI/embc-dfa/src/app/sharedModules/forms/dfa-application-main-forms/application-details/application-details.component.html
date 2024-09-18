@@ -89,7 +89,6 @@
             <mat-form-field appearance="outline">
               <mat-label>To date</mat-label>
               <input matInput
-                (dateInput)="checkDateWithinOpenEvent()"
                 [matDatepicker]="toPicker"
                 formControlName="damageToDate"
                 [readonly]="isReadOnly === true"
