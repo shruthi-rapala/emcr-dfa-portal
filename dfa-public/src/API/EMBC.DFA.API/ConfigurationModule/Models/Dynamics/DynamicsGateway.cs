@@ -237,7 +237,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit",
                     "dfa_damagedpropertyaddresscanadapostverified", "dfa_receiveguidanceassessingyourinfra", "dfa_causeofdamagewildfire2",
                     "dfa_applicantsubtype", "dfa_applicantlocalgovsubtype", "dfa_estimated", "dfa_dfaapplicantsubtypecomments", "dfa_applicantothercomments",
-                    "dfa_governmentbodylegalname"
+                    "dfa_governmentbodylegalname",
+                    // 2024-09-16 EMCRI-663 waynezen; get new fields from dfa_applications table
+                    "_dfa_applicant_value",
+                    "dfa_doingbusinessasdbaname", "dfa_businessnumber", "dfa_businessnumberverifiedflag",
+                    "dfa_incorporationnumber", "dfa_jurisdictionofincorporation", "dfa_statementofregistrationnumber",
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -1253,6 +1257,105 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             {
                 throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
             }
+        }
+
+        // 2024-09-17 EMCRI-663 waynezen; check if Primary Contact exists for this specific Application
+        public async Task<dfa_applicationprimarycontact_retrieve> GetPrimaryContactAsync(Guid applicationId, string bceidUserId)
+        {
+            try
+            {
+                var userObj = await api.GetList<dfa_applicationprimarycontact_retrieve>("dfa_appcontacts", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "dfa_appcontactid", "dfa_bceiduserguid"
+                    },
+                    Filter = $"dfa_bceiduserguid eq '{bceidUserId}'"
+                });
+
+                return userObj != null ? userObj.List.LastOrDefault() : null;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+
+        public async Task<dfa_applicationprimarycontact_retrieve> UpsertPrimaryContactAsync(dfa_applicationprimarycontact_params contact)
+        {
+            try
+            {
+                var exists = await this.GetPrimaryContactAsync(contact.dfa_appapplicationid.Value, contact.dfa_bceiduserguid);
+                if (exists != null)
+                {
+                    return exists;
+                }
+                // must create a primary contact
+                var r = await api.ExecuteAction("dfa_BCeIDCreateContact", contact);
+
+                if (r != null)
+                {
+                    dfa_applicationprimarycontact_retrieve result = new dfa_applicationprimarycontact_retrieve()
+                    {
+                        dfa_appapplicationid = contact.dfa_appapplicationid.Value.ToString(),
+                        dfa_appcontactid = r.Where(m => m.Key == "output") != null ? r.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty,
+                        dfa_bceiduserguid = contact.dfa_bceiduserguid
+                    };
+                    return result;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to update/create primary contact: {ex.Message}", ex);
+            }
+
+            return null;
+        }
+
+        public async Task<dfa_bceidusers> GetBCeIDUserAsync(dfa_bceidusers bceidUser)
+        {
+            try
+            {
+                var userObj = await api.GetList<dfa_bceidusers>("dfa_bceidusers", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                       "dfa_name", "dfa_bceidbusinessguid", "dfa_bceiduserid"
+                    },
+                    Filter = $"dfa_bceiduserid eq '{bceidUser.dfa_bceiduserid}'"
+                });
+
+                return userObj != null ? userObj.List.LastOrDefault() : null;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+
+        public async Task<dfa_bceidusers> UpsertBCeIDUserAsync(dfa_bceidusers bceidUser)
+        {
+            try
+            {
+                var exists = await this.GetBCeIDUserAsync(bceidUser);
+                if (exists != null)
+                {
+                    return exists;
+                }
+                // must create a bceid user
+                var r = await api.ExecuteAction("dfa_DFAPortalCreateBCeIDUsers", bceidUser);
+
+                if (r != null)
+                {
+                    return bceidUser;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to update/create bceid user: {ex.Message}", ex);
+            }
+
+            return null;
         }
     }
 }

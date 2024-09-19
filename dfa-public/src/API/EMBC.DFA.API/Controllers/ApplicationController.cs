@@ -116,14 +116,19 @@ namespace EMBC.DFA.API.Controllers
 
             if (application == null) return BadRequest("Application details cannot be empty.");
 
-            //var dfa_appcontact = await handler.HandleGetUser(currentUserId);
-            //currentUserId = "6e0d26eb-376a-ef11-b851-00505683fbf4";
-            //application.ProfileVerification = new ProfileVerification() { profileId = currentUserId };
-            application.ProfileVerification = new ProfileVerification() { profileId = "6e0d26eb-376a-ef11-b851-00505683fbf4" };
+            var userId = userService.GetBCeIDUserId();
+            application.ProfileVerification = new ProfileVerification() { profileId = userId };
 
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
-
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
+
+            // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
+            var primeContactIn = mapper.Map<dfa_applicationprimarycontact_params>(application.applicationContacts);
+            var primeContactSaved = await handler.HandlePrimaryContactAsync(primeContactIn);
+            if (primeContactSaved?.dfa_appcontactid != null)
+            {
+                mappedApplication.dfa_applicant = primeContactSaved.dfa_appcontactid;
+            }
 
             if (application.OtherContact != null)
             {
@@ -354,6 +359,8 @@ namespace EMBC.DFA.API.Controllers
     {
         public Guid? Id { get; set; }
         public ApplicationDetails? applicationDetails { get; set; }
+        // 2024-09-16 EMCRI-663 waynezen; new fields from application
+        public ApplicationContacts applicationContacts { get; set; }
         public ProfileVerification? ProfileVerification { get; set; }
         public OtherContact[]? OtherContact { get; set; }
         public bool deleteFlag { get; set; }

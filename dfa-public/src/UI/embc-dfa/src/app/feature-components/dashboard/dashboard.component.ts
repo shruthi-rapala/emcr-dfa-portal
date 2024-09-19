@@ -58,10 +58,18 @@ export class DashboardComponent implements OnInit {
     // 2024-07-22 EMCRI-440 waynezen; use new ContactService to get Business Name from Keycloak access token
     // console.debug('[DFA] dashboard loading');
     
-    this.contactService.contactGetLoginInfo().subscribe(loginInfo => {
-      if (loginInfo) {
-        this.businessName = loginInfo?.bceid_business_name;
-        this.dfaApplicationMainDataService.setBusiness(loginInfo?.bceid_business_name);
+    // this.contactService.contactGetLoginInfo().subscribe(loginInfo => {
+    //   if (loginInfo) {
+    //     this.businessName = loginInfo?.bceid_business_name;
+    //     this.dfaApplicationMainDataService.setBusiness(loginInfo?.bceid_business_name);
+    //   }
+    // });
+
+    // 2024-09-18 EMCRI-663 waynezen; create bceidusers record in Dynamics - if necessary
+    this.contactService.contactAddLoginInfo().subscribe(bceidUserInfo => {
+      if (bceidUserInfo) {
+        this.businessName = bceidUserInfo?.bceid_business_name;
+        this.dfaApplicationMainDataService.setBusiness(bceidUserInfo?.bceid_business_name);
       }
     });
 

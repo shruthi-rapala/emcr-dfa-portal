@@ -186,7 +186,26 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.applicationDetails.legalName))
                 .ForMember(d => d.dfa_estimated, opts => opts.MapFrom(s => s.applicationDetails.estimatedPercent))
                 .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.applicationDetails.damageFromDate))
-                .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.applicationDetails.damageToDate));
+                .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.applicationDetails.damageToDate))
+                // 2024-09-16 EMCRI-663 waynezen; Contact form fields
+                .ForMember(d => d.dfa_doingbusinessasdbaname, opts => opts.MapFrom(s => s.applicationContacts.doingBusinessAs))
+                .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.applicationContacts.businessNumber))
+                ;
+
+            // 2024-09-16 EMCRI-663 waynezen; Contact form fields
+            CreateMap<ApplicationContacts, dfa_applicationprimarycontact_params>()
+                .ForMember(d => d.dfa_bceiduserguid, opts => opts.MapFrom(s => s.pcUserId))
+                .ForMember(d => d.dfa_primaryaddressline1, opts => opts.MapFrom(s => s.mailingAddress))
+                .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s => s.mailingAddressVerified))
+                .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.pcFirstName))
+                .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.pcLastName))
+                .ForMember(d => d.dfa_department, opts => opts.MapFrom(s => s.pcDepartment))
+                .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.pcBusinessPhone))
+                .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.pcEmailAddress))
+                .ForMember(d => d.dfa_cellphone, opts => opts.MapFrom(s => s.pcCellPhone))
+                .ForMember(d => d.dfa_jobtitle, opts => opts.MapFrom(s => s.pcJobTitle))
+                .ForMember(d => d.dfa_notes, opts => opts.MapFrom(s => s.pcNotes))
+                ;
 
             CreateMap<dfa_appapplicationmain_retrieve, CleanUpLog>()
                 .ForMember(d => d.haveInvoicesOrReceiptsForCleanupOrRepairs, opts => opts.MapFrom(s => s.dfa_haveinvoicesreceiptsforcleanuporrepairs2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_haveinvoicesreceiptsforcleanuporrepairs2 == (int)YesNoOptionSet.No ? false : (bool?)null)));

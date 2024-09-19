@@ -59,14 +59,13 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   onlyOtherContact: boolean = false;
   disableOnlyOtherContact: boolean = false;
   hideOtherContactButton: boolean = false;
-  otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email', 'deleteIcon'];
+  otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email', 'cellPhone', 'jobTitle', 'deleteIcon'];
   otherContactsDataSource = new BehaviorSubject([]);
   otherContactsData = [];
   otherContactsDeletedData = [];
   otherContactsEditIndex: number;
   otherContactsRowEdit = false;
   otherContactsEditFlag = false;
-  otherContactText = 'New Other Contact';
   showOtherContactForm: boolean = false;
 
 
@@ -105,7 +104,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     if (this.isReadOnly) {
       this.contactsForm.controls.doingBusinessAs.disable();
       this.contactsForm.controls.businessNumber.disable();
-      this.contactsForm.controls.mailingAddress1.disable();
+      this.contactsForm.controls.mailingAddress.disable();
       this.contactsForm.controls.mailingAddress2.disable();
       this.contactsForm.controls.city.disable();
       this.contactsForm.controls.province.disable();
@@ -116,14 +115,14 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.pcLastName.disable();
       this.contactsForm.controls.pcDepartment.disable();
       this.contactsForm.controls.pcBusinessPhone.disable();
-      this.contactsForm.controls.pcEmail.disable();
+      this.contactsForm.controls.pcEmailAddress.disable();
       this.contactsForm.controls.pcCellPhone.disable();
       this.contactsForm.controls.pcJobTitle.disable();
       
     } else {
       this.contactsForm.controls.doingBusinessAs.enable();
       this.contactsForm.controls.businessNumber.enable();
-      this.contactsForm.controls.mailingAddress1.enable();
+      this.contactsForm.controls.mailingAddress.enable();
       this.contactsForm.controls.mailingAddress2.enable();
       this.contactsForm.controls.city.enable();
       this.contactsForm.controls.province.enable();
@@ -134,7 +133,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.pcLastName.enable();
       this.contactsForm.controls.pcDepartment.enable();
       this.contactsForm.controls.pcBusinessPhone.enable();
-      this.contactsForm.controls.pcEmail.enable();
+      this.contactsForm.controls.pcEmailAddress.enable();
       this.contactsForm.controls.pcCellPhone.enable();
       this.contactsForm.controls.pcJobTitle.enable();
 
@@ -152,7 +151,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           legalName: this.dfaApplicationMainDataService.getBusiness(),
           doingBusinessAs: null,
           businessNumber: null,
-          mailingAddress1: null,
+          mailingAddress: null,
           // mailingAddress2: null,
           // city: null,
           // province: null,
@@ -163,7 +162,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           pcLastName: null,
           pcDepartment: null,
           pcBusinessPhone: null,
-          pcEmail: null,
+          pcEmailAddress: null,
           pcCellPhone: null,
           pcJobTitle: null,
         }
@@ -198,11 +197,11 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       });
 
       this.contactsForm
-      .get('mailingAddress1')
+      .get('mailingAddress')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (value === '') {
-          this.contactsForm.get('mailingAddress1').reset();
+          this.contactsForm.get('mailingAddress').reset();
         }
       });
 
@@ -280,7 +279,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   cancelOtherContact(): void {
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(false);
-    this.otherContactText = 'New Other Contact'
   }
 
   validateFormCauseOfDamage(form: FormGroup) {
@@ -333,7 +331,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   }
 
   addOtherContact(): void {
-    this.otherContactText = 'New Other Contact'
     this.otherContactsForm.get('otherContact').reset();
     this.showOtherContactForm = !this.showOtherContactForm;
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
@@ -342,7 +339,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   }
 
   editOtherContactsRow(element, index): void {
-    this.otherContactText = 'Edit Other Contact'
     this.otherContactsEditIndex = index;
     this.otherContactsRowEdit = !this.otherContactsRowEdit;
     this.otherContactsForm.get('otherContact').setValue(element);
@@ -430,7 +426,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
             pcLastName: bceidBusiness.individualSurname,
             pcDepartment: bceidBusiness.department,
             pcBusinessPhone: bceidBusiness.contactPhone,
-            pcEmail: bceidBusiness.contactEmail,
+            pcEmailAddress: bceidBusiness.contactEmail,
 
 
           }
@@ -439,7 +435,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           this.contactsForm.get('pcLastName').setValue(bceidBusiness.individualSurname);
           this.contactsForm.get('pcDepartment').setValue(bceidBusiness.department);
           this.contactsForm.get('pcBusinessPhone').setValue(bceidBusiness.contactPhone);
-          this.contactsForm.get('pcEmail').setValue(bceidBusiness.contactEmail);
+          this.contactsForm.get('pcEmailAddress').setValue(bceidBusiness.contactEmail);
           // TODO: set cell phone and job title with data from Dynamics?
 
           this.showFoundContactMsg = true;
@@ -467,7 +463,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         pcLastName: '',
         pcDepartment: '',
         pcBusinessPhone: '',
-        pcEmail: '',
+        pcEmailAddress: '',
         pcCellPhone: '',
         pcJobTitle: '',
       }
@@ -476,7 +472,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.get('pcLastName').setValue('');
       this.contactsForm.get('pcDepartment').setValue('');
       this.contactsForm.get('pcBusinessPhone').setValue('');
-      this.contactsForm.get('pcEmail').setValue('');
+      this.contactsForm.get('pcEmailAddress').setValue('');
       this.contactsForm.get('pcCellPhone').setValue('');
       this.contactsForm.get('pcJobTitle').setValue('');
 

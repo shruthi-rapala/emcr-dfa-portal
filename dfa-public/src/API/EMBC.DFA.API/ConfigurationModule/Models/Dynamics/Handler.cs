@@ -58,6 +58,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleInvoiceCreateUpdate(dfa_invoice_params objInvoice);
         Task<List<CurrentInvoice>> HandleInvoiceList(string claimId);
         Task<string> HandleInvoiceDelete(dfa_invoice_delete_params objInvoice);
+
+        // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
+        Task<dfa_applicationprimarycontact_retrieve> HandlePrimaryContactAsync(dfa_applicationprimarycontact_params objPrimaryContact);
+        Task<dfa_bceidusers> HandleBCeIDUserAsync(dfa_bceidusers bceidUser);
     }
 
     public class Handler : IConfigurationHandler
@@ -331,6 +335,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             var lstApps = await listsGateway.GetInvoiceListAsync(claimId);
             var mappedInvoices = mapper.Map<List<CurrentInvoice>>(lstApps);
             return mappedInvoices;
+        }
+
+        // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
+        public async Task<dfa_applicationprimarycontact_retrieve> HandlePrimaryContactAsync(dfa_applicationprimarycontact_params primeContactIn)
+        {
+            var result = await listsGateway.UpsertPrimaryContactAsync(primeContactIn);
+            return result;
+        }
+
+        public Task<dfa_bceidusers> HandleBCeIDUserAsync(dfa_bceidusers bceidUser)
+        {
+            var result = listsGateway.UpsertBCeIDUserAsync(bceidUser);
+            return result;
         }
     }
 }

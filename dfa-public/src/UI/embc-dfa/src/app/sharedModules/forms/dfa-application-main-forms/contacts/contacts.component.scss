@@ -147,10 +147,11 @@ table {
   font-family: 'BC Sans';
   font-size: 14px;
   color: #313132;
+  margin-left: 5px;
 }
 
 .iconText {
-  position: absolute;
+  position: relative;
 }
 
 .iconStyleGreen {
@@ -161,8 +162,9 @@ table {
 .iconStyleBlue {
   //font-size: 16px;
   color: #003366;
+  width: 22px;
+  padding-top: 2px;
 }
-
 .noshow {
   display: none;
 

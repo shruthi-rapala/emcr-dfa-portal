@@ -466,6 +466,28 @@ namespace EMBC.DFA.API.Controllers
         public ApplicationStageOptionSet? appStatus { get; set; }
     }
 
+    // 2024-09-16 EMCRI-663 waynezen
+    public class ApplicationContacts
+    {
+        public Guid? id { get; set; }
+        public Guid? applicationId { get; set; }
+        public string? doingBusinessAs { get; set; }
+        public string? businessNumber { get; set; }
+        public string? mailingAddress { get; set; }
+        public bool? mailingAddressVerified { get; set; }
+
+        // Primary Contact info
+        public string? pcUserId { get; set; }
+        public string? pcFirstName { get; set; }
+        public string? pcLastName { get; set; }
+        public string? pcDepartment { get; set; }
+        public string? pcBusinessPhone { get; set; }
+        public string? pcEmailAddress { get; set; }
+        public string? pcCellPhone { get; set; }
+        public string? pcJobTitle { get; set; }
+        public string? pcNotes { get; set; }
+    }
+
     /// <summary>
     /// Clean Up Log
     /// </summary>

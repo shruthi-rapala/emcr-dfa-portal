@@ -16,6 +16,7 @@ export { OtherPreScreeningQuestions } from './models/other-pre-screening-questio
 export { DfaApplicationMain } from './models/dfa-application-main';
 export { ApplicationDetails } from './models/application-details';
 export { ApplicationStageOptionSet } from './models/application-stage-option-set';
+export { ApplicationContacts } from './models/application-contacts';
 export { OtherContact } from './models/other-contact';
 export { CurrentApplication } from './models/current-application';
 export { StatusBar } from './models/status-bar';

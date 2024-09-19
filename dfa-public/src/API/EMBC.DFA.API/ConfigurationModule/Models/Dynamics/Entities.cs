@@ -83,6 +83,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_damagedpropertyaddresscanadapostverified { get; set; } // optional Two Options
     }
 
+    public class dfa_bceidusers
+    {
+        public string? dfa_name { get; set; }
+        public string? dfa_bceidbusinessguid { get; set; }
+        public string? dfa_bceiduserid { get; set; }
+    }
+
     public class temp_dfa_appapplicationstart_params
     {
         public int? dfa_doyourlossestotalmorethan10002 { get; set; } // optional boolean  TODO: move to dfa_applicationstart_params
@@ -177,6 +184,40 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_eventid { get; set; }
         public string? dfa_name { get; set; }
         public bool? dfa_portalsubmitted { get; set; }
+
+        // 2024-09-16 EMCRI-663 waynezen; new fields from application
+        public string? dfa_applicant { get; set; } // primary contact Guid - only include if  you know it
+        public string? dfa_doingbusinessasdbaname { get; set; }
+        public string? dfa_businessnumber { get; set; }
+        public string? dfa_businessnumberverifiedflag { get; set; }
+        public string? dfa_incorporationnumber { get; set; }
+        public string? dfa_jurisdictionofincorporation { get; set; }
+        public string? dfa_statementofregistrationnumber { get; set; }
+    }
+
+    // 2024-09-17 EMCRI-663 waynezen
+    public class dfa_applicationprimarycontact_params
+    {
+        public Guid? dfa_appapplicationid { get; set; } // required string when saving
+        public string? dfa_primaryaddressline1 { get; set; }
+        public bool? dfa_mailingaddresscanadapostverified { get; set; }
+        public string? dfa_bceiduserguid { get; set; }
+        public string? dfa_firstname { get; set; }
+        public string? dfa_lastname { get; set; }
+        public string? dfa_department { get; set; }
+        public string? dfa_businessnumber { get; set; }
+        public string? dfa_emailaddress { get; set; }
+        public string? dfa_cellphone { get; set; }
+        public string? dfa_jobtitle { get; set; }
+        public string? dfa_notes { get; set; }
+    }
+
+    // 2024-09-17 EMCRI-663 waynezen
+    public class dfa_applicationprimarycontact_retrieve
+    {
+        public string? dfa_appapplicationid { get; set; }
+        public string? dfa_appcontactid { get; set; }
+        public string? dfa_bceiduserguid { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
@@ -287,6 +328,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_dfaapplicantsubtypecomments { get; set; }
         public string dfa_applicantothercomments { get; set; }
         public string dfa_governmentbodylegalname { get; set; }
+
+        // 2024-09-16 EMCRI-663 waynezen; new fields from application
+        public string _dfa_applicant_value { get; set; }
+        public string dfa_doingbusinessasdbaname { get; set; }
+        public string dfa_businessnumber { get; set; }
+        public string dfa_businessnumberverifiedflag { get; set; }
+        public string dfa_incorporationnumber { get; set; }
+        public string dfa_jurisdictionofincorporation { get; set; }
+        public string dfa_statementofregistrationnumber { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord

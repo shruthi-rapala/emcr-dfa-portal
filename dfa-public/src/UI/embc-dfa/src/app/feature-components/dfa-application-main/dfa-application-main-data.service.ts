@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
-import { DfaApplicationStart,  } from 'src/app/core/api/models';
+import { DfaApplicationStart, ApplicationContacts } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
 import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, ApplicationDetails, Contacts, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
@@ -202,9 +202,16 @@ export class DFAApplicationMainDataService {
   }
 
    public createDFAApplicationMainDTO(): DfaApplicationMain {
+
+    // 2024-09-16 EMCRI-663 waynezen; assign non-homogeneous fields to Contacts form
+    let primaryContact: ApplicationContacts = this._contacts;
+    primaryContact.applicationId = this._applicationId;
+    primaryContact.pcUserId = this._contacts.primaryContactSearch;
+
     return {
       id: this._applicationId,
       applicationDetails: this._applicationDetails,
+      applicationContacts: primaryContact,
       otherContact: this._otherContacts,
       deleteFlag: false
     };

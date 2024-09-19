@@ -49,5 +49,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> UpsertInvoice(dfa_invoice_params invoice);
         Task<IEnumerable<dfa_recoveryinvoice>> GetInvoiceListAsync(string claimId);
         Task<string> DeleteInvoice(dfa_invoice_delete_params invoice);
+
+        // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
+        public Task<dfa_applicationprimarycontact_retrieve> GetPrimaryContactAsync(Guid applicationId, string userId);
+        public Task<dfa_applicationprimarycontact_retrieve> UpsertPrimaryContactAsync(dfa_applicationprimarycontact_params contact);
+        public Task<dfa_bceidusers> GetBCeIDUserAsync(dfa_bceidusers bceidUser);
+        public Task<dfa_bceidusers> UpsertBCeIDUserAsync(dfa_bceidusers bceidUser);
     }
 }

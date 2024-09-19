@@ -69,7 +69,7 @@ export class ContactService extends BaseService {
   /**
    * Path part for operation contactGetLoginInfo
    */
-  static readonly ContactGetLoginInfoPath = '/api/contacts/login';
+  static readonly ContactGetLoginInfoPath = '/api/contacts/getlogin';
 
   /**
    * If user isn't authenticated, return NULL.
@@ -113,6 +113,49 @@ export class ContactService extends BaseService {
   }): Observable<BceidUserData> {
 
     return this.contactGetLoginInfo$Response(params).pipe(
+      map((r: StrictHttpResponse<BceidUserData>) => r.body as BceidUserData)
+    );
+  }
+
+  /**
+   * Path part for operation contactAddLoginInfo
+   */
+  static readonly ContactAddLoginInfoPath = '/api/contacts/addlogin';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `contactAddLoginInfo()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  contactAddLoginInfo$Response(params?: {
+  }): Observable<StrictHttpResponse<BceidUserData>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ContactService.ContactAddLoginInfoPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<BceidUserData>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `contactAddLoginInfo$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  contactAddLoginInfo(params?: {
+  }): Observable<BceidUserData> {
+
+    return this.contactAddLoginInfo$Response(params).pipe(
       map((r: StrictHttpResponse<BceidUserData>) => r.body as BceidUserData)
     );
   }

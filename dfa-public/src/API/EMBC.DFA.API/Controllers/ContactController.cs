@@ -66,7 +66,7 @@ namespace EMBC.DFA.API.Controllers
         /// If user isn't authenticated, return NULL
         /// </summary>
         /// <returns>NULL if user isn't authenticated</returns>
-        [HttpGet("login")]
+        [HttpGet("getlogin")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -84,17 +84,36 @@ namespace EMBC.DFA.API.Controllers
                 return Ok(null);
             }
         }
-    }
 
-    public class AppCity
-    {
-        public string ID { get; set; }
-        public string City { get; set; }
-    }
+        /// <summary>
+        /// Gets the same BCeID user info as getlogin, but also ensures that a dfa_bceidusers record exists
+        /// for the current logged in user.
+        /// </summary>
+        /// <returns>BCeID user info</returns>
+        [HttpGet("addlogin")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<BceidUserData>> AddLoginInfo()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userData = userService.GetJWTokenData();
+                dfa_bceidusers bceidUser = new dfa_bceidusers()
+                {
+                    dfa_name = userData.name,
+                    dfa_bceidbusinessguid = Convert.ToString(userData.bceid_business_guid),
+                    dfa_bceiduserid = Convert.ToString(userData.bceid_user_guid),
+                };
+                var exists = await handler.HandleBCeIDUserAsync(bceidUser);
 
-    public class AppProvince
-    {
-        public string ID { get; set; }
-        public string Province { get; set; }
+                return Ok(userData);
+            }
+            else
+            {
+                Debug.WriteLine("No Authentication!");
+                return Ok(null);
+            }
+        }
     }
 }

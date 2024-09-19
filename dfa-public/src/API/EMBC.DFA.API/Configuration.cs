@@ -219,10 +219,6 @@ namespace EMBC.DFA.API
                 // 2024-08-11 EMCRI-216 waynezen; Very important to AllowAnyHeader - otherwise CORS problems
                 policy.AllowAnyHeader();
 
-                // 2024-08-20 EMCRI-434 waynezen; Instead of AllowAnyMethod - only allow select Http methods
-                //policy.AllowAnyMethod();
-                policy.WithMethods("GET", "POST");
-
                 //policy.AllowAnyOrigin();
 
                 // 2024-08-20 EMCRI-434 waynezen; Instead of AllowAnyMethod - only allow select Http methods
