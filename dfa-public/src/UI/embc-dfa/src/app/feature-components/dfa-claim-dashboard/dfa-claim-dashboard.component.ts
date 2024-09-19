@@ -56,7 +56,7 @@ export class DFAClaimComponent
   dateOfDamageFrom = '';
   dateOfDamageTo = '';
   eligibleGST = false;
-
+  OneDayAgo: number = 0;
   projNumber = '';
   projName = '';
   siteLocation = '';
@@ -81,7 +81,7 @@ export class DFAClaimComponent
     private applicationService: ApplicationService,
   ) {
     
-
+    this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
   }
 
   ngOnInit(): void {
@@ -196,9 +196,9 @@ export class DFAClaimComponent
     lstProjects.forEach(x => {
       if (
         (x.status.toLowerCase() === "decision made"
-          || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
-        //&&
-        //(x.dateFileClosed && (this.sixtyOneDaysAgo <= new Date(x.dateFileClosed).getTime()))
+          || x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
+        &&
+        (x.dateFileClosed && (this.OneDayAgo >= new Date(x.dateFileClosed).getTime()))
       ) {
         this.closedProjectsCount++;
       } else this.currentProjectsCount++;

@@ -964,7 +964,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_estimatedcompletiondateofproject",
                         "dfa_approvedcost", "dfa_18monthdeadline", "statuscode",
                         "dfa_projectid", "createdon", "dfa_projectbusinessprocessstages",
-                        "dfa_projectbusinessprocesssubstages"
+                        "dfa_projectbusinessprocesssubstages", "dfa_bpfclosedate"
                     },
                     Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
@@ -985,7 +985,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    createdon = objApp.createdon,
                                    statuscode = objApp.statuscode,
                                    dfa_projectbusinessprocessstages = objApp.dfa_projectbusinessprocessstages,
-                                   dfa_projectbusinessprocesssubstages = objApp.dfa_projectbusinessprocesssubstages
+                                   dfa_projectbusinessprocesssubstages = objApp.dfa_projectbusinessprocesssubstages,
+                                   dfa_bpfclosedate = objApp.dfa_bpfclosedate
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstApps;
@@ -1054,7 +1055,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_totaloftotaleligible", "dfa_totalapproved", "dfa_lessfirst1000",
                         "dfa_totalpaid", "dfa_claimpaiddate", "dfa_projectclaimid",
                         "dfa_claimbpfstages", "dfa_claimbpfsubstages", "dfa_claimtotal",
-                        "createdon", "dfa_costsharing", "dfa_eligiblepayable"
+                        "createdon", "dfa_costsharing", "dfa_eligiblepayable",
+                        "dfa_bpfclosedate"
                     },
                     Filter = $"_dfa_recoveryplanid_value eq {projectId}"
                 });
@@ -1080,6 +1082,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    createdon = objClaim.createdon,
                                    dfa_costsharing = objClaim.dfa_costsharing,
                                    dfa_eligiblepayable = objClaim.dfa_eligiblepayable,
+                                   dfa_bpfclosedate = objClaim.dfa_bpfclosedate,
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstClaims;

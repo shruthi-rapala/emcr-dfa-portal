@@ -381,13 +381,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ProjectId, opts => opts.MapFrom(s => s.dfa_projectid))
                 .ForMember(d => d.Status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) ? GetEnumDescription((ProjectStages)Convert.ToInt32(s.dfa_projectbusinessprocessstages)) : null))
                 .ForMember(d => d.Stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_projectbusinessprocesssubstages) ? GetEnumDescription((ProjectSubStages)Convert.ToInt32(s.dfa_projectbusinessprocesssubstages)) : null))
-                //.ForMember(d => d.Status, opts => opts.MapFrom(s => Convert.ToString(ProjectStages.Submitted)))
-                //.ForMember(d => d.Stage, opts => opts.MapFrom(s => Convert.ToString(ProjectSubStages.Pending)))
-                //.ForMember(d => d.Stage, opts => opts.MapFrom(s => s.dfa_projectbusinessprocessstages))
                 .ForMember(d => d.ProjectName, opts => opts.MapFrom(s => s.dfa_projectname))
                 .ForMember(d => d.SiteLocation, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_sitelocation) ? "Not Set" : s.dfa_sitelocation))
                 .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => s.dfa_approvedcost == null ? 0 : s.dfa_approvedcost))
                 .ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => s.createdon))
+                .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
                 .ForMember(d => d.EstimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
 
             CreateMap<dfa_projectclaim, CurrentClaim>()
@@ -402,6 +400,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ApprovedReimbursePercent, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_costsharing) ? "(pending information)" : "CA$ " + s.dfa_costsharing))
                 .ForMember(d => d.EligiblePayable, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_eligiblepayable) ? "(pending information)" : "CA$ " + s.dfa_eligiblepayable))
                 .ForMember(d => d.PaidClaimAmount, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_totalpaid) ? "(pending information)" : "CA$ " + s.dfa_totalpaid))
+                .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
                 .ForMember(d => d.ClaimId, opts => opts.MapFrom(s => s.dfa_projectclaimid))
                 .ForMember(d => d.Status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfstages) ? GetEnumDescription((ClaimStages)Convert.ToInt32(s.dfa_claimbpfstages)) : null))
                 .ForMember(d => d.Stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfsubstages) ?
@@ -431,7 +430,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_applicanttype) ? GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.dfa_applicanttype)) : null))
                 .ForMember(d => d.PrimaryApplicantSignedDate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_primaryapplicantsigneddate) ? null : s.dfa_primaryapplicantsigneddate))
                 .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => s.dfa_casenumber))
-                .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_datefileclosed))
+                .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfcloseddate))
                 .ForMember(d => d.EventId, opts => opts.MapFrom(s => s.dfa_event))
                 .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => string.Join(", ", (new string[] { s.dfa_damagedpropertystreet1, s.dfa_damagedpropertycitytext }).Where(m => !string.IsNullOrEmpty(m)))))
                 .ForMember(d => d.Status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_applicationcasebpfstages) ? GetEnumDescription((ApplicationStages)Convert.ToInt32(s.dfa_applicationcasebpfstages)) : null))

@@ -740,6 +740,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? createdon { get; set; }
         public string? dfa_costsharing { get; set; }
         public string? dfa_eligiblepayable { get; set; }
+        public string? dfa_bpfclosedate { get; set; }
     }
 
     public class dfa_recoveryinvoice
@@ -780,6 +781,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public DateTime createdon { get; set; }
         public string? dfa_projectid { get; set; }
         public string? dfa_projectbusinessprocesssubstages { get; set; }
+        public string? dfa_bpfclosedate { get; set; }
     }
 
     public enum EventType
@@ -839,7 +841,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         ApprovalPending = 222710003,
 
         [Description("Decision Made")]
-        DecisionMade = 222710004
+        DecisionMade = 222710004,
+
+        [Description("Closed")]
+        Closed = 222710009
     }
 
     public enum ProjectSubStages

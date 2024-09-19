@@ -37,7 +37,10 @@ export class DfaDashProjectComponent implements OnInit {
     { status: "Approval Pending", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Decision Made", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
+    { status: "Decision Made", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Closed", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
 
   ];
@@ -48,7 +51,7 @@ export class DfaDashProjectComponent implements OnInit {
   current = 1;
   appId = null;
   public apptype: string;
-  private sixtyOneDaysAgo: number;
+  private OneDayAgo: number;
   public isLoading: boolean = true;
   public color: string = "'#169BD5";
   public searchTextInput: string = '';
@@ -70,7 +73,7 @@ export class DfaDashProjectComponent implements OnInit {
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.apptype = this.route.snapshot.data["apptype"];
-    this.sixtyOneDaysAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 61)).getTime()
+    this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
   }
 
   ngOnInit(): void {
@@ -161,10 +164,13 @@ export class DfaDashProjectComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.lstProjects = res;
     //dfa decision made
+    debugger
     this.lstProjects.forEach(x => {
       if (
         (x.status.toLowerCase() === "decision made"
-          || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
+          || x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
+        &&
+        (x.dateFileClosed && (this.OneDayAgo >= new Date(x.dateFileClosed).getTime()))
         )
       {
           x.openProject = false;
