@@ -535,7 +535,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_descriptionofrepairwork, opts => opts.MapFrom(s => s.Project.repairWorkDetails))
                 .ForMember(d => d.dfa_descriptionofmaterialneededtorepair, opts => opts.MapFrom(s => s.Project.repairDamagedInfrastructure))
                 .ForMember(d => d.dfa_estimatedcompletiondateofproject, opts => opts.MapFrom(s => Convert.ToDateTime(s.Project.estimatedCompletionDate)))
-                .ForMember(d => d.dfa_estimatedcost, opts => opts.MapFrom(s => Convert.ToInt32(s.Project.estimateCostIncludingTax)));
+                .ForMember(d => d.dfa_estimatedcost, opts => opts.MapFrom(s => s.Project != null && !string.IsNullOrEmpty(s.Project.estimateCostIncludingTax) ? decimal.Parse(s.Project.estimateCostIncludingTax) : (decimal?)null));
 
             CreateMap<DFAClaimMain, dfa_claim_params>()
                 .ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.Claim != null ? s.Claim.isThisFinalClaim : (bool?)null))
@@ -554,10 +554,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_purpose, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.PurposeOfGoodsServiceReceived : null))
                 .ForMember(d => d.dfa_invoicenumber, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.InvoiceNumber : null))
                 .ForMember(d => d.dfa_portioninvoicereason, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.ReasonClaimingPartofTotalInvoice : null))
-                .ForMember(d => d.dfa_netinvoicedbeingclaimed, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.NetInvoiceBeingClaimed : null))
-                .ForMember(d => d.dfa_pst, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.PST : null))
-                .ForMember(d => d.dfa_grossgst, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.GrossGST : null))
-                .ForMember(d => d.dfa_eligiblegst, opts => opts.MapFrom(s => s.Invoice != null ? (!string.IsNullOrEmpty(s.Invoice.EligibleGST) ? s.Invoice.EligibleGST : null) : null))
+                .ForMember(d => d.dfa_netinvoicedbeingclaimed, opts => opts.MapFrom(s => s.Invoice != null && !string.IsNullOrEmpty(s.Invoice.NetInvoiceBeingClaimed) ? decimal.Parse(s.Invoice.NetInvoiceBeingClaimed) : (decimal?)null))
+                .ForMember(d => d.dfa_pst, opts => opts.MapFrom(s => s.Invoice != null && !string.IsNullOrEmpty(s.Invoice.PST) ? decimal.Parse(s.Invoice.PST) : (decimal?)null))
+                .ForMember(d => d.dfa_grossgst, opts => opts.MapFrom(s => s.Invoice != null && !string.IsNullOrEmpty(s.Invoice.GrossGST) ? decimal.Parse(s.Invoice.GrossGST) : (decimal?)null))
+                .ForMember(d => d.dfa_eligiblegst, opts => opts.MapFrom(s => s.Invoice != null && !string.IsNullOrEmpty(s.Invoice.EligibleGST) ? decimal.Parse(s.Invoice.EligibleGST) : (decimal?)null))
                 .ForMember(d => d.dfa_invoicedate, opts => opts.MapFrom(s => s.Invoice != null ? Convert.ToDateTime(s.Invoice.InvoiceDate) : (DateTime?)null))
                 .ForMember(d => d.dfa_goodsorservicesreceiveddate, opts => opts.MapFrom(s => s.Invoice != null ? Convert.ToDateTime(s.Invoice.GoodsReceivedDate) : (DateTime?)null))
                 .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.Invoice.VendorName));
