@@ -282,7 +282,7 @@ export class DFAApplicationMainComponent
           this.ninetyDayDeadline = value;
           let date = new Date(value);
           let currentDate = new Date();
-          this.daysToApply = Math.floor((date.getTime() - currentDate.getTime()) / 1000 / 60 / 60 / 24);
+          this.daysToApply = Math.floor((date.getTime() - currentDate.getTime()) / 1000 / 60 / 60 / 24) + 2; // Account for start and end dates
         }
       })
   }

@@ -16,7 +16,7 @@
         </div>
         <div class="col-4" style="text-align: center">
           <span><b>Submit before midnight on:</b>&nbsp;&nbsp;{{eventItem.ninetyDayDeadline | date: "dd-MMM-yyyy"}}</span> <br />
-          <span><b style="color: #990000">{{ eventItem.remainingDays }} days remaining to apply</b></span>
+          <span><b style="color: #990000">{{ getRemainingDays(eventItem) }}</b></span>
         </div>
       </div><br/><br/>
       <table mat-table [dataSource]="getEffectedRegionCommuntiesForEvent(eventItem.eventId)" style="width:100%" *ngIf="getEffectedRegionCommuntiesForEvent(eventItem.eventId).length>0">
