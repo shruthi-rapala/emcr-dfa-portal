@@ -486,7 +486,9 @@ namespace EMBC.DFA.API.Controllers
         public string? pcCellPhone { get; set; }
         public string? pcJobTitle { get; set; }
         public string? pcNotes { get; set; }
-    }
+        public string? pcBCeIDOrgGuid { get; set; }
+        public string? pcBCeIDuserGuid { get; set; }
+}
 
     /// <summary>
     /// Clean Up Log

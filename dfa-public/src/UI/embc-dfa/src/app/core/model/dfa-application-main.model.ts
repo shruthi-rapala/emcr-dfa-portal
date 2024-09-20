@@ -444,6 +444,8 @@ export class Contacts {
   pcCellPhone?: null | string;
   pcJobTitle?: null | string;
   pcNotes?: null | string;
+  pcBCeIDOrgGuid?: null | string;
+  pcBCeIDuserGuid?: null | string;
 
   constructor(
     legalName?: null | string,
@@ -464,6 +466,8 @@ export class Contacts {
     pcBusinessPhone?: null | string,
     pcEmailAddress?: null | string,
     pcNotes?: null | string,
+    pcBCeIDOrgGuid?: null | string,
+    pcBCeIDuserGuid?: null | string,  
   
   ) { }
 }

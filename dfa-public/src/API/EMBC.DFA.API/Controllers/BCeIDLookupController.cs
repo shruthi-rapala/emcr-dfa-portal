@@ -114,7 +114,7 @@ namespace EMBC.DFA.API.Controllers
                     return Ok(errResponse);
                 }
                 // 2024-09-13 EMCRI-676 waynezen: Don't allow search on BCeID users from a different Organization
-                else if (!orgGuid.Equals(bceidData.businessGuid))
+                else if (!orgGuid.Equals(bceidData.organizationGuid))
                 {
                     var errResponse = new BCeIDBusiness() { IsValidResponse = false, ResponseErrorMsg = "Unauthorized lookup outside of Organization" };
                     return Ok(errResponse);

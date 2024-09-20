@@ -116,19 +116,32 @@ namespace EMBC.DFA.API.Controllers
 
             if (application == null) return BadRequest("Application details cannot be empty.");
 
-            var userId = userService.GetBCeIDUserId();
-            application.ProfileVerification = new ProfileVerification() { profileId = userId };
-
-            var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
-            var result = await handler.HandleApplicationUpdate(mappedApplication, null);
+            var userData = userService.GetJWTokenData();
+            if (userData == null) return NotFound();
 
             // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
             var primeContactIn = mapper.Map<dfa_applicationprimarycontact_params>(application.applicationContacts);
-            var primeContactSaved = await handler.HandlePrimaryContactAsync(primeContactIn);
-            if (primeContactSaved?.dfa_appcontactid != null)
+
+            string contactId = null;
+
+            if (primeContactIn != null && primeContactIn?.dfa_bceiduserguid != null)
             {
-                mappedApplication.dfa_applicant = primeContactSaved.dfa_appcontactid;
+                contactId = await handler.HandlePrimaryContactAsync(primeContactIn);
+                if (contactId == null)
+                {
+                    return BadRequest("Create/get Primary Contact failed");
+                }
             }
+
+            var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
+
+            if (contactId != null)
+            {
+                //mappedApplication.dfa_applicant = contactId;
+                mappedApplication.dfa_appcontactid = contactId;
+            }
+
+            var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
             if (application.OtherContact != null)
             {
@@ -228,8 +241,7 @@ namespace EMBC.DFA.API.Controllers
             var userData = userService.GetJWTokenData();
 
             if (userData == null) return NotFound();
-            var profileId = "6e0d26eb-376a-ef11-b851-00505683fbf4"; //userData.bceid_business_guid.ToString(); //"ed762426-1075-ee11-b846-00505683fbf4";
-            var lstApplications = await handler.HandleApplicationList(profileId);
+            var lstApplications = await handler.HandleApplicationList();
             return Ok(lstApplications);
         }
 

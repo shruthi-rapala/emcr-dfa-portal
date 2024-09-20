@@ -94,7 +94,7 @@ namespace EMBC.DFA.API.Controllers
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<BceidUserData>> AddLoginInfo()
+        public ActionResult<BceidUserData> AddLoginInfo()
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -103,9 +103,11 @@ namespace EMBC.DFA.API.Controllers
                 {
                     dfa_name = userData.name,
                     dfa_bceidbusinessguid = Convert.ToString(userData.bceid_business_guid),
-                    dfa_bceiduserid = Convert.ToString(userData.bceid_user_guid),
+                    dfa_bceiduserguid = Convert.ToString(userData.bceid_user_guid),
+                    dfa_eventdate = DateTime.Now,
+                    dfa_auditdescription = "BCeId Login"
                 };
-                var exists = await handler.HandleBCeIDUserAsync(bceidUser);
+                handler.HandleBCeIDUserAsync(bceidUser);
 
                 return Ok(userData);
             }

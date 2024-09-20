@@ -4,9 +4,11 @@ using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
+using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.ESS.Shared.Contracts.Metadata;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -304,7 +306,22 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return list.List.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(string profileId)
+        public async Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync()
+        {
+            BceidUserData userData = new BceidUserData()
+            {
+                bceid_user_guid = Guid.Parse("6e0d26eb-376a-ef11-b851-00505683fbf4"), // Prabin's magic number
+            };
+            return await this.GetApplicationListAsync(userData);
+        }
+
+        /// <summary>
+        /// 2024-09-20 EMCRI-676 waynezen; overloaded method that filters application based on BCeID Org
+        /// </summary>
+        /// <param name="bceidUser">Credentials for current logged in user</param>
+        /// <returns>list of Applications that are in the logged in users Organization</returns>
+        /// <exception cref="Exception">Exception may be thrown in case of Dynamics error</exception>
+        public async Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(BceidUserData bceidUser)
         {
             try
             {
@@ -324,6 +341,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     }
                 });
 
+                // old logic: filter on user, or new logic: filter on bceid businessguid
+                var orgFilter = (bceidUser.bceid_business_guid != Guid.Empty) ?
+                    $"dfa_bceidbusinessguid eq {bceidUser.bceid_business_guid.ToString()}" :
+                    $"_dfa_bceiduser_value eq {bceidUser.bceid_user_guid.ToString()}";
+
                 var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
                 {
                     Select = new[]
@@ -336,7 +358,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_causeofdamageother2", "dfa_receiveguidanceassessingyourinfra", "dfa_dateofdamageto",
                         "dfa_applicationcasebpfstages", "dfa_applicationcasebpfsubstages", "dfa_bpfcloseddate"
                     },
-                    Filter = $"_dfa_bceiduser_value eq {profileId} and dfa_createdonportal eq true"
+                    Filter = $"{orgFilter} and dfa_createdonportal eq true"
+
                     //Expand = new CRMExpandOptions[]
                     //{
                     //    new CRMExpandOptions()
@@ -402,6 +425,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
             }
         }
+
         public async Task<dfa_appapplication> GetApplicationDetailsAsync(string appId)
         {
             try
@@ -1260,7 +1284,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         }
 
         // 2024-09-17 EMCRI-663 waynezen; check if Primary Contact exists for this specific Application
-        public async Task<dfa_applicationprimarycontact_retrieve> GetPrimaryContactAsync(Guid applicationId, string bceidUserId)
+        public async Task<dfa_applicationprimarycontact_retrieve> GetPrimaryContactAsync(string bceidUserId)
         {
             try
             {
@@ -1281,27 +1305,33 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<dfa_applicationprimarycontact_retrieve> UpsertPrimaryContactAsync(dfa_applicationprimarycontact_params contact)
+        public async Task<string> UpsertPrimaryContactAsync(dfa_applicationprimarycontact_params contact)
         {
             try
             {
-                var exists = await this.GetPrimaryContactAsync(contact.dfa_appapplicationid.Value, contact.dfa_bceiduserguid);
+                var exists = await this.GetPrimaryContactAsync(contact.dfa_bceiduserguid);
                 if (exists != null)
                 {
-                    return exists;
+                    return exists.dfa_appcontactid;
                 }
                 // must create a primary contact
-                var r = await api.ExecuteAction("dfa_BCeIDCreateContact", contact);
+                var newContactResult = await api.ExecuteAction("dfa_BCeIDCreatePrimaryContact", contact);
 
-                if (r != null)
+                if (newContactResult != null)
                 {
-                    dfa_applicationprimarycontact_retrieve result = new dfa_applicationprimarycontact_retrieve()
+                    // Dynamics endpoint returns weird value with new contact id; parse out id=
+                    // example input string:
+                    // https://embc-dfa2.dev.jag.gov.bc.ca:443/main.aspx?etc=10051&id=1c274e75-1677-ef11-b852-00505683fbf4&histKey=377816346&newWindow=true&pagetype=entityrecord]}
+
+                    var newContactDynUrl = newContactResult.Where(m => m.Key == "output") != null ? newContactResult.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
+
+                    var regEx = new Regex("(&id=)(?<id>[-0-9a-z]+)(&.*)");
+                    var match = regEx.Match(newContactDynUrl);
+                    if (match.Groups["id"].Success)
                     {
-                        dfa_appapplicationid = contact.dfa_appapplicationid.Value.ToString(),
-                        dfa_appcontactid = r.Where(m => m.Key == "output") != null ? r.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty,
-                        dfa_bceiduserguid = contact.dfa_bceiduserguid
-                    };
-                    return result;
+                        var result = match.Groups["id"].Value;
+                        return result;
+                    }
                 }
             }
             catch (System.Exception ex)
@@ -1322,7 +1352,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                        "dfa_name", "dfa_bceidbusinessguid", "dfa_bceiduserid"
                     },
-                    Filter = $"dfa_bceiduserid eq '{bceidUser.dfa_bceiduserid}'"
+                    Filter = $"dfa_bceiduserid eq '{bceidUser.dfa_bceiduserguid}'"
                 });
 
                 return userObj != null ? userObj.List.LastOrDefault() : null;
@@ -1333,29 +1363,17 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
-        public async Task<dfa_bceidusers> UpsertBCeIDUserAsync(dfa_bceidusers bceidUser)
+        public void UpsertBCeIDUserAsync(dfa_bceidusers bceidUser)
         {
             try
             {
-                var exists = await this.GetBCeIDUserAsync(bceidUser);
-                if (exists != null)
-                {
-                    return exists;
-                }
-                // must create a bceid user
-                var r = await api.ExecuteAction("dfa_DFAPortalCreateBCeIDUsers", bceidUser);
-
-                if (r != null)
-                {
-                    return bceidUser;
-                }
+                // create a bceid audit tx
+                api.ExecuteAction("dfa_DFAPortalCreateBCeIDUsers", bceidUser);
             }
             catch (System.Exception ex)
             {
                 throw new Exception($"Failed to update/create bceid user: {ex.Message}", ex);
             }
-
-            return null;
         }
     }
 }

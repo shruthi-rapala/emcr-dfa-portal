@@ -190,6 +190,7 @@ namespace EMBC.DFA.API.Mappers
                 // 2024-09-16 EMCRI-663 waynezen; Contact form fields
                 .ForMember(d => d.dfa_doingbusinessasdbaname, opts => opts.MapFrom(s => s.applicationContacts.doingBusinessAs))
                 .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.applicationContacts.businessNumber))
+                .ForMember(d => d.dfa_bceidbusinessguid, opts => opts.MapFrom(s => s.applicationContacts.pcBCeIDOrgGuid))
                 ;
 
             // 2024-09-16 EMCRI-663 waynezen; Contact form fields
@@ -205,6 +206,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_cellphone, opts => opts.MapFrom(s => s.pcCellPhone))
                 .ForMember(d => d.dfa_jobtitle, opts => opts.MapFrom(s => s.pcJobTitle))
                 .ForMember(d => d.dfa_notes, opts => opts.MapFrom(s => s.pcNotes))
+                .ForMember(d => d.dfa_bceidbusinessguid, opts => opts.MapFrom(s => s.pcBCeIDOrgGuid))
+                .ForMember(d => d.dfa_bceiduserguid, opts => opts.MapFrom(s => s.pcBCeIDuserGuid))
                 ;
 
             CreateMap<dfa_appapplicationmain_retrieve, CleanUpLog>()

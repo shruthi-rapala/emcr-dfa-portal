@@ -7,6 +7,8 @@ export interface ApplicationContacts {
   id?: null | string;
   mailingAddress?: null | string;
   mailingAddressVerified?: null | boolean;
+  pcBCeIDOrgGuid?: null | string;
+  pcBCeIDuserGuid?: null | string;
   pcBusinessPhone?: null | string;
   pcCellPhone?: null | string;
   pcDepartment?: null | string;

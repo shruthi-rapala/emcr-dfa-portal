@@ -87,7 +87,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public string? dfa_name { get; set; }
         public string? dfa_bceidbusinessguid { get; set; }
-        public string? dfa_bceiduserid { get; set; }
+        public string? dfa_bceiduserguid { get; set; }
+        public DateTime dfa_eventdate { get; set; }
+        public string? dfa_auditdescription { get; set; }
     }
 
     public class temp_dfa_appapplicationstart_params
@@ -193,15 +195,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_incorporationnumber { get; set; }
         public string? dfa_jurisdictionofincorporation { get; set; }
         public string? dfa_statementofregistrationnumber { get; set; }
+        public string? dfa_bceidbusinessguid { get; set; }
     }
 
     // 2024-09-17 EMCRI-663 waynezen
     public class dfa_applicationprimarycontact_params
     {
-        public Guid? dfa_appapplicationid { get; set; } // required string when saving
         public string? dfa_primaryaddressline1 { get; set; }
         public bool? dfa_mailingaddresscanadapostverified { get; set; }
         public string? dfa_bceiduserguid { get; set; }
+        public string? dfa_bceidbusinessguid { get; set; }
         public string? dfa_firstname { get; set; }
         public string? dfa_lastname { get; set; }
         public string? dfa_department { get; set; }

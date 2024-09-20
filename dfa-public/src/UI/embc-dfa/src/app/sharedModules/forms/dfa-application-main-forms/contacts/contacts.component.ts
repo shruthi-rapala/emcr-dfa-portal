@@ -427,7 +427,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
             pcDepartment: bceidBusiness.department,
             pcBusinessPhone: bceidBusiness.contactPhone,
             pcEmailAddress: bceidBusiness.contactEmail,
-
+            pcBCeIDOrgGuid: bceidBusiness.organizationGuid,
+            pcBCeIDuserGuid: bceidBusiness.userGuid,
 
           }
           this.contactsForm.get('primaryContactSearch').setValue(bceidBusiness.userId);

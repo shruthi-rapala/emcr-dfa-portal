@@ -123,6 +123,11 @@ export class ContactService extends BaseService {
   static readonly ContactAddLoginInfoPath = '/api/contacts/addlogin';
 
   /**
+   * Gets the same BCeID user info as getlogin, but also ensures that a dfa_bceidusers record exists
+   * for the current logged in user.
+   *
+   *
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `contactAddLoginInfo()` instead.
    *
@@ -147,6 +152,11 @@ export class ContactService extends BaseService {
   }
 
   /**
+   * Gets the same BCeID user info as getlogin, but also ensures that a dfa_bceidusers record exists
+   * for the current logged in user.
+   *
+   *
+   *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `contactAddLoginInfo$Response()` instead.
    *
