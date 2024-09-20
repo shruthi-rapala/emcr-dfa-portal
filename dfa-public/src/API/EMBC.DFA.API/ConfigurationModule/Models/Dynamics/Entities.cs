@@ -471,7 +471,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_descriptionofthecauseofdamage { get; set; }
         public string? dfa_projectbusinessprocessstages { get; set; }
         public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
-        public int? dfa_estimatedcost { get; set; }
+        public decimal? dfa_estimatedcost { get; set; }
         public string? dfa_projectbusinessprocesssubstages { get; set; }
         public bool? dfa_dateofdamagesameasapplication { get; set; }
     }
@@ -498,10 +498,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_receiveddatesameasinvoicedate { get; set; }
         public bool? dfa_portionofinvoice { get; set; }
         public string? dfa_portioninvoicereason { get; set; }
-        public int? dfa_netinvoicedbeingclaimed { get; set; }
-        public int? dfa_pst { get; set; }
-        public int? dfa_grossgst { get; set; }
-        public int? dfa_eligiblegst { get; set; }
+        public decimal? dfa_netinvoicedbeingclaimed { get; set; }
+        public decimal? dfa_pst { get; set; }
+        public decimal? dfa_grossgst { get; set; }
+        public decimal? dfa_eligiblegst { get; set; }
     }
 
     public class dfa_invoice_delete_params
