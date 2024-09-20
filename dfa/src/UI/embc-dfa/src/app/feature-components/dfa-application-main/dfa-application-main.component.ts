@@ -287,7 +287,6 @@ export class DFAApplicationMainComponent
           const dateDifferenceInMs = eventDate.getTime() - currentDateOnly.getTime();
           const differenceInDays = Math.floor(dateDifferenceInMs / (1000 * 60 * 60 * 24));
           this.daysToApply = differenceInDays + 1;
-          console.log("days to apply: ", this.daysToApply);
         }
       })
   }
