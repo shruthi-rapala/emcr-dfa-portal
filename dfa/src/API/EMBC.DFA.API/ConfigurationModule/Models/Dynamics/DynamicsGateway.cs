@@ -738,8 +738,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
                 {
                     var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1").ToList();
-
-                    var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= DateTime.Today).Count();
+                    var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew).Date >= DateTime.Today.Date).Count();
                     if (deadline90days > 0)
                     {
                         return deadline90days;
@@ -767,9 +766,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     }
                 });
 
-                var nowDate = DateTime.Today;
                 // open events are those active events where the 90 day deadline is now or in the future
-                return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate && m.statuscode == "1");
+                IEnumerable<dfa_event> listOfEvents = lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew).Date >= DateTime.Today.Date && m.statuscode == "1");
+                return listOfEvents;
             }
             catch (System.Exception ex)
             {

@@ -37,7 +37,7 @@ export class DfaEventsComponent implements OnInit {
   }
 
   getRemainingDays(event: DisasterEvent): string {
-    const remainingDays = Number(event.remainingDays) + 2; // Account for start and end dates
+    const remainingDays = Number(event.remainingDays) + 1; // Account for today
     if (remainingDays === 1) {
       return "Apply by midnight tonight";
     }
