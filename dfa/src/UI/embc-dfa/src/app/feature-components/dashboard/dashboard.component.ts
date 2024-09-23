@@ -138,6 +138,14 @@ export class DashboardComponent implements OnInit {
         &&
         (x.dateFileClosed && (new Date(x.dateFileClosed).getTime() <= this.sixtyOneDaysAgo))) {
           this.pastApplicationsCount++;
+        } 
+      else if (
+        /* EMBCDFA-1327: Incomplete application with expired event */
+        x.status.toLowerCase() === "closed: inactive" &&
+        x.dateFileClosed == null &&
+        x.primaryApplicantSignedDate == null)
+      {
+        this.pastApplicationsCount++;
       } else {
         this.currentApplicationsCount++;
       }
