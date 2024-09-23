@@ -474,12 +474,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public decimal? dfa_estimatedcost { get; set; }
         public string? dfa_projectbusinessprocesssubstages { get; set; }
         public bool? dfa_dateofdamagesameasapplication { get; set; }
+        public bool? dfa_createdonportal { get; set; }
+        public bool? dfa_portalsubmitted { get; set; }
     }
 
     public class dfa_claim_params
     {
         public string dfa_recoveryplanid { get; set; } // required string
         public bool? dfa_finalclaim { get; set; }
+        public bool? dfa_createdonportal { get; set; }
+        public bool? dfa_portalsubmitted { get; set; }
         public string? dfa_projectclaimid { get; set; }
         public string? dfa_claimbpfstages { get; set; }
         public string? dfa_claimbpfsubstages { get; set; }
@@ -889,7 +893,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         ApprovalPending = 222710003,
 
         [Description("Decision Made")]
-        DecisionMade = 222710004
+        DecisionMade = 222710010,
+
+        [Description("Closed")]
+        Closed = 222710011
     }
 
     public enum ClaimSubStages

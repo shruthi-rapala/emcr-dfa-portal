@@ -523,6 +523,8 @@ namespace EMBC.DFA.API.Mappers
                 //.ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_projectnumber, opts => opts.MapFrom(s => s.Project.projectNumber))
                 .ForMember(d => d.dfa_dateofdamagesameasapplication, opts => opts.MapFrom(s => s.Project.isdamagedDateSameAsApplication))
+                .ForMember(d => d.dfa_createdonportal, opts => opts.MapFrom(s => true))
+                .ForMember(d => d.dfa_portalsubmitted, opts => opts.MapFrom(s => s.Project.projectStatus != null && s.Project.projectStatus.Value == ProjectStageOptionSet.SUBMIT ? true : (bool?)null))
                 .ForMember(d => d.dfa_dateofdamagefrom, opts => opts.MapFrom(s => Convert.ToDateTime(s.Project.sitelocationdamageFromDate)))
                 .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => Convert.ToDateTime(s.Project.sitelocationdamageToDate)))
                 .ForMember(d => d.dfa_dateofdamagedifferencereason, opts => opts.MapFrom(s => s.Project.differentDamageDatesReason))
@@ -539,8 +541,10 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<DFAClaimMain, dfa_claim_params>()
                 .ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.Claim != null ? s.Claim.isThisFinalClaim : (bool?)null))
                 .ForMember(d => d.dfa_projectclaimid, opts => opts.MapFrom(s => s.Id))
+                .ForMember(d => d.dfa_createdonportal, opts => opts.MapFrom(s => true))
+                .ForMember(d => d.dfa_portalsubmitted, opts => opts.MapFrom(s => s.Claim != null && s.Claim.claimStatus != null && s.Claim.claimStatus.Value == ClaimStageOptionSet.SUBMIT ? true : (bool?)null))
                 .ForMember(d => d.dfa_claimbpfstages, opts => opts.MapFrom(s => s.Claim != null && s.Claim.claimStatus != null ? Convert.ToInt32(s.Claim.claimStatus) : Convert.ToInt32(ClaimStages.Draft)))
-                .ForMember(d => d.dfa_claimbpfsubstages, opts => opts.MapFrom(s => s.Claim.claimStatus != null && s.Claim.claimStatus.Value == ClaimStageOptionSet.SUBMIT ? Convert.ToInt32(ClaimSubStages.Pending) : (int?)null))
+                .ForMember(d => d.dfa_claimbpfsubstages, opts => opts.MapFrom(s => s.Claim != null && s.Claim.claimStatus != null && s.Claim.claimStatus.Value == ClaimStageOptionSet.SUBMIT ? Convert.ToInt32(ClaimSubStages.Pending) : (int?)null))
                 .ForMember(d => d.dfa_claimreceivedbyemcrdate, opts => opts.MapFrom(s => s.Claim.claimStatus != null && s.Claim.claimStatus.Value == ClaimStageOptionSet.SUBMIT ? DateTime.Now : (DateTime?)null))
                 .ForMember(d => d.dfa_recoveryplanid, opts => opts.MapFrom(s => s.ProjectId));
             //.ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.ProjectId));

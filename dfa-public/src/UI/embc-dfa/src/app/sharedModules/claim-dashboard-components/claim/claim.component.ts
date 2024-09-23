@@ -110,7 +110,7 @@ export class DfaDashClaimComponent implements OnInit {
 
                 objApp.statusColor = objStatItem.statusColor;
 
-                if (objApp.stage == 'Ineligible' || objApp.stage == 'Withdrwan') {
+                if (objApp.stage == 'Ineligible' || objApp.stage == 'Withdrawn') {
                   objApp.statusColor = '#E25E63';
                 }
 
