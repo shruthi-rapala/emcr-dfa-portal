@@ -164,7 +164,7 @@ export class DfaDashProjectComponent implements OnInit {
     var res = JSON.parse(JSON.stringify(lstApp));
     this.lstProjects = res;
     //dfa decision made
-    debugger
+    
     this.lstProjects.forEach(x => {
       if (
         (x.status.toLowerCase() === "decision made"
@@ -232,9 +232,9 @@ export class DfaDashProjectComponent implements OnInit {
     }
     
     if (this.searchTextInput != null) {
-      lstProjectsFilterting = lstProjectsFilterting.filter(m => m.projectName.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
-        || m.projectNumber.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
-        || m.siteLocation.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1);
+      lstProjectsFilterting = lstProjectsFilterting.filter(m => (m.projectName && m.projectName.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1)
+        || (m.projectNumber && m.projectNumber.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1)
+        || (m.siteLocation && m.siteLocation.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1));
     }
 
     this.lstFilteredProjects = lstProjectsFilterting;
