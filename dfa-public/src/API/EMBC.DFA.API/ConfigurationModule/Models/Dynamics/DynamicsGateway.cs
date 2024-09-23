@@ -980,7 +980,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_sitelocation = objApp.dfa_sitelocation,
                                    dfa_estimatedcompletiondateofproject = objApp.dfa_estimatedcompletiondateofproject,
                                    //dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
-                                   dfa_approvedcost = objApp.dfa_approvedcost,
+                                   dfa_approvedcost = objApp.dfa_approvedcost.HasValue ? Math.Round(objApp.dfa_approvedcost.Value, 2) : objApp.dfa_approvedcost.Value,
                                    dfa_18monthdeadline = objApp.dfa_18monthdeadline,
                                    createdon = objApp.createdon,
                                    statuscode = objApp.statuscode,
@@ -1056,7 +1056,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_totalpaid", "dfa_claimpaiddate", "dfa_projectclaimid",
                         "dfa_claimbpfstages", "dfa_claimbpfsubstages", "dfa_claimtotal",
                         "createdon", "dfa_costsharing", "dfa_eligiblepayable",
-                        "dfa_bpfclosedate"
+                        "dfa_bpfclosedate", "dfa_onetimedeductionamount",
+                        "dfa_paidclaimamount"
                     },
                     Filter = $"_dfa_recoveryplanid_value eq {projectId}"
                 });
@@ -1083,6 +1084,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_costsharing = objClaim.dfa_costsharing,
                                    dfa_eligiblepayable = objClaim.dfa_eligiblepayable,
                                    dfa_bpfclosedate = objClaim.dfa_bpfclosedate,
+                                   dfa_onetimedeductionamount = objClaim.dfa_onetimedeductionamount,
+                                   dfa_paidclaimamount = objClaim.dfa_paidclaimamount,
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstClaims;

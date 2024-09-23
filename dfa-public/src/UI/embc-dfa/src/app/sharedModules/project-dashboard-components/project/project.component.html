@@ -141,9 +141,9 @@
       <div style="padding-top: 16px; display: flex;" [hidden]="applItem.isHidden">
   
         <div class="col-md-2">
-          <span><b>Sile Location - </b></span>
+          <span><b>Site Location - </b></span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 wrap-text">
           <span>{{applItem.siteLocation }}</span>
         </div>
         <div class="col-md-2">
@@ -159,7 +159,7 @@
           <span><b>EMCR Approved Amount -</b></span>
         </div>
         <div class="col-md-3">
-          <span id="spnCauseOfDamage">{{ applItem.emcrApprovedAmount}}</span>
+          <span id="spnCauseOfDamage">CA$&nbsp;{{ applItem.emcrApprovedAmount | number }}</span>
         </div>
         <div class="col-md-2">
           <span><b>18 Month Deadline -</b></span>

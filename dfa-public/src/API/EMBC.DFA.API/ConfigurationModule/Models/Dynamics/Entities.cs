@@ -745,6 +745,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_costsharing { get; set; }
         public string? dfa_eligiblepayable { get; set; }
         public string? dfa_bpfclosedate { get; set; }
+        public string? dfa_onetimedeductionamount { get; set; }
+        public string? dfa_paidclaimamount { get; set; }
     }
 
     public class dfa_recoveryinvoice
@@ -780,7 +782,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_projectbusinessprocessstages { get; set; }
         public string? statuscode { get; set; }
         public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
-        public int? dfa_approvedcost { get; set; }
+        public decimal? dfa_approvedcost { get; set; }
         public DateTime? dfa_18monthdeadline { get; set; }
         public DateTime createdon { get; set; }
         public string? dfa_projectid { get; set; }
