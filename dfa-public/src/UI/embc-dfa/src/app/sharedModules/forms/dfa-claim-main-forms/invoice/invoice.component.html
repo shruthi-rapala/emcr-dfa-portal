@@ -285,7 +285,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                         formControlName="netInvoiceBeingClaimed"
                         matInput
                              required
-                             mask="99999999999999.00"
+                             mask="separator.2"
                              (keyup)="CalculateInvoice($event);"
                         maxlength="100"/>
                       <span class="currencyText">CA$</span>
@@ -308,7 +308,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                       (focusin)="setHelpText(4, tooltip)"
                       formControlName="pst"
                       matInput
-                      mask="99999999999999.00"
+                      mask="separator.2"
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
@@ -325,7 +325,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                       (focusin)="setHelpText(5, tooltip)"
                       formControlName="grossGST"
                       matInput
-                      mask="99999999999999.00"
+                      mask="separator.2"
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
