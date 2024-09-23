@@ -68,7 +68,14 @@ export class DfaApplicationComponent implements OnInit {
             objApp.isErrorInStatus = false;
             objApp.statusBar = JSON.parse(jsonVal);
             objApp.statusBar.forEach(objStatItem => {
-              if (objApp.status != null && objStatItem.label.toLowerCase() == objApp.status.toLowerCase()) {
+              /* EMBCDFA-1327: Technically, this is a draft application, but it's set to closed because it connected to an expired event,
+                 so we need to manually set it to the Draft Application status on the status bar. */
+              if (objApp.status != null && (
+                    objStatItem.label.toLowerCase() == objApp.status.toLowerCase() || (
+                      objStatItem.label.toLowerCase() === 'draft application' &&
+                      objApp.status.toLowerCase() === 'closed: inactive' 
+                    )
+                  )) {
                 objStatItem.currentStep = true;
                 isFound = true
                 this.matchStatusFound = true;
@@ -110,13 +117,23 @@ export class DfaApplicationComponent implements OnInit {
     this.lstApplications = JSON.parse(JSON.stringify(lstApp));
         
     this.lstApplications.forEach(x => {
-      if (
-        (x.status.toLowerCase() === "dfa decision made"
-          || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
-        &&
-        (x.dateFileClosed && (new Date(x.dateFileClosed).getTime() <= this.sixtyOneDaysAgo))) {        
-          x.currentApplication = false;
-      } else x.currentApplication = true;
+      if (( x.status.toLowerCase() === "dfa decision made" || 
+            x.status.toLowerCase() === "closed: inactive" || 
+            x.status.toLowerCase() === "closed: withdrawn") &&
+          (x.dateFileClosed && 
+            (new Date(x.dateFileClosed).getTime() <= this.sixtyOneDaysAgo))) 
+      {        
+        x.currentApplication = false;
+      } 
+      /* EMBCDFA-1327: Incomplete application with expired event */
+      else if (x.status.toLowerCase() === "closed: inactive" &&
+                  x.dateFileClosed == null &&
+                  x.primaryApplicantSignedDate == null)
+      {
+        x.currentApplication = false;
+      } else {
+        x.currentApplication = true;
+      }
     })
     if (this.appType === "current") {
       this.lstApplications = this.lstApplications
