@@ -569,9 +569,9 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
             
             let invoice = this.dfaClaimMainDataService.createDFAInvoiceDTO();
             if(invoice.id=='null')
-              {
-                invoice.id=null;
-              }
+            {
+              invoice.id=null;
+            }
             this.dfaClaimMainMapping.mapDFAInvoiceMain(invoice);
 
             this.dfaClaimMainService.upsertInvoice(invoice).subscribe(invoiceId => {
