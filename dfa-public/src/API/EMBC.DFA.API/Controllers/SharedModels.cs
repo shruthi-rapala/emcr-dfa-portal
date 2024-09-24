@@ -515,7 +515,7 @@ namespace EMBC.DFA.API.Controllers
         public string? repairWorkDetails { get; set; }
         public string? repairDamagedInfrastructure { get; set; }
         public string? estimatedCompletionDate { get; set; }
-        public string? estimateCostIncludingTax { get; set; }
+        public decimal? estimateCostIncludingTax { get; set; }
         public ProjectStageOptionSet? projectStatus { get; set; }
     }
 
