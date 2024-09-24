@@ -769,6 +769,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     }
                 });
 
+                var nowDate = DateTime.Now;
+
                 // open events are those active events where the 90 day deadline is now or in the future
                 return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null
                     && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate
