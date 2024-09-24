@@ -762,13 +762,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_receiveddatesameasinvoicedate { get; set; }
         public bool? dfa_portionofinvoice { get; set; }
         public string? dfa_portioninvoicereason { get; set; }
-        public int? dfa_netinvoicedbeingclaimed { get; set; }
-        public int? dfa_pst { get; set; }
-        public int? dfa_grossgst { get; set; }
-        public int? dfa_eligiblegst { get; set; }
-        public int? dfa_actualinvoicetotal { get; set; }
-        public int? dfa_totalbeingclaimed { get; set; }
-        public int? dfa_emcrdecision { get; set; }
+        public decimal? dfa_netinvoicedbeingclaimed { get; set; }
+        public decimal? dfa_pst { get; set; }
+        public decimal? dfa_grossgst { get; set; }
+        public decimal? dfa_eligiblegst { get; set; }
+        public decimal? dfa_actualinvoicetotal { get; set; }
+        public decimal? dfa_totalbeingclaimed { get; set; }
+        public decimal? dfa_emcrdecision { get; set; }
         public string? dfa_emcrapprovedamount { get; set; }
         public DateTime? dfa_emcrdecisiondate { get; set; }
         public string? dfa_emcrdecisioncomments { get; set; }
