@@ -112,14 +112,22 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   numericOnly(event): boolean {
-    let patt = /^([0-9])$/;
-    let result = patt.test(event.key);
-    return result;
-  }
+    let patt = /^\d+(\.\d{1,2})?$/;
+    let text = event.target.value+event.key;
+     if(text.indexOf('.')<0)
+     {
+       text=text+'.0'
+     }else 
+     if(text.indexOf('.')==text.length-1)
+       {
+         text=text+'0'
+       }
+     
+     let result = patt.test(text);
+     return result;
+   }
 
   CalculateInvoice(event): void {
-    let patt = /^([0-9])$/;
-    let result = patt.test(event.key);
 
     var netInvoice = Number(this.invoiceForm.controls.netInvoiceBeingClaimed.value);
     var PST = Number(this.invoiceForm.controls.pst.value);
@@ -252,6 +260,8 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
 
       this.hideHelp = true;
       this.isReadOnly = true;
+
+      document.getElementById("invHeadr").scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     //let projectId = this.dfaProjectMainDataService.getProjectId();
@@ -282,6 +292,13 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
       "it out.\r\n" +
       "If you need more guidance, select the field and the " +
       "relevant details will be displayed to assist you.";
+
+    setTimeout(
+      function () {
+        document.getElementById("invHeadr").scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }.bind(this),
+      200
+    );
   }
 
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
@@ -437,9 +454,10 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
     // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - new text mask provider
     NgxMaskDirective, NgxMaskPipe,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
-  declarations: [InvoiceComponent]
+  declarations: [InvoiceComponent],
+  providers: [provideNgxMask()]
 })
 class InvoiceModule {}
 

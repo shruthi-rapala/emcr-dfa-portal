@@ -1,7 +1,8 @@
 <mat-card class="card-align recoveryPlan" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
     <form [formGroup]="invoiceForm">
-      <h1 class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
+      <h1 #invHeadr
+id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
       <button type="button"
           #tooltip="matTooltip" [hidden]="hideHelp"
       (mouseenter)="$event.stopImmediatePropagation()"
@@ -213,7 +214,7 @@
                     #autosize="cdkTextareaAutosize"
                     cdkAutosizeMinRows="2"
                     cdkAutosizeMaxRows="5"
-                    maxlength="2000"></textarea>
+                    maxlength="200"></textarea>
                   <!--<mat-hint>{{ remainingLength }} characters remaining.</mat-hint>-->
                    
                 </mat-form-field>
@@ -259,7 +260,7 @@
                     #autosize="cdkTextareaAutosize"
                     cdkAutosizeMinRows="2"
                     cdkAutosizeMaxRows="5"
-                    maxlength="2000"></textarea>
+                    maxlength="200"></textarea>
                   <!--<mat-hint>{{ remainingLength }} characters remaining.</mat-hint>-->
                 </mat-form-field><br/>
               </div>
@@ -284,7 +285,7 @@
                         formControlName="netInvoiceBeingClaimed"
                         matInput
                              required
-                             (keypress)="numericOnly($event);"
+                             mask="separator.2"
                              (keyup)="CalculateInvoice($event);"
                         maxlength="100"/>
                       <span class="currencyText">CA$</span>
@@ -307,7 +308,7 @@
                       (focusin)="setHelpText(4, tooltip)"
                       formControlName="pst"
                       matInput
-                      (keypress)="numericOnly($event);"
+                      mask="separator.2"
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
@@ -324,7 +325,7 @@
                       (focusin)="setHelpText(5, tooltip)"
                       formControlName="grossGST"
                       matInput
-                      (keypress)="numericOnly($event);"
+                      mask="separator.2"
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
@@ -374,7 +375,7 @@
                             #eligibleGST
                       formControlName="eligibleGST"
                       matInput
-                      (keypress)="numericOnly($event);"
+                      mask="separator.2"
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
