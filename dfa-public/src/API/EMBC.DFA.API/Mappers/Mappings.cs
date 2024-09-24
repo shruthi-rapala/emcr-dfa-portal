@@ -536,7 +536,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_descriptionofrepairwork, opts => opts.MapFrom(s => s.Project.repairWorkDetails))
                 .ForMember(d => d.dfa_descriptionofmaterialneededtorepair, opts => opts.MapFrom(s => s.Project.repairDamagedInfrastructure))
                 .ForMember(d => d.dfa_estimatedcompletiondateofproject, opts => opts.MapFrom(s => Convert.ToDateTime(s.Project.estimatedCompletionDate)))
-                .ForMember(d => d.dfa_estimatedcost, opts => opts.MapFrom(s => s.Project != null && !string.IsNullOrEmpty(s.Project.estimateCostIncludingTax) ? decimal.Parse(s.Project.estimateCostIncludingTax) : (decimal?)null));
+                .ForMember(d => d.dfa_estimatedcost, opts => opts.MapFrom(s => s.Project != null ? s.Project.estimateCostIncludingTax : (decimal?)null));
 
             CreateMap<DFAClaimMain, dfa_claim_params>()
                 .ForMember(d => d.dfa_finalclaim, opts => opts.MapFrom(s => s.Claim != null ? s.Claim.isThisFinalClaim : (bool?)null))
@@ -603,7 +603,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.infraDamageDetails, opts => opts.MapFrom(s => s.dfa_descriptionofdamagedinfrastructure))
                 .ForMember(d => d.repairDamagedInfrastructure, opts => opts.MapFrom(s => s.dfa_descriptionofmaterialneededtorepair))
                 .ForMember(d => d.siteLocation, opts => opts.MapFrom(s => s.dfa_sitelocation))
-                .ForMember(d => d.estimateCostIncludingTax, opts => opts.MapFrom(s => Convert.ToString(s.dfa_estimatedcost)))
+                .ForMember(d => d.estimateCostIncludingTax, opts => opts.MapFrom(s => s.dfa_estimatedcost))
                 .ForMember(d => d.sitelocationdamageFromDate, opts => opts.MapFrom(s => s.dfa_dateofdamagefrom == null ? null : Convert.ToDateTime(s.dfa_dateofdamagefrom).ToString("o")))
                 .ForMember(d => d.sitelocationdamageToDate, opts => opts.MapFrom(s => s.dfa_dateofdamageto == null ? null : Convert.ToDateTime(s.dfa_dateofdamageto).ToString("o")))
                 .ForMember(d => d.isdamagedDateSameAsApplication, opts => opts.MapFrom(s => s.dfa_dateofdamagesameasapplication))
