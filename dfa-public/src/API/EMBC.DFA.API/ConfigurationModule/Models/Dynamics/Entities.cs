@@ -202,7 +202,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_projectbusinessprocessstages { get; set; }
         public int? dfa_projectbusinessprocesssubstages { get; set; }
         public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
-        public int? dfa_estimatedcost { get; set; }
+        public decimal? dfa_estimatedcost { get; set; }
         public bool? dfa_dateofdamagesameasapplication { get; set; }
     }
 

@@ -375,7 +375,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                             #eligibleGST
                       formControlName="eligibleGST"
                       matInput
-                      mask="99999999999999.00"
+                      mask="separator.2"
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
