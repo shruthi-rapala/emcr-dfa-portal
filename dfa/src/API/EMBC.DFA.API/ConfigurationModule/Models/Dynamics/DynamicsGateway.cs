@@ -770,16 +770,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 });
 
                 // open events are those active events where the 90 day deadline is now or in the future
-<<<<<<< HEAD
                 return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null
                     && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate
                     && m.statuscode == "1"
                     && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
                                                 || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString()));
-=======
-                IEnumerable<dfa_event> listOfEvents = lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew).Date >= DateTime.Today.Date && m.statuscode == "1");
-                return listOfEvents;
->>>>>>> origin/support-develop
             }
             catch (System.Exception ex)
             {
