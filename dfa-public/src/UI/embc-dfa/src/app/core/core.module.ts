@@ -96,8 +96,7 @@ import { ContactNotFoundComponent } from 'src/app/sharedModules/forms/dfa-applic
     DFADeleteConfirmInvoiceDialogComponent,
     DFAConfirmClaimCreateDialogComponent,
     DFAConfirmProjectCreateDialogComponent,
-    DFAGeneralInfoDialogComponent
-    DFAConfirmProjectCreateDialogComponent,
+    DFAGeneralInfoDialogComponent,
     ContactNotFoundComponent
   ],
   exports: [
@@ -127,8 +126,7 @@ import { ContactNotFoundComponent } from 'src/app/sharedModules/forms/dfa-applic
     DFAApplicationSubmissionMsgDialogComponent,
     DFADeleteConfirmInvoiceDialogComponent,
     DFAConfirmClaimCreateDialogComponent,
-    DFAConfirmProjectCreateDialogComponent,
-    DFAGeneralInfoDialogComponent
+    DFAGeneralInfoDialogComponent,
     DFAConfirmProjectCreateDialogComponent,
     ContactNotFoundComponent
   ]

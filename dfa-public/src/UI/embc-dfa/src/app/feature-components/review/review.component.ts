@@ -125,29 +125,29 @@ export class ReviewComponent implements OnInit {
     }
 
     var appForm = this.formCreationService.applicationDetailsForm.value;
-    //var contactsForm = this.formCreationService.contactsForm.value;
-    //this.formCreationService.otherContactsForm.value;
-   
     //debugger
-    //if (appForm.controls.floodDamage.value === 'true') {
-    //  this.causeOfDamage = 'Flood Damage, ';
-    //}
-    //if (appForm.controls.landslideDamage.value === 'true') {
-    //  this.causeOfDamage += 'Landslide Damage, ';
-    //}
-    //if (appForm.controls.stormDamage.value === 'true') {
-    //  this.causeOfDamage += 'Storm Damage, ';
-    //}
-    //if (appForm.controls.wildfireDamage.value === 'true') {
-    //  this.causeOfDamage += 'Wildfire Damage, ';
-    //}
-    //if (appForm.controls.otherDamage.value === 'true') {
-    //  this.causeOfDamage += appForm.controls.otherDamage.value + ', ';
-    //}
+    if (appForm.controls.floodDamage.value === 'true') {
+     this.causeOfDamage = 'Flood Damage, ';
+    }
+    if (appForm.controls.landslideDamage.value === 'true') {
+     this.causeOfDamage += 'Landslide Damage, ';
+    }
+    if (appForm.controls.stormDamage.value === 'true') {
+     this.causeOfDamage += 'Storm Damage, ';
+    }
+    if (appForm.controls.wildfireDamage.value === 'true') {
+     this.causeOfDamage += 'Wildfire Damage, ';
+    }
+    if (appForm.controls.otherDamage.value === 'true') {
+     this.causeOfDamage += appForm.controls.otherDamage.value + ', ';
+    }
 
-    //this.causeOfDamage = this.causeOfDamage.slice(0, -1);
-
-    //const _fullTimeOccupantsFormArray = this.formCreationService.applicationDetailsForm.value;
+    this.causeOfDamage = this.causeOfDamage.slice(0, -1);
+   
+    var contactsForm = this.formCreationService.contactsForm.value;
+    var otherContactsForm = this.formCreationService.otherContactsForm.value;
+   
+    let _fullTimeOccupantsFormArray1 = this.formCreationService.applicationDetailsForm.value;
     appForm.valueChanges
       .pipe(
         mapTo(appForm.getRawValue())
