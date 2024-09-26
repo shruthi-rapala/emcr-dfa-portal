@@ -878,6 +878,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Withdrawn")]
         Withdrawn = 222710007,
+
+        [Description("Approved with Exclusions")]
+        ApprovedwithExclusions = 222710008,
     }
 
     public enum ClaimStages

@@ -372,7 +372,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_receiveguidanceassessingyourinfra = objApp.dfa_receiveguidanceassessingyourinfra,
                                    dfa_applicationcasebpfstages = objApp.dfa_applicationcasebpfstages,
                                    dfa_applicationcasebpfsubstages = objApp.dfa_applicationcasebpfsubstages,
-                                   dfa_bpfcloseddate = objApp.dfa_bpfcloseddate
+                                   dfa_bpfcloseddate = !string.IsNullOrEmpty(objApp.dfa_bpfcloseddate) ? DateTime.Parse(objApp.dfa_bpfcloseddate).ToLocalTime().ToString() : objApp.dfa_bpfcloseddate,
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
                 //from objEvent in lstEvents.List
@@ -986,7 +986,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    statuscode = objApp.statuscode,
                                    dfa_projectbusinessprocessstages = objApp.dfa_projectbusinessprocessstages,
                                    dfa_projectbusinessprocesssubstages = objApp.dfa_projectbusinessprocesssubstages,
-                                   dfa_bpfclosedate = objApp.dfa_bpfclosedate
+                                   dfa_bpfclosedate = !string.IsNullOrEmpty(objApp.dfa_bpfclosedate) ? DateTime.Parse(objApp.dfa_bpfclosedate).ToLocalTime().ToString() : objApp.dfa_bpfclosedate,
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstApps;
@@ -1083,7 +1083,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    createdon = objClaim.createdon,
                                    dfa_costsharing = objClaim.dfa_costsharing,
                                    dfa_eligiblepayable = objClaim.dfa_eligiblepayable,
-                                   dfa_bpfclosedate = objClaim.dfa_bpfclosedate,
+                                   dfa_bpfclosedate = !string.IsNullOrEmpty(objClaim.dfa_bpfclosedate) ? DateTime.Parse(objClaim.dfa_bpfclosedate).ToLocalTime().ToString() : objClaim.dfa_bpfclosedate,
                                    dfa_onetimedeductionamount = objClaim.dfa_onetimedeductionamount,
                                    dfa_paidclaimamount = objClaim.dfa_paidclaimamount,
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
