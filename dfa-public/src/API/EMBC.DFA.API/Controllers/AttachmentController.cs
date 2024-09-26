@@ -228,5 +228,20 @@ namespace EMBC.DFA.API.Controllers
         public string? contentType { get; set; }
         public int? fileSize { get; set; }
         public bool deleteFlag { get; set; }
+
+        public class ApplicationReviewPDFUpload
+        {
+            public Guid? dfa_appapplicationid { get; set; }
+            public Guid? id { get; set; }
+            public string? fileName { get; set; }
+            public string? fileDescription { get; set; }
+            public FileCategoryClaim? fileType { get; set; }
+           // public string? fileTypeText { get; set; }
+            public string? uploadedDate { get; set; }
+            public string? modifiedBy { get; set; }
+            public byte[]? fileData { get; set; }
+            public string? contentType { get; set; }
+            public int? fileSize { get; set; }
+            public bool deleteFlag { get; set; }
+        }
     }
-}

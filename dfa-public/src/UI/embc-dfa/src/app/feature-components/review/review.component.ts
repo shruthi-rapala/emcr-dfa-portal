@@ -141,8 +141,9 @@ export class ReviewComponent implements OnInit {
     if (appForm.controls.otherDamage.value === 'true') {
      this.causeOfDamage += appForm.controls.otherDamage.value + ', ';
     }
-
-    this.causeOfDamage = this.causeOfDamage.slice(0, -1);
+    if(this.causeOfDamage){
+      this.causeOfDamage = this.causeOfDamage.slice(0, -1);
+    }
    
     var contactsForm = this.formCreationService.contactsForm.value;
     var otherContactsForm = this.formCreationService.otherContactsForm.value;

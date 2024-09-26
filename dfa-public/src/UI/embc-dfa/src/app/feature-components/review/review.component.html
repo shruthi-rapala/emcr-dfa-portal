@@ -179,7 +179,9 @@
                     .applicantSubtype : "Enter required information"
                 }}
               </span>  
-            </td>   </tr>
+            </td>  
+           </tr>
+           <div class="row info-detail" *ngIf="(formCreationService.applicationDetailsForm$ | async)?.value.applicantSubtype == 'Other Local Government Body'">
             <tr> <td class="record-title"> Other Governing Body  </td>  <td> 
               <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.applicantSubSubtype || (formCreationService.applicationDetailsForm$ | async)?.controls.applicantSubSubtype.invalid}">
                 {{
@@ -188,7 +190,10 @@
                     .applicantSubSubtype : "Enter required information"
                 }}
               </span>   
-            </td>   </tr>
+            </td> 
+            </tr>
+          </div>
+          <div class="row info-detail" *ngIf="(formCreationService.applicationDetailsForm$ | async)?.value.applicantSubtype == 'Other'">
             <tr> <td class="record-title"> Describe Your Organization  </td>  <td> 
                <span [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.subtypeOtherDetails || (formCreationService.applicationDetailsForm$ | async)?.controls.subtypeOtherDetails.invalid}">
               {{
@@ -197,7 +202,10 @@
                   .subtypeOtherDetails : "Enter required information"
               }}
             </span> 
-           </td>   </tr>
+           </td>   
+          </tr>
+        </div>
+
         </table>
         </div>
         <div class="col-md-1" *ngIf="allowEdit">
