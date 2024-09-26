@@ -386,6 +386,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => s.dfa_approvedcost == null ? 0 : s.dfa_approvedcost))
                 .ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
+                .ForMember(d => d.IsClaimSubmission, opts => opts.MapFrom(s =>
+                    !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) && Convert.ToInt32(s.dfa_projectbusinessprocessstages) == Convert.ToInt32(ProjectStages.Closed)
+                    && !string.IsNullOrEmpty(s.dfa_projectbusinessprocesssubstages) &&
+                    (Convert.ToInt32(s.dfa_projectbusinessprocesssubstages) == Convert.ToInt32(ProjectSubStages.Approved) ||
+                    Convert.ToInt32(s.dfa_projectbusinessprocesssubstages) == Convert.ToInt32(ProjectSubStages.ApprovedwithExclusions)) ? true : false))
                 .ForMember(d => d.EstimatedCompletionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_estimatedcompletiondateofproject).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
 
             CreateMap<dfa_projectclaim, CurrentClaim>()
@@ -443,6 +448,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 != null && s.dfa_causeofdamageother2 == (int?)YesNoOptionSet.Yes ? true : false))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
                 .ForMember(d => d.eligibleGST, opts => opts.MapFrom(s => s.dfa_eligiblegst))
+                .ForMember(d => d.IsProjectSubmission, opts => opts.MapFrom(s => CheckEligibilityForProjectSubmission(s.dfa_applicationcasebpfstages)))
                 .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));
 
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
@@ -633,6 +639,21 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.contactEmail, opts => opts.MapFrom(s => s.emailaddress))
                 .ForMember(d => d.individualFirstname, opts => opts.MapFrom(s => s.display_name))
                 ;
+        }
+
+        private bool CheckEligibilityForProjectSubmission(string? dfa_applicationcasebpfstages)
+        {
+            if (!string.IsNullOrEmpty(dfa_applicationcasebpfstages))
+            {
+                if (Convert.ToInt32(dfa_applicationcasebpfstages) == Convert.ToInt32(ApplicationStages.CaseCreated)
+                    || Convert.ToInt32(dfa_applicationcasebpfstages) == Convert.ToInt32(ApplicationStages.CaseInProgress)
+                    || Convert.ToInt32(dfa_applicationcasebpfstages) == Convert.ToInt32(ApplicationStages.Closed))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public FileCategory ConvertStringToFileCategory(string documenttype)
