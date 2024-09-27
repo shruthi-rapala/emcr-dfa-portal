@@ -84,19 +84,20 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
-    this.isReadOnly = (dfaApplicationMainDataService.getViewOrEdit() === 'view'
-      || dfaApplicationMainDataService.getViewOrEdit() === 'edit'
-      || dfaApplicationMainDataService.getViewOrEdit() === 'viewOnly');
+
+    // 2024-09-25 EMCRI-663 waynezen; always make Contact field editable, for now
+    this.isReadOnly = false;
     this.setViewOrEditControls();
 
-    this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
-      this.isReadOnly = (vieworedit === 'view'
-        || vieworedit === 'edit'
-        || vieworedit === 'viewOnly');
-      this.setViewOrEditControls();
-    })
+    // this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
+    //   this.isReadOnly = (vieworedit === 'view'
+    //     || vieworedit === 'edit'
+    //     || vieworedit === 'viewOnly');
+    //   this.setViewOrEditControls();
+    // })
 
-    this.vieworedit = dfaApplicationMainDataService.getViewOrEdit();
+    // this.vieworedit = dfaApplicationMainDataService.getViewOrEdit();
+
   }
 
   setViewOrEditControls() {
@@ -152,10 +153,10 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           doingBusinessAs: null,
           businessNumber: null,
           mailingAddress: null,
-          // mailingAddress2: null,
-          // city: null,
-          // province: null,
-          // postalCode: null,
+          mailingAddress2: null,
+          city: null,
+          province: null,
+          postalCode: null,
           primaryContactSearch: null,
           primaryContactValidated: false,
           pcFirstName: null,
@@ -214,6 +215,9 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
       });
 
+      // EMCRI-663 waynezen TODO: debug
+      //this.dfaApplicationMainMapping.setExistingDFAApplicationMainContacts();
+
     this.getContactForApplication(this.dfaApplicationMainDataService.getApplicationId());
     this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
 
@@ -228,7 +232,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
         next: (dfaApplicationMain) => {
 
-          this.dfaApplicationMainMapping.mapDFAApplicationMain(dfaApplicationMain);          
+          this.dfaApplicationMainMapping.mapDFAApplicationMainContacts(dfaApplicationMain);          
           
         },
         error: (error) => {
@@ -450,7 +454,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
             .open(ContactNotFoundComponent, {
               data: {
               },
-              width: '350px',
+              width: '420px',
               disableClose: true
             });
         }    

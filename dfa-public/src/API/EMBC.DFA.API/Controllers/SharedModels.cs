@@ -469,15 +469,23 @@ namespace EMBC.DFA.API.Controllers
     // 2024-09-16 EMCRI-663 waynezen
     public class ApplicationContacts
     {
-        public Guid? id { get; set; }
-        public Guid? applicationId { get; set; }
+        public Guid? contactId { get; set; }
+        public string? legalName { get; set; }
         public string? doingBusinessAs { get; set; }
         public string? businessNumber { get; set; }
+
         public string? mailingAddress { get; set; }
+        public string? mailingAddress2 { get; set; }
+        public string? city { get; set; }
+        public string? province { get; set; }
+        public string? postalCode { get; set; }
         public bool? mailingAddressVerified { get; set; }
 
         // Primary Contact info
-        public string? pcUserId { get; set; }
+
+        public string? primaryContactSearch { get; set; }
+        public bool? primaryContactValidated { get; set; }
+
         public string? pcFirstName { get; set; }
         public string? pcLastName { get; set; }
         public string? pcDepartment { get; set; }

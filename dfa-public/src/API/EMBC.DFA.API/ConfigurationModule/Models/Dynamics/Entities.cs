@@ -83,7 +83,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_damagedpropertyaddresscanadapostverified { get; set; } // optional Two Options
     }
 
-    public class dfa_bceidusers
+    public class dfa_bceidusers_params
+    {
+        public string? dfa_name { get; set; }
+        public string? dfa_bceidbusinessguid { get; set; }
+        public string? dfa_bceiduserguid { get; set; }
+    }
+
+    public class dfa_audit_event
     {
         public string? dfa_name { get; set; }
         public string? dfa_bceidbusinessguid { get; set; }
@@ -201,16 +208,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     // 2024-09-17 EMCRI-663 waynezen
     public class dfa_applicationprimarycontact_params
     {
-        public string? dfa_primaryaddressline1 { get; set; }
-        public bool? dfa_mailingaddresscanadapostverified { get; set; }
+        public string dfa_appcontactid { get; set; } // if present, update existing record
         public string? dfa_bceiduserguid { get; set; }
         public string? dfa_bceidbusinessguid { get; set; }
+        public string? dfa_bceiduserlogin { get; set; }
         public string? dfa_firstname { get; set; }
         public string? dfa_lastname { get; set; }
         public string? dfa_department { get; set; }
         public string? dfa_businessnumber { get; set; }
         public string? dfa_emailaddress { get; set; }
-        public string? dfa_cellphone { get; set; }
+        public string? dfa_cellphonenumber { get; set; }
         public string? dfa_jobtitle { get; set; }
         public string? dfa_notes { get; set; }
     }
@@ -218,9 +225,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     // 2024-09-17 EMCRI-663 waynezen
     public class dfa_applicationprimarycontact_retrieve
     {
-        public string? dfa_appapplicationid { get; set; }
         public string? dfa_appcontactid { get; set; }
+        public string? dfa_primaryaddressline1 { get; set; }
+        public bool? dfa_mailingaddresscanadapostverified { get; set; }
         public string? dfa_bceiduserguid { get; set; }
+        public string? dfa_bceidbusinessguid { get; set; }
+        public string? dfa_bceiduserlogin { get; set; }
+        public string? dfa_firstname { get; set; }
+        public string? dfa_lastname { get; set; }
+        public string? dfa_department { get; set; }
+        public string? dfa_businessnumber { get; set; }
+        public string? dfa_emailaddress { get; set; }
+        public string? dfa_cellphonenumber { get; set; }
+        public string? dfa_title { get; set; }
+        public string? dfa_notes { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
@@ -340,6 +358,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_incorporationnumber { get; set; }
         public string dfa_jurisdictionofincorporation { get; set; }
         public string dfa_statementofregistrationnumber { get; set; }
+        public string dfa_bceidbusinessguid { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord

@@ -165,10 +165,21 @@ table {
   width: 22px;
   padding-top: 2px;
 }
+
 .noshow {
   display: none;
 
   &.visible {
     display: contents;
   }
+}
+
+.otherContactsBarBack {
+  background-color: #38598A;
+}
+
+.otherContactsBarText {
+  font-family: 'BC Sans';
+  font-size: 16px;
+  color: #ffffff;
 }

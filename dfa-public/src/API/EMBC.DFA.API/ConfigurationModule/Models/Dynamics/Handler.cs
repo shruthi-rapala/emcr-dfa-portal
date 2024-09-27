@@ -65,7 +65,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
         Task<string> HandlePrimaryContactAsync(dfa_applicationprimarycontact_params objPrimaryContact);
-        void HandleBCeIDUserAsync(dfa_bceidusers bceidUser);
+        Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactAsync(string bceidUserId);
+        Task<string> HandleBCeIDAudit(dfa_audit_event auditEvent);
     }
 
     public class Handler : IConfigurationHandler
@@ -180,9 +181,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         }
 
         // 2024-09-19 EMCRI-676 waynezen; overloaded method that filters application based on BCeID Org
-        public Task<List<CurrentApplication>> HandleApplicationList(BceidUserData bceidUser)
+        public async Task<List<CurrentApplication>> HandleApplicationList(BceidUserData bceidUser)
         {
-            throw new NotImplementedException();
+            var lstApps = await listsGateway.GetApplicationListAsync(bceidUser);
+            var mappedApps = mapper.Map<List<CurrentApplication>>(lstApps);
+            return mappedApps;
         }
 
         public async Task<CurrentApplication> HandleApplicationDetails(string applicationId)
@@ -355,9 +358,16 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return result;
         }
 
-        public void HandleBCeIDUserAsync(dfa_bceidusers bceidUser)
+        public async Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactAsync(string contactId)
         {
-            listsGateway.UpsertBCeIDUserAsync(bceidUser);
+            var result = await listsGateway.GetPrimaryContactbyContactIdAsync(contactId);
+            return result;
+        }
+
+        public async Task<string> HandleBCeIDAudit(dfa_audit_event auditEvent)
+        {
+            var result = await listsGateway.CreateBCeIDAuditEvent(auditEvent);
+            return result;
         }
     }
 }

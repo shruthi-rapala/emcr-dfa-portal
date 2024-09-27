@@ -1,24 +1,31 @@
-<h2><b>Contact not found!</b></h2>
-
 <mat-dialog-content>
-    <div class="row">
-        <div class="col-md-12">
-            A BCeID Account with this userID hasn't been found.
-        </div>
+  <div class="row">
+    <div class="iconStyleRed">
+      <mat-icon>error_outline</mat-icon>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <ul>
-                <li>check the spelling and try again</li>
-                <li>drink more alcohol</li>
-            </ul>
-        </div>
+    <div class="col-md-11">
+      <div class="infoHeaderText">Contact not found!</div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 infoText">
+      A BCeID Account with this userID hasn't been found, do one or more of the following:
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 infoText">
+      <ul>
+        <li>check the spelling and try again.</li>
+        <li>ask the primary contact to create a BCeID account.</li>
+        <li>search for and select a different BCeID account.</li>
+      </ul>
+    </div>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <div class="col-md-12">
-    <button class="button-s button-width" mat-button (click)="close()">
+    <button class="button-s button-width button-align" mat-button (click)="close()">
       Close
     </button>
   </div>

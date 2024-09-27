@@ -195,19 +195,33 @@ namespace EMBC.DFA.API.Mappers
 
             // 2024-09-16 EMCRI-663 waynezen; Contact form fields
             CreateMap<ApplicationContacts, dfa_applicationprimarycontact_params>()
-                .ForMember(d => d.dfa_bceiduserguid, opts => opts.MapFrom(s => s.pcUserId))
-                .ForMember(d => d.dfa_primaryaddressline1, opts => opts.MapFrom(s => s.mailingAddress))
-                .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s => s.mailingAddressVerified))
+                .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => (s.contactId.HasValue ? s.contactId.ToString() : null)))
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.pcFirstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.pcLastName))
                 .ForMember(d => d.dfa_department, opts => opts.MapFrom(s => s.pcDepartment))
                 .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.pcBusinessPhone))
                 .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.pcEmailAddress))
-                .ForMember(d => d.dfa_cellphone, opts => opts.MapFrom(s => s.pcCellPhone))
+                .ForMember(d => d.dfa_cellphonenumber, opts => opts.MapFrom(s => s.pcCellPhone))
                 .ForMember(d => d.dfa_jobtitle, opts => opts.MapFrom(s => s.pcJobTitle))
                 .ForMember(d => d.dfa_notes, opts => opts.MapFrom(s => s.pcNotes))
                 .ForMember(d => d.dfa_bceidbusinessguid, opts => opts.MapFrom(s => s.pcBCeIDOrgGuid))
                 .ForMember(d => d.dfa_bceiduserguid, opts => opts.MapFrom(s => s.pcBCeIDuserGuid))
+                .ForMember(d => d.dfa_bceiduserlogin, opts => opts.MapFrom(s => s.primaryContactSearch))
+                ;
+
+            CreateMap<dfa_applicationprimarycontact_retrieve, ApplicationContacts>()
+                .ForMember(d => d.contactId, opts => opts.MapFrom(s => s.dfa_appcontactid))
+                .ForMember(d => d.pcFirstName, opts => opts.MapFrom(s => s.dfa_firstname))
+                .ForMember(d => d.pcLastName, opts => opts.MapFrom(s => s.dfa_lastname))
+                .ForMember(d => d.pcDepartment, opts => opts.MapFrom(s => s.dfa_department))
+                .ForMember(d => d.businessNumber, opts => opts.MapFrom(s => s.dfa_businessnumber))
+                .ForMember(d => d.pcEmailAddress, opts => opts.MapFrom(s => s.dfa_emailaddress))
+                .ForMember(d => d.pcCellPhone, opts => opts.MapFrom(s => s.dfa_cellphonenumber))
+                .ForMember(d => d.pcJobTitle, opts => opts.MapFrom(s => s.dfa_title))
+                .ForMember(d => d.pcNotes, opts => opts.MapFrom(s => s.dfa_notes))
+                .ForMember(d => d.pcBCeIDuserGuid, opts => opts.MapFrom(s => s.dfa_bceiduserguid))
+                .ForMember(d => d.pcBCeIDOrgGuid, opts => opts.MapFrom(s => s.dfa_bceidbusinessguid))
+                .ForMember(d => d.primaryContactSearch, opts => opts.MapFrom(s => s.dfa_bceiduserlogin))
                 ;
 
             CreateMap<dfa_appapplicationmain_retrieve, CleanUpLog>()
@@ -263,6 +277,12 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.eventId, opts => opts.MapFrom(s => s._dfa_eventid_value))
                 .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamage) ? DateTime.Parse(s.dfa_dateofdamage).ToString("o") + "Z" : s.dfa_dateofdamage))
                 .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto));
+
+            // 2024-09-25 EMCRI-663 waynezen; Contact form fields
+            CreateMap<dfa_appapplicationmain_retrieve, ApplicationContacts>()
+                .ForMember(d => d.legalName, opts => opts.MapFrom(s => s.dfa_governmentbodylegalname))
+                .ForMember(d => d.doingBusinessAs, opts => opts.MapFrom(s => s.dfa_doingbusinessasdbaname))
+                ;
 
             CreateMap<dfa_appapplicationmain_retrieve, SignAndSubmit>()
                 .ForMember(d => d.ninetyDayDeadline, opts => opts.MapFrom(s => s.dfa_90daydeadline))

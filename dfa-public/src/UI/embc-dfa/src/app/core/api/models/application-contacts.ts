@@ -1,11 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ApplicationContacts {
-  applicationId?: null | string;
   businessNumber?: null | string;
+  city?: null | string;
+  contactId?: null | string;
   doingBusinessAs?: null | string;
-  id?: null | string;
+  legalName?: null | string;
   mailingAddress?: null | string;
+  mailingAddress2?: null | string;
   mailingAddressVerified?: null | boolean;
   pcBCeIDOrgGuid?: null | string;
   pcBCeIDuserGuid?: null | string;
@@ -17,5 +19,8 @@ export interface ApplicationContacts {
   pcJobTitle?: null | string;
   pcLastName?: null | string;
   pcNotes?: null | string;
-  pcUserId?: null | string;
+  postalCode?: null | string;
+  primaryContactSearch?: null | string;
+  primaryContactValidated?: null | boolean;
+  province?: null | string;
 }

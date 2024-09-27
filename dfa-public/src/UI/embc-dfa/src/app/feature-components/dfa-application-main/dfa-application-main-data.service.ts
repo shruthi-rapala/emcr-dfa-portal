@@ -205,8 +205,6 @@ export class DFAApplicationMainDataService {
 
     // 2024-09-16 EMCRI-663 waynezen; assign non-homogeneous fields to Contacts form
     let primaryContact: ApplicationContacts = this._contacts;
-    primaryContact.applicationId = this._applicationId;
-    primaryContact.pcUserId = this._contacts.primaryContactSearch;
 
     return {
       id: this._applicationId,

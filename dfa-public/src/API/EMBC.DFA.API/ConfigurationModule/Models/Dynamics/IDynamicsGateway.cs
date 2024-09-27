@@ -54,9 +54,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> DeleteInvoice(dfa_invoice_delete_params invoice);
 
         // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
-        public Task<dfa_applicationprimarycontact_retrieve> GetPrimaryContactAsync(string userId);
+        public Task<dfa_applicationprimarycontact_retrieve> GetPrimaryContactbyBCeIDAsync(string bceidUserId);
+        public Task<dfa_applicationprimarycontact_retrieve> GetPrimaryContactbyContactIdAsync(string contactId);
         public Task<string> UpsertPrimaryContactAsync(dfa_applicationprimarycontact_params contact);
-        public Task<dfa_bceidusers> GetBCeIDUserAsync(dfa_bceidusers bceidUser);
-        public void UpsertBCeIDUserAsync(dfa_bceidusers bceidUser);
+        public Task<string> CreateBCeIDAuditEvent(dfa_audit_event auditEvent);
     }
 }

@@ -122,24 +122,21 @@ namespace EMBC.DFA.API.Controllers
             // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
             var primeContactIn = mapper.Map<dfa_applicationprimarycontact_params>(application.applicationContacts);
 
-            string contactId = null;
-
-            if (primeContactIn != null && primeContactIn?.dfa_bceiduserguid != null)
+            var contactId = primeContactIn?.dfa_appcontactid;
+            if (primeContactIn?.dfa_bceiduserguid != null)
             {
+                // saving new Application - try to find existing Primary contact using BCeID user guid
                 contactId = await handler.HandlePrimaryContactAsync(primeContactIn);
+
+                // if still no contactId, then error
                 if (contactId == null)
                 {
-                    return BadRequest("Create/get Primary Contact failed");
+                    return BadRequest("Create/update Primary Contact failed");
                 }
             }
 
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
-
-            if (contactId != null)
-            {
-                //mappedApplication.dfa_applicant = contactId;
-                mappedApplication.dfa_appcontactid = contactId;
-            }
+            mappedApplication.dfa_applicant = contactId;
 
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
@@ -211,15 +208,25 @@ namespace EMBC.DFA.API.Controllers
             try
             {
                 // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
-                var userId = userService.GetBCeIDBusinessId();
-                if (string.IsNullOrEmpty(userId)) return NotFound();
-
-                var appContactProfile = await handler.HandleGetUser(userId);
+                var userData = userService.GetJWTokenData();
+                if (userData == null) return NotFound();
 
                 var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
                 DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
                 dfaApplicationMain.Id = applicationId;
                 dfaApplicationMain.applicationDetails = mapper.Map<ApplicationDetails>(dfa_appapplication);
+
+                // 2024-09-24 EMCRI-663; get primary contact info
+                if (dfa_appapplication?._dfa_applicant_value != null)
+                {
+                    var primeContactIn = await handler.HandleGetPrimaryContactAsync(dfa_appapplication._dfa_applicant_value);
+                    // convert Dynamics DTO to UI DTO
+                    var appContact = mapper.Map<ApplicationContacts>(primeContactIn);
+                    // add in a few extra fields from the Application -> Contacts screen
+                    mapper.Map<dfa_appapplicationmain_retrieve, ApplicationContacts>(dfa_appapplication, appContact);
+
+                    dfaApplicationMain.applicationContacts = appContact;
+                }
 
                 return Ok(dfaApplicationMain);
             }
@@ -241,7 +248,7 @@ namespace EMBC.DFA.API.Controllers
             var userData = userService.GetJWTokenData();
 
             if (userData == null) return NotFound();
-            var lstApplications = await handler.HandleApplicationList();
+            var lstApplications = await handler.HandleApplicationList(userData);
             return Ok(lstApplications);
         }
 
