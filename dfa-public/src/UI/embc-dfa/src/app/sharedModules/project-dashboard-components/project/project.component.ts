@@ -258,14 +258,9 @@ export class DfaDashProjectComponent implements OnInit {
     this.router.navigate(['/dfa-project/' + applItem.projectId + '/claims']);
   }
 
-  ViewProject(applItem: ProjectExtended): void {
+  ViewAmendment(applItem: ProjectExtended): void {
     this.dFAProjectMainDataService.setProjectId(applItem.projectId);
-    //this.dFAProjectMainDataService.setApplicationId(applItem.applicationId);
-    
-    //if (applItem.primaryApplicantSignedDate == null && applItem.currentApplication != false) {
-    //  this.dfaApplicationMainDataService.setViewOrEdit('update');
-    //}
-    //else
+
     if (applItem.openProject === true) {
       if (applItem.status.toLowerCase() == 'draft') {
         this.dFAProjectMainDataService.setViewOrEdit('updateproject');
@@ -276,7 +271,29 @@ export class DfaDashProjectComponent implements OnInit {
       this.dFAProjectMainDataService.setViewOrEdit('viewOnly');
     }
 
-    this.router.navigate(['/dfa-project-main/'+applItem.projectId]);
+    this.router.navigate(['/dfa-project-amendment/' + applItem.projectId]);
+  }
+
+  ViewProject(applItem: ProjectExtended): void {
+    this.dFAProjectMainDataService.setProjectId(applItem.projectId);
+    //this.dFAProjectMainDataService.setApplicationId(applItem.applicationId);
+
+    var urlPrj = "/dfa-project-main/";
+
+    if (applItem.openProject === true) {
+      if (applItem.status.toLowerCase() == 'draft') {
+        urlPrj = "/dfa-project-main/";
+        this.dFAProjectMainDataService.setViewOrEdit('updateproject');
+      } else {
+        urlPrj = "/dfa-project-view/";
+        this.dFAProjectMainDataService.setViewOrEdit('viewOnly');
+      }
+    } else if (applItem.openProject === false) {
+      urlPrj = "/dfa-project-view/";
+      this.dFAProjectMainDataService.setViewOrEdit('viewOnly');
+    }
+
+    this.router.navigate([urlPrj + applItem.projectId]);
   }
 
 }
