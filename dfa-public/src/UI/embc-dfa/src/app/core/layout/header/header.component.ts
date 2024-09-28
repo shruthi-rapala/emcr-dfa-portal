@@ -78,11 +78,20 @@ export class HeaderComponent implements OnInit {
     },
     {
       label: 'View Project',
-      link: 'dfa-project-main/prjid',
+      link: 'dfa-project-view/prjid',
       icon: 'pan_tool',
-      path: '/dfa-project-main/',
+      path: '/dfa-project-view/',
       level: 4,
       excluded: false,
+      islink: true
+    },
+    {
+      label: 'View Amendment',
+      link: 'dfa-project-amendment/prjid',
+      icon: 'pan_tool',
+      path: '/dfa-project-amendment/',
+      level: 4,
+      excluded: true,
       islink: true
     },
     {
@@ -128,7 +137,6 @@ export class HeaderComponent implements OnInit {
     router.events.subscribe(event => {
       
       if (event instanceof NavigationStart) {
-        console.log(event.url)
         var currentItem = null;
 
         this.appitems.forEach(obj => {
