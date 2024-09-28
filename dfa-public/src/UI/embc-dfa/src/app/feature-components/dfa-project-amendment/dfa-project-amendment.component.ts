@@ -92,6 +92,7 @@ export class DFAProjectAmendmentComponent
   ProjectAmendments: CurrentProjectAmendment[] = [];
   statusBar?: null | Array<ProjectStatusBar>;
   isErrorInStatus?: null | boolean;
+  projectName = '';
 
   constructor(
     //@Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -126,6 +127,7 @@ export class DFAProjectAmendmentComponent
     this.projectId = this.dfaProjectMainDataService.getProjectId();
     this.applicationNumber = 'Application';
     this.getApplicationDetials(this.appId);
+    this.getRecoveryPlan(this.projectId);
     this.getAmendmentDetials(this.projectId);
     
     this.dfaProjectMainDataService.setApplicationId(this.appId);
@@ -217,6 +219,21 @@ export class DFAProjectAmendmentComponent
   SyncAmendmentDetails(): void {
     this.projectId = this.dfaProjectMainDataService.getProjectId();
     this.getAmendmentDetials(this.projectId);
+  }
+
+  getRecoveryPlan(projectId: string) {
+    if (projectId) {
+      this.projectService.projectGetProjectMain({ projectId: projectId }).subscribe({
+        next: (dfaProjectMain) => {
+          if (dfaProjectMain && dfaProjectMain.project)
+            this.projectName = 'Project - ' + dfaProjectMain.project.projectName +' (Amended)';
+        },
+        error: (error) => {
+          //console.error(error);
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        }
+      });
+    }
   }
 
   getAmendmentDetials(projectId: string) {
