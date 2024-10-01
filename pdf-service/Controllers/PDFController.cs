@@ -41,7 +41,7 @@ namespace pdfservice.Controllers
         [Produces("text/html")]
         public IActionResult GetPDF_DFATest()
         {
-            var template = "dfa_application_demo";
+            var template = "dfa_application_summary";
             var contacts = new Contact[] {
                     new Contact { FirstName = "Karim", LastName= "Hass",CellPhone="222233",BusinessPhone="44444444",Email="Karim@12332.com",JobTitle="Co-Owner",Notes="notes"},
                     new Contact { FirstName = "Karim1", LastName= "Hass1",CellPhone="2222331",BusinessPhone="444444441",Email="Karim@123321.com",JobTitle="Co-Owner1",Notes="notes1"},
