@@ -14,25 +14,23 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.PDF.PDFService
     {
         private HttpClient httpClient = null;
 
-        private CRMWebAPIConfig crmWebAPIConfig;
-
-        public PDFServiceHandler(CRMWebAPIConfig crmWebAPIConfig)
+        public PDFServiceHandler()
         {
-           this.crmWebAPIConfig = crmWebAPIConfig;
-           if (crmWebAPIConfig.NetworkCredential != null)
-            {
-                httpClient = new HttpClient(new HttpClientHandler
-                {
-                    Credentials = crmWebAPIConfig.NetworkCredential
-                });
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", crmWebAPIConfig.AccessToken);
-            }
+           //this.crmWebAPIConfig = crmWebAPIConfig;
+           //if (crmWebAPIConfig.NetworkCredential != null)
+           // {
+           //     httpClient = new HttpClient(new HttpClientHandler
+           //     {
+           //         Credentials = crmWebAPIConfig.NetworkCredential
+           //     });
+           // }
+           // else
+           // {
+           //     httpClient = new HttpClient();
+           //     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", crmWebAPIConfig.AccessToken);
+           // }
 
-           SetHttpClientDefaults(crmWebAPIConfig.CallerID);
+           //SetHttpClientDefaults(crmWebAPIConfig.CallerID);
         }
         public async Task<byte[]> GetFileDataAsync(PdfApplicationData pdfApplicationData)
         {
