@@ -375,6 +375,25 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_requireddocumenttype, opts => opts.MapFrom(s => s.requiredDocumentType)) // TODO map required file type
                 .ForMember(d => d.fileType, opts => opts.MapFrom(s => s.fileType));
 
+            CreateMap<dfa_projectamendment, CurrentProjectAmendment>()
+                .ForMember(d => d.AmendmentReceivedDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_amendmentreceiveddate).Year < 2020 ? string.Empty : Convert.ToDateTime(s.dfa_amendmentreceiveddate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.AmendmentApprovedDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_amendmentapproveddate).Year < 2020 ? string.Empty : Convert.ToDateTime(s.dfa_amendmentapproveddate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.AmendedProjectDeadlineDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_amendedprojectdeadlinedate).Year < 2020 ? string.Empty : Convert.ToDateTime(s.dfa_amendedprojectdeadlinedate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.Amended18MonthDeadline, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_amended18monthdeadline).Year < 2020 ? string.Empty : Convert.ToDateTime(s.dfa_amended18monthdeadline).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.AmendmentNumber, opts => opts.MapFrom(s => s.dfa_amendmentnumber))
+                .ForMember(d => d.ProjectId, opts => opts.MapFrom(s => s._dfa_project_value))
+                .ForMember(d => d.AmendmentReason, opts => opts.MapFrom(s => s.dfa_amendmentreason))
+                .ForMember(d => d.EMCRDecisionComments, opts => opts.MapFrom(s => s.dfa_emcrapprovalcomments))
+                .ForMember(d => d.AmendmentId, opts => opts.MapFrom(s => s.dfa_projectamendmentid))
+                .ForMember(d => d.EstimatedAdditionalProjectCost, opts => opts.MapFrom(s => s.dfa_estimatedadditionalprojectcost))
+                .ForMember(d => d.ApprovedAdditionalProjectCost, opts => opts.MapFrom(s => s.dfa_approvedadditionalprojectcost))
+                .ForMember(d => d.RequestforProjectDeadlineExtention, opts => opts.MapFrom(s => s.dfa_requestforprojectdeadlineextension == true ? "Yes" : "No"))
+                .ForMember(d => d.DeadlineExtensionApproved, opts => opts.MapFrom(s => s.dfa_deadlineextensionapproved == true ? "Yes" : "No"))
+                .ForMember(d => d.RequestforAdditionalProjectCost, opts => opts.MapFrom(s => s.dfa_requestforadditionalprojectcost == true ? "Yes" : "No"))
+                .ForMember(d => d.Status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_amendmentstages) ? GetEnumDescription((ProjectAmendmentStages)Convert.ToInt32(s.dfa_amendmentstages)) : null))
+                .ForMember(d => d.Stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_amendmentsubstages) ? GetEnumDescription((ProjectAmendmentSubStages)Convert.ToInt32(s.dfa_amendmentsubstages)) : null))
+                .ForMember(d => d.AdditionalProjectCostDecision, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_additionalprojectcostdecision) ? GetEnumDescription((ProjectAmendmentAdditionalProjectCostDecision)Convert.ToInt32(s.dfa_additionalprojectcostdecision)) : null));
+
             CreateMap<dfa_project, CurrentProject>()
                 .ForMember(d => d.Deadline18Month, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_18monthdeadline).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_18monthdeadline).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 .ForMember(d => d.ProjectNumber, opts => opts.MapFrom(s => s.dfa_projectnumber))
@@ -386,6 +405,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.EMCRApprovedAmount, opts => opts.MapFrom(s => s.dfa_approvedcost == null ? 0 : s.dfa_approvedcost))
                 .ForMember(d => d.CreatedDate, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
+                .ForMember(d => d.HasAmendment, opts => opts.MapFrom(s => s.hasAmendments))
                 .ForMember(d => d.IsClaimSubmission, opts => opts.MapFrom(s =>
                     !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) && Convert.ToInt32(s.dfa_projectbusinessprocessstages) == Convert.ToInt32(ProjectStages.Closed)
                     && !string.IsNullOrEmpty(s.dfa_projectbusinessprocesssubstages) &&
