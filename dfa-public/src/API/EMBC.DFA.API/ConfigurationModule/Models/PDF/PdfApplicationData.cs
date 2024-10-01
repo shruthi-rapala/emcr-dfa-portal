@@ -1,7 +1,6 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace pdfservice.Models
+namespace EMBC.DFA.API.ConfigurationModule.Models.PDF
 {
     public class PdfApplicationData
     {

@@ -1,5 +1,4 @@
-﻿
-namespace pdfservice.Models
+﻿namespace EMBC.DFA.API.ConfigurationModule.Models.PDF
 {
     public class Contact
     {
