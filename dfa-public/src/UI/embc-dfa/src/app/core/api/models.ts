@@ -18,6 +18,8 @@ export { ApplicationDetails } from './models/application-details';
 export { ApplicationStageOptionSet } from './models/application-stage-option-set';
 export { ApplicationContacts } from './models/application-contacts';
 export { OtherContact } from './models/other-contact';
+export { PdfApplicationData } from './models/pdf-application-data';
+export { Contact } from './models/contact';
 export { CurrentApplication } from './models/current-application';
 export { StatusBar } from './models/status-bar';
 export { ApplicantSubtypes } from './models/applicant-subtypes';

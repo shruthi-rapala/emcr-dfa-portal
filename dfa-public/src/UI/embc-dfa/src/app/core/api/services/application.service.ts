@@ -14,6 +14,7 @@ import { ApplicantSubtypes } from '../models/applicant-subtypes';
 import { CurrentApplication } from '../models/current-application';
 import { DfaApplicationMain } from '../models/dfa-application-main';
 import { DfaApplicationStart } from '../models/dfa-application-start';
+import { PdfApplicationData } from '../models/pdf-application-data';
 
 @Injectable({
   providedIn: 'root',
@@ -147,6 +148,49 @@ export class ApplicationService extends BaseService {
 
     return this.applicationUpdateApplication$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
+    );
+  }
+
+  /**
+   * Path part for operation applicationGetPdfApplicationData
+   */
+  static readonly ApplicationGetPdfApplicationDataPath = '/api/applications';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `applicationGetPdfApplicationData()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetPdfApplicationData$Response(params?: {
+  }): Observable<StrictHttpResponse<PdfApplicationData>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetPdfApplicationDataPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<PdfApplicationData>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `applicationGetPdfApplicationData$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetPdfApplicationData(params?: {
+  }): Observable<PdfApplicationData> {
+
+    return this.applicationGetPdfApplicationData$Response(params).pipe(
+      map((r: StrictHttpResponse<PdfApplicationData>) => r.body as PdfApplicationData)
     );
   }
 
