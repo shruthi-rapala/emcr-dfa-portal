@@ -341,7 +341,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           this._snackBar.open('Successfully uploaded the document', 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
-            duration: 8000,
           });
         },
         error: (error) => {
@@ -354,7 +353,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
               {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
-                duration: 8000,
               }
           );
           
@@ -385,7 +383,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           this._snackBar.open('Successfully uploaded the document', 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
-            duration: 8000,
           });
         },
         error: (error) => {
@@ -398,7 +395,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             {
               horizontalPosition: 'center',
               verticalPosition: 'top',
-              duration: 8000,
             }
         );
         }
@@ -416,7 +412,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           this._snackBar.open('Successfully uploaded the document', 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
-            duration: 8000,
           });
         },
         error: (error) => {
@@ -429,7 +424,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             {
               horizontalPosition: 'center',
               verticalPosition: 'top',
-              duration: 8000,
             }
         );
         }
@@ -465,7 +459,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         data: {
           content: message
         },
-        // height: '250px',
         width: '350px',
         disableClose: true
       });
