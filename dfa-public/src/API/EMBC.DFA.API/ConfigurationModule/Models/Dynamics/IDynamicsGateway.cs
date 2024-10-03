@@ -36,8 +36,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> DeleteDocumentLocationAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms);
         Task<IEnumerable<dfa_projectdocumentlocation>> GetProjectDocumentLocationsListAsync(Guid projectId);
         Task<IEnumerable<dfa_projectclaimdocumentlocation>> GetProjectClaimDocumentLocationsListAsync(Guid claimId);
-        Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync();
-        // 2024-09-19 EMCRI-676 waynezen; overloaded method that filters application based on BCeID Org
+        // 2024-09-19 EMCRI-676 waynezen; filter applications based on BCeID Org
         Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync(BceidUserData bceidUser);
         Task<int> GetEventCount();
         Task<IEnumerable<dfa_event>> GetOpenPublicEventList();

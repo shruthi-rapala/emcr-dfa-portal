@@ -309,15 +309,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return list.List.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<dfa_appapplication>> GetApplicationListAsync()
-        {
-            BceidUserData userData = new BceidUserData()
-            {
-                bceid_user_guid = Guid.Parse("6e0d26eb-376a-ef11-b851-00505683fbf4"), // Prabin's magic number
-            };
-            return await this.GetApplicationListAsync(userData);
-        }
-
         /// <summary>
         /// 2024-09-20 EMCRI-676 waynezen; overloaded method that filters application based on BCeID Org
         /// </summary>

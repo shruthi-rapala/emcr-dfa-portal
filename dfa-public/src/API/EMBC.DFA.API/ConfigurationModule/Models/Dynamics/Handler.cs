@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -45,7 +45,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> DeleteFileUploadAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms);
         Task<IEnumerable<dfa_projectdocumentlocation>> GetProjectFileUploadsAsync(Guid projectId);
         Task<IEnumerable<dfa_projectclaimdocumentlocation>> GetProjectClaimFileUploadsAsync(Guid claimId);
-        Task<List<CurrentApplication>> HandleApplicationList();
         // 2024-09-19 EMCRI-676 waynezen; overloaded method that filters application based on BCeID Org
         Task<List<CurrentApplication>> HandleApplicationList(BceidUserData bceidUser);
         Task<int> HandleEvents();
@@ -180,13 +179,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             var lstApps = await listsGateway.GetProjectAmendmentListAsync(projectId);
             var mappedProjects = mapper.Map<List<CurrentProjectAmendment>>(lstApps);
             return mappedProjects;
-        }
-
-        public async Task<List<CurrentApplication>> HandleApplicationList()
-        {
-            var lstApps = await listsGateway.GetApplicationListAsync();
-            var mappedApps = mapper.Map<List<CurrentApplication>>(lstApps);
-            return mappedApps;
         }
 
         // 2024-09-19 EMCRI-676 waynezen; overloaded method that filters application based on BCeID Org
