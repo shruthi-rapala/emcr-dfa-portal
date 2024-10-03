@@ -17,6 +17,7 @@ ENV ASPNETCORE_URLS=http://*:8080
 
 ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
 ENV DOTNET_gcServer=1
+ENV LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:$LD_LIBRARY_PATH
 ARG VERSION
 ENV VERSION=$VERSION
 USER 0
@@ -34,6 +35,13 @@ RUN \
     libxrender1 \
     xfonts-75dpi \
     xfonts-base \
+    libssl1.1 \
+    libstdc++6 \
+    zlib1g \
+    libfreetype6 \
+    libpng16-16\
+    libxcb1 \
+    libx11-xcb1 \
     wkhtmltopdf \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /usr/local/bin/Linux \
