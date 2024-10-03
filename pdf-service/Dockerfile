@@ -42,7 +42,10 @@ RUN \
     libpng16-16\
     libxcb1 \
     libx11-xcb1 \
+    gdebi \
     wkhtmltopdf \
+    && ln -s /usr/lib/libgdiplus.so /lib/x86_64-linux-gnu/libgdiplus.so \
+    && ln -s /usr/local/lib/libwkhtmltox.so /usr/lib/libwkhtmltox.so \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /usr/local/bin/Linux \
     && echo $'#!/usr/bin/env sh\n    /usr/local/bin/wkhtmltopdf --zoom 1.3 $@ \n    ' > /usr/local/bin/Linux/wkhtmltopdf     \
