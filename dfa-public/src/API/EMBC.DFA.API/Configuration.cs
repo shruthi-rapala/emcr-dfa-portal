@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
+using EMBC.DFA.API.ConfigurationModule.Models.PDF.PDFService;
 using EMBC.DFA.API.Services;
 using EMBC.Gov.BCeID;
 using EMBC.Gov.BCeID.Models;
@@ -197,6 +198,7 @@ namespace EMBC.DFA.API
             services.AddTransient<IProfileInviteService, ProfileInviteService>();
             services.AddTransient<IConfigurationHandler, Handler>();
             services.AddTransient<IDynamicsGateway, DynamicsGateway>();
+            services.AddTransient<PDFServiceHandler, PDFServiceHandler>();
 
             // 2024-07-02 EMCRI-363 waynezen: added
             services.AddTransient<IUserService, UserService>();
@@ -218,8 +220,6 @@ namespace EMBC.DFA.API
             {
                 // 2024-08-11 EMCRI-216 waynezen; Very important to AllowAnyHeader - otherwise CORS problems
                 policy.AllowAnyHeader();
-
-                //policy.AllowAnyOrigin();
 
                 // 2024-08-20 EMCRI-434 waynezen; Instead of AllowAnyMethod - only allow select Http methods
                 //policy.AllowAnyMethod();

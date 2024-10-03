@@ -56,7 +56,7 @@
             <mat-form-field appearance="outline" >
               <mat-label>From date</mat-label>
               <input matInput
-                     (dateInput)="checkDateWithinOpenEvent()"
+                     (dateChange)="checkDateWithinOpenEvent()"
                 [matDatepicker]="fromPicker"
                 [readonly]="isReadOnly === true"
                 formControlName="damageFromDate"
@@ -89,7 +89,6 @@
             <mat-form-field appearance="outline">
               <mat-label>To date</mat-label>
               <input matInput
-                (dateInput)="checkDateWithinOpenEvent()"
                 [matDatepicker]="toPicker"
                 formControlName="damageToDate"
                 [readonly]="isReadOnly === true"
@@ -134,6 +133,9 @@
              Select a disaster event that matches your community and date of damage<span style="color:red" >*</span>
            </p>
            <div class="col-md-6">
+            <mat-form-field class="invisible">
+              <input class="hide" matInput formControlName="eventName">
+           </mat-form-field>
              <mat-form-field appearance="outline">
                 <mat-label>Matching Disaster Event</mat-label>
                 <mat-select formControlName="eventId" matInput placeholder="Matching Disaster Event" required [disabled]="matchingEventsData.length <= 0 && vieworedit !== 'viewOnly' && vieworedit !== 'view'">

@@ -271,7 +271,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_projectbusinessprocessstages { get; set; }
         public int? dfa_projectbusinessprocesssubstages { get; set; }
         public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
-        public int? dfa_estimatedcost { get; set; }
+        public decimal? dfa_estimatedcost { get; set; }
         public bool? dfa_dateofdamagesameasapplication { get; set; }
     }
 
@@ -524,7 +524,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
         public string? dfa_requireddocumenttype { get; set; } // for required documents TODO: uncomment
     }
-
+    public class SubmissionEntityPDF
+    {
+        public IEnumerable<AttachmentEntity> documentCollection { get; set; }
+        public string dfa_appapplicationid { get; set; }
+        public string dfa_description { get; set; } // pass in description
+        public string dfa_modifiedby { get; set; } // pass in modified by
+        public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
+        public string? dfa_requireddocumenttype { get; set; } // for required documents TODO: uncomment
+    }
     public class dfa_DFAActionDeleteDocuments_parms
     {
         public Guid AppDocID { get; set; } // required string
@@ -556,15 +564,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_descriptionofthecauseofdamage { get; set; }
         public string? dfa_projectbusinessprocessstages { get; set; }
         public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
-        public int? dfa_estimatedcost { get; set; }
+        public decimal? dfa_estimatedcost { get; set; }
         public string? dfa_projectbusinessprocesssubstages { get; set; }
         public bool? dfa_dateofdamagesameasapplication { get; set; }
+        public bool? dfa_createdonportal { get; set; }
+        public bool? dfa_portalsubmitted { get; set; }
     }
 
     public class dfa_claim_params
     {
         public string dfa_recoveryplanid { get; set; } // required string
         public bool? dfa_finalclaim { get; set; }
+        public bool? dfa_createdonportal { get; set; }
+        public bool? dfa_portalsubmitted { get; set; }
         public string? dfa_projectclaimid { get; set; }
         public string? dfa_claimbpfstages { get; set; }
         public string? dfa_claimbpfsubstages { get; set; }
@@ -583,10 +595,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_receiveddatesameasinvoicedate { get; set; }
         public bool? dfa_portionofinvoice { get; set; }
         public string? dfa_portioninvoicereason { get; set; }
-        public int? dfa_netinvoicedbeingclaimed { get; set; }
-        public int? dfa_pst { get; set; }
-        public int? dfa_grossgst { get; set; }
-        public int? dfa_eligiblegst { get; set; }
+        public decimal? dfa_netinvoicedbeingclaimed { get; set; }
+        public decimal? dfa_pst { get; set; }
+        public decimal? dfa_grossgst { get; set; }
+        public decimal? dfa_eligiblegst { get; set; }
     }
 
     public class dfa_invoice_delete_params
@@ -825,6 +837,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? createdon { get; set; }
         public string? dfa_costsharing { get; set; }
         public string? dfa_eligiblepayable { get; set; }
+        public string? dfa_bpfclosedate { get; set; }
+        public string? dfa_onetimedeductionamount { get; set; }
+        public string? dfa_paidclaimamount { get; set; }
     }
 
     public class dfa_recoveryinvoice
@@ -840,13 +855,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_receiveddatesameasinvoicedate { get; set; }
         public bool? dfa_portionofinvoice { get; set; }
         public string? dfa_portioninvoicereason { get; set; }
-        public int? dfa_netinvoicedbeingclaimed { get; set; }
-        public int? dfa_pst { get; set; }
-        public int? dfa_grossgst { get; set; }
-        public int? dfa_eligiblegst { get; set; }
-        public int? dfa_actualinvoicetotal { get; set; }
-        public int? dfa_totalbeingclaimed { get; set; }
-        public string? dfa_emcrdecision { get; set; }
+        public decimal? dfa_netinvoicedbeingclaimed { get; set; }
+        public decimal? dfa_pst { get; set; }
+        public decimal? dfa_grossgst { get; set; }
+        public decimal? dfa_eligiblegst { get; set; }
+        public decimal? dfa_actualinvoicetotal { get; set; }
+        public decimal? dfa_totalbeingclaimed { get; set; }
+        public decimal? dfa_emcrdecision { get; set; }
         public string? dfa_emcrapprovedamount { get; set; }
         public DateTime? dfa_emcrdecisiondate { get; set; }
         public string? dfa_emcrdecisioncomments { get; set; }
@@ -860,11 +875,35 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_projectbusinessprocessstages { get; set; }
         public string? statuscode { get; set; }
         public DateTime? dfa_estimatedcompletiondateofproject { get; set; }
-        public int? dfa_approvedcost { get; set; }
+        public decimal? dfa_approvedcost { get; set; }
         public DateTime? dfa_18monthdeadline { get; set; }
         public DateTime createdon { get; set; }
         public string? dfa_projectid { get; set; }
         public string? dfa_projectbusinessprocesssubstages { get; set; }
+        public string? dfa_bpfclosedate { get; set; }
+        public bool? hasAmendments { get; set; }
+    }
+
+    public class dfa_projectamendment
+    {
+        public string? _dfa_project_value { get; set; }
+        public string? dfa_projectamendmentid { get; set; }
+        public string? dfa_amendmentnumber { get; set; }
+        public string? dfa_amendmentreceiveddate { get; set; }
+        public string? dfa_amendmentreason { get; set; }
+        public string? dfa_amendmentapproveddate { get; set; }
+        public string? dfa_emcrapprovalcomments { get; set; }
+        public bool dfa_requestforprojectdeadlineextension { get; set; }
+        public string? dfa_amendedprojectdeadlinedate { get; set; }
+        public bool dfa_deadlineextensionapproved { get; set; }
+        public string? dfa_amended18monthdeadline { get; set; }
+        public bool dfa_requestforadditionalprojectcost { get; set; }
+        public string? dfa_estimatedadditionalprojectcost { get; set; }
+        public string? dfa_additionalprojectcostdecision { get; set; }
+        public string? dfa_approvedadditionalprojectcost { get; set; }
+        public string? dfa_amendmentstages { get; set; }
+        public string? dfa_amendmentsubstages { get; set; }
+        public DateTime createdon { get; set; }
     }
 
     public enum EventType
@@ -924,7 +963,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         ApprovalPending = 222710003,
 
         [Description("Decision Made")]
-        DecisionMade = 222710004
+        DecisionMade = 222710004,
+
+        [Description("Closed")]
+        Closed = 222710009
     }
 
     public enum ProjectSubStages
@@ -952,6 +994,72 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Withdrawn")]
         Withdrawn = 222710007,
+
+        [Description("Approved with Exclusions")]
+        ApprovedwithExclusions = 222710008,
+    }
+
+    public enum ProjectAmendmentStages
+    {
+        [Description("Created")]
+        Created = 222710000,
+
+        [Description("Under Review")]
+        UnderReview = 222710001,
+
+        [Description("Approval Pending")]
+        ApprovalPending = 222710002,
+
+        [Description("Decision Made")]
+        DecisionMade = 222710007,
+
+        [Description("Closed")]
+        Closed = 222710008
+    }
+
+    public enum ProjectAmendmentSubStages
+    {
+        [Description("Pending")]
+        Pending = 222710000,
+
+        [Description("Received")]
+        Received = 222710001,
+
+        [Description("In Progress")]
+        InProgress = 222710002,
+
+        [Description("Assign to Evaluator")]
+        AssigntoEvaluator = 222710003,
+
+        [Description("Additional info. Required")]
+        AdditionalinfoRequired = 222710005,
+
+        [Description("Approved")]
+        Approved = 222710006,
+
+        [Description("Ineligible")]
+        Ineligible = 222710008,
+
+        [Description("Withdrawn")]
+        Withdrawn = 222710004,
+
+        [Description("Approved with Exclusions")]
+        ApprovedwithExclusions = 222710007,
+    }
+
+    public enum ProjectAmendmentAdditionalProjectCostDecision
+    {
+        [Description("Approved")]
+        Approved = 222710000,
+
+        [Description("Approved with Exclusions")]
+        ApprovedwithExclusions = 222710001,
+
+        [Description("Ineligible")]
+        Ineligible = 222710002,
+
+        [Description("Withdrawn")]
+        Withdrawn = 222710003,
     }
 
     public enum ClaimStages
@@ -969,7 +1077,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         ApprovalPending = 222710003,
 
         [Description("Decision Made")]
-        DecisionMade = 222710004
+        DecisionMade = 222710010,
+
+        [Description("Closed")]
+        Closed = 222710011
     }
 
     public enum ClaimSubStages
@@ -1000,6 +1111,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Approved with Exclusion")]
         ApprovedwithExclusion = 222710008,
+    }
+
+    public enum EMCRDecision
+    {
+        [Description("Approved Total")]
+        ApprovedTotal = 222710000,
+
+        [Description("Approved Partial")]
+        ApprovedPartial = 222710001,
+
+        [Description("Denied")]
+        Denied = 222710002
     }
 
     public class dfa_incident

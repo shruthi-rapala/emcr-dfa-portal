@@ -48,6 +48,9 @@ import { Invoice } from '../../../../core/model/dfa-invoice.model';
 import { DFAClaimMainDataService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { DFAClaimMainMappingService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-mapping.service';
 import { DFAClaimMainService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main.service';
+import { InformationDialogComponent } from '../../../../core/components/dialog-components/information-dialog/information-dialog.component';
+import { DialogComponent } from '../../../../core/components/dialog/dialog.component';
+import { DFAGeneralInfoDialogComponent } from '../../../../core/components/dialog-components/dfa-general-info-dialog/dfa-general-info-dialog.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -145,10 +148,20 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
   }
 
   numericOnly(event): boolean {
-    let patt = /^([0-9])$/;
-    let result = patt.test(event.key);
-    return result;
-  }
+    let patt = /^\d+(\.\d{1,2})?$/;
+    let text = event.target.value+event.key;
+     if(text.indexOf('.')<0)
+     {
+       text=text+'.0'
+     }else 
+     if(text.indexOf('.')==text.length-1)
+       {
+         text=text+'0'
+       }
+     
+     let result = patt.test(text);
+     return result;
+   }
 
   setFocus() {
     //this.projectName.nativeElement.focus();
@@ -292,6 +305,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       this.showDates = true;
     }
   }
+  
 
   ApplyFilter(type: number, searchText: string): void {
     
@@ -423,7 +437,24 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
   }
 
   viewEMCRComment(element, index): void {
-    //this.openInvoiceViewPopup(element, index);
+    let emcrComment = 'No comment found for the invoice!';
+    if (element.emcrDecisionComments) {
+      emcrComment = element.emcrDecisionComments;
+    }
+    const content = { text: emcrComment, cancelButton: 'Close', title: 'EMCR Comment' };
+    
+    this.dialog
+      .open(DFAGeneralInfoDialogComponent, {
+        data: {
+          content: content
+        },
+        height: '345px',
+        width: '530px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+      });
   }
 
   editInvoiceRow(element, index): void {
@@ -537,7 +568,10 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
             this.dfaClaimMainDataService.invoice.totalBeingClaimed = objInv.totalBeingClaimed ? "" + objInv.totalBeingClaimed : "";
             
             let invoice = this.dfaClaimMainDataService.createDFAInvoiceDTO();
-            
+            if(invoice.id=='null')
+            {
+              invoice.id=null;
+            }
             this.dfaClaimMainMapping.mapDFAInvoiceMain(invoice);
 
             this.dfaClaimMainService.upsertInvoice(invoice).subscribe(invoiceId => {

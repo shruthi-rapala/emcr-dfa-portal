@@ -31,6 +31,7 @@ export class DFAApplicationMainDataService {
   private _requiredDocuments = [];
   private _business: string;
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
+  public changeAppId: EventEmitter<string> = new EventEmitter<string>();
 
   // 2024-10-02 EMCRI-663 waynezen; publish event for Canada Post verified message on BcAddressComponent
   public canadaPostVerified: EventEmitter<string> = new EventEmitter<string>();
@@ -163,6 +164,13 @@ export class DFAApplicationMainDataService {
 
   public setApplicationId(applicationId: string): void {
     this._applicationId = applicationId;
+    if (applicationId) {
+      this.cacheService.set('applicationId', applicationId);
+      this.changeAppId.emit(applicationId);
+    }
+    else {
+      this.cacheService.remove('applicationId');
+    }
 
     if (applicationId) {
       this.applicationService.applicationGetApplicationStart({ applicationId: applicationId })
@@ -178,6 +186,10 @@ export class DFAApplicationMainDataService {
   }
 
   public getApplicationId(): string {
+    if (this._applicationId === null || this._applicationId === undefined) {
+      this._applicationId = this.cacheService.get('applicationId');
+    }
+
     return this._applicationId;
   }
 
@@ -192,9 +204,14 @@ export class DFAApplicationMainDataService {
   public setViewOrEdit(vieworedit: string): void {
     this._vieworedit = vieworedit;
     this.changeViewOrEdit.emit(vieworedit);
+    this.cacheService.set('vieworedit', vieworedit);
   }
 
   public getViewOrEdit(): string {
+    if (this._vieworedit === null || this._vieworedit === undefined) {
+      this._vieworedit = this.cacheService.get('vieworedit');
+    }
+
     return this._vieworedit;
   }
 

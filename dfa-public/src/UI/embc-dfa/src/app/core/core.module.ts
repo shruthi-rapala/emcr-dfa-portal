@@ -44,7 +44,9 @@ import { DFAApplicationSubmissionMsgDialogComponent } from './components/dialog-
 import { DFADeleteConfirmInvoiceDialogComponent } from './components/dialog-components/dfa-confirm-delete-invoice-dialog/dfa-confirm-delete-invoice.component';
 import { DFAConfirmClaimCreateDialogComponent } from './components/dialog-components/dfa-confirm-claim-create-dialog/dfa-confirm-claim-create-dialog.component';
 import { DFAConfirmProjectCreateDialogComponent } from './components/dialog-components/dfa-confirm-project-create-dialog/dfa-confirm-project-create-dialog.component';
+import { DFAGeneralInfoDialogComponent } from './components/dialog-components/dfa-general-info-dialog/dfa-general-info-dialog.component';
 import { ContactNotFoundComponent } from 'src/app/sharedModules/forms/dfa-application-main-forms/contacts/contact-not-found.component';
+
 
 @NgModule({
   imports: [
@@ -94,6 +96,7 @@ import { ContactNotFoundComponent } from 'src/app/sharedModules/forms/dfa-applic
     DFADeleteConfirmInvoiceDialogComponent,
     DFAConfirmClaimCreateDialogComponent,
     DFAConfirmProjectCreateDialogComponent,
+    DFAGeneralInfoDialogComponent,
     ContactNotFoundComponent
   ],
   exports: [
@@ -123,6 +126,7 @@ import { ContactNotFoundComponent } from 'src/app/sharedModules/forms/dfa-applic
     DFAApplicationSubmissionMsgDialogComponent,
     DFADeleteConfirmInvoiceDialogComponent,
     DFAConfirmClaimCreateDialogComponent,
+    DFAGeneralInfoDialogComponent,
     DFAConfirmProjectCreateDialogComponent,
     ContactNotFoundComponent
   ]

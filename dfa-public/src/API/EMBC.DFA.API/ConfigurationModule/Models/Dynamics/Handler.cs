@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -54,6 +54,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<List<AreaCommunity>> HandleGetAreaCommunities();
         Task<dfa_projectmain_retrieve> GetProjectMainAsync(Guid projectId);
         Task<List<CurrentProject>> HandleProjectList(string applicationId);
+        Task<List<CurrentProjectAmendment>> HandleProjectAmendmentList(string projectId);
         Task<CurrentApplication> HandleApplicationDetails(string applicationId);
         Task<CurrentProject> HandleProjectDetails(string projectId);
         Task<string> HandleClaimCreateUpdate(dfa_claim_params objClaim);
@@ -62,6 +63,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleInvoiceCreateUpdate(dfa_invoice_params objInvoice);
         Task<List<CurrentInvoice>> HandleInvoiceList(string claimId);
         Task<string> HandleInvoiceDelete(dfa_invoice_delete_params objInvoice);
+        Task<string> HandleFileUploadApplicationPDFAsync(SubmissionEntityPDF objDocumentLocation);
 
         // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
         Task<string> HandlePrimaryContactAsync(dfa_applicationprimarycontact_params objPrimaryContact);
@@ -173,6 +175,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return mappedProjects;
         }
 
+        public async Task<List<CurrentProjectAmendment>> HandleProjectAmendmentList(string projectId)
+        {
+            var lstApps = await listsGateway.GetProjectAmendmentListAsync(projectId);
+            var mappedProjects = mapper.Map<List<CurrentProjectAmendment>>(lstApps);
+            return mappedProjects;
+        }
+
         public async Task<List<CurrentApplication>> HandleApplicationList()
         {
             var lstApps = await listsGateway.GetApplicationListAsync();
@@ -275,7 +284,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             var result = await listsGateway.InsertDocumentLocationClaimAsync(objDocumentLocation);
             return result;
         }
-
+        public async Task<string> HandleFileUploadApplicationPDFAsync(SubmissionEntityPDF objDocumentLocation)
+        {
+            var result = await listsGateway.InsertDocumentLocationApplicationPDFAsync(objDocumentLocation);
+            return result;
+        }
         public async Task<string> DeleteFileUploadAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms)
         {
             var result = await listsGateway.DeleteDocumentLocationAsync(dfa_DFAActionDeleteDocuments_parms);

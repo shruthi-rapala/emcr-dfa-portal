@@ -1,15 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 import { RequestBuilder } from '../request-builder';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { map, filter, catchError } from 'rxjs/operators';
 
 import { CurrentProject } from '../models/current-project';
+import { CurrentProjectAmendment } from '../models/current-project-amendment';
 import { DfaProjectMain } from '../models/dfa-project-main';
 
 @Injectable({
@@ -121,9 +122,21 @@ export class ProjectService extends BaseService {
       map((r: HttpResponse<any>) => {
         return r as StrictHttpResponse<string>;
       })
-    );
+      ,catchError(this.handleError));
   }
-
+   handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, body was: `, error.error);
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(() => new Error('Something bad happened; please try again later.'));
+  }
   /**
    * create or update project.
    *
@@ -268,6 +281,68 @@ export class ProjectService extends BaseService {
 
     return this.projectGetProjectDetailsForClaim$Response(params).pipe(
       map((r: StrictHttpResponse<CurrentProject>) => r.body as CurrentProject)
+    );
+  }
+
+  /**
+   * Path part for operation projectGetDfaProjectAmendments
+   */
+  static readonly ProjectGetDfaProjectAmendmentsPath = '/api/projects/dfaprojectamendments';
+
+  /**
+   * get dfa project amendments.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `projectGetDfaProjectAmendments()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  projectGetDfaProjectAmendments$Response(params?: {
+
+    /**
+     * The project Id.
+     */
+    projectId?: string;
+  }): Observable<StrictHttpResponse<Array<CurrentProjectAmendment>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ProjectService.ProjectGetDfaProjectAmendmentsPath, 'get');
+    if (params) {
+      rb.query('projectId', params.projectId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<CurrentProjectAmendment>>;
+      })
+    );
+  }
+
+  /**
+   * get dfa project amendments.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `projectGetDfaProjectAmendments$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  projectGetDfaProjectAmendments(params?: {
+
+    /**
+     * The project Id.
+     */
+    projectId?: string;
+  }): Observable<Array<CurrentProjectAmendment>> {
+
+    return this.projectGetDfaProjectAmendments$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<CurrentProjectAmendment>>) => r.body as Array<CurrentProjectAmendment>)
     );
   }
 
