@@ -203,6 +203,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_jurisdictionofincorporation { get; set; }
         public string? dfa_statementofregistrationnumber { get; set; }
         public string? dfa_bceidbusinessguid { get; set; }
+
+        public string dfa_businessmailingaddressline1 { get; set; }
+        public string dfa_businessmailingaddressline2 { get; set; }
+        public string dfa_businessmailingaddresscitytext { get; set; }
+        public string dfa_businessmailingaddressprovince { get; set; }
+        public string dfa_businessmailingaddresspostalcode { get; set; }
+        public int? dfa_mailingaddresscanadapostverified { get; set; }
     }
 
     // 2024-09-17 EMCRI-663 waynezen
@@ -218,7 +225,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_businessnumber { get; set; }
         public string? dfa_emailaddress { get; set; }
         public string? dfa_cellphonenumber { get; set; }
-        public string? dfa_jobtitle { get; set; }
+        public string? dfa_title { get; set; }
         public string? dfa_notes { get; set; }
     }
 
@@ -359,6 +366,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_jurisdictionofincorporation { get; set; }
         public string dfa_statementofregistrationnumber { get; set; }
         public string dfa_bceidbusinessguid { get; set; }
+        public string dfa_businessmailingaddressline1 { get; set; }
+        public string dfa_businessmailingaddressline2 { get; set; }
+        public string dfa_businessmailingaddresscitytext { get; set; }
+        public string dfa_businessmailingaddressprovince { get; set; }
+        public string dfa_businessmailingaddresspostalcode { get; set; }
+        public int? dfa_mailingaddresscanadapostverified { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord

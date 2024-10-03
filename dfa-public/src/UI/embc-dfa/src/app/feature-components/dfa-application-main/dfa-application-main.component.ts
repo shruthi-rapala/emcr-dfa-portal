@@ -275,11 +275,13 @@ export class DFAApplicationMainComponent
           // 2024-09-16 EMCRI-663 waynezen; new Contacts form
           this.dfaApplicationMainDataService.contacts.doingBusinessAs = this.form.get('doingBusinessAs').value;
           this.dfaApplicationMainDataService.contacts.businessNumber = this.form.get('businessNumber').value
-          this.dfaApplicationMainDataService.contacts.mailingAddress = this.form.get('mailingAddress').value
-          this.dfaApplicationMainDataService.contacts.mailingAddress2 = this.form.get('mailingAddress2').value
+          this.dfaApplicationMainDataService.contacts.addressLine1 = this.form.get('addressLine1').value
+          this.dfaApplicationMainDataService.contacts.addressLine2 = this.form.get('addressLine2').value
           this.dfaApplicationMainDataService.contacts.city = this.form.get('city').value
-          this.dfaApplicationMainDataService.contacts.province = this.form.get('province').value
+          this.dfaApplicationMainDataService.contacts.community = this.form.get('community').value
+          this.dfaApplicationMainDataService.contacts.stateProvince = this.form.get('stateProvince').value
           this.dfaApplicationMainDataService.contacts.postalCode = this.form.get('postalCode').value
+          this.dfaApplicationMainDataService.contacts.isDamagedAddressVerified = this.form.get('isDamagedAddressVerified').value;
           this.dfaApplicationMainDataService.contacts.primaryContactSearch = this.form.get('primaryContactSearch').value
           this.dfaApplicationMainDataService.contacts.primaryContactValidated = this.form.get('primaryContactValidated').value
           this.dfaApplicationMainDataService.contacts.pcFirstName = this.form.get('pcFirstName').value

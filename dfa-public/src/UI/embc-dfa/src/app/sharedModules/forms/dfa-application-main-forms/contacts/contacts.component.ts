@@ -1,4 +1,3 @@
-
 import { Component, OnInit, NgModule, Inject, OnDestroy, Input } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -38,6 +37,7 @@ import { BCeIdLookupService } from 'src/app/core/api/services/b-ce-id-lookup.ser
 import { BCeIdBusiness } from 'src/app/core/api/models/b-ce-id-business';
 import { MatIconModule } from '@angular/material/icon'
 import { ContactNotFoundComponent } from './contact-not-found.component';
+import { AddressFormsModule } from '../../address-forms/address-forms.module';
 
 @Component({
   selector: 'app-contacts',
@@ -67,6 +67,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   otherContactsRowEdit = false;
   otherContactsEditFlag = false;
   showOtherContactForm: boolean = false;
+
 
 
   constructor(
@@ -105,10 +106,10 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     if (this.isReadOnly) {
       this.contactsForm.controls.doingBusinessAs.disable();
       this.contactsForm.controls.businessNumber.disable();
-      this.contactsForm.controls.mailingAddress.disable();
-      this.contactsForm.controls.mailingAddress2.disable();
+      this.contactsForm.controls.addressLine1.disable();
+      this.contactsForm.controls.addressLine2.disable();
       this.contactsForm.controls.city.disable();
-      this.contactsForm.controls.province.disable();
+      this.contactsForm.controls.stateProvince.disable();
       this.contactsForm.controls.postalCode.disable();
       this.contactsForm.controls.primaryContactSearch.disable();
       // this.contactsForm.controls.primaryContactValidated.disable();
@@ -123,10 +124,10 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     } else {
       this.contactsForm.controls.doingBusinessAs.enable();
       this.contactsForm.controls.businessNumber.enable();
-      this.contactsForm.controls.mailingAddress.enable();
-      this.contactsForm.controls.mailingAddress2.enable();
+      this.contactsForm.controls.addressLine1.enable();
+      this.contactsForm.controls.addressLine2.enable();
       this.contactsForm.controls.city.enable();
-      this.contactsForm.controls.province.enable();
+      this.contactsForm.controls.stateProvince.enable();
       this.contactsForm.controls.postalCode.enable();
       this.contactsForm.controls.primaryContactSearch.enable();
       // this.contactsForm.controls.primaryContactValidated.enable();
@@ -152,10 +153,11 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           legalName: this.dfaApplicationMainDataService.getBusiness(),
           doingBusinessAs: null,
           businessNumber: null,
-          mailingAddress: null,
-          mailingAddress2: null,
+          addressLine1: null,
+          addressLine2: null,
+          community: null,
           city: null,
-          province: null,
+          stateProvince: null,
           postalCode: null,
           primaryContactSearch: null,
           primaryContactValidated: false,
@@ -197,12 +199,21 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.contactsForm
-      .get('mailingAddress')
+    this.contactsForm
+      .get('addressLine1')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((value) => {
         if (value === '') {
-          this.contactsForm.get('mailingAddress').reset();
+          this.contactsForm.get('addressLine1').reset();
+        }
+      });
+
+    this.contactsForm
+      .get('community')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.contactsForm.get('community').reset();
         }
       });
 
@@ -232,8 +243,10 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
         next: (dfaApplicationMain) => {
 
-          this.dfaApplicationMainMapping.mapDFAApplicationMainContacts(dfaApplicationMain);          
-          
+          this.dfaApplicationMainMapping.mapDFAApplicationMainContacts(dfaApplicationMain);
+
+          // 2024-10-02 EMCRI-663 waynezen; publish event for Canada Post verified message on BcAddressComponent
+          this.dfaApplicationMainDataService.setCanadaPostVerified(dfaApplicationMain.applicationContacts.isDamagedAddressVerified);          
         },
         error: (error) => {
           //console.error(error);
@@ -507,7 +520,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     CustomPipeModule,
     NgxMaskDirective, NgxMaskPipe,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    AddressFormsModule
   ],
   declarations: [ContactsComponent]
 })

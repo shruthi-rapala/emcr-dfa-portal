@@ -474,12 +474,13 @@ namespace EMBC.DFA.API.Controllers
         public string? doingBusinessAs { get; set; }
         public string? businessNumber { get; set; }
 
-        public string? mailingAddress { get; set; }
-        public string? mailingAddress2 { get; set; }
+        public string? addressLine1 { get; set; }
+        public string? addressLine2 { get; set; }
+        public string? community { get; set; }
         public string? city { get; set; }
-        public string? province { get; set; }
         public string? postalCode { get; set; }
-        public bool? mailingAddressVerified { get; set; }
+        public string? stateProvince { get; set; }
+        public string? isDamagedAddressVerified { get; set; }
 
         // Primary Contact info
 

@@ -191,6 +191,14 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_doingbusinessasdbaname, opts => opts.MapFrom(s => s.applicationContacts.doingBusinessAs))
                 .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.applicationContacts.businessNumber))
                 .ForMember(d => d.dfa_bceidbusinessguid, opts => opts.MapFrom(s => s.applicationContacts.pcBCeIDOrgGuid))
+                .ForMember(d => d.dfa_businessmailingaddressline1, opts => opts.MapFrom(s => s.applicationContacts.addressLine1))
+                .ForMember(d => d.dfa_businessmailingaddressline2, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.applicationContacts.addressLine2) ? " " : s.applicationContacts.addressLine2))
+                .ForMember(d => d.dfa_businessmailingaddresscitytext, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.applicationContacts.community) ? " " : s.applicationContacts.community))
+                .ForMember(d => d.dfa_businessmailingaddressprovince, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.applicationContacts.stateProvince) ? " " : s.applicationContacts.stateProvince))
+                .ForMember(d => d.dfa_businessmailingaddresspostalcode, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.applicationContacts.postalCode) ? " " : s.applicationContacts.postalCode))
+                .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s =>
+                    (s.applicationContacts.isDamagedAddressVerified != null && s.applicationContacts.isDamagedAddressVerified == "true")
+                    ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 ;
 
             // 2024-09-16 EMCRI-663 waynezen; Contact form fields
@@ -199,10 +207,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.pcFirstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.pcLastName))
                 .ForMember(d => d.dfa_department, opts => opts.MapFrom(s => s.pcDepartment))
-                .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.pcBusinessPhone))
+                .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.businessNumber))
                 .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.pcEmailAddress))
                 .ForMember(d => d.dfa_cellphonenumber, opts => opts.MapFrom(s => s.pcCellPhone))
-                .ForMember(d => d.dfa_jobtitle, opts => opts.MapFrom(s => s.pcJobTitle))
+                .ForMember(d => d.dfa_title, opts => opts.MapFrom(s => s.pcJobTitle))
                 .ForMember(d => d.dfa_notes, opts => opts.MapFrom(s => s.pcNotes))
                 .ForMember(d => d.dfa_bceidbusinessguid, opts => opts.MapFrom(s => s.pcBCeIDOrgGuid))
                 .ForMember(d => d.dfa_bceiduserguid, opts => opts.MapFrom(s => s.pcBCeIDuserGuid))
@@ -282,6 +290,12 @@ namespace EMBC.DFA.API.Mappers
             CreateMap<dfa_appapplicationmain_retrieve, ApplicationContacts>()
                 .ForMember(d => d.legalName, opts => opts.MapFrom(s => s.dfa_governmentbodylegalname))
                 .ForMember(d => d.doingBusinessAs, opts => opts.MapFrom(s => s.dfa_doingbusinessasdbaname))
+                .ForMember(d => d.addressLine1, opts => opts.MapFrom(s => s.dfa_businessmailingaddressline1))
+                .ForMember(d => d.addressLine2, opts => opts.MapFrom(s => s.dfa_businessmailingaddressline2))
+                .ForMember(d => d.community, opts => opts.MapFrom(s => s.dfa_businessmailingaddresscitytext))
+                .ForMember(d => d.stateProvince, opts => opts.MapFrom(s => s.dfa_businessmailingaddressprovince))
+                .ForMember(d => d.postalCode, opts => opts.MapFrom(s => s.dfa_businessmailingaddresspostalcode))
+                .ForMember(d => d.isDamagedAddressVerified, opts => opts.MapFrom(s => s.dfa_mailingaddresscanadapostverified == (int?)YesNoOptionSet.Yes ? "true" : "false"))
                 ;
 
             CreateMap<dfa_appapplicationmain_retrieve, SignAndSubmit>()

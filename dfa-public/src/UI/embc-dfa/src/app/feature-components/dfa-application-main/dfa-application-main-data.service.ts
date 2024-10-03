@@ -32,6 +32,9 @@ export class DFAApplicationMainDataService {
   private _business: string;
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
 
+  // 2024-10-02 EMCRI-663 waynezen; publish event for Canada Post verified message on BcAddressComponent
+  public canadaPostVerified: EventEmitter<string> = new EventEmitter<string>();
+
   constructor(
     private cacheService: CacheService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
@@ -190,6 +193,7 @@ export class DFAApplicationMainDataService {
     this._vieworedit = vieworedit;
     this.changeViewOrEdit.emit(vieworedit);
   }
+
   public getViewOrEdit(): string {
     return this._vieworedit;
   }
@@ -199,6 +203,12 @@ export class DFAApplicationMainDataService {
   }
   public getEditStep(): string {
     return this._editstep;
+  }
+
+  public setCanadaPostVerified(verifiedornot: string) : void {
+
+    this._contacts.isDamagedAddressVerified = verifiedornot;
+    this.canadaPostVerified.emit(verifiedornot);
   }
 
    public createDFAApplicationMainDTO(): DfaApplicationMain {

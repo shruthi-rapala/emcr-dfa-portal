@@ -9,11 +9,16 @@ mat-form-field {
 .primary-radio-group {
   display: flex;
   flex-direction: column;
-  margin: 15px 0;
+  //margin: 15px 0;
 }
 
 .primary-radio-button {
     margin: 5px;
+}
+
+.radio-extra-label {
+  font-weight: normal;
+  //margin-left: 30px;
 }
 
 .highlight {

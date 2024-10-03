@@ -165,7 +165,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+                var result = await api.ExecuteAction("dfa_DFAExpansionPortalAppApplication", application);
                 var jsonVal = JsonConvert.SerializeObject(application);
 
                 // Update with additional values TODO: remove when dynamics process updated to include these parameters
@@ -245,6 +245,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "_dfa_applicant_value",
                     "dfa_doingbusinessasdbaname", "dfa_businessnumber", "dfa_businessnumberverifiedflag",
                     "dfa_incorporationnumber", "dfa_jurisdictionofincorporation", "dfa_statementofregistrationnumber", "dfa_bceidbusinessguid",
+                    "dfa_businessmailingaddressline1", "dfa_businessmailingaddressline2", "dfa_businessmailingaddresscitytext",
+                    "dfa_businessmailingaddressprovince", "dfa_businessmailingaddresspostalcode", "dfa_mailingaddresscanadapostverified",
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -1310,6 +1312,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_mailingaddresscanadapostverified",
                         "dfa_bceiduserguid",
                         "dfa_bceidbusinessguid",
+                        "dfa_bceiduserlogin",
                         "dfa_firstname",
                         "dfa_lastname",
                         "dfa_department",
@@ -1354,11 +1357,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
                     var newContactDynUrl = newContactResult.Where(m => m.Key == "output") != null ? newContactResult.Where(m => m.Key == "output").ToList()[0].Value.ToString() : string.Empty;
 
-                    var regEx = new Regex("(&id=)(?<id>[-0-9a-z]+)(&.*)");
+                    var regEx = new Regex("(?<guid>[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})");
                     var match = regEx.Match(newContactDynUrl);
-                    if (match.Groups["id"].Success)
+                    if (match.Groups["guid"].Success)
                     {
-                        var result = match.Groups["id"].Value;
+                        var result = match.Groups["guid"].Value;
                         return result;
                     }
                 }

@@ -47,15 +47,15 @@
           </div>
         </div>
 
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Mailing Address<span style="color:red">*</span>
-          </p>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <input matInput formControlName="mailingAddress" placeholder=""
-                maxlength="200" />
-            </mat-form-field>
+        <div class="primary-radio-group">
+          <div class="row radio-extra-label">
+            <p class="sub-heading" style="font-size: 15px">
+              Mailing Address<span style="color:red">*</span>
+            </p>
+            <div class="col-md-12">
+              <app-bc-address [addressForm]="contactsForm" [primaryAddressWarning]="false">
+              </app-bc-address>
+            </div>
           </div>
         </div>
         <br>
@@ -107,6 +107,7 @@
             <input type="hidden" formControlName="contactId" />
             <input type="hidden" formControlName="pcBCeIDOrgGuid" />
             <input type="hidden" formControlName="pcBCeIDuserGuid" />
+            <input type="hidden" formControlName="isDamagedAddressVerified" />
 
           </div>
           <div class="col-md-4">

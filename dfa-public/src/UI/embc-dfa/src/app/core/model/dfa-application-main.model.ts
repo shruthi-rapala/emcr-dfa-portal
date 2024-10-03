@@ -423,18 +423,19 @@ export class ApplicationDetailsForm {
 
 // 2024-09-03 EMCRI-663 waynezen; Create Contacts
 export class Contacts {
+  contactId?: null | string;
   legalName?: null | string;
   doingBusinessAs?: null | string;
   businessNumber?: null | string;
-  mailingAddress?: null | string;
-  mailingAddress2?: null | string;
+  addressLine1?: null | string;
+  addressLine2?: null | string;
+  community?: null | string;
   city?: null | string;
-  province?: null | string;
+  stateProvince?: null | string;
   postalCode?: null | string;
-  mailingAddressVerified?: null | boolean;
+  isDamagedAddressVerified?: null | string;
   primaryContactSearch?: null | string;
   primaryContactValidated?: null | boolean;
-  contactId?: null | string;
 
   // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
   pcFirstName?: null | string;  
@@ -452,12 +453,13 @@ export class Contacts {
     legalName?: null | string,
     doingBusinessAs?: null | string,
     businessNumber?: null | string,
-    mailingAddress?: null | string,
-    mailingAddress2?: null | string,
+    addressLine1?: null | string,
+    addressLine2?: null | string,
+    community?: Community | string,
     city?: null | string,
-    province?: null | string,
+    stateProvince?: null | string,
     postalCode?: null | string,
-    mailingAddressVerified?: null | boolean,
+    isDamagedAddressVerified?: null | string,
     primaryContactSearch?: null | string,
     primaryContactValidated?: null | boolean,
     contactId?: null | string,
@@ -479,12 +481,13 @@ export class ContactsForm {
   legalName = new UntypedFormControl();
   doingBusinessAs = new UntypedFormControl();
   businessNumber = new UntypedFormControl();
-  mailingAddress = new UntypedFormControl();
-  mailingAddress2 = new UntypedFormControl();
+  addressLine1 = new UntypedFormControl();
+  addressLine2 = new UntypedFormControl();
+  community = new UntypedFormControl();
   city? = new UntypedFormControl();
-  province = new UntypedFormControl();
+  stateProvince = new UntypedFormControl();
   postalCode = new UntypedFormControl();
-  mailingAddressVerified = new UntypedFormControl();
+  isDamagedAddressVerified = new UntypedFormControl();
   primaryContactSearch = new UntypedFormControl();
   primaryContactValidated = new UntypedFormControl();
   contactId = new UntypedFormControl();
@@ -515,23 +518,26 @@ export class ContactsForm {
     if (contacts.businessNumber) {
       this.businessNumber.setValue(contacts.businessNumber);
     }
-    if (contacts.mailingAddress) {
-      this.mailingAddress.setValue(contacts.mailingAddress);
+    if (contacts.addressLine1) {
+      this.addressLine1.setValue(contacts.addressLine1);
     }
-    if (contacts.mailingAddress2) {
-      this.mailingAddress2.setValue(contacts.mailingAddress2);
+    if (contacts.addressLine2) {
+      this.addressLine2.setValue(contacts.addressLine2);
+    }
+    if (contacts.community) {
+      this.community.setValue(contacts.community);
     }
     if (contacts.city) {
       this.city.setValue(contacts.city);
     }
-    if (contacts.province) {
-      this.province.setValue(contacts.province);
+    if (contacts.stateProvince) {
+      this.stateProvince.setValue(contacts.stateProvince);
     }
     if (contacts.postalCode) {
       this.postalCode.setValue(contacts.postalCode);
     }
-    if (contacts.mailingAddressVerified) {
-      this.mailingAddressVerified.setValue(contacts.mailingAddressVerified);
+    if (contacts.isDamagedAddressVerified) {
+      this.isDamagedAddressVerified.setValue(contacts.isDamagedAddressVerified);
     }
     if (contacts.primaryContactSearch) {
       this.primaryContactSearch.setValue(contacts.primaryContactSearch);
