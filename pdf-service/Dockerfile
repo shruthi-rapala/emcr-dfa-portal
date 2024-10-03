@@ -23,6 +23,17 @@ USER 0
 RUN \
     apt-get update && apt-get install -y \
     libgdiplus \
+    libx11-dev \
+    libxcursor1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libjpeg62-turbo \
+    libfontconfig1 \
+    libxrender1 \
+    xfonts-75dpi \
+    xfonts-base \
     wkhtmltopdf \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /usr/local/bin/Linux \
