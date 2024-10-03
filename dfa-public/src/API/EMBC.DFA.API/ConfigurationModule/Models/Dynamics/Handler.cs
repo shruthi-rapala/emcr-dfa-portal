@@ -59,6 +59,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleInvoiceCreateUpdate(dfa_invoice_params objInvoice);
         Task<List<CurrentInvoice>> HandleInvoiceList(string claimId);
         Task<string> HandleInvoiceDelete(dfa_invoice_delete_params objInvoice);
+        Task<string> HandleFileUploadApplicationPDFAsync(SubmissionEntityPDF objDocumentLocation);
     }
 
     public class Handler : IConfigurationHandler
@@ -265,7 +266,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             var result = await listsGateway.InsertDocumentLocationClaimAsync(objDocumentLocation);
             return result;
         }
-
+        public async Task<string> HandleFileUploadApplicationPDFAsync(SubmissionEntityPDF objDocumentLocation)
+        {
+            var result = await listsGateway.InsertDocumentLocationApplicationPDFAsync(objDocumentLocation);
+            return result;
+        }
         public async Task<string> DeleteFileUploadAsync(dfa_DFAActionDeleteDocuments_parms dfa_DFAActionDeleteDocuments_parms)
         {
             var result = await listsGateway.DeleteDocumentLocationAsync(dfa_DFAActionDeleteDocuments_parms);

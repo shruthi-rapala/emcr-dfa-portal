@@ -431,7 +431,18 @@ export class Contacts {
   city?: null | string;
   province?: null | string;
   postalCode?: null | string;
-  primaryContact?: null | string;
+  primaryContactSearch?: null | string;
+  primaryContactValidated?: null | boolean;
+
+  // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
+  pcFirstName?: null | string;  
+  pcLastName?: null | string;
+  pcDepartment?: null | string;
+  pcBusinessPhone?: null | string;
+  pcEmail?: null | string;
+  pcCellPhone?: null | string;
+  pcJobTitle?: null | string;
+
 
   constructor(
     legalName?: null | string,
@@ -442,7 +453,16 @@ export class Contacts {
     city?: null | string,
     province?: null | string,
     postalCode?: null | string,
-    primaryContact?: null | string
+    primaryContactSearch?: null | string,
+    primaryContactValidated?: null | boolean,
+    
+    pcFirstName?: null | string,
+    pcLastName?: null | string,
+    pcDepartment?: null | string,
+    pcBusinessPhone?: null | string,
+    pcEmail?: null | string,
+  
+  
   ) { }
 }
 
@@ -456,8 +476,19 @@ export class ContactsForm {
   city? = new UntypedFormControl();
   province = new UntypedFormControl();
   postalCode = new UntypedFormControl();
-  primaryContact = new UntypedFormControl();
-  
+  primaryContactSearch = new UntypedFormControl();
+  primaryContactValidated = new UntypedFormControl();
+
+  // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
+  pcFirstName = new UntypedFormControl();
+  pcLastName = new UntypedFormControl();
+  pcDepartment = new UntypedFormControl();
+  pcBusinessPhone = new UntypedFormControl();
+  pcEmail = new UntypedFormControl();
+  pcCellPhone = new UntypedFormControl();
+  pcJobTitle = new UntypedFormControl();
+
+
   constructor(
     contacts: Contacts,
     customValidator: CustomValidationService) {
@@ -486,13 +517,35 @@ export class ContactsForm {
     if (contacts.postalCode) {
       this.postalCode.setValue(contacts.postalCode);
     }
-    if (contacts.primaryContact) {
-      this.primaryContact.setValue(contacts.primaryContact);
+    if (contacts.primaryContactSearch) {
+      this.primaryContactSearch.setValue(contacts.primaryContactSearch);
+    }
+    if (contacts.primaryContactValidated) {
+      this.primaryContactValidated.setValue(contacts.primaryContactValidated);
+    }
+    if (contacts.pcFirstName) {
+      this.pcFirstName.setValue(contacts.pcFirstName);
+    }
+    if (contacts.pcLastName) {
+      this.pcLastName.setValue(contacts.pcLastName);
+    }
+    if (contacts.pcDepartment) {
+      this.pcDepartment.setValue(contacts.pcDepartment);
+    }
+    if (contacts.pcBusinessPhone) { 
+      this.pcBusinessPhone.setValue(contacts.pcBusinessPhone); 
+    }
+    if (contacts.pcEmail) { 
+      this.pcEmail.setValue(contacts.pcEmail); 
+    }
+    if (contacts.pcCellPhone) { 
+      this.pcCellPhone.setValue(contacts.pcCellPhone); 
+    }
+    if (contacts.pcJobTitle) { 
+      this.pcJobTitle.setValue(contacts.pcJobTitle); 
     }
   }
 }
-
-
 
 export class FullTimeOccupant {
   applicationId?: string;

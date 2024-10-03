@@ -131,3 +131,42 @@ table {
   margin: 7px;
   padding: 15px;
 }
+
+// mat-form-field:has(input[readonly]) {
+//   background-color: greenyellow;
+// }
+
+.infoText {
+  background: #F6F9FC 0% 0% no-repeat padding-box;
+  border: 1px solid #003366;
+  border-radius: 10px;
+  height: 56px;
+}
+
+.legalText {
+  font-family: 'BC Sans';
+  font-size: 14px;
+  color: #313132;
+}
+
+.iconText {
+  position: absolute;
+}
+
+.iconStyleGreen {
+  //font-size: 16px;
+  color: #62A370;
+}
+
+.iconStyleBlue {
+  //font-size: 16px;
+  color: #003366;
+}
+
+.noshow {
+  display: none;
+
+  &.visible {
+    display: contents;
+  }
+}

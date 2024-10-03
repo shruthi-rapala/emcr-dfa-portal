@@ -7,6 +7,7 @@ export interface BCeIdBusiness {
   addressLine2?: string;
   addressPostal?: string;
   addressProv?: string;
+  businessGuid?: string;
   businessNumber?: string;
   businessTypeCode?: string;
   businessTypeDescription?: string;
@@ -14,12 +15,15 @@ export interface BCeIdBusiness {
   businessTypeOther?: string;
   contactEmail?: string;
   contactPhone?: string;
+  department?: string;
   incorporationNumber?: string;
   individualFirstname?: string;
   individualMiddlename?: string;
   individualOtherMiddlename?: string;
   individualSurname?: string;
+  isValidResponse?: boolean;
   jurisdictionOfIncorporation?: string;
   legalName?: string;
+  responseErrorMsg?: string;
   userId?: string;
 }

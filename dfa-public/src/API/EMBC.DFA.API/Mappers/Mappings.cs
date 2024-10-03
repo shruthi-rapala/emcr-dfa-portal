@@ -361,6 +361,17 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.subject, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.fileDescription) ? s.fileName : s.fileDescription))
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
 
+            CreateMap<ApplicationReviewPDFUpload, AttachmentEntity>()
+               .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileName))
+               .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_projectclaim"))
+               .ForMember(d => d.subject, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.fileDescription) ? s.fileName : s.fileDescription))
+               .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
+
+            CreateMap<ApplicationReviewPDFUpload, SubmissionEntityPDF>()
+              .ForMember(d => d.dfa_requireddocumenttype, opts => RequiredDocumentType.PostEvent.ToString())
+              .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))
+              .ForMember(d => d.dfa_appapplicationid, opts => opts.MapFrom(s => s.dfa_appapplicationid));
+
             CreateMap<FileUpload, SubmissionEntity>()
                 .ForMember(d => d.dfa_projectid, opts => opts.MapFrom(s => s.project.Id)) // s.projectId
                 .ForMember(d => d.dfa_description, opts => opts.MapFrom(s => s.fileDescription))

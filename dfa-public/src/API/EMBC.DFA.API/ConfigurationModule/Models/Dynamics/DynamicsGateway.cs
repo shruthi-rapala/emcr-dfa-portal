@@ -766,7 +766,23 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
             }
         }
+        public async Task<string> InsertDocumentLocationApplicationPDFAsync(SubmissionEntityPDF submission)
+        {
+            try
+            {
+                var result = await api.ExecuteAction("dfa_SubmitDFADocuments", submission);
 
+                if (result != null)
+                {
+                    return result.Where(m => m.Key == "output") != null ? result.Where(m => m.Key == "output").ToList()[0].Value?.ToString() : string.Empty;
+                }
+                return "Submitted";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to insert/delete document {ex.Message}", ex);
+            }
+        }
         public async Task<IEnumerable<dfa_projectdocumentlocation>> GetProjectDocumentLocationsListAsync(Guid projectId)
         {
             try

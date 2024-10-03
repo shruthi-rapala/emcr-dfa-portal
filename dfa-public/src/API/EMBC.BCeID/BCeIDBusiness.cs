@@ -6,6 +6,8 @@
     /// </summary>
     public class BCeIDBusiness
     {
+        public bool IsValidResponse { get; set; }
+        public string ResponseErrorMsg { get; set; }
         public string contactEmail { get; set; }
         public string contactPhone { get; set; }
 
@@ -29,6 +31,10 @@
         public string addressPostal { get; set; }
         public string addressCountry { get; set; }
         public string userId { get; set; }
+        public string department { get; set; }
 
+        // 2024-09-13 EMCRI-676 waynezen
+        public Guid businessGuid { get; set; }
     }
 }
+
