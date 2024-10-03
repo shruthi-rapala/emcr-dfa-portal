@@ -148,11 +148,36 @@ namespace EMBC.DFA.API.Controllers
                     var resultContact = await handler.HandleOtherContactAsync(mappedOtherContact);
                 }
             }
-            PdfApplicationData pdfApplicationData = GetPdfApplicationData();
-            var template = "dfa_application_demo";
-            string filename = $"Templates/{template}.mustache";
-            var file = await pDFServiceHandler.GetFileDataAsync(pdfApplicationData);
+            //PdfReuest pdfReuest = new PdfReuest
+            //{
+            //    PdfApplicationData = GetPdfApplicationData(),
+            //    Template = "dfa_application_summary"
+            //};
 
+            //var file = await pDFServiceHandler.GetFileDataAsync(pdfReuest);
+
+            //ApplicationReviewPDFUpload applicationReviewPDFUpload = new ApplicationReviewPDFUpload
+            //{
+            //    dfa_appapplicationid = Guid.Parse(mappedApplication.dfa_appapplicationid),
+            //    contentType = "application/pdf",
+            //    fileData = file,
+            //    fileType = FileCategory.AppplicationPDF,
+            //    fileName = $"{mappedApplication.dfa_appapplicationid}.pdf",
+            //    fileDescription = "Appplication PDF",
+            //    uploadedDate = DateTime.Now.ToString()
+            //};
+            //try
+            //{
+            //    var mappedFileUpload = mapper.Map<AttachmentEntity>(applicationReviewPDFUpload);
+            //    var submissionEntity = mapper.Map<SubmissionEntityPDF>(applicationReviewPDFUpload);
+            //    submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
+            //    submissionEntity.documentCollection = submissionEntity.documentCollection.Append<AttachmentEntity>(mappedFileUpload);
+            //    var fileUploadResult = await handler.HandleFileUploadApplicationPDFAsync(submissionEntity);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Ok(ex.Message);
+            //}
             return Ok(result);
         }
         public PdfApplicationData GetPdfApplicationData()

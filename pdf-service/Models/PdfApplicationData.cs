@@ -30,4 +30,9 @@ namespace pdfservice.Models
         public List<Contact> Contacts { get; set; }
         public string ContactsText { get; set; }
     }
+    public class PdfReuest
+    {
+        public PdfApplicationData PdfApplicationData { get; set; }
+        public string Template { get; set; }
+    }
 }

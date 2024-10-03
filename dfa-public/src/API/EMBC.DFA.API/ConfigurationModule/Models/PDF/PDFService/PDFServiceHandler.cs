@@ -1,49 +1,27 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using OpenTelemetry.Contrib.Instrumentation.GrpcCore;
-using Xrm.Tools.WebAPI.Requests;
 
 namespace EMBC.DFA.API.ConfigurationModule.Models.PDF.PDFService
 {
     public class PDFServiceHandler
     {
-        private HttpClient httpClient = null;
-
-        public PDFServiceHandler()
-        {
-           //this.crmWebAPIConfig = crmWebAPIConfig;
-           //if (crmWebAPIConfig.NetworkCredential != null)
-           // {
-           //     httpClient = new HttpClient(new HttpClientHandler
-           //     {
-           //         Credentials = crmWebAPIConfig.NetworkCredential
-           //     });
-           // }
-           // else
-           // {
-           //     httpClient = new HttpClient();
-           //     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", crmWebAPIConfig.AccessToken);
-           // }
-
-           //SetHttpClientDefaults(crmWebAPIConfig.CallerID);
-        }
-        public async Task<byte[]> GetFileDataAsync(PdfApplicationData pdfApplicationData)
+        public async Task<byte[]> GetFileDataAsync(PdfReuest pdfReuest)
         {
             byte[] fileBytes = null;
             //await CheckAuthToken();
-            string url = "https://localhost:53091/api/PDF/GetPDF/dfa_application_demo";
+            string url = "https://localhost:53091/api/PDF/GetPDF";
             //string downloadPath = @"C:\path\to\save\file.zip"; // Local path to save the file
             using (HttpClient client = new HttpClient())
             {
                 // Create your POST request content (if any)
-                var content = new StringContent(JsonConvert.SerializeObject(pdfApplicationData)); // Add appropriate content if needed
                 try
                 {
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    var content = new StringContent(JsonConvert.SerializeObject(pdfReuest), Encoding.UTF8, "application/json");
                     // Send the POST request
                     HttpResponseMessage response = await client.PostAsync(url, content);
                     // Ensure the request was successful
@@ -60,18 +38,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.PDF.PDFService
                 }
             }
             return fileBytes;
-        }
-        private void SetHttpClientDefaults(Guid callerID)
-        {
-            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-            httpClient.DefaultRequestHeaders.Add("OData-MaxVersion", "4.0");
-            httpClient.DefaultRequestHeaders.Add("OData-Version", "4.0");
-            if (callerID != Guid.Empty)
-            {
-                httpClient.DefaultRequestHeaders.Add("MSCRMCallerID", callerID.ToString());
-            }
-
-            httpClient.Timeout = new TimeSpan(0, 2, 0);
         }
     }
 }

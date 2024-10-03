@@ -235,10 +235,9 @@ namespace EMBC.DFA.API.Controllers
         public Guid? id { get; set; }
         public string? fileName { get; set; }
         public string? fileDescription { get; set; }
-        public FileCategoryClaim? fileType { get; set; }
+        public FileCategory? fileType { get; set; }
         // public string? fileTypeText { get; set; }
         public string? uploadedDate { get; set; }
-        public string? modifiedBy { get; set; }
         public byte[]? fileData { get; set; }
         public string? contentType { get; set; }
         public int? fileSize { get; set; }

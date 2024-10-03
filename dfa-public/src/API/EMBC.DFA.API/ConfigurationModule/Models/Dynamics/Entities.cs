@@ -439,7 +439,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
         public string? dfa_requireddocumenttype { get; set; } // for required documents TODO: uncomment
     }
-
+    public class SubmissionEntityPDF
+    {
+        public IEnumerable<AttachmentEntity> documentCollection { get; set; }
+        public string dfa_appapplicationid { get; set; }
+        public string dfa_description { get; set; } // pass in description
+        public string dfa_modifiedby { get; set; } // pass in modified by
+        public string fileType { get; set; } // pass in string for fileType (business defined type e.g. damage photo)
+        public string? dfa_requireddocumenttype { get; set; } // for required documents TODO: uncomment
+    }
     public class dfa_DFAActionDeleteDocuments_parms
     {
         public Guid AppDocID { get; set; } // required string
