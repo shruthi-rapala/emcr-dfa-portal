@@ -35,7 +35,7 @@ RUN \
     libxrender1 \
     xfonts-75dpi \
     xfonts-base \
-    libssl1.1 \
+    libssl3 \
     libstdc++6 \
     zlib1g \
     libfreetype6 \
