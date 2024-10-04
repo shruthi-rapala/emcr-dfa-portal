@@ -478,7 +478,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
                 .ForMember(d => d.HasAmendment, opts => opts.MapFrom(s => s.hasAmendments))
                 .ForMember(d => d.IsClaimSubmission, opts => opts.MapFrom(s =>
-                    !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) && Convert.ToInt32(s.dfa_projectbusinessprocessstages) == Convert.ToInt32(ProjectStages.Closed)
+                    !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) && (Convert.ToInt32(s.dfa_projectbusinessprocessstages) == Convert.ToInt32(ProjectStages.DecisionMade) || Convert.ToInt32(s.dfa_projectbusinessprocessstages) == Convert.ToInt32(ProjectStages.Closed))
                     && !string.IsNullOrEmpty(s.dfa_projectbusinessprocesssubstages) &&
                     (Convert.ToInt32(s.dfa_projectbusinessprocesssubstages) == Convert.ToInt32(ProjectSubStages.Approved) ||
                     Convert.ToInt32(s.dfa_projectbusinessprocesssubstages) == Convert.ToInt32(ProjectSubStages.ApprovedwithExclusions)) ? true : false))
@@ -510,14 +510,15 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.isThisFinalClaim, opts => opts.MapFrom(s => s.dfa_finalclaim))
                 .ForMember(d => d.isFirstClaimApproved, opts => opts.MapFrom(s => s.dfa_isfirstclaim))
                 .ForMember(d => d.claimEligibleGST, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_totaleligiblegst) ? "0" : s.dfa_totaleligiblegst))
-                .ForMember(d => d.claimTotal, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_totaloftotaleligible) ? "0" : s.dfa_totaloftotaleligible))
+                .ForMember(d => d.claimTotal, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_claimtotal) ? "0" : s.dfa_claimtotal))
                 .ForMember(d => d.approvedClaimTotal, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_totalapproved) ? "0" : s.dfa_totalapproved))
-                .ForMember(d => d.firstClaimDeductible1000, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_lessfirst1000) ? "0" : s.dfa_lessfirst1000))
+                .ForMember(d => d.firstClaimDeductible1000, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_onetimedeductionamount) ? "0" : s.dfa_onetimedeductionamount))
                 .ForMember(d => d.approvedReimbursement, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_costsharing) ? "0" : s.dfa_costsharing))
                 .ForMember(d => d.eligiblePayable, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_eligiblepayable) ? "0" : s.dfa_eligiblepayable))
-                .ForMember(d => d.paidClaimAmount, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_totalpaid) ? "0" : s.dfa_totalpaid))
-                .ForMember(d => d.paidClaimDate, opts => opts.MapFrom(s => s.dfa_claimpaiddate))
-                .ForMember(d => d.claimReceivedByEMCRDate, opts => opts.MapFrom(s => s.dfa_claimreceiveddate))
+                .ForMember(d => d.paidClaimAmount, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_paidclaimamount) ? "0" : s.dfa_paidclaimamount))
+                .ForMember(d => d.claimReceivedByEMCRDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_claimreceivedbyemcrdate).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_claimreceivedbyemcrdate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.paidClaimDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_claimpaiddate).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_claimpaiddate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+
                 ;
 
             CreateMap<dfa_appapplication, CurrentApplication>()

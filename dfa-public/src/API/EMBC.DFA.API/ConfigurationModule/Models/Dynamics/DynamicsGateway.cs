@@ -1244,9 +1244,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_name", "dfa_projectclaimid", "dfa_isfirstclaim",
-                        "dfa_finalclaim", "createdon", "dfa_claimreceiveddate",
+                        "dfa_finalclaim", "createdon", "dfa_claimreceivedbyemcrdate",
                         "dfa_totaleligiblegst", "dfa_totaloftotaleligible", "dfa_totalapproved", "dfa_lessfirst1000",
-                        "dfa_costsharing", "dfa_eligiblepayable", "dfa_totalpaid", "dfa_claimpaiddate"
+                        "dfa_costsharing", "dfa_eligiblepayable", "dfa_totalpaid", "dfa_claimpaiddate",
+                        "dfa_claimtotal", "dfa_paidclaimamount", "dfa_onetimedeductionamount"
                     },
                     Filter = $"dfa_projectclaimid eq {claimId}"
                 });
@@ -1259,7 +1260,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_isfirstclaim = objApp.dfa_isfirstclaim,
                                    dfa_finalclaim = objApp.dfa_finalclaim,
                                    createdon = objApp.createdon,
-                                   dfa_claimreceiveddate = objApp.dfa_claimreceiveddate,
+                                   dfa_claimreceivedbyemcrdate = !string.IsNullOrEmpty(objApp.dfa_claimreceivedbyemcrdate) ? DateTime.Parse(objApp.dfa_claimreceivedbyemcrdate).ToLocalTime().ToString() : objApp.dfa_claimreceivedbyemcrdate,
+                                   dfa_claimpaiddate = !string.IsNullOrEmpty(objApp.dfa_claimpaiddate) ? DateTime.Parse(objApp.dfa_claimpaiddate).ToLocalTime().ToString() : objApp.dfa_claimpaiddate,
                                    dfa_totaleligiblegst = objApp.dfa_totaleligiblegst,
                                    dfa_totaloftotaleligible = objApp.dfa_totaloftotaleligible,
                                    dfa_totalapproved = objApp.dfa_totalapproved,
@@ -1267,7 +1269,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_costsharing = objApp.dfa_costsharing,
                                    dfa_eligiblepayable = objApp.dfa_eligiblepayable,
                                    dfa_totalpaid = objApp.dfa_totalpaid,
-                                   dfa_claimpaiddate = objApp.dfa_claimpaiddate
+                                   dfa_claimtotal = objApp.dfa_claimtotal,
+                                   dfa_paidclaimamount = objApp.dfa_paidclaimamount,
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstApps.FirstOrDefault();
