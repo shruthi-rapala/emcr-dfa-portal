@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Community, Country, StateProvince } from './address';
 import { CustomValidationService } from '../services/customValidation.service';
-import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ApplicationStageOptionSet } from 'src/app/core/api/models';
+import { SignatureBlock, SecondaryApplicantTypeOption, FileCategory, RoomType, RequiredDocumentType, ApplicationStageOptionSet, ApplicationContacts } from 'src/app/core/api/models';
 
 export class DamagedPropertyAddress {
   addressLine1?: null | string;
@@ -423,46 +423,58 @@ export class ApplicationDetailsForm {
 
 // 2024-09-03 EMCRI-663 waynezen; Create Contacts
 export class Contacts {
+  contactId?: null | string;
   legalName?: null | string;
   doingBusinessAs?: null | string;
   businessNumber?: null | string;
-  mailingAddress1?: null | string;
-  mailingAddress2?: null | string;
+  addressLine1?: null | string;
+  addressLine2?: null | string;
+  community?: null | string;
   city?: null | string;
-  province?: null | string;
+  stateProvince?: null | string;
   postalCode?: null | string;
+  isDamagedAddressVerified?: null | string;
   primaryContactSearch?: null | string;
   primaryContactValidated?: null | boolean;
+  guidanceSupport?: null | boolean;
 
   // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
   pcFirstName?: null | string;  
   pcLastName?: null | string;
   pcDepartment?: null | string;
   pcBusinessPhone?: null | string;
-  pcEmail?: null | string;
+  pcEmailAddress?: null | string;
   pcCellPhone?: null | string;
   pcJobTitle?: null | string;
+  pcNotes?: null | string;
+  pcBCeIDOrgGuid?: null | string;
+  pcBCeIDuserGuid?: null | string;
 
 
   constructor(
     legalName?: null | string,
     doingBusinessAs?: null | string,
     businessNumber?: null | string,
-    mailingAddress1?: null | string,
-    mailingAddress2?: null | string,
+    addressLine1?: null | string,
+    addressLine2?: null | string,
+    community?: Community | string,
     city?: null | string,
-    province?: null | string,
+    stateProvince?: null | string,
     postalCode?: null | string,
+    isDamagedAddressVerified?: null | string,
     primaryContactSearch?: null | string,
     primaryContactValidated?: null | boolean,
+    contactId?: null | string,
+    guidanceSupport?: null | boolean,
     
     pcFirstName?: null | string,
     pcLastName?: null | string,
     pcDepartment?: null | string,
     pcBusinessPhone?: null | string,
-    pcEmail?: null | string,
-  
-  
+    pcEmailAddress?: null | string,
+    pcNotes?: null | string,
+    pcBCeIDOrgGuid?: null | string,
+    pcBCeIDuserGuid?: null | string,    
   ) { }
 }
 
@@ -471,23 +483,30 @@ export class ContactsForm {
   legalName = new UntypedFormControl();
   doingBusinessAs = new UntypedFormControl();
   businessNumber = new UntypedFormControl();
-  mailingAddress1 = new UntypedFormControl();
-  mailingAddress2 = new UntypedFormControl();
+  addressLine1 = new UntypedFormControl();
+  addressLine2 = new UntypedFormControl();
+  community = new UntypedFormControl();
   city? = new UntypedFormControl();
-  province = new UntypedFormControl();
+  stateProvince = new UntypedFormControl();
   postalCode = new UntypedFormControl();
+  isDamagedAddressVerified = new UntypedFormControl();
   primaryContactSearch = new UntypedFormControl();
   primaryContactValidated = new UntypedFormControl();
+  contactId = new UntypedFormControl();
+  guidanceSupport = new UntypedFormControl();
 
   // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
   pcFirstName = new UntypedFormControl();
   pcLastName = new UntypedFormControl();
   pcDepartment = new UntypedFormControl();
   pcBusinessPhone = new UntypedFormControl();
-  pcEmail = new UntypedFormControl();
+  pcEmailAddress = new UntypedFormControl();
   pcCellPhone = new UntypedFormControl();
   pcJobTitle = new UntypedFormControl();
+  pcNotes = new UntypedFormControl();
 
+  pcBCeIDOrgGuid = new UntypedFormControl();
+  pcBCeIDuserGuid = new UntypedFormControl();
 
   constructor(
     contacts: Contacts,
@@ -502,26 +521,38 @@ export class ContactsForm {
     if (contacts.businessNumber) {
       this.businessNumber.setValue(contacts.businessNumber);
     }
-    if (contacts.mailingAddress1) {
-      this.mailingAddress1.setValue(contacts.mailingAddress1);
+    if (contacts.addressLine1) {
+      this.addressLine1.setValue(contacts.addressLine1);
     }
-    if (contacts.mailingAddress2) {
-      this.mailingAddress2.setValue(contacts.mailingAddress2);
+    if (contacts.addressLine2) {
+      this.addressLine2.setValue(contacts.addressLine2);
+    }
+    if (contacts.community) {
+      this.community.setValue(contacts.community);
     }
     if (contacts.city) {
       this.city.setValue(contacts.city);
     }
-    if (contacts.province) {
-      this.province.setValue(contacts.province);
+    if (contacts.stateProvince) {
+      this.stateProvince.setValue(contacts.stateProvince);
     }
     if (contacts.postalCode) {
       this.postalCode.setValue(contacts.postalCode);
+    }
+    if (contacts.isDamagedAddressVerified) {
+      this.isDamagedAddressVerified.setValue(contacts.isDamagedAddressVerified);
     }
     if (contacts.primaryContactSearch) {
       this.primaryContactSearch.setValue(contacts.primaryContactSearch);
     }
     if (contacts.primaryContactValidated) {
       this.primaryContactValidated.setValue(contacts.primaryContactValidated);
+    }
+    if (contacts.contactId) {
+      this.contactId.setValue(contacts.contactId);
+    }
+    if (contacts.guidanceSupport) {
+      this.guidanceSupport.setValue(contacts.guidanceSupport);
     }
     if (contacts.pcFirstName) {
       this.pcFirstName.setValue(contacts.pcFirstName);
@@ -532,17 +563,26 @@ export class ContactsForm {
     if (contacts.pcDepartment) {
       this.pcDepartment.setValue(contacts.pcDepartment);
     }
-    if (contacts.pcBusinessPhone) { 
-      this.pcBusinessPhone.setValue(contacts.pcBusinessPhone); 
+    if (contacts.pcBusinessPhone) {
+      this.pcBusinessPhone.setValue(contacts.pcBusinessPhone);
     }
-    if (contacts.pcEmail) { 
-      this.pcEmail.setValue(contacts.pcEmail); 
+    if (contacts.pcEmailAddress) {
+      this.pcEmailAddress.setValue(contacts.pcEmailAddress);
     }
-    if (contacts.pcCellPhone) { 
-      this.pcCellPhone.setValue(contacts.pcCellPhone); 
+    if (contacts.pcCellPhone) {
+      this.pcCellPhone.setValue(contacts.pcCellPhone);
     }
-    if (contacts.pcJobTitle) { 
-      this.pcJobTitle.setValue(contacts.pcJobTitle); 
+    if (contacts.pcJobTitle) {
+      this.pcJobTitle.setValue(contacts.pcJobTitle);
+    }
+    if (contacts.pcNotes) {
+      this.pcNotes.setValue(contacts.pcNotes);
+    }
+    if (contacts.pcBCeIDOrgGuid) {
+      this.pcBCeIDOrgGuid.setValue(contacts.pcBCeIDOrgGuid);
+    }
+    if (contacts.pcBCeIDuserGuid) {
+      this.pcBCeIDuserGuid.setValue(contacts.pcBCeIDuserGuid);
     }
   }
 }
@@ -653,6 +693,10 @@ export class OtherContact {
   id?: null | string;
   lastName?: string;
   phoneNumber?: string;
+  
+  // 2024-09-16 EMCRI-663 waynezen; add new fields to Other Contact
+  cellPhone?: string;
+  jobTitle?: string;
 }
 
 export class OtherContactsForm {
@@ -663,6 +707,11 @@ export class OtherContactsForm {
   lastName = new UntypedFormControl();
   phoneNumber = new UntypedFormControl();
   email = new UntypedFormControl();
+
+  // 2024-09-16 EMCRI-663 waynezen; add new fields to Other Contact
+  cellPhone = new UntypedFormControl();
+  jobTitle = new UntypedFormControl();
+
   addNewOtherContactIndicator = new UntypedFormControl(false);
   otherContact: UntypedFormGroup;
   otherContacts = new UntypedFormControl([], Validators.required);
@@ -744,7 +793,17 @@ export class OtherContactsForm {
             .maxLengthValidator(100)
             .bind(customValidator)
         ]
-      ]
+      ],
+      cellPhone: [
+        '',
+        [
+          customValidator.maskedNumberLengthValidator().bind(customValidator)
+            .bind(customValidator)
+        ]
+      ],
+      jobTitle: [
+        '',
+      ],
     });
   }
 }
@@ -1155,6 +1214,7 @@ export class SignAndSubmitForm {
 export interface DfaApplicationMain {
   id?: string;
   applicationDetails?: ApplicationDetails;
+  applicationContacts?: ApplicationContacts;
   otherContact?: OtherContact[];
   deleteFlag?: boolean;
 }

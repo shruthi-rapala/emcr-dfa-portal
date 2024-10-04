@@ -66,7 +66,7 @@ namespace EMBC.DFA.API.Controllers
         /// If user isn't authenticated, return NULL
         /// </summary>
         /// <returns>NULL if user isn't authenticated</returns>
-        [HttpGet("login")]
+        [HttpGet("getlogin")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -84,17 +84,39 @@ namespace EMBC.DFA.API.Controllers
                 return Ok(null);
             }
         }
-    }
 
-    public class AppCity
-    {
-        public string ID { get; set; }
-        public string City { get; set; }
-    }
+        /// <summary>
+        /// Gets the same BCeID user info as getlogin, but also ensures that a dfa_bceidusers record exists
+        /// for the current logged in user.
+        /// </summary>
+        /// <param name="eventMoniker">Brief description of event type; eg. "login", or "submit Application"</param>
+        /// <returns>BCeID user info</returns>
+        [HttpGet("createaudit")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<string>> CreateAuditEvent(string eventMoniker)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userData = userService.GetJWTokenData();
+                dfa_audit_event bceidUser = new dfa_audit_event()
+                {
+                    dfa_name = userData.name,
+                    dfa_bceidbusinessguid = Convert.ToString(userData.bceid_business_guid),
+                    dfa_bceiduserguid = Convert.ToString(userData.bceid_user_guid),
+                    dfa_eventdate = DateTime.Now,
+                    dfa_auditdescription = eventMoniker
+                };
+                var result = await handler.HandleBCeIDAudit(bceidUser);
 
-    public class AppProvince
-    {
-        public string ID { get; set; }
-        public string Province { get; set; }
+                return Ok(result);
+            }
+            else
+            {
+                Debug.WriteLine("No Authentication!");
+                return Ok("error");
+            }
+        }
     }
 }

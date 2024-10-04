@@ -122,12 +122,37 @@ namespace EMBC.DFA.API.Controllers
 
             if (application == null) return BadRequest("Application details cannot be empty.");
 
-            //var dfa_appcontact = await handler.HandleGetUser(currentUserId);
-            //currentUserId = "6e0d26eb-376a-ef11-b851-00505683fbf4";
-            //application.ProfileVerification = new ProfileVerification() { profileId = currentUserId };
-            application.ProfileVerification = new ProfileVerification() { profileId = "6e0d26eb-376a-ef11-b851-00505683fbf4" };
+            var userData = userService.GetJWTokenData();
+            if (userData == null) return NotFound();
+
+            // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
+            var primeContactIn = mapper.Map<dfa_applicationprimarycontact_params>(application.applicationContacts);
+
+            var contactId = primeContactIn?.dfa_appcontactid;
+            if (primeContactIn?.dfa_bceiduserguid != null)
+            {
+                // saving new Application - try to find existing Primary contact using BCeID user guid
+                contactId = await handler.HandlePrimaryContactAsync(primeContactIn);
+
+                // if still no contactId, then error
+                if (contactId == null)
+                {
+                    return BadRequest("Create/update Primary Contact failed");
+                }
+            }
 
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
+            mappedApplication.dfa_applicant = contactId;
+
+            // 2024-09-17 EMCRI-676 waynezen; if no Primary Contact yet, use BCeID guid's of logged in user
+            if (mappedApplication?.dfa_bceidbusinessguid == null && primeContactIn?.dfa_bceidbusinessguid == null)
+            {
+                mappedApplication.dfa_bceidbusinessguid = userData.bceid_business_guid.ToString();
+            }
+            else
+            {
+                mappedApplication.dfa_bceidbusinessguid = primeContactIn.dfa_bceidbusinessguid;
+            }
 
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
@@ -413,15 +438,25 @@ namespace EMBC.DFA.API.Controllers
             try
             {
                 // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
-                var userId = userService.GetBCeIDBusinessId();
-                if (string.IsNullOrEmpty(userId)) return NotFound();
-
-                var appContactProfile = await handler.HandleGetUser(userId);
+                var userData = userService.GetJWTokenData();
+                if (userData == null) return NotFound();
 
                 var dfa_appapplication = await handler.GetApplicationMainAsync(applicationId);
                 DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
                 dfaApplicationMain.Id = applicationId;
                 dfaApplicationMain.applicationDetails = mapper.Map<ApplicationDetails>(dfa_appapplication);
+
+                // 2024-09-24 EMCRI-663; get primary contact info
+                if (dfa_appapplication?._dfa_applicant_value != null)
+                {
+                    var primeContactIn = await handler.HandleGetPrimaryContactAsync(dfa_appapplication._dfa_applicant_value);
+                    // convert Dynamics DTO to UI DTO
+                    var appContact = mapper.Map<ApplicationContacts>(primeContactIn);
+                    // add in a few extra fields from the Application -> Contacts screen
+                    mapper.Map<dfa_appapplicationmain_retrieve, ApplicationContacts>(dfa_appapplication, appContact);
+
+                    dfaApplicationMain.applicationContacts = appContact;
+                }
 
                 return Ok(dfaApplicationMain);
             }
@@ -443,8 +478,7 @@ namespace EMBC.DFA.API.Controllers
             var userData = userService.GetJWTokenData();
 
             if (userData == null) return NotFound();
-            var profileId = "6e0d26eb-376a-ef11-b851-00505683fbf4"; //userData.bceid_business_guid.ToString(); //"ed762426-1075-ee11-b846-00505683fbf4";
-            var lstApplications = await handler.HandleApplicationList(profileId);
+            var lstApplications = await handler.HandleApplicationList(userData);
             return Ok(lstApplications);
         }
 
@@ -574,6 +608,8 @@ namespace EMBC.DFA.API.Controllers
     {
         public Guid? Id { get; set; }
         public ApplicationDetails? applicationDetails { get; set; }
+        // 2024-09-16 EMCRI-663 waynezen; new fields from application
+        public ApplicationContacts applicationContacts { get; set; }
         public ProfileVerification? ProfileVerification { get; set; }
         public OtherContact[]? OtherContact { get; set; }
         public bool deleteFlag { get; set; }

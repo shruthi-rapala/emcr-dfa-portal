@@ -7,8 +7,8 @@ export interface BCeIdBusiness {
   addressLine2?: string;
   addressPostal?: string;
   addressProv?: string;
-  businessGuid?: string;
   businessNumber?: string;
+  businessNumberVerified?: boolean;
   businessTypeCode?: string;
   businessTypeDescription?: string;
   businessTypeName?: string;
@@ -24,6 +24,9 @@ export interface BCeIdBusiness {
   isValidResponse?: boolean;
   jurisdictionOfIncorporation?: string;
   legalName?: string;
+  organizationGuid?: string;
   responseErrorMsg?: string;
+  statementOfRegistrationNumber?: string;
+  userGuid?: string;
   userId?: string;
 }

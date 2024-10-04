@@ -69,7 +69,7 @@ export class ContactService extends BaseService {
   /**
    * Path part for operation contactGetLoginInfo
    */
-  static readonly ContactGetLoginInfoPath = '/api/contacts/login';
+  static readonly ContactGetLoginInfoPath = '/api/contacts/getlogin';
 
   /**
    * If user isn't authenticated, return NULL.
@@ -114,6 +114,70 @@ export class ContactService extends BaseService {
 
     return this.contactGetLoginInfo$Response(params).pipe(
       map((r: StrictHttpResponse<BceidUserData>) => r.body as BceidUserData)
+    );
+  }
+
+  /**
+   * Path part for operation contactCreateAuditEvent
+   */
+  static readonly ContactCreateAuditEventPath = '/api/contacts/createaudit';
+
+  /**
+   * Gets the same BCeID user info as getlogin, but also ensures that a dfa_bceidusers record exists
+   * for the current logged in user.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `contactCreateAuditEvent()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  contactCreateAuditEvent$Response(params?: {
+
+    /**
+     * Brief description of event type; eg. &quot;login&quot;, or &quot;submit Application&quot;
+     */
+    eventMoniker?: string;
+  }): Observable<StrictHttpResponse<string>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ContactService.ContactCreateAuditEventPath, 'get');
+    if (params) {
+      rb.query('eventMoniker', params.eventMoniker, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
+  }
+
+  /**
+   * Gets the same BCeID user info as getlogin, but also ensures that a dfa_bceidusers record exists
+   * for the current logged in user.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `contactCreateAuditEvent$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  contactCreateAuditEvent(params?: {
+
+    /**
+     * Brief description of event type; eg. &quot;login&quot;, or &quot;submit Application&quot;
+     */
+    eventMoniker?: string;
+  }): Observable<string> {
+
+    return this.contactCreateAuditEvent$Response(params).pipe(
+      map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
 

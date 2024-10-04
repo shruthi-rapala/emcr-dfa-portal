@@ -187,7 +187,54 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_name, opts => opts.MapFrom(s => s.applicationDetails.legalName))
                 .ForMember(d => d.dfa_estimated, opts => opts.MapFrom(s => s.applicationDetails.estimatedPercent))
                 .ForMember(d => d.dfa_dateofdamage, opts => opts.MapFrom(s => s.applicationDetails.damageFromDate))
-                .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.applicationDetails.damageToDate));
+                .ForMember(d => d.dfa_dateofdamageto, opts => opts.MapFrom(s => s.applicationDetails.damageToDate))
+                // 2024-09-16 EMCRI-663 waynezen; Contact form fields
+                .ForMember(d => d.dfa_doingbusinessasdbaname, opts => opts.MapFrom(s => s.applicationContacts.doingBusinessAs))
+                .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.applicationContacts.businessNumber))
+                .ForMember(d => d.dfa_bceidbusinessguid, opts => opts.MapFrom(s => s.applicationContacts.pcBCeIDOrgGuid))
+                .ForMember(d => d.dfa_businessmailingaddressline1, opts => opts.MapFrom(s => s.applicationContacts.addressLine1))
+                .ForMember(d => d.dfa_businessmailingaddressline2, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.applicationContacts.addressLine2) ? " " : s.applicationContacts.addressLine2))
+                .ForMember(d => d.dfa_businessmailingaddresscitytext, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.applicationContacts.community) ? " " : s.applicationContacts.community))
+                .ForMember(d => d.dfa_businessmailingaddressprovince, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.applicationContacts.stateProvince) ? " " : s.applicationContacts.stateProvince))
+                .ForMember(d => d.dfa_businessmailingaddresspostalcode, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.applicationContacts.postalCode) ? " " : s.applicationContacts.postalCode))
+                .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s =>
+                    (s.applicationContacts.isDamagedAddressVerified != null && s.applicationContacts.isDamagedAddressVerified == "true")
+                    ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_receiveguidanceassessingyourinfra, opts => opts.MapFrom(s =>
+                    (s.applicationContacts.guidanceSupport == true)
+                    ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                ;
+
+            // 2024-09-16 EMCRI-663 waynezen; Contact form fields
+            CreateMap<ApplicationContacts, dfa_applicationprimarycontact_params>()
+                .ForMember(d => d.dfa_appcontactid, opts => opts.MapFrom(s => (s.contactId.HasValue ? s.contactId.ToString() : null)))
+                .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.pcFirstName))
+                .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.pcLastName))
+                .ForMember(d => d.dfa_department, opts => opts.MapFrom(s => s.pcDepartment))
+                .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.businessNumber))
+                .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.pcEmailAddress))
+                .ForMember(d => d.dfa_cellphonenumber, opts => opts.MapFrom(s => s.pcCellPhone))
+                .ForMember(d => d.dfa_title, opts => opts.MapFrom(s => s.pcJobTitle))
+                .ForMember(d => d.dfa_notes, opts => opts.MapFrom(s => s.pcNotes))
+                .ForMember(d => d.dfa_bceidbusinessguid, opts => opts.MapFrom(s => s.pcBCeIDOrgGuid))
+                .ForMember(d => d.dfa_bceiduserguid, opts => opts.MapFrom(s => s.pcBCeIDuserGuid))
+                .ForMember(d => d.dfa_bceiduserlogin, opts => opts.MapFrom(s => s.primaryContactSearch))
+                ;
+
+            CreateMap<dfa_applicationprimarycontact_retrieve, ApplicationContacts>()
+                .ForMember(d => d.contactId, opts => opts.MapFrom(s => s.dfa_appcontactid))
+                .ForMember(d => d.pcFirstName, opts => opts.MapFrom(s => s.dfa_firstname))
+                .ForMember(d => d.pcLastName, opts => opts.MapFrom(s => s.dfa_lastname))
+                .ForMember(d => d.pcDepartment, opts => opts.MapFrom(s => s.dfa_department))
+                .ForMember(d => d.businessNumber, opts => opts.MapFrom(s => s.dfa_businessnumber))
+                .ForMember(d => d.pcEmailAddress, opts => opts.MapFrom(s => s.dfa_emailaddress))
+                .ForMember(d => d.pcCellPhone, opts => opts.MapFrom(s => s.dfa_cellphonenumber))
+                .ForMember(d => d.pcJobTitle, opts => opts.MapFrom(s => s.dfa_title))
+                .ForMember(d => d.pcNotes, opts => opts.MapFrom(s => s.dfa_notes))
+                .ForMember(d => d.pcBCeIDuserGuid, opts => opts.MapFrom(s => s.dfa_bceiduserguid))
+                .ForMember(d => d.pcBCeIDOrgGuid, opts => opts.MapFrom(s => s.dfa_bceidbusinessguid))
+                .ForMember(d => d.primaryContactSearch, opts => opts.MapFrom(s => s.dfa_bceiduserlogin))
+                ;
 
             CreateMap<dfa_appapplicationmain_retrieve, CleanUpLog>()
                 .ForMember(d => d.haveInvoicesOrReceiptsForCleanupOrRepairs, opts => opts.MapFrom(s => s.dfa_haveinvoicesreceiptsforcleanuporrepairs2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_haveinvoicesreceiptsforcleanuporrepairs2 == (int)YesNoOptionSet.No ? false : (bool?)null)));
@@ -242,6 +289,19 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.eventId, opts => opts.MapFrom(s => s._dfa_eventid_value))
                 .ForMember(d => d.damageFromDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamage) ? DateTime.Parse(s.dfa_dateofdamage).ToString("o") + "Z" : s.dfa_dateofdamage))
                 .ForMember(d => d.damageToDate, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_dateofdamageto) ? DateTime.Parse(s.dfa_dateofdamageto).ToString("o") + "Z" : s.dfa_dateofdamageto));
+
+            // 2024-09-25 EMCRI-663 waynezen; Contact form fields
+            CreateMap<dfa_appapplicationmain_retrieve, ApplicationContacts>()
+                .ForMember(d => d.legalName, opts => opts.MapFrom(s => s.dfa_governmentbodylegalname))
+                .ForMember(d => d.doingBusinessAs, opts => opts.MapFrom(s => s.dfa_doingbusinessasdbaname))
+                .ForMember(d => d.addressLine1, opts => opts.MapFrom(s => s.dfa_businessmailingaddressline1))
+                .ForMember(d => d.addressLine2, opts => opts.MapFrom(s => s.dfa_businessmailingaddressline2))
+                .ForMember(d => d.community, opts => opts.MapFrom(s => s.dfa_businessmailingaddresscitytext))
+                .ForMember(d => d.stateProvince, opts => opts.MapFrom(s => s.dfa_businessmailingaddressprovince))
+                .ForMember(d => d.postalCode, opts => opts.MapFrom(s => s.dfa_businessmailingaddresspostalcode))
+                .ForMember(d => d.isDamagedAddressVerified, opts => opts.MapFrom(s => s.dfa_mailingaddresscanadapostverified == (int?)YesNoOptionSet.Yes ? "true" : "false"))
+                .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.Yes ? true : (s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                ;
 
             CreateMap<dfa_appapplicationmain_retrieve, SignAndSubmit>()
                 .ForMember(d => d.ninetyDayDeadline, opts => opts.MapFrom(s => s.dfa_90daydeadline))
