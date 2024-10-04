@@ -8,6 +8,7 @@ export interface ApplicationContacts {
   community?: null | string;
   contactId?: null | string;
   doingBusinessAs?: null | string;
+  guidanceSupport?: null | boolean;
   isDamagedAddressVerified?: null | string;
   legalName?: null | string;
   pcBCeIDOrgGuid?: null | string;

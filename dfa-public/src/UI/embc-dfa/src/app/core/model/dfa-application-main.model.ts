@@ -436,6 +436,7 @@ export class Contacts {
   isDamagedAddressVerified?: null | string;
   primaryContactSearch?: null | string;
   primaryContactValidated?: null | boolean;
+  guidanceSupport?: null | boolean;
 
   // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
   pcFirstName?: null | string;  
@@ -448,6 +449,7 @@ export class Contacts {
   pcNotes?: null | string;
   pcBCeIDOrgGuid?: null | string;
   pcBCeIDuserGuid?: null | string;
+
 
   constructor(
     legalName?: null | string,
@@ -463,6 +465,7 @@ export class Contacts {
     primaryContactSearch?: null | string,
     primaryContactValidated?: null | boolean,
     contactId?: null | string,
+    guidanceSupport?: null | boolean,
     
     pcFirstName?: null | string,
     pcLastName?: null | string,
@@ -471,8 +474,7 @@ export class Contacts {
     pcEmailAddress?: null | string,
     pcNotes?: null | string,
     pcBCeIDOrgGuid?: null | string,
-    pcBCeIDuserGuid?: null | string,  
-  
+    pcBCeIDuserGuid?: null | string,    
   ) { }
 }
 
@@ -491,6 +493,7 @@ export class ContactsForm {
   primaryContactSearch = new UntypedFormControl();
   primaryContactValidated = new UntypedFormControl();
   contactId = new UntypedFormControl();
+  guidanceSupport = new UntypedFormControl();
 
   // 2024-09-10 EMCRI-663 waynezen; Primary Contact info
   pcFirstName = new UntypedFormControl();
@@ -547,6 +550,9 @@ export class ContactsForm {
     }
     if (contacts.contactId) {
       this.contactId.setValue(contacts.contactId);
+    }
+    if (contacts.guidanceSupport) {
+      this.guidanceSupport.setValue(contacts.guidanceSupport);
     }
     if (contacts.pcFirstName) {
       this.pcFirstName.setValue(contacts.pcFirstName);

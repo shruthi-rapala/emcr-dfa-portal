@@ -200,6 +200,9 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s =>
                     (s.applicationContacts.isDamagedAddressVerified != null && s.applicationContacts.isDamagedAddressVerified == "true")
                     ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_receiveguidanceassessingyourinfra, opts => opts.MapFrom(s =>
+                    (s.applicationContacts.guidanceSupport == true)
+                    ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 ;
 
             // 2024-09-16 EMCRI-663 waynezen; Contact form fields
@@ -297,6 +300,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.stateProvince, opts => opts.MapFrom(s => s.dfa_businessmailingaddressprovince))
                 .ForMember(d => d.postalCode, opts => opts.MapFrom(s => s.dfa_businessmailingaddresspostalcode))
                 .ForMember(d => d.isDamagedAddressVerified, opts => opts.MapFrom(s => s.dfa_mailingaddresscanadapostverified == (int?)YesNoOptionSet.Yes ? "true" : "false"))
+                .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.Yes ? true : (s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 ;
 
             CreateMap<dfa_appapplicationmain_retrieve, SignAndSubmit>()

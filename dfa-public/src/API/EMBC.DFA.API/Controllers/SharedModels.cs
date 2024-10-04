@@ -490,6 +490,8 @@ namespace EMBC.DFA.API.Controllers
         public string? primaryContactSearch { get; set; }
         public bool? primaryContactValidated { get; set; }
 
+        public bool? guidanceSupport { get; set; }
+
         public string? pcFirstName { get; set; }
         public string? pcLastName { get; set; }
         public string? pcDepartment { get; set; }

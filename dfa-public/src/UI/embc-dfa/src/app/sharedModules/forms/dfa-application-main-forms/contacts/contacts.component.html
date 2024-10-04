@@ -183,19 +183,41 @@
         </div>
 
         <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Additional Contact Details
-          </p>
-          <div class="col-md-6">
+          <div class="col-md-12 bottomspace">
+
+
           </div>
         </div>
 
-      </ng-container>
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p>
+              If there is an opportunity to receive guidance and support in assessing your damaged infrastructure,
+              would you like to receive this support?
+              You may change your response in the future if needed.
+              <span style="color:red">*</span>
+            </p>
+            <mat-radio-group formControlName="guidanceSupport" class="primary-radio-group horizontal-radio-group" required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div><br /><br />
+        
+        </ng-container>
     </form>
 
     <form [formGroup]="otherContactsForm">
       <div formGroupName="otherContact">
         <ng-container>
+          
+          <div class="row">
+            <p class="sub-heading" style="font-size: 15px">
+              Additional Contact Details
+            </p>
+            <div class="col-md-6">
+            </div>
+          </div>
 
           <div class="row">
             <div class="col-md-12">

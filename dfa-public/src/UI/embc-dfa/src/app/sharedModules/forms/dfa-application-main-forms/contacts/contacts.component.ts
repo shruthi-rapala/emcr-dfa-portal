@@ -112,7 +112,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.stateProvince.disable();
       this.contactsForm.controls.postalCode.disable();
       this.contactsForm.controls.primaryContactSearch.disable();
-      // this.contactsForm.controls.primaryContactValidated.disable();
+      this.contactsForm.controls.guidanceSupport.disable();
       this.contactsForm.controls.pcFirstName.disable();
       this.contactsForm.controls.pcLastName.disable();
       this.contactsForm.controls.pcDepartment.disable();
@@ -130,7 +130,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.stateProvince.enable();
       this.contactsForm.controls.postalCode.enable();
       this.contactsForm.controls.primaryContactSearch.enable();
-      // this.contactsForm.controls.primaryContactValidated.enable();
+      this.contactsForm.controls.guidanceSupport.enable();
       this.contactsForm.controls.pcFirstName.enable();
       this.contactsForm.controls.pcLastName.enable();
       this.contactsForm.controls.pcDepartment.enable();
@@ -217,6 +217,15 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
       });
 
+      this.contactsForm
+      .get('guidanceSupport')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (value === '') {
+          this.contactsForm.get('guidanceSupport').reset();
+        }
+      });
+
     this.contactsForm
       .get('primaryContactSearch')
       .valueChanges.pipe(distinctUntilChanged())
@@ -225,9 +234,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           this.contactsForm.get('primaryContactSearch').reset();
         }
       });
-
-      // EMCRI-663 waynezen TODO: debug
-      //this.dfaApplicationMainMapping.setExistingDFAApplicationMainContacts();
 
     this.getContactForApplication(this.dfaApplicationMainDataService.getApplicationId());
     this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());

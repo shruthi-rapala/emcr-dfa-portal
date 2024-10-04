@@ -57,6 +57,7 @@ export class DFAApplicationMainMappingService {
         .subscribe((contactDetails) => {
           contactDetails.setValue({
             ...dfaApplicationMain.applicationContacts,
+            guidanceSupport: dfaApplicationMain.applicationContacts.guidanceSupport === true ? 'true' : (dfaApplicationMain.applicationContacts.guidanceSupport === false ? 'false' : null),
           });
           formGroup = contactDetails;
         });

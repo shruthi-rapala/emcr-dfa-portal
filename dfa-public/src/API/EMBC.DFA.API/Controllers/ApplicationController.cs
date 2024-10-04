@@ -144,6 +144,16 @@ namespace EMBC.DFA.API.Controllers
             var mappedApplication = mapper.Map<dfa_appapplicationmain_params>(application);
             mappedApplication.dfa_applicant = contactId;
 
+            // 2024-09-17 EMCRI-676 waynezen; if no Primary Contact yet, use BCeID guid's of logged in user
+            if (mappedApplication?.dfa_bceidbusinessguid == null && primeContactIn?.dfa_bceidbusinessguid == null)
+            {
+                mappedApplication.dfa_bceidbusinessguid = userData.bceid_business_guid.ToString();
+            }
+            else
+            {
+                mappedApplication.dfa_bceidbusinessguid = primeContactIn.dfa_bceidbusinessguid;
+            }
+
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
             if (application.OtherContact != null)
