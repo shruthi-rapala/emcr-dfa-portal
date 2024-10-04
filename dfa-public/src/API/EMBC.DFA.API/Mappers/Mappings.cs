@@ -418,7 +418,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
                 .ForMember(d => d.HasAmendment, opts => opts.MapFrom(s => s.hasAmendments))
                 .ForMember(d => d.IsClaimSubmission, opts => opts.MapFrom(s =>
-                    !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) && Convert.ToInt32(s.dfa_projectbusinessprocessstages) == Convert.ToInt32(ProjectStages.Closed)
+                    !string.IsNullOrEmpty(s.dfa_projectbusinessprocessstages) && (Convert.ToInt32(s.dfa_projectbusinessprocessstages) == Convert.ToInt32(ProjectStages.DecisionMade) || Convert.ToInt32(s.dfa_projectbusinessprocessstages) == Convert.ToInt32(ProjectStages.Closed))
                     && !string.IsNullOrEmpty(s.dfa_projectbusinessprocesssubstages) &&
                     (Convert.ToInt32(s.dfa_projectbusinessprocesssubstages) == Convert.ToInt32(ProjectSubStages.Approved) ||
                     Convert.ToInt32(s.dfa_projectbusinessprocesssubstages) == Convert.ToInt32(ProjectSubStages.ApprovedwithExclusions)) ? true : false))
