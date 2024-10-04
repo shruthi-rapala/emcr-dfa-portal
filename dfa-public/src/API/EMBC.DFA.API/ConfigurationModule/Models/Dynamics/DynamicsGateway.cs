@@ -162,7 +162,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                var result = await api.ExecuteAction("dfa_DFAPortalCreateApplication", application);
+                var result = await api.ExecuteAction("dfa_DFAExpansionPortalAppApplication", application);
                 var jsonVal = JsonConvert.SerializeObject(application);
 
                 // Update with additional values TODO: remove when dynamics process updated to include these parameters
