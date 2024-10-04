@@ -5,7 +5,7 @@ on:
       - develop
 
     paths:
-      - ".github/workflows/zap-scan-config.yml"
+      - ".github/workflows/zap-scan-public-config.yml"
   #schedule:
   #  # Scheduled Scanning of Dev
   #  - cron:  '5 6 * * *'
