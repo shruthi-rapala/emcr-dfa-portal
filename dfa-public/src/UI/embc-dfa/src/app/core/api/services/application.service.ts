@@ -160,13 +160,15 @@ export class ApplicationService extends BaseService {
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `applicationGetPdfApplicationData()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  applicationGetPdfApplicationData$Response(params?: {
+  applicationGetPdfApplicationData$Response(params: {
+    body: DfaApplicationMain
   }): Observable<StrictHttpResponse<PdfApplicationData>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetPdfApplicationDataPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetPdfApplicationDataPath, 'post');
     if (params) {
+      rb.body(params.body, 'application/json');
     }
 
     return this.http.request(rb.build({
@@ -184,9 +186,10 @@ export class ApplicationService extends BaseService {
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `applicationGetPdfApplicationData$Response()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  applicationGetPdfApplicationData(params?: {
+  applicationGetPdfApplicationData(params: {
+    body: DfaApplicationMain
   }): Observable<PdfApplicationData> {
 
     return this.applicationGetPdfApplicationData$Response(params).pipe(
