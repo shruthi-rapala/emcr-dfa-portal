@@ -204,6 +204,8 @@ namespace EMBC.DFA.API
             services.AddTransient<IUserService, UserService>();
 
             services.Configure<ADFSTokenProviderOptions>(configuration.GetSection("Dynamics:ADFS"));
+            services.Configure<PdfServiceConfigs>(configuration.GetSection("pdfService"));
+
             services.AddADFSTokenProvider();
             services.AddHttpClient("captcha");
             services.AddScoped(sp =>
