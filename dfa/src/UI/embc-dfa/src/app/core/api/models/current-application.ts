@@ -10,6 +10,7 @@ export interface CurrentApplication {
   dateFileClosed?: string;
   dateOfDamage?: string;
   eventId?: string;
+  hasAppealStages?: boolean;
   isErrorInStatus?: boolean;
   legalName?: string;
   primaryApplicantSignedDate?: string;

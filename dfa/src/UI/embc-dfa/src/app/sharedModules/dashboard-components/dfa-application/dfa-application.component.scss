@@ -40,6 +40,10 @@
   margin-top: 60px;
 }
 
+.appeal-stages .nocircle {
+  margin-right: 21px;
+}
+
 .circle {
   /*width: 100px;*/
   height: 12px;
@@ -50,6 +54,15 @@
   margin-top: 60px;
 }
 
+.appeal-stages .col-md-1 {
+  width: 6.333333%;
+}
+
+.appeal-stages .circle {
+  padding-left: 6%;
+  margin-right: 18px;
+}
+
 .stepsDesc {
   /*width: 100px;*/
   height: 12px;
@@ -58,6 +71,12 @@
   margin-right: 20px;
   margin-top: 30px;
 }
+
+.appeal-stages .stepsDesc {
+  margin-right: 16px;
+  padding-left: 6.5%;
+}
+
 
 .youAreHere {
   background-color: #faf1c9;
@@ -74,7 +93,7 @@
   display: inline-flex;
 }
 
-@media (max-width: 1100px) and (min-width: 300px) {
+@media (max-width: 1200px) and (min-width: 300px) {
   .nocircle {
     height: 12px;
     float: left;

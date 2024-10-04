@@ -272,6 +272,7 @@ namespace EMBC.DFA.API.Controllers
         public List<StatusBar> StatusBar { get; set; }
         public string StatusLastUpdated { get; set; }
         public bool IsErrorInStatus { get; set; }
+        public bool hasAppealStages { get; set; }
     }
 
     public class StatusBar
