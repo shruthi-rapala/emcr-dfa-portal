@@ -318,7 +318,7 @@ namespace EMBC.DFA.API.Controllers
         //        contactText.Append($@"<tr>
         //                <td>{contact.FirstName}</td>
         //                <td>{contact.LastName}</td>
-        //                <td>{contact.BusinessPhone}</td>   
+        //                <td>{contact.BusinessPhone}</td>
         //                <td>{contact.Email}</td>
         //                <td>{contact.CellPhone}</td>
         //                <td>{contact.JobTitle}</td>
