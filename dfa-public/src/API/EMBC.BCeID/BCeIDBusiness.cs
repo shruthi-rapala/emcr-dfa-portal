@@ -39,6 +39,9 @@
         public Guid organizationGuid { get; set; }
         public Guid userGuid { get; set; }
 
+        // 2024-10-05 EMCRI-804 waynezen
+        public string doingBusinessAs { get; set; }
+
     }
 }
 

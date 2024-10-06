@@ -48,7 +48,7 @@ export class DFAApplicationMainMappingService {
     this.dfaApplicationMainDataService.contacts = dfaApplicationMain.applicationContacts;
   }
 
-    // EMCRI-663 waynezen TODO: debug
+    // EMCRI-663 waynezen
     private setContactDetails(dfaApplicationMain: DfaApplicationMain): void {
       let formGroup: UntypedFormGroup;
       this.formCreationService
@@ -57,6 +57,8 @@ export class DFAApplicationMainMappingService {
         .subscribe((contactDetails) => {
           contactDetails.setValue({
             ...dfaApplicationMain.applicationContacts,
+            // 2024-10-05 EMCRI-804 waynezen; if doingBusinessAs is blank, fill in value from BCeID Web Svc
+            doingBusinessAs: dfaApplicationMain.applicationContacts.doingBusinessAs !== null ? dfaApplicationMain.applicationContacts.doingBusinessAs : this.dfaApplicationMainDataService.getDoingBusinessAs(),
             guidanceSupport: dfaApplicationMain.applicationContacts.guidanceSupport === true ? 'true' : (dfaApplicationMain.applicationContacts.guidanceSupport === false ? 'false' : null),
           });
           formGroup = contactDetails;

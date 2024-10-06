@@ -30,6 +30,7 @@ export class DFAApplicationMainDataService {
   private _editstep: string;
   private _requiredDocuments = [];
   private _business: string;
+  private _doingBusinessAs: string;
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
   public changeAppId: EventEmitter<string> = new EventEmitter<string>();
 
@@ -199,6 +200,14 @@ export class DFAApplicationMainDataService {
 
   public getBusiness(): string {
     return this._business;
+  }
+
+  public setDoingBusinessAs(busName: string): void {
+    this._doingBusinessAs = busName;
+  }
+
+  public getDoingBusinessAs(): string {
+    return this._doingBusinessAs;
   }
 
   public setViewOrEdit(vieworedit: string): void {

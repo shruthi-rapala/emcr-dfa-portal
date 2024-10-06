@@ -147,11 +147,20 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       .getContactsForm()
       .subscribe((contactDetails) => {
         contactDetails.controls.legalName.setValue(this.dfaApplicationMainDataService.getBusiness());
+
+        // 2024-10-05 EMCRI-804 waynezen; if brand new Application, fill in doingBusinessAs from BCeID Web Svc
+        let contactDetailsBase: string | null = null;
+        let appId = this.dfaApplicationMainDataService.getApplicationId();
+        if (appId === null) {
+          let contactDetailsBase = this.dfaApplicationMainDataService.getDoingBusinessAs();
+          contactDetails.controls.doingBusinessAs.setValue(contactDetailsBase);
+        }
+
         this.contactsForm = contactDetails;
         this.setViewOrEditControls();
         this.dfaApplicationMainDataService.contacts = {
           legalName: this.dfaApplicationMainDataService.getBusiness(),
-          doingBusinessAs: null,
+          doingBusinessAs: contactDetailsBase,
           businessNumber: null,
           addressLine1: null,
           addressLine2: null,
