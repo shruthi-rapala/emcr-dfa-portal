@@ -230,70 +230,70 @@
 
           <table cellspacing="0" cellpadding="0" style="border: none;">
             <tr> <td class="record-title">Doing Business As (DBA) Name  </td> <td>    
-              <span>
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.doingBusinessAs || (formCreationService.contactsForm$ | async)?.controls.doingBusinessAs.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
                     .doingBusinessAs ? (formCreationService.contactsForm$ | async)?.value
-                    .doingBusinessAs : ""
+                    .doingBusinessAs : "Enter required information"
                 }}
               </span>   
             </td></tr>
             <tr> <td class="record-title"> Business Number  </td>  <td>
-              <span>
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.businessNumber || (formCreationService.contactsForm$ | async)?.controls.businessNumber.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
                     .businessNumber ? (formCreationService.contactsForm$ | async)?.value
-                    .businessNumber : ""
+                    .businessNumber : "Enter required information"
                 }}
               </span>     
             </td>   </tr>
 
             <tr> <td width="50%"> <p><u><strong>Mailing Address</strong></u> </p>  </td>    </tr>
             <tr> <td class="record-title"> Address Line 1  </td>  <td> 
-              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.addressLine1 || (formCreationService.contactsForm$ | async)?.controls.addressLine1.invalid}">
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.mailingAddress1 || (formCreationService.contactsForm$ | async)?.controls.mailingAddress1.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
-                    .addressLine1 ? (formCreationService.contactsForm$ | async)?.value
-                    .addressLine1 : "Enter required information"
+                    .mailingAddress1 ? (formCreationService.contactsForm$ | async)?.value
+                    .mailingAddress1 : "Enter required information"
                 }}
               </span>   
             
             </td>   </tr>
             <tr> <td class="record-title"> Address Line 2  </td>  <td> 
               
-              <span>
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.mailingAddress2 || (formCreationService.contactsForm$ | async)?.controls.mailingAddress2.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
-                    .addressLine2 ? (formCreationService.contactsForm$ | async)?.value
-                    .addressLine2 : ""
+                    .mailingAddress2 ? (formCreationService.contactsForm$ | async)?.value
+                    .mailingAddress2 : "Enter required information"
                 }}
               </span>   
             </td>   </tr>
             <tr> <td class="record-title"> City  </td>  <td> 
 
-              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.community || (formCreationService.contactsForm$ | async)?.controls.community.invalid}">
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.city || (formCreationService.contactsForm$ | async)?.controls.city.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
-                    .community ? (formCreationService.contactsForm$ | async)?.value
-                    .community : "Enter required information"
+                    .city ? (formCreationService.contactsForm$ | async)?.value
+                    .city : "Enter required information"
                 }}
               </span>   
             </td>   </tr>
             <tr> <td class="record-title"> Province  </td>  <td> 
-              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.stateProvince || (formCreationService.contactsForm$ | async)?.controls.stateProvince.invalid}">
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.province || (formCreationService.contactsForm$ | async)?.controls.province.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
-                    .stateProvince ? (formCreationService.contactsForm$ | async)?.value
-                    .stateProvince : "Enter required information"
+                    .province ? (formCreationService.contactsForm$ | async)?.value
+                    .province : "Enter required information"
                 }}
               </span>   
                </td>   </tr>
             <tr> <td class="record-title"> Postal Code  </td>  <td> 
-               <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.postalCode || (formCreationService.contactsForm$ | async)?.controls.postalCode.invalid}">
+               <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.PostalCode || (formCreationService.contactsForm$ | async)?.controls.PostalCode.invalid}">
               {{
                 (formCreationService.contactsForm$ | async)?.value
-                  .postalCode ? (formCreationService.contactsForm$ | async)?.value
-                  .postalCode : "Enter required information"
+                  .PostalCode ? (formCreationService.contactsForm$ | async)?.value
+                  .PostalCode : "Enter required information"
               }}
             </span>    
             </td>   </tr>
@@ -318,29 +318,29 @@
               </span>     
             </td>   </tr>
             <tr> <td class="record-title"> Department  </td>  <td> 
-              <span>
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.pcDepartment || (formCreationService.contactsForm$ | async)?.controls.pcDepartment.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
                     .pcDepartment ? (formCreationService.contactsForm$ | async)?.value
-                    .pcDepartment : ""
+                    .pcDepartment : "Enter required information"
                 }}
               </span>     
               </td>   </tr>
             <tr> <td class="record-title"> Business Phone  </td>  <td> 
-              <span>
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.pcBusinessPhone || (formCreationService.contactsForm$ | async)?.controls.pcBusinessPhone.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
                     .pcBusinessPhone ? (formCreationService.contactsForm$ | async)?.value
-                    .pcBusinessPhone : ""
+                    .pcBusinessPhone : "Enter required information"
                 }}
               </span>     
               </td>   </tr>
             <tr> <td class="record-title"> Email Address  </td>  <td> 
-              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.pcEmailAddress || (formCreationService.contactsForm$ | async)?.controls.pcEmailAddress.invalid}">
+              <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.pcEmail || (formCreationService.contactsForm$ | async)?.controls.pcEmail.invalid}">
                 {{
                   (formCreationService.contactsForm$ | async)?.value
-                    .pcEmailAddress ? (formCreationService.contactsForm$ | async)?.value
-                    .pcEmailAddress : "Enter required information"
+                    .pcEmail ? (formCreationService.contactsForm$ | async)?.value
+                    .pcEmail : "Enter required information"
                 }}
               </span>     
                </td>   </tr>
@@ -420,12 +420,6 @@
                       <td>{{contact.phoneNumber}}</td>   
                       <td>{{contact.email}}</td>
           </tr> -->
-           <tr *ngFor="let contact of otherContactsData">
-                      <td>{{contact.firstName}}</td>
-                      <td>{{contact.lastName}}</td>
-                      <td>{{contact.phoneNumber}}</td>   
-                      <td>{{contact.email}}</td>
-          </tr>
         </tbody>
         </table>
       </div>

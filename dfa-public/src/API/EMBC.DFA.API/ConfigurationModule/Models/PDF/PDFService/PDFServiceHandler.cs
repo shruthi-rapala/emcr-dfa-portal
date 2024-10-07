@@ -24,8 +24,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.PDF.PDFService
         {
             byte[] fileBytes = null;
             var url = options.GeneratePDFFile;
+            //string url = "https://dfa-public-sector-pdf-dev.apps.silver.devops.gov.bc.ca/api/PDF/GetPDF";
+            //string downloadPath = @"C:\path\to\save\file.zip"; // Local path to save the file
             using (HttpClient client = new HttpClient())
             {
+                // Create your POST request content (if any)
                 try
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
