@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -117,6 +118,7 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<string>> UpdateApplication(DFAApplicationMain application)
         {
+            var txt = JsonConvert.SerializeObject(application, Formatting.Indented);
             var e2 = ((ApplicantSubtypeCategories)System.Enum.Parse(typeof(ApplicantSubtypeCategories), "FirstNationCommunity")).ToString();
             var e3 = ((EstimatedPercent)System.Enum.Parse(typeof(EstimatedPercent), "FirstNationCommunity")).ToString();
 
@@ -216,17 +218,11 @@ namespace EMBC.DFA.API.Controllers
 
         public PdfApplicationData GetPdfApplicationData(DFAApplicationMain application)
         {
-            var contacts = new Contact[]
+            Contact[] contacts = null;
+            if (application.OtherContact != null && application.OtherContact.Count() > 0)
             {
-                    new Contact
-                    {
-                        FirstName = "Karim", LastName = "Hass", CellPhone = "222233", BusinessPhone = "44444444", Email = "Karim@12332.com", JobTitle = "Co-Owner", Notes = "notes"
-                    },
-                    new Contact
-                    {
-                        FirstName = "Karim1", LastName = "Hass1", CellPhone = "2222331", BusinessPhone = "444444441", Email = "Karim@123321.com", JobTitle = "Co-Owner1", Notes = "notes1"
-                    }
-            };
+              contacts = mapper.Map<Contact[]>(application.OtherContact);
+            }
             var contactText = new StringBuilder();
             contactText.Append($@"<div class='contacts-container' ><table class='contacts' style='width:95%'>");
 
@@ -246,150 +242,45 @@ namespace EMBC.DFA.API.Controllers
             }
 
             contactText.Append("</table></div>");
-
-            var pdfApplicationData = new PdfApplicationData
+            PdfApplicationData pdfApplicationData = new PdfApplicationData();
+            if (application.applicationDetails != null)
             {
-                IndigenousGoverningBody = "SmallBusinessOwner",
-                DateofDamageFrom = "DateofDamageTo",
-                DateofDamageTo = "DateofDamageTo",
-                DisasterEvent = "DisasterEvent",
-                CauseofDamage = "CauseofDamage ",
-                GovernmentType = "GovernmentType",
-                OtherGoverningBody = "OtherGoverningBody",
-                DescribeYourOrganization = "DescribeYourOrganization",
+                try
+                {
+                    pdfApplicationData = mapper.Map<PdfApplicationData>(application);
+                }
+                catch (Exception ex)
+                {
+                    pdfApplicationData.ContactsText = ex.Message;
+                    throw;
+                }
+                pdfApplicationData.ContactsText = contactText.ToString();
 
-                //////////// Second section////////////
-                DoingBusinessAsDBAName = "DoingBusinessAsDBAName",
-                BusinessNumber = "BusinessNumber",
-                AddressLine1 = "AddressLine1",
-                AddressLine2 = "AddressLine2",
-                City = "City",
-                Province = "Province",
-                PostalCode = "PostalCode",
-
-                //Primary Contact Details
-                FirstName = "FirstName",
-                LastName = "LastName",
-                Department = "Department",
-                BusinessPhone = "BusinessPhone",
-                EmailAddress = "EmailAddress",
-                CellPhone = "CellPhone",
-                JobTitle = "JobTitle",
-                // ContactNotes = "ContactNotes",
-
-                //Contacts
-                ContactsText = contactText.ToString(),
-            };
-            return pdfApplicationData;
-            //if (System.IO.File.Exists(filename))
-            //{
-            //    string format = System.IO.File.ReadAllText(filename);
-            //    HandlebarsTemplate<object, object> handlebar = GetHandlebarsTemplate(format);
-
-            //    handlebar = Handlebars.Compile(format);
-            //    var html = handlebar(rawdata);
-
-            //    var doc = new HtmlToPdfDocument()
-            //    {
-            //        GlobalSettings = {
-            //            PaperSize = PaperKind.Letter,
-            //            Orientation = Orientation.Portrait,
-            //            Margins = new MarginSettings(5.0,5.0,5.0,5.0)
-            //        },
-
-            //        Objects = {
-            //            new ObjectSettings()
-            //            {
-            //                HtmlContent = html
-            //            }
-            //        }
-            //    };
-            //    try
-            //    {
-            //        var pdf = _generatePdf.Convert(doc);
-            //        string bitString = BitConverter.ToString(pdf);
-
-            //        return File(pdf, "application/pdf", "test.pdf");
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        _logger.LogError(e, "ERROR rendering PDF");
-            //        _logger.LogError(template);
-            //        _logger.LogError(html);
-            //    }
-            //    return Content(html, "text/html", Encoding.UTF8);
+                var causeofDamage = new StringBuilder();
+                if (application.applicationDetails.floodDamage.HasValue && application.applicationDetails.floodDamage.Value)
+                {
+                    causeofDamage.Append("Flood Damage, ");
+                }
+                if (application.applicationDetails.landslideDamage.HasValue && application.applicationDetails.landslideDamage.Value)
+                {
+                    causeofDamage.Append("Landslide Damage, ");
+                }
+                if (application.applicationDetails.stormDamage.HasValue && application.applicationDetails.stormDamage.Value)
+                {
+                    causeofDamage.Append("Storm Damage, ");
+                }
+                if (application.applicationDetails.wildfireDamage.HasValue && application.applicationDetails.wildfireDamage.Value)
+                {
+                    causeofDamage.Append("Wildfire Damage, ");
+                }
+                causeofDamage.Remove(causeofDamage.Length - 2, 2);
+                if (application.applicationDetails.otherDamage.HasValue && application.applicationDetails.otherDamage.Value)
+                {
+                    causeofDamage.Append(application.applicationDetails.otherDamageText);
+                }
             }
-
-        //public PdfApplicationData GetPdfApplicationData()
-        //{
-        //    var contacts = new Contact[]
-        //    {
-        //            new Contact
-        //            {
-        //                FirstName = "Karim", LastName = "Hass", CellPhone = "222233", BusinessPhone = "44444444", Email = "Karim@12332.com", JobTitle = "Co-Owner", Notes = "notes"
-        //            },
-        //            new Contact
-        //            {
-        //                FirstName = "Karim1", LastName = "Hass1", CellPhone = "2222331", BusinessPhone = "444444441", Email = "Karim@123321.com", JobTitle = "Co-Owner1", Notes = "notes1"
-        //            }
-        //    };
-        //    var contactText = new StringBuilder();
-        //    contactText.Append($@"<div class='contacts-container' ><table class='contacts' style='width:95%'>");
-
-        //    contactText.Append($@"<tr style='background-color: #415a88;color: #fff;'>
-        //                 <th>First Name</th><th>Last Name</th><th>Business Phone</th><th>Email</th><th>Cell Phone</th><th>Job Title</th><th>Notes</th></tr>");
-        //    foreach (var contact in contacts)
-        //    {
-        //        contactText.Append($@"<tr>
-        //                <td>{contact.FirstName}</td>
-        //                <td>{contact.LastName}</td>
-        //                <td>{contact.BusinessPhone}</td>
-        //                <td>{contact.Email}</td>
-        //                <td>{contact.CellPhone}</td>
-        //                <td>{contact.JobTitle}</td>
-        //                <td>{contact.Notes}</td>
-        //                </tr>");
-        //    }
-
-        //    contactText.Append("</table></div>");
-
-        //    var pdfApplicationData = new PdfApplicationData
-        //    {
-        //        IndigenousGoverningBody = "SmallBusinessOwner",
-        //        DateofDamageFrom = "DateofDamageTo",
-        //        DateofDamageTo = "DateofDamageTo",
-        //        DisasterEvent = "DisasterEvent",
-        //        CauseofDamage = "CauseofDamage ",
-        //        GovernmentType = "GovernmentType",
-        //        OtherGoverningBody = "OtherGoverningBody",
-        //        DescribeYourOrganization = "DescribeYourOrganization",
-
-        //        //////////// Second section////////////
-        //        DoingBusinessAsDBAName = "DoingBusinessAsDBAName",
-        //        BusinessNumber = "BusinessNumber",
-        //        AddressLine1 = "AddressLine1",
-        //        AddressLine2 = "AddressLine2",
-        //        City = "City",
-        //        Province = "Province",
-        //        PostalCode = "PostalCode",
-
-        //        //Primary Contact Details
-        //        FirstName = "FirstName",
-        //        LastName = "LastName",
-        //        Department = "Department",
-        //        BusinessPhone = "BusinessPhone",
-        //        EmailAddress = "EmailAddress",
-        //        CellPhone = "CellPhone",
-        //        JobTitle = "JobTitle",
-        //        // ContactNotes = "ContactNotes",
-
-        //        //Contacts
-        //        ContactsText = contactText.ToString(),
-        //    };
-        //    return pdfApplicationData;
-        //}
-
-        //return new NotFoundResult();
+            return pdfApplicationData;
+            }
 
         /// <summary>
         /// Get an application by Id
