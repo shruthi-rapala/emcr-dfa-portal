@@ -483,7 +483,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     if (form.controls.stormDamage.value !== true &&
       form.controls.landslideDamage.value !== true &&
       form.controls.otherDamage.value !== true &&
-      form.controls.floodDamage.value !== true) {
+      form.controls.floodDamage.value !== true &&
+      form.controls.wildfireDamage.value !== true) {
       return { noCauseOfDamage: true };
     }
     return null;
