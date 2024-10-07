@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Inject, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, NgModule, Inject, OnDestroy, Input } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -67,7 +67,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   otherContactsRowEdit = false;
   otherContactsEditFlag = false;
   showOtherContactForm: boolean = false;
-  @Output() stepToNavigate = new EventEmitter<number>();
+
 
 
   constructor(
@@ -352,9 +352,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.otherContactsForm.get('otherContact').markAllAsTouched();
     }
   }
-  navigateToStep(stepIndex: number) {
-    this.stepToNavigate.emit(stepIndex);
-  }
+
   addOtherContact(): void {
     this.otherContactsForm.get('otherContact').reset();
     this.showOtherContactForm = !this.showOtherContactForm;
