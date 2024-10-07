@@ -338,10 +338,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
           this.isLoading = false;
-          this._snackBar.open('Successfully uploaded the document', 'Close', {
+          this._snackBar.open('The document was successfully uploaded', 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
-            duration: 8000,
           });
         },
         error: (error) => {
@@ -354,7 +353,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
               {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
-                duration: 8000,
               }
           );
           
@@ -382,10 +380,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           fileUploads[requiredDocumentTypeFoundIndex] = fileUpload;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
           this.isLoading = false;
-          this._snackBar.open('Successfully uploaded the document', 'Close', {
+          this._snackBar.open('The document was successfully uploaded', 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
-            duration: 8000,
           });
         },
         error: (error) => {
@@ -398,7 +395,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             {
               horizontalPosition: 'center',
               verticalPosition: 'top',
-              duration: 8000,
             }
         );
         }
@@ -413,10 +409,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
           this.isLoading = false;
-          this._snackBar.open('Successfully uploaded the document', 'Close', {
+          this._snackBar.open('The document was successfully uploaded', 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
-            duration: 8000,
           });
         },
         error: (error) => {
@@ -429,7 +424,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             {
               horizontalPosition: 'center',
               verticalPosition: 'top',
-              duration: 8000,
             }
         );
         }
@@ -465,7 +459,6 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
         data: {
           content: message
         },
-        // height: '250px',
         width: '350px',
         disableClose: true
       });
