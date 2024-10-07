@@ -245,7 +245,17 @@ namespace EMBC.DFA.API.Controllers
             PdfApplicationData pdfApplicationData = new PdfApplicationData();
             if (application.applicationDetails != null)
             {
-                pdfApplicationData = mapper.Map<PdfApplicationData>(application.applicationDetails);
+                try
+                {
+                    pdfApplicationData = mapper.Map<PdfApplicationData>(application);
+                }
+                catch (Exception ex)
+                {
+                    pdfApplicationData.ContactsText = ex.Message;
+                    throw;
+                }
+                pdfApplicationData.ContactsText = contactText.ToString();
+
                 var causeofDamage = new StringBuilder();
                 if (application.applicationDetails.floodDamage.HasValue && application.applicationDetails.floodDamage.Value)
                 {
@@ -271,77 +281,6 @@ namespace EMBC.DFA.API.Controllers
             }
             return pdfApplicationData;
             }
-
-        //public PdfApplicationData GetPdfApplicationData()
-        //{
-        //    var contacts = new Contact[]
-        //    {
-        //            new Contact
-        //            {
-        //                FirstName = "Karim", LastName = "Hass", CellPhone = "222233", BusinessPhone = "44444444", Email = "Karim@12332.com", JobTitle = "Co-Owner", Notes = "notes"
-        //            },
-        //            new Contact
-        //            {
-        //                FirstName = "Karim1", LastName = "Hass1", CellPhone = "2222331", BusinessPhone = "444444441", Email = "Karim@123321.com", JobTitle = "Co-Owner1", Notes = "notes1"
-        //            }
-        //    };
-        //    var contactText = new StringBuilder();
-        //    contactText.Append($@"<div class='contacts-container' ><table class='contacts' style='width:95%'>");
-
-        //    contactText.Append($@"<tr style='background-color: #415a88;color: #fff;'>
-        //                 <th>First Name</th><th>Last Name</th><th>Business Phone</th><th>Email</th><th>Cell Phone</th><th>Job Title</th><th>Notes</th></tr>");
-        //    foreach (var contact in contacts)
-        //    {
-        //        contactText.Append($@"<tr>
-        //                <td>{contact.FirstName}</td>
-        //                <td>{contact.LastName}</td>
-        //                <td>{contact.BusinessPhone}</td>
-        //                <td>{contact.Email}</td>
-        //                <td>{contact.CellPhone}</td>
-        //                <td>{contact.JobTitle}</td>
-        //                <td>{contact.Notes}</td>
-        //                </tr>");
-        //    }
-
-        //    contactText.Append("</table></div>");
-
-        //    var pdfApplicationData = new PdfApplicationData
-        //    {
-        //        IndigenousGoverningBody = "SmallBusinessOwner",
-        //        DateofDamageFrom = "DateofDamageTo",
-        //        DateofDamageTo = "DateofDamageTo",
-        //        DisasterEvent = "DisasterEvent",
-        //        CauseofDamage = "CauseofDamage ",
-        //        GovernmentType = "GovernmentType",
-        //        OtherGoverningBody = "OtherGoverningBody",
-        //        DescribeYourOrganization = "DescribeYourOrganization",
-
-        //        //////////// Second section////////////
-        //        DoingBusinessAsDBAName = "DoingBusinessAsDBAName",
-        //        BusinessNumber = "BusinessNumber",
-        //        AddressLine1 = "AddressLine1",
-        //        AddressLine2 = "AddressLine2",
-        //        City = "City",
-        //        Province = "Province",
-        //        PostalCode = "PostalCode",
-
-        //        //Primary Contact Details
-        //        FirstName = "FirstName",
-        //        LastName = "LastName",
-        //        Department = "Department",
-        //        BusinessPhone = "BusinessPhone",
-        //        EmailAddress = "EmailAddress",
-        //        CellPhone = "CellPhone",
-        //        JobTitle = "JobTitle",
-        //        // ContactNotes = "ContactNotes",
-
-        //        //Contacts
-        //        ContactsText = contactText.ToString(),
-        //    };
-        //    return pdfApplicationData;
-        //}
-
-        //return new NotFoundResult();
 
         /// <summary>
         /// Get an application by Id
