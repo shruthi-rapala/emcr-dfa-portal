@@ -21,7 +21,7 @@
           </p>
           <div class="col-md-6">
             <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="doingBusinessAs" placeholder=""
+              <input matInput formControlName="doingBusinessAs" placeholder=""
                 maxlength="200" />
             </mat-form-field>
           </div>
@@ -42,20 +42,20 @@
           </p>
           <div class="col-md-6">
             <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="businessNumber" placeholder="" maxlength="200" />
+              <input matInput formControlName="businessNumber" placeholder="" maxlength="9" />
             </mat-form-field>
           </div>
         </div>
 
-        <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Mailing Address<span style="color:red">*</span>
-          </p>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="mailingAddress1" placeholder=""
-                maxlength="200" />
-            </mat-form-field>
+        <div class="primary-radio-group">
+          <div class="row radio-extra-label">
+            <p class="sub-heading" style="font-size: 15px">
+              Mailing Address<span style="color:red">*</span>
+            </p>
+            <div class="col-md-12">
+              <app-bc-address [addressForm]="contactsForm" [primaryAddressWarning]="false">
+              </app-bc-address>
+            </div>
           </div>
         </div>
         <br>
@@ -66,7 +66,7 @@
           </p>
           <div class="col-md-6">
             <mat-form-field appearance="outline">
-              <input [disabled]="isReadOnly" matInput formControlName="primaryContactSearch" id="primaryContactSearch"
+              <input matInput formControlName="primaryContactSearch" id="primaryContactSearch"
                 placeholder="User Id" maxlength="16" />
             </mat-form-field>
           </div>
@@ -100,15 +100,22 @@
               First Name
             </p>
             <mat-form-field appearance="fill">
-              <input formControlName="pcFirstName" matInput disabled readonly placeholder="" maxlength="100" />
+              <input formControlName="pcFirstName" matInput disabled readonly maxlength="100" />
             </mat-form-field>
+
+            <!-- 2024-09-25 EMCRI-663 waynezen -->
+            <input type="hidden" formControlName="contactId" />
+            <input type="hidden" formControlName="pcBCeIDOrgGuid" />
+            <input type="hidden" formControlName="pcBCeIDuserGuid" />
+            <input type="hidden" formControlName="isDamagedAddressVerified" />
+
           </div>
           <div class="col-md-4">
             <p>
               Last Name
             </p>
             <mat-form-field appearance="fill">
-              <input formControlName="pcLastName" matInput disabled readonly placeholder="" maxlength="100" />
+              <input formControlName="pcLastName" matInput disabled readonly maxlength="100" />
             </mat-form-field>
           </div>
           <div class="col-md-4">
@@ -116,7 +123,7 @@
               Department
             </p>
             <mat-form-field appearance="fill">
-              <input formControlName="pcDepartment" matInput disabled readonly placeholder="" maxlength="100" />
+              <input formControlName="pcDepartment" matInput disabled readonly maxlength="100" />
             </mat-form-field>
           </div>
         </div>
@@ -127,7 +134,7 @@
               Business Phone
             </p>
             <mat-form-field appearance="fill">
-              <input formControlName="pcBusinessPhone" matInput disabled readonly placeholder="" maxlength="100" />
+              <input formControlName="pcBusinessPhone" matInput disabled readonly maxlength="100" />
             </mat-form-field>
           </div>
           <div class="col-md-4">
@@ -135,7 +142,7 @@
               Email Address
             </p>
             <mat-form-field appearance="fill">
-              <input formControlName="pcEmail" matInput disabled readonly placeholder="" maxlength="100" />
+              <input formControlName="pcEmailAddress" matInput disabled readonly maxlength="100" />
             </mat-form-field>
           </div>
         </div>
@@ -146,7 +153,7 @@
               Cell Phone
             </p>
             <mat-form-field appearance="outline">
-              <input formControlName="pcCellPhone" matInput placeholder="" maxlength="100" />
+              <input formControlName="pcCellPhone" matInput maxlength="100" />
             </mat-form-field>
           </div>
           <div class="col-md-4">
@@ -154,25 +161,63 @@
               Job Title
             </p>
             <mat-form-field appearance="outline">
-              <input formControlName="pcJobTitle" matInput placeholder="" maxlength="100" />
+              <input formControlName="pcJobTitle" matInput maxlength="100" />
             </mat-form-field>
           </div>
         </div>
 
         <div class="row">
-          <p class="sub-heading" style="font-size: 15px">
-            Additional Contact Details
-          </p>
-          <div class="col-md-6">
+          <div class="col-md-12">
+            <p>
+              Contact Notes (details about when the person may or may not be available or additional contact information)
+            </p>
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                formControlName="pcNotes"
+                [rows]="5"
+                style="resize:none"
+                maxlength="200">
+              </textarea>
+            </mat-form-field><br/>
           </div>
         </div>
 
-      </ng-container>
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 bottomspace">
+            <p>
+              If there is an opportunity to receive guidance and support in assessing your damaged infrastructure,
+              would you like to receive this support?
+              You may change your response in the future if needed.
+              <span style="color:red">*</span>
+            </p>
+            <mat-radio-group formControlName="guidanceSupport" class="primary-radio-group horizontal-radio-group" required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div><br /><br />
+        
+        </ng-container>
     </form>
 
     <form [formGroup]="otherContactsForm">
       <div formGroupName="otherContact">
         <ng-container>
+          
+          <div class="row">
+            <p class="sub-heading" style="font-size: 15px">
+              Additional Contact Details
+            </p>
+            <div class="col-md-6">
+            </div>
+          </div>
 
           <div class="row">
             <div class="col-md-12">
@@ -197,7 +242,7 @@
                 </ng-container>
 
                 <!-- Phone Column -->
-                <ng-container matColumnDef="phoneNumber" style="width:27%">
+                <ng-container matColumnDef="phoneNumber" style="width:17%">
                   <th mat-header-cell *matHeaderCellDef>
                     <b>Phone</b>
                   </th>
@@ -207,12 +252,32 @@
                 </ng-container>
 
                 <!-- Email Column -->
-                <ng-container matColumnDef="email" style="width:27%">
+                <ng-container matColumnDef="email" style="width:17%">
                   <th mat-header-cell *matHeaderCellDef>
                     <b>Email</b>
                   </th>
                   <td *matCellDef="let element" mat-cell>
                     {{ element.email}}
+                  </td>
+                </ng-container>
+
+                <!-- Cell Phone Column -->
+                <ng-container matColumnDef="cellPhone" style="width:10%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Cell Phone</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.cellPhone}}
+                  </td>
+                </ng-container>
+
+                <!-- Job Title Column -->
+                <ng-container matColumnDef="jobTitle" style="width:10%">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <b>Job Title</b>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    {{ element.jobTitle}}
                   </td>
                 </ng-container>
 
@@ -251,7 +316,6 @@
                   *matRowDef="let element; columns: otherContactsColumnsToDisplay"
                   class="example-element-row"
                 ></tr>
-
               </table>
 
               <div  *ngIf="otherContactsDataSource.getValue().length > 0">
@@ -273,14 +337,11 @@
               </button>
 
               <mat-card *ngIf="showOtherContactForm">
-                <p class="sub-heading" style="font-size: 15px">
-                  {{otherContactText}}
-                </p>
                 <div class="row">
                   <div class="col-md-3">
                     <mat-form-field appearance="outline">
-                      <mat-label>Contact first name</mat-label>
-                      <input formControlName="firstName" matInput placeholder="Contact first name" required maxlength="49"/>
+                      <mat-label>First Name</mat-label>
+                      <input formControlName="firstName" matInput placeholder="First Name" required maxlength="49"/>
                       <mat-error
                         *ngIf="
                           otherContactsForm.get('otherContact').controls.firstName.invalid &&
@@ -302,8 +363,8 @@
                   </div>
                   <div class="col-md-3">
                     <mat-form-field appearance="outline">
-                      <mat-label>Contact last name</mat-label>
-                      <input formControlName="lastName" matInput placeholder="Contact last name" required maxlength="49"/>
+                      <mat-label>Last Name</mat-label>
+                      <input formControlName="lastName" matInput placeholder="Last Name" required maxlength="49"/>
                       <mat-error
                         *ngIf="
                           otherContactsForm.get('otherContact').controls.lastName.invalid &&
@@ -325,12 +386,12 @@
                   </div>
                   <div class="col-md-3">
                     <mat-form-field appearance="outline">
-                      <mat-label>Contact phone</mat-label>
+                      <mat-label>Business Phone</mat-label>
                       <!-- 2024-08-01 EMCRI-216 waynezen; upgrade to Angular 18 - use new ngx-mask -->
                       <input formControlName="phoneNumber"
                         matInput
                         required
-                        placeholder="Contact phone"
+                        placeholder="Business Phone"
                       />
                         <mat-error
                         *ngIf="
@@ -353,8 +414,8 @@
                   </div>
                   <div class="col-md-3">
                     <mat-form-field appearance="outline">
-                      <mat-label>Contact email</mat-label>
-                      <input formControlName="email" required matInput placeholder="Contact email" type="email" maxlength="100" />
+                      <mat-label>Email</mat-label>
+                      <input formControlName="email" required matInput placeholder="Email" type="email" maxlength="100" />
                       <mat-error
                         *ngIf="
                           otherContactsForm.get('otherContact').controls.email.invalid &&
@@ -379,6 +440,34 @@
                       >
                         Maximum length is 100 characters</mat-error
                       >
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <!-- 2024-09-16 EMCRI-663 waynezen; add new fields to Other Contact -->
+                <div class="row">
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Cell Phone</mat-label>
+                      <!-- 2024-08-01 EMCRI-216 waynezen; upgrade to Angular 18 - use new ngx-mask -->
+                      <input formControlName="cellPhone"
+                        matInput
+                        placeholder="Cell Phone"
+                      />
+                      <mat-error
+                        *ngIf="
+                          otherContactsForm.get('otherContact').controls.cellPhone.invalid &&
+                          otherContactsForm.get('otherContact').controls.cellPhone.hasError('incorrectLength')
+                        "
+                      >
+                        Telephone number must have 10 digits</mat-error
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Job Title</mat-label>
+                      <input formControlName="jobTitle" matInput placeholder="Job Title" maxlength="49"/>
                     </mat-form-field>
                   </div>
                 </div>

@@ -22,6 +22,8 @@
         public string businessTypeOther { get; set; }
         public string legalName { get; set; }
         public string businessNumber { get; set; }
+        public bool businessNumberVerified { get; set; }
+        public string statementOfRegistrationNumber { get; set; }
         public string incorporationNumber { get; set; }
         public string jurisdictionOfIncorporation { get; set; }
         public string addressLine1 { get; set; }
@@ -34,7 +36,9 @@
         public string department { get; set; }
 
         // 2024-09-13 EMCRI-676 waynezen
-        public Guid businessGuid { get; set; }
+        public Guid organizationGuid { get; set; }
+        public Guid userGuid { get; set; }
+
     }
 }
 

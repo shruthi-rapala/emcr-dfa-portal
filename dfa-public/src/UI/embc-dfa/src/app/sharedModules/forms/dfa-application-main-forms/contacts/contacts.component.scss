@@ -9,11 +9,16 @@ mat-form-field {
 .primary-radio-group {
   display: flex;
   flex-direction: column;
-  margin: 15px 0;
+  //margin: 15px 0;
 }
 
 .primary-radio-button {
     margin: 5px;
+}
+
+.radio-extra-label {
+  font-weight: normal;
+  //margin-left: 30px;
 }
 
 .highlight {
@@ -147,10 +152,11 @@ table {
   font-family: 'BC Sans';
   font-size: 14px;
   color: #313132;
+  margin-left: 5px;
 }
 
 .iconText {
-  position: absolute;
+  position: relative;
 }
 
 .iconStyleGreen {
@@ -161,6 +167,8 @@ table {
 .iconStyleBlue {
   //font-size: 16px;
   color: #003366;
+  width: 22px;
+  padding-top: 2px;
 }
 
 .noshow {
@@ -169,4 +177,14 @@ table {
   &.visible {
     display: contents;
   }
+}
+
+.otherContactsBarBack {
+  background-color: #38598A;
+}
+
+.otherContactsBarText {
+  font-family: 'BC Sans';
+  font-size: 16px;
+  color: #ffffff;
 }
