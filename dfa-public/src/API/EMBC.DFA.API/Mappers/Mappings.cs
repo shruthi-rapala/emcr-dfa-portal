@@ -6,8 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
+using EMBC.DFA.API.ConfigurationModule.Models;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
+using EMBC.DFA.API.ConfigurationModule.Models.PDF;
 using EMBC.DFA.API.Controllers;
 using Microsoft.IdentityModel.Tokens;
 using bceid = EMBC.Gov.BCeID;
@@ -421,6 +423,32 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.activitysubject, opts => opts.MapFrom(s => "dfa_projectclaim"))
                 .ForMember(d => d.subject, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.fileDescription) ? s.fileName : s.fileDescription))
                 .ForMember(d => d.body, opts => opts.MapFrom(s => s.fileData));
+
+            CreateMap<OtherContact, EMBC.DFA.API.ConfigurationModule.Models.PDF.Contact>()
+                .ForMember(d => d.BusinessPhone, opts => opts.MapFrom(s => s.phoneNumber));
+
+            CreateMap<DFAApplicationMain, PdfApplicationData>()
+                .ForMember(d => d.IndigenousGoverningBody, opts => opts.MapFrom(s => s.applicationDetails.legalName))
+                .ForMember(d => d.DateofDamageFrom, opts => opts.MapFrom(s => s.applicationDetails.damageFromDate))
+                .ForMember(d => d.DateofDamageTo, opts => opts.MapFrom(s => s.applicationDetails.damageToDate))
+                .ForMember(d => d.DisasterEvent, opts => opts.MapFrom(s => s.applicationDetails.eventName))
+                .ForMember(d => d.GovernmentType, opts => opts.MapFrom(s => s.applicationDetails.applicantSubtype))
+                .ForMember(d => d.OtherGoverningBody, opts => opts.MapFrom(s => s.applicationDetails.applicantSubSubtype))
+                .ForMember(d => d.DescribeYourOrganization, opts => opts.MapFrom(s => s.applicationDetails.subtypeOtherDetails))
+                .ForMember(d => d.DoingBusinessAsDBAName, opts => opts.MapFrom(s => s.applicationContacts.doingBusinessAs))
+                .ForMember(d => d.BusinessNumber, opts => opts.MapFrom(s => s.applicationContacts.businessNumber))
+                .ForMember(d => d.AddressLine1, opts => opts.MapFrom(s => s.applicationContacts.addressLine1))
+                .ForMember(d => d.AddressLine2, opts => opts.MapFrom(s => s.applicationContacts.addressLine2))
+                .ForMember(d => d.City, opts => opts.MapFrom(s => s.applicationContacts.community))
+                .ForMember(d => d.Province, opts => opts.MapFrom(s => s.applicationContacts.stateProvince))
+                .ForMember(d => d.PostalCode, opts => opts.MapFrom(s => s.applicationContacts.postalCode))
+                .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.applicationContacts.pcFirstName))
+                .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.applicationContacts.pcLastName))
+                .ForMember(d => d.Department, opts => opts.MapFrom(s => s.applicationContacts.pcDepartment))
+                .ForMember(d => d.BusinessPhone, opts => opts.MapFrom(s => s.applicationContacts.pcBusinessPhone))
+                .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.applicationContacts.pcEmailAddress))
+                .ForMember(d => d.CellPhone, opts => opts.MapFrom(s => s.applicationContacts.pcCellPhone))
+                .ForMember(d => d.JobTitle, opts => opts.MapFrom(s => s.applicationContacts.pcJobTitle));
 
             CreateMap<ApplicationReviewPDFUpload, AttachmentEntity>()
                .ForMember(d => d.filename, opts => opts.MapFrom(s => s.fileName))

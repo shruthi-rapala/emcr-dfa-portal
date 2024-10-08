@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Inject, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, NgModule, Inject, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -38,6 +38,7 @@ import { BCeIdBusiness } from 'src/app/core/api/models/b-ce-id-business';
 import { MatIconModule } from '@angular/material/icon'
 import { ContactNotFoundComponent } from './contact-not-found.component';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
+import { CacheService } from 'src/app/core/services/cache.service';
 
 @Component({
   selector: 'app-contacts',
@@ -67,7 +68,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   otherContactsRowEdit = false;
   otherContactsEditFlag = false;
   showOtherContactForm: boolean = false;
-
+  @Output() stepToNavigate = new EventEmitter<number>();
 
 
   constructor(
@@ -81,7 +82,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     private contactService: ContactService,
     private loginService: LoginService,
     private bceidLookupService: BCeIdLookupService,
-    public dialog: MatDialog,
+    public dialog: MatDialog,private cacheService: CacheService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -256,6 +257,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
 
     this.getContactForApplication(this.dfaApplicationMainDataService.getApplicationId());
     this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+    this.cacheService.set('otherContacts', this.dfaApplicationMainDataService.otherContacts);
 
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
       this.contactsForm.disable();
@@ -371,11 +373,14 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       }
 
       this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+      this.cacheService.set('otherContacts', this.dfaApplicationMainDataService.otherContacts);
     } else {
       this.otherContactsForm.get('otherContact').markAllAsTouched();
     }
   }
-
+  navigateToStep(stepIndex: number) {
+    this.stepToNavigate.emit(stepIndex);
+  }
   addOtherContact(): void {
     this.otherContactsForm.get('otherContact').reset();
     this.showOtherContactForm = !this.showOtherContactForm;

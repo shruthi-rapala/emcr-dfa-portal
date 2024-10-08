@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, Subscription, mapTo } from 'rxjs';
+import { Observable, Subscription, mapTo,BehaviorSubject, interval } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import {
@@ -11,6 +11,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
 import { UntypedFormGroup } from '@angular/forms';
 import { ContactDetails } from 'src/app/core/model/profile.model';
+import { OtherContactService } from 'src/app/core/api/services';
+import { CacheService } from 'src/app/core/services/cache.service';
 
 @Component({
   selector: 'app-review',
@@ -37,7 +39,8 @@ export class ReviewComponent implements OnInit {
   fullTimeOccupantsColumnsToDisplay = ['name', 'relationship'];
   secondaryApplicantsDataSource = new MatTableDataSource();
   secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email'];
-  otherContactsDataSource = new MatTableDataSource();
+  otherContactsDataSource = new BehaviorSubject([]);
+  otherContactsData = [];
   otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email'];
   cleanUpWorkDataSource = new MatTableDataSource();
   cleanUpWorkColumnsToDisplay = ['date', 'name','hours','description'];
@@ -71,11 +74,12 @@ export class ReviewComponent implements OnInit {
   hasInsurance: string;
 
   contacts:ContactDetails[]= [];
-
+  otherContactsForm: UntypedFormGroup;
+  otherContactsForm$: Subscription;
   constructor(
     private router: Router,
-    public formCreationService: FormCreationService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService
+    public formCreationService: FormCreationService,private otherContactsService: OtherContactService,
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,private cacheService: CacheService
   ) {
 
     this.appTypeInsuranceForm$ = this.formCreationService
@@ -116,6 +120,15 @@ export class ReviewComponent implements OnInit {
       });
   }
 
+
+
+
+    mySubscription: Subscription
+
+
+ 
+
+
   ngOnInit(): void {
     this.navigationExtras = { state: { parentPageName: this.parentPageName } };
     if (this.currentFlow === 'verified-registration') {
@@ -146,9 +159,14 @@ export class ReviewComponent implements OnInit {
     }
    
     var contactsForm = this.formCreationService.contactsForm.value;
-    var otherContactsForm = this.formCreationService.otherContactsForm.value;
+    
+    interval(5000).subscribe(x => {
+      this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
+  });
+    //this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
+       
    
-    let _fullTimeOccupantsFormArray1 = this.formCreationService.applicationDetailsForm.value;
+    this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
     appForm.valueChanges
       .pipe(
         mapTo(appForm.getRawValue())
@@ -199,11 +217,11 @@ export class ReviewComponent implements OnInit {
         ).subscribe(data => this.secondaryApplicantsDataSource.data = _secondaryApplicantsFormArray.getRawValue());
 
     // subscribe to changes in other contacts
-    const _otherContactsFormArray = this.formCreationService.otherContactsForm.value.get('otherContacts');
-    _otherContactsFormArray.valueChanges
-      .pipe(
-        mapTo(_otherContactsFormArray.getRawValue())
-        ).subscribe(data => this.otherContactsDataSource.data = _otherContactsFormArray.getRawValue());
+    // const _otherContactsFormArray = this.formCreationService.otherContactsForm.value.get('otherContacts');
+    // _otherContactsFormArray.valueChanges
+    //   .pipe(
+    //     mapTo(_otherContactsFormArray.getRawValue())
+    //     ).subscribe(data => this.otherContactsDataSource.data = _otherContactsFormArray.getRawValue());
 
     // subscribe to changes in clean up logs
     const _cleanUpWorkFormArray = this.formCreationService.cleanUpLogItemsForm.value.get('cleanuplogs');
@@ -241,7 +259,19 @@ export class ReviewComponent implements OnInit {
       //    x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false)
     })
   }
-
+  getOtherContactsForApplication(applicationId: string) {
+    if (applicationId) {
+      this.otherContactsService.otherContactGetOtherContacts({ applicationId: applicationId }).subscribe({
+        next: (otherContacts) => {
+          this.otherContactsData = otherContacts;
+          this.otherContactsDataSource.next(this.otherContactsData);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    }
+  }
   navigateToStep(stepIndex: number) {
     this.stepToNavigate.emit(stepIndex);
   }
