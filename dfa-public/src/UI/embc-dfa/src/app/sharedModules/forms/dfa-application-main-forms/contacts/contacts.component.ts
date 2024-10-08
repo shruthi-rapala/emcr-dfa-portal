@@ -248,6 +248,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.contactsForm.get('primaryContactSearch').reset();
         }
+        // assuming that value of primaryContactSearch was previously verified (shaky assumption, tho'),
+        // then un-verify the Primary Contact as soon as the field is changed on the screen
         if (value != this.dfaApplicationMainDataService.contacts.primaryContactSearch) {
           this.dfaApplicationMainDataService.contacts.primaryContactValidated = false;
           this.setPrimaryContactFieldsEnabled(false);
