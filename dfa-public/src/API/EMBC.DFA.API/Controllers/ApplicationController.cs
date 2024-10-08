@@ -15,6 +15,7 @@ using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.ConfigurationModule.Models.PDF;
 using EMBC.DFA.API.ConfigurationModule.Models.PDF.PDFService;
 using EMBC.DFA.API.Services;
+using EMBC.Gov.BCeID;
 using Google.Protobuf.WellKnownTypes;
 using HandlebarsDotNet;
 using Microsoft.AspNetCore.Authorization;
@@ -35,19 +36,22 @@ namespace EMBC.DFA.API.Controllers
         // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
         private readonly IUserService userService;
         private readonly PDFServiceHandler pDFServiceHandler;
+        private readonly IBCeIDBusinessQuery bceidQuery;
 
         public ApplicationController(
             IHostEnvironment env,
             IMapper mapper,
             IConfigurationHandler handler,
             IUserService userService,
-            PDFServiceHandler pDFServiceHandler)
+            PDFServiceHandler pdfServiceHandler,
+            IBCeIDBusinessQuery query)
         {
             this.env = env;
             this.mapper = mapper;
             this.handler = handler;
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.pDFServiceHandler = pDFServiceHandler;
+            this.pDFServiceHandler = pdfServiceHandler ?? throw new ArgumentNullException($"{nameof(pdfServiceHandler)}");
+            this.bceidQuery = query ?? throw new ArgumentNullException($"{nameof(query)}");
         }
 
         private string currentUserId => userService.GetBCeIDBusinessId();
@@ -445,18 +449,33 @@ namespace EMBC.DFA.API.Controllers
                 DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
                 dfaApplicationMain.Id = applicationId;
                 dfaApplicationMain.applicationDetails = mapper.Map<ApplicationDetails>(dfa_appapplication);
+                ApplicationContacts appContact = new ApplicationContacts();
 
                 // 2024-09-24 EMCRI-663; get primary contact info
                 if (dfa_appapplication?._dfa_applicant_value != null)
                 {
                     var primeContactIn = await handler.HandleGetPrimaryContactAsync(dfa_appapplication._dfa_applicant_value);
-                    // convert Dynamics DTO to UI DTO
-                    var appContact = mapper.Map<ApplicationContacts>(primeContactIn);
-                    // add in a few extra fields from the Application -> Contacts screen
-                    mapper.Map<dfa_appapplicationmain_retrieve, ApplicationContacts>(dfa_appapplication, appContact);
 
-                    dfaApplicationMain.applicationContacts = appContact;
+                    // convert Dynamics DTO to UI DTO
+                    appContact = mapper.Map<ApplicationContacts>(primeContactIn);
+
+                    // 2024-10-05 EMCRI-804 waynezen; validate Primary Contact
+                    if (!appContact.primaryContactValidated.HasValue &&
+                        !string.IsNullOrEmpty(appContact?.primaryContactSearch))
+                    {
+                        var userGuid = userData.bceid_user_guid;
+                        var orgGuid = userData.bceid_business_guid;
+                        var bceidData = await this.bceidQuery.ProcessBusinessQuery(userGuid, appContact.primaryContactSearch);
+
+                        if (bceidData != null && orgGuid.Equals(bceidData.organizationGuid))
+                        {
+                            appContact.primaryContactValidated = true;
+                        }
+                    }
                 }
+                // add in a few extra fields from the Application -> Contacts screen
+                mapper.Map<dfa_appapplicationmain_retrieve, ApplicationContacts>(dfa_appapplication, appContact);
+                dfaApplicationMain.applicationContacts = appContact;
 
                 return Ok(dfaApplicationMain);
             }

@@ -71,6 +71,7 @@ export class DashboardComponent implements OnInit {
     this.bceidLookupService.bCeIdLookupGetBCeIdSelfInfo().subscribe((bceidBusiness: BCeIdBusiness) => {
       if (bceidBusiness && bceidBusiness.isValidResponse) {
         this.dfaApplicationMainDataService.setDoingBusinessAs(bceidBusiness.doingBusinessAs);
+        this.dfaApplicationMainDataService.setBusinessNumber(bceidBusiness.businessNumber);
       }
     });
 
