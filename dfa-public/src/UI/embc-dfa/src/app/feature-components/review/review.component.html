@@ -383,58 +383,29 @@
 
         <div class="contacts-container" >
         <table class="contacts" style="width:95%">
-          
             <thead>
               <tr style="background-color: #415a88;color: #fff;">
                        <td class="contact-title">First Name</td>
                        <td class="contact-title">Last Name</td>
                        <!-- <td class="contact-title">Business Phone</td> -->
                        <td class="contact-title">Cell Phone</td>
-
                        <td class="contact-title">Email</td>
-                       <!-- <td class="contact-title">Job Title</td>
-                       <td class="contact-title">Notes</td> -->
                       </tr>
-                      </thead>
-                      <tbody>
-                        <!-- <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr> -->
-                        <!-- <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value[0]?.firstName }">
-                          {{
-                            (formCreationService.otherContactsForm$ | async)?.value[0]?
-                              .firstName ? (formCreationService.otherContactsForm$ | async)?.value[0]?
-                              .firstName : "Enter required information"
-                          }}
-                        </span>    -->
-                        
-          <!-- <tr *ngFor="let contact of (formCreationService.otherContactsForm$ | async)?.value">
+            </thead>
+            <tbody>
+            <tr *ngFor="let contact of otherContactsData">
                       <td>{{contact.firstName}}</td>
                       <td>{{contact.lastName}}</td>
                       <td>{{contact.phoneNumber}}</td>   
                       <td>{{contact.email}}</td>
-          </tr> -->
-           <tr *ngFor="let contact of otherContactsData">
-                      <td>{{contact.firstName}}</td>
-                      <td>{{contact.lastName}}</td>
-                      <td>{{contact.phoneNumber}}</td>   
-                      <td>{{contact.email}}</td>
-          </tr>
+             </tr>
         </tbody>
         </table>
-      </div>
+   
         
+      </div>
     </div>
-
 </div>
-
-
 <!-- </mat-card-content> -->
 
 </div>

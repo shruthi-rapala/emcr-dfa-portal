@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, Subscription, mapTo,BehaviorSubject } from 'rxjs';
+import { Observable, Subscription, mapTo,BehaviorSubject, interval } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import {
@@ -12,6 +12,7 @@ import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-appli
 import { UntypedFormGroup } from '@angular/forms';
 import { ContactDetails } from 'src/app/core/model/profile.model';
 import { OtherContactService } from 'src/app/core/api/services';
+import { CacheService } from 'src/app/core/services/cache.service';
 
 @Component({
   selector: 'app-review',
@@ -78,7 +79,7 @@ export class ReviewComponent implements OnInit {
   constructor(
     private router: Router,
     public formCreationService: FormCreationService,private otherContactsService: OtherContactService,
-    private dfaApplicationMainDataService: DFAApplicationMainDataService
+    private dfaApplicationMainDataService: DFAApplicationMainDataService,private cacheService: CacheService
   ) {
 
     this.appTypeInsuranceForm$ = this.formCreationService
@@ -119,6 +120,15 @@ export class ReviewComponent implements OnInit {
       });
   }
 
+
+
+
+    mySubscription: Subscription
+
+
+ 
+
+
   ngOnInit(): void {
     this.navigationExtras = { state: { parentPageName: this.parentPageName } };
     if (this.currentFlow === 'verified-registration') {
@@ -149,11 +159,13 @@ export class ReviewComponent implements OnInit {
     }
    
     var contactsForm = this.formCreationService.contactsForm.value;
-    //var otherContactsForm = this.formCreationService.otherContactsForm.value;
-    //console.log('otherContactsForm     '+JSON.stringify(otherContactsForm));
-    //console.log('contactsForm     '+JSON.stringify(contactsForm));
-    //let _fullTimeOccupantsFormArray1 = this.formCreationService.applicationDetailsForm.value;
-    //console.log('_fullTimeOccupantsFormArray1     '+JSON.stringify(_fullTimeOccupantsFormArray1));
+    
+    interval(5000).subscribe(x => {
+      this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
+  });
+    //this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
+       
+   
     this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
     appForm.valueChanges
       .pipe(
