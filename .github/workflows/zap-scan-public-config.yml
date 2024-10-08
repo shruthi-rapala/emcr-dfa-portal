@@ -1,4 +1,4 @@
-name: ZAP Scan
+name: ZAP Scan Public portal
 on:
   push:
     branches:
