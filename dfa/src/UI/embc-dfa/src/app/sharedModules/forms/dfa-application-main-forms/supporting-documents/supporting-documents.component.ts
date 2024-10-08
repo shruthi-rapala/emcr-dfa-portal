@@ -84,6 +84,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
   InsuranceOptions = InsuranceOption;
   vieworedit: string = "";
   isNoInsurance: boolean = false;
+  showFileUpload = {
+    other: null
+  }
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -343,7 +346,9 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             verticalPosition: 'top',
           });
 
-          this.vieworedit = 'viewOnly';
+          this.showFileUpload = {
+            other: false
+          }
         },
         error: (error) => {
           console.error(error);
@@ -386,6 +391,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
+          //this.vieworedit = 'viewOnly';
         },
         error: (error) => {
           console.error(error);
@@ -415,6 +421,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
+          //this.vieworedit = 'viewOnly';
         },
         error: (error) => {
           console.error(error);

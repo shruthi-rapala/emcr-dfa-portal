@@ -482,6 +482,7 @@
             (saveFileUpload)="saveSupportingFiles($event)"
             (cancelFileUpload)="cancelSupportingFiles()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('supportingFilesFileUpload')"
+            [showFileUpload]="showFileUpload.other"
           ></app-dfa-attachment>
           <app-loader
             class="spinner"
