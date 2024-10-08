@@ -342,13 +342,15 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
+
+          this.vieworedit = 'viewOnly';
         },
         error: (error) => {
           console.error(error);
           this.isLoading = false;
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
           this._snackBar.open(
-              'Unable To upload the file. Please retry the upload process.',
+              'Unable to upload the file. Please retry the upload process.',
               'Close',
               {
                 horizontalPosition: 'center',
