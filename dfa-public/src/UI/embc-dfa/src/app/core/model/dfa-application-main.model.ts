@@ -817,12 +817,28 @@ export class OtherContactsForm {
       cellPhone: [
         '',
         [
-          customValidator.maskedNumberLengthValidator().bind(customValidator)
+          customValidator.maskedNumberLengthValidator().bind(customValidator),
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
             .bind(customValidator)
         ]
       ],
       jobTitle: [
         '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
       ],
     });
   }

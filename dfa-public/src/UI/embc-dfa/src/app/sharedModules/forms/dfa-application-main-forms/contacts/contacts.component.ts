@@ -53,8 +53,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   vieworedit: string = "";
   protected showFoundContactMsg = false;
 
-  primaryContactAddressValidated: boolean = false;
-
   // 2024-09-13 EMCRI-663 waynezen;
   otherContactsForm: UntypedFormGroup;
   otherContactsForm$: Subscription;
