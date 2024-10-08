@@ -32,7 +32,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   fileUploadsForm: UntypedFormGroup;
   fileUploadsForm$: Subscription;
   formCreationService: FormCreationService;
-  showFileUpload: boolean = false;
+  @Input() showFileUpload: boolean = false;
   FileCategories = FileCategory;
   RequiredDocumentTypes = RequiredDocumentType;
 
