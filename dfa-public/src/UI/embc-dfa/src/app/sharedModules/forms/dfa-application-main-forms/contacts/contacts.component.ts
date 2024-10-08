@@ -38,6 +38,7 @@ import { BCeIdBusiness } from 'src/app/core/api/models/b-ce-id-business';
 import { MatIconModule } from '@angular/material/icon'
 import { ContactNotFoundComponent } from './contact-not-found.component';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
+import { CacheService } from 'src/app/core/services/cache.service';
 
 @Component({
   selector: 'app-contacts',
@@ -81,7 +82,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     private contactService: ContactService,
     private loginService: LoginService,
     private bceidLookupService: BCeIdLookupService,
-    public dialog: MatDialog,
+    public dialog: MatDialog,private cacheService: CacheService
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -237,6 +238,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
 
     this.getContactForApplication(this.dfaApplicationMainDataService.getApplicationId());
     this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+    this.cacheService.set('otherContacts', this.dfaApplicationMainDataService.otherContacts);
 
 
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
@@ -348,6 +350,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       }
 
       this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+      this.cacheService.set('otherContacts', this.dfaApplicationMainDataService.otherContacts);
     } else {
       this.otherContactsForm.get('otherContact').markAllAsTouched();
     }
