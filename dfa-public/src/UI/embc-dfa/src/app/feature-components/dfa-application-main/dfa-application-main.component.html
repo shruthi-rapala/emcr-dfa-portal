@@ -134,7 +134,7 @@
         <!--&& ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)-->
         <div class="col-md-6" *ngIf="!isSubmitted
            && (formCreationService.applicationDetailsForm$ | async)?.valid
-           
+           && (formCreationService.contactsForm$ | async)?.valid
            ">
         <!--<div class="col-md-6">-->
         <button
