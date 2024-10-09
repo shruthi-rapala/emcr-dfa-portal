@@ -402,11 +402,12 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ApplicationSubType, opts => opts.MapFrom(s => s.dfa_smallbusinesstype != null ?
                 " - " + GetEnumDescription((SmallBusinessOptionSet)Convert.ToInt32(s.dfa_smallbusinesstype)) :
                 (s.dfa_farmtype != null ? " - " + GetEnumDescription((FarmOptionSet)Convert.ToInt32(s.dfa_farmtype)) : string.Empty)))
-                .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.dfa_applicanttype))))
+                .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_applicanttype) ? GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.dfa_applicanttype)) : null))
                 .ForMember(d => d.PrimaryApplicantSignedDate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_primaryapplicantsigneddate) ? null : s.dfa_primaryapplicantsigneddate))
                 .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => s.dfa_casenumber))
                 .ForMember(d => d.LegalName, opts => opts.MapFrom(s => s.dfa_accountlegalname))
                 .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_datefileclosed))
+                .ForMember(d => d.DateAppealClosed, opts => opts.MapFrom(s => s.dfa_appealcloseddate))
                 .ForMember(d => d.EventId, opts => opts.MapFrom(s => s.dfa_event))
                 .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => string.Join(", ", (new string[] { s.dfa_damagedpropertystreet1, s.dfa_damagedpropertycitytext }).Where(m => !string.IsNullOrEmpty(m)))))
                 .ForMember(d => d.Status, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_applicationstatusportal) ? string.Empty : s.dfa_applicationstatusportal))
