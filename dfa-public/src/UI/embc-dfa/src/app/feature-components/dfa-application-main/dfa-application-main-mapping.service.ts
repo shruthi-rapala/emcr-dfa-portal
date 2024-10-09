@@ -48,22 +48,24 @@ export class DFAApplicationMainMappingService {
     this.dfaApplicationMainDataService.contacts = dfaApplicationMain.applicationContacts;
   }
 
-    // EMCRI-663 waynezen TODO: debug
-    private setContactDetails(dfaApplicationMain: DfaApplicationMain): void {
-      let formGroup: UntypedFormGroup;
-      this.formCreationService
-        .getContactsForm()
-        .pipe(first())
-        .subscribe((contactDetails) => {
-          contactDetails.setValue({
-            ...dfaApplicationMain.applicationContacts,
-            guidanceSupport: dfaApplicationMain.applicationContacts.guidanceSupport === true ? 'true' : (dfaApplicationMain.applicationContacts.guidanceSupport === false ? 'false' : null),
-          });
-          formGroup = contactDetails;
+  // EMCRI-663 waynezen
+  private setContactDetails(dfaApplicationMain: DfaApplicationMain): void {
+    let formGroup: UntypedFormGroup;
+    this.formCreationService
+      .getContactsForm()
+      .pipe(first())
+      .subscribe((contactDetails) => {
+        contactDetails.setValue({
+          ...dfaApplicationMain.applicationContacts,
+          // 2024-10-05 EMCRI-804 waynezen; if doingBusinessAs or Business Number blank, fill in value from BCeID Web Svc
+          doingBusinessAs: dfaApplicationMain?.applicationContacts?.doingBusinessAs !== null ? dfaApplicationMain.applicationContacts.doingBusinessAs : this.dfaApplicationMainDataService.getDoingBusinessAs(),
+          businessNumber: dfaApplicationMain?.applicationContacts?.businessNumber !== null ? dfaApplicationMain.applicationContacts.businessNumber : this.dfaApplicationMainDataService.getBusinessNumber(),
+          // set values of radio buttons manually
+          guidanceSupport: dfaApplicationMain?.applicationContacts?.guidanceSupport === true ? 'true' : (dfaApplicationMain.applicationContacts.guidanceSupport === false ? 'false' : null),
         });
-      this.dfaApplicationMainDataService.applicationDetails = dfaApplicationMain.applicationDetails;
-      this.dfaApplicationMainDataService.contacts = dfaApplicationMain.applicationContacts;
-    }
-  
-
+        formGroup = contactDetails;
+     });
+    this.dfaApplicationMainDataService.applicationDetails = dfaApplicationMain.applicationDetails;
+    this.dfaApplicationMainDataService.contacts = dfaApplicationMain.applicationContacts;
+  }
 }

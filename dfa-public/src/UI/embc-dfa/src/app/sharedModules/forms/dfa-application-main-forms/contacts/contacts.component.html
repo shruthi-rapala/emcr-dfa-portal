@@ -66,10 +66,28 @@
           </p>
           <div class="col-md-6">
             <mat-form-field appearance="outline">
-              <input matInput formControlName="primaryContactSearch" id="primaryContactSearch"
-                placeholder="User Id" maxlength="16" />
+              <input matInput formControlName="primaryContactSearch" id="primaryContactSearch" required placeholder="User Id"
+                maxlength="20" />
+              <mat-hint>Maximum length is 20 characters</mat-hint>
+              <mat-error
+              *ngIf="
+                contactsForm.get('primaryContactSearch').invalid &&
+                contactsForm.get('primaryContactSearch').hasError('required') &&
+                contactsForm.get('primaryContactSearch').touched
+              "
+            >
+              Primary Contact is required</mat-error
+            >
+            <mat-error
+              *ngIf="
+                contactsForm.get('primaryContactSearch').invalid &&
+                contactsForm.get('primaryContactSearch').hasError('maxLength')
+              "
+            >
+              Maximum length is 16 characters</mat-error
+            >
             </mat-form-field>
-          </div>
+            </div>
           <div class="col-md-2">
             <button class="button-p save-button" mat-stroked-button type="button" (click)="searchForContact()">
               Search for Contact
@@ -91,7 +109,7 @@
 
         <div class="row">
           <p class="sub-heading" style="font-size: 15px">
-            Primary Contact Details
+            Primary Contact Details<span style="color:red">*</span>
           </p>
         </div>
         <div class="row">
@@ -150,18 +168,41 @@
         <div class="row">
           <div class="col-md-4">
             <p>
-              Cell Phone
+              Cell Phone*
             </p>
             <mat-form-field appearance="outline">
-              <input formControlName="pcCellPhone" matInput maxlength="100" />
+              <input type="text" formControlName="pcCellPhone" matInput maxlength="100" required 
+                mask="(000) 000-0000" />
+              <mat-error *ngIf="
+                contactsForm.get('pcCellPhone').invalid &&
+                contactsForm.get('pcCellPhone').hasError('incorrectLength')
+              ">
+                Telephone number must have 10 digits</mat-error>
+              <mat-error *ngIf="
+                contactsForm.get('pcCellPhone').invalid &&
+                contactsForm.get('pcCellPhone').hasError('required') &&
+                contactsForm.get('pcCellPhone').touched
+              ">
+                Cell Phone number is required</mat-error>
             </mat-form-field>
-          </div>
+            </div>
           <div class="col-md-4">
             <p>
-              Job Title
+              Job Title*
             </p>
             <mat-form-field appearance="outline">
-              <input formControlName="pcJobTitle" matInput maxlength="100" />
+              <input formControlName="pcJobTitle" matInput maxlength="100" required />
+              <mat-error *ngIf="
+              contactsForm.get('pcJobTitle').invalid &&
+              contactsForm.get('pcJobTitle').hasError('maxLength')
+            ">
+              Maximum length is 100 characters</mat-error>
+            <mat-error *ngIf="
+              contactsForm.get('pcJobTitle').invalid &&
+              contactsForm.get('pcJobTitle').hasError('required') &&
+              contactsForm.get('pcJobTitle').touched
+            ">
+              Job Title is required</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -322,9 +363,9 @@
                 <br /><br/>
               </div>
 
-              <!--<div *ngIf="otherContactsForm.get('otherContacts').invalid && otherContactsForm.get('otherContacts').hasError('required')">
+              <div *ngIf="otherContactsForm.get('otherContacts').invalid && otherContactsForm.get('otherContacts').hasError('required')">
                 <span style="color:red">At least one other contact is required.</span>
-              </div>-->
+              </div>
 
               <button
                 *ngIf="!showOtherContactForm && vieworedit !== 'viewOnly'"
@@ -392,6 +433,7 @@
                         matInput
                         required
                         placeholder="Business Phone"
+                        mask="(000) 000-0000"
                       />
                         <mat-error
                         *ngIf="
@@ -400,7 +442,7 @@
                           otherContactsForm.get('otherContact').controls.phoneNumber.touched
                         "
                       >
-                       Telephone number is required</mat-error
+                       Business Phone is required</mat-error
                       >
                       <mat-error
                         *ngIf="
@@ -408,7 +450,7 @@
                           otherContactsForm.get('otherContact').controls.phoneNumber.hasError('incorrectLength')
                         "
                       >
-                        Telephone number must have 10 digits</mat-error
+                        Business Phone must have 10 digits</mat-error
                       >
                     </mat-form-field>
                   </div>
@@ -450,24 +492,41 @@
                     <mat-form-field appearance="outline">
                       <mat-label>Cell Phone</mat-label>
                       <!-- 2024-08-01 EMCRI-216 waynezen; upgrade to Angular 18 - use new ngx-mask -->
-                      <input formControlName="cellPhone"
-                        matInput
-                        placeholder="Cell Phone"
-                      />
-                      <mat-error
-                        *ngIf="
-                          otherContactsForm.get('otherContact').controls.cellPhone.invalid &&
-                          otherContactsForm.get('otherContact').controls.cellPhone.hasError('incorrectLength')
-                        "
-                      >
-                        Telephone number must have 10 digits</mat-error
-                      >
+                      <input formControlName="cellPhone" matInput placeholder="Cell Phone" mask="(000) 000-0000" />
+                      <mat-error *ngIf="
+                        otherContactsForm.get('otherContact').controls.cellPhone.invalid &&
+                        otherContactsForm.get('otherContact').controls.cellPhone.hasError('required') &&
+                        otherContactsForm.get('otherContact').controls.cellPhone.touched
+                      ">
+                        Cell Phone is required</mat-error>
+                      <mat-error *ngIf="
+                        otherContactsForm.get('otherContact').controls.cellPhone.invalid &&
+                        otherContactsForm.get('otherContact').controls.cellPhone.hasError('incorrectLength')
+                      ">
+                        Cell Phone must have 10 digits</mat-error>
                     </mat-form-field>
                   </div>
                   <div class="col-md-3">
                     <mat-form-field appearance="outline">
                       <mat-label>Job Title</mat-label>
-                      <input formControlName="jobTitle" matInput placeholder="Job Title" maxlength="49"/>
+                      <input formControlName="jobTitle" matInput placeholder="Job Title" maxlength="100"/>
+                      <mat-error
+                        *ngIf="
+                          otherContactsForm.get('otherContact').controls.jobTitle.invalid &&
+                          otherContactsForm.get('otherContact').controls.jobTitle.hasError('required') &&
+                          otherContactsForm.get('otherContact').controls.jobTitle.touched
+                        "
+                      >
+                        Job Title is required</mat-error
+                      >
+                      <mat-error
+                        *ngIf="
+                          otherContactsForm.get('otherContact').controls.jobTitle.invalid &&
+                          otherContactsForm.get('otherContact').controls.jobTitle.hasError('maxLength')
+                        "
+                      >
+                        Maximum length is 100 characters</mat-error
+                      >
                     </mat-form-field>
                   </div>
                 </div>

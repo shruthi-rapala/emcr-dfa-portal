@@ -12,6 +12,8 @@ import { first, mergeMap, Observable, Subject } from 'rxjs';
 import { EligibilityService } from '../../core/api/services/eligibility.service';
 import { DisasterEvent } from 'src/app/core/api/models';
 import { LoginService } from '../../core/services/login.service';
+import { BCeIdLookupService } from 'src/app/core/api/services/b-ce-id-lookup.service';
+import { BCeIdBusiness } from 'src/app/core/api/models/b-ce-id-business';
 
 //import { DfaApplicationMain } from 'src/app/core/api/models';
 
@@ -47,6 +49,7 @@ export class DashboardComponent implements OnInit {
     private appSessionService: AppSessionService,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private eventService: EligibilityService,
+    private bceidLookupService: BCeIdLookupService,
   ) {
     this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
   }
@@ -61,6 +64,14 @@ export class DashboardComponent implements OnInit {
       if (loginInfo) {
         this.businessName = loginInfo?.bceid_business_name;
         this.dfaApplicationMainDataService.setBusiness(loginInfo?.bceid_business_name);
+      }
+    });
+
+    // 2024-10-05 EMCRI-804 waynezen; get BCeID Web Svc Doing Business As - use for initial value when creating new Applications
+    this.bceidLookupService.bCeIdLookupGetBCeIdSelfInfo().subscribe((bceidBusiness: BCeIdBusiness) => {
+      if (bceidBusiness && bceidBusiness.isValidResponse) {
+        this.dfaApplicationMainDataService.setDoingBusinessAs(bceidBusiness.doingBusinessAs);
+        this.dfaApplicationMainDataService.setBusinessNumber(bceidBusiness.businessNumber);
       }
     });
 

@@ -524,12 +524,24 @@ export class ContactsForm {
     if (contacts.addressLine1) {
       this.addressLine1.setValue(contacts.addressLine1);
     }
+    this.addressLine1.setValidators([Validators.required,
+    customValidator
+      .maxLengthValidator(100)
+      .bind(customValidator)
+    ]);
+
     if (contacts.addressLine2) {
       this.addressLine2.setValue(contacts.addressLine2);
     }
     if (contacts.community) {
       this.community.setValue(contacts.community);
     }
+    this.community.setValidators([Validators.required,
+    customValidator
+      .maxLengthValidator(100)
+      .bind(customValidator)
+    ]);
+
     if (contacts.city) {
       this.city.setValue(contacts.city);
     }
@@ -545,6 +557,12 @@ export class ContactsForm {
     if (contacts.primaryContactSearch) {
       this.primaryContactSearch.setValue(contacts.primaryContactSearch);
     }
+    this.primaryContactSearch.setValidators([Validators.required,
+      customValidator
+        .maxLengthValidator(16)
+        .bind(customValidator)
+      ]);
+  
     if (contacts.primaryContactValidated) {
       this.primaryContactValidated.setValue(contacts.primaryContactValidated);
     }
@@ -572,6 +590,8 @@ export class ContactsForm {
     if (contacts.pcCellPhone) {
       this.pcCellPhone.setValue(contacts.pcCellPhone);
     }
+    this.pcCellPhone.setValidators([customValidator.maskedNumberLengthValidator().bind(customValidator)]);
+
     if (contacts.pcJobTitle) {
       this.pcJobTitle.setValue(contacts.pcJobTitle);
     }
@@ -797,12 +817,28 @@ export class OtherContactsForm {
       cellPhone: [
         '',
         [
-          customValidator.maskedNumberLengthValidator().bind(customValidator)
+          customValidator.maskedNumberLengthValidator().bind(customValidator),
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
             .bind(customValidator)
         ]
       ],
       jobTitle: [
         '',
+        [
+          customValidator
+            .conditionalValidation(
+              () => this.addNewOtherContactIndicator.value,
+              Validators.required
+            )
+            .bind(customValidator),
+          customValidator
+            .maxLengthValidator(100)
+            .bind(customValidator)
+        ]
       ],
     });
   }

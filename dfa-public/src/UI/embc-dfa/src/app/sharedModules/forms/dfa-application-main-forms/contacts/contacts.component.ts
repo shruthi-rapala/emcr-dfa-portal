@@ -148,6 +148,18 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       .getContactsForm()
       .subscribe((contactDetails) => {
         contactDetails.controls.legalName.setValue(this.dfaApplicationMainDataService.getBusiness());
+
+        // 2024-10-05 EMCRI-804 waynezen; if brand new Application, fill in doingBusinessAs from BCeID Web Svc
+        let bceidDoingBusAs: string | null = null;
+        let bceidBusNumber: string | null = null;
+        let appId = this.dfaApplicationMainDataService.getApplicationId();
+        if (appId === null) {
+          bceidDoingBusAs = this.dfaApplicationMainDataService.getDoingBusinessAs();
+          contactDetails.controls.doingBusinessAs.setValue(bceidDoingBusAs);
+          bceidBusNumber = this.dfaApplicationMainDataService.getBusinessNumber();
+          contactDetails.controls.businessNumber.setValue(bceidBusNumber);
+        }
+
         this.contactsForm = contactDetails;
         this.setViewOrEditControls();
         this.dfaApplicationMainDataService.contacts = {
@@ -162,6 +174,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           postalCode: null,
           primaryContactSearch: null,
           primaryContactValidated: false,
+          isDamagedAddressVerified: 'false',
           pcFirstName: null,
           pcLastName: null,
           pcDepartment: null,
@@ -234,12 +247,17 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.contactsForm.get('primaryContactSearch').reset();
         }
+        // assuming that value of primaryContactSearch was previously verified (shaky assumption, tho'),
+        // then un-verify the Primary Contact as soon as the field is changed on the screen
+        if (value != this.dfaApplicationMainDataService.contacts.primaryContactSearch) {
+          this.dfaApplicationMainDataService.contacts.primaryContactValidated = false;
+          this.setPrimaryContactFieldsEnabled(false);
+        }
       });
 
     this.getContactForApplication(this.dfaApplicationMainDataService.getApplicationId());
     this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
     this.cacheService.set('otherContacts', this.dfaApplicationMainDataService.otherContacts);
-
 
     if (this.dfaApplicationMainDataService.getViewOrEdit() == 'viewOnly') {
       this.contactsForm.disable();
@@ -250,11 +268,16 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     if (applicationId) {
       this.applicationService.applicationGetApplicationMain({ applicationId: applicationId }).subscribe({
         next: (dfaApplicationMain) => {
-
-          this.dfaApplicationMainMapping.mapDFAApplicationMainContacts(dfaApplicationMain);
-
+          
           // 2024-10-02 EMCRI-663 waynezen; publish event for Canada Post verified message on BcAddressComponent
-          this.dfaApplicationMainDataService.setCanadaPostVerified(dfaApplicationMain.applicationContacts.isDamagedAddressVerified);          
+          this.dfaApplicationMainDataService.setCanadaPostVerified(dfaApplicationMain.applicationContacts.isDamagedAddressVerified);  
+          
+          // 2024-10-07 EMCRI-804 waynezen; don't allow editing in fields until we have a valid Primary Contact
+          //let allowPrimeContactEditFields = dfaApplicationMain?.applicationContacts?.primaryContactValidated !== true ? false : true;
+          let allowPrimeContactEditFields = this.dfaApplicationMainDataService.contacts.primaryContactValidated;
+          this.setPrimaryContactFieldsEnabled(allowPrimeContactEditFields);
+          
+          this.dfaApplicationMainMapping.mapDFAApplicationMainContacts(dfaApplicationMain);
         },
         error: (error) => {
           //console.error(error);
@@ -436,15 +459,15 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     }
   }
 
-
   searchForContact() {
     var userId = this.contactsForm.get('primaryContactSearch')?.value;
-    console.debug("searchForContact parameter: " + userId);
+    //console.debug("searchForContact parameter: " + userId);
 
     if (userId) {
       this.bceidLookupService.bCeIdLookupGetBCeIdOtherInfo({userId}).subscribe((bceidBusiness: BCeIdBusiness) => {
         if (bceidBusiness && bceidBusiness.isValidResponse) {
-          console.log('searchForContact: Primary contact: ' + bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname);
+          //console.log('searchForContact: Primary contact: ' + bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname);
+          this.setPrimaryContactFieldsEnabled(true);
 
           // found a valid Primary Contact
           this.dfaApplicationMainDataService.contacts = {
@@ -471,9 +494,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
         else {
           // invalid BCeID Web Service response
-          this.dfaApplicationMainDataService.contacts = {
-            primaryContactValidated: false,
-          }
+          this.setPrimaryContactInfoBlank();
           this.dialog
             .open(ContactNotFoundComponent, {
               data: {
@@ -485,27 +506,45 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       });
     }
     else {
-      // Blank Primary Contact
-      this.dfaApplicationMainDataService.contacts = {
-        primaryContactValidated: false,
-        pcFirstName: '',
-        pcLastName: '',
-        pcDepartment: '',
-        pcBusinessPhone: '',
-        pcEmailAddress: '',
-        pcCellPhone: '',
-        pcJobTitle: '',
-      }
-      this.contactsForm.get('primaryContactSearch').setValue('');
-      this.contactsForm.get('pcFirstName').setValue('');
-      this.contactsForm.get('pcLastName').setValue('');
-      this.contactsForm.get('pcDepartment').setValue('');
-      this.contactsForm.get('pcBusinessPhone').setValue('');
-      this.contactsForm.get('pcEmailAddress').setValue('');
-      this.contactsForm.get('pcCellPhone').setValue('');
-      this.contactsForm.get('pcJobTitle').setValue('');
-
+      this.setPrimaryContactInfoBlank();
       this.showFoundContactMsg = false;
+    }
+  }
+
+  private setPrimaryContactInfoBlank() {
+    // Blank Primary Contact
+    this.dfaApplicationMainDataService.contacts = {
+      primaryContactValidated: false,
+      pcFirstName: '',
+      pcLastName: '',
+      pcDepartment: '',
+      pcBusinessPhone: '',
+      pcEmailAddress: '',
+      pcCellPhone: '',
+      pcJobTitle: '',
+    }
+
+    this.contactsForm.get('primaryContactSearch').setValue('');
+    this.contactsForm.get('pcFirstName').setValue('');
+    this.contactsForm.get('pcLastName').setValue('');
+    this.contactsForm.get('pcDepartment').setValue('');
+    this.contactsForm.get('pcBusinessPhone').setValue('');
+    this.contactsForm.get('pcEmailAddress').setValue('');
+    this.contactsForm.get('pcCellPhone').setValue('');
+    this.contactsForm.get('pcJobTitle').setValue('');
+  }
+
+  private setPrimaryContactFieldsEnabled(enable: boolean) {
+    
+    if (enable) {
+      // 2024-10-07 EMCRI-804 waynezen; allow editing in fields
+      this.contactsForm.controls.pcCellPhone.enable();
+      this.contactsForm.controls.pcJobTitle.enable();          
+    }
+    else {
+      // 2024-10-07 EMCRI-804 waynezen; don't allow editing in fields
+      this.contactsForm.controls.pcCellPhone.disable();
+      this.contactsForm.controls.pcJobTitle.disable();
     }
   }
 

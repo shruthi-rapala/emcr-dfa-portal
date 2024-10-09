@@ -132,6 +132,9 @@ namespace EMBC.Gov.BCeID
             business.organizationGuid = Guid.Parse(account.business.guid.value.ToString());
             business.userGuid = Guid.Parse(account.guid.value.ToString());
 
+            // 2024-10-05 EMCRI-804 waynezen
+            business.doingBusinessAs = account.business.doingBusinessAs.value;
+
             return business;
         }
 

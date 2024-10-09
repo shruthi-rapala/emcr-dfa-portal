@@ -16,6 +16,7 @@ export interface BCeIdBusiness {
   contactEmail?: string;
   contactPhone?: string;
   department?: string;
+  doingBusinessAs?: string;
   incorporationNumber?: string;
   individualFirstname?: string;
   individualMiddlename?: string;

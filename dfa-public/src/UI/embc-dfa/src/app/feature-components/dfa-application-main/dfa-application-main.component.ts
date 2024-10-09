@@ -283,7 +283,6 @@ export class DFAApplicationMainComponent
           this.dfaApplicationMainDataService.contacts.postalCode = this.form.get('postalCode').value
           this.dfaApplicationMainDataService.contacts.isDamagedAddressVerified = this.form.get('isDamagedAddressVerified').value;
           this.dfaApplicationMainDataService.contacts.primaryContactSearch = this.form.get('primaryContactSearch').value
-          this.dfaApplicationMainDataService.contacts.primaryContactValidated = this.form.get('primaryContactValidated').value
           this.dfaApplicationMainDataService.contacts.guidanceSupport = this.form.get('guidanceSupport').value == 'true' ? true : (this.form.get('guidanceSupport').value == 'false' ? false : null);
           this.dfaApplicationMainDataService.contacts.pcFirstName = this.form.get('pcFirstName').value
           this.dfaApplicationMainDataService.contacts.pcLastName = this.form.get('pcLastName').value
