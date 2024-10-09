@@ -139,7 +139,12 @@ export class DfaApplicationComponent implements OnInit {
     this.lstApplications = JSON.parse(JSON.stringify(lstApp));
         
     this.lstApplications.forEach(x => {
-      if (( x.status.toLowerCase() === "dfa decision made" || 
+      //EMCRI-298: Make it past application after appeal stage closing
+      if (x.dateAppealClosed &&
+        (new Date(x.dateAppealClosed).getTime() <= this.sixtyOneDaysAgo)) {
+        x.currentApplication = false;
+      }
+      else if (( x.status.toLowerCase() === "dfa decision made" || 
             x.status.toLowerCase() === "closed: inactive" || 
             x.status.toLowerCase() === "closed: withdrawn") &&
           (x.dateFileClosed && 
@@ -153,7 +158,8 @@ export class DfaApplicationComponent implements OnInit {
                   x.primaryApplicantSignedDate == null)
       {
         x.currentApplication = false;
-      } else {
+      }
+      else {
         x.currentApplication = true;
       }
     })
