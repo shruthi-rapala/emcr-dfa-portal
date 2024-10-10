@@ -13,6 +13,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ContactDetails } from 'src/app/core/model/profile.model';
 import { OtherContactService } from 'src/app/core/api/services';
 import { CacheService } from 'src/app/core/services/cache.service';
+import { ContactsForm } from 'src/app/core/model/dfa-application-main.model';
 
 @Component({
   selector: 'app-review',
@@ -76,6 +77,7 @@ export class ReviewComponent implements OnInit {
   contacts:ContactDetails[]= [];
   otherContactsForm: UntypedFormGroup;
   otherContactsForm$: Subscription;
+  contactsForm:UntypedFormGroup;
   constructor(
     private router: Router,
     public formCreationService: FormCreationService,private otherContactsService: OtherContactService,
@@ -158,13 +160,15 @@ export class ReviewComponent implements OnInit {
       this.causeOfDamage = this.causeOfDamage.slice(0, -1);
     }
    
-    var contactsForm = this.formCreationService.contactsForm.value;
+    //var contactsForm = this.formCreationService.contactsForm.value;
     
-    // EMCRI-815 waynezen TODO: remember to un-comment Karim's code
-
-  //   interval(5000).subscribe(x => {
-  //     this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
-  // });
+    interval(5000).subscribe(x => {
+      if(this.cacheService.get('otherContacts')!=undefined&&this.cacheService.get('otherContacts')!="undefined")
+      {
+      this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'));
+      this.contactsForm = this.formCreationService.contactsForm.value;
+      }
+    });
     //this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
        
    
