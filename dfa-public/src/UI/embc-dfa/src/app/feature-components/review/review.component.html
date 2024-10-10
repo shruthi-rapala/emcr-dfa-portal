@@ -352,7 +352,8 @@
                       .pcCellPhone : "Enter required information"
                   }}
                 </span>     
-                 </td>   </tr>
+                 </td>
+                </tr>
                  <tr> <td class="record-title">Job Title  </td>  <td> 
                   <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.pcJobTitle || (formCreationService.contactsForm$ | async)?.controls.pcJobTitle.invalid}">
                     {{
@@ -361,7 +362,30 @@
                         .pcJobTitle : "Enter required information"
                     }}
                   </span>     
-                   </td>   </tr>
+                   </td>  
+                </tr>
+              <tr>
+                <td class="record-title">Primary Contact Validated  </td>  <td> 
+               <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.primaryContactValidated || (formCreationService.contactsForm$ | async)?.controls.primaryContactValidated.invalid}">
+                 {{
+                   (formCreationService.contactsForm$ | async)?.value
+                     .primaryContactValidated ? (formCreationService.contactsForm$ | async)?.value
+                     .primaryContactValidated : "Please validate the primary Contact"
+                 }}
+               </span>     
+                </td>  
+              </tr>
+              <tr>
+                <td class="record-title">Guidance Support  </td>  <td> 
+               <span [ngClass]="{'missing-info': !(formCreationService.contactsForm$ | async)?.value?.guidanceSupport || (formCreationService.contactsForm$ | async)?.controls.guidanceSupport.invalid}">
+                 {{
+                   (formCreationService.contactsForm$ | async)?.value
+                     .guidanceSupport ? (formCreationService.contactsForm$ | async)?.value
+                     .guidanceSupport : "Please validate the guidance support"
+                 }}
+               </span>     
+                </td>  
+              </tr>
             
         </table>
 
