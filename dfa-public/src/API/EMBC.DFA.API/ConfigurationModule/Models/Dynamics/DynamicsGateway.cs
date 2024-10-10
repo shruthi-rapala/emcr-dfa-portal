@@ -246,7 +246,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_doingbusinessasdbaname", "dfa_businessnumber", "dfa_businessnumberverifiedflag",
                     "dfa_incorporationnumber", "dfa_jurisdictionofincorporation", "dfa_statementofregistrationnumber", "dfa_bceidbusinessguid",
                     "dfa_businessmailingaddressline1", "dfa_businessmailingaddressline2", "dfa_businessmailingaddresscitytext",
-                    "dfa_businessmailingaddressprovince", "dfa_businessmailingaddresspostalcode", "dfa_mailingaddresscanadapostverified",
+                    "dfa_businessmailingaddressprovince", "dfa_businessmailingaddresspostalcode",
+                    "dfa_mailingaddresscanadapostverified", "dfa_toreceivesupportaccessingdamage"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -600,7 +601,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "_dfa_appapplicationid_value", "dfa_appothercontactid", "dfa_emailaddress", "dfa_firstname",
-                        "dfa_lastname", "dfa_phonenumber", "dfa_name"
+                        "dfa_lastname", "dfa_phonenumber", "dfa_name", "dfa_jobtitle", "dfa_cellphone",
+                        "dfa_notes"
                     },
                     Filter = $"_dfa_appapplicationid_value eq {applicationId}"
                 });

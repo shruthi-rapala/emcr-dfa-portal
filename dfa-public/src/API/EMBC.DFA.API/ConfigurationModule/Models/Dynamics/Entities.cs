@@ -210,6 +210,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_businessmailingaddressprovince { get; set; }
         public string dfa_businessmailingaddresspostalcode { get; set; }
         public int? dfa_mailingaddresscanadapostverified { get; set; }
+        public bool? dfa_primarycontactverified { get; set; }
+        public int? dfa_toreceivesupportaccessingdamage { get; set; }
     }
 
     // 2024-09-17 EMCRI-663 waynezen
@@ -375,6 +377,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_businessmailingaddressprovince { get; set; }
         public string dfa_businessmailingaddresspostalcode { get; set; }
         public int? dfa_mailingaddresscanadapostverified { get; set; }
+        public bool? dfa_primarycontactverified { get; set; }
+        public int? dfa_toreceivesupportaccessingdamage { get; set; }
     }
 
     public class dfa_appbuildingownerlandlord
@@ -417,6 +421,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_phonenumber { get; set; } // required string
         public string? _dfa_appapplicationid_value { get; set; } // optional string
         public string? dfa_name { get; set; } // optional string
+        // 2024-10-09 EMCRI-815 waynezen; new fields
+        public string? dfa_jobtitle { get; set; }
+        public string? dfa_cellphone { get; set; }
+        public string? dfa_notes { get; set; }
     }
 
     public class dfa_appothercontact_params
@@ -427,6 +435,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_firstname { get; set; } // required string
         public string dfa_lastname { get; set; } // required string
         public string dfa_phonenumber { get; set; } // required string
+        // 2024-10-09 EMCRI-815 waynezen; new fields
+        public string? dfa_jobtitle { get; set; }
+        public string? dfa_cellphone { get; set; }
+        public string? dfa_notes { get; set; }
         public bool delete { get; set; } // required enum
     }
 
