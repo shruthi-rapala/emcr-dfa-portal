@@ -30,22 +30,6 @@ export class DfaApplicationComponent implements OnInit {
     { label: "DFA Making Decision", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { label: "DFA Decision Made", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
   ];
-
-  appealitems = [
-    { label: "Draft Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Submitted Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Reviewing Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Creating Case File", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Checking Criteria", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Assessing Damage", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Reviewing Damage Report", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "DFA Making Decision", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "DFA Decision Made", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Appeal Received", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Appeal In Progress", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { label: "Appeal Closed", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
-  ];
-
   lstApplications: ApplicationExtended[] = [];
   matchStatusFound = false;
   isLinear = true;
@@ -81,12 +65,6 @@ export class DfaApplicationComponent implements OnInit {
           lstData.forEach(objApp => {
             var isFound = false;
             var jsonVal = JSON.stringify(this.items);
-
-            if (objApp.status && objApp.status.toLowerCase().indexOf('appeal') > -1) {
-              jsonVal = JSON.stringify(this.appealitems);
-              objApp.hasAppealStages = true;
-            }
-
             objApp.isErrorInStatus = false;
             objApp.statusBar = JSON.parse(jsonVal);
             objApp.statusBar.forEach(objStatItem => {
@@ -139,12 +117,7 @@ export class DfaApplicationComponent implements OnInit {
     this.lstApplications = JSON.parse(JSON.stringify(lstApp));
         
     this.lstApplications.forEach(x => {
-      //EMCRI-298: Make it past application after appeal stage closing
-      if (x.dateAppealClosed &&
-        (new Date(x.dateAppealClosed).getTime() <= this.sixtyOneDaysAgo)) {
-        x.currentApplication = false;
-      }
-      else if (( x.status.toLowerCase() === "dfa decision made" || 
+      if (( x.status.toLowerCase() === "dfa decision made" || 
             x.status.toLowerCase() === "closed: inactive" || 
             x.status.toLowerCase() === "closed: withdrawn") &&
           (x.dateFileClosed && 
@@ -158,8 +131,7 @@ export class DfaApplicationComponent implements OnInit {
                   x.primaryApplicantSignedDate == null)
       {
         x.currentApplication = false;
-      }
-      else {
+      } else {
         x.currentApplication = true;
       }
     })

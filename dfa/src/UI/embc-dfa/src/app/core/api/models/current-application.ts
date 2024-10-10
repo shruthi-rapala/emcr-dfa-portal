@@ -7,11 +7,9 @@ export interface CurrentApplication {
   applicationType?: string;
   caseNumber?: string;
   damagedAddress?: string;
-  dateAppealClosed?: string;
   dateFileClosed?: string;
   dateOfDamage?: string;
   eventId?: string;
-  hasAppealStages?: boolean;
   isErrorInStatus?: boolean;
   legalName?: string;
   primaryApplicantSignedDate?: string;
