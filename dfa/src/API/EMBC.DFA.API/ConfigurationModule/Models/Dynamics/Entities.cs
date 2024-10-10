@@ -529,7 +529,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_farmtype { get; set; }
         public string dfa_smallbusinesstype { get; set; }
         public string dfa_accountlegalname { get; set; }
-        public string dfa_appealcloseddate { get; set; }
         //public string dfa_statuslastupdated { get; set; }
     }
 
