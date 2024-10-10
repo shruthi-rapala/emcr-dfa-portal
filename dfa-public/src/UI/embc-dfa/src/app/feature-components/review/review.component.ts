@@ -160,9 +160,11 @@ export class ReviewComponent implements OnInit {
    
     var contactsForm = this.formCreationService.contactsForm.value;
     
-    interval(5000).subscribe(x => {
-      this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
-  });
+    // EMCRI-815 waynezen TODO: remember to un-comment Karim's code
+
+  //   interval(5000).subscribe(x => {
+  //     this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
+  // });
     //this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
        
    

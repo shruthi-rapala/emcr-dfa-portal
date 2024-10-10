@@ -247,8 +247,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         if (value === '') {
           this.contactsForm.get('primaryContactSearch').reset();
         }
-        // assuming that value of primaryContactSearch was previously verified (shaky assumption, tho'),
-        // then un-verify the Primary Contact as soon as the field is changed on the screen
+        // un-verify Primary Contact as soon as the field is changed on the screen
         if (value != this.dfaApplicationMainDataService.contacts.primaryContactSearch) {
           this.dfaApplicationMainDataService.contacts.primaryContactValidated = false;
           this.setPrimaryContactFieldsEnabled(false);
@@ -273,7 +272,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           this.dfaApplicationMainDataService.setCanadaPostVerified(dfaApplicationMain.applicationContacts.isDamagedAddressVerified);  
           
           // 2024-10-07 EMCRI-804 waynezen; don't allow editing in fields until we have a valid Primary Contact
-          //let allowPrimeContactEditFields = dfaApplicationMain?.applicationContacts?.primaryContactValidated !== true ? false : true;
           let allowPrimeContactEditFields = this.dfaApplicationMainDataService.contacts.primaryContactValidated;
           this.setPrimaryContactFieldsEnabled(allowPrimeContactEditFields);
           
@@ -302,7 +300,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
         },
         error: (error) => {
-          //console.error(error);
+          console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
       });
@@ -321,6 +319,15 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       .updateValueAndValidity();
     this.otherContactsForm
       .get('otherContact.email')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.cellPhone')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.jobTitle')
+      .updateValueAndValidity();
+    this.otherContactsForm
+      .get('otherContact.otherNotes')
       .updateValueAndValidity();
   }
 

@@ -349,6 +349,8 @@ namespace EMBC.DFA.API.Controllers
 
                     // convert Dynamics DTO to UI DTO
                     appContact = mapper.Map<ApplicationContacts>(primeContactIn);
+                    // add in a few extra fields from the Application -> Contacts screen
+                    mapper.Map<dfa_appapplicationmain_retrieve, ApplicationContacts>(dfa_appapplication, appContact);
 
                     // 2024-10-05 EMCRI-804 waynezen; validate Primary Contact
                     if (!appContact.primaryContactValidated.HasValue &&
@@ -364,10 +366,8 @@ namespace EMBC.DFA.API.Controllers
                         }
                     }
                 }
-                // add in a few extra fields from the Application -> Contacts screen
-                mapper.Map<dfa_appapplicationmain_retrieve, ApplicationContacts>(dfa_appapplication, appContact);
-                dfaApplicationMain.applicationContacts = appContact;
 
+                dfaApplicationMain.applicationContacts = appContact;
                 return Ok(dfaApplicationMain);
             }
             catch (Exception ex)
