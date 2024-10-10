@@ -315,6 +315,10 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
     if (searchText != null) {
       this.searchTextInput = searchText;
     }
+
+    if (this.stageSelected && this.stageSelected != '-1') {
+      lstInvoicesFilterting = lstInvoicesFilterting.filter(m => m.emcrDecision == this.stageSelected);
+    }
     
     if (this.filterbydaysSelected && this.filterbydaysSelected != -1) {
       var backdate = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * this.filterbydaysSelected));
