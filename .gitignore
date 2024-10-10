@@ -10,18 +10,21 @@
 # Angular local environment files
 **/environment.local.ts
 DFAautomationTests/bin/chromedriver.exe
-/dfa-public/src/API/EMBC.DFA.API/obj
-/dfa-public/src/API/EMBC.ESS.Shared.Contracts/obj
-/dfa-public/src/API/EMBC.Tests.Unit.DFA.API/bin/Debug/net6.0
-/dfa-public/src/API/EMBC.Tests.Unit.DFA.API/obj/Debug/net6.0
-/dfa-public/src/API/EMBC.Utilities.Telemetry/obj/Debug/netstandard2.1
-/dfa-public/src/API/EMBC.Utilities.Messaging/obj/Debug/net6.0
-/dfa-public/src/API/EMBC.Utilities.Hosting/obj/Debug/net6.0
-/dfa-public/src/API/EMBC.Utilities.Caching/obj/Debug/netstandard2.1
-/dfa-public/src/API/EMBC.Utilities.Caching/obj
-/dfa-public/src/API/EMBC.Utilities/obj
-/dfa-public/src/API/EMBC.Tests.Unit.DFA.API/obj
-/dfa-public/src/API/EMBC.Utilities.Hosting/obj
-/dfa-public/src/API/EMBC.Utilities.Messaging/obj
-/dfa-public/src/API/EMBC.Utilities.Telemetry/obj
-/dfa/src/UI/embc-dfa/.browserslistrc
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+bin/
+Bin/
+obj/
+Obj/
+
+# dfa-public/src/UI/embc-dfa/src/app/core/api/services/
+
+dfa-public/src/UI/embc-dfa/package-lock.json
