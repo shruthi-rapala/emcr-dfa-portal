@@ -249,7 +249,7 @@ export class DFAClaimComponent
       this.projService.projectGetProjectDetailsForClaim({ projectId: projectId }).subscribe({
         next: (dfaProject) => {
           if (dfaProject) {
-            dfaProject.deadline18Month = '09/22/2024';
+            //dfaProject.deadline18Month = '09/22/2024';
 
             let endDate = moment(new Date(dfaProject.deadline18Month)); // yyyy-MM-dd
             let startDate = moment(); // yyyy-MM-dd

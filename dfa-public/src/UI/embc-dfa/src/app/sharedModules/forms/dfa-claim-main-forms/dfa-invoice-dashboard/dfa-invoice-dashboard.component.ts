@@ -331,8 +331,8 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       } else if (this.sortfieldSelected == 'invoicenumber') {
         lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (a.invoiceNumber > b.invoiceNumber) ? 1 : ((b.invoiceNumber > a.invoiceNumber) ? -1 : 0))
       } else if (this.sortfieldSelected == 'totaleligible') {
-        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (a.totalBeingClaimed > b.totalBeingClaimed) ? 1 : ((b.totalBeingClaimed > a.totalBeingClaimed) ? -1 : 0))
-      } else if (this.sortfieldSelected == 'claimpaiddate') {
+        lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (parseFloat(a.totalBeingClaimed) > parseFloat(b.totalBeingClaimed)) ? 1 : ((parseFloat(b.totalBeingClaimed) > parseFloat(a.totalBeingClaimed)) ? -1 : 0))
+      } else if (this.sortfieldSelected == 'invoicedate') {
         lstInvoicesFilterting = lstInvoicesFilterting.sort((a, b) => (new Date(a.invoiceDate) > new Date(b.invoiceDate)) ? 1 : (new Date(b.invoiceDate) > new Date(a.invoiceDate) ? -1 : 0))
       }
     }
