@@ -51,6 +51,7 @@ import { DFAClaimMainService } from '../../../../feature-components/dfa-claim-ma
 import { InformationDialogComponent } from '../../../../core/components/dialog-components/information-dialog/information-dialog.component';
 import { DialogComponent } from '../../../../core/components/dialog/dialog.component';
 import { DFAGeneralInfoDialogComponent } from '../../../../core/components/dialog-components/dfa-general-info-dialog/dfa-general-info-dialog.component';
+import { CoreModule } from '../../../../core/core.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -95,6 +96,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
   documentSummaryDataSource = new MatTableDataSource<InvoiceExtended>();
   documentSummaryDataSourceFiltered = new MatTableDataSource<InvoiceExtended>();
   noInvoiceText = 'To begin adding invoices, click the "+ Add Invoice" button.';
+  isLoading = false;
   
   readonly phoneMask = [
     /\d/,
@@ -552,6 +554,8 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe((result) => {
         //debugger;
+        this.isLoading = true;
+
         if (result.event === 'confirm' || result.event === 'update') {
           if (result.invData) {
             var objInv = result.invData;
@@ -565,8 +569,8 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
             this.dfaClaimMainDataService.invoice.isClaimforPartofTotalInvoice = objInv.isClaimforPartofTotalInvoice == 'true' ? true : (objInv.isClaimforPartofTotalInvoice == 'false' ? false : null);
             this.dfaClaimMainDataService.invoice.reasonClaimingPartofTotalInvoice = objInv.reasonClaimingPartofTotalInvoice;
             this.dfaClaimMainDataService.invoice.netInvoiceBeingClaimed = objInv.netInvoiceBeingClaimed;
-            this.dfaClaimMainDataService.invoice.pst = objInv.pst;
-            this.dfaClaimMainDataService.invoice.grossGST = objInv.grossGST;
+            this.dfaClaimMainDataService.invoice.pst = objInv.pst == '' ? null : objInv.pst;
+            this.dfaClaimMainDataService.invoice.grossGST = objInv.grossGST == '' ? null : objInv.grossGST;
             this.dfaClaimMainDataService.invoice.actualInvoiceTotal = objInv.actualInvoiceTotal ? "" + objInv.actualInvoiceTotal : "" ;
             this.dfaClaimMainDataService.invoice.eligibleGST = objInv.eligibleGST ? "" + objInv.eligibleGST : "";
             this.dfaClaimMainDataService.invoice.totalBeingClaimed = objInv.totalBeingClaimed ? "" + objInv.totalBeingClaimed : "";
@@ -588,9 +592,12 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
               else {
                 objInv.invoiceId = this.dfaClaimMainDataService.getInvoiceId();
               }
+
+              this.isLoading = false;
             },
               error => {
                 console.error(error);
+                this.isLoading = false;
                 document.location.href = 'https://dfa.gov.bc.ca/error.html';
               });
 
@@ -615,7 +622,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
         }
         else {
           //when edit invoice pop up cancelled without saving
-          
+          this.isLoading = false;
           var invId = this.dfaClaimMainDataService.getInvoiceId()
 
           if (invId) {
@@ -625,6 +632,8 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
             }
           }
         }
+
+        
       });
   }
 
@@ -692,6 +701,7 @@ const routes: Routes = [{
     DirectivesModule,
     MatTableModule,
     CustomPipeModule,
+    CoreModule,
     // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - new text mask provider
     NgxMaskDirective, NgxMaskPipe,
     MatSelectModule,
