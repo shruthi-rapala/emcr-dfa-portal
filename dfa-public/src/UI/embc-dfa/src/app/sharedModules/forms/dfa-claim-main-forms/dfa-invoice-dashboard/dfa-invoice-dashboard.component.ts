@@ -593,6 +593,21 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
                 objInv.invoiceId = this.dfaClaimMainDataService.getInvoiceId();
               }
 
+              if (index != null) {
+                this.documentSummaryDataSource.data.splice(index, 1, objInv);
+              }
+              else {
+                this.documentSummaryDataSource.data.push(objInv);
+              }
+
+              let cloned = this.documentSummaryDataSource.data.slice()
+              this.documentSummaryDataSource.data = cloned;
+              this.documentSummaryDataSourceFiltered.data = this.documentSummaryDataSource.data;
+              this.invoicesCount = this.documentSummaryDataSource.data.length;
+              this.SummaryClaimCalc();
+              this.formCreationService.recoveryClaimForm.value.get('invoices').setValue(this.documentSummaryDataSource.data);
+              this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
+
               this.isLoading = false;
             },
               error => {
@@ -604,20 +619,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
             //this.documentSummaryDataSource.data.push(
             //  { invoiceNumber: objInv.invoiceNumber, vendorName: objInv.vendorName, invoiceDate: objInv.invoiceDate, totalBeingClaimed: objInv.totalBeingClaimed }
             //);
-            if (index != null) {
-              this.documentSummaryDataSource.data.splice(index, 1, objInv);
-            }
-            else {
-              this.documentSummaryDataSource.data.push(objInv);
-            }
-
-            let cloned = this.documentSummaryDataSource.data.slice()
-            this.documentSummaryDataSource.data = cloned;
-            this.documentSummaryDataSourceFiltered.data = this.documentSummaryDataSource.data;
-            this.invoicesCount = this.documentSummaryDataSource.data.length;
-            this.SummaryClaimCalc();
-            this.formCreationService.recoveryClaimForm.value.get('invoices').setValue(this.documentSummaryDataSource.data);
-            this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
+            
           }
         }
         else {
