@@ -376,6 +376,28 @@ namespace EMBC.DFA.API.Controllers
             }
         }
 
+        [HttpGet("getcontact/byId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ApplicationContacts>> GetPrimaryContactByBCeIDAsync(
+            [FromQuery]
+            [Required]
+            Guid bceiduserguid)
+        {
+            try
+            {
+                var primeContactIn = await handler.HandleGetPrimaryContactByBCeIDAsync(bceiduserguid.ToString());
+                // convert Dynamics DTO to UI DTO
+                ApplicationContacts appContact = new ApplicationContacts();
+                appContact = mapper.Map<ApplicationContacts>(primeContactIn);
+                return appContact;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         /// <summary>
         /// get dfa applications
         /// </summary>

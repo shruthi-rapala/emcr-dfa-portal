@@ -11,6 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { ApplicantSubtypeSubCategories } from '../models/applicant-subtype-sub-categories';
 import { ApplicantSubtypes } from '../models/applicant-subtypes';
+import { ApplicationContacts } from '../models/application-contacts';
 import { CurrentApplication } from '../models/current-application';
 import { DfaApplicationMain } from '../models/dfa-application-main';
 import { DfaApplicationStart } from '../models/dfa-application-start';
@@ -318,6 +319,52 @@ export class ApplicationService extends BaseService {
 
     return this.applicationGetApplicationMain$Response(params).pipe(
       map((r: StrictHttpResponse<DfaApplicationMain>) => r.body as DfaApplicationMain)
+    );
+  }
+
+  /**
+   * Path part for operation applicationGetPrimaryContactByBCeId
+   */
+  static readonly ApplicationGetPrimaryContactByBCeIdPath = '/api/applications/getcontact/byId';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `applicationGetPrimaryContactByBCeId()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetPrimaryContactByBCeId$Response(params?: {
+    bceiduserguid?: string;
+  }): Observable<StrictHttpResponse<ApplicationContacts>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ApplicationService.ApplicationGetPrimaryContactByBCeIdPath, 'get');
+    if (params) {
+      rb.query('bceiduserguid', params.bceiduserguid, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ApplicationContacts>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `applicationGetPrimaryContactByBCeId$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetPrimaryContactByBCeId(params?: {
+    bceiduserguid?: string;
+  }): Observable<ApplicationContacts> {
+
+    return this.applicationGetPrimaryContactByBCeId$Response(params).pipe(
+      map((r: StrictHttpResponse<ApplicationContacts>) => r.body as ApplicationContacts)
     );
   }
 

@@ -210,11 +210,19 @@ export class DFAApplicationMainComponent
     if (component === 'application-details' || component === 'contacts') {
       this.setFormData(component);
 
-      //2024-10-11 EMCRI-809 waynezen; force the Contacts screen to "re-publish" changes for Review form
+      let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+      this.dfaApplicationMainMapping.mapDFAApplicationMain(application);  
+
+      // 2024-10-11 EMCRI-809 waynezen; force Application Details & Contacts screen to update validators
+      if (component == 'application-details') {
+        let theform = this.formCreationService.applicationDetailsForm.value;
+        theform.updateValueAndValidity();
+        // 2024-10-11 EMCRI-809 waynezen; ignore validation failures when the form is disabled
+        this.applicationDetailsValid = (theform.disabled) ? true : theform.valid;
+      }
       if (component == 'contacts') {
-        //this.formCreationService.setContactsForm(this.form);
-        let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-        this.dfaApplicationMainMapping.mapDFAApplicationMain(application);  
+        let theform = this.formCreationService.contactsForm.value;
+        this.contactsValid = theform.valid;
       }
 
       this.dfaApplicationMainStepper.selected.completed = true;

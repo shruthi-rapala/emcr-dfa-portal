@@ -207,8 +207,9 @@ namespace EMBC.DFA.API.Mappers
                 //    (s.applicationContacts.primaryContactValidated == true)
                 //    ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_toreceivesupportaccessingdamage, opts => opts.MapFrom(s =>
-                    (s.applicationContacts.guidanceSupport == true)
-                    ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                    s.applicationContacts.guidanceSupport.HasValue ?
+                    (s.applicationContacts.guidanceSupport.Value == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No) :
+                    null))
                 ;
 
             // 2024-09-16 EMCRI-663 waynezen; Contact form fields

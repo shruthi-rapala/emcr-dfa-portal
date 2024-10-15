@@ -487,6 +487,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       form.controls.wildfireDamage.value !== true) {
       return { noCauseOfDamage: true };
     }
+
     return null;
   }
 

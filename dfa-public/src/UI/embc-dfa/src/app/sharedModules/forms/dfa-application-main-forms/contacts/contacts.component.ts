@@ -39,6 +39,7 @@ import { MatIconModule } from '@angular/material/icon'
 import { ContactNotFoundComponent } from './contact-not-found.component';
 import { AddressFormsModule } from '../../address-forms/address-forms.module';
 import { CacheService } from 'src/app/core/services/cache.service';
+import { guid } from '@progress/kendo-angular-common';
 
 @Component({
   selector: 'app-contacts',
@@ -374,10 +375,10 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         this.showOtherContactForm = !this.showOtherContactForm;
       }
 
-      this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
       // 2024-10-11 EMCRI-809 waynezen; notify Review screen that Other Contact data has changed
-      this.dfaApplicationMainDataService.otherContactsDataChangedEvent.emit(true);
+      this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
       this.cacheService.set('otherContacts', this.dfaApplicationMainDataService.otherContacts);
+      this.dfaApplicationMainDataService.otherContactsDataChangedEvent.emit(true);
 
     } else {
       this.otherContactsForm.get('otherContact').markAllAsTouched();
@@ -392,6 +393,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     this.otherContactsForm.get('addNewOtherContactIndicator').setValue(true);
     this.otherContactsForm.get('otherContact.deleteFlag').setValue(false);
     this.otherContactsForm.get('otherContact.applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+
   }
 
   editOtherContactsRow(element, index): void {
@@ -402,6 +404,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     this.otherContactsEditFlag = !this.otherContactsEditFlag;
     this.otherContactsForm
       .get('addNewOtherContactIndicator').setValue(true);
+
   }
 
   deleteOtherContactRow(index: number): void {
@@ -496,7 +499,14 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           this.contactsForm.get('pcDepartment').setValue(bceidBusiness.department);
           this.contactsForm.get('pcBusinessPhone').setValue(bceidBusiness.contactPhone);
           this.contactsForm.get('pcEmailAddress').setValue(bceidBusiness.contactEmail);
-          // TODO: set cell phone and job title with data from Dynamics?
+          
+          // 2024-10-11 EMCRI-809 waynezen; get cell phone and job title with data from Dynamics
+          this.applicationService.applicationGetPrimaryContactByBCeId({ bceiduserguid: bceidBusiness.userGuid }).subscribe({
+            next: (contact) => {
+              this.contactsForm.get('pcCellPhone').setValue(contact.pcCellPhone);
+              this.contactsForm.get('pcJobTitle').setValue(contact.pcJobTitle);
+            }
+            });    
 
           this.showFoundContactMsg = true;
           this.dfaApplicationMainDataService.primaryContactValidatedEvent.emit(true);
@@ -540,6 +550,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     this.contactsForm.get('pcDepartment').setValue('');
     this.contactsForm.get('pcBusinessPhone').setValue('');
     this.contactsForm.get('pcEmailAddress').setValue('');
+    this.contactsForm.get('pcCellPhone').setValue('');
+    this.contactsForm.get('pcJobTitle').setValue('');
     this.contactsForm.get('pcCellPhone').setValue('');
     this.contactsForm.get('pcJobTitle').setValue('');
 

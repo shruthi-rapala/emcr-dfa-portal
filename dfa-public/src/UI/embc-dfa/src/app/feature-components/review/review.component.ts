@@ -70,14 +70,6 @@ export class ReviewComponent implements OnInit {
   appTypeInsuranceForm$: Subscription;
   causeOfDamage: string;
 
-  // 2024-10-11 EMCRI-809 waynezen;
-  applicationDetailsForm$: Subscription;
-  applicationDetailsForm: UntypedFormGroup;
-  applicationDetailsValid: boolean = false;  
-  contactsForm$: Subscription;
-  contactsForm: UntypedFormGroup;
-  contactsValid: boolean = false;
-
   otherContactsDataSource = new BehaviorSubject([]);
   otherContactsData: Array<OtherContact> = [];
   otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email'];
@@ -161,19 +153,6 @@ export class ReviewComponent implements OnInit {
         this.otherContactsDataSource.next(this.otherContactsData);
       }
     });
-    // 2024-10-12 EMCRI-809 waynezen; listen for changes to validation status
-    this.applicationDetailsForm$ = this.formCreationService.getApplicationDetailsForm().subscribe((applicationDetails) => {
-      this.applicationDetailsForm = applicationDetails;
-      this.applicationDetailsValid = this.applicationDetailsForm.valid;
-    });
-    this.contactsForm$ = this.formCreationService.getContactsForm().subscribe((contacts) => {
-      this.contactsForm = contacts;
-      this.contactsValid = this.contactsForm.valid;
-
-      // TODO: debug remove
-      let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
-      console.debug('[DFA] applicationContacts.addressLine1: ' + application.applicationContacts.addressLine1);
-    });
     this.dfaApplicationMainDataService.primaryContactValidatedEvent.subscribe((verifiedornot) => {
       if (verifiedornot != null) {
         this.primaryContactValidated = verifiedornot;
@@ -205,13 +184,13 @@ export class ReviewComponent implements OnInit {
    
     //var contactsForm = this.formCreationService.contactsForm.value;
     
-    interval(5000).subscribe(x => {
-      if(this.cacheService.get('otherContacts')!=undefined&&this.cacheService.get('otherContacts')!="undefined")
-      {
-      this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'));
-      //this.contactsForm = this.formCreationService.contactsForm.value;
-      }
-    });
+    // interval(5000).subscribe(x => {
+    //   if(this.cacheService.get('otherContacts')!=undefined&&this.cacheService.get('otherContacts')!="undefined")
+    //   {
+    //   this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'));
+    //   //this.contactsForm = this.formCreationService.contactsForm.value;
+    //   }
+    // });
     //this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
     // this.otherContactsData = this.dfaApplicationMainDataService.otherContacts;
 
