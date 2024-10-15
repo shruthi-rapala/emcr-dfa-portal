@@ -385,14 +385,6 @@
               Estimate or actual cost of total project (include taxes)<span style="color:red" >*</span>
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-              <!--<input
-                id="currencyBox"
-                formControlName="estimateCostIncludingTax"
-                matInput
-                required
-                placeholder="Estimate or actual cost"
-                maxlength="100"/>
-              <span class="currencyText">CA</span>-->
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -402,7 +394,7 @@
                   matInput
                        required
                   placeholder="Estimate or actual cost"
-                  mask="separator.2"
+                  mask="separator.2" thousandSeparator="" decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>

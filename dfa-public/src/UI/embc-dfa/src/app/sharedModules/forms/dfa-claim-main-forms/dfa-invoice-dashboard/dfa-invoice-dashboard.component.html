@@ -240,7 +240,13 @@
     ></tr>
 
   </table>
-
+  <app-loader
+    class="spinner"
+    [showLoader]="isLoading"
+    strokeWidth="10"
+    diameter="50"
+  >
+  </app-loader>
 </div>
 <div class="content-container no-invoices" *ngIf="documentSummaryDataSourceFiltered.data.length <= 0" >
     <div class="row">
