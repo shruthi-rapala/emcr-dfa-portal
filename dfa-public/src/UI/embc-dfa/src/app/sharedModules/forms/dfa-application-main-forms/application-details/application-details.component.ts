@@ -479,7 +479,7 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     this.otherContactText = 'New Other Contact'
   }
 
-  validateFormCauseOfDamage(form: FormGroup) {
+  public validateFormCauseOfDamage(form: FormGroup) {
     if (form.controls.stormDamage.value !== true &&
       form.controls.landslideDamage.value !== true &&
       form.controls.otherDamage.value !== true &&

@@ -1,3 +1,4 @@
+import { ValidateInsuranceOption } from './../../sharedModules/forms/dfa-prescreening-forms/prescreening/prescreening.component';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable, Subscription, mapTo,BehaviorSubject, interval } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
@@ -6,14 +7,14 @@ import {
   CaptchaResponse,
   CaptchaResponseType
 } from 'src/app/core/components/captcha-v2/captcha-v2.component';
-import { ApplicantOption, FarmOption, FileCategory, FileUpload, InsuranceOption, RoomType, SmallBusinessOption } from 'src/app/core/api/models';
+import { ApplicantOption, DfaApplicationMain, FarmOption, FileCategory, FileUpload, InsuranceOption, RoomType, SmallBusinessOption } from 'src/app/core/api/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { DFAApplicationMainDataService } from '../dfa-application-main/dfa-application-main-data.service';
 import { UntypedFormGroup } from '@angular/forms';
 import { ContactDetails } from 'src/app/core/model/profile.model';
 import { OtherContactService } from 'src/app/core/api/services';
 import { CacheService } from 'src/app/core/services/cache.service';
-import { ContactsForm } from 'src/app/core/model/dfa-application-main.model';
+import { ContactsForm, ApplicationDetails, OtherContact } from 'src/app/core/model/dfa-application-main.model';
 
 @Component({
   selector: 'app-review',
@@ -40,9 +41,6 @@ export class ReviewComponent implements OnInit {
   fullTimeOccupantsColumnsToDisplay = ['name', 'relationship'];
   secondaryApplicantsDataSource = new MatTableDataSource();
   secondaryApplicantsColumnsToDisplay = ['applicantType', 'name', 'phoneNumber', 'email'];
-  otherContactsDataSource = new BehaviorSubject([]);
-  otherContactsData = [];
-  otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email'];
   cleanUpWorkDataSource = new MatTableDataSource();
   cleanUpWorkColumnsToDisplay = ['date', 'name','hours','description'];
   cleanUpWorkFileDataSource = new MatTableDataSource<FileUpload>();
@@ -71,13 +69,29 @@ export class ReviewComponent implements OnInit {
   appTypeInsuranceForm: UntypedFormGroup;
   appTypeInsuranceForm$: Subscription;
   causeOfDamage: string;
+
+  // 2024-10-11 EMCRI-809 waynezen;
+  applicationDetailsForm$: Subscription;
+  applicationDetailsForm: UntypedFormGroup;
+  applicationDetailsValid: boolean = false;  
+  contactsForm$: Subscription;
+  contactsForm: UntypedFormGroup;
+  contactsValid: boolean = false;
+
+  otherContactsDataSource = new BehaviorSubject([]);
+  otherContactsData: Array<OtherContact> = [];
+  otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email'];
+
+  noCauseOfDamageError: boolean = false;
+  primaryContactValidated: boolean = false;
+
   applicationType: string;
   hasInsurance: string;
 
   contacts:ContactDetails[]= [];
   otherContactsForm: UntypedFormGroup;
   otherContactsForm$: Subscription;
-  contactsForm:UntypedFormGroup;
+  
   constructor(
     private router: Router,
     public formCreationService: FormCreationService,private otherContactsService: OtherContactService,
@@ -122,13 +136,7 @@ export class ReviewComponent implements OnInit {
       });
   }
 
-
-
-
-    mySubscription: Subscription
-
-
- 
+  mySubscription: Subscription
 
 
   ngOnInit(): void {
@@ -139,7 +147,42 @@ export class ReviewComponent implements OnInit {
       });
     }
 
+    // 2024-10-11 EMCRI-809 waynezen; subscribe to event when cacheService.set('dfa-application-main')
+    this.dfaApplicationMainDataService.dfaApplicationMainCachedEvent.subscribe((verifiedornot) => {
+      if (verifiedornot) {
+        let data = this.dfaApplicationMainDataService.getDFAApplicationMain();
+        this.noCauseOfDamageError = this.validateFormCauseOfDamage(data);
+      }
+    });
+    // 2024-10-11 EMCRI-809 waynezen; subscribe to event when Other Contacts grid is changed
+    this.dfaApplicationMainDataService.otherContactsDataChangedEvent.subscribe((changed) => {
+      if (changed) {
+        this.otherContactsData = this.dfaApplicationMainDataService.otherContacts;
+        this.otherContactsDataSource.next(this.otherContactsData);
+      }
+    });
+    // 2024-10-12 EMCRI-809 waynezen; listen for changes to validation status
+    this.applicationDetailsForm$ = this.formCreationService.getApplicationDetailsForm().subscribe((applicationDetails) => {
+      this.applicationDetailsForm = applicationDetails;
+      this.applicationDetailsValid = this.applicationDetailsForm.valid;
+    });
+    this.contactsForm$ = this.formCreationService.getContactsForm().subscribe((contacts) => {
+      this.contactsForm = contacts;
+      this.contactsValid = this.contactsForm.valid;
+
+      // TODO: debug remove
+      let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+      console.debug('[DFA] applicationContacts.addressLine1: ' + application.applicationContacts.addressLine1);
+    });
+    this.dfaApplicationMainDataService.primaryContactValidatedEvent.subscribe((verifiedornot) => {
+      if (verifiedornot != null) {
+        this.primaryContactValidated = verifiedornot;
+      }
+    });
+
+
     var appForm = this.formCreationService.applicationDetailsForm.value;
+
     //debugger
     if (appForm.controls.floodDamage.value === 'true') {
      this.causeOfDamage = 'Flood Damage, ';
@@ -166,13 +209,12 @@ export class ReviewComponent implements OnInit {
       if(this.cacheService.get('otherContacts')!=undefined&&this.cacheService.get('otherContacts')!="undefined")
       {
       this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'));
-      this.contactsForm = this.formCreationService.contactsForm.value;
+      //this.contactsForm = this.formCreationService.contactsForm.value;
       }
     });
     //this.otherContactsData = JSON.parse(this.cacheService.get('otherContacts'))
-       
-   
-    this.getOtherContactsForApplication(this.dfaApplicationMainDataService.getApplicationId());
+    // this.otherContactsData = this.dfaApplicationMainDataService.otherContacts;
+
     appForm.valueChanges
       .pipe(
         mapTo(appForm.getRawValue())
@@ -195,9 +237,11 @@ export class ReviewComponent implements OnInit {
           this.causeOfDamage += appForm.controls.otherDamageText.value + ', ';
         }
 
-        if (this.causeOfDamage)
+        if (this.causeOfDamage) {
           this.causeOfDamage = this.causeOfDamage.slice(0, -2);
         }
+      }
+
     );
 
     //if (appForm.value.get('fullTimeOccupants') controls.stormDamage.value !== true &&
@@ -265,19 +309,7 @@ export class ReviewComponent implements OnInit {
       //    x.fileType === this.FileCategories.Cleanup && x.deleteFlag === false)
     })
   }
-  getOtherContactsForApplication(applicationId: string) {
-    if (applicationId) {
-      this.otherContactsService.otherContactGetOtherContacts({ applicationId: applicationId }).subscribe({
-        next: (otherContacts) => {
-          this.otherContactsData = otherContacts;
-          this.otherContactsDataSource.next(this.otherContactsData);
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
-    }
-  }
+
   navigateToStep(stepIndex: number) {
     this.stepToNavigate.emit(stepIndex);
   }
@@ -305,4 +337,17 @@ export class ReviewComponent implements OnInit {
   onTokenResponse($event: CaptchaResponse) {
     this.captchaPassed.emit($event);
   }
+
+  // 2024-10-11 EMCRI-809 waynezen; duplicated logic from application-details.component
+  private validateFormCauseOfDamage(data: DfaApplicationMain): boolean {
+    if (data.applicationDetails.stormDamage !== true &&
+      data.applicationDetails.landslideDamage !== true &&
+      data.applicationDetails.otherDamage !== true &&
+      data.applicationDetails.floodDamage !== true &&
+      data.applicationDetails.wildfireDamage !== true) {
+      return true;
+    }
+    return false;
+  }
+
 }

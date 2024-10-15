@@ -196,6 +196,21 @@ export class ComponentCreationService {
     return componentArr;
   }
 
+  //2024-10-11 EMCRI-820 waynezen;
+  modifyDFAApplicationMainStepsforSubmitted(steps: Array<ComponentMetaDataModel>, vieworedit: string): void {
+    if (vieworedit == 'view') {
+      if (steps[0]) {
+        steps[0].nextButtonLabel = "Next - Update Contact Information";
+      }
+
+      if (steps[1]) {
+        steps[1].nextButtonLabel = "Next - Review & Save";
+        steps[1].backButtonLabel = "Go Back";
+      }
+    }
+  }
+
+
   createDFAProjectMainSteps(): Array<ComponentMetaDataModel> {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();

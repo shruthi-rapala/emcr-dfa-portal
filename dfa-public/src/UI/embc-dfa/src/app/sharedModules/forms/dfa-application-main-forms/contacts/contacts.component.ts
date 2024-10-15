@@ -91,15 +91,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     this.isReadOnly = false;
     this.setViewOrEditControls();
 
-    // this.dfaApplicationMainDataService.changeViewOrEdit.subscribe((vieworedit) => {
-    //   this.isReadOnly = (vieworedit === 'view'
-    //     || vieworedit === 'edit'
-    //     || vieworedit === 'viewOnly');
-    //   this.setViewOrEditControls();
-    // })
-
-    // this.vieworedit = dfaApplicationMainDataService.getViewOrEdit();
-
   }
 
   setViewOrEditControls() {
@@ -249,8 +240,9 @@ export default class ContactsComponent implements OnInit, OnDestroy {
         }
         // un-verify Primary Contact as soon as the field is changed on the screen
         if (value != this.dfaApplicationMainDataService.contacts.primaryContactSearch) {
-          this.dfaApplicationMainDataService.contacts.primaryContactValidated = false;
           this.setPrimaryContactFieldsEnabled(false);
+          this.dfaApplicationMainDataService.contacts.primaryContactValidated = false;
+          this.dfaApplicationMainDataService.primaryContactValidatedEvent.emit(false);
         }
       });
 
@@ -274,6 +266,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           // 2024-10-07 EMCRI-804 waynezen; don't allow editing in fields until we have a valid Primary Contact
           let allowPrimeContactEditFields = this.dfaApplicationMainDataService.contacts.primaryContactValidated;
           this.setPrimaryContactFieldsEnabled(allowPrimeContactEditFields);
+          this.dfaApplicationMainDataService.primaryContactValidatedEvent.emit(allowPrimeContactEditFields);
           
           this.dfaApplicationMainMapping.mapDFAApplicationMainContacts(dfaApplicationMain);
         },
@@ -298,6 +291,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           this.otherContactsDataSource.next(this.otherContactsData);
           this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
           this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+          // 2024-10-11 EMCRI-809 waynezen; notify Review screen that Other Contact data has changed
+          this.dfaApplicationMainDataService.otherContactsDataChangedEvent.emit(true);
         },
         error: (error) => {
           console.error(error);
@@ -380,7 +375,10 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       }
 
       this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+      // 2024-10-11 EMCRI-809 waynezen; notify Review screen that Other Contact data has changed
+      this.dfaApplicationMainDataService.otherContactsDataChangedEvent.emit(true);
       this.cacheService.set('otherContacts', this.dfaApplicationMainDataService.otherContacts);
+
     } else {
       this.otherContactsForm.get('otherContact').markAllAsTouched();
     }
@@ -433,6 +431,9 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     this.otherContactsForm.get('otherContacts').setValue(this.otherContactsData);
     
     this.dfaApplicationMainDataService.otherContacts = this.otherContactsForm.get('otherContacts').getRawValue();
+    // 2024-10-11 EMCRI-809 waynezen; notify Review screen that Other Contact data has changed
+    this.dfaApplicationMainDataService.otherContactsDataChangedEvent.emit(true);
+
     if (this.otherContactsData.length === 0) {
       this.otherContactsForm
         .get('addNewOtherContactIndicator')
@@ -498,6 +499,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           // TODO: set cell phone and job title with data from Dynamics?
 
           this.showFoundContactMsg = true;
+          this.dfaApplicationMainDataService.primaryContactValidatedEvent.emit(true);
         }
         else {
           // invalid BCeID Web Service response
@@ -515,6 +517,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     else {
       this.setPrimaryContactInfoBlank();
       this.showFoundContactMsg = false;
+      this.dfaApplicationMainDataService.primaryContactValidatedEvent.emit(false);
     }
   }
 
@@ -539,6 +542,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     this.contactsForm.get('pcEmailAddress').setValue('');
     this.contactsForm.get('pcCellPhone').setValue('');
     this.contactsForm.get('pcJobTitle').setValue('');
+
+    this.dfaApplicationMainDataService.primaryContactValidatedEvent.emit(false);
   }
 
   private setPrimaryContactFieldsEnabled(enable: boolean) {
