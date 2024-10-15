@@ -162,6 +162,10 @@ namespace EMBC.DFA.API.Controllers
 
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
+            if (string.IsNullOrEmpty(mappedApplication.dfa_appapplicationid) && result != null && Guid.TryParse(result, out Guid appId))
+            {
+                mappedApplication.dfa_appapplicationid = result;
+            }
             if (application.OtherContact != null)
             {
                 foreach (var objContact in application.OtherContact)
@@ -188,10 +192,10 @@ namespace EMBC.DFA.API.Controllers
                 };
 
                 var file = await pDFServiceHandler.GetFileDataAsync(pdfReuest);
-
-                var applicationReviewPDFUpload = BuildApplicationReviewPDFUpload(mappedApplication, file);
+                ApplicationReviewPDFUpload applicationReviewPDFUpload = null;
                 try
                 {
+                    applicationReviewPDFUpload = BuildApplicationReviewPDFUpload(mappedApplication, file);
                     var mappedFileUpload = mapper.Map<AttachmentEntity>(applicationReviewPDFUpload);
                     var submissionEntity = mapper.Map<SubmissionEntityPDF>(applicationReviewPDFUpload);
                     submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();

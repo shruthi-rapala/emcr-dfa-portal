@@ -160,29 +160,29 @@ namespace pdfservice.Controllers
 
             _logger.LogInformation($"PDF-Service GetPDF: template filename is: {filename}");
 
-            var contactText = new StringBuilder();
-            contactText.Append($@"<div class='contacts-container' ><table class='contacts' style='width:95%'>");
+            //var contactText = new StringBuilder();
+            //contactText.Append($@"<div class='contacts-container' ><table class='contacts' style='width:95%'>");
 
-            contactText.Append($@"<tr style='background-color: #415a88;color: #fff;'>
-                         <th>First Name</th><th>Last Name</th><th>Business Phone</th><th>Email</th><th>Cell Phone</th><th>Job Title</th><th>Notes</th></tr>");
-            if (pdfReuest.PdfApplicationData.Contacts!=null && pdfReuest.PdfApplicationData.Contacts.Count>0)
-            {
-                foreach (var contact in pdfReuest.PdfApplicationData.Contacts)
-                {
-                    contactText.Append($@"<tr>
-                        <td>{contact.FirstName}</td>
-                        <td>{contact.LastName}</td>
-                        <td>{contact.BusinessPhone}</td>   
-                        <td>{contact.Email}</td>
-                        <td>{contact.CellPhone}</td>
-                        <td>{contact.JobTitle}</td>
-                        <td>{contact.Notes}</td>
-                        </tr>");
-                }
-            }
+            //contactText.Append($@"<tr style='background-color: #415a88;color: #fff;'>
+            //             <th>First Name</th><th>Last Name</th><th>Business Phone</th><th>Email</th><th>Cell Phone</th><th>Job Title</th><th>Notes</th></tr>");
+            //if (pdfReuest.PdfApplicationData.Contacts!=null && pdfReuest.PdfApplicationData.Contacts.Count>0)
+            //{
+            //    foreach (var contact in pdfReuest.PdfApplicationData.Contacts)
+            //    {
+            //        contactText.Append($@"<tr>
+            //            <td>{contact.FirstName}</td>
+            //            <td>{contact.LastName}</td>
+            //            <td>{contact.BusinessPhone}</td>   
+            //            <td>{contact.Email}</td>
+            //            <td>{contact.CellPhone}</td>
+            //            <td>{contact.JobTitle}</td>
+            //            <td>{contact.Notes}</td>
+            //            </tr>");
+            //    }
+            //}
 
-            contactText.Append("</table></div>");
-            pdfReuest.PdfApplicationData.ContactsText = contactText.ToString();
+            //contactText.Append("</table></div>");
+            //pdfReuest.PdfApplicationData.ContactsText = contactText.ToString();
             if (System.IO.File.Exists(filename))
             {
                 string format = System.IO.File.ReadAllText(filename);
