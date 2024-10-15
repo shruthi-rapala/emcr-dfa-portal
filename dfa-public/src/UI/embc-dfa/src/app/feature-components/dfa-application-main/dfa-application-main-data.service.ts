@@ -38,6 +38,12 @@ export class DFAApplicationMainDataService {
   // 2024-10-02 EMCRI-663 waynezen; publish event for Canada Post verified message on BcAddressComponent
   public canadaPostVerified: EventEmitter<string> = new EventEmitter<string>();
 
+  // 2024-10-11 EMCRI-809 waynezen; publish events for key validation fields on Contacts form
+  public dfaApplicationMainCachedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  public primaryContactValidatedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  public otherContactsDataChangedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+
   constructor(
     private cacheService: CacheService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
@@ -113,6 +119,7 @@ export class DFAApplicationMainDataService {
   public setDFAApplicationMain(dfaApplicationMain: DfaApplicationMain): void {
     this._dfaApplicationMain = dfaApplicationMain;
     this.cacheService.set('dfa-application-main', dfaApplicationMain);
+    this.dfaApplicationMainCachedEvent.emit(true);
   }
 
   public get damagedPropertyAddress(): DamagedPropertyAddress {

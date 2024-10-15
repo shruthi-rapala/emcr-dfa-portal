@@ -64,7 +64,8 @@
       ></app-component-wrapper>
       <br />
       <div class="row justify-content-between resp-style">
-        <div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
+        <!-- 2024-10-11 EMCRI-820 waynezen;   -->
+        <div class="col-md-3" *ngIf="vieworedit === 'add' || vieworedit === 'edit' || vieworedit === 'view'">
           <button
             class="button-s"
             [hidden]="step.component === 'application-details'"
@@ -74,6 +75,8 @@
           >
             {{ step.backButtonLabel }}
           </button>
+        </div>
+        <div class="col-md-3" *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
           &nbsp;
           <button
             class="button-s"
@@ -85,10 +88,11 @@
           </button>
         </div>
         <div class="col-md-6">
+          <!-- 2024-10-11 EMCRI-820 waynezen;   -->
           <button
             *ngIf="
               currentFlow === 'verified-registration' &&
-                  (vieworedit === 'add' || vieworedit === 'edit')
+                  (vieworedit === 'add' || vieworedit === 'edit' || vieworedit === 'view')
             "
             class="button-p"
             mat-stroked-button
@@ -107,7 +111,8 @@
         </div>
       </div>
     </mat-step>
-    <mat-step *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
+    <!-- 2024-10-11 EMCRI-820 waynezen;   -->
+    <mat-step *ngIf="vieworedit === 'add' || vieworedit === 'edit' || vieworedit === 'view'">
       <ng-template matStepLabel>Review and Submit</ng-template>
       <app-review
         [type]="type"
@@ -132,10 +137,8 @@
           </button>
         </div>
         <!--&& ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)-->
-        <div class="col-md-6" *ngIf="!isSubmitted
-           && (formCreationService.applicationDetailsForm$ | async)?.valid
-           && (formCreationService.contactsForm$ | async)?.valid
-           ">
+        <!-- <div class="col-md-6" *ngIf="!isSubmitted && applicationDetailsValid && contactsValid"> -->
+        <div class="col-md-6" *ngIf="!isSubmitted && applicationDetailsValid && contactsValid && primaryContactValidated ">
         <!--<div class="col-md-6">-->
         <button
           class="button-p save-button"
@@ -143,7 +146,9 @@
           type="button"
           (click)="submitFile()"
         >
-          Submit
+        <!-- 2024-10-12 EMCRI-809 waynezen; button displays "Save" if Application has already been Submitted - display "Submit" otherwise -->
+          <span *ngIf="vieworedit === 'add' || vieworedit === 'update'">Submit</span>
+          <span *ngIf="vieworedit === 'view'">Save</span>
         </button>
       </div>
         <br/><br/>

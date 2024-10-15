@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Cronos;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
+using EMBC.DFA.API.ConfigurationModule.Models.PDF;
 using EMBC.DFA.API.Controllers;
 using EMBC.DFA.API.Mappers;
 using EMBC.Utilities.Caching;
@@ -66,7 +67,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         // 2024-09-17 EMCRI-663 waynezen; handle Primary Contact
         Task<string> HandlePrimaryContactAsync(dfa_applicationprimarycontact_params objPrimaryContact);
-        Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactAsync(string bceidUserId);
+        Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactAsync(string contactId);
+        Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactByBCeIDAsync(string bceidUserId);
         Task<string> HandleBCeIDAudit(dfa_audit_event auditEvent);
     }
 
@@ -366,6 +368,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public async Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactAsync(string contactId)
         {
             var result = await listsGateway.GetPrimaryContactbyContactIdAsync(contactId);
+            return result;
+        }
+
+        public async Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactByBCeIDAsync(string bceidUserId)
+        {
+            var result = await listsGateway.GetPrimaryContactbyBCeIDAsync(bceidUserId);
             return result;
         }
 
