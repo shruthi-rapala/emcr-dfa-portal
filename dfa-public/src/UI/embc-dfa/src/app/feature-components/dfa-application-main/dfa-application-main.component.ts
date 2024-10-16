@@ -1,3 +1,4 @@
+import { ApplicationDetailsForm } from './../../core/model/dfa-application-main.model';
 import {
   Component,
   OnInit,
@@ -7,7 +8,7 @@ import {
   ChangeDetectorRef,
   ViewEncapsulation
 } from '@angular/core';
-import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCreationService } from '../../core/services/componentCreation.service';
 import * as globalConst from '../../core/services/globalConstants';
@@ -76,6 +77,15 @@ export class DFAApplicationMainComponent
   signAndSubmitForm: UntypedFormGroup;
   showStepper: boolean = false;
 
+  // 2024-10-11 EMCRI-809 waynezen;
+  applicationDetailsForm$: Subscription;
+  applicationDetailsForm: UntypedFormGroup;
+  applicationDetailsValid: boolean = false;  
+  contactsForm$: Subscription;
+  contactsForm: UntypedFormGroup;
+  contactsValid: boolean = false;
+  primaryContactValidated: boolean = false;
+
   constructor(
     private router: Router,
     private componentService: ComponentCreationService,
@@ -112,11 +122,32 @@ export class DFAApplicationMainComponent
     this.formCreationService.clearContactsData();
     this.formCreationService.clearOtherContactsData();
 
-    this.steps = this.componentService.createDFAApplicationMainSteps();
     this.vieworedit = this.dfaApplicationMainDataService.getViewOrEdit();
+    this.steps = this.componentService.createDFAApplicationMainSteps();
+    
+    //2024-10-11 EMCRI-820 waynezen;
+    this.componentService.modifyDFAApplicationMainStepsforSubmitted(this.steps, this.vieworedit);
+    
     this.editstep = this.dfaApplicationMainDataService.getEditStep();
     //this.showStepper = true;
     this.dfaApplicationMainHeading = 'Create your Application'
+
+    // 2024-10-11 EMCRI-809 waynezen; listen for changes to validation status
+    this.applicationDetailsForm$ = this.formCreationService.getApplicationDetailsForm().subscribe((applicationDetails) => {
+      this.applicationDetailsForm = applicationDetails;
+      this.applicationDetailsValid = this.applicationDetailsForm.valid;
+    });
+    this.contactsForm$ = this.formCreationService.getContactsForm().subscribe((contacts) => {
+      this.contactsForm = contacts;
+      this.contactsValid = this.contactsForm.valid;
+    });
+
+    this.dfaApplicationMainDataService.primaryContactValidatedEvent.subscribe((verifiedornot) => {
+      if (verifiedornot != null) {
+        this.primaryContactValidated = verifiedornot;
+      }
+    });    
+
   }
 
   ngAfterViewChecked(): void {
@@ -178,6 +209,22 @@ export class DFAApplicationMainComponent
     
     if (component === 'application-details' || component === 'contacts') {
       this.setFormData(component);
+
+      let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+      this.dfaApplicationMainMapping.mapDFAApplicationMain(application);  
+
+      // 2024-10-11 EMCRI-809 waynezen; force Application Details & Contacts screen to update validators
+      if (component == 'application-details') {
+        let theform = this.formCreationService.applicationDetailsForm.value;
+        theform.updateValueAndValidity();
+        // 2024-10-11 EMCRI-809 waynezen; ignore validation failures when the form is disabled
+        this.applicationDetailsValid = (theform.disabled) ? true : theform.valid;
+      }
+      if (component == 'contacts') {
+        let theform = this.formCreationService.contactsForm.value;
+        this.contactsValid = theform.valid;
+      }
+
       this.dfaApplicationMainStepper.selected.completed = true;
       //this.submitFile();
       this.form$.unsubscribe();
