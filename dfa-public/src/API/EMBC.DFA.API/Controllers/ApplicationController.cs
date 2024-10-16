@@ -232,24 +232,35 @@ namespace EMBC.DFA.API.Controllers
               contacts = mapper.Map<Contact[]>(application.OtherContact);
             }
             var contactText = new StringBuilder();
-            contactText.Append($@"<div class='contacts-container' ><table class='contacts' style='width:95%'>");
-
-            contactText.Append($@"<tr style='background-color: #415a88;color: #fff;'>
-                         <th>First Name</th><th>Last Name</th><th>Business Phone</th><th>Email</th><th>Cell Phone</th><th>Job Title</th><th>Notes</th></tr>");
-            foreach (var contact in contacts)
+            contactText.Append($@"<div class='contacts-container'>");
+            if (contacts != null && contacts.Count() > 0)
             {
-                contactText.Append($@"<tr>
+                contactText.Append($@"<table class='contacts' style='width:95%'>");
+                contactText.Append($@"<tr style='background-color: #415a88;color: #fff;'>
+                         <th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Cell Phone</th><th>Job Title</th></tr>");
+                foreach (var contact in contacts)
+                {
+                    contactText.Append($@"<tr>
                         <td>{contact.FirstName}</td>
                         <td>{contact.LastName}</td>
                         <td>{contact.BusinessPhone}</td>   
                         <td>{contact.Email}</td>
                         <td>{contact.CellPhone}</td>
                         <td>{contact.JobTitle}</td>
-                        <td>{contact.Notes}</td>
                         </tr>");
+                }
+                contactText.Append($@"</table>");
+            }
+            else
+            {
+                contactText.Append($@"<div class='row' style='display:flex;'> ");
+                contactText.Append($@"<div class='col-6'> <span >Other Contacts info missing</span> </div>");
+                contactText.Append($@"<div class='col-6'> <span style='color:red'>At least one other contact is required.</span> </div>");
+                contactText.Append($@"</div>");
             }
 
-            contactText.Append("</table></div>");
+            contactText.Append($@"</div>");
+
             PdfApplicationData pdfApplicationData = new PdfApplicationData();
             if (application.applicationDetails != null)
             {
