@@ -334,9 +334,9 @@ export class DFAProjectAmendmentComponent
             objAmendment.statusColor = '#639DD4';
           }
 
-          if (objAmendment.status.toLowerCase().indexOf('decision made') > -1 && objAmendment.stage.toLowerCase().indexOf('progress') > -1) {
-            objAmendment.statusColor = '#FDCB52';
-          }
+          //if (objAmendment.status.toLowerCase().indexOf('decision made') > -1 && objAmendment.stage.toLowerCase().indexOf('progress') > -1) {
+          //  objAmendment.statusColor = '#FDCB52';
+          //}
         }
 
         if (isFound == false) {

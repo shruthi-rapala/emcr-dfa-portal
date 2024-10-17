@@ -132,6 +132,8 @@ export class ReviewComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.cacheService.set('otherContacts',undefined);
+    
     this.navigationExtras = { state: { parentPageName: this.parentPageName } };
     if (this.currentFlow === 'verified-registration') {
       this.captchaPassed.emit({
