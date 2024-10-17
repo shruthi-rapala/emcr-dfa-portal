@@ -1,16 +1,17 @@
-
-#CD pipeline for dfa pdf public
-name: cd-dfae-project-pdf-service
+# GitHub Actions pipeline for DFA PDF microservice component
+name: cd-dfa-pdf-service
 
 on:
   push:
     branches:
-      - 'develop'
+      - support-develop
+      - develop
     paths:
       - "pdf-service/**"
-      - ".github/workflows/cd-dfae-project-pdf-service.yml"
-
+      - ".github/workflows/cd-dfa-pdf-service.yml"
+  
   workflow_dispatch:
+
 env:
   IMAGE_NAME: dfa-portal-pdf-service
   WORKING_DIRECTORY: ./pdf-service
