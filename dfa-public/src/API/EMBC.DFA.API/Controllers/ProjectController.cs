@@ -102,7 +102,10 @@ namespace EMBC.DFA.API.Controllers
             DFAProjectMain dfaProjectMain = new DFAProjectMain();
             dfaProjectMain.Id = projectId;
             dfaProjectMain.Project = mapper.Map<RecoveryPlan>(dfa_project);
-
+            if (dfaProjectMain.Project != null && dfaProjectMain.Project.estimateCostIncludingTax == 0)
+            {
+                dfaProjectMain.Project.estimateCostIncludingTax = null;
+            }
             return Ok(dfaProjectMain);
         }
 

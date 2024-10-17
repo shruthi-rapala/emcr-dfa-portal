@@ -568,9 +568,9 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
             this.dfaClaimMainDataService.invoice.purposeOfGoodsServiceReceived = objInv.purposeOfGoodsServiceReceived;
             this.dfaClaimMainDataService.invoice.isClaimforPartofTotalInvoice = objInv.isClaimforPartofTotalInvoice == 'true' ? true : (objInv.isClaimforPartofTotalInvoice == 'false' ? false : null);
             this.dfaClaimMainDataService.invoice.reasonClaimingPartofTotalInvoice = objInv.reasonClaimingPartofTotalInvoice;
-            this.dfaClaimMainDataService.invoice.netInvoiceBeingClaimed = objInv.netInvoiceBeingClaimed;
-            this.dfaClaimMainDataService.invoice.pst = objInv.pst == '' ? null : objInv.pst;
-            this.dfaClaimMainDataService.invoice.grossGST = objInv.grossGST == '' ? null : objInv.grossGST;
+            this.dfaClaimMainDataService.invoice.netInvoiceBeingClaimed = objInv.netInvoiceBeingClaimed.toFixed(2);
+            this.dfaClaimMainDataService.invoice.pst = objInv.pst == '' ? null : objInv.pst.toFixed(2);
+            this.dfaClaimMainDataService.invoice.grossGST = objInv.grossGST == '' ? null : objInv.grossGST.toFixed(2);
             this.dfaClaimMainDataService.invoice.actualInvoiceTotal = objInv.actualInvoiceTotal ? "" + objInv.actualInvoiceTotal : "" ;
             this.dfaClaimMainDataService.invoice.eligibleGST = objInv.eligibleGST ? "" + objInv.eligibleGST : "";
             this.dfaClaimMainDataService.invoice.totalBeingClaimed = objInv.totalBeingClaimed ? "" + objInv.totalBeingClaimed : "";

@@ -134,8 +134,8 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
     var GrossGST = Number(this.invoiceForm.controls.grossGST.value);
     var EligibleGST = Number(this.invoiceForm.controls.eligibleGST.value);
 
-    this.invoiceForm.controls.totalBeingClaimed.setValue(netInvoice + PST + EligibleGST);
-    this.invoiceForm.controls.actualInvoiceTotal.setValue(netInvoice + PST + GrossGST);
+    this.invoiceForm.controls.totalBeingClaimed.setValue((netInvoice + PST + EligibleGST).toFixed(2));
+    this.invoiceForm.controls.actualInvoiceTotal.setValue((netInvoice + PST + GrossGST).toFixed(2));
   }
 
   setFocus() {
