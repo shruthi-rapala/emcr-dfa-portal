@@ -13,5 +13,6 @@ export interface OtherContact {
   id?: null | string;
   jobTitle?: null | string;
   lastName?: string;
+  otherNotes?: null | string;
   phoneNumber?: string;
 }

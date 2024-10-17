@@ -162,6 +162,10 @@ namespace EMBC.DFA.API.Controllers
 
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
+            if (string.IsNullOrEmpty(mappedApplication.dfa_appapplicationid) && result != null && Guid.TryParse(result, out Guid appId))
+            {
+                mappedApplication.dfa_appapplicationid = result;
+            }
             if (application.OtherContact != null)
             {
                 foreach (var objContact in application.OtherContact)
@@ -188,10 +192,10 @@ namespace EMBC.DFA.API.Controllers
                 };
 
                 var file = await pDFServiceHandler.GetFileDataAsync(pdfReuest);
-
-                var applicationReviewPDFUpload = BuildApplicationReviewPDFUpload(mappedApplication, file);
+                ApplicationReviewPDFUpload applicationReviewPDFUpload = null;
                 try
                 {
+                    applicationReviewPDFUpload = BuildApplicationReviewPDFUpload(mappedApplication, file);
                     var mappedFileUpload = mapper.Map<AttachmentEntity>(applicationReviewPDFUpload);
                     var submissionEntity = mapper.Map<SubmissionEntityPDF>(applicationReviewPDFUpload);
                     submissionEntity.documentCollection = Enumerable.Empty<AttachmentEntity>();
@@ -228,24 +232,35 @@ namespace EMBC.DFA.API.Controllers
               contacts = mapper.Map<Contact[]>(application.OtherContact);
             }
             var contactText = new StringBuilder();
-            contactText.Append($@"<div class='contacts-container' ><table class='contacts' style='width:95%'>");
-
-            contactText.Append($@"<tr style='background-color: #415a88;color: #fff;'>
-                         <th>First Name</th><th>Last Name</th><th>Business Phone</th><th>Email</th><th>Cell Phone</th><th>Job Title</th><th>Notes</th></tr>");
-            foreach (var contact in contacts)
+            contactText.Append($@"<div class='contacts-container'>");
+            if (contacts != null && contacts.Count() > 0)
             {
-                contactText.Append($@"<tr>
+                contactText.Append($@"<table class='contacts' style='width:95%'>");
+                contactText.Append($@"<tr style='background-color: #415a88;color: #fff;'>
+                         <th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Cell Phone</th><th>Job Title</th></tr>");
+                foreach (var contact in contacts)
+                {
+                    contactText.Append($@"<tr>
                         <td>{contact.FirstName}</td>
                         <td>{contact.LastName}</td>
                         <td>{contact.BusinessPhone}</td>   
                         <td>{contact.Email}</td>
                         <td>{contact.CellPhone}</td>
                         <td>{contact.JobTitle}</td>
-                        <td>{contact.Notes}</td>
                         </tr>");
+                }
+                contactText.Append($@"</table>");
+            }
+            else
+            {
+                contactText.Append($@"<div class='row' style='display:flex;'> ");
+                contactText.Append($@"<div class='col-6'> <span >Other Contacts info missing</span> </div>");
+                contactText.Append($@"<div class='col-6'> <span style='color:red'>At least one other contact is required.</span> </div>");
+                contactText.Append($@"</div>");
             }
 
-            contactText.Append("</table></div>");
+            contactText.Append($@"</div>");
+
             PdfApplicationData pdfApplicationData = new PdfApplicationData();
             if (application.applicationDetails != null)
             {
@@ -349,6 +364,8 @@ namespace EMBC.DFA.API.Controllers
 
                     // convert Dynamics DTO to UI DTO
                     appContact = mapper.Map<ApplicationContacts>(primeContactIn);
+                    // add in a few extra fields from the Application -> Contacts screen
+                    mapper.Map<dfa_appapplicationmain_retrieve, ApplicationContacts>(dfa_appapplication, appContact);
 
                     // 2024-10-05 EMCRI-804 waynezen; validate Primary Contact
                     if (!appContact.primaryContactValidated.HasValue &&
@@ -364,11 +381,31 @@ namespace EMBC.DFA.API.Controllers
                         }
                     }
                 }
-                // add in a few extra fields from the Application -> Contacts screen
-                mapper.Map<dfa_appapplicationmain_retrieve, ApplicationContacts>(dfa_appapplication, appContact);
-                dfaApplicationMain.applicationContacts = appContact;
 
+                dfaApplicationMain.applicationContacts = appContact;
                 return Ok(dfaApplicationMain);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("getcontact/byId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ApplicationContacts>> GetPrimaryContactByBCeIDAsync(
+            [FromQuery]
+            [Required]
+            Guid bceiduserguid)
+        {
+            try
+            {
+                var primeContactIn = await handler.HandleGetPrimaryContactByBCeIDAsync(bceiduserguid.ToString());
+                // convert Dynamics DTO to UI DTO
+                ApplicationContacts appContact = new ApplicationContacts();
+                appContact = mapper.Map<ApplicationContacts>(primeContactIn);
+                return appContact;
             }
             catch (Exception ex)
             {

@@ -63,8 +63,9 @@
         [folderPath]="dfaApplicationMainFolderPath"
       ></app-component-wrapper>
       <br />
-      <div class="row justify-content-between resp-style">
-        <div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
+      <div class="row">
+        <!-- 2024-10-11 EMCRI-820 waynezen; allow Back button if Application is Submitted  -->
+        <div class="col-md-3" *ngIf="step.component !== 'application-details' && (vieworedit === 'add' || vieworedit === 'edit' || vieworedit === 'view')">
           <button
             class="button-s"
             [hidden]="step.component === 'application-details'"
@@ -74,6 +75,11 @@
           >
             {{ step.backButtonLabel }}
           </button>
+        </div>
+        <div class="col-md-3" *ngIf="step.component === 'application-details'">
+
+        </div>
+        <div class="col-md-3" *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
           &nbsp;
           <button
             class="button-s"
@@ -83,13 +89,11 @@
           >
             Save Application
           </button>
-        </div>
+        </div>        
         <div class="col-md-6">
+          <!-- 2024-10-11 EMCRI-820 waynezen;   -->
           <button
-            *ngIf="
-              currentFlow === 'verified-registration' &&
-                  (vieworedit === 'add' || vieworedit === 'edit')
-            "
+            *ngIf="currentFlow === 'verified-registration' && (vieworedit === 'add' || vieworedit === 'edit' || vieworedit === 'view')"
             class="button-p"
             mat-stroked-button
             type="button"
@@ -99,6 +103,8 @@
           </button>
         </div>
         <br/>
+      </div>
+      <div class="row">
         <div class="col-md-12" style="padding: 35px 16px 28px 12px;">
           <p class="infoHeader">Information Viewable at Any Time by DFA Staff</p>
           <p>
@@ -107,7 +113,8 @@
         </div>
       </div>
     </mat-step>
-    <mat-step *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
+    <!-- 2024-10-11 EMCRI-820 waynezen;   -->
+    <mat-step *ngIf="vieworedit === 'add' || vieworedit === 'edit' || vieworedit === 'view'">
       <ng-template matStepLabel>Review and Submit</ng-template>
       <app-review
         [type]="type"
@@ -120,22 +127,20 @@
       </app-review>
       <br />
 
-      <div class="row justify-content-between resp-style">
-        <div class="col-md-6" style="padding-left: 28px;">
+      <div class="row">
+        <div class="col-md-3" style="padding-left: 28px;">
           <button
             class="button-s"
             mat-button
             type="button"
             (click)="dfaApplicationMainStepper.previous()"
           >
-            <span>Go Back</span><span *ngIf="vieworedit === 'add' || vieworedit === 'update'"> & Edit</span>
+            <span>Go Back</span><span *ngIf="vieworedit === 'add' || vieworedit === 'update' || vieworedit === 'edit'"> & Edit</span>
           </button>
         </div>
         <!--&& ((formCreationService.otherContactsForm$ | async)?.value?.otherContacts?.length > 0)-->
-        <div class="col-md-6" *ngIf="!isSubmitted
-           && (formCreationService.applicationDetailsForm$ | async)?.valid
-           && (formCreationService.contactsForm$ | async)?.valid
-           ">
+        <!-- <div class="col-md-6" *ngIf="!isSubmitted && applicationDetailsValid && contactsValid"> -->
+        <div class="col-md-6" *ngIf="!isSubmitted && applicationDetailsValid && contactsValid && primaryContactValidated ">
         <!--<div class="col-md-6">-->
         <button
           class="button-p save-button"
@@ -143,7 +148,9 @@
           type="button"
           (click)="submitFile()"
         >
-          Submit
+        <!-- 2024-10-12 EMCRI-809 waynezen; button displays "Save" if Application has already been Submitted - display "Submit" otherwise -->
+          <span *ngIf="vieworedit === 'add' || vieworedit === 'update' || vieworedit === 'edit'">Submit</span>
+          <span *ngIf="vieworedit === 'view'">Save</span>
         </button>
       </div>
         <br/><br/>

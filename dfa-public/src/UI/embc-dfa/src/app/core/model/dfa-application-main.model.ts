@@ -559,19 +559,22 @@ export class ContactsForm {
     }
     this.primaryContactSearch.setValidators([Validators.required,
       customValidator
-        .maxLengthValidator(16)
+        .maxLengthValidator(20)
         .bind(customValidator)
       ]);
   
     if (contacts.primaryContactValidated) {
       this.primaryContactValidated.setValue(contacts.primaryContactValidated);
     }
+
     if (contacts.contactId) {
       this.contactId.setValue(contacts.contactId);
     }
     if (contacts.guidanceSupport) {
       this.guidanceSupport.setValue(contacts.guidanceSupport);
     }
+    this.guidanceSupport.setValidators([Validators.required]);
+
     if (contacts.pcFirstName) {
       this.pcFirstName.setValue(contacts.pcFirstName);
     }
@@ -717,6 +720,23 @@ export class OtherContact {
   // 2024-09-16 EMCRI-663 waynezen; add new fields to Other Contact
   cellPhone?: string;
   jobTitle?: string;
+  otherNotes?: string;
+
+  constructor(
+    legalName?: null | string,
+
+    applicationId?: null | string,
+    deleteFlag?: null | boolean,
+    email?: null | string,
+    firstName?: null | string,
+    id?: null | null | string,
+    lastName?: null | string,
+    phoneNumber?: null | string,
+    cellPhone?: null | string,
+    jobTitle?: null | string,
+    otherNotes?: null | string,  
+  ) { }
+
 }
 
 export class OtherContactsForm {
@@ -731,6 +751,7 @@ export class OtherContactsForm {
   // 2024-09-16 EMCRI-663 waynezen; add new fields to Other Contact
   cellPhone = new UntypedFormControl();
   jobTitle = new UntypedFormControl();
+  otherNotes = new UntypedFormControl();
 
   addNewOtherContactIndicator = new UntypedFormControl(false);
   otherContact: UntypedFormGroup;
@@ -741,6 +762,10 @@ export class OtherContactsForm {
     customValidator: CustomValidationService,
     builder: UntypedFormBuilder
   ) {
+
+    // 2024-10-10 EMCRI-820 waynezen; add ability to re-hydrate OtherContacts data
+    console.debug('[DFA] otherContacts ctor: ' + otherContacts.length);
+    
     this.otherContact = builder.group({
       deleteFlag: [
         false,
@@ -840,6 +865,7 @@ export class OtherContactsForm {
             .bind(customValidator)
         ]
       ],
+      otherNotes: ['',]
     });
   }
 }

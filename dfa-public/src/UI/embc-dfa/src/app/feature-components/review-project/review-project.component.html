@@ -88,7 +88,7 @@
 
         <div class="row info-detail" *ngIf="(formCreationService.recoveryPlanForm$ | async)?.value.isdamagedDateSameAsApplication === 'false'">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.differentDamageDatesReason || (formCreationService.recoveryPlanForm$ | async)?.controls?.differentDamageDatesReason.invalid}">Date of Damage Difference Reason:</span></div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.differentDamageDatesReason || (formCreationService.recoveryPlanForm$ | async)?.controls?.differentDamageDatesReason.invalid}">
               {{
                 (formCreationService.recoveryPlanForm$ | async)?.value
@@ -101,7 +101,7 @@
 
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.siteLocation || (formCreationService.recoveryPlanForm$ | async)?.controls?.siteLocation.invalid}">Site Location:</span></div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.siteLocation || (formCreationService.recoveryPlanForm$ | async)?.controls?.siteLocation.invalid}">
               {{
                 (formCreationService.recoveryPlanForm$ | async)?.value
@@ -120,7 +120,7 @@
 
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.infraDamageDetails || (formCreationService.recoveryPlanForm$ | async)?.controls?.infraDamageDetails.invalid}">Damaged Infrastructure:</span></div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.infraDamageDetails || (formCreationService.recoveryPlanForm$ | async)?.controls?.infraDamageDetails.invalid}">
               {{
                 (formCreationService.recoveryPlanForm$ | async)?.value
@@ -133,7 +133,7 @@
 
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.causeofDamageDetails || (formCreationService.recoveryPlanForm$ | async)?.controls?.causeofDamageDetails.invalid}">Cause of Damage:</span></div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.causeofDamageDetails || (formCreationService.recoveryPlanForm$ | async)?.controls?.causeofDamageDetails.invalid}">
               {{
                 (formCreationService.recoveryPlanForm$ | async)?.value
@@ -146,7 +146,7 @@
 
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.describeDamageDetails || (formCreationService.recoveryPlanForm$ | async)?.controls?.describeDamageDetails.invalid}">Damage Description:</span></div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.describeDamageDetails || (formCreationService.recoveryPlanForm$ | async)?.controls?.describeDamageDetails.invalid}">
               {{
                 (formCreationService.recoveryPlanForm$ | async)?.value
@@ -159,7 +159,7 @@
 
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.describeDamagedInfrastructure || (formCreationService.recoveryPlanForm$ | async)?.controls?.describeDamagedInfrastructure.invalid}">Damage Materials:</span></div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.describeDamagedInfrastructure || (formCreationService.recoveryPlanForm$ | async)?.controls?.describeDamagedInfrastructure.invalid}">
               {{
                 (formCreationService.recoveryPlanForm$ | async)?.value
@@ -178,7 +178,7 @@
 
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.repairWorkDetails || (formCreationService.recoveryPlanForm$ | async)?.controls?.repairWorkDetails.invalid}">Repair Work:</span></div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.repairWorkDetails || (formCreationService.recoveryPlanForm$ | async)?.controls?.repairWorkDetails.invalid}">
               {{
                 (formCreationService.recoveryPlanForm$ | async)?.value
@@ -191,7 +191,7 @@
 
         <div class="row info-detail">
           <div class="col-md-3"><span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.repairDamagedInfrastructure || (formCreationService.recoveryPlanForm$ | async)?.controls?.repairDamagedInfrastructure.invalid}">Repair Materials:</span></div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             <span [ngClass]="{'missing-info': !(formCreationService.recoveryPlanForm$ | async)?.value?.repairDamagedInfrastructure || (formCreationService.recoveryPlanForm$ | async)?.controls?.repairDamagedInfrastructure.invalid}">
               {{
                 (formCreationService.recoveryPlanForm$ | async)?.value

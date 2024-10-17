@@ -225,27 +225,12 @@
 
         <div class="row">
           <div class="col-md-12 bottomspace">
-
-
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-12 bottomspace">
-            <p>
-              If there is an opportunity to receive guidance and support in assessing your damaged infrastructure,
-              would you like to receive this support?
-              You may change your response in the future if needed.
-              <span style="color:red">*</span>
-            </p>
-            <mat-radio-group formControlName="guidanceSupport" class="primary-radio-group horizontal-radio-group" required
-              aria-label="Select an option">
-              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div><br /><br />
+        <!-- TODO waynezen Original Guidance and Support section was here -->
         
-        </ng-container>
+      </ng-container>
     </form>
 
     <form [formGroup]="otherContactsForm">
@@ -530,6 +515,17 @@
                     </mat-form-field>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Notes</mat-label>                  
+                      <textarea [disabled]="isReadOnly" matInput 
+                        formControlName="otherNotes" [rows]="2" style="resize:none"
+                        maxlength="200">
+                      </textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
 
                 <div class="row">
                   <div class="col-md-3">
@@ -563,5 +559,36 @@
       </div>
     </form>
 
+    <br />
+    <hr />
+    <form [formGroup]="contactsForm">
+      <ng-container>
+        <div class="row">
+          <div class="col-md-12">
+            <p>
+              If there is an opportunity to receive guidance and support in assessing your damaged infrastructure,
+              would you like to receive this support?
+              You may change your response in the future if needed.
+              <span style="color:red">*</span>
+            </p>
+            <mat-radio-group formControlName="guidanceSupport" class="primary-radio-group horizontal-radio-group" required
+              aria-label="Select an option">
+              <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <mat-error *ngIf="
+              contactsForm.get('guidanceSupport').invalid &&
+              contactsForm.get('guidanceSupport').hasError('required') &&
+              contactsForm.get('guidanceSupport').touched">
+              Guidance and Support answer is required
+            </mat-error>
+          </div>
+        </div>
+    
+      </ng-container>
+    </form>
   </mat-card-content>
 </mat-card>

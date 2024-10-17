@@ -43,7 +43,22 @@
     
   </div>
   <div class="row filterStage">
-  
+  <div class="col-md-2" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'" >
+    <mat-select placeholder="Filter by status" class="boxborder" [(value)]="stageSelected" (selectionChange)="ApplyFilter(2,null)">
+      <mat-option value="-1">
+        All Invoices
+      </mat-option>
+      <mat-option value="Approved Total">
+        Approved Total
+      </mat-option>
+      <mat-option value="Approved Partial">
+        Approved Partial
+      </mat-option>
+      <mat-option value="Denied">
+        Denied
+      </mat-option>
+    </mat-select>
+  </div>
 
   <div class="col-md-2">
     <mat-select placeholder="Filter by days" class="boxborder" [(value)]="filterbydaysSelected" (selectionChange)="ApplyFilter(2,null)">
@@ -68,7 +83,9 @@
     </mat-select>
   </div>
 
-  <div class="col-md-5">
+  <div class="col-md-3" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
+  </div>
+  <div class="col-md-5" *ngIf="!(vieworedit == 'viewOnly' || vieworedit == 'view')">
   </div>
 
   <div class="col-md-2 ">
@@ -223,7 +240,13 @@
     ></tr>
 
   </table>
-
+  <app-loader
+    class="spinner"
+    [showLoader]="isLoading"
+    strokeWidth="10"
+    diameter="50"
+  >
+  </app-loader>
 </div>
 <div class="content-container no-invoices" *ngIf="documentSummaryDataSourceFiltered.data.length <= 0" >
     <div class="row">

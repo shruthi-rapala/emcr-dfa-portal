@@ -172,7 +172,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_portalloggedinuser, opts => opts.MapFrom(s => s.ProfileVerification.profileId))
                 .ForMember(d => d.dfa_causeofdamagestorm2, opts => opts.MapFrom(s => s.applicationDetails.stormDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagewildfire2, opts => opts.MapFrom(s => s.applicationDetails.wildfireDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
-                .ForMember(d => d.dfa_receiveguidanceassessingyourinfra, opts => opts.MapFrom(s => s.applicationDetails.guidanceSupport == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_toreceivesupportaccessingdamage, opts => opts.MapFrom(s => s.applicationDetails.guidanceSupport == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageflood2, opts => opts.MapFrom(s => s.applicationDetails.floodDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamagelandslide2, opts => opts.MapFrom(s => s.applicationDetails.landslideDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageother2, opts => opts.MapFrom(s => s.applicationDetails.otherDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
@@ -202,9 +202,14 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_mailingaddresscanadapostverified, opts => opts.MapFrom(s =>
                     (s.applicationContacts.isDamagedAddressVerified != null && s.applicationContacts.isDamagedAddressVerified == "true")
                     ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
-                .ForMember(d => d.dfa_receiveguidanceassessingyourinfra, opts => opts.MapFrom(s =>
-                    (s.applicationContacts.guidanceSupport == true)
-                    ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_primarycontactverified, opts => opts.MapFrom(s => s.applicationContacts.primaryContactValidated))
+                //.ForMember(d => d.dfa_primarycontactverified, opts => opts.MapFrom(s =>
+                //    (s.applicationContacts.primaryContactValidated == true)
+                //    ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
+                .ForMember(d => d.dfa_toreceivesupportaccessingdamage, opts => opts.MapFrom(s =>
+                    s.applicationContacts.guidanceSupport.HasValue ?
+                    (s.applicationContacts.guidanceSupport.Value == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No) :
+                    null))
                 ;
 
             // 2024-09-16 EMCRI-663 waynezen; Contact form fields
@@ -271,7 +276,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.charityExistsAtLeast12Months, opts => opts.MapFrom(s => s.dfa_charityexistsatleast12months == (int)YesNoOptionSet.Yes ? true : (s.dfa_charityexistsatleast12months == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.charityProvidesCommunityBenefit, opts => opts.MapFrom(s => s.dfa_charityprovidescommunitybenefit == (int)YesNoOptionSet.Yes ? true : (s.dfa_charityprovidescommunitybenefit == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.isPrimaryAndDamagedAddressSame, opts => opts.MapFrom(s => s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_isprimaryanddamagedaddresssame2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
-                .ForMember(d => d.isDamagedAddressVerified, opts => opts.MapFrom(s => s.dfa_damagedpropertyaddresscanadapostverified == (int)YesNoOptionSet.Yes ? true : (s.dfa_damagedpropertyaddresscanadapostverified == (int)YesNoOptionSet.No ? false : (bool?)null)));
+                .ForMember(d => d.isDamagedAddressVerified, opts => opts.MapFrom(s => s.dfa_damagedpropertyaddresscanadapostverified == (int)YesNoOptionSet.Yes ? true : (s.dfa_damagedpropertyaddresscanadapostverified == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                ;
 
             CreateMap<dfa_appapplicationmain_retrieve, ApplicationDetails>()
                 .ForMember(d => d.stormDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagestorm2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
@@ -279,7 +285,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.landslideDamage, opts => opts.MapFrom(s => s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamagelandslide2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageother2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageother2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.floodDamage, opts => opts.MapFrom(s => s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.Yes ? true : (s.dfa_causeofdamageflood2 == (int)YesNoOptionSet.No ? false : (bool?)null)))
-                .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.Yes ? true : (s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_toreceivesupportaccessingdamage == (int)YesNoOptionSet.Yes ? true : (s.dfa_toreceivesupportaccessingdamage == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
 
                 .ForMember(d => d.applicantSubtype, opts => opts.MapFrom(s => GetEnumDescription((ApplicantSubtypeCategoriesOptionSet)s.dfa_applicantsubtype).ToString()))
@@ -303,7 +309,9 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.stateProvince, opts => opts.MapFrom(s => s.dfa_businessmailingaddressprovince))
                 .ForMember(d => d.postalCode, opts => opts.MapFrom(s => s.dfa_businessmailingaddresspostalcode))
                 .ForMember(d => d.isDamagedAddressVerified, opts => opts.MapFrom(s => s.dfa_mailingaddresscanadapostverified == (int?)YesNoOptionSet.Yes ? "true" : "false"))
-                .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.Yes ? true : (s.dfa_receiveguidanceassessingyourinfra == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                //.ForMember(d => d.primaryContactValidated, opts => opts.MapFrom(s => s.dfa_primarycontactverified == (int)YesNoOptionSet.Yes ? true : (s.dfa_primarycontactverified == (int)YesNoOptionSet.No ? false : (bool?)null)))
+                .ForMember(d => d.primaryContactValidated, opts => opts.MapFrom(s => s.dfa_primarycontactverified))
+                .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_toreceivesupportaccessingdamage == (int)YesNoOptionSet.Yes ? true : (s.dfa_toreceivesupportaccessingdamage == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 ;
 
             CreateMap<dfa_appapplicationmain_retrieve, SignAndSubmit>()
@@ -342,6 +350,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.firstName, opts => opts.MapFrom(s => s.dfa_firstname != null ? s.dfa_firstname : s.dfa_name))
                 .ForMember(d => d.lastName, opts => opts.MapFrom(s => s.dfa_lastname != null ? s.dfa_lastname : s.dfa_name))
                 .ForMember(d => d.phoneNumber, opts => opts.MapFrom(s => s.dfa_phonenumber))
+                // 2024-10-09 EMCRI-815 waynezen; new fields
+                .ForMember(d => d.jobTitle, opts => opts.MapFrom(s => s.dfa_jobtitle))
+                .ForMember(d => d.cellPhone, opts => opts.MapFrom(s => s.dfa_cellphone))
+                .ForMember(d => d.otherNotes, opts => opts.MapFrom(s => s.dfa_notes))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
             CreateMap<FullTimeOccupant, dfa_appoccupant_params>()
@@ -368,6 +380,10 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.firstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.lastName))
                 .ForMember(d => d.dfa_phonenumber, opts => opts.MapFrom(s => s.phoneNumber))
+                // 2024-10-09 EMCRI-815 waynezen; new fields
+                .ForMember(d => d.dfa_jobtitle, opts => opts.MapFrom(s => s.jobTitle))
+                .ForMember(d => d.dfa_cellphone, opts => opts.MapFrom(s => s.cellPhone))
+                .ForMember(d => d.dfa_notes, opts => opts.MapFrom(s => s.otherNotes))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
 
             CreateMap<dfa_appcleanuplogs_retrieve, CleanUpLogItem>()

@@ -97,6 +97,10 @@ table {
   justify-content: flex-end;
 }
 
+.custom-mat-error {
+  display: block;
+  //padding-top: 3px;
+}
 
 .delete-image img:last-child {
   display: none;
