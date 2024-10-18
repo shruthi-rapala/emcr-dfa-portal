@@ -49,7 +49,7 @@ export class DFAApplicationMainComponent
   type = 'dfa-application-main';
   dfaApplicationMainHeading: string;
   parentPageName = 'dfa-application-main';
-  showLoader = false;
+  isLoading = false;
   isSubmitted = false;
   ApplicantOptions = ApplicantOption;
   isApplicantSigned: boolean = false;
@@ -211,6 +211,7 @@ export class DFAApplicationMainComponent
       this.setFormData(component);
 
       let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+      application.applicationDetails.appStatus = null; //to fix console error, actual status being set when user clicks submit/save button
       this.dfaApplicationMainMapping.mapDFAApplicationMain(application);  
 
       // 2024-10-11 EMCRI-809 waynezen; force Application Details & Contacts screen to update validators
@@ -233,6 +234,7 @@ export class DFAApplicationMainComponent
     } else {
       this.setFormData(component);
       let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
+      application.applicationDetails.appStatus = null; //to fix console error, actual status being set when user clicks submit/save button
       this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
 
       this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
@@ -354,7 +356,6 @@ export class DFAApplicationMainComponent
    * @param index Step index
    */
   loadStepForm(index: number): void {
-    
     switch (index) {
       case 0:
          this.form$ = this.formCreationService
@@ -380,10 +381,9 @@ export class DFAApplicationMainComponent
     let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
     application.applicationDetails.appStatus = ApplicationStageOptionSet.DRAFT;
     this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
-      this.showLoader = !this.showLoader;
       this.returnToDashboard();
     },
-    error => {
+      error => {
       console.error(error);
       document.location.href = 'https://dfa.gov.bc.ca/error.html';
       });
@@ -417,6 +417,7 @@ export class DFAApplicationMainComponent
       .afterClosed()
       .subscribe((result) => {
         if (result === 'confirm') {
+          this.isLoading = !this.isLoading;
           //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
           //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
@@ -424,6 +425,7 @@ export class DFAApplicationMainComponent
           application.applicationDetails.appStatus = ApplicationStageOptionSet.SUBMIT;
 
           this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+            this.isLoading = !this.isLoading;
             this.isSubmitted = !this.isSubmitted;
             this.alertService.clearAlert();
             this.dfaApplicationMainDataService.isSubmitted = true;
@@ -432,9 +434,10 @@ export class DFAApplicationMainComponent
             //this.returnToDashboard();
             this.MessageAfterSubmission();
           },
-          error => {
+            error => {
+              this.isLoading = !this.isLoading;
             console.error(error);
-            //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            document.location.href = 'https://dfa.gov.bc.ca/error.html';
           });
         }
       });

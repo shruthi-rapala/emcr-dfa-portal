@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, first, Observable, ReplaySubject, switchMap, mergeMap, tap, map, of, retry } from 'rxjs';
-import { AuthenticatedResult, AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
+import { AuthenticatedResult, AuthModule, AuthOptions, LoginResponse, LogoutAuthOptions, OidcSecurityService } from 'angular-auth-oidc-client';
 import { CacheService } from '../../core/services/cache.service';
 
 @Injectable({
@@ -56,11 +56,13 @@ export class LoginService  {
     }
 
     public logOff(): void {
-      this.oidcSecurityService.logoffAndRevokeTokens();
-      this.isAuthenticated.next(false);
-      this.cacheService.clear();
-      localStorage.clear();
-  
+
+      this.oidcSecurityService.logoff('').subscribe((result) => {
+        localStorage.clear();
+        this.cacheService.clear();
+        this.isAuthenticated.next(false);
+      });
+      
     }
 }
   
