@@ -166,4 +166,12 @@
       {{ index + 1 }}
     </ng-template>
   </mat-horizontal-stepper>
+  <app-loader
+    class="spinner"
+    [showLoader]="isLoading"
+    [strokeWidth]="10"
+    [diameter]="50"
+    [color]="'green'"
+  >
+  </app-loader>
 </div>
