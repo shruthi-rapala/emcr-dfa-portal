@@ -746,7 +746,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.infraDamageDetails, opts => opts.MapFrom(s => s.dfa_descriptionofdamagedinfrastructure))
                 .ForMember(d => d.repairDamagedInfrastructure, opts => opts.MapFrom(s => s.dfa_descriptionofmaterialneededtorepair))
                 .ForMember(d => d.siteLocation, opts => opts.MapFrom(s => s.dfa_sitelocation))
-                .ForMember(d => d.estimateCostIncludingTax, opts => opts.MapFrom(s => s.dfa_estimatedcost))
+                .ForMember(d => d.estimateCostIncludingTax, opts => opts.MapFrom(s => s.dfa_estimatedcost.HasValue ? decimal.Round(decimal.Parse(s.dfa_estimatedcost.Value.ToString("F")), 2) : (decimal?)null))
                 .ForMember(d => d.sitelocationdamageFromDate, opts => opts.MapFrom(s => s.dfa_dateofdamagefrom == null ? null : Convert.ToDateTime(s.dfa_dateofdamagefrom).ToString("o")))
                 .ForMember(d => d.sitelocationdamageToDate, opts => opts.MapFrom(s => s.dfa_dateofdamageto == null ? null : Convert.ToDateTime(s.dfa_dateofdamageto).ToString("o")))
                 .ForMember(d => d.isdamagedDateSameAsApplication, opts => opts.MapFrom(s => s.dfa_dateofdamagesameasapplication))
