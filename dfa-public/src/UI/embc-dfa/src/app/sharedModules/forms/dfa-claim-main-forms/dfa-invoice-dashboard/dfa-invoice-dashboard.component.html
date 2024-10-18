@@ -155,7 +155,7 @@
         <b>Total being Claimed</b>
       </th>
       <td *matCellDef="let element" mat-cell>
-        $&nbsp;{{ element.totalBeingClaimed | number }}
+        $&nbsp;{{ element.totalBeingClaimed | number : '1.2-2'}}
       </td>
     </ng-container>
 
@@ -165,7 +165,7 @@
         <b>Invoice Amount</b>
       </th>
       <td *matCellDef="let element" mat-cell>
-        $&nbsp;{{ element.totalBeingClaimed | number }}
+        $&nbsp;{{ element.totalBeingClaimed | number : '1.2-2'}}
       </td>
     </ng-container>
 
@@ -175,7 +175,7 @@
         <b>EMCR Approved Amount</b>
       </th>
       <td *matCellDef="let element" mat-cell>
-        $&nbsp;{{ element.emcrApprovedAmount | number }}
+        $&nbsp;{{ element.emcrApprovedAmount | number : '1.2-2'}}
       </td>
     </ng-container>
 

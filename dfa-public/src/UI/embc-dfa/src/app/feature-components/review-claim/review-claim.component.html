@@ -66,7 +66,7 @@
             <span>
               $&nbsp;{{
                 recoveryPlanFormAbstract
-                  .totalInvoicesBeingClaimed | number
+                  .totalInvoicesBeingClaimed | number: '1.2-2'
               }}
             </span>
           </div>
@@ -78,7 +78,7 @@
             <span>
               $&nbsp;{{
                 recoveryPlanFormAbstract
-                  .claimPST | number
+                  .claimPST | number : '1.2-2'
               }}
             </span>
           </div>
@@ -91,7 +91,7 @@
             <span>
               $&nbsp;{{
                 recoveryPlanFormAbstract
-                  .claimGrossGST | number
+                  .claimGrossGST | number : '1.2-2'
               }}
             </span>
           </div>
@@ -104,7 +104,7 @@
             <span>
               $&nbsp;{{
                 recoveryPlanFormAbstract
-                  .totalActualClaim | number
+                  .totalActualClaim | number : '1.2-2'
               }}
             </span>
           </div>
@@ -165,7 +165,7 @@
               <b>Total being Claimed</b>
             </th>
             <td *matCellDef="let element" mat-cell>
-              ${{ element.totalBeingClaimed | number }}
+              ${{ element.totalBeingClaimed | number : '1.2-2' }}
             </td>
           </ng-container>
 

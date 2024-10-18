@@ -345,7 +345,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                   <p class="currency-invoice" style="padding-right: 22px; padding-top: 5px;">
                     <b>
                     $&nbsp;{{ (formCreationService.invoiceForm$ | async)?.value
-  .actualInvoiceTotal | number }}
+  .actualInvoiceTotal | number : '1.2-2' }}
                       </b>
                   </p>
                 </div>
@@ -360,7 +360,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                 <div class="col-md-5">
                   <p class="currency-invoice" style="padding-right: 22px;">
                     $&nbsp;{{(formCreationService.invoiceForm$ | async)?.value
-  .pst | number }}
+  .pst | number : '1.2-2' }}
                   </p>
                 </div>
                 <div class="col-md-7 aln-txt">
@@ -396,7 +396,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                   <p class="currency-invoice" style="padding-right: 22px; padding-top: 5px;">
                     <b>
                     $&nbsp;{{ (formCreationService.invoiceForm$ | async)?.value
-  .totalBeingClaimed | number }}
+  .totalBeingClaimed | number : '1.2-2' }}
                       </b>
                   </p>
                 </div>
