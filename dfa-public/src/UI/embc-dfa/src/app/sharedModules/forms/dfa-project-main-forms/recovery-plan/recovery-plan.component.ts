@@ -263,12 +263,12 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
           //  //this.notifyAddressChange();
           //}
           //debugger
-          const toFixedWithoutZeros = (num, precision) =>
-            num.toFixed(precision).replace(/\.0+$/, '');
+          const toFixedWithZeros = (num, precision) =>
+            num?.toFixed(precision).replace(/\.0+$/, '');
           if (dfaProjectMain && dfaProjectMain.project && dfaProjectMain.project.isdamagedDateSameAsApplication == false) {
             this.showDates = true;
           }
-          dfaProjectMain.project.estimateCostIncludingTax =toFixedWithoutZeros(dfaProjectMain.project.estimateCostIncludingTax,2);
+          dfaProjectMain.project.estimateCostIncludingTax =toFixedWithZeros(dfaProjectMain.project.estimateCostIncludingTax,2);
           
           this.dfaProjectMainMapping.mapDFAProjectMain(dfaProjectMain);
           
