@@ -702,7 +702,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_portioninvoicereason, opts => opts.MapFrom(s => s.Invoice != null ? s.Invoice.ReasonClaimingPartofTotalInvoice : null))
                 .ForMember(d => d.dfa_netinvoicedbeingclaimed, opts => opts.MapFrom(s => s.Invoice != null && s.Invoice.NetInvoiceBeingClaimed.HasValue ? decimal.Round(s.Invoice.NetInvoiceBeingClaimed.Value, 2) : (decimal?)null))
                 .ForMember(d => d.dfa_grossgst, opts => opts.MapFrom(s => s.Invoice != null && s.Invoice.GrossGST.HasValue ? decimal.Round(s.Invoice.GrossGST.Value, 2) : (decimal?)null))
-                .ForMember(d => d.dfa_pst, opts => opts.MapFrom(s => s.Invoice != null ? decimal.Round(s.Invoice.PST.Value, 2) : (decimal?)null))
+                .ForMember(d => d.dfa_pst, opts => opts.MapFrom(s => s.Invoice != null && s.Invoice.PST.HasValue ? decimal.Round(s.Invoice.PST.Value, 2) : (decimal?)null))
                 .ForMember(d => d.dfa_eligiblegst, opts => opts.MapFrom(s => s.Invoice != null && !string.IsNullOrEmpty(s.Invoice.EligibleGST) ? decimal.Round(decimal.Parse(s.Invoice.EligibleGST), 2) : (decimal?)null))
                 .ForMember(d => d.dfa_invoicedate, opts => opts.MapFrom(s => s.Invoice != null ? Convert.ToDateTime(s.Invoice.InvoiceDate) : (DateTime?)null))
                 .ForMember(d => d.dfa_goodsorservicesreceiveddate, opts => opts.MapFrom(s => s.Invoice != null ? Convert.ToDateTime(s.Invoice.GoodsReceivedDate) : (DateTime?)null))
