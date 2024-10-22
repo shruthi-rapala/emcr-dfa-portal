@@ -961,6 +961,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         [Description("Pending")]
         Pending = 222710000,
+
+        [Description("Additional info. Required")]
+        AdditionalinfoRequired = 222710001,
     }
 
     public enum ProjectStages

@@ -57,6 +57,9 @@ export class DFAClaimMainMappingService {
       .subscribe((invoice) => {
         invoice.setValue({
           ...dfaInvoiceMain.invoice,
+          pst: isNaN(dfaInvoiceMain.invoice.pst) ? null : Number(dfaInvoiceMain.invoice.pst),
+          grossGST: isNaN(dfaInvoiceMain.invoice.grossGST) ? null : Number(dfaInvoiceMain.invoice.grossGST),
+          netInvoiceBeingClaimed: isNaN(dfaInvoiceMain.invoice.netInvoiceBeingClaimed) ? null : Number(dfaInvoiceMain.invoice.netInvoiceBeingClaimed),
           isGoodsReceivedonInvoiceDate: dfaInvoiceMain.invoice.isGoodsReceivedonInvoiceDate === true ? 'true' : (dfaInvoiceMain.invoice.isGoodsReceivedonInvoiceDate === false ? 'false' : null),
           isClaimforPartofTotalInvoice: dfaInvoiceMain.invoice.isClaimforPartofTotalInvoice === true ? 'true' : (dfaInvoiceMain.invoice.isClaimforPartofTotalInvoice === false ? 'false' : null),
         });
