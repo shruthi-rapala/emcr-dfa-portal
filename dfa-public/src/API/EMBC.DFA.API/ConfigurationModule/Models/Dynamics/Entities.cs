@@ -961,7 +961,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         [Description("Pending")]
         Pending = 222710000,
 
-        [Description("Additional info. Required")]
+        [Description("Additional info. Requested")]
         AdditionalinfoRequired = 222710001,
     }
 

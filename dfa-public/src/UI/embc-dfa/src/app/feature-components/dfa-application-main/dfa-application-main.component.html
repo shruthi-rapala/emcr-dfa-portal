@@ -65,9 +65,9 @@
       <br />
       <div class="row">
         <!-- 2024-10-11 EMCRI-820 waynezen; allow Back button if Application is Submitted  -->
-        <div class="col-md-3" *ngIf="step.component !== 'application-details' && (vieworedit === 'add' || vieworedit === 'edit' || vieworedit === 'view')">
+        <div class="col-md-6" *ngIf="vieworedit === 'add' || vieworedit === 'edit' || vieworedit === 'view'">
           <button
-            class="button-s"
+            class="button-s align-back-button"
             [hidden]="step.component === 'application-details'"
             mat-button
             type="button"
@@ -75,21 +75,17 @@
           >
             {{ step.backButtonLabel }}
           </button>
-        </div>
-        <div class="col-md-3" *ngIf="step.component === 'application-details'">
-
-        </div>
-        <div class="col-md-3" *ngIf="vieworedit === 'add' || vieworedit === 'edit'">
-          &nbsp;
           <button
             class="button-s"
             mat-button
+            *ngIf="vieworedit === 'add' || vieworedit === 'edit'"
             type="button"
             (click)="saveAndBackToDashboard()"
           >
             Save Application
           </button>
-        </div>        
+        </div>
+              
         <div class="col-md-6">
           <!-- 2024-10-11 EMCRI-820 waynezen;   -->
           <button
@@ -128,7 +124,7 @@
       <br />
 
       <div class="row">
-        <div class="col-md-3" style="padding-left: 28px;">
+        <div class="col-md-6">
           <button
             class="button-s"
             mat-button
