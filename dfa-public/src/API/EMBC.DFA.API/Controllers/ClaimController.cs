@@ -11,12 +11,14 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.Execution;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -61,8 +63,34 @@ namespace EMBC.DFA.API.Controllers
             var lstClaims = await handler.HandleClaimList(projectId);
             //lstClaims.Add(new CurrentClaim() {
             //});
+            foreach (var claim in lstClaims)
+            {
+                claim.ApprovedReimbursePercent = FixDecimalPlaces(claim.ApprovedReimbursePercent);
+                claim.LessFirst1000 = FixDecimalPlaces(claim.LessFirst1000);
+                claim.ApprovedClaimTotal = FixDecimalPlaces(claim.ApprovedClaimTotal);
+                claim.EligiblePayable = FixDecimalPlaces(claim.EligiblePayable);
+                claim.PaidClaimAmount = FixDecimalPlaces(claim.PaidClaimAmount);
+                claim.ClaimTotal = FixDecimalPlaces(claim.ClaimTotal);
+            }
 
             return Ok(lstClaims);
+        }
+
+        private string FixDecimalPlaces(string number)
+        {
+            if (number.Contains("pending"))
+            {
+                return number;
+            }
+            if (number.IndexOf(".") == -1)
+            {
+                number += ".00";
+            }
+            else if (number.IndexOf(".") == number.Length - 2)
+            {
+                number += "0";
+            }
+            return number;
         }
 
         /// <summary>
