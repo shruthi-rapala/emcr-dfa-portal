@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace EMBC.DFA.API.Controllers
@@ -38,10 +39,12 @@ namespace EMBC.DFA.API.Controllers
         private readonly IUserService userService;
         private readonly PDFServiceHandler pDFServiceHandler;
         private readonly IBCeIDBusinessQuery bceidQuery;
+        private readonly ILogger<ApplicationController> logger;
 
         public ApplicationController(
             IHostEnvironment env,
             IMapper mapper,
+            ILogger<ApplicationController> logger,
             IConfigurationHandler handler,
             IUserService userService,
             PDFServiceHandler pdfServiceHandler,
@@ -49,6 +52,7 @@ namespace EMBC.DFA.API.Controllers
         {
             this.env = env;
             this.mapper = mapper;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.handler = handler;
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.pDFServiceHandler = pdfServiceHandler ?? throw new ArgumentNullException($"{nameof(pdfServiceHandler)}");
@@ -195,6 +199,12 @@ namespace EMBC.DFA.API.Controllers
                 ApplicationReviewPDFUpload applicationReviewPDFUpload = null;
                 try
                 {
+                    // 2024-10-23 EMCRI-901 waynezen; GetPdfApplicationData can return null
+                    if (pdfReuest?.PdfApplicationData == null)
+                    {
+                        throw new Exception("Error in GetPdfApplicationData() function");
+                    }
+
                     applicationReviewPDFUpload = BuildApplicationReviewPDFUpload(mappedApplication, file);
                     var mappedFileUpload = mapper.Map<AttachmentEntity>(applicationReviewPDFUpload);
                     var submissionEntity = mapper.Map<SubmissionEntityPDF>(applicationReviewPDFUpload);
@@ -224,6 +234,11 @@ namespace EMBC.DFA.API.Controllers
             };
         }
 
+        /// <summary>
+        /// Create content that will be transformed into PDF
+        /// </summary>
+        /// <param name="application">application</param>
+        /// <returns>pdfApplicationData or NULL if an exception is thrown</returns>
         public PdfApplicationData GetPdfApplicationData(DFAApplicationMain application)
         {
             Contact[] contacts = null;
@@ -273,29 +288,42 @@ namespace EMBC.DFA.API.Controllers
                     pdfApplicationData.ContactsText = ex.Message;
                     throw;
                 }
-                pdfApplicationData.ContactsText = contactText.ToString();
+                try
+                {
+                    pdfApplicationData.ContactsText = contactText.ToString();
 
-                var causeofDamage = new StringBuilder();
-                if (application.applicationDetails.floodDamage.HasValue && application.applicationDetails.floodDamage.Value)
-                {
-                    causeofDamage.Append("Flood Damage, ");
+                    var causeofDamage = new StringBuilder();
+                    if (application.applicationDetails.floodDamage.HasValue && application.applicationDetails.floodDamage.Value)
+                    {
+                        causeofDamage.Append("Flood Damage, ");
+                    }
+                    if (application.applicationDetails.landslideDamage.HasValue && application.applicationDetails.landslideDamage.Value)
+                    {
+                        causeofDamage.Append("Landslide Damage, ");
+                    }
+                    if (application.applicationDetails.stormDamage.HasValue && application.applicationDetails.stormDamage.Value)
+                    {
+                        causeofDamage.Append("Storm Damage, ");
+                    }
+                    if (application.applicationDetails.wildfireDamage.HasValue && application.applicationDetails.wildfireDamage.Value)
+                    {
+                        causeofDamage.Append("Wildfire Damage, ");
+                    }
+
+                    // 2024-10-23 EMCRI-901 waynezen; avoid "StartIndex cannot be less than zero" error
+                    if (causeofDamage.Length > 2)
+                    {
+                        causeofDamage.Remove(causeofDamage.Length - 2, 2);
+                    }
+                    if (application.applicationDetails.otherDamage.HasValue && application.applicationDetails.otherDamage.Value)
+                    {
+                        causeofDamage.Append(application.applicationDetails.otherDamageText);
+                    }
                 }
-                if (application.applicationDetails.landslideDamage.HasValue && application.applicationDetails.landslideDamage.Value)
+                catch (Exception ex)
                 {
-                    causeofDamage.Append("Landslide Damage, ");
-                }
-                if (application.applicationDetails.stormDamage.HasValue && application.applicationDetails.stormDamage.Value)
-                {
-                    causeofDamage.Append("Storm Damage, ");
-                }
-                if (application.applicationDetails.wildfireDamage.HasValue && application.applicationDetails.wildfireDamage.Value)
-                {
-                    causeofDamage.Append("Wildfire Damage, ");
-                }
-                causeofDamage.Remove(causeofDamage.Length - 2, 2);
-                if (application.applicationDetails.otherDamage.HasValue && application.applicationDetails.otherDamage.Value)
-                {
-                    causeofDamage.Append(application.applicationDetails.otherDamageText);
+                    this.logger.LogError(ex.Message, ex);
+                    return null;
                 }
             }
             return pdfApplicationData;
