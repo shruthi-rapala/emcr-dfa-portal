@@ -113,6 +113,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.pcEmailAddress.disable();
       this.contactsForm.controls.pcCellPhone.disable();
       this.contactsForm.controls.pcJobTitle.disable();
+      this.contactsForm.controls.pcNotes.disable();
       
     } else {
       this.contactsForm.controls.doingBusinessAs.enable();
@@ -131,6 +132,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       this.contactsForm.controls.pcEmailAddress.enable();
       this.contactsForm.controls.pcCellPhone.enable();
       this.contactsForm.controls.pcJobTitle.enable();
+      this.contactsForm.controls.pcNotes.enable();
 
     }
   }
@@ -505,6 +507,8 @@ export default class ContactsComponent implements OnInit, OnDestroy {
             next: (contact) => {
               this.contactsForm.get('pcCellPhone').setValue(contact.pcCellPhone);
               this.contactsForm.get('pcJobTitle').setValue(contact.pcJobTitle);
+              // 2024-10-23 EMCRI-901 waynezen; get contact notes, too!
+              this.contactsForm.get('pcNotes').setValue(contact.pcNotes);
             }
             });    
 
@@ -542,6 +546,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       pcEmailAddress: '',
       pcCellPhone: '',
       pcJobTitle: '',
+      pcNotes: '',
     }
 
     this.contactsForm.get('primaryContactSearch').setValue('');
@@ -554,6 +559,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     this.contactsForm.get('pcJobTitle').setValue('');
     this.contactsForm.get('pcCellPhone').setValue('');
     this.contactsForm.get('pcJobTitle').setValue('');
+    this.contactsForm.get('pcNotes').setValue('');
 
     this.dfaApplicationMainDataService.primaryContactValidatedEvent.emit(false);
   }
@@ -564,11 +570,13 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       // 2024-10-07 EMCRI-804 waynezen; allow editing in fields
       this.contactsForm.controls.pcCellPhone.enable();
       this.contactsForm.controls.pcJobTitle.enable();          
+      this.contactsForm.controls.pcNotes.enable();
     }
     else {
       // 2024-10-07 EMCRI-804 waynezen; don't allow editing in fields
       this.contactsForm.controls.pcCellPhone.disable();
       this.contactsForm.controls.pcJobTitle.disable();
+      this.contactsForm.controls.pcNotes.disable();
     }
   }
 
