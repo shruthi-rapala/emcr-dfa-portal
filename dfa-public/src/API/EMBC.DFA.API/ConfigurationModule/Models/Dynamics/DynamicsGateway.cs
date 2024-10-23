@@ -1403,6 +1403,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_firstname",
                         "dfa_lastname",
                         "dfa_department",
+                        "dfa_businessnumber",
                         "dfa_cellphonenumber",
                         "dfa_emailaddress",
                         "dfa_title",

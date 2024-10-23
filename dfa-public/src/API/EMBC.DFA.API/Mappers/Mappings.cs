@@ -218,7 +218,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_firstname, opts => opts.MapFrom(s => s.pcFirstName))
                 .ForMember(d => d.dfa_lastname, opts => opts.MapFrom(s => s.pcLastName))
                 .ForMember(d => d.dfa_department, opts => opts.MapFrom(s => s.pcDepartment))
-                //.ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.businessNumber))
+                // 2024-10-22 EMCRI-894 waynezen; Business Phone missing
+                .ForMember(d => d.dfa_businessnumber, opts => opts.MapFrom(s => s.pcBusinessPhone))
                 .ForMember(d => d.dfa_emailaddress, opts => opts.MapFrom(s => s.pcEmailAddress))
                 .ForMember(d => d.dfa_cellphonenumber, opts => opts.MapFrom(s => s.pcCellPhone))
                 .ForMember(d => d.dfa_title, opts => opts.MapFrom(s => s.pcJobTitle))
@@ -233,7 +234,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.pcFirstName, opts => opts.MapFrom(s => s.dfa_firstname))
                 .ForMember(d => d.pcLastName, opts => opts.MapFrom(s => s.dfa_lastname))
                 .ForMember(d => d.pcDepartment, opts => opts.MapFrom(s => s.dfa_department))
-                //.ForMember(d => d.businessNumber, opts => opts.MapFrom(s => s.dfa_businessnumber))
+                // 2024-10-22 EMCRI-894 waynezen; Business Phone missing
+                .ForMember(d => d.pcBusinessPhone, opts => opts.MapFrom(s => s.dfa_businessnumber))
                 .ForMember(d => d.pcEmailAddress, opts => opts.MapFrom(s => s.dfa_emailaddress))
                 .ForMember(d => d.pcCellPhone, opts => opts.MapFrom(s => s.dfa_cellphonenumber))
                 .ForMember(d => d.pcJobTitle, opts => opts.MapFrom(s => s.dfa_title))
