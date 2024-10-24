@@ -831,6 +831,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string statuscode { get; set; }
         public string dfa_90daydeadlinenew { get; set; }
         public string dfa_eventname { get; set; }
+        public string dfa_eventtype { get; set; }
     }
 
     public class dfa_projectclaim
