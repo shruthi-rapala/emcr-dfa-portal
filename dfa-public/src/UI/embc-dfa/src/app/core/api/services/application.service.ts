@@ -158,12 +158,20 @@ export class ApplicationService extends BaseService {
   static readonly ApplicationGetPdfApplicationDataPath = '/api/applications';
 
   /**
+   * Create content that will be transformed into PDF.
+   *
+   *
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `applicationGetPdfApplicationData()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   applicationGetPdfApplicationData$Response(params: {
+
+    /**
+     * application
+     */
     body: DfaApplicationMain
   }): Observable<StrictHttpResponse<PdfApplicationData>> {
 
@@ -184,12 +192,20 @@ export class ApplicationService extends BaseService {
   }
 
   /**
+   * Create content that will be transformed into PDF.
+   *
+   *
+   *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `applicationGetPdfApplicationData$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   applicationGetPdfApplicationData(params: {
+
+    /**
+     * application
+     */
     body: DfaApplicationMain
   }): Observable<PdfApplicationData> {
 

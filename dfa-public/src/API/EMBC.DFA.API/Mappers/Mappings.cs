@@ -182,7 +182,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_applicantothercomments, opts => opts.MapFrom(s => s.applicationDetails.subtypeOtherDetails))
                 .ForMember(d => d.dfa_dfaapplicantsubtypecomments, opts => opts.MapFrom(s => s.applicationDetails.subtypeDFAComment))
                 .ForMember(d => d.dfa_createdonportal, opts => opts.MapFrom(s => true))
-                .ForMember(d => d.dfa_applicationcasebpfstages, opts => opts.MapFrom(s => s.applicationDetails.appStatus == null ? Convert.ToInt32(ApplicationStageOptionSet.DRAFT) : Convert.ToInt32(s.applicationDetails.appStatus)))
+                //.ForMember(d => d.dfa_applicationcasebpfstages, opts => opts.MapFrom(s => s.applicationDetails.appStatus == null ? Convert.ToInt32(ApplicationStageOptionSet.DRAFT) : Convert.ToInt32(s.applicationDetails.appStatus)))
                 .ForMember(d => d.dfa_applicationcasebpfsubstages, opts => opts.MapFrom(s => s.applicationDetails.appStatus != null && s.applicationDetails.appStatus.Value == ApplicationStageOptionSet.SUBMIT ? Convert.ToInt32(ApplicationSubStages.Pending) : (int?)null))
                 .ForMember(d => d.dfa_portalsubmitted, opts => opts.MapFrom(s => s.applicationDetails.appStatus != null && s.applicationDetails.appStatus.Value == ApplicationStageOptionSet.SUBMIT ? true : (bool?)null))
                 .ForMember(d => d.dfa_eventid, opts => opts.MapFrom(s => s.applicationDetails.eventId))

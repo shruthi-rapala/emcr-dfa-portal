@@ -188,7 +188,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_applicantothercomments { get; set; }
         public string? dfa_dfaapplicantsubtypecomments { get; set; }
         public bool? dfa_createdonportal { get; set; }
-        public int? dfa_applicationcasebpfstages { get; set; }
+        //public int? dfa_applicationcasebpfstages { get; set; }
         public int? dfa_applicationcasebpfsubstages { get; set; }
         public string? dfa_eventid { get; set; }
         public string? dfa_name { get; set; }
