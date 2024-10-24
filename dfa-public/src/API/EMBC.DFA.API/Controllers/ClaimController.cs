@@ -78,7 +78,7 @@ namespace EMBC.DFA.API.Controllers
 
         private string FixDecimalPlaces(string number)
         {
-            if (number.Contains("pending"))
+            if (string.IsNullOrEmpty(number) || number.Contains("pending"))
             {
                 return number;
             }
