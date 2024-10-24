@@ -543,6 +543,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string statuscode { get; set; }
         public string dfa_90daydeadlinenew { get; set; }
         public string dfa_eventname { get; set; }
+        public string dfa_eventtype { get; set; }
+    }
+
+    public enum EventType
+    {
+        [Description("Private")]
+        Private = 222710000,
+
+        [Description("Public")]
+        Public = 222710001,
+
+        [Description("Private & Public")]
+        PrivatePublic = 222710002
     }
 
     public class dfa_incident
