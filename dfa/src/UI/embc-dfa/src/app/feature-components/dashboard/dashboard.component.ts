@@ -132,7 +132,12 @@ export class DashboardComponent implements OnInit {
     this.pastApplicationsCount = 0;
   
     lstApplications.forEach(x => {
-      if (
+      //EMCRI-298: Make it past application after appeal stage closing
+      if (x.dateAppealClosed &&
+        (new Date(x.dateAppealClosed).getTime() <= this.sixtyOneDaysAgo)) {
+        x.currentApplication = false;
+      }
+      else if (
         (x.status.toLowerCase() === "dfa decision made"
         || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
         &&

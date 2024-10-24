@@ -268,10 +268,12 @@ namespace EMBC.DFA.API.Controllers
         public string DateOfDamage { get; set; }
         public string PrimaryApplicantSignedDate { get; set; }
         public string DateFileClosed { get; set; }
+        public string DateAppealClosed { get; set; }
         public string Status { get; set; }
         public List<StatusBar> StatusBar { get; set; }
         public string StatusLastUpdated { get; set; }
         public bool IsErrorInStatus { get; set; }
+        public bool hasAppealStages { get; set; }
     }
 
     public class StatusBar
