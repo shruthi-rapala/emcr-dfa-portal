@@ -505,12 +505,20 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           // 2024-10-11 EMCRI-809 waynezen; get cell phone and job title with data from Dynamics
           this.applicationService.applicationGetPrimaryContactByBCeId({ bceiduserguid: bceidBusiness.userGuid }).subscribe({
             next: (contact) => {
-              this.contactsForm.get('pcCellPhone').setValue(contact.pcCellPhone);
-              this.contactsForm.get('pcJobTitle').setValue(contact.pcJobTitle);
-              // 2024-10-23 EMCRI-901 waynezen; get contact notes, too!
-              this.contactsForm.get('pcNotes').setValue(contact.pcNotes);
+              // 2024-10-29 EMCRI-922 waynezen; if Primary Contact not found, API returns null
+              if (contact) {
+                this.contactsForm.get('pcCellPhone').setValue(contact.pcCellPhone);
+                this.contactsForm.get('pcJobTitle').setValue(contact.pcJobTitle);
+                // 2024-10-23 EMCRI-901 waynezen; get contact notes, too!
+                this.contactsForm.get('pcNotes').setValue(contact.pcNotes);
+              }
+              else {
+                this.contactsForm.get('pcCellPhone').setValue('');
+                this.contactsForm.get('pcJobTitle').setValue('');
+                this.contactsForm.get('pcNotes').setValue('');            
+              }
             }
-            });    
+          });    
 
           this.showFoundContactMsg = true;
           this.dfaApplicationMainDataService.primaryContactValidatedEvent.emit(true);
