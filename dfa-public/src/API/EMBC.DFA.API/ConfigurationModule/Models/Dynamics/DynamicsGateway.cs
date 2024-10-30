@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
+using EMBC.DFA.API.ConfigurationModule.Models.PDF;
 using EMBC.ESS.Shared.Contracts.Metadata;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -1424,6 +1425,29 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
         }
 
+        public async Task<dyn_contact> GetVerifiedPrimaryContactbyBCeIDAsync(string bceidUserId)
+        {
+            try
+            {
+                var userObj = await api.GetList<dyn_contact>("contacts", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "contactid",
+                        "dfa_bceid_user_guid",
+                        "fullname",
+                    },
+                    Filter = $"dfa_bceid_user_guid eq '{bceidUserId}'"
+                });
+
+                return userObj != null ? userObj.List.LastOrDefault() : null;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+
         public async Task<string> UpsertPrimaryContactAsync(dfa_applicationprimarycontact_params contact)
         {
             try
@@ -1473,7 +1497,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 var result = await api.ExecuteAction("dfa_DFAPortalCreateBCeIDUsers", auditEvent);
                 Debug.WriteLine(result);
 
-                return "foo";
+                return auditEvent.dfa_name;
             }
             catch (System.Exception ex)
             {

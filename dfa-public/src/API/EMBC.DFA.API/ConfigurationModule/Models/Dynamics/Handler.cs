@@ -70,6 +70,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactAsync(string contactId);
         Task<dfa_applicationprimarycontact_retrieve> HandleGetPrimaryContactByBCeIDAsync(string bceidUserId);
         Task<string> HandleBCeIDAudit(dfa_audit_event auditEvent);
+        Task<dyn_contact> HandleGetVerifiedPrimaryContactAsync(string bceidUserId);
     }
 
     public class Handler : IConfigurationHandler
@@ -380,6 +381,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public async Task<string> HandleBCeIDAudit(dfa_audit_event auditEvent)
         {
             var result = await listsGateway.CreateBCeIDAuditEvent(auditEvent);
+            return result;
+        }
+
+        public async Task<dyn_contact> HandleGetVerifiedPrimaryContactAsync(string bceidUserId)
+        {
+            var result = await listsGateway.GetVerifiedPrimaryContactbyBCeIDAsync(bceidUserId);
             return result;
         }
     }
