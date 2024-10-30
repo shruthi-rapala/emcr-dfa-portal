@@ -135,11 +135,11 @@ export class DFAApplicationMainComponent
     // 2024-10-11 EMCRI-809 waynezen; listen for changes to validation status
     this.applicationDetailsForm$ = this.formCreationService.getApplicationDetailsForm().subscribe((applicationDetails) => {
       this.applicationDetailsForm = applicationDetails;
-      this.applicationDetailsValid = this.applicationDetailsForm.valid;
+      this.applicationDetailsValid = this.applicationDetailsForm.valid && applicationDetails.value.legalName!=null;
     });
     this.contactsForm$ = this.formCreationService.getContactsForm().subscribe((contacts) => {
       this.contactsForm = contacts;
-      this.contactsValid = this.contactsForm.valid;
+      this.contactsValid = this.contactsForm.valid&& contacts.value.primaryContactValidated!=null;
     });
 
     this.dfaApplicationMainDataService.primaryContactValidatedEvent.subscribe((verifiedornot) => {
