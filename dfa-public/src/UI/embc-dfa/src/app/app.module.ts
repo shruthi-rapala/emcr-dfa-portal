@@ -31,7 +31,7 @@ import { AuthConfigModule } from './auth/auth-config.module';
 import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor'
 import { environment } from '../environments/environment';
 import { IConfig, provideEnvironmentNgxMask } from 'ngx-mask';
-export const maskConfigFunction: () => Partial<IConfig> = () => {
+const maskConfigFunction: () => Partial<IConfig> = () => {
     return {
       validation: false,
     };
