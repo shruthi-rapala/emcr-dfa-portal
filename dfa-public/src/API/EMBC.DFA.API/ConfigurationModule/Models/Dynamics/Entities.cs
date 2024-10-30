@@ -54,6 +54,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_mailingaddresscanadapostverified { get; set; }
     }
 
+    public class dyn_contact
+    {
+        public string? contactid { get; set; }
+        public string? dfa_bceid_user_guid { get; set; }
+        public string? fullname { get; set; }
+    }
+
     public class dfa_appcontact_extended : dfa_appcontact
     {
         public string? dfa_title { get; set; }
@@ -212,6 +219,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_mailingaddresscanadapostverified { get; set; }
         public bool? dfa_primarycontactverified { get; set; }
         public int? dfa_toreceivesupportaccessingdamage { get; set; }
+        // 2024-10-29 EMCRI-922 waynezen
+        public string? verified_contact_id { get; set; }
     }
 
     // 2024-09-17 EMCRI-663 waynezen

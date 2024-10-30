@@ -59,5 +59,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public Task<dfa_applicationprimarycontact_retrieve> GetPrimaryContactbyContactIdAsync(string contactId);
         public Task<string> UpsertPrimaryContactAsync(dfa_applicationprimarycontact_params contact);
         public Task<string> CreateBCeIDAuditEvent(dfa_audit_event auditEvent);
+
+        public Task<dyn_contact> GetVerifiedPrimaryContactbyBCeIDAsync(string bceidUserId);
     }
 }

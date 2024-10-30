@@ -164,6 +164,10 @@ namespace EMBC.DFA.API.Controllers
                 mappedApplication.dfa_bceidbusinessguid = primeContactIn.dfa_bceidbusinessguid;
             }
 
+            // 2024-10-29 EMCRI-922 waynezen; check if a verified Primary Contact exists
+            // 2024-10-30 users will have to manually create a Confirmed Primary Contact in RAFT due to technical limitations
+            mappedApplication.verified_contact_id = null;
+
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
             if (string.IsNullOrEmpty(mappedApplication.dfa_appapplicationid) && result != null && Guid.TryParse(result, out Guid appId))
