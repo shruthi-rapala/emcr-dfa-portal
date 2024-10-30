@@ -1,5 +1,5 @@
 <mat-card class="card-align" style="border:none;" [class.mat-elevation-z0]="true">
-  <mat-card-content>
+  <mat-card-content class="card-content-align">
     <form [formGroup]="contactsForm">
       <ng-container>
         <br />
@@ -26,13 +26,11 @@
             </mat-form-field>
           </div>
           <div class="col-md-1"></div>
-          <div class="col-md-5">
-            <div class="legalText infoText">
+          <div class="col-md-5 infoText">
               <mat-icon class="iconStyleBlue">info</mat-icon>
               <span class="iconText">
                 This is the Doing Business As (DBA) name from BCeID. Update if needed or provide a name.
               </span>
-            </div>
           </div>
         </div>
 
@@ -45,16 +43,30 @@
               <input matInput formControlName="businessNumber" placeholder="" maxlength="9" />
             </mat-form-field>
           </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-5 infoText">
+              <mat-icon class="iconStyleBlue">info</mat-icon>
+              <span class="iconText">
+                This is the Canadian Revenue Agency 9 digit business number from BCeID. Update if needed or provide a number.
+              </span>
+          </div>
         </div>
 
         <div class="primary-radio-group">
           <div class="row radio-extra-label">
-            <p class="sub-heading" style="font-size: 15px">
+            <p class="sub-heading set-margin" style="font-size: 15px;">
               Mailing Address<span style="color:red">*</span>
             </p>
-            <div class="col-md-12">
+            <div class="col-md-6">
               <app-bc-address [addressForm]="contactsForm" [primaryAddressWarning]="false">
               </app-bc-address>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5 infoText">
+                <mat-icon class="iconStyleBlue">info</mat-icon>
+                <span class="iconText">
+                  Enter the mailing address where information from DFA should be received at. This address must be kept current.
+                </span>
             </div>
           </div>
         </div>
@@ -62,40 +74,53 @@
 
         <div class="row">
           <p class="sub-heading" style="font-size: 15px">
-            Primary Contact<span style="color:red">*</span>
+            Primary Contact
           </p>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <input matInput formControlName="primaryContactSearch" id="primaryContactSearch" required placeholder="User Id"
-                maxlength="20" />
-              <mat-hint>Maximum length is 20 characters</mat-hint>
+          <div class="col-md-8">
+            <p>The primary contact must has a BCeID account. Search for their account by their BCeID user name<span style="color:red">*</span></p>
+            <div class="align-search">
+            <div class="col-md-9">
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="primaryContactSearch" id="primaryContactSearch" required placeholder="User Id"
+                  maxlength="20" />
+                <mat-hint>Maximum length is 20 characters</mat-hint>
+                <mat-error
+                *ngIf="
+                  contactsForm.get('primaryContactSearch').invalid &&
+                  contactsForm.get('primaryContactSearch').hasError('required') &&
+                  contactsForm.get('primaryContactSearch').touched
+                "
+              >
+                Primary Contact is required</mat-error
+              >
               <mat-error
-              *ngIf="
-                contactsForm.get('primaryContactSearch').invalid &&
-                contactsForm.get('primaryContactSearch').hasError('required') &&
-                contactsForm.get('primaryContactSearch').touched
-              "
-            >
-              Primary Contact is required</mat-error
-            >
-            <mat-error
-              *ngIf="
-                contactsForm.get('primaryContactSearch').invalid &&
-                contactsForm.get('primaryContactSearch').hasError('maxLength')
-              "
-            >
-              Maximum length is 16 characters</mat-error
-            >
-            </mat-form-field>
+                *ngIf="
+                  contactsForm.get('primaryContactSearch').invalid &&
+                  contactsForm.get('primaryContactSearch').hasError('maxLength')
+                "
+              >
+                Maximum length is 16 characters</mat-error
+              >
+              </mat-form-field>
+              </div>
+            <div class="col-md-3 btn-search-parent-div">
+              &nbsp;
+              <button class="button-p save-button align-search-button" mat-stroked-button type="button" (click)="searchForContact()">
+                Search for Contact
+              </button>
             </div>
-          <div class="col-md-2">
-            <button class="button-p save-button" mat-stroked-button type="button" (click)="searchForContact()">
-              Search for Contact
-            </button>
+              </div>
           </div>
+          
+          <div class="col-md-4 infoText">
+            <mat-icon class="iconStyleBlue">info</mat-icon>
+            <span class="iconText">
+              The primary contact is a person in your organization that the DFA can contact to discuss the application, cost recovery plan project(s), claims, and/or invoices that your organization will submit during recovery. One primary contact is required and should be kept up to date.
+            </span>
+        </div>
         </div>
         <div class="row">
-          <div id="foundContactMsg" [class.visible]="showFoundContactMsg" class="noshow">
+          <div id="foundContactMsg" [class.visible]="showFoundContactMsg" class="noshow col-md-12">
             <div class="iconStyleGreen">
               <mat-icon>check_circle</mat-icon>
             </div>
@@ -247,13 +272,12 @@
 
           <div class="row">
             <div class="col-md-12">
-              <div class="legalText infoText">
+              <div class="infoText">
                 <mat-icon class="iconStyleBlue">info</mat-icon>
                 <span class="iconText">
                   Provide at least one additional contact that the DFA may contact in case the primary contact can't be reached
                 </span>
               </div>
-
               <br>
               
               <table mat-table [dataSource]="otherContactsDataSource" *ngIf="otherContactsDataSource.getValue().length > 0">
@@ -348,7 +372,7 @@
                 <br /><br/>
               </div>
 
-              <div *ngIf="otherContactsForm.get('otherContacts').invalid && otherContactsForm.get('otherContacts').hasError('required')">
+              <div class="errmsg-other-contact-align" *ngIf="otherContactsForm.get('otherContacts').invalid && otherContactsForm.get('otherContacts').hasError('required')">
                 <span style="color:red">At least one other contact is required.</span>
               </div>
 
@@ -560,7 +584,6 @@
     </form>
 
     <br />
-    <hr />
     <form [formGroup]="contactsForm">
       <ng-container>
         <div class="row">
@@ -587,7 +610,7 @@
             </mat-error>
           </div>
         </div>
-    
+        <br />
       </ng-container>
     </form>
   </mat-card-content>
