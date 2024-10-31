@@ -30,8 +30,8 @@ import { map } from 'rxjs';
 import { AuthConfigModule } from './auth/auth-config.module';
 import { BceidAuthInterceptor } from './core/interceptors/bceid-auth.interceptor'
 import { environment } from '../environments/environment';
-import { IConfig, provideEnvironmentNgxMask } from 'ngx-mask';
-export const maskConfigFunction: () => Partial<IConfig> = () => {
+import { NgxMaskConfig, provideEnvironmentNgxMask } from 'ngx-mask';
+const maskConfigFunction: () => Partial<NgxMaskConfig> = () => {
     return {
       validation: false,
     };
