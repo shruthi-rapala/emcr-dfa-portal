@@ -162,6 +162,14 @@ const routes: Routes = [
         (m) => m.OutageModule
       )
   },
+  {
+    path: 'error',
+    loadChildren: () =>
+      import('./feature-components/outage/error.module').then(
+        (m) => m.ErrorModule
+      )
+  },
+
   // {
   //   path: 'api/contacts/login',
   //   component: EligibilityService,

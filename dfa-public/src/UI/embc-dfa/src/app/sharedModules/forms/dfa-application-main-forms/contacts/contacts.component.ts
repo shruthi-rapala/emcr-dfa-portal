@@ -176,6 +176,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           pcEmailAddress: null,
           pcCellPhone: null,
           pcJobTitle: null,
+          pcNotes: null,
         }
       });
 
@@ -482,7 +483,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
           //console.log('searchForContact: Primary contact: ' + bceidBusiness.individualFirstname + ' ' + bceidBusiness.individualSurname);
           this.setPrimaryContactFieldsEnabled(true);
 
-          console.debug("[DFA] searchForContact found: " + userId + " from BCeID Web Svc");
+          //console.debug("[DFA] searchForContact found: " + userId + " from BCeID Web Svc");
 
           // found a valid Primary Contact
           this.dfaApplicationMainDataService.contacts = {
@@ -509,7 +510,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
             next: (contact) => {
               // 2024-10-29 EMCRI-922 waynezen; if Primary Contact not found, API returns null
               if (contact) {
-                console.debug("[DFA] searchForContact found: " + bceidBusiness.userGuid + " from Dynamics dfa_appapplicant");
+                //console.debug("[DFA] searchForContact found: " + bceidBusiness.userGuid + " from Dynamics dfa_appapplicant");
 
                 this.contactsForm.get('pcCellPhone').setValue(contact.pcCellPhone);
                 this.contactsForm.get('pcJobTitle').setValue(contact.pcJobTitle);
@@ -517,7 +518,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
                 this.contactsForm.get('pcNotes').setValue(contact.pcNotes);
               }
               else {
-                console.debug("[DFA] searchForContact did not find: " + bceidBusiness.userGuid + " from Dynamics dfa_appapplicant");
+                //console.debug("[DFA] searchForContact did not find: " + bceidBusiness.userGuid + " from Dynamics dfa_appapplicant");
 
                 this.contactsForm.get('pcCellPhone').setValue('');
                 this.contactsForm.get('pcJobTitle').setValue('');
@@ -569,8 +570,6 @@ export default class ContactsComponent implements OnInit, OnDestroy {
     this.contactsForm.get('pcDepartment').setValue('');
     this.contactsForm.get('pcBusinessPhone').setValue('');
     this.contactsForm.get('pcEmailAddress').setValue('');
-    this.contactsForm.get('pcCellPhone').setValue('');
-    this.contactsForm.get('pcJobTitle').setValue('');
     this.contactsForm.get('pcCellPhone').setValue('');
     this.contactsForm.get('pcJobTitle').setValue('');
     this.contactsForm.get('pcNotes').setValue('');

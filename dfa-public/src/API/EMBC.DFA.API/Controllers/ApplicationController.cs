@@ -165,8 +165,18 @@ namespace EMBC.DFA.API.Controllers
             }
 
             // 2024-10-29 EMCRI-922 waynezen; check if a verified Primary Contact exists
-            // 2024-10-30 users will have to manually create a Confirmed Primary Contact in RAFT due to technical limitations
-            mappedApplication.verified_contact_id = null;
+            if (contactId != null && primeContactIn?.dfa_bceiduserguid != null)
+            {
+                var confirmedPrimContact = await handler.HandleGetVerifiedPrimaryContactAsync(primeContactIn.dfa_bceiduserguid);
+                if (confirmedPrimContact == null)
+                {
+                    mappedApplication.verified_contact_id = null;
+                }
+                else
+                {
+                    mappedApplication.verified_contact_id = confirmedPrimContact.contactid;
+                }
+            }
 
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
