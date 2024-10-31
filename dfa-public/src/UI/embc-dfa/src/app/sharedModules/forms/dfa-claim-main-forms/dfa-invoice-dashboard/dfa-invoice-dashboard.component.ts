@@ -279,14 +279,14 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       return acc + Number(val.actualInvoiceTotal);
     }, 0);
 
-    this.dfaClaimMainDataService.recoveryClaim.totalInvoicesBeingClaimed = sumOfNetInvoiceBeingClaimed + '';
-    this.dfaClaimMainDataService.recoveryClaim.claimPST = sumOfClaimPST + '';
-    this.dfaClaimMainDataService.recoveryClaim.claimGrossGST = sumOfClaimGrossGST + '';
-    this.dfaClaimMainDataService.recoveryClaim.totalActualClaim = sumOfTotalActualClaim + '';
-    this.formCreationService.recoveryClaimForm.value.get('totalInvoicesBeingClaimed').setValue(sumOfNetInvoiceBeingClaimed);
-    this.formCreationService.recoveryClaimForm.value.get('claimPST').setValue(sumOfClaimPST);
-    this.formCreationService.recoveryClaimForm.value.get('claimGrossGST').setValue(sumOfClaimGrossGST);
-    this.formCreationService.recoveryClaimForm.value.get('totalActualClaim').setValue(sumOfTotalActualClaim);
+    this.dfaClaimMainDataService.recoveryClaim.totalInvoicesBeingClaimed = sumOfNetInvoiceBeingClaimed?.toFixed(2) + '';
+    this.dfaClaimMainDataService.recoveryClaim.claimPST = sumOfClaimPST?.toFixed(2) + '';
+    this.dfaClaimMainDataService.recoveryClaim.claimGrossGST = sumOfClaimGrossGST?.toFixed(2) + '';
+    this.dfaClaimMainDataService.recoveryClaim.totalActualClaim = sumOfTotalActualClaim?.toFixed(2) + '';
+    this.formCreationService.recoveryClaimForm.value.get('totalInvoicesBeingClaimed').setValue(sumOfNetInvoiceBeingClaimed?.toFixed(2));
+    this.formCreationService.recoveryClaimForm.value.get('claimPST').setValue(sumOfClaimPST?.toFixed(2));
+    this.formCreationService.recoveryClaimForm.value.get('claimGrossGST').setValue(sumOfClaimGrossGST?.toFixed(2));
+    this.formCreationService.recoveryClaimForm.value.get('totalActualClaim').setValue(sumOfTotalActualClaim?.toFixed(2));
     
     this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
   }
