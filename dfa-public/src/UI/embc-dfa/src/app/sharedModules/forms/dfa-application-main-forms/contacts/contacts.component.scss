@@ -65,8 +65,6 @@ mat-form-field {
   display: flex;
 }
 
-
-
 .details-button {
   width: 100%;
 }
@@ -78,7 +76,20 @@ mat-form-field {
 }
 
 .save-button {
-  height: 55px;
+  height: 45px;
+}
+
+.btn-search-parent-div {
+  display: flex;
+  justify-content: space-around;
+}
+
+.errmsg-other-contact-align {
+  margin-bottom: 10px;
+}
+
+.align-search-button {
+  margin-left: 10px;
 }
 
 table {
@@ -141,15 +152,23 @@ table {
   padding: 15px;
 }
 
+.align-search {
+    display: flex;
+}
+
+.set-margin {
+  margin: 0px;
+}
 // mat-form-field:has(input[readonly]) {
 //   background-color: greenyellow;
 // }
-
 .infoText {
   background: #F6F9FC 0% 0% no-repeat padding-box;
   border: 1px solid #003366;
   border-radius: 10px;
-  height: 56px;
+  height: fit-content;
+  display: flex;
+  padding: 7px;
 }
 
 .legalText {
@@ -166,20 +185,21 @@ table {
 .iconStyleGreen {
   //font-size: 16px;
   color: #62A370;
+  padding-right: inherit;
 }
 
 .iconStyleBlue {
-  //font-size: 16px;
+  font-size: 17px;
   color: #003366;
-  width: 22px;
   padding-top: 2px;
+  padding-right: 15px;
 }
 
 .noshow {
   display: none;
 
   &.visible {
-    display: contents;
+    display: flex;
   }
 }
 
