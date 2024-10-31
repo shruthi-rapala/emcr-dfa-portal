@@ -27,6 +27,7 @@ export class DFAApplicationMainDataService {
   private _isSubmitted: boolean = false;
   private _applicationId: string;
   private _vieworedit: string;
+  private _loadComplete: string;
   private _editstep: string;
   private _requiredDocuments = [];
   private _business: string;
@@ -34,6 +35,7 @@ export class DFAApplicationMainDataService {
   private _businessNumber: string;
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
   public changeAppId: EventEmitter<string> = new EventEmitter<string>();
+  public isApplicationLoadComplete: EventEmitter<string> = new EventEmitter<string>();
 
   // 2024-10-02 EMCRI-663 waynezen; publish event for Canada Post verified message on BcAddressComponent
   public canadaPostVerified: EventEmitter<string> = new EventEmitter<string>();
@@ -238,6 +240,20 @@ export class DFAApplicationMainDataService {
     }
 
     return this._vieworedit;
+  }
+
+  public setApplicationLoadComplete(loadComplete: string): void {
+    this._loadComplete = loadComplete;
+    this.changeViewOrEdit.emit(loadComplete);
+    this.cacheService.set('loadComplete', loadComplete);
+  }
+
+  public getApplicationLoadComplete(): string {
+    if (this._loadComplete === null || this._loadComplete === undefined) {
+      this._loadComplete = this.cacheService.get('loadComplete');
+    }
+
+    return this._loadComplete;
   }
 
   public setEditStep(editstep: string): void {

@@ -111,6 +111,7 @@ export class DFAApplicationMainComponent
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     let applicationId = this.route.snapshot.paramMap.get('id');
 
@@ -146,7 +147,17 @@ export class DFAApplicationMainComponent
       if (verifiedornot != null) {
         this.primaryContactValidated = verifiedornot;
       }
-    });    
+    });
+
+    var appThis = this;
+    const appInterval = setTimeout(function () {
+      appThis.isLoading = false;
+      appStopFunction();
+    }, 2000);
+
+    function appStopFunction() {
+      clearInterval(appInterval);
+    }
 
   }
 
