@@ -27,6 +27,7 @@ import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.mode
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
 import { DFAApplicationSubmissionMsgDialogComponent } from '../../core/components/dialog-components/dfa-application-submission-msg-dialog/dfa-application-submission-msg.component';
+import { LoginService } from '../../core/services/login.service';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -99,6 +100,7 @@ export class DFAApplicationMainComponent
     public dialog: MatDialog,
     private fileUploadsService: AttachmentService,
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
+    private loginService: LoginService,
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -148,6 +150,7 @@ export class DFAApplicationMainComponent
         this.primaryContactValidated = verifiedornot;
       }
     });
+
 
     var appThis = this;
     const appInterval = setTimeout(function () {

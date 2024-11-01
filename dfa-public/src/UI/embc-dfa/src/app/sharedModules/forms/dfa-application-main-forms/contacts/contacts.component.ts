@@ -475,7 +475,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
 
   searchForContact() {
     var userId = this.contactsForm.get('primaryContactSearch')?.value;
-    console.debug("[DFA] searchForContact searching: " + userId);
+    //console.debug("[DFA] searchForContact searching: " + userId);
 
     if (userId) {
       this.bceidLookupService.bCeIdLookupGetBCeIdOtherInfo({userId}).subscribe((bceidBusiness: BCeIdBusiness) => {
