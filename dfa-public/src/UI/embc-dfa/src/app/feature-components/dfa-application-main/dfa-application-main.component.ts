@@ -194,6 +194,12 @@ export class DFAApplicationMainComponent
    */
   stepChanged(event: any, stepper: MatStepper): void {
     stepper.selected.interacted = false;
+    let appForm = this.formCreationService.applicationDetailsForm.value;
+    appForm.updateValueAndValidity();
+    this.applicationDetailsValid = (appForm.disabled) ? true : appForm.valid;
+    
+    let contactForm = this.formCreationService.contactsForm.value;
+    this.contactsValid = contactForm.valid;
   }
 
   /**
@@ -223,22 +229,18 @@ export class DFAApplicationMainComponent
     
     if (component === 'application-details' || component === 'contacts') {
       this.setFormData(component);
-
       let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
       application.applicationDetails.appStatus = null; //to fix console error, actual status being set when user clicks submit/save button
       this.dfaApplicationMainMapping.mapDFAApplicationMain(application);  
 
       // 2024-10-11 EMCRI-809 waynezen; force Application Details & Contacts screen to update validators
-      if (component == 'application-details') {
-        let theform = this.formCreationService.applicationDetailsForm.value;
-        theform.updateValueAndValidity();
-        // 2024-10-11 EMCRI-809 waynezen; ignore validation failures when the form is disabled
-        this.applicationDetailsValid = (theform.disabled) ? true : theform.valid;
-      }
-      if (component == 'contacts') {
-        let theform = this.formCreationService.contactsForm.value;
-        this.contactsValid = theform.valid;
-      }
+      // Modified the logic by removing if conditions as save button doesn't display
+      let appForm = this.formCreationService.applicationDetailsForm.value;
+      appForm.updateValueAndValidity();
+      this.applicationDetailsValid = (appForm.disabled) ? true : appForm.valid;
+
+      let contactForm = this.formCreationService.contactsForm.value;
+      this.contactsValid = contactForm.valid;
 
       this.dfaApplicationMainStepper.selected.completed = true;
       //this.submitFile();
