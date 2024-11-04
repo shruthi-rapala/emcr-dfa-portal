@@ -131,7 +131,7 @@
 
     <!-- Vendor Name -->
     <ng-container matColumnDef="vendorName">
-      <th mat-header-cell *matHeaderCellDef style="width:25%">
+      <th mat-header-cell *matHeaderCellDef style="width:20%">
         <b>Vendor Name</b>
       </th>
       <td *matCellDef="let element" mat-cell>
@@ -151,7 +151,7 @@
 
       <!-- Total Claim Column -->
       <ng-container matColumnDef="totalBeingClaimed" *ngIf="vieworedit !== 'viewOnly' && vieworedit !== 'view'">
-      <th mat-header-cell *matHeaderCellDef style="width:15%">
+      <th mat-header-cell *matHeaderCellDef style="width:18%">
         <b>Total being Claimed</b>
       </th>
       <td *matCellDef="let element" mat-cell>
@@ -161,7 +161,7 @@
 
       <!-- Invoice Amount -->
       <ng-container matColumnDef="invoiceAmount" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
-      <th mat-header-cell *matHeaderCellDef style="width:12%">
+      <th mat-header-cell *matHeaderCellDef style="width:18%">
         <b>Invoice Amount</b>
       </th>
       <td *matCellDef="let element" mat-cell>
@@ -171,7 +171,7 @@
 
       <!-- EMCR Approved Amount -->
       <ng-container matColumnDef="emcrApprovedAmount" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
-      <th mat-header-cell *matHeaderCellDef style="width:16%">
+      <th mat-header-cell *matHeaderCellDef style="width:17%">
         <b>EMCR Approved Amount</b>
       </th>
       <td *matCellDef="let element" mat-cell>
@@ -181,7 +181,7 @@
 
       <!-- EMCR Comments -->
       <ng-container matColumnDef="emcrComments" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
-      <th mat-header-cell *matHeaderCellDef style="width:12%">
+      <th mat-header-cell *matHeaderCellDef style="width:10%">
         <b>EMCR Comments</b>
       </th>
       <td *matCellDef="let element" mat-cell>

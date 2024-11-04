@@ -24,7 +24,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
       </button>-->
       <ng-container>
         <div class="row">
-          <div class="col-md-7">
+          <div class="col-md-6">
             <div class="row" *ngIf="isReadOnly === true">
               <div class="col-md-6">
                 <p  style="font-size: 15px">
@@ -268,7 +268,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
 
           </div>
 
-          <div class="col-md-5" >
+          <div class="col-md-6" >
             <div class="invoice-box">
               <div class="row">
                 <div class="col-md-12 costCurrency">
@@ -295,13 +295,13 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
               </div>
 
               <div class="row pst-box">
-                <div class="col-md-7 aln-txt">
+                <div class="col-md-4 aln-txt">
                   <p  style="font-size: 15px">
                     PST
                   </p>
                   
                 </div>
-                <div class="col-md-5 inputCurrency">
+                <div class="col-md-8 inputCurrency">
                   $&nbsp;<mat-form-field class="monetary-input-small" appearance="outline" style="height: 30px !important">
                     <input
                       #PST
@@ -313,12 +313,12 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                       maxlength="100"/>
                   </mat-form-field>
                 </div>
-                <div class="col-md-7 aln-txt">
+                <div class="col-md-4 aln-txt">
                   <p  style="font-size: 15px">
                     Gross GST
                   </p>
                 </div>
-                <div class="col-md-5 inputCurrency">
+                <div class="col-md-8 inputCurrency">
                   $&nbsp;<mat-form-field class="monetary-input-small" appearance="outline" style="height: 30px !important">
                     <input
                             #grossGST
@@ -363,12 +363,12 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
   .pst | number : '1.2-2' }}
                   </p>
                 </div>
-                <div class="col-md-7 aln-txt">
+                <div class="col-md-4 aln-txt">
                   <p  style="font-size: 15px">
                     Eligible GST
                   </p>
                 </div>
-                <div class="col-md-5 inputCurrency">
+                <div class="col-md-8 inputCurrency">
                   $&nbsp;<mat-form-field class="monetary-input-small" appearance="outline" style="height: 30px !important">
                     <input
                       (focusin)="setHelpText(6, tooltip)"

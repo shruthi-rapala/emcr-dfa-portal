@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, first, Observable, ReplaySubject, switchMap, mergeMap, tap, map, of, retry } from 'rxjs';
+import { BehaviorSubject, first, Observable, ReplaySubject, switchMap, mergeMap, tap, map, of, retry, delay } from 'rxjs';
 import { AuthenticatedResult, AuthModule, AuthOptions, LoginResponse, LogoutAuthOptions, OidcSecurityService } from 'angular-auth-oidc-client';
 import { CacheService } from '../../core/services/cache.service';
 
@@ -20,9 +20,8 @@ export class LoginService  {
     return this.oidcSecurityService.checkAuth()
       .pipe(
         tap((response: LoginResponse) => { 
-          // console.debug('[DFA] loginService called oidcSecurityService.checkAuth() isAuthenticated: ' + response?.isAuthenticated);
-          this._isAuth = response?.isAuthenticated;
-          
+
+          this._isAuth = response?.isAuthenticated;          
           this._accesstoken = response?.accessToken;
 
           if (response?.isAuthenticated) {
@@ -41,8 +40,13 @@ export class LoginService  {
   private isAuthenticated: BehaviorSubject<boolean> =
     new BehaviorSubject(false);
 
+  // EMCRI-939 waynezen; angular-auth-oidc-client is slow - wait a bit before checking isAuthenticated status
   public isAuthenticated$: Observable<boolean> =
-    this.isAuthenticated.asObservable();
+    this.isAuthenticated.asObservable().pipe(delay(500));
+
+  public forceAuthenticated(): void {
+    this.isAuthenticated.next(true);
+  }
 
   public getAccessToken(): Observable<string> {
       return this.oidcSecurityService.getAccessToken()

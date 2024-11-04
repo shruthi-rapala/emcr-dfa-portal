@@ -211,18 +211,55 @@ export class HeaderComponent implements OnInit {
       .isAuthenticated$
       .subscribe(isAuthenticated => {
         if (isAuthenticated) {
-          // console.debug("[DFA] header.component: is authenticated");
+          // EMCRI-939 waynezen; angular-auth-oidc-client says we're logged in
+          //console.debug("[DFA] header.component: is authenticated");
           this.contactService.contactGetDashboardContactInfo()
+            .pipe(first())
             .subscribe(loginInfo => {
-              // console.debug("[DFA] header.component: got names");
+              //console.debug("[DFA] header.component: got names");
               this.showLoginMatMenu = true;
               this.lastName = loginInfo?.individualSurname;
-              this.firstName = loginInfo?.individualFirstname;    
+              this.firstName = loginInfo?.individualFirstname;
+            })
+        }
+        else {
+          // EMCRI-939 waynezen; angular-auth-oidc-client not authenticated yet.. check middle-tier API for auth status
+          this.contactService.contactGetAuthenticatedStatus()
+            .pipe(first())
+            .subscribe(isAuthenticated => {
+              //console.debug("[DFA] header.component: angular client is NOT authenticated; server isAuthenticatedStatus: " + isAuthenticated);
+
+              if (isAuthenticated) {
+                // EMCRI-939 waynezen; middle-tier API says we're authenticated - get logged in user info
+                this.contactService.contactGetDashboardContactInfo()
+                  .pipe(first())
+                  .subscribe(loginInfo => {
+                    // console.debug("[DFA] header.component: got names(2), firstname: " + loginInfo?.individualFirstname);
+                    if (loginInfo?.individualFirstname) {
+                      this.showLoginMatMenu = true;
+                      this.lastName = loginInfo?.individualSurname;
+                      this.firstName = loginInfo?.individualFirstname;
+
+                      // EMCRI-939 waynezen; correct angular-auth-oidc-client bad state
+                      // console.debug("[DFA] header.component: force authenticated");
+                      this.loginService.forceAuthenticated();
+                    }
+                    else {
+                      this.showLoginMatMenu = false;
+                    }
+                  })
+              }
+              // else {
+              //   // EMCRI-939 waynezen; both angular-auth-oidc-client AND middle-tier API say we're not logged in - force a relogin
+              //   console.debug('[DFA] forcing a re-login');
+              //   this.router.navigate(['/registration-method']);
+              // }
             })
         }
       });
+
   }
-  
+
   breadCrumbMain() {
     this.menuHeader = [];
     this.router.navigate(['dfa-dashboard']);

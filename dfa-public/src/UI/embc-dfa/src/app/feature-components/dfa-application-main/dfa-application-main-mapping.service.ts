@@ -65,7 +65,7 @@ export class DFAApplicationMainMappingService {
         });
         formGroup = contactDetails;
      });
-    this.dfaApplicationMainDataService.applicationDetails = dfaApplicationMain.applicationDetails;
+    //this.dfaApplicationMainDataService.applicationDetails = dfaApplicationMain.applicationDetails;
     this.dfaApplicationMainDataService.contacts = dfaApplicationMain.applicationContacts;
   }
 }

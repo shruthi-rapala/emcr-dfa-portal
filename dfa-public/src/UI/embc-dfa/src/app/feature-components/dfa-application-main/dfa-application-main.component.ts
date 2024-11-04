@@ -27,6 +27,7 @@ import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.mode
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
 import { DFAApplicationSubmissionMsgDialogComponent } from '../../core/components/dialog-components/dfa-application-submission-msg-dialog/dfa-application-submission-msg.component';
+import { LoginService } from '../../core/services/login.service';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -99,6 +100,7 @@ export class DFAApplicationMainComponent
     public dialog: MatDialog,
     private fileUploadsService: AttachmentService,
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
+    private loginService: LoginService,
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -111,6 +113,7 @@ export class DFAApplicationMainComponent
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.currentFlow = this.route.snapshot.data.flow ? this.route.snapshot.data.flow : 'verified-registration';
     let applicationId = this.route.snapshot.paramMap.get('id');
 
@@ -146,7 +149,18 @@ export class DFAApplicationMainComponent
       if (verifiedornot != null) {
         this.primaryContactValidated = verifiedornot;
       }
-    });    
+    });
+
+
+    var appThis = this;
+    const appInterval = setTimeout(function () {
+      appThis.isLoading = false;
+      appStopFunction();
+    }, 2000);
+
+    function appStopFunction() {
+      clearInterval(appInterval);
+    }
 
   }
 
@@ -180,6 +194,12 @@ export class DFAApplicationMainComponent
    */
   stepChanged(event: any, stepper: MatStepper): void {
     stepper.selected.interacted = false;
+    let appForm = this.formCreationService.applicationDetailsForm.value;
+    appForm.updateValueAndValidity();
+    this.applicationDetailsValid = (appForm.disabled) ? true : appForm.valid;
+    
+    let contactForm = this.formCreationService.contactsForm.value;
+    this.contactsValid = contactForm.valid;
   }
 
   /**
@@ -209,22 +229,18 @@ export class DFAApplicationMainComponent
     
     if (component === 'application-details' || component === 'contacts') {
       this.setFormData(component);
-
       let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
       application.applicationDetails.appStatus = null; //to fix console error, actual status being set when user clicks submit/save button
       this.dfaApplicationMainMapping.mapDFAApplicationMain(application);  
 
       // 2024-10-11 EMCRI-809 waynezen; force Application Details & Contacts screen to update validators
-      if (component == 'application-details') {
-        let theform = this.formCreationService.applicationDetailsForm.value;
-        theform.updateValueAndValidity();
-        // 2024-10-11 EMCRI-809 waynezen; ignore validation failures when the form is disabled
-        this.applicationDetailsValid = (theform.disabled) ? true : theform.valid;
-      }
-      if (component == 'contacts') {
-        let theform = this.formCreationService.contactsForm.value;
-        this.contactsValid = theform.valid;
-      }
+      // Modified the logic by removing if conditions as save button doesn't display
+      let appForm = this.formCreationService.applicationDetailsForm.value;
+      appForm.updateValueAndValidity();
+      this.applicationDetailsValid = (appForm.disabled) ? true : appForm.valid;
+
+      let contactForm = this.formCreationService.contactsForm.value;
+      this.contactsValid = contactForm.valid;
 
       this.dfaApplicationMainStepper.selected.completed = true;
       //this.submitFile();
