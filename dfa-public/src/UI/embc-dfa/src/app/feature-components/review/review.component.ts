@@ -142,12 +142,12 @@ export class ReviewComponent implements OnInit {
     }
 
     // 2024-10-11 EMCRI-809 waynezen; subscribe to event when cacheService.set('dfa-application-main')
-    this.dfaApplicationMainDataService.dfaApplicationMainCachedEvent.subscribe((verifiedornot) => {
-      if (verifiedornot) {
-        let data = this.dfaApplicationMainDataService.getDFAApplicationMain();
-        this.noCauseOfDamageError = this.validateFormCauseOfDamage(data);
-      }
-    });
+    //this.dfaApplicationMainDataService.dfaApplicationMainCachedEvent.subscribe((verifiedornot) => {
+    //  if (verifiedornot) {
+    //    let data = this.dfaApplicationMainDataService.getDFAApplicationMain();
+    //    this.noCauseOfDamageError = this.validateFormCauseOfDamage(data);
+    //  }
+    //});
     // 2024-10-11 EMCRI-809 waynezen; subscribe to event when Other Contacts grid is changed
     this.dfaApplicationMainDataService.otherContactsDataChangedEvent.subscribe((changed) => {
       if (changed) {
@@ -321,7 +321,8 @@ export class ReviewComponent implements OnInit {
 
   // 2024-10-11 EMCRI-809 waynezen; duplicated logic from application-details.component
   private validateFormCauseOfDamage(data: DfaApplicationMain): boolean {
-    if (data.applicationDetails.stormDamage !== true &&
+    this.formCreationService.applicationDetailsForm.value.get('stormDamage').value;
+    if (this.formCreationService.applicationDetailsForm.value.get('stormDamage').value !== true &&
       data.applicationDetails.landslideDamage !== true &&
       data.applicationDetails.otherDamage !== true &&
       data.applicationDetails.floodDamage !== true &&

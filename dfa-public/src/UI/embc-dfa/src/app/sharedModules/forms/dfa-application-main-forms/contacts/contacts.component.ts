@@ -184,6 +184,7 @@ export default class ContactsComponent implements OnInit, OnDestroy {
       .getOtherContactsForm()
       .subscribe((otherContacts) => {
         this.otherContactsForm = otherContacts;
+        this.dfaApplicationMainDataService.otherContacts = null;
       });
 
       this.otherContactsForm
