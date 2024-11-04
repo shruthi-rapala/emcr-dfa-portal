@@ -142,7 +142,7 @@
                 <tr>
                   <td class="record-title"> Date of Damage From </td>
                   <td> <span
-                      [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.damageFromDate || !(formCreationService.applicationDetailsForm$ | async)?.value?.damageToDate} ">
+                      [ngClass]="{'missing-info': !(formCreationService.applicationDetailsForm$ | async)?.value?.damageFromDate} ">
                       {{
                       (formCreationService.applicationDetailsForm$ | async)?.value
                       .damageFromDate ? ('Starts ' + ((formCreationService.applicationDetailsForm$ |
@@ -181,16 +181,13 @@
                 <tr>
                   <td class="record-title"> Cause of Damage </td>
                   <td>
-                    <!-- 2024-10-11 EMCRI-809 waynezen; duplicated noCauseOfError validator for Review form -->
-                    <div class="col-md-3" *ngIf="noCauseOfDamageError !== true">
+                    
+                    <span
+                      [ngClass]="{'missing-info': !(causeOfDamage)}">
                       {{
-                      causeOfDamage
+                      causeOfDamage ? causeOfDamage : "At least one cause of damage is required"
                       }}
-                    </div>
-                    <!-- 2024-10-11 EMCRI-809 waynezen; duplicated noCauseOfError validator for Review form -->
-                    <div class="col-md-3" *ngIf="noCauseOfDamageError == true">
-                      <span style="color:red">At least one cause of damage is required.</span>
-                    </div>
+                    </span>
                   </td>
                 </tr>
                 <tr>

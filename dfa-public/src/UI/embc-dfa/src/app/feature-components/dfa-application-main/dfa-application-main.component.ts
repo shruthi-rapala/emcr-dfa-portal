@@ -153,7 +153,7 @@ export class DFAApplicationMainComponent
     const appInterval = setTimeout(function () {
       appThis.isLoading = false;
       appStopFunction();
-    }, 2000);
+    }, 3000);
 
     function appStopFunction() {
       clearInterval(appInterval);
@@ -197,6 +197,14 @@ export class DFAApplicationMainComponent
     
     let contactForm = this.formCreationService.contactsForm.value;
     this.contactsValid = contactForm.valid;
+
+    if (appForm && event.previouslySelectedIndex == 0) {
+      this.setFormData('application-details');
+    }
+
+    if (contactForm && event.previouslySelectedIndex == 1) {
+      this.setFormData('contacts');
+    }
   }
 
   /**
@@ -390,18 +398,22 @@ export class DFAApplicationMainComponent
   }
 
   saveAndBackToDashboard() {
+    
+    this.isLoading = !this.isLoading;
     this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
     let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
     application.applicationDetails.appStatus = ApplicationStageOptionSet.DRAFT;
     this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
+      this.isLoading = !this.isLoading;
       this.returnToDashboard();
     },
       error => {
+        this.isLoading = !this.isLoading;
       console.error(error);
       document.location.href = 'https://dfa.gov.bc.ca/error.html';
       });
 
-    this.returnToDashboard();
+    //this.returnToDashboard();
   }
 
   returnToDashboard() {

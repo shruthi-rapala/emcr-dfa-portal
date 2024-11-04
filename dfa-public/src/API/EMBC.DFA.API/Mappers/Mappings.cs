@@ -177,8 +177,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_causeofdamagelandslide2, opts => opts.MapFrom(s => s.applicationDetails.landslideDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageother2, opts => opts.MapFrom(s => s.applicationDetails.otherDamage == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No))
                 .ForMember(d => d.dfa_causeofdamageloss, opts => opts.MapFrom(s => s.applicationDetails.otherDamageText))
-                .ForMember(d => d.dfa_applicantsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeOptionSet(s.applicationDetails.applicantSubtype)))
-                .ForMember(d => d.dfa_applicantlocalgovsubtype, opts => opts.MapFrom(s => ConvertStringToApplicantSubTypeSubOptionSet(s.applicationDetails.applicantSubSubtype)))
+                .ForMember(d => d.dfa_applicantsubtype, opts => opts.MapFrom(s => s.applicationDetails.applicantSubtype != null ? ConvertStringToApplicantSubTypeOptionSet(s.applicationDetails.applicantSubtype) : (int?)null))
+                .ForMember(d => d.dfa_applicantlocalgovsubtype, opts => opts.MapFrom(s => s.applicationDetails.applicantSubSubtype != null ? ConvertStringToApplicantSubTypeSubOptionSet(s.applicationDetails.applicantSubSubtype) : (int?)null))
                 .ForMember(d => d.dfa_applicantothercomments, opts => opts.MapFrom(s => s.applicationDetails.subtypeOtherDetails))
                 .ForMember(d => d.dfa_dfaapplicantsubtypecomments, opts => opts.MapFrom(s => s.applicationDetails.subtypeDFAComment))
                 .ForMember(d => d.dfa_createdonportal, opts => opts.MapFrom(s => true))
@@ -290,8 +290,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.guidanceSupport, opts => opts.MapFrom(s => s.dfa_toreceivesupportaccessingdamage == (int)YesNoOptionSet.Yes ? true : (s.dfa_toreceivesupportaccessingdamage == (int)YesNoOptionSet.No ? false : (bool?)null)))
                 .ForMember(d => d.otherDamageText, opts => opts.MapFrom(s => s.dfa_causeofdamageloss))
 
-                .ForMember(d => d.applicantSubtype, opts => opts.MapFrom(s => GetEnumDescription((ApplicantSubtypeCategoriesOptionSet)s.dfa_applicantsubtype).ToString()))
-                .ForMember(d => d.applicantSubSubtype, opts => opts.MapFrom(s => GetEnumDescription((ApplicantSubtypeSubCategoriesOptionSet)s.dfa_applicantlocalgovsubtype).ToString()))
+                .ForMember(d => d.applicantSubtype, opts => opts.MapFrom(s => s.dfa_applicantsubtype != null ? GetEnumDescription((ApplicantSubtypeCategoriesOptionSet)s.dfa_applicantsubtype).ToString() : null))
+                .ForMember(d => d.applicantSubSubtype, opts => opts.MapFrom(s => s.dfa_applicantlocalgovsubtype != null ? GetEnumDescription((ApplicantSubtypeSubCategoriesOptionSet)s.dfa_applicantlocalgovsubtype).ToString() : null))
                 .ForMember(d => d.subtypeOtherDetails, opts => opts.MapFrom(s => s.dfa_applicantothercomments))
                 .ForMember(d => d.estimatedPercent, opts => opts.MapFrom(s => s.dfa_estimated))
                 .ForMember(d => d.subtypeDFAComment, opts => opts.MapFrom(s => s.dfa_dfaapplicantsubtypecomments))
@@ -915,38 +915,38 @@ namespace EMBC.DFA.API.Mappers
             else return ApplicantSubtypeCategories.Other;
         }
 
-        public ApplicantSubtypeCategoriesOptionSet ConvertStringToApplicantSubTypeOptionSet(string subtype)
+        public int ConvertStringToApplicantSubTypeOptionSet(string subtype)
         {
             switch (subtype)
             {
                 case "First Nations Community":
                     {
-                        return ApplicantSubtypeCategoriesOptionSet.FirstNationCommunity;
+                        return Convert.ToInt32(ApplicantSubtypeCategoriesOptionSet.FirstNationCommunity);
                     }
                 case "Municipality":
                     {
-                        return ApplicantSubtypeCategoriesOptionSet.Municipality;
+                        return Convert.ToInt32(ApplicantSubtypeCategoriesOptionSet.Municipality);
                     }
                 case "Regional District":
                     {
-                        return ApplicantSubtypeCategoriesOptionSet.RegionalDistrict;
+                        return Convert.ToInt32(ApplicantSubtypeCategoriesOptionSet.RegionalDistrict);
                     }
                 case "Other Local Government Body":
                     {
-                        return ApplicantSubtypeCategoriesOptionSet.OtherLocalGovernmentBody;
+                        return Convert.ToInt32(ApplicantSubtypeCategoriesOptionSet.OtherLocalGovernmentBody);
                     }
                 case "Other":
                     {
-                        return ApplicantSubtypeCategoriesOptionSet.Other;
+                        return Convert.ToInt32(ApplicantSubtypeCategoriesOptionSet.Other);
                     }
                 default:
                     {
-                        return ApplicantSubtypeCategoriesOptionSet.FirstNationCommunity;
+                        return Convert.ToInt32(ApplicantSubtypeCategoriesOptionSet.FirstNationCommunity);
                     }
             }
         }
 
-        public ApplicantSubtypeSubCategoriesOptionSet ConvertStringToApplicantSubTypeSub(string subtype)
+        public int ConvertStringToApplicantSubTypeSub(string subtype)
         {
             ApplicantSubtypeSubCategories subType = ApplicantSubtypeSubCategories.Any;
             System.Enum.TryParse(subtype, out subType);
@@ -956,69 +956,69 @@ namespace EMBC.DFA.API.Mappers
             return ConvertStringToApplicantSubTypeSubOptionSet(subtype);
         }
 
-        public ApplicantSubtypeSubCategoriesOptionSet ConvertStringToApplicantSubTypeSubOptionSet(string subtype)
+        public int ConvertStringToApplicantSubTypeSubOptionSet(string subtype)
         {
             switch (subtype)
             {
                 case "an improvement district as defined in the Local Government Act":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.ImprovementDistrict;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.ImprovementDistrict);
                     }
                 case "a local area as defined in the Local Services Act":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.LocalArea;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.LocalArea);
                     }
                 case "a greater board as defined in the Community Charter or any incorporated board that provides similar services and is incorporated by letters patent":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.GreaterBoard;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.GreaterBoard);
                     }
                 case "a board of variance established under Division 15 of Part 14 of the Local Government Act or section 572 of the Vancouver Charter":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.BoardofVariance;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.BoardofVariance);
                     }
                 case "the trust council, the executive committee, a local trust committee and the Islands Trust Conservancy, as these are defined in the Islands Trust Act":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.TrustCouncil;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.TrustCouncil);
                     }
                 case "the Okanagan Basin Water Board":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.OkanaganBasinWaterBoard;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.OkanaganBasinWaterBoard);
                     }
                 case "a water users' community as defined in section 1 (1) of the Water Users' Communities Act":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.WaterUsersCommunity;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.WaterUsersCommunity);
                     }
                 case "the Okanagan-Kootenay Sterile Insect Release Board":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.OkanaganKootenaySterileInsectReleaseBoard;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.OkanaganKootenaySterileInsectReleaseBoard);
                     }
                 case "a municipal police board established under section 23 of the Police Act":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.MunicipalPoliceBoard;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.MunicipalPoliceBoard);
                     }
                 case "a library board as defined in the Library Act":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.LibraryBoard;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.LibraryBoard);
                     }
                 case "any board, committee, commission, panel, agency or corporation that is created or owned by a body referred to in paragraphs (a) to (m) and all the members or officers of which are appointed or chosen by or under the authority of that body":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.Any;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.Any);
                     }
                 case "a board of trustees established under section 37 of the Cremation, Interment and Funeral Services Act":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.BoardofTrustees;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.BoardofTrustees);
                     }
                 case "the South Coast British Columbia Transportation Authority":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.SouthCoast;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.SouthCoast);
                     }
                 case "the Park Board referred to in section 485 of the Vancouver Charter":
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.ParkBoard;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.ParkBoard);
                     }
                 default:
                     {
-                        return ApplicantSubtypeSubCategoriesOptionSet.ImprovementDistrict;
+                        return Convert.ToInt32(ApplicantSubtypeSubCategoriesOptionSet.ImprovementDistrict);
                     }
             }
         }

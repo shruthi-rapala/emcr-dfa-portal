@@ -388,6 +388,7 @@ namespace EMBC.DFA.API.Controllers
                 dfaApplicationMain.Id = applicationId;
                 dfaApplicationMain.applicationDetails = mapper.Map<ApplicationDetails>(dfa_appapplication);
                 ApplicationContacts appContact = new ApplicationContacts();
+                appContact = mapper.Map<ApplicationContacts>(dfa_appapplication);
 
                 // 2024-09-24 EMCRI-663; get primary contact info
                 if (dfa_appapplication?._dfa_applicant_value != null)
