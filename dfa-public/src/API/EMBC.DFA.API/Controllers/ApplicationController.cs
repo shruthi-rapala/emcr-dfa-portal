@@ -165,18 +165,20 @@ namespace EMBC.DFA.API.Controllers
             }
 
             // 2024-10-29 EMCRI-922 waynezen; check if a verified Primary Contact exists
-            if (contactId != null && primeContactIn?.dfa_bceiduserguid != null)
-            {
-                var confirmedPrimContact = await handler.HandleGetVerifiedPrimaryContactAsync(primeContactIn.dfa_bceiduserguid);
-                if (confirmedPrimContact == null)
-                {
-                    mappedApplication.verified_contact_id = null;
-                }
-                else
-                {
-                    mappedApplication.verified_contact_id = confirmedPrimContact.contactid;
-                }
-            }
+            // 2024-10-29 EMCRI-922 waynezen; during UAT testing, they decided to NOT set confirmed primary contact from Portal
+            mappedApplication.verified_contact_id = null;
+            //if (contactId != null && primeContactIn?.dfa_bceiduserguid != null)
+            //{
+            //    var confirmedPrimContact = await handler.HandleGetVerifiedPrimaryContactAsync(primeContactIn.dfa_bceiduserguid);
+            //    if (confirmedPrimContact == null)
+            //    {
+            //        mappedApplication.verified_contact_id = null;
+            //    }
+            //    else
+            //    {
+            //        mappedApplication.verified_contact_id = confirmedPrimContact.contactid;
+            //    }
+            //}
 
             var result = await handler.HandleApplicationUpdate(mappedApplication, null);
 
