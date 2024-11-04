@@ -161,14 +161,7 @@ const routes: Routes = [
       import('./feature-components/outage/outage.module').then(
         (m) => m.OutageModule
       )
-  },
-  {
-    path: 'error',
-    loadChildren: () =>
-      import('./feature-components/outage/error.module').then(
-        (m) => m.ErrorModule
-      )
-  },
+  }
 
   // {
   //   path: 'api/contacts/login',

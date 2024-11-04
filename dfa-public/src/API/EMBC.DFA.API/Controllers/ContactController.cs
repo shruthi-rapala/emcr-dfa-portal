@@ -85,6 +85,22 @@ namespace EMBC.DFA.API.Controllers
             }
         }
 
+        [HttpGet("isauthenticated")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<bool> GetAuthenticatedStatus()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return Ok(false);
+            }
+        }
+
         /// <summary>
         /// Gets the same BCeID user info as getlogin, but also ensures that a dfa_bceidusers record exists
         /// for the current logged in user.
