@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
+import { ContactService } from 'src/app/core/api/services';
 import { DfaApplicationStart, ApplicationContacts } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
 import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, ApplicationDetails, Contacts, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
@@ -50,7 +51,8 @@ export class DFAApplicationMainDataService {
     private cacheService: CacheService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private fileUploadsService: AttachmentService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private contactService: ContactService,
   ) {
   }
   public get requiredDocuments(): Array<string> {
@@ -205,26 +207,38 @@ export class DFAApplicationMainDataService {
   }
 
   public setBusiness(busName: string): void {
+    this.cacheService.set('business-number', busName);
     this._business = busName;
   }
 
   public getBusiness(): string {
+    if (!this._business) {
+      this._business = this.cacheService.get('business-number');
+    }
     return this._business;
   }
 
   public setDoingBusinessAs(busName: string): void {
+    this.cacheService.set('doingbusinessas', busName);
     this._doingBusinessAs = busName;
   }
 
   public getDoingBusinessAs(): string {
+    if (!this._doingBusinessAs) {
+      this._doingBusinessAs = this.cacheService.get('doingbusinessas');
+    }
     return this._doingBusinessAs;
   }
 
   public setBusinessNumber(busNumber: string): void {
+    this.cacheService.set('businessnumber', busNumber);
     this._businessNumber = busNumber;
   }
 
   public getBusinessNumber(): string {
+    if (!this._businessNumber) {
+      this._businessNumber = this.cacheService.get('businessnumber');
+    }
     return this._businessNumber;
   }
 
