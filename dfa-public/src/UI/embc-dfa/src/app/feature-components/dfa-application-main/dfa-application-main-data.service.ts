@@ -1,6 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
-import { ContactService } from 'src/app/core/api/services';
 import { DfaApplicationStart, ApplicationContacts } from 'src/app/core/api/models';
 import { DFAApplicationStartDataService } from '../dfa-application-start/dfa-application-start-data.service';
 import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, ApplicationDetails, Contacts, SupportingDocuments, SignAndSubmit, FullTimeOccupant, OtherContact, SecondaryApplicant, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
@@ -52,7 +51,6 @@ export class DFAApplicationMainDataService {
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private fileUploadsService: AttachmentService,
     private applicationService: ApplicationService,
-    private contactService: ContactService,
   ) {
   }
   public get requiredDocuments(): Array<string> {
