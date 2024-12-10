@@ -172,7 +172,7 @@ namespace EMBC.Utilities.Messaging.Grpc
                         if (options.AuthorizationEnabled && !string.IsNullOrEmpty(opts.MetadataAddress))
                         {
                             // load the oidc config from the oauth server
-                            opts.OidcConfig = OpenIdConnectConfigurationRetriever.GetAsync(opts.MetadataAddress, CancellationToken.None).GetAwaiter().GetResult();
+                            //opts.OidcConfig = OpenIdConnectConfigurationRetriever.GetAsync(opts.MetadataAddress, CancellationToken.None).GetAwaiter().GetResult();
                         }
                         else
                         {

@@ -1,0 +1,83 @@
+.review-heading {
+    font-weight: 700;
+    font-style: normal;
+    font-size: 30px;
+    color: #169bd5;
+}
+
+.card-heading {
+  align-content: center;
+  color: black;
+}
+
+.review-profile-head{
+    margin: 0px !important;
+}
+
+.edit-image img:last-child {
+    display: none;
+}
+
+.edit-image:hover img:last-child {
+    display: block;
+}
+
+.edit-image:hover img:first-child {
+    display: none;
+}
+
+.info-detail {
+    display: contents;
+}
+
+.wrap-text {
+    word-wrap: break-word;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
+
+.contentStyle {
+  border: 1px solid lightgrey;
+  padding: 10px
+}
+
+.missing-info {
+  color: red;
+}
+table {
+    border-collapse: collapse;
+}
+
+.contacts td, th {
+    border: 1px solid #1d1212;
+    padding: 0.5rem;
+    text-align: left;
+}
+td {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+u {
+    text-decoration: underline;
+}
+.record-title {
+    width: 320px;
+    padding-left: 5px;
+    color: black;
+}
+.contacts {
+    margin: 0 auto;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.contacts-container {
+    padding-bottom: 5px;
+}
+.contact-title{
+    font-size: 21px;
+}
+table{
+    width: 100%;
+}

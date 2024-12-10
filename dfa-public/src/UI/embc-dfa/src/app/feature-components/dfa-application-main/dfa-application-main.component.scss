@@ -1,0 +1,20 @@
+.save-button {
+    width: 120px;
+    height:40px !important;
+    vertical-align: middle;
+}
+
+.infoHeader {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/*:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none;
+}*/
+
+@media screen and (max-width: 768px) {
+    ::ng-deep .mat-step-label {
+        display: none !important;
+    }
+}
