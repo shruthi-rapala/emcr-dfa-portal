@@ -7,14 +7,12 @@ import { NgStyle } from '@angular/common';
 @Component({
   selector: 'app-environment-banner',
   templateUrl: './environment-banner.component.html',
-  styleUrls: ['./environment-banner.component.scss'],
+  styleUrls: ['./environment-banner.component.scss']
 })
 export class EnvironmentBannerComponent implements OnInit {
-  environment: EnvironmentInformation;
+  @Input() environment: EnvironmentInformation;
 
-  constructor(private envBannerService: EnvironmentBannerService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.environment = this.envBannerService.getEnvironmentBanner();
-  }
+  ngOnInit(): void {}
 }

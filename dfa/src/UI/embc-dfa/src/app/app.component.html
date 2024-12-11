@@ -4,9 +4,7 @@
     (closeEvent)="closeOutageBanner($event)"
   ></app-outage-banner>
 
-  @if (environment !== null && environment !== undefined) {
-    <app-environment-banner [environment]="environment"></app-environment-banner>
-  }
+  <app-environment-banner *ngIf="environment" [environment]="environment"></app-environment-banner>
 
   <app-header
     [ngStyle]="
