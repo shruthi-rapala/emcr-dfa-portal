@@ -301,6 +301,7 @@ export class DFAApplicationMainComponent
    * @param index step index
    */
   currentStep(index: number): void {
+    console.log('currentStep', index);
     this.loadStepForm(index);
     this.cd.detectChanges();
   }
@@ -425,6 +426,7 @@ export class DFAApplicationMainComponent
    * @param component Name of the component
    */
   setFormData(component: string): void {
+    console.log('setFormData', component);
     switch (component) {
       case 'damaged-property-address':
         this.dfaApplicationMainDataService.damagedPropertyAddress.addressLine1 = this.form.get('addressLine1').value;
@@ -504,7 +506,7 @@ export class DFAApplicationMainComponent
    * @param index Step index
    */
   loadStepForm(index: number): void {
-    console.log('loadStepForm', this.steps);
+    console.log('loadStepForm', index);
     switch (index) {
       case 0:
         this.form$ = this.formCreationService
@@ -547,6 +549,7 @@ export class DFAApplicationMainComponent
           });
         break;
       case 7:
+      case 8:
         this.form$ = this.formCreationService
           .getSignAndSubmitForm()
           .subscribe((signAndSubmit)=> {
