@@ -87,6 +87,7 @@ export class DfaDashProjectComponent implements OnInit {
           var initialList = lstData;
           lstDataUnModified.push(initialList);
           lstData.forEach(objApp => {
+            objApp.isHidden = false;
             var isFound = false;
             var jsonVal = JSON.stringify(this.items);
             objApp.isErrorInStatus = false;
