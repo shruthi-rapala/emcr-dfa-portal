@@ -22,10 +22,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class DynamicsGateway : IDynamicsGateway
     {
         private readonly CRMWebAPI api;
-
-        public DynamicsGateway(CRMWebAPI api)
+        private readonly FeatureFlags featureFlags;
+        public DynamicsGateway(CRMWebAPI api, FeatureFlags featureFlags)
         {
             this.api = api;
+            this.featureFlags = featureFlags;
         }
 
         public async Task<IEnumerable<dfa_appcontact>> GetContactsAsync()
@@ -148,8 +149,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-               await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", dfa_signature);
-               return "signatureadded";
+                await api.ExecuteAction("dfa_DFAPortalAnnotationCreation", dfa_signature);
+                return "signatureadded";
             }
             catch (System.Exception ex)
             {
@@ -351,10 +352,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "incidentid", "ticketnumber", "dfa_datefileclosed"
                     }
                 });
-
-                var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
+                if (featureFlags.DFA_APPEALCLOSEDDATE.ENABLED)
                 {
-                    Select = new[]
+                    var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
+                    {
+                        Select = new[]
                     {
                         "dfa_appapplicationid", "dfa_applicanttype",
                         "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext",
@@ -362,58 +364,122 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_applicationstatusportal", "dfa_farmtype", "dfa_smallbusinesstype", "dfa_accountlegalname",
                         "dfa_appealcloseddate"
                     },
-                    Filter = $"_dfa_applicant_value eq {profileId}"
-                    //Expand = new CRMExpandOptions[]
-                    //{
-                    //    new CRMExpandOptions()
-                    //    {
-                    //        Property = "_dfa_eventid_value",
-                    //        Select = new string[] { "dfa_eventid", "dfa_id" }
-                    //    }
-                    //}
-                });
+                        Filter = $"_dfa_applicant_value eq {profileId}"
+                        //Expand = new CRMExpandOptions[]
+                        //{
+                        //    new CRMExpandOptions()
+                        //    {
+                        //        Property = "_dfa_eventid_value",
+                        //        Select = new string[] { "dfa_eventid", "dfa_id" }
+                        //    }
+                        //}
+                    });
 
-                var lstApps = (from objApp in list.List
-                               join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
-                               from objAppEvent in appEvent.DefaultIfEmpty()
-                               join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
-                               from objCaseEvent in appCase.DefaultIfEmpty()
-                               select new dfa_appapplication
-                               {
-                                   dfa_appapplicationid = objApp.dfa_appapplicationid,
-                                   dfa_applicanttype = objApp.dfa_applicanttype,
-                                   dfa_dateofdamage = objApp.dfa_dateofdamage,
-                                   dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
-                                   dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                                   dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
-                                   dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
-                                   dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
-                                   dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
-                                   dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
-                                   createdon = objApp.createdon,
-                                   dfa_farmtype = objApp.dfa_farmtype,
-                                   dfa_smallbusinesstype = objApp.dfa_smallbusinesstype,
-                                   dfa_accountlegalname = objApp.dfa_accountlegalname,
-                                   dfa_appealcloseddate = objApp.dfa_appealcloseddate,
-                               }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
+                    var lstApps = (from objApp in list.List
+                                   join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
+                                   from objAppEvent in appEvent.DefaultIfEmpty()
+                                   join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
+                                   from objCaseEvent in appCase.DefaultIfEmpty()
+                                   select new dfa_appapplication
+                                   {
+                                       dfa_appapplicationid = objApp.dfa_appapplicationid,
+                                       dfa_applicanttype = objApp.dfa_applicanttype,
+                                       dfa_dateofdamage = objApp.dfa_dateofdamage,
+                                       dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                                       dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                                       dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
+                                       dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
+                                       dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
+                                       dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
+                                       dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
+                                       createdon = objApp.createdon,
+                                       dfa_farmtype = objApp.dfa_farmtype,
+                                       dfa_smallbusinesstype = objApp.dfa_smallbusinesstype,
+                                       dfa_accountlegalname = objApp.dfa_accountlegalname,
+                                       dfa_appealcloseddate = objApp.dfa_appealcloseddate,
+                                   }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
 
-                //from objEvent in lstEvents.List
-                //            where objEvent.dfa_eventid == objApp._dfa_eventid_value
-                //            from objCase in lstCases.List
-                //            where objCase.incidentid == objApp._dfa_casecreatedid_value into reslist
-                //            from p in ps_jointable.DefaultIfEmpty()
-                //            select new dfa_appapplication
-                //            {
-                //                dfa_appapplicationid = objApp.dfa_appapplicationid,
-                //                dfa_applicanttype = objApp.dfa_applicanttype,
-                //                dfa_dateofdamage = objApp.dfa_dateofdamage,
-                //                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
-                //                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                //                dfa_event = objEvent.dfa_id,
-                //                dfa_casenumber = objCase.ticketnumber
-                //            }).AsEnumerable();
+                    //from objEvent in lstEvents.List
+                    //            where objEvent.dfa_eventid == objApp._dfa_eventid_value
+                    //            from objCase in lstCases.List
+                    //            where objCase.incidentid == objApp._dfa_casecreatedid_value into reslist
+                    //            from p in ps_jointable.DefaultIfEmpty()
+                    //            select new dfa_appapplication
+                    //            {
+                    //                dfa_appapplicationid = objApp.dfa_appapplicationid,
+                    //                dfa_applicanttype = objApp.dfa_applicanttype,
+                    //                dfa_dateofdamage = objApp.dfa_dateofdamage,
+                    //                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                    //                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                    //                dfa_event = objEvent.dfa_id,
+                    //                dfa_casenumber = objCase.ticketnumber
+                    //            }).AsEnumerable();
 
-                return lstApps;
+                    return lstApps;
+                }
+                else
+                {
+                    var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                            "dfa_appapplicationid", "dfa_applicanttype",
+                            "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext",
+                            "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon",
+                            "dfa_applicationstatusportal", "dfa_farmtype", "dfa_smallbusinesstype", "dfa_accountlegalname"
+                        },
+                        Filter = $"_dfa_applicant_value eq {profileId}"
+                        //Expand = new CRMExpandOptions[]
+                        //{
+                        //    new CRMExpandOptions()
+                        //    {
+                        //        Property = "_dfa_eventid_value",
+                        //        Select = new string[] { "dfa_eventid", "dfa_id" }
+                        //    }
+                        //}
+                    });
+
+                    var lstApps = (from objApp in list.List
+                                   join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
+                                   from objAppEvent in appEvent.DefaultIfEmpty()
+                                   join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
+                                   from objCaseEvent in appCase.DefaultIfEmpty()
+                                   select new dfa_appapplication
+                                   {
+                                       dfa_appapplicationid = objApp.dfa_appapplicationid,
+                                       dfa_applicanttype = objApp.dfa_applicanttype,
+                                       dfa_dateofdamage = objApp.dfa_dateofdamage,
+                                       dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                                       dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                                       dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
+                                       dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
+                                       dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
+                                       dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
+                                       dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
+                                       createdon = objApp.createdon,
+                                       dfa_farmtype = objApp.dfa_farmtype,
+                                       dfa_smallbusinesstype = objApp.dfa_smallbusinesstype,
+                                       dfa_accountlegalname = objApp.dfa_accountlegalname,
+                                   }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
+
+                    //from objEvent in lstEvents.List
+                    //            where objEvent.dfa_eventid == objApp._dfa_eventid_value
+                    //            from objCase in lstCases.List
+                    //            where objCase.incidentid == objApp._dfa_casecreatedid_value into reslist
+                    //            from p in ps_jointable.DefaultIfEmpty()
+                    //            select new dfa_appapplication
+                    //            {
+                    //                dfa_appapplicationid = objApp.dfa_appapplicationid,
+                    //                dfa_applicanttype = objApp.dfa_applicanttype,
+                    //                dfa_dateofdamage = objApp.dfa_dateofdamage,
+                    //                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                    //                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                    //                dfa_event = objEvent.dfa_id,
+                    //                dfa_casenumber = objCase.ticketnumber
+                    //            }).AsEnumerable();
+
+                    return lstApps;
+                }
             }
             catch (System.Exception ex)
             {
@@ -614,7 +680,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             }
             catch (System.Exception ex)
             {
-              throw new Exception($"Failed to update/insert/delete clean up log item {ex.Message}", ex);
+                throw new Exception($"Failed to update/insert/delete clean up log item {ex.Message}", ex);
             }
 
             return string.Empty;
@@ -708,7 +774,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Select = new[]
                     {
                         "dfa_appdocumentlocationsid", "_dfa_applicationid_value", "dfa_name", "dfa_description", "createdon", "dfa_documenttype", "dfa_modifiedby", "dfa_requireddocumenttype"
-                    }, Filter = $"_dfa_applicationid_value eq {applicationIdString}"
+                    },
+                    Filter = $"_dfa_applicationid_value eq {applicationIdString}"
                 });
 
                 // TODO: delete this loop and replace with actual retrieval of required document type above
@@ -728,25 +795,50 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                // TODO: when new event name field is added, retrieve the new field
-                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                if (featureFlags.DFA_EVENTTYPE.ENABLED)
                 {
-                    Select = new[]
+                    // TODO: when new event name field is added, retrieve the new field
+                    var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
                     {
-                        "dfa_eventid", "dfa_id", "statuscode", "dfa_90daydeadlinenew", "dfa_eventtype"
+                        Select = new[]
+                        {
+                            "dfa_eventid", "dfa_id", "statuscode", "dfa_90daydeadlinenew", "dfa_eventtype"
+                        }
+                    });
+
+                    if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
+                    {
+                        var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1"
+                                                && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
+                                                    || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())).ToList();
+
+                        var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= DateTime.Now).Count();
+                        if (deadline90days > 0)
+                        {
+                            return deadline90days;
+                        }
                     }
-                });
-
-                if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
+                }
+                else
                 {
-                    var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1"
-                                            && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
-                                                || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())).ToList();
-
-                    var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= DateTime.Now).Count();
-                    if (deadline90days > 0)
+                    // TODO: when new event name field is added, retrieve the new field
+                    var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
                     {
-                        return deadline90days;
+                        Select = new[]
+                        {
+                            "dfa_eventid", "dfa_id", "statuscode", "dfa_90daydeadlinenew"
+                        }
+                    });
+
+                    if (lstEvents.List.Where(m => m.statuscode == "1").Count() > 0)
+                    {
+                        var lstActiveEvents = lstEvents.List.Where(m => m.statuscode == "1").ToList();
+
+                        var deadline90days = lstActiveEvents.Where(m => m.dfa_90daydeadlinenew != null && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= DateTime.Now).Count();
+                        if (deadline90days > 0)
+                        {
+                            return deadline90days;
+                        }
                     }
                 }
 
@@ -762,23 +854,44 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                // TODO: Retrieve appropriate geographical information
-                var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                if (featureFlags.DFA_EVENTTYPE.ENABLED)
                 {
-                    Select = new[]
+                    // TODO: Retrieve appropriate geographical information
+                    var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
                     {
-                        "dfa_eventid", "dfa_id", "statuscode", "dfa_startdate", "dfa_enddate", "dfa_90daydeadlinenew", "dfa_eventname", "dfa_eventtype"
-                    }
-                });
+                        Select = new[]
+                        {
+                            "dfa_eventid", "dfa_id", "statuscode", "dfa_startdate", "dfa_enddate", "dfa_90daydeadlinenew", "dfa_eventname", "dfa_eventtype"
+                        }
+                    });
 
-                var nowDate = DateTime.Now;
+                    var nowDate = DateTime.Now;
 
-                // open events are those active events where the 90 day deadline is now or in the future
-                return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null
-                    && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate
-                    && m.statuscode == "1"
-                    && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
-                                                || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString()));
+                    // open events are those active events where the 90 day deadline is now or in the future
+                    return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null
+                        && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate
+                        && m.statuscode == "1"
+                        && (m.dfa_eventtype == Convert.ToInt32(EventType.Private).ToString()
+                                                    || m.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString()));
+                }
+                else
+                {
+                    // TODO: Retrieve appropriate geographical information
+                    var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                            "dfa_eventid", "dfa_id", "statuscode", "dfa_startdate", "dfa_enddate", "dfa_90daydeadlinenew", "dfa_eventname"
+                        }
+                    });
+
+                    var nowDate = DateTime.Now;
+
+                    // open events are those active events where the 90 day deadline is now or in the future
+                    return lstEvents.List.Where(m => m.dfa_90daydeadlinenew != null
+                        && Convert.ToDateTime(m.dfa_90daydeadlinenew) >= nowDate
+                        && m.statuscode == "1");
+                }
             }
             catch (System.Exception ex)
             {
