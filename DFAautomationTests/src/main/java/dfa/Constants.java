@@ -14,6 +14,21 @@ public class Constants {
     public static final String 		DEV_Support     = "DEV_Support";
     public static final String 		TST_Support 	= "TST_Support";
     public static final String 		TRN_Support 	= "TRN_Support";
+    public static final String 		DEV_Public 	= "DEV_Public";
+    public static final String 		TST_Public 	= "TST_Public";
+    public static final String 		DEV_DynamicsPub 	= "DEV_DynamicsPub";
+    public static final String 		TST_DynamicsPub 	= "TST_DynamicsPub";
+    public static final String 		TRN_Public 	= "TRN_Public";
+    public static final String 		TRN_DynamicsPub 	= "TRN_DynamicsPub";
+    public static final String 		DEV_SupportDynamicsPub    = "DEV_SupportDynamicsPub";
+    public static final String 		DEV_SupportPub     = "DEV_SupportPub";
+    public static final String 		DEV_SandboxPub     = "DEV_SandboxPub";
+    public static final String 		DEV_SandboxDynamicsPub    = "DEV_SupportDynamicsPub";
+    public static final String 		TST_SupportPub     = "TST_SupportPub";
+    public static final String 		TST_SupportDynamicsPub    = "TST_SupportDynamicsPub";
+    public static final String 		TRN_SupportPub 	= "TRN_SupportPub";
+    public static final String 		TRN_SupportDynamicsPub    = "TRN_SupportDynamicsPub";
+
 
 
     //others
