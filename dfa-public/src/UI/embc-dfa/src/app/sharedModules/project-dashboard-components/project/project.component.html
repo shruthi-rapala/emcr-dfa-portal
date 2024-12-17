@@ -150,23 +150,24 @@
           </span>
         </div>
       </div>
+      
+      @if(applItem.stage == 'Approved' || applItem.stage == 'Approved with Exclusions') {
       <div style="padding-top: 16px; display: flex;" [hidden]="applItem.isHidden">
-  
-        <div class="col-md-2">
-          <span><b>Site Location - </b></span>
-        </div>
-        <div class="col-md-3 wrap-text">
-          <span>{{applItem.siteLocation }}</span>
-        </div>
-        <div class="col-md-2">
-          <span><b>Estimated Completion Date - </b></span>
-        </div>
-        <div class="col-md-2">
-          <span>{{ applItem.estimatedCompletionDate }}</span>
-        </div>
-        
+          <div class="col-md-2">
+            <span><b>Site Location - </b></span>
+          </div>
+          <div class="col-md-3 wrap-text">
+            <span>{{applItem.siteLocation }}</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Estimated Completion Date - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{ applItem.estimatedCompletionDate }}</span>
+          </div>
       </div>
       <div style="border-bottom: 1px solid lightgrey; padding-bottom: 16px; display: flex;" [hidden]="applItem.isHidden">
+        
         <div class="col-md-2">
           <span><b>EMCR Approved Amount -</b></span>
         </div>
@@ -180,6 +181,7 @@
           <span id="spnCauseOfDamage">{{ applItem.deadline18Month }}</span>
         </div>
       </div>
+    }
       <div style="width: 90%; min-width: 725px; display: flex; flex-direction: column;">
         <div class="col-md-3" style="margin-top: 20px;">
           <span *ngIf="applItem.isErrorInStatus == true" style="color: red;">Error in displaying status<br /></span>
