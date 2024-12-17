@@ -1,5 +1,5 @@
 import dfa.CommonUtils;
-import dfa.WebDriverManager;
+import dfa.CustomWebDriverManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -19,23 +19,24 @@ public class Login {
     private static String bceidPASSWORD = System.getenv("PASSWORD_BCEID");
 
 
-/*    @After
+    @After
     public void tearDown() {
         driver.close();
         driver.quit();
     }
+
     @AfterClass
     public static void afterClass() {
-        WebDriverManager.instance = null;
-    }*/
+        CustomWebDriverManager.instance = null;
+    }
 
 
     @Test
     public void test() throws Exception {
-        driver = WebDriverManager.getDriver();
-        WebDriverWait driverWait = WebDriverManager.getDriverWait();
-        WebElement element = WebDriverManager.getElement();
-        WebDriverManager.getElements();
+        driver = CustomWebDriverManager.getDriver();
+        WebDriverWait driverWait = CustomWebDriverManager.getDriverWait();
+        WebElement element = CustomWebDriverManager.getElement();
+        CustomWebDriverManager.getElements();
 
         CommonUtils.login();
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -55,12 +56,10 @@ public class Login {
         element.sendKeys(bceidPASSWORD);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("submit-btn")));
         element.click();
-//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnSubmit")));
-//        element.click();
 
         //Display notice of Collention
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'This page is for homeowners and residential tenants.')]")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'This page is for homeowners, residential tenants, small businesses, farms, and charitable')]")));
 
     }
 }

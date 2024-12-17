@@ -3,13 +3,16 @@ dfa\ConcurrentSuite.class
 dfa\Constants.class
 dfa\ConcurrentSuite$2.class
 dfa\ConcurrentJunitRunner$NamedThreadFactory.class
-dfa\WebDriverManager.class
 dfa\Atest.class
 dfa\ConcurrentJunitRunner.class
 dfa\Atest$ATest.class
 dfa\ConcurrentSuite$1.class
 dfa\Config.class
 dfa\WaitTool.class
+dfa\ElementInteractionHelper.class
+dfa\PageContentChecker.class
+dfa\ElementClickHelper.class
+dfa\CustomWebDriverManager.class
 dfa\CommonUtils.class
 dfa\Concurent$Concurrent.class
 dfa\Concurent.class

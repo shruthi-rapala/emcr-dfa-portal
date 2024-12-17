@@ -1,4 +1,4 @@
-import dfa.WebDriverManager;
+import dfa.CustomWebDriverManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -10,8 +10,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Iterator;
+import java.util.Set;
 
-import static dfa.WebDriverManager.getDriver;
+import static dfa.CustomWebDriverManager.getDriver;
 
 public class HomeOwnerWithnsurance {
 
@@ -25,22 +27,22 @@ public class HomeOwnerWithnsurance {
     }
     @AfterClass
     public static void afterClass() {
-        WebDriverManager.instance = null;
+        CustomWebDriverManager.instance = null;
     }
 
 
     @Test
     public void test() throws Exception {
         driver = getDriver();
-        WebDriverWait driverWait = WebDriverManager.getDriverWait();
-        WebElement element = WebDriverManager.getElement();
-        WebDriverManager.getElements();
+        WebDriverWait driverWait = CustomWebDriverManager.getDriverWait();
+        WebElement element = CustomWebDriverManager.getElement();
+        CustomWebDriverManager.getElements();
 
 
         Login login = new Login();
         login.test();
         Thread.sleep(4000);
-        CreateNewApplicationHomeowner createAp = new CreateNewApplicationHomeowner();
+        CreateNewApplicationHomeownerNoInsurance createAp = new CreateNewApplicationHomeownerNoInsurance();
         createAp.createAppl(element, driverWait, driver);
 
         //TO DO - Profile verification
@@ -57,9 +59,27 @@ public class HomeOwnerWithnsurance {
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='radio' and @value='Yes']")));
         js2.executeScript("arguments[0].click();", element);
         //Yes, cancel my app
+        // Switch to pop-up window
+        String parentWindowHandler = driver.getWindowHandle(); // Store your parent window
+        String subWindowHandler = null;
 
-        new WebDriverWait(driver, Duration.ofSeconds(30)).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Yes, Cancel my Application ')]"))).click();
+        Set<String> handles = driver.getWindowHandles(); // get all window handles
+        Iterator<String> iterator = handles.iterator();
+        while (iterator.hasNext()) {
+            subWindowHandler = iterator.next();
+        }
+        driver.switchTo().window(subWindowHandler); // switch to popup window
+        System.out.println("switched");
+        Thread.sleep(1000);
+        JavascriptExecutor js11 = (JavascriptExecutor) driver;
+        element = driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"mat-dialog-0\"]/app-dfa-eligibility-dialog/mat-dialog-actions/div[1]/button/span[1]")));
+        js11.executeScript("arguments[0].click();", element);
+        System.out.println("Don't Continue in pop-up clicked");
+
+        driver.switchTo().window(parentWindowHandler); // switch back to parent window
+        Thread.sleep(1000);
+
         new WebDriverWait(driver, Duration.ofSeconds(30)).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Create New Application ')]")));
 
