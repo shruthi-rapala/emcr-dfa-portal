@@ -25,6 +25,7 @@ import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-
 import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 
+
 @Component({
   selector: 'app-dfa-application-main',
   templateUrl: './dfa-application-main.component.html',
@@ -588,7 +589,10 @@ export class DFAApplicationMainComponent
       })
       .afterClosed()
       .subscribe((result) => {
-        if (result === 'confirm') {
+        console.log(result);
+        if (result === 'confirm') 
+        {
+          this.setFormData('sign-and-submit');
           let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
           this.dfaApplicationMainService.upsertApplication(application).subscribe(x => {
             this.isSubmitted = !this.isSubmitted;
@@ -596,6 +600,7 @@ export class DFAApplicationMainComponent
             this.dfaApplicationMainDataService.isSubmitted = true;
             this.dfaApplicationMainDataService.setViewOrEdit('view');
             this.vieworedit = 'view';
+           
           },
           error => {
             console.error(error);
