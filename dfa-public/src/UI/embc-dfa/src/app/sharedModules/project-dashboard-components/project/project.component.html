@@ -151,7 +151,7 @@
         </div>
       </div>
       
-      @if(applItem.stage == 'Approved' || applItem.stage == 'Approved with Exclusions') {
+      @if(applItem.stage == DecisionEnum.Approved || applItem.stage == DecisionEnum.ApprovedWithExclusions) {
       <div style="padding-top: 16px; display: flex;" [hidden]="applItem.isHidden">
           <div class="col-md-2">
             <span><b>Site Location - </b></span>

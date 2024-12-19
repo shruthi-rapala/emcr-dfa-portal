@@ -10,6 +10,7 @@ import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-a
 import { CurrentApplication, CurrentProject } from 'src/app/core/api/models';
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
+import { Decision } from 'src/app/models/decision.enum';
 
 @Component({
   selector: 'app-dfadashboard-project',
@@ -18,6 +19,8 @@ import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-m
 })
 
 export class DfaDashProjectComponent implements OnInit {
+
+  DecisionEnum = Decision;
 
   addNewItem(value: number) {
     this.appSessionService.currentProjectsCount.emit(value);
@@ -86,8 +89,7 @@ export class DfaDashProjectComponent implements OnInit {
           var lstDataUnModified = [];
           var initialList = lstData;
           lstDataUnModified.push(initialList);
-          lstData.forEach(objApp => {
-            objApp.isHidden = false;
+          lstData.forEach(objApp => {       
             var isFound = false;
             var jsonVal = JSON.stringify(this.items);
             objApp.isErrorInStatus = false;

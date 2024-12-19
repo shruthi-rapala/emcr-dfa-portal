@@ -11,6 +11,7 @@ import { CurrentApplication, CurrentClaim, CurrentProject } from 'src/app/core/a
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { ClaimService } from '../../../core/api/services';
+import { Decision } from 'src/app/models/decision.enum';
 
 @Component({
   selector: 'app-dfadashboard-claim',
@@ -19,6 +20,8 @@ import { ClaimService } from '../../../core/api/services';
 })
 
 export class DfaDashClaimComponent implements OnInit {
+
+  DecisionEnum = Decision;
 
   addNewItem(value: number) {
     this.appSessionService.currentProjectsCount.emit(value);
