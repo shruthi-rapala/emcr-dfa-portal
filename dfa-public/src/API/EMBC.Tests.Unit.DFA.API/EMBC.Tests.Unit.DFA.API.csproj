@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <Nullable>warnings</Nullable>
@@ -28,7 +28,7 @@
   </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EMBC.DFA.API\EMBC.DFA.API.csproj" />
+        <ProjectReference Include="..\EMBC.DFA.PUBLIC.API\EMBC.DFA.PUBLIC.API.csproj" />
     </ItemGroup>
 
 </Project>

@@ -105,7 +105,9 @@ namespace EMBC.Utilities.Hosting
                  .ConfigureHostConfiguration(opts =>
                  {
                      // add secrets json file if exists in the hosting assembly
+#pragma warning disable CS8604 // Possible null reference argument.
                      opts.AddUserSecrets(Assembly.GetEntryAssembly(), true, true);
+#pragma warning restore CS8604 // Possible null reference argument.
                  })
                 .UseSerilog((ctx, services, config) => Logging.ConfigureSerilog(ctx, services, config, appName))
                 .ConfigureWebHostDefaults(webBuilder =>

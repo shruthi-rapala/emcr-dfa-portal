@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using bceid = EMBC.Gov.BCeID;
+using BCeID = EMBC.Gov.BCeID;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -48,7 +48,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("self")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<bceid.BCeIDBusiness>> GetBCeIDSelfInfo()
+        public async Task<ActionResult<BCeID.BCeIDBusiness>> GetBCeIDSelfInfo()
         {
             try
             {
@@ -88,7 +88,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("other")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<bceid.BCeIDBusiness>> GetBCeIDOtherInfo(
+        public async Task<ActionResult<BCeID.BCeIDBusiness>> GetBCeIDOtherInfo(
             [FromQuery]
             [Required]
             string userId)

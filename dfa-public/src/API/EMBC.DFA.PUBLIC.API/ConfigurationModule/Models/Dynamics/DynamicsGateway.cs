@@ -272,7 +272,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     application.dfa_contactemail = buildingOwnerlist.List.Last().dfa_contactemail;
                 }
 
-                var annotationList = await api.GetList<annotation>("annotations", new CRMGetListOptions
+                var annotationList = await api.GetList<Annotation>("annotations", new CRMGetListOptions
                 {
                     Select = new[]
                     {
@@ -281,7 +281,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Filter = $"_objectid_value eq {application.dfa_appapplicationid}"
                 });
 
-                foreach (annotation annotation in annotationList.List)
+                foreach (Annotation annotation in annotationList.List)
                 {
                     if (annotation.subject == "primaryApplicantSignature")
                     {

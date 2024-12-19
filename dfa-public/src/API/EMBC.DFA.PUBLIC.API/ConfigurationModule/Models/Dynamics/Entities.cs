@@ -119,7 +119,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_appapplicationid { get; set; }
     }
 
-    public class annotation
+    public class Annotation
     {
         public Guid annotationid { get; set; }
         public string documentbody { get; set; }
