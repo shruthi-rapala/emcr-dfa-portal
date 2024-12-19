@@ -12,7 +12,7 @@
       },
       "distributionName": ""
     },
-    "EMBC.DFA.API": {
+    "EMBC.DFA.PUBLIC.API": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",

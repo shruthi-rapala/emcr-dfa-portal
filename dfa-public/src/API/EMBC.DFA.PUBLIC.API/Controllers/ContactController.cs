@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using bceid = EMBC.Gov.BCeID;
+using BCeID = EMBC.Gov.BCeID;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -44,7 +44,7 @@ namespace EMBC.DFA.API.Controllers
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bceid.BCeIDBusiness> GetDashboardContactInfo()
+        public ActionResult<BCeID.BCeIDBusiness> GetDashboardContactInfo()
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -52,7 +52,7 @@ namespace EMBC.DFA.API.Controllers
 
                 if (userData == null) return NotFound("Authentication missing");
 
-                var bceidData = mapper.Map<bceid.BCeIDBusiness>(userData);
+                var bceidData = mapper.Map<BCeID.BCeIDBusiness>(userData);
                 return Ok(bceidData);
             }
             else

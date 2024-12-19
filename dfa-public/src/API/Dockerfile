@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://*:8080
@@ -7,7 +7,7 @@ ENV DOTNET_gcServer=1
 ARG VERSION
 ENV VERSION=$VERSION
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # install diagnostics tools
 RUN dotnet tool install --tool-path /tools dotnet-trace
@@ -15,7 +15,7 @@ RUN dotnet tool install --tool-path /tools dotnet-counters
 RUN dotnet tool install --tool-path /tools dotnet-dump
 
 WORKDIR /src
-COPY ["EMBC.DFA.API/EMBC.DFA.API.csproj", "EMBC.DFA.API/"]
+COPY ["EMBC.DFA.PUBLIC.API/EMBC.DFA.PUBLIC.API.csproj", "EMBC.DFA.PUBLIC.API/"]
 COPY ["EMBC.ESS.Shared.Contracts/EMBC.ESS.Shared.Contracts.csproj", "EMBC.ESS.Shared.Contracts/"]
 COPY ["EMBC.Utilities/EMBC.Utilities.csproj", "EMBC.Utilities/"]
 COPY ["EMBC.Utilities.Hosting/EMBC.Utilities.Hosting.csproj", "EMBC.Utilities.Hosting/"]
@@ -24,7 +24,7 @@ COPY ["EMBC.Utilities.Telemetry/EMBC.Utilities.Telemetry.csproj", "EMBC.Utilitie
 COPY ["EMBC.Utilities.Messaging/EMBC.Utilities.Messaging.csproj", "EMBC.Utilities.Messaging/"]
 COPY ["EMBC.Tests.Unit.DFA.API/EMBC.Tests.Unit.DFA.API.csproj", "EMBC.Tests.Unit.DFA.API/"]
 COPY ["EMBC.BCeID/EMBC.Gov.BCeID.csproj", "EMBC.BCeID/"]
-COPY ["EMBC.DFA.sln", ".editorconfig", "./"]
+COPY ["EMBC.DFA.PUBLIC.sln", ".editorconfig", "./"]
 RUN dotnet restore .
 COPY . .
 
@@ -33,7 +33,7 @@ COPY . .
 
 # build
 FROM build AS publish
-RUN dotnet publish "EMBC.DFA.API/EMBC.DFA.API.csproj" -c Release -o /app/publish --runtime linux-musl-x64 --no-self-contained
+RUN dotnet publish "EMBC.DFA.PUBLIC.API/EMBC.DFA.PUBLIC.API.csproj" -c Release -o /app/publish --runtime linux-musl-x64 --no-self-contained
 
 FROM base AS final
 # copy diagnostics tools
@@ -42,4 +42,4 @@ COPY --from=build /tools .
 # copy app
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EMBC.DFA.API.dll"]
+ENTRYPOINT ["dotnet", "EMBC.DFA.PUBLIC.API.dll"]
