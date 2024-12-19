@@ -28,3 +28,10 @@ Obj/
 # dfa-public/src/UI/embc-dfa/src/app/core/api/services/
 
 dfa-public/src/UI/embc-dfa/package-lock.json
+/.idea/.idea.emcr-dfa-portal.dir/.idea
+/dfa/src/UI/embc-dfa/.browserslistrc
+/DFAautomationTests/.idea
+/DFAautomationTests/target
+/DFAautomationTests/DFAautomationTests.iml
+/DFAautomationTests/src/main/java/dfa/WebDriverManager.java
+/DFAautomationTests/src/test/java/CreateNewApplicationHomeowner.java
