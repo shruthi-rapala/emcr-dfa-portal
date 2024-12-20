@@ -561,8 +561,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.paidClaimAmount, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_paidclaimamount) ? "0" : s.dfa_paidclaimamount))
                 .ForMember(d => d.claimReceivedByEMCRDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_claimreceivedbyemcrdate).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_claimreceivedbyemcrdate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 .ForMember(d => d.paidClaimDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_claimpaiddate).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_claimpaiddate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
-
-                ;
+                .ForMember(d => d.status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfstages) ? GetEnumDescription((ClaimStages)Convert.ToInt32(s.dfa_claimbpfstages)) : null))
+                .ForMember(d => d.stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfsubstages) ?
+                    (Convert.ToInt32(s.dfa_claimbpfstages) == Convert.ToInt32(ClaimStages.Draft) ? null : GetEnumDescription((ClaimSubStages)Convert.ToInt32(s.dfa_claimbpfsubstages)))
+                    : null));
+                
 
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))

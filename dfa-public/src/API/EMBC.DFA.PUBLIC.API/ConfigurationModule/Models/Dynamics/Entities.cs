@@ -305,6 +305,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_claimtotal { get; set; }
         public string? dfa_paidclaimamount { get; set; }
         public string? dfa_onetimedeductionamount { get; set; }
+        public string? dfa_claimbpfstages { get; set; }
+        public string? dfa_claimbpfsubstages { get; set; }
+
     }
 
     public class dfa_appapplicationmain_retrieve
