@@ -45,6 +45,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DFAProjectMainMappingService } from '../dfa-project-main/dfa-project-main-mapping.service';
 import { ProjectAmendment } from '../../core/model/dfa-project-main.model';
 import { DFAGeneralInfoDialogComponent } from '../../core/components/dialog-components/dfa-general-info-dialog/dfa-general-info-dialog.component';
+import { Decision } from 'src/app/models/decision.enum';
 
 
 @Component({
@@ -93,6 +94,7 @@ export class DFAProjectAmendmentComponent
   statusBar?: null | Array<ProjectStatusBar>;
   isErrorInStatus?: null | boolean;
   projectName = '';
+  DecisionEnum = Decision;
 
   constructor(
     //@Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -115,21 +117,21 @@ export class DFAProjectAmendmentComponent
   }
 
   ngOnInit(): void {
-    
+
 
     this.projectAmendmentForm$ = this.formCreationService
       .getProjectAmendmentForm()
       .subscribe((projectAmendment) => {
         this.projectAmendmentForm = projectAmendment;
       });
-    
+
     this.appId = this.dfaProjectMainDataService.getApplicationId(); //this.route.snapshot.paramMap.get('id');
     this.projectId = this.dfaProjectMainDataService.getProjectId();
     this.applicationNumber = 'Application';
     this.getApplicationDetials(this.appId);
     this.getRecoveryPlan(this.projectId);
     this.getAmendmentDetials(this.projectId);
-    
+
     this.dfaProjectMainDataService.setApplicationId(this.appId);
     this.disableFormfields();
   }
@@ -149,7 +151,7 @@ export class DFAProjectAmendmentComponent
     this.projectAmendmentForm.controls.additionalProjectCostDecision.disable();
     this.projectAmendmentForm.controls.approvedAdditionalProjectCost.disable();
   }
-  
+
   getApplicationDetials(applicationId: string) {
     if (applicationId) {
       this.applicationService.applicationGetApplicationDetailsForProject({ applicationId: applicationId }).subscribe({
@@ -243,7 +245,7 @@ export class DFAProjectAmendmentComponent
           if (dfaAmendment) {
             var amendmentId = this.projectAmendmentForm.controls.amendmentId.value;
             this.ProjectAmendments = dfaAmendment;
-            
+
             if (dfaAmendment && dfaAmendment.length > 0) {
               var selectedAmendment = dfaAmendment.filter(m => m.amendmentId == amendmentId);
               if (selectedAmendment.length > 0) {
@@ -256,13 +258,13 @@ export class DFAProjectAmendmentComponent
             else {
               let noAmendment = 'No amendment found for the project!<br/>Click \'Close\' button to go back to Project Dashboard';
               this.ConfirmAndGoBack(noAmendment);
-              
+
             }
           }
           else {
             let noAmendment = 'No amendment found for the project!<br/>Click \'Close\' button to go back to Project Dashboard';
             this.ConfirmAndGoBack(noAmendment);
-            
+
           }
 
         },
@@ -357,7 +359,7 @@ export class DFAProjectAmendmentComponent
     else {
       this.isErrorInStatus = true;
     }
-      
+
 
     //this.mapData(lstDataModified);
 
@@ -374,7 +376,7 @@ export class DFAProjectAmendmentComponent
   }
 
   ngAfterViewInit(): void {
-    
+
   }
 
 }
