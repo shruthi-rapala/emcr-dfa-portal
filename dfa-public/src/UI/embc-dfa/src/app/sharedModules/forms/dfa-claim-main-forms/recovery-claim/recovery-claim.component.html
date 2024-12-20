@@ -197,6 +197,7 @@
       </ng-container>
       <br />
 
+    @if(recoveryClaim.claim.stage == DecisionEnum.Approved || recoveryClaim.claim.stage == DecisionEnum.ApprovedwithExclusions){
       <ng-container *ngIf="isReadOnly == true">
         <div class="row decisionHeader">
           <b>Decision</b>
@@ -365,6 +366,7 @@
           </div>
         </div>
       </ng-container>
+    }
     </form>
     
   </mat-card-content>

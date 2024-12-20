@@ -24,7 +24,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption, ApplicantSubtypeSubCategories } from 'src/app/core/api/models';
+import { ApplicantOption, ApplicantSubtypeSubCategories, DfaClaimMain } from 'src/app/core/api/models';
 import { MatTableModule } from '@angular/material/table';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
@@ -42,6 +42,7 @@ import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/
 import { DFAClaimMainDataService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { DFAClaimMainMappingService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-mapping.service';
 import { ActivatedRoute } from '@angular/router';
+import { Decision } from 'src/app/models/decision.enum';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -58,6 +59,9 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }]
 })
 export default class RecoveryClaimComponent implements OnInit, OnDestroy {
+
+  DecisionEnum = Decision;
+  
   //@ViewChild('projectName') projectName: ElementRef;
   message : string = '';
   recoveryClaimForm: UntypedFormGroup;
@@ -85,6 +89,8 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     /\d/,
     /\d/
   ];
+
+  recoveryClaim?: DfaClaimMain;
 
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -237,10 +243,13 @@ export default class RecoveryClaimComponent implements OnInit, OnDestroy {
     }
   }
 
+
+
   getRecoveryClaim(claimId: string) {
     if (claimId) {
       this.claimService.claimGetClaimMain({ claimId: claimId }).subscribe({
         next: (dfaClaimMain) => {
+          this.recoveryClaim = dfaClaimMain;
           this.dfaClaimMainMapping.mapDFAClaimMain(dfaClaimMain);
           
         },

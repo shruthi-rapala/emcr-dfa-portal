@@ -19,6 +19,8 @@ export interface RecoveryClaim {
   isThisFinalClaim?: null | boolean;
   paidClaimAmount?: null | string;
   paidClaimDate?: null | string;
+  stage?: string;
+  status?: string;
   totalActualClaim?: null | string;
   totalInvoicesBeingClaimed?: null | string;
 }
