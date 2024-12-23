@@ -997,7 +997,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_estimatedcompletiondateofproject",
                         "dfa_approvedcost", "dfa_18monthdeadline", "statuscode",
                         "dfa_projectid", "createdon", "dfa_projectbusinessprocessstages",
-                        "dfa_projectbusinessprocesssubstages", "dfa_bpfclosedate"
+                        "dfa_projectbusinessprocesssubstages", "dfa_bpfclosedate", "dfa_projectdecision"
                     },
                     Filter = $"_dfa_applicationid_value eq {applicationId}"
                 });
@@ -1039,6 +1039,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    hasAmendments = objApp.hasAmendments,
                                    dfa_projectbusinessprocessstages = objApp.dfa_projectbusinessprocessstages,
                                    dfa_projectbusinessprocesssubstages = objApp.dfa_projectbusinessprocesssubstages,
+                                   dfa_projectdecision = objApp.dfa_projectdecision,
                                    dfa_bpfclosedate = !string.IsNullOrEmpty(objApp.dfa_bpfclosedate) ? DateTime.Parse(objApp.dfa_bpfclosedate).ToLocalTime().ToString() : objApp.dfa_bpfclosedate,
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 

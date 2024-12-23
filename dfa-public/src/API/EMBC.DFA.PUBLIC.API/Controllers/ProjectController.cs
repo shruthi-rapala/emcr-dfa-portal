@@ -200,6 +200,7 @@ namespace EMBC.DFA.API.Controllers
         public string DateFileClosed { get; set; }
         public bool IsClaimSubmission { get; set; }
         public bool HasAmendment { get; set; }
+        public string ProjectDecision { get; set; }
     }
 
     public class ProjectStatusBar

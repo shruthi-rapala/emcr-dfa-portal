@@ -12,6 +12,7 @@ export interface CurrentProject {
   isClaimSubmission?: boolean;
   isErrorInStatus?: boolean;
   isHidden?: boolean;
+  projectDecision?: string;
   projectId?: string;
   projectName?: string;
   projectNumber?: string;
