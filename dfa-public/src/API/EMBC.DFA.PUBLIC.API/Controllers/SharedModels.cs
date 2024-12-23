@@ -591,8 +591,9 @@ namespace EMBC.DFA.API.Controllers
         public string? paidClaimDate { get; set; }
         public string? claimReceivedByEMCRDate { get; set; }
         public Invoice[]? invoices { get; set; }
-        public string stage { get; set; }
-        public string status { get; set; }
+        public string? stage { get; set; }
+        public string? status { get; set; }
+        public string? claimDecision { get; set; }
     }
 
     public class Invoice

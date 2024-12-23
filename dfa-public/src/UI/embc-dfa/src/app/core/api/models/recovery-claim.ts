@@ -5,6 +5,7 @@ import { Invoice } from './invoice';
 export interface RecoveryClaim {
   approvedClaimTotal?: null | string;
   approvedReimbursement?: null | string;
+  claimDecision?: null | string;
   claimEligibleGST?: null | string;
   claimGrossGST?: null | string;
   claimNumber?: null | string;
@@ -19,8 +20,8 @@ export interface RecoveryClaim {
   isThisFinalClaim?: null | boolean;
   paidClaimAmount?: null | string;
   paidClaimDate?: null | string;
-  stage?: string;
-  status?: string;
+  stage?: null | string;
+  status?: null | string;
   totalActualClaim?: null | string;
   totalInvoicesBeingClaimed?: null | string;
 }

@@ -547,7 +547,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.Stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfsubstages) ?
                     (Convert.ToInt32(s.dfa_claimbpfstages) == Convert.ToInt32(ClaimStages.Draft) ? null : GetEnumDescription((ClaimSubStages)Convert.ToInt32(s.dfa_claimbpfsubstages)))
                     : null))
-                .ForMember(d => d.PaidClaimDate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_claimpaiddate) ? "(pending information)" : Convert.ToDateTime(s.dfa_claimpaiddate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
+                .ForMember(d => d.PaidClaimDate, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_claimpaiddate) ? "(pending information)" : Convert.ToDateTime(s.dfa_claimpaiddate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(d => d.ClaimDecision, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_decisioncopy) ? GetEnumDescription((ClaimDecisions)Convert.ToInt32(s.dfa_decisioncopy)) : null));
 
             CreateMap<dfa_claim_retrieve, RecoveryClaim>()
                 .ForMember(d => d.claimNumber, opts => opts.MapFrom(s => s.dfa_name))
@@ -566,7 +567,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.status, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfstages) ? GetEnumDescription((ClaimStages)Convert.ToInt32(s.dfa_claimbpfstages)) : null))
                 .ForMember(d => d.stage, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimbpfsubstages) ?
                     (Convert.ToInt32(s.dfa_claimbpfstages) == Convert.ToInt32(ClaimStages.Draft) ? null : GetEnumDescription((ClaimSubStages)Convert.ToInt32(s.dfa_claimbpfsubstages)))
-                    : null));
+                    : null))
+                .ForMember(d => d.claimDecision, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_decisioncopy) ? GetEnumDescription((ClaimDecisions)Convert.ToInt32(s.dfa_decisioncopy)) : null));
                 
 
             CreateMap<dfa_appapplication, CurrentApplication>()
