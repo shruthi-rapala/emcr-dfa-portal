@@ -932,6 +932,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_amendmentstages { get; set; }
         public string? dfa_amendmentsubstages { get; set; }
         public DateTime createdon { get; set; }
+
+        public string? dfa_amendmentdecision { get; set; }
     }
 
     public enum EventType
@@ -1091,6 +1093,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Approved with Exclusions")]
         ApprovedwithExclusions = 222710007,
+    }
+
+    public enum ProjectAmendmentDecsions
+    {
+        [Description("Approved")]
+        Approved = 222710000,
+
+        [Description("Ineligible")]
+        Ineligible = 222710001,
+
+        [Description("Withdrawn")]
+        Withdrawn = 222710002,
+
+        [Description("Approved with Exclusions")]
+        ApprovedwithExclusions = 222710003,
     }
 
     public enum ProjectAmendmentAdditionalProjectCostDecision

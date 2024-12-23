@@ -1075,7 +1075,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                             "dfa_amendmentreceiveddate",
                             "dfa_amendmentstages",
                             "dfa_amendmentsubstages",
-                            "dfa_projectamendmentid"
+                            "dfa_projectamendmentid",
+                            "dfa_amendmentdecision"
                         },
                     Filter = $"_dfa_project_value eq {projectId}"
                     //Filter = $"_dfa_project_value eq 25fff2cb-a15b-4c94-bd94-c9107e8b383a"
@@ -1102,6 +1103,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_amended18monthdeadline = !string.IsNullOrEmpty(objApp.dfa_amended18monthdeadline) ? DateTime.Parse(objApp.dfa_amended18monthdeadline).ToLocalTime().ToString() : objApp.dfa_amended18monthdeadline,
                                    dfa_amendmentapproveddate = !string.IsNullOrEmpty(objApp.dfa_amendmentapproveddate) ? DateTime.Parse(objApp.dfa_amendmentapproveddate).ToLocalTime().ToString() : objApp.dfa_amendmentapproveddate,
                                    dfa_amendmentreceiveddate = !string.IsNullOrEmpty(objApp.dfa_amendmentreceiveddate) ? DateTime.Parse(objApp.dfa_amendmentreceiveddate).ToLocalTime().ToString() : objApp.dfa_amendmentreceiveddate,
+                                   dfa_amendmentdecision = objApp.dfa_amendmentdecision,
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstPrjAmnds;
