@@ -909,6 +909,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_projectbusinessprocesssubstages { get; set; }
         public string? dfa_bpfclosedate { get; set; }
         public bool? hasAmendments { get; set; }
+        public string? dfa_projectdecision { get; set; }
     }
 
     public class dfa_projectamendment
@@ -1027,6 +1028,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("Approved with Exclusions")]
         ApprovedwithExclusions = 222710008,
+    }
+
+    public enum ProjectDecisions
+    {
+        [Description("Approved")]
+        Approved = 222710000,
+
+        [Description("Ineligible")]
+        Ineligible = 222710001,
+
+        [Description("Withdrawn")]
+        Withdrawn = 222710002,
+
+        [Description("Approved with Exclusions")]
+        ApprovedwithExclusions = 222710003,
     }
 
     public enum ProjectAmendmentStages
