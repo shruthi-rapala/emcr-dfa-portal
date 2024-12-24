@@ -1,7 +1,7 @@
 FROM trion/ng-cli-karma:18.2.11 AS node-builder
 WORKDIR /src
 COPY ./embc-dfa/package*.json ./
-RUN npm install --ignore-scripts 
+RUN npm install --ignore-scripts --legacy-peer-deps
 COPY ./embc-dfa/ .
 
 FROM node-builder as ng-builder
