@@ -1,4 +1,4 @@
-FROM trion/ng-cli-karma AS node-builder
+FROM trion/ng-cli-karma:18 AS node-builder
 WORKDIR /src
 COPY ./embc-dfa/package*.json ./
 RUN npm install --ignore-scripts --legacy-peer-deps
