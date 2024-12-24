@@ -6,6 +6,7 @@ export interface CurrentProjectAmendment {
   amended18MonthDeadline?: string;
   amendedProjectDeadlineDate?: string;
   amendmentApprovedDate?: string;
+  amendmentDecision?: string;
   amendmentId?: string;
   amendmentNumber?: string;
   amendmentReason?: string;

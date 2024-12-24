@@ -197,7 +197,7 @@
       </ng-container>
       <br />
 
-    @if(recoveryClaim.claim.stage == DecisionEnum.Approved || recoveryClaim.claim.stage == DecisionEnum.ApprovedWithExclusions){
+    @if(recoveryClaim.claim.claimDecision == DecisionEnum.Approved || recoveryClaim.claim.claimDecision == DecisionEnum.ApprovedWithExclusions){
       <ng-container *ngIf="isReadOnly == true">
         <div class="row decisionHeader">
           <b>Decision</b>

@@ -145,7 +145,7 @@
                 </mat-form-field>
               </div>
             </div>
-            @if (option.stage == DecisionEnum.Approved || option.stage == DecisionEnum.ApprovedWithExclusions) {
+            @if (option.amendmentDecision == DecisionEnum.Approved || option.stage == amendmentDecision.ApprovedWithExclusions) {
               <div class="row">
                 <div class="col-md-3">
                   <p style="font-size: 15px">
@@ -211,7 +211,7 @@
                   ></mat-datepicker>
                 </mat-form-field>
               </div>
-              @if (option.stage == DecisionEnum.Approved || option.stage == DecisionEnum.ApprovedWithExclusions) {
+              @if (option.amendmentDecision == DecisionEnum.Approved || option.amendmentDecision == DecisionEnum.ApprovedWithExclusions) {
                 <div class="col-md-3">
                   <p style="font-size: 15px; margin-bottom: 10px !important">
                     Deadline Extension Approved
@@ -276,7 +276,7 @@
 
                 </mat-form-field>
               </div>
-              @if (option.stage == DecisionEnum.Approved || option.stage == DecisionEnum.ApprovedWithExclusions) {
+              @if (option.amendmentDecision == DecisionEnum.Approved || option.amendmentDecision == DecisionEnum.ApprovedWithExclusions) {
                 <div class="col-md-3">
                   <p style="font-size: 15px; margin-bottom: 10px !important">
                     Additional Project Cost Decision

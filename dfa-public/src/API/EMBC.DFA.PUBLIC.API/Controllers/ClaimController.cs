@@ -191,6 +191,8 @@ namespace EMBC.DFA.API.Controllers
         public bool IsHidden { get; set; } = true;
         public string StatusColor { get; set; }
         public string DateFileClosed { get; set; }
+
+        public string ClaimDecision { get; set; }
     }
 
     public class ClaimStatusBar

@@ -132,7 +132,7 @@
         <div class="col-md-2">
           <span>{{applItem.firstClaim == true ? 'Yes' : (applItem.firstClaim == false ? 'No' : 'Not Set')}}</span>
         </div>
-        @if(applItem.stage == DecisionEnum.Approved || applItem.stage == DecisionEnum.ApprovedWithExclusions){
+        @if(applItem.claimDecision == DecisionEnum.Approved || applItem.claimDecision == DecisionEnum.ApprovedWithExclusions){
           <div class="col-md-2">
             <span><b>Approved Claim Total - </b></span>
           </div>
@@ -156,7 +156,7 @@
         <div class="col-md-2">
           <span id="spnCauseOfDamage">{{applItem.finalClaim == true ? 'Yes' : (applItem.finalClaim == false ? 'No' : 'Not Set')}}</span>
         </div>
-        @if(applItem.stage == DecisionEnum.Approved || applItem.stage == DecisionEnum.ApprovedWithExclusions){
+        @if(applItem.claimDecision == DecisionEnum.Approved || applItem.claimDecision == DecisionEnum.ApprovedWithExclusions){
         <div class="col-md-2">
           <span><b>Less First $1,000 -</b></span>
         </div>
@@ -180,7 +180,7 @@
         <div class="col-md-2">
           <span id="spnCauseOfDamage">{{applItem.claimTotal }}</span>
         </div>
-        @if(applItem.stage == DecisionEnum.Approved || applItem.stage == DecisionEnum.ApprovedWithExclusions){
+        @if(applItem.claimDecision == DecisionEnum.Approved || applItem.claimDecision == DecisionEnum.ApprovedWithExclusions){
         <div class="col-md-2">
           <span><b>Approved Reimbursement % -</b></span>
         </div>

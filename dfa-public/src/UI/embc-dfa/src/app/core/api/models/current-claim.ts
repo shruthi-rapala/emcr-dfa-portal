@@ -5,6 +5,7 @@ export interface CurrentClaim {
   applicationId?: string;
   approvedClaimTotal?: string;
   approvedReimbursePercent?: string;
+  claimDecision?: string;
   claimId?: string;
   claimNumber?: string;
   claimTotal?: string;
