@@ -100,8 +100,8 @@ export class DfaDashProjectComponent implements OnInit {
                 isFound = true
                 this.matchStatusFound = true;
 
-                if (objApp.stage) {
-                  objStatItem.stage = objApp.stage;
+                if (objApp.projectDecision) {
+                  objStatItem.stage = objApp.projectDecision;
                 }
 
                 objApp.statusColor = objStatItem.statusColor;
