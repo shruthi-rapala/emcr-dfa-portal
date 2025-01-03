@@ -245,7 +245,6 @@ export class DFAProjectAmendmentComponent
           if (dfaAmendment) {
             var amendmentId = this.projectAmendmentForm.controls.amendmentId.value;
             this.ProjectAmendments = dfaAmendment;
-
             if (dfaAmendment && dfaAmendment.length > 0) {
               var selectedAmendment = dfaAmendment.filter(m => m.amendmentId == amendmentId);
               if (selectedAmendment.length > 0) {
@@ -322,8 +321,8 @@ export class DFAProjectAmendmentComponent
           objStatItem.currentStep = true;
           isFound = true
 
-          if (objAmendment.stage) {
-            objStatItem.stage = objAmendment.stage;
+          if (objAmendment.amendmentDecision) {
+            objStatItem.stage = objAmendment.amendmentDecision;
           }
 
           objAmendment.statusColor = objStatItem.statusColor;
