@@ -109,6 +109,11 @@ export class DfaDashClaimComponent implements OnInit {
 
                 if (objApp.stage) {
                   objStatItem.stage = objApp.stage;
+                  this.dfaClaimMainDataService.setStage(objApp.stage);
+                }
+
+                if (objApp.claimDecision) {
+                  this.dfaClaimMainDataService.setClaimDecision(objApp.claimDecision);
                 }
 
                 objApp.statusColor = objStatItem.statusColor;
