@@ -107,8 +107,13 @@ export class DfaDashClaimComponent implements OnInit {
                 isFound = true
                 this.matchStatusFound = true;
 
+                if (objApp.stage) {
+                  objStatItem.stage = objApp.stage;
+                  this.dfaClaimMainDataService.setStage(objApp.stage);
+                }
+
                 if (objApp.claimDecision) {
-                  objStatItem.stage = objApp.claimDecision;
+                  this.dfaClaimMainDataService.setClaimDecision(objApp.claimDecision);
                 }
 
                 objApp.statusColor = objStatItem.statusColor;

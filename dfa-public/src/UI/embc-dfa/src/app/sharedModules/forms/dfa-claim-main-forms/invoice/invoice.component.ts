@@ -42,6 +42,7 @@ import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/
 import { DFAClaimMainDataService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { Invoice } from '../../../../core/model/dfa-invoice.model';
 import { DFAClaimMainMappingService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-mapping.service';
+import { Decision } from 'src/app/models/decision.enum';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -88,6 +89,9 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
     /\d/,
     /\d/
   ];
+
+  claimDecision: string = "";
+  DecisionEnum = Decision;
 
   constructor(
     //@Inject('formBuilder') formBuilder: UntypedFormBuilder,
@@ -155,12 +159,17 @@ export default class InvoiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     var passData = this.data;
     var objInvData = passData.content;
+
     if (!objInvData) {
       this.formCreationService.clearInvoiceData();
     }
     
     if (passData.invoiceId) {
       this.invoiceId = passData.invoiceId;
+    }
+
+    if (passData.claimDecision){
+      this.claimDecision = passData.claimDecision;
     }
 
     this.invoiceForm$ = this.formCreationService
