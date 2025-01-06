@@ -12,6 +12,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
       [matTooltip]="message || ''">
       <span class="ques">?</span>&nbsp; HELP
     </button>
+
       <!--<mat-form-field class="example-user-input">
         <mat-label>Tooltip message</mat-label>
         <input style="display:none" value="test test test value" matInput [formControl]="message">
@@ -26,77 +27,75 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
         <div class="row">
           <div class="col-md-6">
             <div class="row" *ngIf="isReadOnly === true">
-              <div class="col-md-6">
-                <p  style="font-size: 15px">
-                  EMCR Decision
-                </p>
-                <mat-form-field appearance="outline">
-                  <input
-                         #emcrDecision
-                    formControlName="emcrDecision"
-                    matInput />
-                </mat-form-field>
-              </div>
-            
-              <div class="col-md-6">
-                <p  style="font-size: 15px;">
-                  EMCR Approved Amount
-                </p>
-                <mat-form-field appearance="outline" class="mat-form-round">
-    
-                  <div class="searchDiv">
-                    <input
-                      #currencyBoxemcrApprovedAmount
-                      id="currencyBoxemcrApprovedAmount"
-                      formControlName="emcrApprovedAmount"
-                      matInput />
-                    <span class="currencyText">CA$</span>
+              <div *ngIf="claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions">
+                <div class="col-md-6">
+                  <p  style="font-size: 15px">
+                    EMCR Decision
+                  </p>
+                  <mat-form-field appearance="outline">
+                      <input
+                            #emcrDecision
+                        formControlName="emcrDecision"
+                        matInput />
+                  </mat-form-field>
+                </div>
+
+                <div class="col-md-6">
+                  <p  style="font-size: 15px;">
+                    EMCR Approved Amount
+                  </p>
+                  <mat-form-field appearance="outline" class="mat-form-round">
+                      <div class="searchDiv">
+                        <input
+                          #currencyBoxemcrApprovedAmount
+                          id="currencyBoxemcrApprovedAmount"
+                          formControlName="emcrApprovedAmount"
+                          matInput />
+                        <span class="currencyText">CA$</span>
+                      </div>
+                  </mat-form-field>
+                </div>
+
+                <div class="row" *ngIf="isReadOnly === true">
+                  <div class="col-md-6">
+                    <p  style="font-size: 15px">
+                      EMCR Decision Date
+                    </p>
+                    <mat-form-field appearance="outline" >
+                        <input matInput
+                          [matDatepicker]="emcrDecisionDatePicker"
+                          [readonly]="isReadOnly === true"
+                          formControlName="emcrDecisionDate"
+                          >
+                        <mat-hint *ngIf="isReadOnly !== true">MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="emcrDecisionDatePicker" [disabled]="isReadOnly === true"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #emcrDecisionDatePicker [disabled]="isReadOnly === true"
+                        ></mat-datepicker>
+                    </mat-form-field>
                   </div>
-    
-                </mat-form-field>
-              </div>
-            </div>
+                </div>
 
-            <div class="row" *ngIf="isReadOnly === true">
-              <div class="col-md-6">
-                <p  style="font-size: 15px">
-                  EMCR Decision Date
-                </p>
-                <mat-form-field appearance="outline" >
-                  <input matInput
-                    [matDatepicker]="emcrDecisionDatePicker"
-                    [readonly]="isReadOnly === true"
-                    formControlName="emcrDecisionDate"
-                     >
-                  <mat-hint *ngIf="isReadOnly !== true">MM/DD/YYYY</mat-hint>
-                  <mat-datepicker-toggle matSuffix [for]="emcrDecisionDatePicker" [disabled]="isReadOnly === true"
-                  ></mat-datepicker-toggle>
-                  <mat-datepicker #emcrDecisionDatePicker [disabled]="isReadOnly === true"
-                  ></mat-datepicker>
-    
-                </mat-form-field>
+                <div class="row" *ngIf="isReadOnly === true">
+                  <p  style="font-size: 15px">
+                    EMCR Decision Comments
+                  </p>
+                  <div class="col-md-12">
+                    <mat-form-field appearance="outline">
+                        <textarea [disabled]="isReadOnly" matInput
+                          formControlName="emcrDecisionComments"
+                          style="resize:none"
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="2"
+                          cdkAutosizeMaxRows="5"></textarea>
+                    </mat-form-field>
+                    <br/>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div class="row" *ngIf="isReadOnly === true">
-              <p  style="font-size: 15px">
-                EMCR Decision Comments
-              </p>
-              <div class="col-md-12">
-                <mat-form-field appearance="outline">
-                  <textarea [disabled]="isReadOnly" matInput
-                    formControlName="emcrDecisionComments"
-                    style="resize:none"
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="2"
-                    cdkAutosizeMaxRows="5"></textarea>
-     
-                </mat-form-field>
-  
-                <br/>
-              </div>
-            </div>
+            
             <hr class="hr-align" *ngIf="isReadOnly === true" />
             <div class="row">
               <div class="col-md-12">

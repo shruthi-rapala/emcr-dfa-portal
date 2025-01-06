@@ -22,6 +22,8 @@ export class DFAClaimMainDataService {
   private _stepselected: string;
   private _isdisabled: string;
   private _editstep: string;
+  private _stage: string;
+  private _claimDecision: string;
   private _requiredDocuments = [];
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
   public changeDisableFileUpload: EventEmitter<string> = new EventEmitter<string>();
@@ -195,6 +197,20 @@ export class DFAClaimMainDataService {
   }
   public getEditStep(): string {
     return this._editstep;
+  }
+  
+  public setStage(stage: string): void {
+    this._stage = stage;
+  }
+  public getStage(): string {
+    return this._stage;
+  }
+
+  public setClaimDecision(claimDecision: string): void {
+    this._claimDecision = claimDecision;
+  }
+  public getClaimDecision(): string {
+    return this._claimDecision;
   }
 
    public createDFAClaimMainDTO(): DfaClaimMain {

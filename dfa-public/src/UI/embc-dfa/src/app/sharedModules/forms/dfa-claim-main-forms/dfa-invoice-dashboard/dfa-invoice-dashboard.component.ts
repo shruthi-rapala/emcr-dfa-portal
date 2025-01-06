@@ -52,6 +52,7 @@ import { InformationDialogComponent } from '../../../../core/components/dialog-c
 import { DialogComponent } from '../../../../core/components/dialog/dialog.component';
 import { DFAGeneralInfoDialogComponent } from '../../../../core/components/dialog-components/dfa-general-info-dialog/dfa-general-info-dialog.component';
 import { CoreModule } from '../../../../core/core.module';
+import { Decision } from 'src/app/models/decision.enum';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -113,6 +114,9 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
     /\d/
   ];
 
+  claimDecision: string = '';  
+  DecisionEnum = Decision;
+    
   constructor(
     @Inject('formBuilder') formBuilder: UntypedFormBuilder,
     @Inject('formCreationService') formCreationService: FormCreationService,
@@ -147,6 +151,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
     this.apptype = this.route.snapshot.data["apptype"];
 
     this.vieworedit = dfaClaimMainDataService.getViewOrEdit();
+    this.claimDecision = dfaClaimMainDataService.getClaimDecision();
   }
 
   numericOnly(event): boolean {
@@ -520,6 +525,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
         data: {
           content: objInvoice,
           invoiceId: this.dfaClaimMainDataService.getInvoiceId(),
+          claimDecision: this.dfaClaimMainDataService.getClaimDecision(),
           header: 'View'
         },
         height: '665px',
@@ -545,7 +551,8 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       .open(InvoiceComponent, {
         data: {
           content: objInvoice,
-          invoiceId: this.dfaClaimMainDataService.getInvoiceId()
+          invoiceId: this.dfaClaimMainDataService.getInvoiceId(),
+          claimDecision: this.dfaClaimMainDataService.getClaimDecision()
         },
         height: '665px',
         width: '1200px',
