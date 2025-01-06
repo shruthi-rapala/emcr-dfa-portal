@@ -1176,7 +1176,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         [Description("Withdrawn")]
         Withdrawn = 222710007,
 
-        [Description("Approved with Exclusion")]
+        [Description("Approved with Exclusions")]
         ApprovedwithExclusion = 222710008,
     }
 
@@ -1191,7 +1191,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         [Description("Withdrawn")]
         Withdrawn = 222710002,
 
-        [Description("Approved with exclusions")]
+        [Description("Approved with Exclusions")]
         ApprovedwithExclusion = 222710003,
     }
     public enum EMCRDecision

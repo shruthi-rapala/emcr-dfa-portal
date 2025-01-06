@@ -18,6 +18,8 @@ export class DFAProjectMainDataService {
   private _stepselected: string;
   private _isdisabled: string;
   private _editstep: string;
+  private _stage: string;
+  private _projectDecision: string;
   private _requiredDocuments = [];
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
   public changeAppUrl: EventEmitter<string> = new EventEmitter<string>();
@@ -154,6 +156,20 @@ export class DFAProjectMainDataService {
   }
   public getEditStep(): string {
     return this._editstep;
+  }
+
+  public setStage(stage: string): void {
+    this._stage = stage;
+  }
+  public getStage(): string {
+    return this._stage;
+  }
+
+  public setProjectDecision(projectDecision: string): void {
+    this._projectDecision = projectDecision;
+  }
+  public getProjectDecision(): string {
+    return this._projectDecision;
   }
 
    public createDFAProjectMainDTO(): DfaProjectMain {

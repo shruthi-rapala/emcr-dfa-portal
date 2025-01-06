@@ -102,6 +102,11 @@ export class DfaDashProjectComponent implements OnInit {
 
                 if (objApp.stage) {
                   objStatItem.stage = objApp.stage;
+                  this.dFAProjectMainDataService.setStage(objApp.stage);
+                }
+
+                if (objApp.projectDecision) {
+                  this.dFAProjectMainDataService.setProjectDecision(objApp.projectDecision);
                 }
 
                 objApp.statusColor = objStatItem.statusColor;
