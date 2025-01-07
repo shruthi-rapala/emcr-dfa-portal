@@ -29,10 +29,14 @@ export class DFAClaimMainMappingService {
       .getRecoveryClaimForm()
       .pipe(first())
       .subscribe((claim) => {
+       // if ((dfaClaimMain?.claim as any)?.stage) delete (dfaClaimMain?.claim as any)?.stage;
+    
+
         claim.setValue({
           ...dfaClaimMain.claim,
           isFirstClaimApproved: dfaClaimMain.claim.isFirstClaimApproved === true ? 'true' : (dfaClaimMain.claim.isFirstClaimApproved === false ? 'false' : null),
           isThisFinalClaim: dfaClaimMain.claim.isThisFinalClaim === true ? 'true' : (dfaClaimMain.claim.isThisFinalClaim === false ? 'false' : null),
+         
         });
         formGroup = claim;
       });
@@ -61,7 +65,7 @@ export class DFAClaimMainMappingService {
           grossGST: isNaN(dfaInvoiceMain.invoice.grossGST) ? null : Number(dfaInvoiceMain.invoice.grossGST),
           netInvoiceBeingClaimed: isNaN(dfaInvoiceMain.invoice.netInvoiceBeingClaimed) ? null : Number(dfaInvoiceMain.invoice.netInvoiceBeingClaimed),
           isGoodsReceivedonInvoiceDate: dfaInvoiceMain.invoice.isGoodsReceivedonInvoiceDate === true ? 'true' : (dfaInvoiceMain.invoice.isGoodsReceivedonInvoiceDate === false ? 'false' : null),
-          isClaimforPartofTotalInvoice: dfaInvoiceMain.invoice.isClaimforPartofTotalInvoice === true ? 'true' : (dfaInvoiceMain.invoice.isClaimforPartofTotalInvoice === false ? 'false' : null),
+          isClaimforPartofTotalInvoice: dfaInvoiceMain.invoice.isClaimforPartofTotalInvoice === true ? 'true' : (dfaInvoiceMain.invoice.isClaimforPartofTotalInvoice === false ? 'false' : null),        
         });
         formGroup = invoice;
       });
