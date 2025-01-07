@@ -281,7 +281,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                         (focusin)="setHelpText(3, tooltip)"
                         #currencyBoxnetInvoiceBeingClaimed
                         id="currencyBoxnetInvoiceBeingClaimed"
-                        formControlName="netInvoiceBeingClaimed"
+                        [formControl]="invoiceForm.controls['netInvoiceBeingClaimed']"
                         matInput
                              required
                              mask="separator.2" thousandSeparator="" decimalMarker="."
@@ -305,7 +305,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                     <input
                       #PST
                       (focusin)="setHelpText(4, tooltip)"
-                      formControlName="pst"
+                      [formControl]="invoiceForm.controls['pst']"
                       matInput
                       mask="separator.2" thousandSeparator="" decimalMarker="."
                       (keyup)="CalculateInvoice($event);"
@@ -322,7 +322,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                     <input
                             #grossGST
                       (focusin)="setHelpText(5, tooltip)"
-                      formControlName="grossGST"
+                      [formControl]="invoiceForm.controls['grossGST']"
                       matInput
                       mask="separator.2" thousandSeparator="" decimalMarker="."
                       (keyup)="CalculateInvoice($event);"
@@ -335,7 +335,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                   </p>
                     <input
                            #PST
-                      formControlName="actualInvoiceTotal"
+                      [formControl]="invoiceForm.controls['actualInvoiceTotal']"
                       type="hidden"
                       required
                       maxlength="100"/>
@@ -372,7 +372,8 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                     <input
                       (focusin)="setHelpText(6, tooltip)"
                             #eligibleGST
-                      formControlName="eligibleGST"
+                    
+                      [formControl]="invoiceForm.controls['eligibleGST']"
                       matInput
                       mask="separator.2" thousandSeparator="" decimalMarker="."
                       (keyup)="CalculateInvoice($event);"
@@ -386,7 +387,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                     <input
                       (focusin)="setHelpText(7, tooltip)"
                            #PST
-                      formControlName="totalBeingClaimed"
+                      [formControl]="invoiceForm.controls['totalBeingClaimed']"
                       type="hidden"
                       required
                       maxlength="100"/>

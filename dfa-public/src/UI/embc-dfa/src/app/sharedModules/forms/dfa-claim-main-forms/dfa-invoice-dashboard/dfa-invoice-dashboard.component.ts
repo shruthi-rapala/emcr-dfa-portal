@@ -284,14 +284,28 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
       return acc + Number(val.actualInvoiceTotal);
     }, 0);
 
+    var sumOfClaimEligibleGST = this.documentSummaryDataSource.data.reduce((acc, val) => {
+      return acc + Number(val.eligibleGST);
+    }, 0);
+
+    var sumOfTotalClaim = this.documentSummaryDataSource.data.reduce((acc, val) => {
+      return acc + Number(val.totalBeingClaimed);
+    }, 0);
+
+   
+
     this.dfaClaimMainDataService.recoveryClaim.totalInvoicesBeingClaimed = sumOfNetInvoiceBeingClaimed?.toFixed(2) + '';
     this.dfaClaimMainDataService.recoveryClaim.claimPST = sumOfClaimPST?.toFixed(2) + '';
     this.dfaClaimMainDataService.recoveryClaim.claimGrossGST = sumOfClaimGrossGST?.toFixed(2) + '';
     this.dfaClaimMainDataService.recoveryClaim.totalActualClaim = sumOfTotalActualClaim?.toFixed(2) + '';
+    this.dfaClaimMainDataService.recoveryClaim.claimEligibleGST = sumOfClaimEligibleGST?.toFixed(2) + '';
+    this.dfaClaimMainDataService.recoveryClaim.claimTotal = sumOfTotalClaim?.toFixed(2) + '';
     this.formCreationService.recoveryClaimForm.value.get('totalInvoicesBeingClaimed').setValue(sumOfNetInvoiceBeingClaimed?.toFixed(2));
     this.formCreationService.recoveryClaimForm.value.get('claimPST').setValue(sumOfClaimPST?.toFixed(2));
     this.formCreationService.recoveryClaimForm.value.get('claimGrossGST').setValue(sumOfClaimGrossGST?.toFixed(2));
     this.formCreationService.recoveryClaimForm.value.get('totalActualClaim').setValue(sumOfTotalActualClaim?.toFixed(2));
+    this.formCreationService.recoveryClaimForm.value.get('claimEligibleGST').setValue(sumOfClaimEligibleGST?.toFixed(2));
+    this.formCreationService.recoveryClaimForm.value.get('claimTotal').setValue(sumOfTotalClaim?.toFixed(2));
     
     this.formCreationService.recoveryClaimForm.value.updateValueAndValidity();
   }
@@ -581,6 +595,7 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
             this.dfaClaimMainDataService.invoice.actualInvoiceTotal = objInv.actualInvoiceTotal ? "" + objInv.actualInvoiceTotal : "" ;
             this.dfaClaimMainDataService.invoice.eligibleGST = objInv.eligibleGST ? "" + objInv.eligibleGST : "";
             this.dfaClaimMainDataService.invoice.totalBeingClaimed = objInv.totalBeingClaimed ? "" + objInv.totalBeingClaimed : "";
+       
             
             let invoice = this.dfaClaimMainDataService.createDFAInvoiceDTO();
             if(invoice.id=='null')
