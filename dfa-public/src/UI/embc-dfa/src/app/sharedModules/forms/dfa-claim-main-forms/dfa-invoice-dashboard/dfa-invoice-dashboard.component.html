@@ -169,31 +169,37 @@
       </td>
     </ng-container>
 
-
-      <!-- EMCR Approved Amount -->
-      <ng-container matColumnDef="emcrApprovedAmount" *ngIf="(vieworedit == 'viewOnly' || vieworedit == 'view')">
+    <!-- EMCR Approved Amount -->
+    @if(claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions){
+      <ng-container matColumnDef="emcrApprovedAmount" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
         <th mat-header-cell *matHeaderCellDef style="width:17%">
           <b>EMCR Approved Amount</b>
         </th>
         <td *matCellDef="let element" mat-cell>
-          <div *ngIf="claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions">
-            $&nbsp;{{ element.emcrApprovedAmount | number : '1.2-2'}}
-          </div>
+            $&nbsp;{{element.emcrApprovedAmount | number : '1.2-2'}}
         </td>
       </ng-container>
-
-      <!-- EMCR Comments -->
-      <ng-container matColumnDef="emcrComments" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
-        <th mat-header-cell *matHeaderCellDef style="width:10%">
-          <b>EMCR Comments</b>
+    }@else{
+      <ng-container matColumnDef="emcrApprovedAmount" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
+        <th mat-header-cell *matHeaderCellDef style="width:0%">
         </th>
         <td *matCellDef="let element" mat-cell>
-          <span (click)="viewEMCRComment(element, index)" class="material-symbols-outlined setViewIcon"
-            *ngIf="claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions">
-            chat_bubble
-          </span>
+          &nbsp;
         </td>
       </ng-container>
+    }
+
+    <!-- EMCR Comments -->
+    <ng-container matColumnDef="emcrComments" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
+      <th mat-header-cell *matHeaderCellDef style="width:10%">
+        <b>EMCR Comments</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>
+        <span (click)="viewEMCRComment(element, index)" class="material-symbols-outlined setViewIcon">
+          chat_bubble
+        </span>
+      </td>
+    </ng-container>
 
       <!-- View Invoices -->
       <ng-container matColumnDef="viewInvoice" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
