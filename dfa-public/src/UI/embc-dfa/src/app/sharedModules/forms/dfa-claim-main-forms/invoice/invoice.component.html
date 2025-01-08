@@ -27,19 +27,19 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
         <div class="row">
           <div class="col-md-6">
             <div class="row" *ngIf="isReadOnly === true">
-              <div *ngIf="claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions">
-                <div class="col-md-6">
-                  <p  style="font-size: 15px">
-                    EMCR Decision
-                  </p>
-                  <mat-form-field appearance="outline">
-                      <input
-                            #emcrDecision
-                        formControlName="emcrDecision"
-                        matInput />
-                  </mat-form-field>
-                </div>
+              <div class="col-md-6">
+                <p  style="font-size: 15px">
+                  EMCR Decision
+                </p>
+                <mat-form-field appearance="outline">
+                    <input
+                          #emcrDecision
+                      formControlName="emcrDecision"
+                      matInput />
+                </mat-form-field>
+              </div>
 
+              <div *ngIf="claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions">
                 <div class="col-md-6">
                   <p  style="font-size: 15px;">
                     EMCR Approved Amount
@@ -55,43 +55,43 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                       </div>
                   </mat-form-field>
                 </div>
+              </div>
 
-                <div class="row" *ngIf="isReadOnly === true">
-                  <div class="col-md-6">
-                    <p  style="font-size: 15px">
-                      EMCR Decision Date
-                    </p>
-                    <mat-form-field appearance="outline" >
-                        <input matInput
-                          [matDatepicker]="emcrDecisionDatePicker"
-                          [readonly]="isReadOnly === true"
-                          formControlName="emcrDecisionDate"
-                          >
-                        <mat-hint *ngIf="isReadOnly !== true">MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="emcrDecisionDatePicker" [disabled]="isReadOnly === true"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #emcrDecisionDatePicker [disabled]="isReadOnly === true"
-                        ></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
-
-                <div class="row" *ngIf="isReadOnly === true">
+              <div class="row" *ngIf="isReadOnly === true">
+                <div class="col-md-6">
                   <p  style="font-size: 15px">
-                    EMCR Decision Comments
+                    EMCR Decision Date
                   </p>
-                  <div class="col-md-12">
-                    <mat-form-field appearance="outline">
-                        <textarea [disabled]="isReadOnly" matInput
-                          formControlName="emcrDecisionComments"
-                          style="resize:none"
-                          cdkTextareaAutosize
-                          #autosize="cdkTextareaAutosize"
-                          cdkAutosizeMinRows="2"
-                          cdkAutosizeMaxRows="5"></textarea>
-                    </mat-form-field>
-                    <br/>
-                  </div>
+                  <mat-form-field appearance="outline" >
+                      <input matInput
+                        [matDatepicker]="emcrDecisionDatePicker"
+                        [readonly]="isReadOnly === true"
+                        formControlName="emcrDecisionDate"
+                        >
+                      <mat-hint *ngIf="isReadOnly !== true">MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="emcrDecisionDatePicker" [disabled]="isReadOnly === true"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #emcrDecisionDatePicker [disabled]="isReadOnly === true"
+                      ></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="isReadOnly === true">
+                <p  style="font-size: 15px">
+                  EMCR Decision Comments
+                </p>
+                <div class="col-md-12">
+                  <mat-form-field appearance="outline">
+                      <textarea [disabled]="isReadOnly" matInput
+                        formControlName="emcrDecisionComments"
+                        style="resize:none"
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="2"
+                        cdkAutosizeMaxRows="5"></textarea>
+                  </mat-form-field>
+                  <br/>
                 </div>
               </div>
             </div>
