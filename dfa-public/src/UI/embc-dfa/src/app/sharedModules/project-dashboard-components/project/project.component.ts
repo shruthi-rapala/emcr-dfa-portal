@@ -229,13 +229,15 @@ export class DfaDashProjectComponent implements OnInit {
       lstProjectsFilterting = lstProjectsFilterting.filter(m => (backdate <= new Date(m.createdDate)));
     }
 
+
     if (this.sortfieldSelected != '' && this.sortfieldSelected != null) {
       if (this.sortfieldSelected == 'projectname') {
-        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.projectName > b.projectName) ? 1 : ((b.projectName > a.projectName) ? -1 : 0))
+       
+        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.projectName.toLowerCase() > b.projectName.toLowerCase()) ? 1 : ((b.projectName.toLowerCase() > a.projectName.toLowerCase()) ? -1 : 0))
       } else if (this.sortfieldSelected == 'projectnumber') {
-        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.projectNumber > b.projectNumber) ? 1 : ((b.projectNumber > a.projectNumber) ? -1 : 0))
+        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.projectNumber.toLowerCase() > b.projectNumber.toLowerCase()) ? 1 : ((b.projectNumber.toLowerCase() > a.projectNumber.toLowerCase()) ? -1 : 0))
       } else if (this.sortfieldSelected == 'sitelocation') {
-        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.siteLocation > b.siteLocation) ? 1 : ((b.siteLocation > a.siteLocation) ? -1 : 0))
+        lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (a.siteLocation.toLowerCase() > b.siteLocation.toLowerCase()) ? 1 : ((b.siteLocation.toLowerCase() > a.siteLocation.toLowerCase()) ? -1 : 0))
       } else if (this.sortfieldSelected == 'completiondate') {
         lstProjectsFilterting = lstProjectsFilterting.sort((a, b) => (new Date(a.estimatedCompletionDate) > new Date(b.estimatedCompletionDate)) ? 1 : (new Date(b.estimatedCompletionDate) > new Date(a.estimatedCompletionDate) ? -1 : 0))
       } else if (this.sortfieldSelected == '18monthdeadline') {
