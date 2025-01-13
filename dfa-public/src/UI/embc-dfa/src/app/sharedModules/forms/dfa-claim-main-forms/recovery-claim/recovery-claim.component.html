@@ -1,7 +1,7 @@
 <mat-card class="card-align recoveryPlan" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
     <form [formGroup]="recoveryClaimForm">
-      
+
       <button type="button"
           #tooltip="matTooltip" [hidden]="hideHelp"
       (mouseenter)="$event.stopImmediatePropagation()"
@@ -30,7 +30,7 @@
             Please review and complete the form below. You may start a claim, save it, and continue to add to it later. Required fields are marked with a red asterisk <span style="color:red" >*</span>
           </div>
           <div class="col-md-6"></div>
-      
+
           </div>
           <div class="col-md-6"></div>
       </div>
@@ -87,7 +87,7 @@
               First claim approved?
             </p>
             <mat-radio-group
-              (focusin)="setHelpText(3, tooltip)" 
+              (focusin)="setHelpText(3, tooltip)"
               formControlName="isFirstClaimApproved"
               class="primary-radio-group horizontal-radio-group"
               (change)="selectDamageDates($event)"
@@ -111,13 +111,13 @@
         </div>
 
         <div class="row">
-          
+
           <div class="col-md-3 costCurrency">
             <p  style="font-size: 15px; margin-bottom: 10px !important">
               Total Net Invoices being Claimed
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-              
+
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -125,11 +125,11 @@
                   id="currencyBoxTotalInvoicesBeingClaimed"
                   formControlName="totalInvoicesBeingClaimed"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-              
+
             </mat-form-field>
           </div>
           <div class="col-md-3 costCurrency">
@@ -137,7 +137,7 @@
               Claim PST
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-    
+
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -145,11 +145,11 @@
                   id="currencyBoxClaimPST"
                   formControlName="claimPST"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-    
+
             </mat-form-field>
           </div>
           <div class="col-md-3 costCurrency">
@@ -157,7 +157,7 @@
               Claim Gross GST
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-    
+
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -165,19 +165,19 @@
                   id="currencyBoxClaimGrossGST"
                   formControlName="claimGrossGST"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-    
+
             </mat-form-field>
-          </div>  
+          </div>
           <div class="col-md-3 costCurrency">
             <p  style="font-size: 15px; margin-bottom: 10px !important">
               Total Actual Claim
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-    
+
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -185,11 +185,11 @@
                   id="currencyBoxTotalActualClaim"
                   formControlName="totalActualClaim"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-    
+
             </mat-form-field>
           </div>
 
@@ -198,7 +198,7 @@
               Claim Eligible GST
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-    
+
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -206,11 +206,11 @@
                   id="currencyBoxClaimEligibleGST"
                   formControlName="claimEligibleGST"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-    
+
             </mat-form-field>
           </div>
 
@@ -219,7 +219,7 @@
               Claim Total
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-    
+
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -227,16 +227,16 @@
                   id="currencyBoxTotalBeingClaimed"
                   formControlName="claimTotal"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-    
+
             </mat-form-field>
           </div>
-          
-         
-          
+
+
+
         </div>
       </ng-container>
       <br />
@@ -247,13 +247,13 @@
           <b>Decision</b>
         </div>
        <div class="row">
-        
+
         <div class="col-md-3 costCurrency">
           <p  style="font-size: 15px; margin-bottom: 10px !important">
             Claim Eligible GST
           </p>
           <mat-form-field appearance="outline" class="mat-form-round">
-      
+
             <div class="searchDiv">
               <input
                 (focusin)="setHelpText(15, tooltip)"
@@ -261,11 +261,11 @@
                 id="currencyBoxclaimEligibleGST"
                 formControlName="claimEligibleGST"
                 matInput
-                mask="separator.2" thousandSeparator="" decimalMarker="."
+                mask="separator.2" thousandSeparator="," decimalMarker="."
                 maxlength="100"/>
               <span class="currencyText">CA$</span>
             </div>
-      
+
           </mat-form-field>
         </div>
         <div class="col-md-3 costCurrency">
@@ -273,7 +273,7 @@
             Claim Total
           </p>
           <mat-form-field appearance="outline" class="mat-form-round">
-    
+
             <div class="searchDiv">
               <input
                 (focusin)="setHelpText(15, tooltip)"
@@ -281,11 +281,11 @@
                 id="currencyBoxclaimTotal"
                 formControlName="claimTotal"
                 matInput
-                mask="separator.2" thousandSeparator="" decimalMarker="."
+                mask="separator.2" thousandSeparator="," decimalMarker="."
                 maxlength="100"/>
               <span class="currencyText">CA$</span>
             </div>
-    
+
           </mat-form-field>
         </div>
         <div class="col-md-3 costCurrency">
@@ -293,7 +293,7 @@
             Approved Claim Total
           </p>
           <mat-form-field appearance="outline" class="mat-form-round">
-    
+
             <div class="searchDiv">
               <input
                 (focusin)="setHelpText(15, tooltip)"
@@ -301,19 +301,19 @@
                 id="currencyBoxapprovedClaimTotal"
                 formControlName="approvedClaimTotal"
                 matInput
-                mask="separator.2" thousandSeparator="" decimalMarker="."
+                mask="separator.2" thousandSeparator="," decimalMarker="."
                 maxlength="100"/>
               <span class="currencyText">CA$</span>
             </div>
-    
+
           </mat-form-field>
-        </div>  
+        </div>
         <div class="col-md-3 costCurrency">
           <p  style="font-size: 15px; margin-bottom: 10px !important">
             Less First $1,000
           </p>
           <mat-form-field appearance="outline" class="mat-form-round">
-    
+
             <div class="searchDiv">
               <input
                 (focusin)="setHelpText(15, tooltip)"
@@ -321,18 +321,18 @@
                 id="currencyBoxfirstClaimDeductible1000"
                 formControlName="firstClaimDeductible1000"
                 matInput
-                mask="separator.2" thousandSeparator="" decimalMarker="."
+                mask="separator.2" thousandSeparator="," decimalMarker="."
                 maxlength="100"/>
               <span class="currencyText">CA$</span>
             </div>
-    
+
           </mat-form-field>
         </div>
-  
+
       </div>
 
          <div class="row">
-  
+
           <div class="col-md-3 costCurrency">
             <p  style="font-size: 15px; margin-bottom: 10px !important">
               Approved Reimbursement %
@@ -346,7 +346,7 @@
                   id="currencyBoxapprovedReimbursement"
                   formControlName="approvedReimbursement"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
@@ -358,7 +358,7 @@
               Eligible Payable
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-    
+
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -366,11 +366,11 @@
                   id="currencyBoxeligiblePayable"
                   formControlName="eligiblePayable"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-    
+
             </mat-form-field>
           </div>
           <div class="col-md-3 costCurrency">
@@ -378,7 +378,7 @@
               Paid Claim Amount
             </p>
             <mat-form-field appearance="outline" class="mat-form-round">
-    
+
               <div class="searchDiv">
                 <input
                   (focusin)="setHelpText(15, tooltip)"
@@ -386,13 +386,13 @@
                   id="currencyBoxpaidClaimAmount"
                   formControlName="paidClaimAmount"
                   matInput
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-    
+
             </mat-form-field>
-          </div>  
+          </div>
         </div>
         <div class="row">
           <div class="col-md-3">
@@ -412,6 +412,6 @@
       </ng-container>
     }
     </form>
-    
+
   </mat-card-content>
 </mat-card>
