@@ -1,7 +1,7 @@
 <mat-card class="card-align recoveryPlan" style="border:none;" [class.mat-elevation-z0]="true">
   <mat-card-content>
     <form [formGroup]="recoveryPlanForm">
-      
+
       <button type="button"
           #tooltip="matTooltip" [hidden]="hideHelp"
       (mouseenter)="$event.stopImmediatePropagation()"
@@ -30,7 +30,7 @@
             Please review and complete the form below. Required fields are marked with a red asterisk<span style="color:red" >*</span>
           </div>
           <div class="col-md-6"></div>
-      
+
           </div>
           <div class="col-md-6"></div>
       </div>
@@ -282,7 +282,7 @@
             Are the dates of damage the same dates provided on the application?<span style="color:red" >*</span>
           </p>
           <mat-radio-group
-            (focusin)="setHelpText(3, tooltip)" 
+            (focusin)="setHelpText(3, tooltip)"
             formControlName="isdamagedDateSameAsApplication"
             class="primary-radio-group horizontal-radio-group"
             required
@@ -548,7 +548,7 @@
         </div>
         <br />
         <div class="row">
-          
+
           <div class="col-md-4">
             <p  style="font-size: 15px; margin-bottom: 10px !important">
               Estimated completion date (month/year)
@@ -590,18 +590,18 @@
                   matInput
                        required
                   placeholder="Estimate or actual cost"
-                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  mask="separator.2" thousandSeparator="," decimalMarker="."
                   maxlength="100"/>
                 <span class="currencyText">CA$</span>
               </div>
-              
+
             </mat-form-field>
           </div>
-          
+
         </div>
       </ng-container>
-      
+
     </form>
-    
+
   </mat-card-content>
 </mat-card>
