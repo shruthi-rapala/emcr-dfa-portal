@@ -36,6 +36,200 @@
       </div>
       <br/>
       <ng-container>
+        <div>
+          <p  style="font-size: 18px; font-weight: bold;">
+            Decision
+          </p>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-3">
+            <mat-label>
+              Project Approved Date<span style="color:red" >*</span>
+            </mat-label>
+            <mat-form-field appearance="outline" class="mat-form-round">
+              
+              <input
+                id="projectApprovedDate"
+                     (focusin)="setHelpText(1, tooltip)"
+                formControlName="projectApprovedDate"
+                matInput
+                required
+                placeholder="Project Approved Date"
+                maxlength="100"/>
+              <mat-error
+                  *ngIf="
+                  recoveryPlanForm.get('projectNumber').hasError('isRequired')
+                "
+                >
+                Project Approved Date is required</mat-error
+                >
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-3">
+            <mat-label>
+              18 month deadline<span style="color:red" >*</span>
+            </mat-label>
+            <mat-form-field appearance="outline" class="mat-form-round">
+              
+              <input
+                id="18MonthDeadline"
+                     (focusin)="setHelpText(1, tooltip)"
+                formControlName="18MonthDeadline"
+                matInput
+                required
+                placeholder="18 month deadline"
+                />
+              <mat-error
+                  *ngIf="
+                  recoveryPlanForm.get('projectNumber').hasError('isRequired')
+                "
+                >
+                18 month deadline is required</mat-error
+                >
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <mat-label>
+               Approved Project Cost<span style="color:red" >*</span>
+            </mat-label>
+            <mat-form-field appearance="outline" class="mat-form-round">
+              <div class="searchDiv">
+                <input
+                  (focusin)="setHelpText(15, tooltip)"
+                  #currencyBox
+                  id="currencyBox"
+                  formControlName="estimateCostIncludingTax"
+                  matInput
+                       required
+                  placeholder="Approved Project Cost"
+                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  maxlength="100"/>
+                <span class="currencyText">CA$</span>
+              </div>
+              
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-3">
+            <mat-label>
+              Approved Amended Project Cost<span style="color:red" >*</span>
+            </mat-label>
+            <mat-form-field appearance="outline" class="mat-form-round">
+              <div class="searchDiv">
+                <input
+                  (focusin)="setHelpText(15, tooltip)"
+                  #currencyBox
+                  id="currencyBox"
+                  formControlName="estimateCostIncludingTax"
+                  matInput
+                       required
+                  placeholder="Approved Amended Project Cost"
+                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  maxlength="100"/>
+                <span class="currencyText">CA$</span>
+              </div>
+              
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-label>
+              Project Claim Total<span style="color:red" >*</span>
+            </mat-label>
+            <mat-form-field appearance="outline" class="mat-form-round">
+              <div class="searchDiv">
+                <input
+                  (focusin)="setHelpText(15, tooltip)"
+                  #currencyBox
+                  id="currencyBox"
+                  formControlName="estimateCostIncludingTax"
+                  matInput
+                       required
+                  placeholder="Project Claim Total"
+                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  maxlength="100"/>
+                <span class="currencyText">CA$</span>
+              </div>
+              
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-label>
+              Project Approved Claim Total <span style="color:red" >*</span>
+            </mat-label>
+            <mat-form-field appearance="outline" class="mat-form-round">
+              <div class="searchDiv">
+                <input
+                  (focusin)="setHelpText(15, tooltip)"
+                  #currencyBox
+                  id="currencyBox"
+                  formControlName="estimateCostIncludingTax"
+                  matInput
+                       required
+                  placeholder="Project Approved Claim Total"
+                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  maxlength="100"/>
+                <span class="currencyText">CA$</span>
+              </div>
+              
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <mat-label>
+              Paid Project Amount <span style="color:red" >*</span>
+            </mat-label>
+            <mat-form-field appearance="outline" class="mat-form-round">
+              <div class="searchDiv">
+                <input
+                  (focusin)="setHelpText(15, tooltip)"
+                  #currencyBox
+                  id="currencyBox"
+                  formControlName="estimateCostIncludingTax"
+                  matInput
+                       required
+                  placeholder="Paid Project Amount"
+                  mask="separator.2" thousandSeparator="" decimalMarker="."
+                  maxlength="100"/>
+                <span class="currencyText">CA$</span>
+              </div>
+              
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row" >
+          <mat-label>
+            EMCR Decision Comments<span style="color:red" >*</span>
+          </mat-label>
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <textarea [disabled]="isReadOnly" matInput
+                (focusin)="setHelpText(8, tooltip)"
+                formControlName="infraDamageDetails"
+                placeholder="EMCR Decision Comments"
+                [rows]="5"
+                required
+                style="resize:none"
+                (keyup)="calcRemainingCharsInfrastructure()"
+                maxlength="2000"></textarea>
+              <mat-hint>{{ remainingLengthInfrastructure }} characters remaining.</mat-hint>
+            </mat-form-field><br/>
+          </div>
+        </div>
+        <div>
+          <p  style="font-size: 18px; font-weight: bold;">
+           Project Details
+          </p>
+        </div>
+        <br />
         <div class="row">
           <div class="col-md-3">
             <p  style="font-size: 15px">

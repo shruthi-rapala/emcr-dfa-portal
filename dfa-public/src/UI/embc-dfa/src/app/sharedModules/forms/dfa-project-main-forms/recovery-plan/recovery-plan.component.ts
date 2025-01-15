@@ -312,6 +312,7 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
 
   setHelpText(inputSelection, tooltip: MatTooltip): void {
     switch (inputSelection) {
+      
       case 1:
         this.message = "Project number\r\n\r\nThe project number is the unique project identifier that your organization assigned to the project's site location where damage has occurred.\r\nThe project identifier may be a number, letter, or any combination of letters and numbers.\r\nThis project number is specific to the site and is often referred to when discussing the location.";
         break;
