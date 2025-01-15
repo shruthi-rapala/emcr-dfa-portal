@@ -2,6 +2,7 @@
 name: cd-dfa-portal-support-api
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - support-develop
