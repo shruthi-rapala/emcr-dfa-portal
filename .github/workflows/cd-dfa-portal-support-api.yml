@@ -2,6 +2,7 @@
 name: cd-dfa-portal-support-api
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - support-develop
@@ -17,7 +18,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v3
