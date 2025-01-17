@@ -67,6 +67,7 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
   remainingLengthDescribeDamagedInfrastructure: number = 2000;
   remainingLengthDescribeRepair: number = 2000;
   remainingLengthDescribeRepairMaterial: number = 2000;
+  remainingLengthEMCRComments: number = 2000;
   todayDate = new Date().toISOString();
   vieworedit: string = "";
   isReadOnly: boolean = false;
@@ -213,6 +214,11 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
 
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
+  }
+
+  calcRemainingEMCRComments() {
+    if (this.recoveryPlanForm.get('emcrComments').value)
+      this.remainingLengthEMCRComments = 2000 - this.recoveryPlanForm.get('emcrComments').value?.length;
   }
 
   calcRemainingCharsInfrastructure() {

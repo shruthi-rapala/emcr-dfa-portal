@@ -136,6 +136,14 @@ export class RecoveryPlan {
   repairDamagedInfrastructure?: null | string;
   estimatedCompletionDate?: null | string;
   estimateCostIncludingTax?: null | number;
+  projectApprovedDate ?: null | string;
+  project18MonthDeadline ?: null | string;
+  approvedCost?: null | number;
+  approvedAmendedProjectCost?: null | number;
+  claimTotal?: null | number;
+  approvedTotal?: null | number;
+  paidProjectAmount?: null | number;
+  emcrapprovalcomments?: null | string;
 
   constructor(
     sitelocationdamageFromDate?: null | string,
@@ -153,7 +161,15 @@ export class RecoveryPlan {
     repairWorkDetails?: null | string,
     repairDamagedInfrastructure?: null | string,
     estimatedCompletionDate?: null | string,
-    estimateCostIncludingTax?: null | number
+    estimateCostIncludingTax?: null | number,
+    projectApprovedDate ?: null | string,
+    project18MonthDeadline ?: null | string,
+    approvedCost?: null | number,
+    approvedAmendedProjectCost?: null | number,
+    claimTotal?: null | number,
+    approvedTotal?: null | number,
+    paidProjectAmount?: null | number,
+    emcrapprovalcomments?: null | string
   ) { }
 }
 
@@ -174,6 +190,14 @@ export class RecoveryPlanForm {
   repairDamagedInfrastructure = new UntypedFormControl();
   estimatedCompletionDate = new UntypedFormControl();
   estimateCostIncludingTax = new UntypedFormControl();
+  projectApprovedDate = new UntypedFormControl();
+  project18MonthDeadline = new UntypedFormControl();
+  approvedCost = new UntypedFormControl();
+  approvedAmendedProjectCost = new UntypedFormControl();
+  claimTotal = new UntypedFormControl();
+  approvedTotal = new UntypedFormControl();
+  paidProjectAmount = new UntypedFormControl();
+  emcrapprovalcomments = new UntypedFormControl();
 
   constructor(
     recoveryPlan: RecoveryPlan,
@@ -261,6 +285,47 @@ export class RecoveryPlanForm {
       this.estimateCostIncludingTax.setValue(recoveryPlan.estimateCostIncludingTax);
     }
     this.estimateCostIncludingTax.setValidators(null);
+
+    if (recoveryPlan.projectApprovedDate) {
+      this.projectApprovedDate.setValue(recoveryPlan.projectApprovedDate);
+    }
+    this.projectApprovedDate.setValidators(null);
+
+    if (recoveryPlan.project18MonthDeadline) {
+      this.project18MonthDeadline.setValue(recoveryPlan.project18MonthDeadline);
+    }
+    this.project18MonthDeadline.setValidators(null);
+
+    if (recoveryPlan.approvedCost) {
+      this.approvedCost.setValue(recoveryPlan.approvedCost);
+    }
+    this.approvedCost.setValidators(null);
+
+    if (recoveryPlan.approvedAmendedProjectCost) {
+      this.approvedAmendedProjectCost.setValue(recoveryPlan.approvedAmendedProjectCost);
+    }
+    this.approvedAmendedProjectCost.setValidators(null);
+
+    if (recoveryPlan.claimTotal) {
+      this.claimTotal.setValue(recoveryPlan.claimTotal);
+    }
+    this.claimTotal.setValidators(null);
+
+    if (recoveryPlan.approvedTotal) {
+      this.approvedTotal.setValue(recoveryPlan.approvedTotal);
+    }
+    this.approvedTotal.setValidators(null);
+
+    if (recoveryPlan.paidProjectAmount) {
+      this.paidProjectAmount.setValue(recoveryPlan.paidProjectAmount);
+    }
+    this.paidProjectAmount.setValidators(null);
+
+    if (recoveryPlan.emcrapprovalcomments) {
+      this.emcrapprovalcomments.setValue(recoveryPlan.emcrapprovalcomments);
+    }
+    this.emcrapprovalcomments.setValidators(null);
+
   }
 }
 
