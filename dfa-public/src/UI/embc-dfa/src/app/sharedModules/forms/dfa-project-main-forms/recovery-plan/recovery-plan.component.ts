@@ -217,8 +217,8 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
   }
 
   calcRemainingEMCRComments() {
-    if (this.recoveryPlanForm.get('emcrComments').value)
-      this.remainingLengthEMCRComments = 2000 - this.recoveryPlanForm.get('emcrComments').value?.length;
+    if (this.recoveryPlanForm.get('emcrapprovalcomments').value)
+      this.remainingLengthEMCRComments = 2000 - this.recoveryPlanForm.get('emcrapprovalcomments').value?.length;
   }
 
   calcRemainingCharsInfrastructure() {

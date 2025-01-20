@@ -60,26 +60,22 @@
             </mat-form-field>
           </div>
 
-          <div class="col-md-3">
+          <!-- <div class="col-md-3">
             <p class="label">
               18 month deadline<span style="color:red">*</span>
             </p>
             <mat-form-field appearance="outline">
               <mat-label>18 month deadline</mat-label>
               <input matInput (focusin)="setHelpText(14, tooltip)" [matDatepicker]="deadlinePicker"
-                [readonly]="isReadOnly === true" formControlName="project18MonthDeadline" required>
+                [readonly]="isReadOnly === true" formControlName="project18MonthDeadline">
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matSuffix [for]="deadlinePicker"
                 [disabled]="isReadOnly === true"></mat-datepicker-toggle>
               <mat-datepicker #deadlinePicker startView="multi-year"
                 [disabled]="isReadOnly === true"></mat-datepicker>
-              <mat-error *ngIf="
-                recoveryPlanForm.get('project18MonthDeadline').invalid &&
-                recoveryPlanForm.get('project18MonthDeadline').hasError('required')
-              ">
-                18 month deadline is required</mat-error>
+              
             </mat-form-field>
-          </div>
+          </div> -->
 
         </div>
 
@@ -106,9 +102,8 @@
             <mat-form-field appearance="outline" class="mat-form-round">
               <div class="searchDiv">
                 <input (focusin)="setHelpText(15, tooltip)" #currencyBox id="currencyBox"
-                  formControlName="approvedAmendedProjectCost" matInput required
-                  placeholder="Approved Amended Project Cost" mask="separator.2" thousandSeparator="," decimalMarker="."
-                  maxlength="100" />
+                  formControlName="approvedAmendedProjectCost" matInput required placeholder="Amendmend Project Cost"
+                  mask="separator.2" thousandSeparator="," decimalMarker="." maxlength="100" />
                 <span class="currencyText">CA$</span>
               </div>
 
