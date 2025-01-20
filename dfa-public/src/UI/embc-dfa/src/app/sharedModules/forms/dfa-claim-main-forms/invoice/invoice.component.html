@@ -95,7 +95,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                 </div>
               </div>
             </div>
-            
+
             <hr class="hr-align" *ngIf="isReadOnly === true" />
             <div class="row">
               <div class="col-md-12">
@@ -143,7 +143,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                   ></mat-datepicker-toggle>
                   <mat-datepicker #invoiceDatePicker [disabled]="isReadOnly === true"
                   ></mat-datepicker>
-                  
+
                 </mat-form-field>
               </div>
               <div class="col-md-1"></div>
@@ -157,10 +157,10 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                 <mat-radio-group
                   formControlName="isGoodsReceivedonInvoiceDate"
                   class="primary-radio-group horizontal-radio-group"
-                  
+
                   aria-label="Select an option">
                   <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
-                  
+
                    <mat-error *ngIf="
                                   invoiceForm.get('isGoodsReceivedonInvoiceDate').invalid &&
                                   invoiceForm.get('isGoodsReceivedonInvoiceDate').hasError('required')
@@ -168,18 +168,18 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is required
                    </mat-error>
                   </mat-radio-group>
-                
+
               </div>
             </div>
             <br />
-            
+
             <div class="row" [hidden]="(formCreationService.invoiceForm$ | async)?.value
   .isGoodsReceivedonInvoiceDate != 'false'">
               <p  style="font-size: 15px">
                 Select the date that the goods or services were received<span style="color:red" >*</span>
               </p>
               <div class="col-md-6">
-                
+
                 <mat-form-field appearance="outline" >
                   <input matInput
                     [matDatepicker]="goodsReceivedDatePicker"
@@ -191,10 +191,10 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                   ></mat-datepicker-toggle>
                   <mat-datepicker #goodsReceivedDatePicker [disabled]="isReadOnly === true"
                   ></mat-datepicker>
-    
+
                 </mat-form-field>
               </div>
-        
+
             </div>
             <br *ngIf="(formCreationService.invoiceForm$ | async)?.value
                         .isGoodsReceivedonInvoiceDate == 'false'"/>
@@ -206,7 +206,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                 <mat-form-field appearance="outline">
                   <textarea [disabled]="isReadOnly" matInput
                     formControlName="purposeOfGoodsServiceReceived"
-                    
+
                     required
                     style="resize:none"
                     cdkTextareaAutosize
@@ -215,9 +215,9 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                     cdkAutosizeMaxRows="5"
                     maxlength="200"></textarea>
                   <!--<mat-hint>{{ remainingLength }} characters remaining.</mat-hint>-->
-                   
+
                 </mat-form-field>
-                
+
                 <br/>
               </div>
             </div>
@@ -230,7 +230,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                 <mat-radio-group
                   formControlName="isClaimforPartofTotalInvoice"
                   class="primary-radio-group horizontal-radio-group"
-                  
+
                   (change)="selectDamageDates($event)"
                   aria-label="Select an option">
                   <mat-radio-button value=true>Yes</mat-radio-button>&nbsp;&nbsp;<mat-radio-button value=false>No</mat-radio-button>
@@ -240,7 +240,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is required
                   </mat-error>
                   </mat-radio-group>
-                   
+
               </div>
             </div>
             <br/>
@@ -275,7 +275,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                     Net invoiced being claimed (excluding taxes)<span style="color:red" >*</span>
                   </p>
                   <mat-form-field appearance="outline" class="mat-form-round monetary-input">
-    
+
                     <div class="searchDiv">
                       <input
                         (focusin)="setHelpText(3, tooltip)"
@@ -284,13 +284,13 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                         [formControl]="invoiceForm.controls['netInvoiceBeingClaimed']"
                         matInput
                              required
-                             mask="separator.2" thousandSeparator="" decimalMarker="."
+                             mask="separator.2" thousandSeparator="," decimalMarker="."
                              (keyup)="CalculateInvoice($event);"
                         maxlength="100"/>
                       <span class="currencyText">CA$</span>
                     </div>
                   </mat-form-field>
-                </div>  
+                </div>
               </div>
 
               <div class="row pst-box">
@@ -298,7 +298,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                   <p  style="font-size: 15px">
                     PST
                   </p>
-                  
+
                 </div>
                 <div class="col-md-8 inputCurrency">
                   $&nbsp;<mat-form-field class="monetary-input-small" appearance="outline" style="height: 30px !important">
@@ -307,7 +307,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                       (focusin)="setHelpText(4, tooltip)"
                       [formControl]="invoiceForm.controls['pst']"
                       matInput
-                      mask="separator.2" thousandSeparator="" decimalMarker="."
+                      mask="separator.2" thousandSeparator="," decimalMarker="."
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
@@ -324,7 +324,7 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                       (focusin)="setHelpText(5, tooltip)"
                       [formControl]="invoiceForm.controls['grossGST']"
                       matInput
-                      mask="separator.2" thousandSeparator="" decimalMarker="."
+                      mask="separator.2" thousandSeparator="," decimalMarker="."
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
@@ -372,10 +372,10 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
                     <input
                       (focusin)="setHelpText(6, tooltip)"
                             #eligibleGST
-                    
+
                       [formControl]="invoiceForm.controls['eligibleGST']"
                       matInput
-                      mask="separator.2" thousandSeparator="" decimalMarker="."
+                      mask="separator.2" thousandSeparator="," decimalMarker="."
                       (keyup)="CalculateInvoice($event);"
                       maxlength="100"/>
                   </mat-form-field>
@@ -415,6 +415,6 @@ id="invHeadr" class="header-align-inv">{{addeditInvoiceText}} Invoice</h1>
         </div>
       </div>
     </form>
-    
+
   </mat-card-content>
 </mat-card>
