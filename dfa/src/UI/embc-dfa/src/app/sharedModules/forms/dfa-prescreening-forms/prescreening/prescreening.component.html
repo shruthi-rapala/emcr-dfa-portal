@@ -173,7 +173,7 @@
                 {{ profile?.primaryAddress?.city }}&nbsp;{{profile?.primaryAddress?.stateProvince}}&nbsp;{{ profile?.primaryAddress?.postalCode }}<br /><br/>
               </div>
               <mat-radio-button value=false>Different from my profile address above</mat-radio-button>
-              <div class="row radio-extra-label" *ngIf="prescreeningForm.get('isPrimaryAndDamagedAddressSame').value == 'false'">
+              <div class="row radio-extra-label" *ngIf="prescreeningForm.get('isPrimaryAndDamagedAddressSame').value === 'false'">
                 <app-bc-address
                   [addressForm]="prescreeningForm"
                   [primaryAddressWarning]="false"

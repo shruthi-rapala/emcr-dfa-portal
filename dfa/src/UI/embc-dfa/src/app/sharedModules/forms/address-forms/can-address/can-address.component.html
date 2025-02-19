@@ -80,7 +80,7 @@
 
   <div class="row">
     <div class="col-md-4">
-      <mat-form-field appearance="outline" *ngIf="isCanadaPostValidated=='false'">
+      <mat-form-field appearance="outline" *ngIf="isCanadaPostValidated==='false'">
       <mat-label>City</mat-label>
       <input type="text"
              placeholder="Select City"
@@ -104,7 +104,7 @@
           </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-      <mat-form-field appearance="outline" *ngIf="isCanadaPostValidated!='false'">
+      <mat-form-field appearance="outline" *ngIf="isCanadaPostValidated!=='false'">
         <mat-label>City</mat-label>
         <input
           maxlength="100"
@@ -231,7 +231,7 @@
     </div>
   </div>
 
-  <div id="divAddressMatchResponse" [style]="isCanadaPostValidated =='false' ? 'color: red' : 'color: green'">
+  <div id="divAddressMatchResponse" [style]="isCanadaPostValidated ==='false' ? 'color: red' : 'color: green'">
     {{addressMatchResponse}}
   </div>
 </form>

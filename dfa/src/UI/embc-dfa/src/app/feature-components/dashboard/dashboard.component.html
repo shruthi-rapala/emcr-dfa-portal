@@ -68,7 +68,7 @@ If you're an Indigenous community or local government your process is different:
             width="15"
           />
           <!--&nbsp;&nbsp; {{ tabItem.label }}-->
-          &nbsp;&nbsp; {{ tabItem.label != "Profile" ? tabItem.label + " (" + tabItem.count + ")" : tabItem.label }}
+          &nbsp;&nbsp; {{ tabItem.label !== "Profile" ? tabItem.label + " (" + tabItem.count + ")" : tabItem.label }}
         </a>
       </nav>
       <mat-tab-nav-panel #tabPanel>

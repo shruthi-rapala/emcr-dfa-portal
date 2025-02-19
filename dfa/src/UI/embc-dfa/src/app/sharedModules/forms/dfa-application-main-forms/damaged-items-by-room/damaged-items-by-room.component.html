@@ -61,7 +61,7 @@
                     </button>&nbsp;
                     <button
                       class="delete-image"
-                      *ngIf="vieworedit != 'viewOnly'"
+                      *ngIf="vieworedit !== 'viewOnly'"
                       mat-icon-button
                       aria-label="Remove"
                       (click)="deleteDamagedRoomRow(index)"
@@ -86,7 +86,7 @@
                 <br /><br/>
               </div>
 
-              <div  *ngIf="damagedRoomsDataSource.getValue().length == 0 && vieworedit == 'viewOnly'">
+              <div  *ngIf="damagedRoomsDataSource.getValue().length == 0 && vieworedit === 'viewOnly'">
                 <br />No damaged rooms were added.<br/>
               </div>
 

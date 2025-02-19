@@ -262,14 +262,14 @@
           <div class="col-md-3" *ngIf="((formCreationService.addressForm$ | async)?.value?.mailingAddress
                   ?.addressLine1 == null ||
                                (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                  ?.addressLine1 == '') &&
+                  ?.addressLine1 === '') &&
                ((formCreationService.addressForm$ | async)?.value?.mailingAddress
                   ?.addressLine2 == null ||
                                (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                  ?.addressLine2 == '') && ((formCreationService.addressForm$ | async)?.value?.mailingAddress
+                  ?.addressLine2 === '') && ((formCreationService.addressForm$ | async)?.value?.mailingAddress
                   ?.postalCode == null ||
                                (formCreationService.addressForm$ | async)?.value?.mailingAddress
-                  ?.postalCode == '')
+                  ?.postalCode === '')
                                "><b>No mailing address available.</b></div>
           <div
             class="col-md-3"
@@ -483,14 +483,14 @@
         </div>
         <hr />
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">Damaged property address same as the primary address?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame === 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame === 'false'))}">Damaged property address same as the primary address?:</span></div>
           <div class="col-md-3">
-            <span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame == 'false'))}">{{
+            <span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame === 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.isPrimaryAndDamagedAddressSame === 'false'))}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .isPrimaryAndDamagedAddressSame == 'true'
+                .isPrimaryAndDamagedAddressSame === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .isPrimaryAndDamagedAddressSame == 'false' ? 'No' : 'Make a selection')
+                .isPrimaryAndDamagedAddressSame === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -562,10 +562,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.businessManagedByAllOwnersOnDayToDayBasis}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .businessManagedByAllOwnersOnDayToDayBasis == 'true'
+                .businessManagedByAllOwnersOnDayToDayBasis === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .businessManagedByAllOwnersOnDayToDayBasis == 'false' ? 'No' : 'Make a selection')
+                .businessManagedByAllOwnersOnDayToDayBasis === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -574,10 +574,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.grossRevenues100002000000BeforeDisaster}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .grossRevenues100002000000BeforeDisaster == 'true'
+                .grossRevenues100002000000BeforeDisaster === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .grossRevenues100002000000BeforeDisaster == 'false' ? 'No' : 'Make a selection')
+                .grossRevenues100002000000BeforeDisaster === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -586,10 +586,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.employLessThan50EmployeesAtAnyOneTime}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .employLessThan50EmployeesAtAnyOneTime == 'true'
+                .employLessThan50EmployeesAtAnyOneTime === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .employLessThan50EmployeesAtAnyOneTime == 'false' ? 'No' : 'Make a selection')
+                .employLessThan50EmployeesAtAnyOneTime === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -598,10 +598,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperation}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .farmoperation == 'true'
+                .farmoperation === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .farmoperation == 'false' ? 'No' : 'Make a selection')
+                .farmoperation === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -610,10 +610,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.ownedandoperatedbya}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .ownedandoperatedbya == 'true'
+                .ownedandoperatedbya === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .ownedandoperatedbya == 'false' ? 'No' : 'Make a selection')
+                .ownedandoperatedbya === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -622,10 +622,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.farmoperationderivesthatpersonsmajorincom}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .farmoperationderivesthatpersonsmajorincom == 'true'
+                .farmoperationderivesthatpersonsmajorincom === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .farmoperationderivesthatpersonsmajorincom == 'false' ? 'No' : 'Make a selection')
+                .farmoperationderivesthatpersonsmajorincom === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -634,10 +634,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityProvidesCommunityBenefit}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityProvidesCommunityBenefit == 'true'
+                .charityProvidesCommunityBenefit === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityProvidesCommunityBenefit == 'false' ? 'No' : 'Make a selection')
+                .charityProvidesCommunityBenefit === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -646,10 +646,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityExistsAtLeast12Months}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityExistsAtLeast12Months == 'true'
+                .charityExistsAtLeast12Months === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityExistsAtLeast12Months == 'false' ? 'No' : 'Make a selection')
+                .charityExistsAtLeast12Months === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -658,10 +658,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.charityRegistered}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityRegistered == 'true'
+                .charityRegistered === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .charityRegistered == 'false' ? 'No' : 'Make a selection')
+                .charityRegistered === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -686,22 +686,22 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.occupyAsPrimaryResidence}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .occupyAsPrimaryResidence == 'true'
+                .occupyAsPrimaryResidence === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .occupyAsPrimaryResidence == 'false' ? 'No' : 'Make a selection')
+                .occupyAsPrimaryResidence === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
         <div class="row info-detail">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'false'))}">Losses Total More Than $1000?:</span></div>
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 == 'false'))}">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 === 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 === 'false'))}">Losses Total More Than $1000?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 === 'true') || ((formCreationService.damagedPropertyAddressForm$ | async)?.value.lossesExceed1000 === 'false'))}">
             {{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
                 .lossesExceed1000 === 'true'
                 ? 'Yes'
                 :  ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .lossesExceed1000 == 'false' ? 'No' : 'Make a selection')
+                .lossesExceed1000 === 'false' ? 'No' : 'Make a selection')
             }}
           </span></div>
         </div>
@@ -710,10 +710,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.onAFirstNationsReserve}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .onAFirstNationsReserve == 'true'
+                .onAFirstNationsReserve === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .onAFirstNationsReserve == 'false' ? 'No' : 'Make a selection')
+                .onAFirstNationsReserve === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -734,10 +734,10 @@
           <div class="col-md-3">
             {{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .manufacturedHome == 'true'
+                .manufacturedHome === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .manufacturedHome == 'false' ? 'No' : '')
+                .manufacturedHome === 'false' ? 'No' : '')
             }}
           </div>
         </div>
@@ -746,10 +746,10 @@
           <div class="col-md-3">
             <span [ngClass]="{'missing-info': !(formCreationService.damagedPropertyAddressForm$ | async)?.value?.eligibleForHomeOwnerGrant}">{{
               (formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .eligibleForHomeOwnerGrant == 'true'
+                .eligibleForHomeOwnerGrant === 'true'
                 ? 'Yes'
                 : ((formCreationService.damagedPropertyAddressForm$ | async)?.value
-                .eligibleForHomeOwnerGrant == 'false' ? 'No' : 'Make a selection')
+                .eligibleForHomeOwnerGrant === 'false' ? 'No' : 'Make a selection')
             }}</span>
           </div>
         </div>
@@ -935,8 +935,8 @@
           </div>
         </div>
         <div class="row info-detail" *ngIf="isResidentialTenant || isHomeowner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'false'))}">Were You Evacuated?:</span></div>
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated == 'false'))}">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated === 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated === 'false'))}">Were You Evacuated?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated === 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.wereYouEvacuated === 'false'))}">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .wereYouEvacuated === 'true' ?
@@ -944,19 +944,19 @@
                 .dateReturned ? ('Yes, returned ' + (((formCreationService.propertyDamageForm$ | async)?.value
                 .dateReturned) | date: "MM/dd/yyyy")) : 'Yes')
                 : ((formCreationService.propertyDamageForm$ | async)?.value
-                .wereYouEvacuated == 'false' ? 'No' : 'Make a selection')
+                .wereYouEvacuated === 'false' ? 'No' : 'Make a selection')
             }}
           </span></div>
         </div>
         <div class="row info-detail" *ngIf="isResidentialTenant || isHomeowner">
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'false'))}">Residing In Residence?:</span></div>
-          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence == 'false'))}">
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence === 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence === 'false'))}">Residing In Residence?:</span></div>
+          <div class="col-md-3"><span [ngClass]="{'missing-info': !(((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence === 'true') || ((formCreationService.propertyDamageForm$ | async)?.value.residingInResidence === 'false'))}">
             {{
               (formCreationService.propertyDamageForm$ | async)?.value
                 .residingInResidence === 'true'
                 ? 'Yes'
                 : ((formCreationService.propertyDamageForm$ | async)?.value
-                .residingInResidence == 'false' ? 'No' : 'Make a selection')
+                .residingInResidence === 'false' ? 'No' : 'Make a selection')
             }}
           </span></div>
         </div>
@@ -971,7 +971,7 @@
             }}
           </span></div>
         </div>
-        <div class="row info-detail" *ngIf="(formCreationService.propertyDamageForm$ | async)?.value.previousApplication == 'Yes' || (formCreationService.propertyDamageForm$ | async)?.value.previousApplication == 'Not sure' ">
+        <div class="row info-detail" *ngIf="(formCreationService.propertyDamageForm$ | async)?.value.previousApplication === 'Yes' || (formCreationService.propertyDamageForm$ | async)?.value.previousApplication === 'Not sure' ">
           <div class="col-md-3"><span>Previous DFA application details?:</span></div>
           <div class="col-md-3"><span>
             {{

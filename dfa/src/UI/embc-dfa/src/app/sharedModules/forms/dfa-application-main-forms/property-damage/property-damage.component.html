@@ -192,7 +192,7 @@
           </div>
         </div><br/>
 
-        <div class="row" *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true' && (isResidentialTenant === true || isHomeowner === true)">
+        <div class="row" *ngIf="propertyDamageForm.get('wereYouEvacuated').value === 'true' && (isResidentialTenant === true || isHomeowner === true)">
           <p class="sub-heading" style="font-size: 15px">
             If yes, when did you return to the residence?
           </p>
@@ -217,7 +217,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div *ngIf="propertyDamageForm.get('wereYouEvacuated').value == 'true'">
+        <div *ngIf="propertyDamageForm.get('wereYouEvacuated').value === 'true'">
           <br/><br/>
         </div>
 

@@ -90,7 +90,7 @@
         <button
           class="col-md-2 application-button"
           type="button"
-          *ngIf="applItem.primaryApplicantSignedDate || appType != 'current'"
+          *ngIf="applItem.primaryApplicantSignedDate || appType !== 'current'"
           (click)="ViewApplication(applItem)"
         >
           View Application
@@ -99,7 +99,7 @@
         <button
         class="col-md-2 application-button"
         type="button"
-        *ngIf="!applItem.primaryApplicantSignedDate && appType == 'current'"
+        *ngIf="!applItem.primaryApplicantSignedDate && appType === 'current'"
         (click)="ViewApplication(applItem)"
         >
           Complete Application
