@@ -1,3 +1,4 @@
+export { FilesService } from './services/files.service';
 export { ApplicationService } from './services/application.service';
 export { AttachmentService } from './services/attachment.service';
 export { BCeIdLookupService } from './services/b-ce-id-lookup.service';
