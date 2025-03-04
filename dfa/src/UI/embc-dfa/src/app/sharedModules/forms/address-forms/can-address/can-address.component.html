@@ -37,7 +37,7 @@
           Maximum length is 100 characters</mat-error
         >
         <mat-autocomplete autoActiveFirstOption #autoAddress1="matAutocomplete">
-        
+
         <mat-option (onSelectionChange)="selectOption(option, addressMatchResponse)"
             *ngFor="let option of filteredAddress | async"
             [value]="option.name"
@@ -80,7 +80,7 @@
 
   <div class="row">
     <div class="col-md-4">
-      <mat-form-field appearance="outline" *ngIf="isCanadaPostValidated=='false'">
+      <mat-form-field appearance="outline" *ngIf="isCanadaPostValidated==='false'">
       <mat-label>City</mat-label>
       <input type="text"
              placeholder="Select City"
@@ -90,12 +90,9 @@
              [formControlName]="'community'"
              [matAutocomplete]="auto"
              (keyup)="SelectCity($event, 'input')"
-             [readonly]="primaryAddressWarning == true || readOnly == true"
+             [readonly]="primaryAddressWarning === true || readOnly === true"
              >
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <!--@for (option of filteredCountries | async; track option) {
-          <mat-option [value]="option">{{option}}</mat-option>
-        }-->
         <mat-option (onSelectionChange)="SelectCity(option, null)"
             *ngFor="let option of filteredOptions | async"
             [value]="option.name"
@@ -104,14 +101,14 @@
           </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-      <mat-form-field appearance="outline" *ngIf="isCanadaPostValidated!='false'">
+      <mat-form-field appearance="outline" *ngIf="isCanadaPostValidated!=='false'">
         <mat-label>City</mat-label>
         <input
           maxlength="100"
           [formControlName]="'community'"
           matInput
           placeholder="City"
-          
+
           (focusout)="checkCanadaPostAddress(addressFormControl?.addressLine1,
                addressFormControl?.addressLine2,
                addressFormControl?.community,
@@ -231,7 +228,7 @@
     </div>
   </div>
 
-  <div id="divAddressMatchResponse" [style]="isCanadaPostValidated =='false' ? 'color: red' : 'color: green'">
+  <div id="divAddressMatchResponse" [style]="isCanadaPostValidated ==='false' ? 'color: red' : 'color: green'">
     {{addressMatchResponse}}
   </div>
 </form>

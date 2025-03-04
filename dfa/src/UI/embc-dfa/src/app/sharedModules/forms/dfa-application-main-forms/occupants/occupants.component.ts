@@ -131,6 +131,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
                   this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(this.onlyOccupantInHome);
 
                 this.otherContactsForm.get('onlyOtherContact').setValue(this.onlyOtherContact);
+                this.otherContactsForm.get('onlyOtherContact').updateValueAndValidity();
 
                 if (this.isHomeowner || this.isResidentialTenant) {
                   this.updateFullTimeOccupantOnlyOccupantInHome(this.onlyOccupantInHome);
@@ -199,6 +200,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
     this.fullTimeOccupantsForm.get('onlyOccupantInHome').setValue(this.onlyOccupantInHome);
     this.otherContactsForm.get('onlyOtherContact').setValue(this.onlyOtherContact);
+    this.otherContactsForm.get('onlyOtherContact').updateValueAndValidity();
   }
   
   onChecked(e) {
@@ -216,9 +218,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     if (e.checked) {
       this.hideOtherContactButton = true;
       this.otherContactsForm.get('onlyOtherContact').setValue(true);
+      this.otherContactsForm
+      .get('otherContacts')
+      .updateValueAndValidity();
     } else {
       this.hideOtherContactButton = false;
       this.otherContactsForm.get('onlyOtherContact').setValue(false);
+      this.otherContactsForm
+      .get('otherContacts')
+      .updateValueAndValidity();
     }
 
   }

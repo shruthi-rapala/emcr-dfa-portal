@@ -37,13 +37,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="IdentityModel.AspNetCore.OAuth2Introspection" Version="6.1.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+        <PackageReference Include="Amazon.Extensions.S3.Encryption" Version="2.2.1" />
+        <PackageReference Include="AWSSDK.S3" Version="3.7.415.9" />
+        <PackageReference Include="IdentityModel.AspNetCore.OAuth2Introspection" Version="6.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13" />
 
-        <PackageReference Include="NSwag.AspNetCore" Version="14.0.7" />
+        <PackageReference Include="NSwag.AspNetCore" Version="14.2.0" />
 
-        <PackageReference Include="System.ServiceModel.Http" Version="6.0.0" />
-        <PackageReference Include="System.ServiceModel.Security" Version="4.6.0" />
+        <PackageReference Include="System.ServiceModel.Http" Version="8.1.1" />
+        <PackageReference Include="System.ServiceModel.Security" Version="6.0.0" />
         <PackageReference Include="Xrm.Tools.CRMWebAPI" Version="1.0.25" />
     </ItemGroup>
 

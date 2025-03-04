@@ -8,6 +8,7 @@ import {
   FormGroup,
   FormControl
 } from '@angular/forms';
+import moment from 'moment';
 import { CommonModule, KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +25,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
-import { ApplicantOption, ApplicantSubtypeSubCategories } from 'src/app/core/api/models';
+import {ApplicantOption, ApplicantSubtypeSubCategories, CurrentApplication} from 'src/app/core/api/models';
 import { MatTableModule } from '@angular/material/table';
 import { CustomPipeModule } from 'src/app/core/pipe/customPipe.module';
 import { DFADeleteConfirmDialogComponent } from '../../../../core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
@@ -39,6 +40,8 @@ import { DFAProjectMainDataService } from '../../../../feature-components/dfa-pr
 import { DFAProjectMainMappingService } from '../../../../feature-components/dfa-project-main/dfa-project-main-mapping.service';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import {MatDividerModule} from "@angular/material/divider";
+import {Decision} from "../../../../models/decision.enum";
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -67,10 +70,16 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
   remainingLengthDescribeDamagedInfrastructure: number = 2000;
   remainingLengthDescribeRepair: number = 2000;
   remainingLengthDescribeRepairMaterial: number = 2000;
+  remainingLengthEMCRComments: number = 2000;
   todayDate = new Date().toISOString();
   vieworedit: string = "";
   isReadOnly: boolean = false;
   showDates: boolean = false;
+  projectDecision: string = "";
+  dateOfDamageTo: string = "";
+  dateOfDamage: string = "";
+  caseNumber: string = "";
+  damageTypes: string = '';
   hideHelp: boolean = true;
   timerID;
   readonly phoneMask = [
@@ -124,12 +133,12 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
     if(text.indexOf('.')<0)
     {
       text=text+'.0'
-    }else 
+    }else
     if(text.indexOf('.')==text.length-1)
       {
         text=text+'0'
       }
-    
+
     let result = patt.test(text);
     return result;
   }
@@ -172,9 +181,14 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
       });
 
     let projectId = this.dfaProjectMainDataService.getProjectId();
+    let applicaitonId = this.dfaProjectMainDataService.getApplicationId();
 
     if (projectId) {
       this.getRecoveryPlan(projectId);
+    }
+
+    if (applicaitonId) {
+      this.getApplication(applicaitonId);
     }
 
     this.dfaProjectMainDataService.stepSelected.subscribe((stepSelected) => {
@@ -202,7 +216,7 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
         1000
       );
     }
-    
+
     //this.otherContactsForm.get('onlyOtherContact').setValue(this.onlyOtherContact);
     this.message = "Click on any field in the form to view detailed information " +
       "about what information is required and tips on how to fill " +
@@ -213,6 +227,11 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
 
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
+  }
+
+  calcRemainingEMCRComments() {
+    if (this.recoveryPlanForm.get('emcrapprovalcomments').value)
+      this.remainingLengthEMCRComments = 2000 - this.recoveryPlanForm.get('emcrapprovalcomments').value?.length;
   }
 
   calcRemainingCharsInfrastructure() {
@@ -253,7 +272,25 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
       this.showDates = true;
     }
   }
-
+  getApplication(applicationId: string){
+    if(applicationId){
+      this.applicationService.applicationGetApplicationDetailsForProject({ applicationId: applicationId }).subscribe({
+        next: (dfaApplicationMain) => {
+          this.dateOfDamageTo = moment(dfaApplicationMain.dateOfDamageTo).format('DD-MMM-YYYY');
+          this.dateOfDamage = moment(dfaApplicationMain.dateOfDamage).format('DD-MMM-YYYY');
+          this.caseNumber = dfaApplicationMain.caseNumber;
+          dfaApplicationMain.floodDamage === true ? this.damageTypes += 'Flood Damage, ' : '';
+          dfaApplicationMain.stormDamage === true ? this.damageTypes += 'Storm Damage, ' : '';
+          dfaApplicationMain.landslideDamage === true ? this.damageTypes += 'Landslide Damage, ' : '';
+          dfaApplicationMain.wildfireDamage === true ? this.damageTypes += 'Wildfire Damage, ' : '';
+          if(dfaApplicationMain.otherDamage === true) {
+            this.damageTypes += dfaApplicationMain.otherDamageText;
+          }
+          this.damageTypes = this.damageTypes.replace(/,\s*$/, "");
+          }
+      });
+    }
+  }
   getRecoveryPlan(projectId: string) {
     if (projectId) {
       this.projectService.projectGetProjectMain({ projectId: projectId }).subscribe({
@@ -268,18 +305,19 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
           if (dfaProjectMain && dfaProjectMain.project && dfaProjectMain.project.isdamagedDateSameAsApplication == false) {
             this.showDates = true;
           }
-          
+
           dfaProjectMain.project.estimateCostIncludingTax = dfaProjectMain.project.estimateCostIncludingTax ? toFixedWithZeros(dfaProjectMain.project.estimateCostIncludingTax,2) : null;
-          
+
           this.dfaProjectMainMapping.mapDFAProjectMain(dfaProjectMain);
-          
+          this.projectDecision = dfaProjectMain.project.projectDecision
+
           this.calcRemainingCharsCauseDamage();
           this.calcRemainingCharsDescribeDamage();
           this.calcRemainingCharsDescribeDamagedInfrastructure();
           this.calcRemainingCharsDescribeRepair();
           this.calcRemainingCharsDescribeRepairMaterial();
           this.calcRemainingCharsInfrastructure();
-          
+
         },
         error: (error) => {
           //console.error(error);
@@ -312,6 +350,7 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
 
   setHelpText(inputSelection, tooltip: MatTooltip): void {
     switch (inputSelection) {
+
       case 1:
         this.message = "Project number\r\n\r\nThe project number is the unique project identifier that your organization assigned to the project's site location where damage has occurred.\r\nThe project identifier may be a number, letter, or any combination of letters and numbers.\r\nThis project number is specific to the site and is often referred to when discussing the location.";
         break;
@@ -375,6 +414,8 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
       3000
     );
   }
+
+  protected readonly DecisionEnum = Decision;
 }
 
 @NgModule({
@@ -395,7 +436,8 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
     // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18 - new text mask provider
     NgxMaskDirective, NgxMaskPipe,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDividerModule
   ],
   declarations: [RecoveryPlanComponent],
   providers: [provideNgxMask()]

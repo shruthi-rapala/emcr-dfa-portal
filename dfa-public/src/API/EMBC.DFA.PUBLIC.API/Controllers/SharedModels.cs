@@ -469,6 +469,20 @@ namespace EMBC.DFA.API.Controllers
         public ApplicationStageOptionSet? appStatus { get; set; }
     }
 
+    /// <summary>
+    /// Authorized Representative
+    /// </summary>
+    public class AuthorizedRepresentative
+    {
+        public string? firstName { get; set; }
+        public string? lastName { get; set; }
+        public string? businessPhone { get; set; }
+        public string? email { get; set; }
+        public string? positionTitle { get; set; }
+        public bool? firstDeclaration { get; set; }
+        public bool? secondDeclaration { get; set; }
+    }
+
     // 2024-09-16 EMCRI-663 waynezen
     public class ApplicationContacts
     {
@@ -502,7 +516,7 @@ namespace EMBC.DFA.API.Controllers
         public string? pcNotes { get; set; }
         public string? pcBCeIDOrgGuid { get; set; }
         public string? pcBCeIDuserGuid { get; set; }
-}
+    }
 
     /// <summary>
     /// Clean Up Log
@@ -555,6 +569,17 @@ namespace EMBC.DFA.API.Controllers
         public string? estimatedCompletionDate { get; set; }
         public decimal? estimateCostIncludingTax { get; set; }
         public ProjectStageOptionSet? projectStatus { get; set; }
+
+        public string? projectApprovedDate { get; set; }
+        public string? project18MonthDeadline { get; set; }
+        public decimal? approvedCost { get; set; }
+        public decimal? approvedAmendedProjectCost { get; set; }
+        public decimal? claimTotal { get; set; }
+        public decimal? approvedTotal { get; set; }
+        public decimal? paidProjectAmount { get; set; }
+        public string? emcrapprovalcomments { get; set; }
+        public string? ProjectDecision { get; set; }
+
     }
 
     public class DFAClaimMain
@@ -584,7 +609,7 @@ namespace EMBC.DFA.API.Controllers
         public string? claimEligibleGST { get; set; }
         public string? claimTotal { get; set; }
         public string? approvedClaimTotal { get; set; }
-        public string? firstClaimDeductible1000 { get; set; }
+        public string? lessFirst1000 { get; set; }
         public string? approvedReimbursement { get; set; }
         public string? eligiblePayable { get; set; }
         public string? paidClaimAmount { get; set; }
