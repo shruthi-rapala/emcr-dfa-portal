@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,9 +7,11 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Amazon.S3;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.ConfigurationModule.Models.PDF.PDFService;
 using EMBC.DFA.API.Services;
+//using EMBC.DFA.PUBLIC.API.Services.S3;
 using EMBC.Gov.BCeID;
 using EMBC.Gov.BCeID.Models;
 using EMBC.Utilities.Configuration;
@@ -200,7 +202,9 @@ namespace EMBC.DFA.API
             services.AddTransient<IDynamicsGateway, DynamicsGateway>();
             services.AddTransient<PDFServiceHandler, PDFServiceHandler>();
 
-            // 2024-07-02 EMCRI-363 waynezen: added
+            
+
+                // 2024-07-02 EMCRI-363 waynezen: added
             services.AddTransient<IUserService, UserService>();
 
             services.Configure<ADFSTokenProviderOptions>(configuration.GetSection("Dynamics:ADFS"));
