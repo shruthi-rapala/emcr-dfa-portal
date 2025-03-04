@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EMBC.DFA.API.Controllers;
 using EMBC.DFA.PUBLIC.API.Services;
-using EMBC.DFA.PUBLIC.API.Services.S3;
+
+using EMBC.Utilities.S3;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

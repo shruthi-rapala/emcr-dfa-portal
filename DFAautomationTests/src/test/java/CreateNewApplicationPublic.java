@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static dfa.CustomWebDriverManager.getDriver;
+import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 
 public class CreateNewApplicationPublic {
@@ -94,24 +95,12 @@ public class CreateNewApplicationPublic {
 
         sleep(2000);
         //Choose and event
-        //element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[formcontrolname='eventId']")));
-        //element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//mat-select[@id='mat-select-0']")));
-        WebElement element1= driver.findElement(By.xpath("//mat-select[@id='mat-select-0']")); // to select the matching event
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[formcontrolname='eventId']")));
+        element.click();
 
-        JavascriptExecutor executor = (JavascriptExecutor)driver;
-
-        executor.executeScript("arguments[0].click();", element1);
-        //element.click();
-
-        //element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//mat-option")));
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//mat-option")));
 //        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[contains(text(),'August 1')]")));
-        //element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//mat-option[@id='mat-option-5']")));
-        //element.click();
-        WebElement element2= driver.findElement(By.xpath("//mat-option[@id='mat-option-5']"));
-
-        JavascriptExecutor executor1 = (JavascriptExecutor)driver;
-
-        executor1.executeScript("arguments[0].click();", element2);
+        element.click();
 
         // Select cause of damage
         sleep(1000);
@@ -138,9 +127,39 @@ public class CreateNewApplicationPublic {
         // Application Type
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[formcontrolname='applicantSubtype']")));
         ElementClickHelper.clickElement(driver, element);
+        //Municipality
+//       element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Municipality')]")));
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+//
+//        //Regional District
+//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Regional District')]")));
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+//
+//      //  First Nations Community
+//       element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'First Nations Community')]")));
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
 
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Municipality')]")));
+        //  Other Local Government Body
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Other Local Government Body')]")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+       sleep(1000);
+
+        WebElement selectElement = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Please select the type of Other Local Government Body']")));
+        selectElement.click();
+        Thread.sleep(1000);
+        //select the type of other local gov body
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'an improvement district as defined in the Local Government Act')]")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+
+
+//        //Other
+//        WebElement otherOption = driverWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+//                By.xpath("//mat-option"))).get(4);
+//        otherOption.click();
+//
+//        //Please Describe your Organisation
+//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//textarea[@placeholder='Please describe your organization']")));
+//       element.sendKeys("Your description text here");
 
         // Click on Next
         sleep(1000);
@@ -173,8 +192,9 @@ public class CreateNewApplicationPublic {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//mat-option")));
         element.click();
 
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[contains(text(),'Primary Contact')]/parent::div//input")));
-        element.sendKeys(bceidUSERNAME);
+//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[contains(text(),'Primary Contact')]/parent::div//input")));
+//        element.sendKeys(bceidUSERNAME);
+//        sleep(1000);
 
         sleep(1000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[contains(text(),'Search for Contact')]")));
@@ -263,8 +283,10 @@ public class CreateNewApplicationPublic {
         // there's a bug that redirect doesn't work, need to uncomment after fix
 
         driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Your application has been submitted. ')]")));
+        sleep(2000);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), ' Back To Dashboard ')]")));
         element.click();
+        sleep(2000);
 //
 //        driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Cause(s) of Damage - ')]")));
 //        WebElement bodyElement = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));

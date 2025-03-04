@@ -47,11 +47,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Controllers
     //    /// <summary>
     //    /// Get configuration settings for clients
     //    /// </summary>
-    //    /// <returns>Configuration settings object</returns>
+    //    /// <returns>S3Configuration settings object</returns>
     //    [HttpGet]
     //    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     //    [ProducesResponseType(StatusCodes.Status200OK)]
-    //    public async Task<ActionResult<Configuration>> GetConfiguration()
+    //    public async Task<ActionResult<S3Configuration>> GetConfiguration()
     //    {
     //        var outageInfo = await cache.GetOrSet(
     //            "outageinfo",
@@ -59,7 +59,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Controllers
     //            TimeSpan.FromSeconds(30));
 
     //        var oidcConfig = configuration.GetSection("auth:oidc");
-    //        var config = new Configuration
+    //        var config = new S3Configuration
     //        {
     //            Oidc = new OidcOptions
     //            {
@@ -175,7 +175,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Controllers
     //    }
     //}
 
-    //public class Configuration
+    //public class S3Configuration
     //{
     //    public OidcOptions Oidc { get; set; }
     //    public OutageInformation OutageInfo { get; set; }

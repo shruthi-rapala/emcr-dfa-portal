@@ -53,19 +53,12 @@ public class LoginPublicPortal {
         element.sendKeys(bceidPASSWORD);
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.name("btnSubmit")));
         element.click();
-        //Thread.sleep(30000);
-        // element = driverWait
-               // .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='submit' and @value='Continue']")));
-        // element.click();
-        //element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='checkbox']"))); // sometime it display the page with the login history
-        //element.click();
-        //element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='submit']")));
-        //element.click();
+//        element = driverWait
+//                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='submit' and @value='Continue']")));
+//       element.click();
         //Display notice of Collention
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                //ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Disaster Financial Assistance')]")));
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()=' Create a New Application ']")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Disaster Financial Assistance')]")));
 
     }
-
 }
