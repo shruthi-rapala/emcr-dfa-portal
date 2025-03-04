@@ -11,7 +11,7 @@ using Amazon.S3.Model;
 //using MailKit;
 using Microsoft.Extensions.Configuration;
 
-namespace EMBC.DFA.PUBLIC.API.Services.S3
+namespace EMBC.Utilities.S3
 {
     public class S3Provider : IS3Provider
     {
@@ -48,58 +48,72 @@ namespace EMBC.DFA.PUBLIC.API.Services.S3
 
         private async Task<string> UploadStorageItem(UploadFileCommand cmd, CancellationToken cancellationToken)
         {
-            S3File file = cmd.File;
+            S3File? file = cmd.File;
             var folder = cmd.Folder == null ? "" : $"{cmd.Folder}/";
             var key = $"{folder}{cmd.Key}";
+            if (cmd.File != null && file != null)
+            {
+                var request = new PutObjectRequest
+                {
+                    Key = key,
+                    ContentType = !string.IsNullOrEmpty(cmd.File.ContentType) ? cmd.File.ContentType : null,
+                    InputStream = new MemoryStream(file.Content),
+                    BucketName = bucketName,
+                    TagSet = GetTagSet(cmd.FileTag?.Tags ?? new List<Tag>()),
+                };
+                request.Metadata.Add("contenttype", file.ContentType);
+                request.Metadata.Add("filename", HttpUtility.HtmlEncode(file.FileName));
+                if (file.Metadata != null)
+                {
+                    foreach (FileMetadata md in file.Metadata)
+                        request.Metadata.Add(md.Key, md.Value);
+                }
 
-            var request = new PutObjectRequest
-            {
-                Key = key,
-                ContentType = !string.IsNullOrEmpty(cmd.File.ContentType) ? cmd.File.ContentType : null,
-                InputStream = new MemoryStream(file.Content),
-                BucketName = bucketName,
-                TagSet = GetTagSet(cmd.FileTag?.Tags ?? []),
-            };
-            request.Metadata.Add("contenttype", file.ContentType);
-            request.Metadata.Add("filename", HttpUtility.HtmlEncode(file.FileName));
-            if (file.Metadata != null)
-            {
-                foreach (FileMetadata md in file.Metadata)
-                    request.Metadata.Add(md.Key, md.Value);
+                var response = await _amazonS3Client.PutObjectAsync(request, cancellationToken);
+                response.EnsureSuccess();
+
+                if (cmd?.Key != null)
+                {
+                    return cmd.Key;
+                }
+
             }
 
-            var response = await _amazonS3Client.PutObjectAsync(request, cancellationToken);
-            response.EnsureSuccess();
-
-            return cmd.Key;
+            return "";
         }
 
         private async Task<string> UploadStorageItemStream(UploadFileStreamCommand cmd, CancellationToken cancellationToken)
         {
-            S3FileStream file = cmd.FileStream;
+            S3FileStream? file = cmd.FileStream;
             var folder = cmd.Folder == null ? "" : $"{cmd.Folder}/";
             var key = $"{folder}{cmd.Key}";
 
-            var request = new PutObjectRequest
+            if (cmd.FileStream != null && cmd.Key != null && file != null)
             {
-                Key = key,
-                ContentType = cmd.FileStream.ContentType,
-                InputStream = file.FileContentStream,
-                BucketName = bucketName,
-                TagSet = GetTagSet(cmd.FileTag?.Tags ?? []),
-            };
-            request.Metadata.Add("contenttype", file.ContentType);
-            request.Metadata.Add("filename", HttpUtility.HtmlEncode(file.FileName));
-            if (file.Metadata != null)
-            {
-                foreach (FileMetadata md in file.Metadata)
-                    request.Metadata.Add(md.Key, md.Value);
+                var request = new PutObjectRequest
+                {
+                    Key = key,
+                    ContentType = cmd.FileStream.ContentType,
+                    InputStream = file.FileContentStream,
+                    BucketName = bucketName,
+                    TagSet = GetTagSet(cmd.FileTag?.Tags ?? new List<Tag>()),
+                };
+                request.Metadata.Add("contenttype", file.ContentType);
+                request.Metadata.Add("filename", HttpUtility.HtmlEncode(file.FileName));
+                if (file.Metadata != null)
+                {
+                    foreach (FileMetadata md in file.Metadata)
+                        request.Metadata.Add(md.Key, md.Value);
+                }
+
+                var response = await _amazonS3Client.PutObjectAsync(request, cancellationToken);
+                response.EnsureSuccess();
+
+                return cmd.Key;
             }
 
-            var response = await _amazonS3Client.PutObjectAsync(request, cancellationToken);
-            response.EnsureSuccess();
+            return "";
 
-            return cmd.Key;
         }
 
         private async Task<FileQueryResult> DownloadStorageItem(string key, string? folder, CancellationToken ct)
@@ -156,13 +170,17 @@ namespace EMBC.DFA.PUBLIC.API.Services.S3
             {
                 Key = key,
                 BucketName = bucketName,
-                Tagging = new Tagging { TagSet = GetTagSet(cmd.FileTag?.Tags ?? []) }
+                Tagging = new Tagging { TagSet = GetTagSet(cmd.FileTag?.Tags ?? new List<Tag>()) }
             };
 
             var response = await _amazonS3Client.PutObjectTaggingAsync(request, cancellationToken);
             response.EnsureSuccess();
+            if (cmd.Key != null)
+            {
+                return cmd.Key;
+            }
 
-            return cmd.Key;
+            return "";
         }
 
         private static List<Amazon.S3.Model.Tag> GetTagSet(IEnumerable<Tag> tags)

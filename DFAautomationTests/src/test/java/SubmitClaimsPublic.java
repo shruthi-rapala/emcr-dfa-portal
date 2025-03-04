@@ -52,7 +52,7 @@ public class SubmitClaimsPublic {
         getUrls();
 
         //Navigate to Submitted projects
-        navigateToSubmittedProjects(driver, driverWait, js, actions);
+        navigateToSubmittedProjects(driver, driverWait, js, actions, null);
 
         //Login Portal
         loginToPortal();
@@ -77,9 +77,12 @@ public class SubmitClaimsPublic {
         fillFormField(driverWait, "[formcontrolname='invoiceNumber'][maxlength='100']", RandomIntGenerator.generateRandomInt(100));
         fillFormField(driverWait, "[formcontrolname='invoiceDate'][aria-haspopup='dialog']", dateUtils.getTodayAsString());
         fillFormField(driverWait, "[formcontrolname='purposeOfGoodsServiceReceived'][maxlength='200']", RandomStringGenerator.generateRandomAlphanumeric(200));
-        fillFormField(driverWait, "[formcontrolname='netInvoiceBeingClaimed'][maxlength='100']", RandomIntGenerator.generateRandomInt(6));
-        fillFormField(driverWait, "[formcontrolname='pst'][maxlength='100']", RandomIntGenerator.generateRandomInt(1));
-        fillFormField(driverWait, "[formcontrolname='grossGST'][maxlength='100']", RandomIntGenerator.generateRandomInt(1));
+        //fillFormField(driverWait, "[formcontrolname='netInvoiceBeingClaimed'][maxlength='100']", RandomIntGenerator.generateRandomInt(6));
+        fillFormField(driverWait, "input#currencyBoxnetInvoiceBeingClaimed[maxlength='100']", RandomIntGenerator.generateRandomInt(6));
+       // fillFormField(driverWait, "[formcontrolname='pst'][maxlength='100']", RandomIntGenerator.generateRandomInt(1));
+       // fillFormField(driverWait, "input[mask='separator.2'][maxlength='100']", RandomIntGenerator.generateRandomInt(1));
+       // fillFormField(driverWait, "[formcontrolname='grossGST'][maxlength='100']", RandomIntGenerator.generateRandomInt(1));
+       // fillFormField(driverWait, "input[mask='separator.2'][maxlength='100']", RandomIntGenerator.generateRandomInt(1));
 
         // Check rdo buttons
 
@@ -229,7 +232,7 @@ public class SubmitClaimsPublic {
         }
     }
 
-    public static void navigateToSubmittedProjects(WebDriver driver, WebDriverWait driverWait, JavascriptExecutor js, Actions actions) throws InterruptedException {
+    public static void navigateToSubmittedProjects(WebDriver driver, WebDriverWait driverWait, JavascriptExecutor js, Actions actions, String projectNumber) throws InterruptedException {
         // Ensure the driver is set
         if (SubmitClaimsPublic.driver == null) {
             SubmitClaimsPublic.driver = driver;
@@ -276,10 +279,12 @@ public class SubmitClaimsPublic {
         element.click();
         // Double-click on Project number
         Thread.sleep(2000);
-        System.out.println("Project number: " + CreateNewProjectPublic.getRandomProjectNumber());
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[title='" + CreateNewProjectPublic.getRandomProjectNumber() + "'][role='gridcell']")));
-        actions.doubleClick(element).perform();
-        Thread.sleep(1000);
+
+        // Determine the vendor name to use
+        String resolvedProjectNumber = (projectNumber != null && !projectNumber.trim().isEmpty()) ? projectNumber : CreateNewProjectPublic.getRandomProjectNumber();
+
+        System.out.println("Project number: " + resolvedProjectNumber);
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[title='" + resolvedProjectNumber + "'][role='gridcell']")));
         actions.doubleClick(element).perform();
         Thread.sleep(5000);
         clickElementWithRetry(driverWait, By.cssSelector("[role='presentation'][title='Draft']"));
@@ -320,8 +325,8 @@ public class SubmitClaimsPublic {
         // Select Project Decision - Approved
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//select[@data-id='header_process_dfa_projectdecision.fieldControl-option-set-select']")));
         element.click();
-        sleep(1000);
-        element.sendKeys(Keys.DOWN, Keys.RETURN);
+         element.sendKeys(Keys.DOWN, Keys.RETURN);
+        sleep(2000);
 
         SubmitApplicationsRAFT.clickSaveButton(driverWait);
         Thread.sleep(1000);

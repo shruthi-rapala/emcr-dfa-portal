@@ -1,4 +1,4 @@
-﻿namespace EMBC.DFA.PUBLIC.API.Services.S3
+﻿namespace EMBC.Utilities.S3
 {
     public class S3StorageProviderSettings
     {

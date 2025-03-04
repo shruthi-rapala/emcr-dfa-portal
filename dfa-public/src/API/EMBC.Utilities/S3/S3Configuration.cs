@@ -6,9 +6,9 @@ using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EMBC.DFA.PUBLIC.API.Services.S3
+namespace EMBC.Utilities.S3
 {
-    public static class Configuration
+    public static class S3Configuration
     {
         public static IServiceCollection AddS3Storage(this IServiceCollection services, IConfiguration configuration)
         {
@@ -16,7 +16,7 @@ namespace EMBC.DFA.PUBLIC.API.Services.S3
 
             if (settings != null && settings.Url != null)
             {
-                services.AddOptions<S3StorageProviderSettings>().Bind(configuration.GetSection("S3"));
+                services.AddOptions<S3StorageProviderSettings>(); // .Bind(configuration.GetSection("S3"))
 
                 services.AddSingleton<IAmazonS3>(_ =>
                     new AmazonS3Client(
@@ -29,7 +29,12 @@ namespace EMBC.DFA.PUBLIC.API.Services.S3
                         }));
                 services.AddSingleton<IS3Provider, S3Provider>();
             }
-            return services;
+            else
+            {
+                services.AddSingleton<IS3Provider, S3Provider>();
+            }
+
+                return services;
         }
 
         private static S3StorageProviderSettings? GetSettings(IConfiguration configuration)

@@ -57,7 +57,7 @@ namespace EMBC.DFA.API.Controllers
         /// <summary>
         /// Get configuration settings for clients
         /// </summary>
-        /// <returns>Configuration settings object</returns>
+        /// <returns>S3Configuration settings object</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
