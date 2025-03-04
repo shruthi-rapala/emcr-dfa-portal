@@ -318,7 +318,7 @@ export class DFAProjectAmendmentComponent
       this.statusBar = JSON.parse(jsonVal);
 
       if(objAmendment.amendmentDecision !== "Approved" && objAmendment.amendmentDecision !== "Approved with Exclusions") {
-        objAmendment.amendmentReceivedDate = null
+        objAmendment.amendmentApprovedDate = null
         objAmendment.emcrDecisionComments = null
         objAmendment.deadlineExtensionApproved = null
         objAmendment.amended18MonthDeadline = null
