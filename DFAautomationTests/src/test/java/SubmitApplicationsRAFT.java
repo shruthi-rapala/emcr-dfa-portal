@@ -179,35 +179,35 @@ public class SubmitApplicationsRAFT {
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[aria-label='Assigned To, Lookup'][type='text']")));
         element.click();
         //element.sendKeys("test");
-        element.sendKeys("EMCR Service Account Dynamics Test");
+        element.sendKeys("EMCR DFA");
 
         // Determine the environment and set the appropriate XPath
         String environmentAssingTo = Config.ENVIRONMENT_Dynamics; // Assume Config.ENVIRONMENT contains the environment name
         String xpathExpressionAssingTo;
 
         if (Constants.DEV_DynamicsPub.equalsIgnoreCase(environmentAssingTo)) {
-            xpathExpressionAssingTo = "//*[contains(text(), 'EMCR DFA Reporting BI Test')]";
+            xpathExpressionAssingTo = "//span[@data-id='dfa_assignedtoid.fieldControl-fullname0_0_0' and contains(., 'EMCR DFA Reporting BI Test')]";
         } else if (Constants.TST_DynamicsPub.equalsIgnoreCase(environmentAssingTo)) {
-            xpathExpressionAssingTo = "//*[contains(text(), 'EMBC DFA Test')]";
+            xpathExpressionAssingTo = "//span[@data-id='dfa_assignedtoid.fieldControl-fullname0_0_0' and contains(., 'EMBC DFA Test')]";
         } else if (Constants.TRN_DynamicsPub.equalsIgnoreCase(environmentAssingTo)) {
-            xpathExpressionAssingTo = "//*[contains(text(), 'EMBC DFA Test')]";
-        } else if (Constants.TST_DynamicsPub.equalsIgnoreCase(environmentAssingTo)) {
-            xpathExpressionAssingTo = "//*[contains(text(), 'EMCR Service Account Dynamics Test')]";
-        } else if (Constants.TST_SupportDynamicsPub.equalsIgnoreCase(environmentAssingTo)) {
-            xpathExpressionAssingTo = "//*[contains(text(), 'EMCR Service Account Dynamics Test')]";
+            xpathExpressionAssingTo = "//span[@data-id='dfa_assignedtoid.fieldControl-fullname0_0_0' and contains(., 'EMBC DFA Test')]";
         } else if (Constants.DEV_SupportDynamicsPub.equalsIgnoreCase(environmentAssingTo)) {
-            xpathExpressionAssingTo = "//*[contains(text(), 'EMCR DFA Reporting BI Test')]";
+            xpathExpressionAssingTo = "//span[@data-id='dfa_assignedtoid.fieldControl-fullname0_0_0' and contains(., 'EMCR DFA Reporting BI Test')]";
         } else if (Constants.TST_SupportDynamicsPub.equalsIgnoreCase(environmentAssingTo)) {
-            xpathExpressionAssingTo = "//*[contains(text(), 'EMCR DFA Reporting BI Test')]";
+            xpathExpressionAssingTo = "//span[@data-id='dfa_assignedtoid.fieldControl-fullname0_0_0' and contains(., 'EMCR DFA Reporting BI Test')]";
         } else if (Constants.TRN_SupportDynamicsPub.equalsIgnoreCase(environmentAssingTo)) {
-            xpathExpressionAssingTo = "//*[contains(text(), 'EMCR DFA API Service Account')]";
+            xpathExpressionAssingTo = "//span[@data-id='dfa_assignedtoid.fieldControl-fullname0_0_0' and contains(., 'EMCR DFA API Service Account')]";
         } else {
             throw new IllegalArgumentException("Unknown environment: " + environmentName);
         }
 
+        WebElement dropdownOption = driverWait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(xpathExpressionAssingTo)
+        ));
+
         // Locate and click the element based on the environment
-//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathExpressionAssingTo)));
-//        element.click();
+        // element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathExpressionAssingTo)));
+        dropdownOption.click();
 
         // scroll to the bottom of the page by navigating to the last //label element
         sleep(1000);
@@ -341,10 +341,8 @@ public class SubmitApplicationsRAFT {
         Thread.sleep(1000);
 
         // Approve
-//        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[erol='presentation'][title^='In-Review']")));
-//        element.click(); // In Train environment
-        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[aria-label='Review Status'][title^='Open']")));
-//        element.click(); // Added for Test Environment
+        element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[role='presentation'][title^='In-Review']")));
+        element.click();
         element = driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Approved')]")));
         element.click();
         System.out.println("Switched to Approve status");
