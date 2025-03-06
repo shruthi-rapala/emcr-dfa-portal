@@ -1,0 +1,31 @@
+name: Promote PDF Service to Test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/promote-pdf-service-test.yaml"
+
+env:
+  IMAGE_PDF_NAME: dfa-portal-pdf-service
+  IMAGE_REGISTRY: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}
+  IMAGE_CURRENT_ENV_TAG: dev
+  IMAGE_PROMOTE_ENV_TAG: test
+
+jobs:
+  promote-pdf-service:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'bcgov'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Promote dfa-portal-pdf-service to test
+        uses: tinact/docker.image-retag@master
+        with:
+          image_name: ${{ env.IMAGE_API_NAME }}
+          image_old_tag: ${{ env.IMAGE_CURRENT_ENV_TAG }}
+          image_new_tag: ${{ env.IMAGE_PROMOTE_ENV_TAG }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          registry_username: ${{ secrets.OCP4_USERNAME }}
+          registry_password: ${{ secrets.OCP4_PASSWORD }}

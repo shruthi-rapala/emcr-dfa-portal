@@ -1,37 +1,47 @@
-name: cd-dfa-private-portal-api-prod
+name: Promote Private Portal to Test
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/promote-private-portal-test.yaml"
 
 env:
-  IMAGE_NAME: dfa-portal-api
+  IMAGE_API_NAME: dfa-portal-api
+  IMAGE_UI_NAME: dfa-portal-ui
   IMAGE_REGISTRY: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}
-  IMAGE_CURRENT_ENV_TAG: training
-  IMAGE_PROMOTE_ENV_TAG: prod
-  IMAGE_PROMOTE_ENV_BACKUP_TAG: prod-backup
+  IMAGE_CURRENT_ENV_TAG: dev
+  IMAGE_PROMOTE_ENV_TAG: test
 
 jobs:
-  backup-dfa-private-portal-api:
+  promote-private-portal-api:
     runs-on: ubuntu-latest
     if: github.repository_owner == 'bcgov'
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Promote existing prod dfa-portal-api image to prod-backup
+      - name: Promote dfa-portal-api to test
         uses: tinact/docker.image-retag@master
         with:
-          image_name: ${{ env.IMAGE_NAME }}
-          image_old_tag: ${{ env.IMAGE_PROMOTE_ENV_TAG }}
-          image_new_tag: ${{ env.IMAGE_PROMOTE_ENV_BACKUP_TAG }}
+          image_name: ${{ env.IMAGE_API_NAME }}
+          image_old_tag: ${{ env.IMAGE_CURRENT_ENV_TAG }}
+          image_new_tag: ${{ env.IMAGE_PROMOTE_ENV_TAG }}
           registry: ${{ env.IMAGE_REGISTRY }}
           registry_username: ${{ secrets.OCP4_USERNAME }}
           registry_password: ${{ secrets.OCP4_PASSWORD }}
 
-      - name: Promote dfa-portal-api to prod
+  promote-private-portal-ui:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'bcgov'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Promote dfa-portal-ui to test
         uses: tinact/docker.image-retag@master
         with:
-          image_name: ${{ env.IMAGE_NAME }}
+          image_name: ${{ env.IMAGE_UI_NAME }}
           image_old_tag: ${{ env.IMAGE_CURRENT_ENV_TAG }}
           image_new_tag: ${{ env.IMAGE_PROMOTE_ENV_TAG }}
           registry: ${{ env.IMAGE_REGISTRY }}
