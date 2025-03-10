@@ -8,7 +8,8 @@
     <div class="container">
       <div class="hero-content">
         <h1>Disaster Financial Assistance (DFA)</h1>
-        <p>After a disaster, the provincial government may declare the event eligible for Disaster Financial Assistance (DFA). On this page you will be able to access the correct portal for your application type.</p>
+        <p>After a disaster, the provincial government may declare the event eligible for Disaster Financial Assistance
+          (DFA). On this page you will be able to access the correct portal for your application type.</p>
         <p><a style="color: white;"
             href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance"
             target="_blank">Learn more about DFA</a></p>
@@ -19,9 +20,9 @@
   <div class="application">
     <div class="container">
       <div style="text-align: center;">
-       
-          <h2><b>Choose your application type below to begin.</b></h2>
-      
+
+        <h2><b>Choose your application type below to begin.</b></h2>
+
         <p>Applications must be submitted within <b>90 days</b> of the disaster being declared.</p>
       </div>
 
@@ -79,9 +80,15 @@
 
             </div>
             <div>
-              <button class="applyButton">
+              <button class="applyButton" (click)="naviagteToPrivateDFA()">
                 Apply to Private DFA
               </button>
+              <div class="loginText">
+                <p>
+                  You will need your BC Services card to log in
+                </p>
+              </div>
+
             </div>
 
           </mat-card-content>
@@ -119,6 +126,16 @@
                 </div>
               </div>
             </div>
+            <div style="padding-top: 90px;">
+              <button class="applyButton" (click)="naviagteToPublicDFA()"> 
+                  Apply to Public DFA
+              </button>
+              <div class="loginText">
+                <p>
+                  You will need your BC BCeID to log in
+                </p>
+              </div>
+            </div>
           </mat-card-content>
         </mat-card>
       </div>
@@ -127,10 +144,10 @@
     <div>
 
     </div>
-   
+
 
   </div>
-  
+
 
   <div class="site-footer">
     <div class="contact">
@@ -143,7 +160,8 @@
           <h2>
             For General Assistance
           </h2>
-          <p>For questions or more information, contact the Disaster Financial Assistance team toll-free at 1-888-257-4777</p>
+          <p>For questions or more information, contact the Disaster Financial Assistance team toll-free at
+            1-888-257-4777</p>
         </div>
         <div>
           <h2>
@@ -158,12 +176,12 @@
             Indigenous Governing Bodies and Local Authorities
           </h2>
           <p>
-            Email: 
+            Email:
           </p>
         </div>
         <div>
           <h2>
-           Technical Support
+            Technical Support
           </h2>
           <p>
             <a>Send a Technical Inquiry</a>
