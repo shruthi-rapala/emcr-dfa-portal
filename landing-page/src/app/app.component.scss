@@ -180,6 +180,14 @@ color: #F8BB47;
 
 /** Footer **/
 
+.footerText{
+	font-family: "BCSans-Regular", "BC Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    color: #333333;
+}
+
 .site-footer {
     background-color: #ffffff;
     width: 100%;
@@ -197,6 +205,11 @@ color: #F8BB47;
     padding-top: 30px;
     border-top: 1px solid black;
     width: 70%;
+	font-family: "BCSans-Regular", "BC Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    color: #333333;
 }
 
 @media (min-width: 720px) {
@@ -212,6 +225,7 @@ color: #F8BB47;
 .site-footer-links {
 	list-style: none;
 	margin-bottom: 0;
+	
 }
 
 .site-footer-links li {
@@ -219,9 +233,13 @@ color: #F8BB47;
 }
 
 .site-footer-links a {
-	font-size: 14px;
-	color: #333;
-	text-decoration: none;
+	font-family: "BCSans-Regular", "BC Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    text-decoration: underline;
+    color: #333333;
+	
 }
 
 .site-footer-links a:hover {
@@ -243,7 +261,7 @@ color: #F8BB47;
 }
 
 .site-footer-phone-number {
-	margin-bottom: 20px;
+	padding: 20px;
 }
 
 @media (min-width: 720px) {
