@@ -4,6 +4,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { FilesService } from './services/files.service';
 import { ApplicationService } from './services/application.service';
 import { AttachmentService } from './services/attachment.service';
 import { BCeIdLookupService } from './services/b-ce-id-lookup.service';
@@ -28,6 +29,7 @@ import { SecondaryApplicantService } from './services/secondary-applicant.servic
   exports: [],
   declarations: [],
   providers: [
+    FilesService,
     ApplicationService,
     AttachmentService,
     BCeIdLookupService,

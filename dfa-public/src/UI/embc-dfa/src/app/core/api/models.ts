@@ -1,3 +1,4 @@
+export { ApplicationResult } from './models/application-result';
 export { ProblemDetails } from './models/problem-details';
 export { DfaApplicationStart } from './models/dfa-application-start';
 export { Consent } from './models/consent';
