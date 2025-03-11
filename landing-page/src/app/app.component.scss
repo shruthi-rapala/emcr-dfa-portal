@@ -125,18 +125,23 @@ color:#ffffff !important;
 .icon-text {
     display: flex;
     align-items: center;
-    gap:10px;
-    line-height: 35px;
+    line-height: 32px;
+	padding-left: 20px;
 }
 
 .checkIcon{
 color: #F8BB47;
-
+width: 40px;
 }
 
 .infoIcon{
     color: #31B0E6;
     transform: scale(1.5);
+	width: 50px;
+}
+
+.padding-left{
+	padding-left: 50px;
 }
 
 .applyButton{
@@ -178,6 +183,9 @@ color: #F8BB47;
     padding: 100px;
 }
 
+.divider{
+	border-bottom: 1px solid #333333;
+}
 /** Footer **/
 
 .footerText{

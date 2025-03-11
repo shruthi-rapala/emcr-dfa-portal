@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="hero">
-    <div >
+    <div>
       <div class="hero-content">
         <h1>Disaster Financial Assistance (DFA)</h1>
         <p>After a disaster, the provincial government may declare the event eligible for Disaster Financial Assistance
@@ -34,19 +34,24 @@
                 <div>
                   <img src="images/u67.svg" alt="Individuals and Organizations" class="icon">
                 </div>
-
                 <h2>
                   Individuals and Organizations
                 </h2>
               </div>
-
-              <p>
-                Private sector applicant may receive DFA assistance to restore uninsurable losses critical to homes,
-                livelihoods, or community services.
-              </p>
-              <p>
-                Want more information about eligibility? <a class="links">See Private sector information</a>
-              </p>
+              <div class="divider">
+                <p>
+                  Private sector applicant may receive DFA assistance to restore uninsurable losses critical to homes,
+                  livelihoods, or community services.
+                </p>
+                <p>
+                  <b>
+                    Want more information about eligibility?
+                    <a class="links"
+                      href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/preparedbc/evacuation-recovery/disaster-financial-assistance"
+                      target="_blank">See Private sector information</a>
+                  </b>
+                </p>
+              </div>
             </div>
             <div>
               <div class="icon-text">
@@ -55,7 +60,7 @@
                   <h2>Use this portal if you are a:</h2>
                 </span>
               </div>
-              <div>
+              <div class="padding-left">
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
                   <span>Homeowner</span>
@@ -77,8 +82,8 @@
                   <span>Charitable organization</span>
                 </div>
               </div>
-
             </div>
+
             <div>
               <button class="applyButton" (click)="naviagteToPrivateDFA()">
                 Apply to Private DFA
@@ -101,13 +106,19 @@
               </div>
               <h2>Indigenous Governing Bodies and Local Authorities</h2>
             </div>
-
+            <div class="divider">
             <p>
               Public sector applicants may receive financial assistance from the DFA program for damaged infrastructure.
             </p>
             <p>
-              Want more information about eligibility? <a class="links">See Public sector information</a>
+              <b>
+                Want more information about eligibility?
+                <a class="links"
+                  href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/local-emergency-programs/financial/communities-dfa"
+                  target="_blank">See Public sector information</a>
+              </b>
             </p>
+          </div>
             <div>
               <div class="icon-text">
                 <mat-icon class="infoIcon">info</mat-icon>
@@ -115,7 +126,7 @@
                   <h2>Use this portal if you are representing a local government:</h2>
                 </span>
               </div>
-              <div>
+              <div class="padding-left">
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
                   <span>Indigenous Governing Bodies</span>
@@ -126,9 +137,9 @@
                 </div>
               </div>
             </div>
-            <div style="padding-top: 30px;">
-              <button class="applyButton" (click)="naviagteToPublicDFA()"> 
-                  Apply to Public DFA
+            <div style="padding-top: 50px;">
+              <button class="applyButton" (click)="naviagteToPublicDFA()">
+                Apply to Public DFA
               </button>
               <div class="loginText">
                 <p>
@@ -153,7 +164,7 @@
     <div class="contact">
       <div>
         <img src="images/phonecontact.png" alt="contact" class="contactIcon">
-        
+
       </div>
       <div>
         <h2>Contact us</h2>
@@ -161,8 +172,9 @@
           <h2>
             For General Assistance
           </h2>
-          <p>For questions or more information, contact the Disaster Financial Assistance team toll-free at
-            1-888-257-4777</p>
+          <p>For questions or more information, contact the Disaster Financial Assistance team toll-free at</p>
+          <a class="--link-black" href="tel:18882574777" style="font-size: 18px;">1-888-257-4777</a>
+          
         </div>
         <div>
           <h2>
