@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import {MatCard, MatCardModule} from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
 
 
 @Component({
@@ -12,7 +13,9 @@ import { MatButtonModule } from '@angular/material/button';
   MatCardModule, 
   MatCard,
   MatIconModule,
-  MatButtonModule],
+  MatButtonModule,
+  EnvironmentBannerComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true

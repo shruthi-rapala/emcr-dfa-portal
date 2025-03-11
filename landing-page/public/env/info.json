@@ -1,0 +1,6 @@
+    {
+        "envName": "local",
+        "bannerTitle": "You are in the LOCAL version of the Disaster Financial Assistance Tool.",
+        "bannerSubTitle": "All information entered here will be treated as LOCAL data.",
+        "bannerColor": "#097d8c"
+    }
