@@ -1,7 +1,6 @@
 .container {
 	/*max-width: 1262px;*/
 	margin: 0 auto;
-	padding: 0 20px;
 }
 
 p {
@@ -79,7 +78,7 @@ h3 {
     color: #ffffff;
 }
 .hero-content {
-padding: 30px 0 10px 0;
+padding: 24px;
 max-width: 1084px;
 margin: 0 auto;
 }
@@ -87,6 +86,8 @@ margin: 0 auto;
 .hero-content p{
 color:#ffffff !important;
 }
+
+
 
 /** Application Content **/
 .application{
@@ -127,6 +128,7 @@ color:#ffffff !important;
     align-items: center;
     line-height: 32px;
 	padding-left: 20px;
+	gap:10px;
 }
 
 .checkIcon{
@@ -137,7 +139,7 @@ width: 40px;
 .infoIcon{
     color: #31B0E6;
     transform: scale(1.5);
-	width: 50px;
+	width: 56px;
 }
 
 .padding-left{
@@ -176,6 +178,7 @@ width: 40px;
 	flex-wrap: wrap;
     justify-content: center;
     gap: 50px;
+	padding: 24px;
 }
 
 .contactIcon{
@@ -183,7 +186,7 @@ width: 40px;
     padding: 100px;
 }
 
-.divider{
+.content-divider{
 	border-bottom: 1px solid #333333;
 }
 /** Footer **/
