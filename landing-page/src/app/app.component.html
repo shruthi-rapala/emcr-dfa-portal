@@ -1,6 +1,11 @@
 <div class="container">
-<app-environment-banner></app-environment-banner>
-  
+
+  <!-- ENVIRONMENT BANNER -->
+  <div>
+    <app-environment-banner></app-environment-banner>
+  </div>
+
+
   <div class="site-header">
     <div class="site-header-content">
       <a href="/" class="site-logo"><img src="https://dfa.gov.bc.ca/img/gov_bc_logo.svg" alt="Government of B.C."></a>
@@ -18,6 +23,14 @@
       </div>
     </div>
   </div>
+
+  <!-- OUTAGE BANNER -->
+   @if(environment?.outageDateFrom && environment?.outageDateTo) {
+    <div>
+      <app-outage-banner></app-outage-banner>
+    </div>
+   }
+ 
 
   <div class="application">
     <div class="container">
@@ -109,18 +122,19 @@
               <h2>Indigenous Governing Bodies and Local Authorities</h2>
             </div>
             <div class="content-divider">
-            <p>
-              Public sector applicants may receive financial assistance from the DFA program for damaged infrastructure.
-            </p>
-            <p>
-              <b>
-                Want more information about eligibility?
-                <a class="links"
-                  href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/local-emergency-programs/financial/communities-dfa"
-                  target="_blank">See Public sector information</a>
-              </b>
-            </p>
-          </div>
+              <p>
+                Public sector applicants may receive financial assistance from the DFA program for damaged
+                infrastructure.
+              </p>
+              <p>
+                <b>
+                  Want more information about eligibility?
+                  <a class="links"
+                    href="https://www2.gov.bc.ca/gov/content/safety/emergency-management/local-emergency-programs/financial/communities-dfa"
+                    target="_blank">See Public sector information</a>
+                </b>
+              </p>
+            </div>
             <div>
               <div class="icon-text">
                 <mat-icon class="infoIcon">info</mat-icon>
@@ -176,7 +190,7 @@
           </h2>
           <p>For questions or more information, contact the Disaster Financial Assistance team toll-free at</p>
           <a class="--link-black" href="tel:18882574777" style="font-size: 18px;">1-888-257-4777</a>
-          
+
         </div>
         <div>
           <h2>
