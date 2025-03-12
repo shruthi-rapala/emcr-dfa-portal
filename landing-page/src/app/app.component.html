@@ -25,9 +25,12 @@
   </div>
 
   <!-- OUTAGE BANNER -->
-  <div>
-    <app-outage-banner></app-outage-banner>
-  </div>
+   @if(environment?.outageDateFrom && environment?.outageDateTo) {
+    <div>
+      <app-outage-banner></app-outage-banner>
+    </div>
+   }
+ 
 
   <div class="application">
     <div class="container">

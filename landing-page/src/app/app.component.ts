@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {MatCard, MatCardModule} from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
 import { OutageBannerComponent } from './components/outage-banner/outage-banner.component';
+import { EnvironmentBannerService, EnvironmentInformation } from './services/environment.service';
 
 
 @Component({
@@ -22,8 +23,17 @@ import { OutageBannerComponent } from './components/outage-banner/outage-banner.
   styleUrl: './app.component.scss',
   standalone: true
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'landing-page';
+  public environment?: EnvironmentInformation;
+
+  constructor(private environmentBannerService: EnvironmentBannerService) { }
+
+  ngOnInit(): void {
+    this.environmentBannerService.getEnvironment().subscribe(environment => {
+      this.environment = environment;
+      });
+    }
 
   public privatePortal = 'https://portal.dev.dfa.gov.bc.ca';
   public publicPortal = 'https://publicsector-dev.dfa.gov.bc.ca';
