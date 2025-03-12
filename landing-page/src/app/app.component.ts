@@ -4,6 +4,7 @@ import {MatCard, MatCardModule} from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
+import { OutageBannerComponent } from './components/outage-banner/outage-banner.component';
 
 
 @Component({
@@ -14,7 +15,8 @@ import { EnvironmentBannerComponent } from './components/environment-banner/envi
   MatCard,
   MatIconModule,
   MatButtonModule,
-  EnvironmentBannerComponent
+  EnvironmentBannerComponent,
+  OutageBannerComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
