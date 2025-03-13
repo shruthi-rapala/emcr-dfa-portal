@@ -26,12 +26,24 @@ import { EnvironmentBannerService, EnvironmentInformation } from './services/env
 export class AppComponent implements OnInit {
   title = 'landing-page';
   public environment?: EnvironmentInformation;
+  public currentDate = Date.now();
+  startDisplayOutageBanner?: number;
+  outageEnd?: number;
 
   constructor(private environmentBannerService: EnvironmentBannerService) { }
 
   ngOnInit(): void {
     this.environmentBannerService.getEnvironment().subscribe(environment => {
       this.environment = environment;
+      if (environment.startDisplayOutageBanner) {
+        this.startDisplayOutageBanner = new Date(environment.startDisplayOutageBanner).getTime();
+      }
+      
+      if(environment.outageEnd){
+        this.outageEnd = new Date(environment.outageEnd).getTime();
+
+      }
+
       });
     }
 

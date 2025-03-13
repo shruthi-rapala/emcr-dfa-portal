@@ -25,7 +25,7 @@
   </div>
 
   <!-- OUTAGE BANNER -->
-   @if(environment?.outageDateFrom && environment?.outageDateTo) {
+   @if((startDisplayOutageBanner && currentDate && startDisplayOutageBanner > currentDate) && (outageEnd && currentDate && currentDate < outageEnd)) {
     <div>
       <app-outage-banner></app-outage-banner>
     </div>
