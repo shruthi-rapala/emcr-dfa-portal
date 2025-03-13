@@ -7,8 +7,9 @@ export interface EnvironmentInformation {
     bannerTitle?: null | string;
     bannerSubTitle?: null | string;
     bannerColor?: null | string;
-    outageDateFrom?: null | string;
-    outageDateTo?: null | string;
+    startDisplayOutageBanner?: null| string;
+    outageStart?: null| string;
+    outageEnd?: null| string;
   }
 
 @Injectable({

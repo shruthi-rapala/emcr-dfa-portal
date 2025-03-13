@@ -1,17 +1,17 @@
 <div class="container outageBanner">
-    <div style="max-width: 670px;">
+    <div style="max-width: 660px;">
         <h2>
             PLANNED OUTAGE ALERT
         </h2>
         <p>
             There is a scheduled system outage of the Disaster Financial Assistance portal from
-            <span class="underline">{{environment?.outageDateFrom}}.</span> to 
-            <span class="underline">{{environment?.outageDateTo}}.</span>
+            <span class="underline">{{environment?.outageStart | date : "EEEE, MMMM d, y, h:mm:ss a"}}.</span> to 
+            <span class="underline">{{environment?.outageEnd | date:"EEEE, MMMM d, y, h:mm:ss a"}}.</span>
             which will disrupt our services and access to the portal.
         </p>
         <p>
             Please ensure you are logged out of the portal by <span
-                class="underline">{{environment?.outageDateTo}}.</span>
+                class="underline">{{environment?.outageEnd | date:"EEEE, MMMM d, y, h:mm:ss a"}}.</span>
             to ensure that your application information is saved.
         </p>
         <p>
