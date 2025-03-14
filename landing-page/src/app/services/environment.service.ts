@@ -10,6 +10,9 @@ export interface EnvironmentInformation {
     startDisplayOutageBanner?: null| string;
     outageStart?: null| string;
     outageEnd?: null| string;
+    dfaPublicUrl?: null| string;
+    dfaPrivateUrl?: null| string;
+
   }
 
 @Injectable({
