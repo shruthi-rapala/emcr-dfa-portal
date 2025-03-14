@@ -47,17 +47,28 @@ export class AppComponent implements OnInit {
       });
     }
 
-  public privatePortal = 'https://portal.dev.dfa.gov.bc.ca';
-  public publicPortal = 'https://publicsector-dev.dfa.gov.bc.ca';
+  // public privatePortal = this.environment?.dfaPrivateUrl;
+  // public publicPortal = this.environment?.dfaPublicUrl;
 
-  private privateUrlRegistration = this.privatePortal + '/registration-method';
-	private publicUrlRegistration = this.privatePortal + '/registration-method';
   
   naviagteToPublicDFA(){
-    window.open(  this.publicUrlRegistration, '_blank');
-  }
+
+      const publicUrl = this.environment?.dfaPublicUrl;
+      if (publicUrl) {
+        window.open(publicUrl, '_blank');
+      } else {
+        console.error('Public portal URL is not defined');
+      }
+    }
+  
 
   naviagteToPrivateDFA(){
-    window.open(  this.privateUrlRegistration, '_blank');
+    const privateUrl = this.environment?.dfaPrivateUrl;
+    if (privateUrl) {
+      window.open(privateUrl, '_blank');
+    } else {
+      console.error('Private portal URL is not defined');
+    }
   }
 }
+
