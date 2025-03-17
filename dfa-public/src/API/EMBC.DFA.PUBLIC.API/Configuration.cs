@@ -102,7 +102,7 @@ namespace EMBC.DFA.API
 
             })
             //JWT token handling - SSO for BCeID login
-            .AddJwtBearer("jwt", options =>
+            .AddJwtBearer("SSO", options =>
              {
                  options.BackchannelHttpHandler = new HttpClientHandler
                  {
