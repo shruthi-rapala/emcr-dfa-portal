@@ -144,7 +144,11 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
     _documentSummaryFormArray.valueChanges
       .pipe(
         mapTo(_documentSummaryFormArray.getRawValue())
-    ).subscribe(data => this.claimDocumentSummaryDataSource.data = _documentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false));
+    ).subscribe(
+      data =>  {
+        console.log(data);
+        this.claimDocumentSummaryDataSource.data = _documentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
+    });
 
     if (this.dfaClaimMainDataService.getViewOrEdit() == 'viewOnly') {
       this.supportingDocumentsForm.disable();
@@ -321,7 +325,7 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
       this.attachmentsService.attachmentUpsertDeleteClaimAttachment({body: element}).subscribe({
        next: (result) => {
          fileUploads.splice(foundIndex, 1);
-         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+         this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').setValue(fileUploads);
          switch (element.requiredDocumentType) {
            case "InsuranceTemplate":
              this.initRequiredFileForm("insuranceTemplateFileUpload");
@@ -381,10 +385,10 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
       this.attachmentsService.attachmentUpsertDeleteClaimAttachment({body: element}).subscribe({
        next: (result) => {
          fileUploads[index] = element;
-         this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+         this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').setValue(fileUploads);
          //if (fileUploads?.filter(x => x.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])?.length == 0)
          //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(false);
-         if (this.formCreationService.fileUploadsForm.value.get('fileUploads').value.length === 0) {
+         if (this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').value.length === 0) {
            this.fileUploadForm
              .get('addNewFileUploadIndicator')
              .setValue(false);
