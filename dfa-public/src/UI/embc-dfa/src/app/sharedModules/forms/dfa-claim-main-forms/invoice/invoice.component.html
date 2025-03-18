@@ -25,11 +25,17 @@
                 <p style="font-size: 15px">
                   EMCR Decision
                 </p>
+                @if(claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions || claimDecision == DecisionEnum.Ineligible || claimDecision == DecisionEnum.Withdrawn){
                 <mat-form-field appearance="outline">
                   <input #emcrDecision formControlName="emcrDecision" matInput />
                 </mat-form-field>
+              }@else {
+                <mat-form-field appearance="outline">
+                  <input matInput readonly disabled="true"/>
+                </mat-form-field>
+              }
               </div>
-
+          
               <div class="col-md-6">
                 <p style="font-size: 15px;">
                   EMCR Approved Amount
@@ -58,6 +64,7 @@
                   <p style="font-size: 15px">
                     EMCR Decision Date
                   </p>
+                  @if(claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions || claimDecision == DecisionEnum.Ineligible || claimDecision == DecisionEnum.Withdrawn){
                   <mat-form-field appearance="outline">
                     <input matInput [matDatepicker]="emcrDecisionDatePicker" [readonly]="isReadOnly === true"
                       formControlName="emcrDecisionDate">
@@ -66,6 +73,12 @@
                       [disabled]="isReadOnly === true"></mat-datepicker-toggle>
                     <mat-datepicker #emcrDecisionDatePicker [disabled]="isReadOnly === true"></mat-datepicker>
                   </mat-form-field>
+                }@else {
+                  <mat-form-field appearance="outline">
+                    <input matInput readonly disabled="true"/>
+                    <mat-datepicker #emcrDecisionDatePicker [disabled]="isReadOnly === true"></mat-datepicker>
+                  </mat-form-field> 
+                }
                 </div>
               </div>
 
@@ -74,11 +87,18 @@
                   EMCR Decision Comments
                 </p>
                 <div class="col-md-12">
+                  @if(claimDecision == DecisionEnum.Approved || claimDecision == DecisionEnum.ApprovedWithExclusions || claimDecision == DecisionEnum.Ineligible || claimDecision == DecisionEnum.Withdrawn){
                   <mat-form-field appearance="outline">
                     <textarea [disabled]="isReadOnly" matInput formControlName="emcrDecisionComments"
                       style="resize:none" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2"
                       cdkAutosizeMaxRows="5"></textarea>
                   </mat-form-field>
+                }@else {
+                  <mat-form-field appearance="outline">
+                    <textarea matInput readonly disabled="true" style="resize:none" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2"
+                      cdkAutosizeMaxRows="5"></textarea>
+                  </mat-form-field>
+                }
                   <br />
                 </div>
               </div>
