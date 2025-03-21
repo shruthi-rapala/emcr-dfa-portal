@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormGroup } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { DfaApplicationMain, FullTimeOccupant, SecondaryApplicant, OtherContact, DamagedRoom, CleanUpLogItem } from 'src/app/core/model/dfa-application-main.model';
 import { FormCreationService } from '../../core/services/formCreation.service';
-import { DfaClaimMain } from '../../core/model/dfa-claim-main.model';
+import { DfaClaimMain, RecoveryClaimForm } from '../../core/model/dfa-claim-main.model';
 import { DFAClaimMainDataService } from './dfa-claim-main-data.service';
 import { DfaInvoiceMain } from '../../core/model/dfa-invoice.model';
 
@@ -24,16 +24,29 @@ export class DFAClaimMainMappingService {
   }
 
   private setClaimDetails(dfaClaimMain: DfaClaimMain): void {
-    let formGroup: UntypedFormGroup;
+    let formGroup: FormGroup<RecoveryClaimForm>;
     this.formCreationService
       .getRecoveryClaimForm()
       .pipe(first())
-      .subscribe((claim) => {
-       // if ((dfaClaimMain?.claim as any)?.stage) delete (dfaClaimMain?.claim as any)?.stage;
-    
-
+      .subscribe((claim: FormGroup<RecoveryClaimForm>) => {
         claim.setValue({
-          ...dfaClaimMain.claim,
+          // ...dfaClaimMain.claim,
+          approvedClaimTotal: dfaClaimMain.claim.approvedClaimTotal,
+          claimEligibleGST: dfaClaimMain.claim.claimEligibleGST,
+          claimNumber: dfaClaimMain.claim.claimNumber,
+          claimGrossGST: dfaClaimMain.claim.claimGrossGST,
+          approvedReimbursement: dfaClaimMain.claim.approvedReimbursement,
+          claimPST: dfaClaimMain.claim.claimPST,
+          claimReceivedByEMCRDate : dfaClaimMain.claim.claimReceivedByEMCRDate,
+          claimStatus: dfaClaimMain.claim.claimStatus,
+          claimTotal: dfaClaimMain.claim.claimTotal,
+          eligiblePayable: dfaClaimMain.claim.eligiblePayable,
+          invoices: dfaClaimMain.claim.invoices,
+          lessFirst1000: dfaClaimMain.claim.lessFirst1000,
+          paidClaimAmount: dfaClaimMain.claim.paidClaimAmount,
+          paidClaimDate: dfaClaimMain.claim.paidClaimDate,
+          totalActualClaim: dfaClaimMain.claim.totalActualClaim,
+          totalInvoicesBeingClaimed: dfaClaimMain.claim.totalInvoicesBeingClaimed,
           isFirstClaimApproved: dfaClaimMain.claim.isFirstClaimApproved === true ? 'true' : (dfaClaimMain.claim.isFirstClaimApproved === false ? 'false' : null),
           isThisFinalClaim: dfaClaimMain.claim.isThisFinalClaim === true ? 'true' : (dfaClaimMain.claim.isThisFinalClaim === false ? 'false' : null),
          

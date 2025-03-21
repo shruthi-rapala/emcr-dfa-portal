@@ -8,6 +8,7 @@ import {
   FormGroup,
   ValidatorFn,
   ValidationErrors,
+  UntypedFormControl,
 } from '@angular/forms';
 import { CommonModule, KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -231,7 +232,7 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
     }
   }
 
-  saveRequiredForm(fileUpload: FileUploadClaim): void {
+  saveRequiredForm(fileUpload: FileUploadClaim, claimFileUploadFormGroup: string): void {
     // dont allow same filename twice
     let fileUploads = this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').value;
     if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
@@ -247,10 +248,13 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
     fileUpload.claimId = this.dfaClaimMainDataService.getClaimId();
     if (fileUploads?.filter(x => x.requiredDocumentType === fileUpload.requiredDocumentType).length > 0) {
       this.attachmentsService.attachmentUpsertDeleteClaimAttachment({ body: fileUpload }).subscribe({
-        next: (result) => {
+        next: (fileUploadId) => {
+          fileUpload.id = fileUploadId;
           let requiredDocumentTypeFoundIndex = fileUploads.findIndex(x => x.requiredDocumentType === fileUpload.requiredDocumentType);
           fileUploads[requiredDocumentTypeFoundIndex] = fileUpload;
           this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').setValue(fileUploads);
+          // Reset the file upload fields
+          this.formCreationService.fileUploadsClaimForm.value.get(claimFileUploadFormGroup).reset();
           this.isLoading = false;
         },
         error: (error) => {
@@ -268,6 +272,8 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
           this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').setValue(fileUploads);
           //if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
           //  this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);
+           // Reset the file upload fields
+          this.formCreationService.fileUploadsClaimForm.value.get(claimFileUploadFormGroup).reset();
           this.isLoading = false;
         },
         error: (error) => {
@@ -327,6 +333,7 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
          fileUploads.splice(foundIndex, 1);
          this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').setValue(fileUploads);
          switch (element.requiredDocumentType) {
+
            case "InsuranceTemplate":
              this.initRequiredFileForm("insuranceTemplateFileUpload");
              break;

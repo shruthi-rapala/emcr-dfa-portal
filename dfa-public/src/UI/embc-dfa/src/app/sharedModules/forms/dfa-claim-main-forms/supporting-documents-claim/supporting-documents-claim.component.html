@@ -35,7 +35,7 @@
             fileType="Invoices"
             fileTypeText="Invoices"
             excludeFileTypes="[]"
-            (saveFileUpload)="saveRequiredForm($event)"
+            (saveFileUpload)="saveRequiredForm($event, 'invoiceUpload')"
             [fileUpload]="formCreationService.fileUploadsClaimForm.value.get('invoiceUpload')"
           ></app-dfa-attachment>
           <app-loader
@@ -69,7 +69,7 @@
             fileType="GeneralLedger"
             fileTypeText="General Ledger"
             excludeFileTypes="[]"
-            (saveFileUpload)="saveRequiredForm($event)"
+            (saveFileUpload)="saveRequiredForm($event, 'generalLedgerUpload')"
             [fileUpload]="formCreationService.fileUploadsClaimForm.value.get('generalLedgerUpload')"
           ></app-dfa-attachment>
           <app-loader
@@ -102,7 +102,7 @@
             fileType="ProofofPayment"
             fileTypeText="Proof of Payment"
             excludeFileTypes="[]"
-            (saveFileUpload)="saveRequiredForm($event)"
+            (saveFileUpload)="saveRequiredForm($event, 'proofOfPaymentUpload')"
             [fileUpload]="formCreationService.fileUploadsClaimForm.value.get('proofOfPaymentUpload')"
           ></app-dfa-attachment>
           <app-loader

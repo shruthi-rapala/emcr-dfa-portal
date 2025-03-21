@@ -275,7 +275,8 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
     fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
     if (fileUploads?.filter(x => x.requiredDocumentType === fileUpload.requiredDocumentType).length > 0) {
       this.attachmentsService.attachmentUpsertDeleteProjectAttachment({body: fileUpload }).subscribe({
-        next: (result) => {
+        next: (fileUploadId) => {
+          fileUpload.id = fileUploadId;
           let requiredDocumentTypeFoundIndex = fileUploads.findIndex(x => x.requiredDocumentType === fileUpload.requiredDocumentType);
           fileUploads[requiredDocumentTypeFoundIndex] = fileUpload;
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
