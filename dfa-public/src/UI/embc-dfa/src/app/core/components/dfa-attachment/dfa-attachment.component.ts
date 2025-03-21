@@ -87,23 +87,24 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   }
 
   initFileUploadForm() {
-    let fileUploads = this.isClaim ?
-      this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').value :
-      this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
-    if (this.requiredDocumentType && fileUploads?.filter(x => x.requiredDocumentType === this.requiredDocumentType).length > 0) {
-      let foundIndex = fileUploads.findIndex(x => x.requiredDocumentType === this.requiredDocumentType);
-      this.fileUpload.setValue(fileUploads[foundIndex]);
-    } else {
-      this.fileUpload.reset();
-      this.fileUpload.get('modifiedBy').setValue("Applicant");
-      if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType); else this.fileUpload.get('fileType').setValue(null);
-      if (this.fileTypeText) this.fileUpload.get('fileTypeText').setValue(this.fileTypeText); else this.fileUpload.get('fileTypeText').setValue(null);
-      if (this.requiredDocumentType) this.fileUpload.get('requiredDocumentType').setValue(this.requiredDocumentType); else this.fileUpload.get('requiredDocumentType').setValue(null);
-      this.fileUpload.get('deleteFlag').setValue(false);
-      //this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
-      this.fileUpload.get('id').setValue(null);
-      this.fileUpload.updateValueAndValidity();
-    }
+    this.fileUpload.reset();
+    // let fileUploads = this.isClaim ?
+    //   this.formCreationService.fileUploadsClaimForm.value.get('fileUploads').value :
+    //   this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
+    // if (this.requiredDocumentType && fileUploads?.filter(x => x.requiredDocumentType === this.requiredDocumentType).length > 0) {
+    //   let foundIndex = fileUploads.findIndex(x => x.requiredDocumentType === this.requiredDocumentType);
+    //   this.fileUpload.setValue(fileUploads[foundIndex]);
+    // } else {
+    //   this.fileUpload.reset();
+    //   this.fileUpload.get('modifiedBy').setValue("Applicant");
+    //   if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType); else this.fileUpload.get('fileType').setValue(null);
+    //   if (this.fileTypeText) this.fileUpload.get('fileTypeText').setValue(this.fileTypeText); else this.fileUpload.get('fileTypeText').setValue(null);
+    //   if (this.requiredDocumentType) this.fileUpload.get('requiredDocumentType').setValue(this.requiredDocumentType); else this.fileUpload.get('requiredDocumentType').setValue(null);
+    //   this.fileUpload.get('deleteFlag').setValue(false);
+    //   //this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+    //   this.fileUpload.get('id').setValue(null);
+    //   this.fileUpload.updateValueAndValidity();
+    // }
   }
 
   // Preserve original property order
@@ -113,9 +114,16 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
 
   saveAttachment(): void {
     if (this.fileUpload.status === 'VALID') {
+      this.fileUpload.get('modifiedBy').setValue("Applicant");
+      if (this.fileType) this.fileUpload.get('fileType').setValue(this.fileType); else this.fileUpload.get('fileType').setValue(null);
+      if (this.fileTypeText) this.fileUpload.get('fileTypeText').setValue(this.fileTypeText); else this.fileUpload.get('fileTypeText').setValue(null);
+      if (this.requiredDocumentType) this.fileUpload.get('requiredDocumentType').setValue(this.requiredDocumentType); else this.fileUpload.get('requiredDocumentType').setValue(null);
+      this.fileUpload.get('deleteFlag').setValue(false);
+      //this.fileUpload.get('applicationId').setValue(this.dfaApplicationMainDataService.getApplicationId());
+      this.fileUpload.get('id').setValue(null);
       this.saveFileUpload.emit(this.fileUpload.value);
       this.showFileUpload = false;
-      this.initFileUploadForm();
+      // this.initFileUploadForm();
     } else {
       console.error(this.fileUpload);
       this.fileUpload.markAllAsTouched();
@@ -171,4 +179,5 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
       this.fileUpload.get('uploadedDate').setValue(new Date());
     };
   }
+
 }
