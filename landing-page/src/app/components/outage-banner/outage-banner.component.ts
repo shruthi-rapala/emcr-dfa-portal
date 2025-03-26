@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { EnvironmentBannerService, EnvironmentInformation } from '../../services/environment.service';
 import { DatePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-outage-banner',
-  imports: [DatePipe],
+  imports: [DatePipe, MatIconModule],
   templateUrl: './outage-banner.component.html',
   styleUrl: './outage-banner.component.scss',
   standalone: true

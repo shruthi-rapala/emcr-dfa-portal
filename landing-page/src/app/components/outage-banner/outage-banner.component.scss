@@ -1,28 +1,32 @@
 .outageBanner {
-    color: rgb(255, 255, 255);
-    padding: 24px;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
     background: rgb(190, 0, 0);
-    text-align: center;
     font-family: "BCSans-Regular", "BC Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 18px;
+    font-size: 16px;
+    color: #FFFFFF;
     line-height: 24px;
-    font-weight: bold;
+}
+
+.outageBannerContent{
+    padding: 24px;
+    max-width: 1084px;
+    margin: 0 auto;
 }
 
 .--link-white{
-    color: #FCBA19;
+    color: white;
     cursor: pointer;
 }
 
-.underline {
-    text-decoration: underline;   
+
+
+.icon-text {
+    display: flex;
+    align-items: center;  
 }
 
-.italic{
-    font-style: italic;
+.infoIcon{
+    transform: scale(1.5);
+	width: 32px;
 }
