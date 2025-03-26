@@ -80,33 +80,49 @@
               <div class="padding-left">
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
-                  <span>Homeowner</span>
+                  <span class="font">Homeowner</span>
                 </div>
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
-                  <span>Residential tenant</span>
+                  <span class="font">Residential tenant</span>
                 </div>
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
-                  <span>Small businesses (including landlords)</span>
+                  <span class="font">Small businesses (including landlords)</span>
                 </div>
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
-                  <span>Farms</span>
+                  <span class="font">Farms</span>
                 </div>
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
-                  <span>Charitable organization</span>
+                  <span class="font">Charitable organization</span>
                 </div>
               </div>
             </div>
 
-            <div>
-              <button class="applyButton" (click)="naviagteToPrivateDFA()">
-                Apply to Private DFA
+            <div style="padding-top: 15px;">
+              @if (environment?.disablePrivateUrl) {
+                <button disabled 
+                class="disableButton" 
+                #tooltip="matTooltip"
+                matTooltip="New applications are not currently being accepted"
+                tooltipClass="my-custom-class"
+                [matTooltipPosition]="position.value!">
+                  Register to apply to Private DFA
+                </button>
+              } @else { 
+                <button class="applyButton" (click)="naviagteToPrivateDFA()">
+                  Register to apply to Private DFA
+                </button>
+              }
+
+              <button class="loginButton" (click)="naviagteToPrivateDFA()">
+                Login into to Private DFA
               </button>
-              <div class="loginText">
-                <p>
+
+              <div>
+                <p class="loginText">
                   You will need your BC Services card to log in
                 </p>
               </div>
@@ -147,20 +163,40 @@
               <div class="padding-left">
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
-                  <span>Indigenous Governing Bodies</span>
+                  <span class="font">Indigenous Governing Bodies</span>
                 </div>
                 <div class="icon-text">
                   <mat-icon class="checkIcon">check_circle</mat-icon>
-                  <span>Local Authorities</span>
+                  <span class="font">Local Authorities</span>
                 </div>
               </div>
             </div>
-            <div style="padding-top: 65px;">
-              <button class="applyButton" (click)="naviagteToPublicDFA()">
-                Apply to Public DFA
-              </button>
-              <div class="loginText">
-                <p>
+            <div style="padding-top: 80px;">
+
+              @if (environment?.disablePublicUrl || environment?.newApplicationNotAccepted) {
+                <button disabled 
+                class="disableButton" 
+                #tooltip="matTooltip"
+                matTooltip="New applications are not currently being accepted"
+                tooltipClass="my-custom-class"
+                [matTooltipPosition]="position.value!">
+                  Register to apply to Public DFA
+                </button>
+              } @else { 
+                <button class="applyButton" (click)="naviagteToPublicDFA()">
+                  Register to apply to Public DFA
+                </button>
+              }
+         
+              @if(!environment?.newApplicationNotAccepted) {
+                <button class="loginButton" (click)="naviagteToPublicDFA()">
+                  Login into to Public DFA
+                </button>
+  
+              }
+           
+              <div>
+                <p  class="loginText">
                   You will need your BC BCeID to log in
                 </p>
               </div>
