@@ -264,7 +264,7 @@ width: 40px;
 }
 
 .contactInfo{
-    width: 50%;
+    flex: 1 1 400px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -275,7 +275,12 @@ width: 40px;
     height: 150px;
 }
 
-
+@media (max-width: 720px) {
+    .contactIcon{
+        width: 100px;
+        height: 100px;
+    }
+}
 
 .content-divider{
 	border-bottom: 1px solid #333333;
