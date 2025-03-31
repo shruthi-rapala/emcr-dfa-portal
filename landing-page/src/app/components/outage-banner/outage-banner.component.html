@@ -8,13 +8,14 @@
           </div>
         <p>
             There is a scheduled system outage of the Disaster Financial Assistance portal from
-            <span>{{environment?.outageStart | date : "EEEE MMMM d 'at' h:mm a"}}.</span> to 
-            <span >{{environment?.outageEnd | date:"EEEE MMMM d 'at' h:mm a"}}.</span>
+            <span>{{environment?.outageStart | date : "EEEE MMMM d 'at' h:mm "}} {{starttime}} </span> to 
+            <span >{{environment?.outageEnd | date:"EEEE MMMM d 'at' h:mm "}} {{endtime}}</span>
             which will disrupt our services and access to the portal.
         </p>
         <p>
             Please ensure you are logged out of the portal by 
-            <span>{{environment?.outageStart | date:"h:mm a 'on 'EEEE MMMM d"}}</span>
+            <span>{{environment?.outageStart | date:"h:mm" }} {{starttime}}{{environment?.outageStart | date:"'on 'EEEE MMMM d"}}</span>
+            <!-- <span>{{environment?.outageStart | date:"h:mm a 'on 'EEEE MMMM d"}}</span> -->
             to ensure that your application information is saved.
         </p>
         <p>
