@@ -61,7 +61,6 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    
     this.FileCategories = this.isClaim ? FileCategoryClaim : FileCategory;
     this.RequiredDocumentTypes = this.isClaim ? RequiredDocumentTypeClaim : RequiredDocumentType;
     if (this.isClaim) {
@@ -113,6 +112,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   }
 
   saveAttachment(): void {
+    console.log(this.fileUpload);
     if (this.fileUpload.status === 'VALID') {
       this.fileUpload.get('modifiedBy').setValue("Applicant");
       if (!this.fileUpload.get('fileType').value) {
