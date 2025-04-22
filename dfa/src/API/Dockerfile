@@ -36,8 +36,8 @@ RUN dotnet publish "EMBC.DFA.API/EMBC.DFA.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 # copy diagnostics tools
-WORKDIR /tools
-COPY --from=build /tools .
+# WORKDIR /tools
+# COPY --from=build /tools .
 # copy app
 WORKDIR /app
 COPY --from=publish /app/publish .
