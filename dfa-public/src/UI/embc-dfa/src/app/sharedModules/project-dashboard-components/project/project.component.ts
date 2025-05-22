@@ -115,11 +115,11 @@ export class DfaDashProjectComponent implements OnInit {
                   objApp.statusColor = '#E25E63';
                 }
 
-                if (objApp.status.toLowerCase() == 'draft') {
+                if (objApp.status?.toLowerCase() == 'draft') {
                   objApp.statusColor = '#639DD4';
                 }
 
-                if (objApp.status.toLowerCase().indexOf('decision made') > -1 && objApp.stage.toLowerCase().indexOf('progress') > -1) {
+                if (objApp.status?.toLowerCase().indexOf('decision made') > -1 && objApp.stage?.toLowerCase().indexOf('progress') > -1) {
                   objApp.statusColor = '#FDCB52';
                 }
               }
