@@ -37,6 +37,7 @@ import { IMaskModule } from 'angular-imask';
 
 @Component({
   selector: 'app-damaged-property-address',
+  standalone: false,
   templateUrl: './damaged-property-address.component.html',
   styleUrls: ['./damaged-property-address.component.scss']
 })
@@ -152,7 +153,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
       this.damagedPropertyAddressForm = damagedPropertyAddress;
       this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
         this.damagedPropertyAddressForm.controls.lossesExceed1000.setValidators([Validators.required]);
-        if (application) {
+        if (application && application.appTypeInsurance) {
           this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
           this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
           this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);
@@ -198,6 +199,7 @@ export default class DamagedPropertyAddressComponent implements OnInit, OnDestro
             this.accountLegalNameLabel = "farm's"
             this.accountPlaceHolderLabel = "Farm";
           } else if (this.isCharitableOrganization) {
+            this.damagedPropertyAddressForm.controls.businessLegalName.setValidators([Validators.maxLength(100), Validators.required]);
             this.damagedPropertyAddressForm.controls.charityExistsAtLeast12Months.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.charityRegistered.setValidators([Validators.required]);
             this.damagedPropertyAddressForm.controls.charityProvidesCommunityBenefit.setValidators([Validators.required]);

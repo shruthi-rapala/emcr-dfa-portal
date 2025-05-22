@@ -37,6 +37,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-supporting-documents',
+  standalone: false,
   templateUrl: './supporting-documents.component.html',
   styleUrls: ['./supporting-documents.component.scss']
 })
@@ -110,7 +111,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     });
 
     this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-      if (application) {
+      if (application && application.appTypeInsurance) {
         this.isNoInsurance = (application.appTypeInsurance.insuranceOption == Object.keys(this.InsuranceOptions)[Object.values(this.InsuranceOptions).indexOf(this.InsuranceOptions.No)]);
         this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.ResidentialTenant)]);
         this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.AppOptions)[Object.values(this.AppOptions).indexOf(this.AppOptions.Homeowner)]);

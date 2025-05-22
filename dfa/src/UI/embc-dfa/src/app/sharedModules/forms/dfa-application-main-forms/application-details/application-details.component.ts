@@ -28,6 +28,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-application-details',
+  standalone: false,
   templateUrl: './application-details.component.html',
   styleUrls: ['./application-details.component.scss']
 })
@@ -120,7 +121,7 @@ export default class ApplicationDetailsComponent implements OnInit, OnDestroy {
       .subscribe((review) => {
         this.applicationDetailsForm = review;
         this.dfaApplicationMainDataService.getDfaApplicationStart().subscribe(application => {
-           if (application) {
+           if (application && application.appTypeInsurance) {
             this.isResidentialTenant = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.ResidentialTenant)]);
             this.isHomeowner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.Homeowner)]);
             this.isFarmOwner = (application.appTypeInsurance.applicantOption == Object.keys(this.ApplicantOptions)[Object.values(this.ApplicantOptions).indexOf(this.ApplicantOptions.FarmOwner)]);

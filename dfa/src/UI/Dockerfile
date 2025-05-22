@@ -1,4 +1,9 @@
-FROM trion/ng-cli-karma AS node-builder
+# We need to use a specific tag and not the latest for the base docker image 
+# This is to keep node and npm versions in sync
+# trion/ng-cli-karma:19.2.6 
+#             node version 22.14.0
+#             npm version 10.9.2
+FROM trion/ng-cli-karma:19.2.6 AS node-builder
 WORKDIR /src
 COPY ./embc-dfa/package*.json ./
 RUN npm install --ignore-scripts
@@ -16,9 +21,20 @@ RUN xcaddy build \
 FROM caddy:2 as final
 ARG VERSION
 ENV VERSION=$VERSION
-ENV API_URL=
+# API_URL gets replaced at deployment time
+# ENV API_URL=http://localhost:5020
+ENV API_URL=http://host.containers.internal:5020
 RUN chmod +rw /config/caddy
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY --from=ng-builder src/dist/embc-dfa /site
+
+# Use if you need to run the container in your local dev setup
+RUN mkdir -p /site/env && echo '{ \
+    "envName": "local", \
+    "bannerTitle": "You are in the **LOCAL** version of the **Disaster Financial Assistance Tool**.", \
+    "bannerSubTitle": "All information entered here will be treated as **LOCAL** data.", \
+    "bannerColor": "#097d8c" \
+}' > /site/env/info.json
+
 EXPOSE 2015 2016

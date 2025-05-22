@@ -15,6 +15,7 @@ export class FileUploadComponent {
   @Input() allowedFileExtensionsList: string;
   fileAttachments: string[] = [];
   attachSizeError = false;
+  maxFileSize: number = 45 * 1024 * 1024; //MB
 
   constructor(
     public dialog: MatDialog
@@ -33,8 +34,8 @@ export class FileUploadComponent {
     for (const e of event) {
       if (!(e.size > 0)) {
         this.warningDialog(constant.zeroFileMessage);
-      } else if (!(e.size <= 26214400)) {
-        this.warningDialog(constant.fileTooLargeMessage);
+      } else if (!(e.size <= this.maxFileSize)) {
+        this.warningDialog(`${constant.fileTooLargeMessage}${(this.maxFileSize / 1048576).toFixed(2)}MB`);
       } else if (!this.allowedFileTypes?.includes(e.type)) {
         this.warningDialog(constant.fileTypeMessage);
       } else if (!constant.fileNameFormat.test(e.name)) {
