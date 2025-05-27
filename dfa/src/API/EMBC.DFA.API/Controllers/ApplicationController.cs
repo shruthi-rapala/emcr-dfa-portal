@@ -274,6 +274,13 @@ namespace EMBC.DFA.API.Controllers
         public string StatusLastUpdated { get; set; }
         public bool IsErrorInStatus { get; set; }
         public bool hasAppealStages { get; set; }
+        public IEnumerable<CurrentCaseAppeal> Appeals { get; set; }
+    }
+
+    public class CurrentCaseAppeal
+    {
+        public string AppealStatus { get; set; }
+        public string AppealType { get; set; }
     }
 
     public class StatusBar

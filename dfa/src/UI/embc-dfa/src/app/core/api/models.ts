@@ -17,6 +17,7 @@ export type { Configuration } from './models/configuration';
 export type { Consent } from './models/consent';
 export type { ContactDetails } from './models/contact-details';
 export type { CurrentApplication } from './models/current-application';
+export type { CurrentCaseAppeal } from './models/current-case-appeal';
 export type { DamagedPropertyAddress } from './models/damaged-property-address';
 export type { DamagedRoom } from './models/damaged-room';
 export type { DateOfBirthDataConflict } from './models/date-of-birth-data-conflict';
