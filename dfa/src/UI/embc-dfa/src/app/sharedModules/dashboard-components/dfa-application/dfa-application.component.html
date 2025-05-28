@@ -149,15 +149,26 @@
 
       <!-- Add Appeals section -->
       @if (applItem.dateFileClosed && remainingDays(applItem) > 0) {
-        <div class="appeals">
-            <p>
-              You have {{remainingDays(applItem)}} days to register an eligible appeal on this application.
-            </p>     
-          <button class="col-md-2 application-button whitebutton" type="button">
-            Appeals</button>
-        </div>
+      @if(applItem.caseEligibility === this.CaseElibilityEnum.Ineligible) {
+      <div class="appeals">
+        <span>
+          You have {{remainingDays(applItem)}} days to register an eligible appeal on this application
+        </span>
+        <button class="col-md-2 application-button whitebutton" type="button" (click)="ViewAppeals(applItem)">Appeal
+          Eligibility Decision</button>
+      </div>
       }
-      
+      @if(applItem.caseEligibility === this.CaseElibilityEnum.Eligible) {
+      <div class="appeals">
+        <span>
+          You have {{remainingDays(applItem)}} days to register an amount appeal on this application
+        </span>
+        <button class="col-md-2 application-button whitebutton" type="button">
+          Appeal Payment Amount</button>
+      </div>
+      }
+      }
+
 
     </mat-card>
   </div>

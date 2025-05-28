@@ -9,6 +9,7 @@ export interface CurrentApplication {
   applicationId?: string;
   applicationSubType?: string;
   applicationType?: string;
+  caseEligibility?: string;
   caseNumber?: string;
   damagedAddress?: string;
   dateAppealClosed?: string;

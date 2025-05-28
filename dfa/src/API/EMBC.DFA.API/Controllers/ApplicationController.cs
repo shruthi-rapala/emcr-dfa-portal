@@ -275,6 +275,8 @@ namespace EMBC.DFA.API.Controllers
         public bool IsErrorInStatus { get; set; }
         public bool hasAppealStages { get; set; }
         public IEnumerable<CurrentCaseAppeal> Appeals { get; set; }
+
+        public string CaseEligibility { get; set; }
     }
 
     public class CurrentCaseAppeal

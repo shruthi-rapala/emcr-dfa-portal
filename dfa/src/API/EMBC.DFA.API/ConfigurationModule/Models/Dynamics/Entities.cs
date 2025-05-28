@@ -588,7 +588,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_smallbusinesstype { get; set; }
         public string dfa_accountlegalname { get; set; }
         public string dfa_appealcloseddate { get; set; }
-        //public string dfa_eligibilitystatus { get; set; }
+        public string dfa_eligibilitystatus { get; set; }
         public IEnumerable<dfa_appeal>? dfa_appeal { get; set; }
     }
 
@@ -653,6 +653,30 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Other = 222710002
     }
 
+    public enum CaseEligibilityOptionSet
+    {
+        [Description("Eligible")]
+        Eligible = 222710000,
+
+        [Description("Ineligible")]
+        Ineligible = 222710001,
+
+        [Description("On hold; pending DFA decision")]
+        OnHoldPendingDFADecision = 222710005,
+
+        [Description("Under Review")]
+        UnderReview = 222710002,
+
+        [Description("Waiting for applicant information")]
+        WaitingForApplicantInformation = 222710004,
+
+        [Description("Waiting on insurance settlement decision")]
+        WaitingOnInsuranceSettlementDecision = 222710006,
+
+        [Description("Withdrawn")]
+        Withdrawn = 222710003,
+    }
+
     public class dfa_event
     {
         public string dfa_eventid { get; set; }
@@ -683,6 +707,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string incidentid { get; set; }
         public string ticketnumber { get; set; }
         public string dfa_datefileclosed { get; set; }
+        public string dfa_eligibilitystatus { get; set; }
     }
 
     public enum SameAddressOptionSet

@@ -95,6 +95,7 @@
 .appeals{
   display: flex;
   padding-top: 35px;
+  justify-content: end;
 }
 
 @media (max-width: 1200px) and (min-width: 300px) {

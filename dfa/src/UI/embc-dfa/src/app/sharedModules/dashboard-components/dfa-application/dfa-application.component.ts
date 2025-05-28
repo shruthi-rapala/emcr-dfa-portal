@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { CurrentApplication } from 'src/app/core/api/models';
+import {CaseEligibility} from 'src/app/core/model/caseEligibilityEnum';
 
 @Component({
   selector: 'app-dfadashboard-application',
@@ -16,6 +17,9 @@ import { CurrentApplication } from 'src/app/core/api/models';
 })
 export class DfaApplicationComponent implements OnInit {
 
+  CaseElibilityEnum = CaseEligibility;
+  
+  
   addNewItem(value: number) {
     this.appSessionService.currentApplicationsCount.emit(value);
   }
