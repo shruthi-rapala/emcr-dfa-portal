@@ -1,7 +1,6 @@
-<div class="content-container" style="padding-bottom: 100px; padding-top: 50px; min-width: 1075px;" *ngIf="lstApplications.length > 0">
-  <div class="row"
-           *ngFor="let applItem of lstApplications"
-           >
+<div class="content-container" style="padding-bottom: 100px; padding-top: 50px; min-width: 1075px;"
+  *ngIf="lstApplications.length > 0">
+  <div class="row" *ngFor="let applItem of lstApplications">
     <!--<div class="row block">
     <div class="row">
       <div class="col-md-6">
@@ -16,11 +15,12 @@
       </div>
     </div>
     </div>-->
-    <mat-card appearance="outlined" class="mat-elevation-z4 content" >
+    <mat-card appearance="outlined" class="mat-elevation-z4 content">
 
       <div style="border-bottom: 1px solid lightgrey; padding-bottom: 20px; display: flex;">
         <div class="col-md-3">
-          <span style="font-size: 20px;"><b>{{applItem.eventId === null ? "To Be Assigned" : applItem.eventId }}</b></span>
+          <span style="font-size: 20px;"><b>{{applItem.eventId === null ? "To Be Assigned" : applItem.eventId
+              }}</b></span>
         </div>
         <div class="col-md-7">
         </div>
@@ -29,7 +29,8 @@
           <span style="font-size: 16px;">{{applItem.statusLastUpdated }}</span>
         </div>-->
       </div>
-      <div [ngClass]="applItem.hasAppealStages ? 'appeal-stages' : ''" style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;width: 100%;min-width: 725px;">
+      <div [ngClass]="applItem.hasAppealStages ? 'appeal-stages' : ''"
+        style="border-bottom: 1px solid lightgrey;padding-bottom:20px; height: 210px;width: 100%;min-width: 725px;">
         <div class="col-md-3" style="margin-top: 20px;">
           <span><b>Application Status</b></span><br />
           <span *ngIf="applItem.isErrorInStatus === true" style="color: red;">Error in displaying status<br /></span>
@@ -38,14 +39,18 @@
           <span class="stepText">{{item.label}}</span>
         </div>
         <br style="clear: both;" />
-        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="i === 0 ? 'nocircle col-md-1' : 'circle col-md-1'">
-          <span *ngIf="item.isCompleted === true && applItem.isErrorInStatus === false" class="material-icons" style="color: rgb(21 178 89);">
+        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}"
+          [ngClass]="i === 0 ? 'nocircle col-md-1' : 'circle col-md-1'">
+          <span *ngIf="item.isCompleted === true && applItem.isErrorInStatus === false" class="material-icons"
+            style="color: rgb(21 178 89);">
             check_circle
           </span>
-          <span *ngIf="item.isCompleted === false && item.currentStep === true && applItem.isErrorInStatus === false" class="material-symbols-outlined" style="color: darkblue">
+          <span *ngIf="item.isCompleted === false && item.currentStep === true && applItem.isErrorInStatus === false"
+            class="material-symbols-outlined" style="color: darkblue">
             circle
           </span>
-          <span *ngIf="item.isCompleted === false && item.currentStep === false && applItem.isErrorInStatus === false" class="material-symbols-outlined" style="color: lightgrey">
+          <span *ngIf="item.isCompleted === false && item.currentStep === false && applItem.isErrorInStatus === false"
+            class="material-symbols-outlined" style="color: lightgrey">
             circle
           </span>
           <span *ngIf="applItem.isErrorInStatus === true" class="material-symbols-outlined" style="color: lightgrey">
@@ -57,9 +62,11 @@
           </span>-->
         </div>
         <br style="clear: both;" />
-        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.currentStep === true ? 'stepsDesc col-md-2' : 'stepsDesc col-md-1'">
-            <span *ngIf="item.currentStep === true && applItem.isErrorInStatus === false && item.isCompleted === false" class="youAreHere">You are here</span>
-          </div>
+        <div *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}"
+          [ngClass]="item.currentStep === true ? 'stepsDesc col-md-2' : 'stepsDesc col-md-1'">
+          <span *ngIf="item.currentStep === true && applItem.isErrorInStatus === false && item.isCompleted === false"
+            class="youAreHere">You are here</span>
+        </div>
       </div>
       <div class="row" style="padding-top: 20px;">
         <div class="col-md-3">
@@ -84,77 +91,53 @@
         </div>
       </div>
       <div class="row" style="padding-top: 35px;">
-        <button
-          class="col-md-2 application-button"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate || appType !== 'current'"
-          (click)="ViewApplication(applItem)"
-        >
+        <button class="col-md-2 application-button" type="button"
+          *ngIf="applItem.primaryApplicantSignedDate || appType !== 'current'" (click)="ViewApplication(applItem)">
           View Application
         </button>
 
-        <button
-        class="col-md-2 application-button"
-        type="button"
-        *ngIf="!applItem.primaryApplicantSignedDate && appType === 'current'"
-        (click)="ViewApplication(applItem)"
-        >
+        <button class="col-md-2 application-button" type="button"
+          *ngIf="!applItem.primaryApplicantSignedDate && appType === 'current'" (click)="ViewApplication(applItem)">
           Complete Application
         </button>
 
-        <button
-          class="col-md-2 application-button whitebutton"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate &&
+        <button class="col-md-2 application-button whitebutton" type="button" *ngIf="applItem.primaryApplicantSignedDate &&
                 applItem.currentApplication === true &&
                 applItem.status.toLowerCase() !== 'assessing damage' &&
                 applItem.status.toLowerCase() !== 'reviewing damage report' &&
                 applItem.status.toLowerCase() !== 'dfa making mecision' &&
                 applItem.status.toLowerCase() !== 'dfa decision made'
-                "
-          (click)="EditApplication(applItem.applicationId, '4')"
-        >
+                " (click)="EditApplication(applItem.applicationId, '4')">
           Add to Clean Up Log
         </button>
 
-        <button
-          class="col-md-2 application-button whitebutton"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate &&
+        <button class="col-md-2 application-button whitebutton" type="button" *ngIf="applItem.primaryApplicantSignedDate &&
                 applItem.currentApplication === true &&
                 applItem.status.toLowerCase() !== 'assessing damage' &&
                 applItem.status.toLowerCase() !== 'reviewing damage report' &&
                 applItem.status.toLowerCase() !== 'dfa making mecision' &&
                 applItem.status.toLowerCase() !== 'dfa decision made'
-                "
-          (click)="EditApplication(applItem.applicationId, '5')"
-        >
+                " (click)="EditApplication(applItem.applicationId, '5')">
           Add to Damaged Items
         </button>
 
-        <button
-          class="col-md-2 application-button whitebutton"
-          type="button"
-          *ngIf="applItem.primaryApplicantSignedDate &&
+        <button class="col-md-2 application-button whitebutton" type="button" *ngIf="applItem.primaryApplicantSignedDate &&
                 applItem.currentApplication === true &&
                 applItem.status.toLowerCase() !== 'assessing damage' &&
                 applItem.status.toLowerCase() !== 'reviewing damage report' &&
                 applItem.status.toLowerCase() !== 'dfa making mecision' &&
                 applItem.status.toLowerCase() !== 'dfa decision made'
-                "
-          (click)="EditApplication(applItem.applicationId, '6')"
-        >
+                " (click)="EditApplication(applItem.applicationId, '6')">
           Add Supporting Docs
         </button>
 
-        <button
-          class="col-md-2 application-button whitebutton"
-          type="button"
+        <button class="col-md-2 application-button whitebutton" type="button"
           *ngIf="applItem.primaryApplicantSignedDate && applItem.currentApplication === true"
-          (click)="EditApplication(applItem.applicationId, '3')"
-        >
+          (click)="EditApplication(applItem.applicationId, '3')">
           Add Other Contacts
         </button>
+
+
 
         <!--<button
           class="application-button redbutton"
@@ -163,11 +146,25 @@
           Delete Application
         </button>-->
       </div>
+
+      <!-- Add Appeals section -->
+      @if (applItem.dateFileClosed && remainingDays(applItem) > 0) {
+        <div class="appeals">
+            <p>
+              You have {{remainingDays(applItem)}} days to register an eligible appeal on this application.
+            </p>     
+          <button class="col-md-2 application-button whitebutton" type="button">
+            Appeals</button>
+        </div>
+      }
+      
+
     </mat-card>
   </div>
 </div>
-<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;" *ngIf="lstApplications.length === 0 && isLoading === false">
- <div class="heading-container">
+<div class="content-container" style="padding-bottom: 100px; padding-top: 50px;"
+  *ngIf="lstApplications.length === 0 && isLoading === false">
+  <div class="heading-container">
     <div class="row">
       <div class="col-md-12">
         <span class="page-heading"> No {{appType}} Applications</span> <br />
@@ -175,11 +172,5 @@
     </div>
   </div>
 </div>
-<app-loader
-class="spinner"
-[showLoader]="isLoading"
-[strokeWidth]="10"
-[diameter]="50"
-[color]="color"
->
+<app-loader class="spinner" [showLoader]="isLoading" [strokeWidth]="10" [diameter]="50" [color]="color">
 </app-loader>

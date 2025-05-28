@@ -207,6 +207,24 @@ export class DfaApplicationComponent implements OnInit {
     this.router.navigate(['/dfa-application-main/'+applicationId]);
   }
 
+  canAppeal(application: CurrentApplication): boolean {
+    return application.status && (application.status.toLowerCase() === "dfa decision made" || 
+    application.status.toLowerCase() === "closed: inactive" || 
+    application.status.toLowerCase() === "closed: withdrawn")
+      && this.remainingDays(application) > 0;
+  }
+
+  remainingDays(application: CurrentApplication): number {
+    const dateFileClosed = new Date(application.dateFileClosed);
+    const today = new Date();
+    const appealPeriod = 60; // 60 days appeal period
+    dateFileClosed.setDate(dateFileClosed.getDate() + appealPeriod);
+    
+    const diffTime = dateFileClosed.getTime() - today.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
 }
 
 export interface ApplicationExtended extends CurrentApplication {

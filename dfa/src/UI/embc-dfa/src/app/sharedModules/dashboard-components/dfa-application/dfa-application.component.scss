@@ -92,6 +92,11 @@
   display: inline-flex;
 }
 
+.appeals{
+  display: flex;
+  padding-top: 35px;
+}
+
 @media (max-width: 1200px) and (min-width: 300px) {
   .nocircle {
     height: 12px;
