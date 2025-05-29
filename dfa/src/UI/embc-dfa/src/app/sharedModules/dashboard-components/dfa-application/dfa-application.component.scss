@@ -92,9 +92,20 @@
   display: inline-flex;
 }
 
+.eventName{
+  border-bottom: 1px solid lightgrey; 
+  padding-bottom: 20px; 
+  display: flex;
+}
+
+.applicationStatus{
+  padding-top: 35px; 
+  border-bottom: 1px solid lightgrey; 
+  padding-bottom:60px;
+}
+
 .appeals{
   display: flex;
-  padding-top: 35px;
   justify-content: end;
 }
 
