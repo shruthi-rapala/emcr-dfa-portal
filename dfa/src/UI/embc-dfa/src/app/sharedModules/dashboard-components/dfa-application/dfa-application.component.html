@@ -137,26 +137,29 @@
     </div>
 
       <!-- Add Appeals section -->
-    @if (applItem.dateFileClosed && remainingDays(applItem) > 0) {
-      @if(applItem.caseEligibility === this.CaseElibilityEnum.Ineligible) {
-      <div class="appeals">
-        <span>
-          You have <b>{{remainingDays(applItem)}}</b> days to register an eligible appeal on this application
-        </span>
-        <button class="col-md-2 application-button whitebutton" type="button" (click)="ViewAppeals(applItem)">Appeal
-          Eligibility Decision</button>
-      </div>
+    <div [featureEnabled]="'useAppeals'">
+      @if (applItem.dateFileClosed && remainingDays(applItem) > 0) {
+        @if(applItem.caseEligibility === this.CaseElibilityEnum.Ineligible) {
+        <div class="appeals">
+          <span>
+            You have <b>{{remainingDays(applItem)}}</b> days to register an eligible appeal on this application
+          </span>
+          <button class="col-md-2 application-button whitebutton" type="button" (click)="ViewAppeals(applItem)">Appeal
+            Eligibility Decision</button>
+        </div>
+        }
+        @if(applItem.caseEligibility === this.CaseElibilityEnum.Eligible) {
+        <div class="appeals">
+          <span>
+            You have <b>{{remainingDays(applItem)}}</b> days to register an amount appeal on this application
+          </span>
+          <button class="col-md-2 application-button whitebutton" type="button">
+            Appeal Payment Amount</button>
+        </div>
+        }
       }
-      @if(applItem.caseEligibility === this.CaseElibilityEnum.Eligible) {
-      <div class="appeals">
-        <span>
-          You have <b>{{remainingDays(applItem)}}</b> days to register an amount appeal on this application
-        </span>
-        <button class="col-md-2 application-button whitebutton" type="button">
-          Appeal Payment Amount</button>
-      </div>
-      }
-    }
+    </div>   
+ 
 
 
     </mat-card>

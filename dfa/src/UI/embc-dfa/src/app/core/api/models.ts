@@ -26,6 +26,7 @@ export type { DfaApplicationStart } from './models/dfa-application-start';
 export type { DisasterEvent } from './models/disaster-event';
 export type { EffectedRegionCommunity } from './models/effected-region-community';
 export { FarmOption } from './models/farm-option';
+export type { FeatureFlagConfiguration } from './models/feature-flag-configuration';
 export { FileCategory } from './models/file-category';
 export type { FileUpload } from './models/file-upload';
 export type { FullTimeOccupant } from './models/full-time-occupant';
