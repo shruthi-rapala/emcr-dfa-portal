@@ -18,9 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./dfa-application.component.scss']
 })
 export class DfaApplicationComponent implements OnInit {
-
   CaseElibilityEnum = CaseEligibility;
-  
   
   addNewItem(value: number) {
     this.appSessionService.currentApplicationsCount.emit(value);
