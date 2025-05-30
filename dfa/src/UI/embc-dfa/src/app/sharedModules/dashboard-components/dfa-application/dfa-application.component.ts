@@ -8,6 +8,8 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { CurrentApplication } from 'src/app/core/api/models';
 import {CaseEligibility} from 'src/app/core/model/caseEligibilityEnum';
+import { AppealConfirmationDialogComponent } from './appeal-confirmation-dialog/appeal-confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dfadashboard-application',
@@ -16,9 +18,7 @@ import {CaseEligibility} from 'src/app/core/model/caseEligibilityEnum';
   styleUrls: ['./dfa-application.component.scss']
 })
 export class DfaApplicationComponent implements OnInit {
-
   CaseElibilityEnum = CaseEligibility;
-  
   
   addNewItem(value: number) {
     this.appSessionService.currentApplicationsCount.emit(value);
@@ -67,7 +67,8 @@ export class DfaApplicationComponent implements OnInit {
     private router: Router,
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.appType = this.route.snapshot.data["apptype"];
@@ -227,6 +228,24 @@ export class DfaApplicationComponent implements OnInit {
     const diffTime = dateFileClosed.getTime() - today.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
+  }
+
+  viewAppeals(applItem: ApplicationExtended): void {
+    this.dialog
+          .open(AppealConfirmationDialogComponent, {
+            data: {
+              content: applItem ,
+            },
+            height: '600px',
+            width: '700px',
+            disableClose: true
+          })
+          .afterClosed()
+          .subscribe((result) => {
+            //if (result === 'confirm') {
+    
+            //}
+          });
   }
 
 }
