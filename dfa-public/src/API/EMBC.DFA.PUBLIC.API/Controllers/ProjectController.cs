@@ -16,6 +16,7 @@ using EMBC.DFA.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace EMBC.DFA.API.Controllers
@@ -30,17 +31,20 @@ namespace EMBC.DFA.API.Controllers
         private readonly IConfigurationHandler handler;
         // 2024-08-11 EMCRI-595 waynezen; BCeID Authentication
         private readonly IUserService userService;
+        private readonly IConfiguration configuration;
 
         public ProjectController(
             IHostEnvironment env,
             IMapper mapper,
             IConfigurationHandler handler,
-            IUserService userService)
+            IUserService userService,
+            IConfiguration configuration)
         {
             this.env = env;
             this.mapper = mapper;
             this.handler = handler;
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.configuration = configuration;
         }
 
         private string currentUserId => userService.GetBCeIDBusinessId();
@@ -54,10 +58,6 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CurrentProject>>> GetDFAProjects(string applicationId)
         {
-            //var userId = currentUserId;
-            //var profile = await handler.HandleGetUser(userId);
-            //if (profile == null) return NotFound(userId);
-            //var profileId = profile.Id;
             var lstProjects = await handler.HandleProjectList(applicationId);
 
             return Ok(lstProjects);

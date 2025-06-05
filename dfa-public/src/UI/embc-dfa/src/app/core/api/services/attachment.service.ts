@@ -13,6 +13,8 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { attachmentDeleteProjectAttachment } from '../fn/attachment/attachment-delete-project-attachment';
 import { AttachmentDeleteProjectAttachment$Params } from '../fn/attachment/attachment-delete-project-attachment';
+import { attachmentGetAmendmentAttachments } from '../fn/attachment/attachment-get-amendment-attachments';
+import { AttachmentGetAmendmentAttachments$Params } from '../fn/attachment/attachment-get-amendment-attachments';
 import { attachmentGetClaimAttachments } from '../fn/attachment/attachment-get-claim-attachments';
 import { AttachmentGetClaimAttachments$Params } from '../fn/attachment/attachment-get-claim-attachments';
 import { attachmentGetProjectAttachments } from '../fn/attachment/attachment-get-project-attachments';
@@ -158,6 +160,39 @@ export class AttachmentService extends BaseService {
    */
   attachmentGetProjectAttachments(params?: AttachmentGetProjectAttachments$Params, context?: HttpContext): Observable<Array<FileUpload>> {
     return this.attachmentGetProjectAttachments$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<FileUpload>>): Array<FileUpload> => r.body)
+    );
+  }
+
+  /** Path part for operation `attachmentGetAmendmentAttachments()` */
+  static readonly AttachmentGetAmendmentAttachmentsPath = '/api/attachments/byProjectId';
+
+  /**
+   * Get a list of amendment attachments by project Id.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `attachmentGetAmendmentAttachments()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  attachmentGetAmendmentAttachments$Response(params?: AttachmentGetAmendmentAttachments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<FileUpload>>> {
+    return attachmentGetAmendmentAttachments(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get a list of amendment attachments by project Id.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `attachmentGetAmendmentAttachments$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  attachmentGetAmendmentAttachments(params?: AttachmentGetAmendmentAttachments$Params, context?: HttpContext): Observable<Array<FileUpload>> {
+    return this.attachmentGetAmendmentAttachments$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<FileUpload>>): Array<FileUpload> => r.body)
     );
   }
