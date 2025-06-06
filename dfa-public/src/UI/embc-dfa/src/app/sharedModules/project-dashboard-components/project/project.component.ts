@@ -381,6 +381,22 @@ export class DfaDashProjectComponent implements OnInit {
     this.router.navigate(['/dfa-project-amendment/' + applItem.projectId]);
   }
 
+  ViewAmendments(applItem: ProjectExtended): void {
+    this.dFAProjectMainDataService.setProjectId(applItem.projectId);
+
+    if (applItem.openProject === true) {
+      if (applItem.status.toLowerCase() == 'draft') {
+        this.dFAProjectMainDataService.setViewOrEdit('updateproject');
+      } else {
+        this.dFAProjectMainDataService.setViewOrEdit('viewOnly');
+      }
+    } else if (applItem.openProject === false) {
+      this.dFAProjectMainDataService.setViewOrEdit('viewOnly');
+    }
+
+    this.router.navigate(['/dfa-project-amendments/' + applItem.projectId]);
+  }
+
   ViewProject(applItem: ProjectExtended): void {
     this.dFAProjectMainDataService.setProjectId(applItem.projectId);
     //this.dFAProjectMainDataService.setApplicationId(applItem.applicationId);

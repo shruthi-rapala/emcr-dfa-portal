@@ -13,6 +13,7 @@ export class DFAProjectMainDataService {
   private _applicationId: string;
   private _projectId: string;
   private _claimId: string;
+  private _amendmentId: string;
   private _appUrl: string;
   private _vieworedit: string;
   private _stepselected: string;
@@ -115,6 +116,19 @@ export class DFAProjectMainDataService {
     }
 
     return this._claimId;
+  }
+
+  public setAmendmentId(amendmentId: string): void {
+    this._amendmentId = amendmentId;
+    this.cacheService.set('amendmentId', amendmentId);
+  }
+
+  public getAmendmentId(): string {
+    if (this._amendmentId === null || this._amendmentId === undefined) {
+      this._amendmentId = this.cacheService.get('amendmentId');
+    }
+
+    return this._amendmentId;
   }
 
   public setViewOrEdit(vieworedit: string): void {
