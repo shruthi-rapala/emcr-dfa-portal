@@ -61,12 +61,14 @@
             </mat-form-field>
           </div>
           <div class="col-md-3" *ngIf="isReadOnly == true">
-            <p style="font-size: 15px">Claim Received by EMCR Date</p>
+            <p  style="font-size: 15px">
+              Claim Received by Date
+            </p>
             <mat-form-field appearance="outline" class="mat-form-round">
               <input
-                id="claimReceivedByEMCRDate"
-                (focusin)="setHelpText(1, tooltip)"
-                formControlName="claimReceivedByEMCRDate"
+                id="claimReceivedDate"
+                     (focusin)="setHelpText(1, tooltip)"
+                formControlName="claimReceivedDate"
                 matInput
                 maxlength="100" />
             </mat-form-field>
