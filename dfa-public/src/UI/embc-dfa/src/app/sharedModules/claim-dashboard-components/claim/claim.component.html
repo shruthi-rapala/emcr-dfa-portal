@@ -105,7 +105,7 @@
         <div class="col-md-3" style="display: flex; justify-content: flex-end">
           <button class="application-button" type="button" *ngIf="applItem.status != 'Draft'"
             (click)="ViewClaim(applItem)">
-            View Claim
+            Claim Details
           </button>
           <button class="application-button" type="button" *ngIf="applItem.status == 'Draft'"
             (click)="ResumeClaimSubmission(applItem)">
@@ -208,7 +208,7 @@
               [ngClass]="item.status != '' ? 'labelStyle' : 'labelEmptyWidth'">
               <!--<div *ngIf="item.status != '' && item.currentStep == false" [ngClass]=" i == 0 ? 'removeBorder' : 'lineConnector'"></div>-->
               <div *ngIf="item.status != ''"
-                [ngClass]="item.currentStep == false || item.status == 'Closed' ? 'alignStatus': (item.stage == '' ? 'alignStatus' : 'currentStatus')">
+                [ngClass]="item.status != 'Decision Made' && (item.currentStep == false || item.status == 'Closed') ? 'alignStatus': (item.stage == '' ? 'alignStatus' : 'currentStatus')">
                 <span
                   *ngIf="applItem.status != 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false"
                   class="material-icons"
@@ -217,10 +217,9 @@
                 </span>
                 <span
                   *ngIf="applItem.status == 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false"
-                  class="material-icons"
+                  [class.material-icons]="item.status != 'Decision Made'"
                   [ngStyle]="{'color': item.status == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn') ? 'red' : 'rgb(21 178 89)'}">
-                  {{ item.status == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn')
-                  ? 'cancel' : 'check_circle' }}
+                  {{ item.status == 'Decision Made' ? item.stage : 'check_circle' }}
                 </span>
                 <span
                   *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage != ''">

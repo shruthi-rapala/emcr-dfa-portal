@@ -131,6 +131,13 @@ export class DfaDashClaimComponent implements OnInit {
                 }
               }
 
+              // set the decision made stage when the status is closed
+              if (objApp.status.toLowerCase() === 'closed') {
+                if (objStatItem.status.toLowerCase() == 'decision made') {
+                  objStatItem.stage = objApp.stage;
+                }
+              }
+
               if (isFound == false) {
                 objStatItem.isCompleted = true;
               }
