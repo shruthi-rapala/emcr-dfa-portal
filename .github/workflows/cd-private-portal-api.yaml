@@ -7,12 +7,13 @@ on:
 
     paths:
       - "dfa/src/API/**"
+      - "shared/src/**"
       - ".github/workflows/cd-private-portal-api.yaml"
 
   workflow_dispatch:
 
 env:
-  DOCKER_CONTEXT_DIRECTORY: ./dfa/src/API
+  DOCKER_CONTEXT_DIRECTORY: .
   IMAGE_NAME: dfa-portal-api
   IMAGE_REGISTRY: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}
 
@@ -48,7 +49,7 @@ jobs:
       - name: Create version environment variable
         run: echo "VERSION=$(echo '${{ steps.tag_version.outputs.new_tag }}' | awk -F-v '{print $NF}')" >> $GITHUB_ENV
 
-      - name: Build and push dfa-portal-ui
+      - name: Build and push dfa-portal-api
         uses: docker/build-push-action@v6
         with:
           build-args: |
@@ -56,6 +57,7 @@ jobs:
           cache-from: |
             ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           context: ${{ env.DOCKER_CONTEXT_DIRECTORY }}
+          file: ./dfa/src/API/Dockerfile
           push: true
           tags: |
             ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
