@@ -41,7 +41,7 @@ jobs:
       - name: Build Image
         working-directory: ${{env.WORKING_DIRECTORY}}
         run: |
-          docker build -t ${{env.IMAGE_NAME}} .
+          docker build -t ${{env.IMAGE_NAME}} ${{env.WORKING_DIRECTORY}}
 
       - name: Tag Image
         run: |
