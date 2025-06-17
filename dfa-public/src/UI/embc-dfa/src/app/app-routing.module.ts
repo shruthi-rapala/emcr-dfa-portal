@@ -181,6 +181,14 @@ const routes: Routes = [
       canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
+    path: 'app-claim-decision/:id',
+    loadComponent: () =>
+      import(
+        './sharedModules/claim-dashboard-components/claim-decision/claim-decision.component' 
+      ).then((m) => m.ClaimDecisionComponent),
+      canActivate: [AutoLoginPartialRoutesGuard]
+  },
+  {
     path: 'invite-error',
     loadChildren: () =>
       import('./feature-components/invite-error/invite-error.module').then(
