@@ -38,8 +38,7 @@ jobs:
           echo "::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)"
           echo "Short SHA: $SHORT_SHA"
 
-      - name: Build Image
-        working-directory: ${{env.WORKING_DIRECTORY}}
+      - name: Build Image        
         run: |
           docker build -t ${{env.IMAGE_NAME}} ${{env.WORKING_DIRECTORY}}
 
