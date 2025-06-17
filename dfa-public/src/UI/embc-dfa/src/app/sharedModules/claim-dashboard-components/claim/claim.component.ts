@@ -81,24 +81,6 @@ export class DfaDashClaimComponent implements OnInit {
     this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
   }
 
-  /**
-   * Initializes the component and performs necessary setup operations.
-   * 
-   * This method is called automatically when the component is initialized. It retrieves the project ID 
-   * from the `dFAProjectMainDataService` and sets it in the `dfaClaimMainDataService`. It then fetches 
-   * claim data associated with the project ID using the `claimService` and processes the data to update 
-   * the status bar and other properties for each claim. The processed data is mapped for further use 
-   * in the component.
-   * 
-   * Key operations:
-   * - Retrieves the project ID and sets it in the claim data service.
-   * - Fetches claim data and processes it to update status, stage, decision, and color properties.
-   * - Handles specific conditions for claim statuses such as "Draft", "Closed", "Ineligible", and "Withdrawn".
-   * - Maps the processed claim data for use in the component.
-   * - Handles errors by redirecting to an error page.
-   * 
-   * @returns void
-   */
   ngOnInit(): void {
     //var applicationId = '0b9eec99-1a34-ef11-b850-00505683fbf4'; //this.dFAProjectMainDataService.getApplicationId();
     let projectId = this.dFAProjectMainDataService.getProjectId();
