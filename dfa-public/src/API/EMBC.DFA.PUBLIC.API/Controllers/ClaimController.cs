@@ -190,8 +190,9 @@ namespace EMBC.DFA.API.Controllers
         public string ClaimDecision { get; set; }
         /* D4P-112 */
         public string AdvancedDrawdownAmount { get; set; }
-
         public string DecisionDate { get; set; }
+        public string? ClaimType { get; set; }
+        public bool? IsAdjustmentClaim { get; set; }
     }
 
     public class ClaimStatusBar

@@ -1009,6 +1009,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_advanceddrawdownamount { get; set; }
 
         public string? dfa_decisiondate { get; set; }
+
+        public string? dfa_claimtype {  get; set; }
+
+        public bool? dfa_isadjustmentclaim { get; set; }
+
+
+
     }
 
     public class dfa_recoveryinvoice
@@ -1465,6 +1472,15 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         [Description("I don't have a permanent address right now")]
         NoAddress = 222710002
+    }
+
+    public enum ClaimTypeOptionSet
+    {
+        [Description("Standard Payment")]
+        StandardPayment = 222710000,
+
+        [Description("Advanced Payment")]
+        AdvancedPayment = 222710001,
     }
 
     public class dfa_effectedregioncommunities

@@ -12,6 +12,8 @@ import { DFAProjectMainDataService } from '../../../feature-components/dfa-proje
 import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { ClaimService } from '../../../core/api/services';
 import { Decision } from 'src/app/models/decision.enum';
+import {ClaimType} from 'src/app/models/claim-type.enum';
+
 
 @Component({
   selector: 'app-dfadashboard-claim',
@@ -22,6 +24,7 @@ import { Decision } from 'src/app/models/decision.enum';
 export class DfaDashClaimComponent implements OnInit {
 
   DecisionEnum = Decision;
+  ClaimTypeEnum = ClaimType;
 
   addNewItem(value: number) {
     this.appSessionService.currentProjectsCount.emit(value);
@@ -271,11 +274,16 @@ export class DfaDashClaimComponent implements OnInit {
 
     if (applItem.openClaim === true) {
       this.dfaClaimMainDataService.setViewOrEdit('view');
-    } else if (applItem.openClaim === false) {
-      this.dfaClaimMainDataService.setViewOrEdit('viewOnly');
-    }
-
+    } 
+    // else if (applItem.openClaim === false) {
+    //   this.dfaClaimMainDataService.setViewOrEdit('viewOnly');
+    // }
     this.router.navigate(['/dfa-claim-main/' + applItem.claimId]);
+
+    if(applItem.claimDecision === this.DecisionEnum.ApprovedWithExclusions || applItem.claimDecision === this.DecisionEnum.Ineligible 
+      || applItem.claimDecision === this.DecisionEnum.Approved || applItem.claimDecision === this.DecisionEnum.Ineligible) {
+      this.router.navigate(['/app-claim-decision/' + applItem.claimId]);
+    }
   }
 
   ResumeClaimSubmission(applItem: ClaimExtended): void {
@@ -289,9 +297,13 @@ export class DfaDashClaimComponent implements OnInit {
 
   canAppealClaims(applItem: ClaimExtended): boolean {
     // Check if the claim is eligible for appeal based on its status and decision
-    return applItem.claimDecision && (applItem.claimDecision.toLowerCase() === this.DecisionEnum.ApprovedWithExclusions.toLowerCase() || applItem.claimDecision.toLowerCase() === this.DecisionEnum.Ineligible.toLowerCase())
-    && this.remainingDays(applItem) > 0;;
-    
+    return applItem.claimDecision 
+      && (
+          applItem.claimDecision.toLowerCase() === this.DecisionEnum.ApprovedWithExclusions.toLowerCase() 
+          || applItem.claimDecision.toLowerCase() === this.DecisionEnum.Ineligible.toLowerCase()
+        )
+      && (applItem.isAdjustmentClaim !== true && applItem.claimType !== this.ClaimTypeEnum.AdvancedPayment)
+      && this.remainingDays(applItem) > 0; 
   }
 
   remainingDays(claim: ClaimExtended): number {

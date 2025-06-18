@@ -1386,7 +1386,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "createdon", "dfa_costsharing", "dfa_eligiblepayable",
                         "dfa_bpfclosedate", "dfa_onetimedeductionamount",
                         "dfa_paidclaimamount",  "dfa_decisioncopy",
-                        "dfa_advanceddrawdownamount", "dfa_decisiondate"
+                        "dfa_advanceddrawdownamount", "dfa_decisiondate",
+                        "dfa_claimtype", "dfa_isadjustmentclaim"
                     },
                     Filter = $"_dfa_recoveryplanid_value eq {projectId}"
                 });
@@ -1417,7 +1418,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_paidclaimamount = objClaim.dfa_paidclaimamount,
                                    dfa_decisioncopy = objClaim.dfa_decisioncopy,
                                    dfa_advanceddrawdownamount = objClaim.dfa_advanceddrawdownamount,
-                                   dfa_decisiondate = objClaim.dfa_decisiondate
+                                   dfa_decisiondate = objClaim.dfa_decisiondate,
+                                   dfa_claimtype = objClaim.dfa_claimtype,
+                                   dfa_isadjustmentclaim = objClaim.dfa_isadjustmentclaim,
                             
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 

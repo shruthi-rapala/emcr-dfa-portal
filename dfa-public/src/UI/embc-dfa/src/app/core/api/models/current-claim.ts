@@ -12,12 +12,14 @@ export interface CurrentClaim {
   claimId?: string;
   claimNumber?: string;
   claimTotal?: string;
+  claimType?: string | null;
   createdDate?: string;
   dateFileClosed?: string;
   decisionDate?: string;
   eligiblePayable?: string;
   finalClaim?: boolean;
   firstClaim?: boolean;
+  isAdjustmentClaim?: boolean | null;
   isErrorInStatus?: boolean;
   isHidden?: boolean;
   lessFirst1000?: string;

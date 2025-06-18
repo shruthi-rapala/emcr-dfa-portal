@@ -130,6 +130,16 @@ export class HeaderComponent implements OnInit {
       excluded: true,
       islink: true
     },
+    {
+      label: 'Claim Decision',
+      link: 'app-claim-decision/clid',
+      icon: 'pan_tool',
+      path: '/app-claim-decision/',
+      level: 6,
+      excluded: true,
+      islink: true
+    },
+    
   ];
 
   constructor(
