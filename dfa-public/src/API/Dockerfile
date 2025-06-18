@@ -9,37 +9,22 @@ ENV VERSION=$VERSION
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-# install diagnostics tools
-# RUN dotnet tool install --tool-path /tools dotnet-trace
-# RUN dotnet tool install --tool-path /tools dotnet-counters
-# RUN dotnet tool install --tool-path /tools dotnet-dump
 
 WORKDIR /src
-COPY ["EMBC.DFA.PUBLIC.API/EMBC.DFA.PUBLIC.API.csproj", "EMBC.DFA.PUBLIC.API/"]
-COPY ["EMBC.ESS.Shared.Contracts/EMBC.ESS.Shared.Contracts.csproj", "EMBC.ESS.Shared.Contracts/"]
-COPY ["EMBC.Utilities/EMBC.Utilities.csproj", "EMBC.Utilities/"]
-COPY ["EMBC.Utilities.Hosting/EMBC.Utilities.Hosting.csproj", "EMBC.Utilities.Hosting/"]
-COPY ["EMBC.Utilities.Caching/EMBC.Utilities.Caching.csproj", "EMBC.Utilities.Caching/"]
-COPY ["EMBC.Utilities.Telemetry/EMBC.Utilities.Telemetry.csproj", "EMBC.Utilities.Telemetry/"]
-COPY ["EMBC.Utilities.Messaging/EMBC.Utilities.Messaging.csproj", "EMBC.Utilities.Messaging/"]
-COPY ["EMBC.Tests.Unit.DFA.API/EMBC.Tests.Unit.DFA.API.csproj", "EMBC.Tests.Unit.DFA.API/"]
-COPY ["EMBC.BCeID/EMBC.Gov.BCeID.csproj", "EMBC.BCeID/"]
-COPY ["EMBC.DFA.PUBLIC.sln", ".editorconfig", "./"]
-RUN dotnet restore .
-COPY . .
+# Copy all directories at once
+COPY ["dfa-public/src/API/", "dfa-public/src/API/"]
+COPY ["shared/src/", "shared/src/"]
 
-# run unit tests
-#RUN dotnet test -c Release
 
-# build
-FROM build AS publish
+# Build and publish
+WORKDIR /src/dfa-public/src/API
+RUN dotnet sln EMBC.DFA.PUBLIC.sln remove /src/shared/src/EMBC.Database.Test/EMBC.Database.Test.csproj || true
+RUN dotnet restore EMBC.DFA.PUBLIC.sln
 RUN dotnet publish "EMBC.DFA.PUBLIC.API/EMBC.DFA.PUBLIC.API.csproj" -c Release -o /app/publish --runtime linux-musl-x64 --no-self-contained
 
-FROM base AS final
-# copy diagnostics tools
-# WORKDIR /tools
-# COPY --from=build /tools .
-# copy app
+
+# Final stage
+FROM base
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "EMBC.DFA.PUBLIC.API.dll"]

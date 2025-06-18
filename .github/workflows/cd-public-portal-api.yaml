@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - support-develop
-      - develop
+
     paths:
       - "dfa-public/src/API/**"
       - ".github/workflows/cd-public-portal-api.yaml"
@@ -13,7 +13,7 @@ on:
 
 env:
   IMAGE_NAME: dfa-portal-api-public
-  WORKING_DIRECTORY: ./dfa-public/src/API
+  WORKING_DIRECTORY: .
   IMAGE_TAG: dev
 
 jobs:
@@ -38,10 +38,9 @@ jobs:
           echo "::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)"
           echo "Short SHA: $SHORT_SHA"
 
-      - name: Build Image
-        working-directory: ${{env.WORKING_DIRECTORY}}
+      - name: Build Image        
         run: |
-          docker build -t ${{env.IMAGE_NAME}} .
+          docker build -t ${{env.IMAGE_NAME}} -f ./dfa-public/src/API/Dockerfile .
 
       - name: Tag Image
         run: |
