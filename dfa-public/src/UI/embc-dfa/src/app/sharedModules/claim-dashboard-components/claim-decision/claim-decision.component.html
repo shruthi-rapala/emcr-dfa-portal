@@ -1,1 +1,102 @@
-<p>claim-decision works!</p>
+<div class="container container-frame">
+
+    <div class="row heading-container">
+        <div class="col-8">
+            <span class="page-heading">Claim Details</span>
+        </div>
+
+        <div class="col-4">
+            <button #backtodash id="backtodash" class="button-p nextNsave col-4"
+                style="vertical-align: middle; width: 220px; margin-top: 15px" (click)="BackToDashboard()"
+                mat-stroked-button type="button">
+                Back to Claim Dashboard
+                <app-loader [strokeWidth]="3" [diameter]="25"></app-loader>
+            </button>
+        </div>
+    </div>
+    <div>
+        <mat-card>
+            <mat-card-content>
+                <div style="border-bottom: 1px solid lightgrey; padding-bottom: 15px; display: flex;">
+                    <div class="col-md-4">
+                        <span><b>Claim Number - </b></span>
+                        <span>{{recoveryClaim?.claim.claimNumber}}</span>
+                    </div>
+                    <div class="col-md-3">
+                        <span><b>Submitted Date - </b></span>
+                        <span>{{recoveryClaim?.claim.claimReceivedDate}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span><b>Claim Status - </b></span>
+                        <span>    {{recoveryClaim?.claim.stage}}</span>
+                    </div>
+                </div>
+
+                <div class="claim-details">
+
+                    <div class="col-md-2">
+                        <span><b>First Claim - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>{{recoveryClaim?.claim.isFirstClaimApproved == true ? 'Yes' : (recoveryClaim?.claim.isFirstClaimApproved == false ? 'No' : 'Not Set')}}</span>                     
+                    </div>
+                    <div class="col-md-2">
+                        <span><b>Approved Claim Total - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>CA$ {{recoveryClaim?.claim.approvedClaimTotal}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span><b>Eligible Payable - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>CA$ {{recoveryClaim?.claim.eligiblePayable}}</span>
+                    </div>
+                </div>
+                <div class="claim-details">
+                    <div class="col-md-2">
+                        <span><b>Final Claim - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                    
+                        <span>{{recoveryClaim?.claim.isThisFinalClaim == true ? 'Yes' : (recoveryClaim?.claim.isThisFinalClaim == false ? 'No' : 'Not Set')}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span><b>Less First $1,000 - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>CA$ {{recoveryClaim?.claim.lessFirst1000}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span><b>Paid Claim Amount - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>CA$ {{recoveryClaim?.claim.paidClaimAmount}}</span>
+                    </div>
+                </div>
+                <div class="claim-details">
+
+                    <div class="col-md-2">
+                        <span><b> Claim Total - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>CA$ {{recoveryClaim?.claim.claimTotal}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span><b>Approved Reimbursement % - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>{{recoveryClaim?.claim.approvedReimbursement}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span><b>Paid Claim Date - </b></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>{{recoveryClaim?.claim.paidClaimDate}}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+</div>
