@@ -99,4 +99,102 @@
         </mat-card>
 
     </div>
+
+    <table
+    mat-table
+    [dataSource]="documentSummaryDataSourceFiltered"
+    *ngIf="documentSummaryDataSourceFiltered.data.length > 0"
+    style="width: 100%">
+    <!-- Invoice Number Column -->
+    <ng-container matColumnDef="invoiceNumber">
+      <th mat-header-cell *matHeaderCellDef style="width: 15%">
+        <b>Invoice Number</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.invoiceNumber }}
+      </td>
+    </ng-container>
+
+    <!-- Vendor Name -->
+    <ng-container matColumnDef="vendorName">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%">
+        <b>Vendor Name</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.vendorName }}
+      </td>
+    </ng-container>
+
+    <!-- Invoice Date Column -->
+    <ng-container matColumnDef="invoiceDate">
+      <th mat-header-cell *matHeaderCellDef style="width: 10%">
+        <b>Invoice Date</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.invoiceDate | date: 'dd-MMM-yyyy' }}
+      </td>
+    </ng-container>
+
+    <!-- Total Claim Column -->
+    <ng-container matColumnDef="totalBeingClaimed">
+      <th mat-header-cell *matHeaderCellDef style="width: 18%">
+        <b>Total being Claimed</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>$&nbsp;{{ element.totalBeingClaimed | number: '1.2-2' }}</td>
+    </ng-container>
+
+    <!-- Invoice Amount -->
+    <ng-container matColumnDef="invoiceAmount">
+      <th mat-header-cell *matHeaderCellDef style="width: 18%">
+        <b>Invoice Amount</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>$&nbsp;{{ element.totalBeingClaimed | number: '1.2-2' }}</td>
+    </ng-container>
+
+    <!-- EMCR Approved Amount -->
+    <ng-container matColumnDef="emcrApprovedAmount">
+      <th mat-header-cell *matHeaderCellDef style="width: 17%">
+        <b>EMCR Approved Amount</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>
+        <div>
+          $&nbsp;{{ element.emcrApprovedAmount | number: '1.2-2' }}
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- EMCR Comments -->
+    <!-- <ng-container matColumnDef="emcrComments" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
+      <th mat-header-cell *matHeaderCellDef style="width: 10%">
+        <b>EMCR Comments</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>
+        <span (click)="viewEMCRComment(element, index)" class="material-symbols-outlined setViewIcon">
+          chat_bubble
+        </span>
+      </td>
+    </ng-container> -->
+
+    <!-- View Invoices -->
+    <!-- <ng-container matColumnDef="viewInvoice" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
+      <th mat-header-cell *matHeaderCellDef style="width: 10%">
+        <b>View Invoices</b>
+      </th>
+      <td *matCellDef="let element" mat-cell>
+        <span (click)="viewInvoiceRow(element, index)" class="material-symbols-outlined setViewIcon"> visibility </span>
+      </td>
+    </ng-container> -->
+
+    <tr mat-header-row *matHeaderRowDef="documentSummaryColumnsToDisplay"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: documentSummaryColumnsToDisplay"
+      class="example-element-row"
+      [style.height]="'auto'"></tr>
+  </table>
+
+    <div *ngIf="documentSummaryDataSourceFiltered.data.length === 0" class="no-data-message">
+        <span>No Invoices Found</span>
+    </div>
+
 </div>
