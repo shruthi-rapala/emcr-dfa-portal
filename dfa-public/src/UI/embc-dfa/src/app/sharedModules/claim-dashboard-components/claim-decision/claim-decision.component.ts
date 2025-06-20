@@ -8,11 +8,12 @@ import { ClaimService, InvoiceService } from 'src/app/core/api/services';
 import { CoreModule } from 'src/app/core/core.module';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { DFAClaimMainDataService } from 'src/app/feature-components/dfa-claim-main/dfa-claim-main-data.service';
-import { DFAClaimMainMappingService } from 'src/app/feature-components/dfa-claim-main/dfa-claim-main-mapping.service';
+import InvoiceComponent from '../../forms/dfa-claim-main-forms/invoice/invoice.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 @Component({
   selector: 'app-claim-decision',
   standalone: true,
-  imports: [CoreModule, MatCardModule, MatTableModule, CommonModule,],
+  imports: [CoreModule, MatCardModule, MatTableModule, CommonModule,MatDialogModule],
   templateUrl: './claim-decision.component.html',
   styleUrl: './claim-decision.component.scss',
 })
@@ -21,12 +22,12 @@ export class ClaimDecisionComponent implements OnInit {
   recoveryClaim?: DfaClaimMain;
   recoveryClaimFormAbstract: [];
 
-  documentSummaryColumnsToDisplay = ['invoiceNumber', 'vendorName', 'invoiceDate', 'totalBeingClaimed', 'invoiceAmount', 'emcrApprovedAmount'];
+  documentSummaryColumnsToDisplay = ['invoiceNumber', 'vendorName', 'invoiceDate', 'totalBeingClaimed', 'invoiceAmount', 'emcrApprovedAmount', 'viewInvoice'];
   documentSummaryDataSource = new MatTableDataSource<InvoiceExtended>();
   documentSummaryDataSourceFiltered = new MatTableDataSource<InvoiceExtended>();
   invoicesCount: number = 0;
   formCreationService: FormCreationService;
-
+  
 
 
   constructor(
@@ -34,7 +35,7 @@ export class ClaimDecisionComponent implements OnInit {
     private route: ActivatedRoute,
     public dfaClaimMainDataService: DFAClaimMainDataService,
     private invoiceService: InvoiceService,
-    
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -115,6 +116,34 @@ export class ClaimDecisionComponent implements OnInit {
       });
     }
   }
+
+  viewInvoiceRow(element, index): void {
+    this.openInvoiceViewPopup(element, index);
+  }
+
+    openInvoiceViewPopup(objInvoice, _index): void {
+      if (objInvoice && objInvoice.invoiceId) {
+        this.dfaClaimMainDataService.setInvoiceId(objInvoice.invoiceId);
+        delete (objInvoice as any).invoiceId;
+      } else {
+        this.dfaClaimMainDataService.setInvoiceId(null);
+      }
+  
+      this.dialog
+        .open(InvoiceComponent, {
+          data: {
+            content: objInvoice,
+            invoiceId: this.dfaClaimMainDataService.getInvoiceId(),
+            claimDecision: this.dfaClaimMainDataService.getClaimDecision(),
+            header: 'View'
+          },
+          maxHeight: '90vh',
+          width: '1200px',
+          disableClose: true
+        })
+        .afterClosed()
+        .subscribe((_result) => {});
+    }
 
   BackToDashboard() {
   }

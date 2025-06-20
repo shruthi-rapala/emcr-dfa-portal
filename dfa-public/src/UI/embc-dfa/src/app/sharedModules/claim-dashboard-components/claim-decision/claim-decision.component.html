@@ -176,14 +176,14 @@
     </ng-container> -->
 
     <!-- View Invoices -->
-    <!-- <ng-container matColumnDef="viewInvoice" *ngIf="vieworedit == 'viewOnly' || vieworedit == 'view'">
+    <ng-container matColumnDef="viewInvoice">
       <th mat-header-cell *matHeaderCellDef style="width: 10%">
         <b>View Invoices</b>
       </th>
       <td *matCellDef="let element" mat-cell>
         <span (click)="viewInvoiceRow(element, index)" class="material-symbols-outlined setViewIcon"> visibility </span>
       </td>
-    </ng-container> -->
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="documentSummaryColumnsToDisplay"></tr>
     <tr
