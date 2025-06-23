@@ -116,13 +116,13 @@
                     <span *ngIf="element.emcrDecision === ''" class="material-symbols-outlined">
                         circle
                       </span>
-                      <span *ngIf="element.emcrDecision === 'Approved Total'" class="material-symbols-outlined circleicon1">
+                      <span *ngIf="element.emcrDecision === InvoiceDecisionEnum?.ApprovedTotal" class="material-symbols-outlined circleicon1">
                         check_circle
                       </span>
-                      <span *ngIf="element.emcrDecision === 'Approved Partial'" class="material-symbols-outlined circleicon2">
+                      <span *ngIf="element.emcrDecision === InvoiceDecisionEnum?.ApprovedPartial" class="material-symbols-outlined circleicon2">
                         check_circle
                       </span>
-                      <span *ngIf="element.emcrDecision === 'Denied'" class="material-symbols-outlined circleicon3">
+                      <span *ngIf="element.emcrDecision === InvoiceDecisionEnum?.Denied" class="material-symbols-outlined circleicon3">
                         cancel
                       </span>
                 </td>

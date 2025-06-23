@@ -10,6 +10,8 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { DFAClaimMainDataService } from 'src/app/feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import InvoiceComponent from '../../forms/dfa-claim-main-forms/invoice/invoice.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { InvoiceDecision } from 'src/app/models/invoice-decision.enum';
+
 @Component({
   selector: 'app-claim-decision',
   standalone: true,
@@ -18,7 +20,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   styleUrl: './claim-decision.component.scss',
 })
 export class ClaimDecisionComponent implements OnInit {
-
+  
   recoveryClaim?: DfaClaimMain;
   recoveryClaimFormAbstract: [];
 
@@ -28,7 +30,7 @@ export class ClaimDecisionComponent implements OnInit {
   invoicesCount: number = 0;
   formCreationService: FormCreationService;
   
-
+  InvoiceDecisionEnum = InvoiceDecision;
 
   constructor(
     private claimService: ClaimService,
