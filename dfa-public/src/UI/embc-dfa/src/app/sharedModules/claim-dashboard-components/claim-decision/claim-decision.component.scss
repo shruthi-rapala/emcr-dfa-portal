@@ -48,3 +48,27 @@ table {
     border: 1px solid;
     border-color: rgb(204, 204, 204);
   }
+
+  .circleicon1{
+    position: relative;
+    top: 6px;
+    color: rgb(21, 178, 89)
+  }
+
+  .circleicon2{
+    position: relative;
+    top: 6px;
+    color: #fcba19;;
+  }
+
+  .circleicon3{
+    position: relative;
+    top: 6px;
+    color: rgb(226, 94, 99);
+  }
+
+  .invoice-status-container{
+   display: flex;
+  gap: 24px;
+  padding: 24px;
+  }
