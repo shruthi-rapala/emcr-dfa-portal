@@ -38,8 +38,7 @@ jobs:
 
       - name: Restore dependencies
         run: |
-          cd dfa/src/API
-          dotnet restore EMBC.DFA.sln  # Download all NuGet packages
+          dotnet restore dfa/src/API/EMBC.DFA.API/EMBC.DFA.API.csproj --disable-parallel  # Download all NuGet packages
           if [ $? -ne 0 ]; then
             echo "::error::Failed to restore NuGet packages"
             exit 1
@@ -47,8 +46,7 @@ jobs:
 
       - name: Build
         run: |
-          cd dfa/src/API
-          dotnet build EMBC.DFA.sln --no-restore
+          dotnet build dfa/src/API/EMBC.DFA.API/EMBC.DFA.API.csproj --no-restore
           if [ $? -ne 0 ]; then
             echo "::error::Build failed - check the logs above for compilation errors"
             exit 1
