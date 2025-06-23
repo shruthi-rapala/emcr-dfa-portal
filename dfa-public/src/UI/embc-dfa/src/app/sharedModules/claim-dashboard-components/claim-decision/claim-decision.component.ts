@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DfaClaimMain, Invoice } from 'src/app/core/api/models';
 import { ClaimService, InvoiceService } from 'src/app/core/api/services';
 import { CoreModule } from 'src/app/core/core.module';
@@ -22,7 +22,7 @@ export class ClaimDecisionComponent implements OnInit {
   recoveryClaim?: DfaClaimMain;
   recoveryClaimFormAbstract: [];
 
-  documentSummaryColumnsToDisplay = ['invoiceNumber', 'vendorName', 'invoiceDate', 'totalBeingClaimed', 'invoiceAmount', 'emcrApprovedAmount', 'viewInvoice'];
+  documentSummaryColumnsToDisplay = ['checkCircle','invoiceNumber', 'vendorName', 'invoiceDate', 'totalBeingClaimed', 'invoiceAmount', 'emcrApprovedAmount', 'viewInvoice'];
   documentSummaryDataSource = new MatTableDataSource<InvoiceExtended>();
   documentSummaryDataSourceFiltered = new MatTableDataSource<InvoiceExtended>();
   invoicesCount: number = 0;
@@ -35,7 +35,8 @@ export class ClaimDecisionComponent implements OnInit {
     private route: ActivatedRoute,
     public dfaClaimMainDataService: DFAClaimMainDataService,
     private invoiceService: InvoiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -146,6 +147,8 @@ export class ClaimDecisionComponent implements OnInit {
     }
 
   BackToDashboard() {
+    var projId = this.dfaClaimMainDataService.getProjectId();
+    this.router.navigate(['/dfa-project/' + projId + '/claims']);
   }
 
 
