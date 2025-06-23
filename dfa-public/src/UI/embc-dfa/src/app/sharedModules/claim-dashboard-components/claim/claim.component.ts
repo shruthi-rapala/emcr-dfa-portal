@@ -281,7 +281,7 @@ export class DfaDashClaimComponent implements OnInit {
     this.router.navigate(['/dfa-claim-main/' + applItem.claimId]);
 
     if(applItem.claimDecision === this.DecisionEnum.ApprovedWithExclusions || applItem.claimDecision === this.DecisionEnum.Ineligible 
-      || applItem.claimDecision === this.DecisionEnum.Approved || applItem.claimDecision === this.DecisionEnum.Ineligible) {
+      || applItem.claimDecision === this.DecisionEnum.Approved || applItem.claimDecision === this.DecisionEnum.Withdrawn) {
       this.router.navigate(['/app-claim-decision/' + applItem.claimId]);
     }
   }
