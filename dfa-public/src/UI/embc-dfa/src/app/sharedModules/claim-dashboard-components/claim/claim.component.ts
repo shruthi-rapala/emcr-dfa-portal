@@ -17,6 +17,7 @@ import {ClaimType} from 'src/app/models/claim-type.enum';
 
 @Component({
   selector: 'app-dfadashboard-claim',
+  standalone: false,
   templateUrl: './claim.component.html',
   styleUrls: ['./claim.component.scss']
 })
