@@ -52,6 +52,24 @@ export class DfaDashClaimComponent implements OnInit {
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
 
   ];
+  appealItems = [
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Submitted", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Under Review", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Approval Pending", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Decision Made", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Closed", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
+    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+
+  ];
   lstClaims: ClaimExtended[] = [];
   lstFilteredClaims: ClaimExtended[] = [];
   matchStatusFound = false;
@@ -66,6 +84,7 @@ export class DfaDashClaimComponent implements OnInit {
   public sortfieldSelected: string = '';
   public filterbydaysSelected: number;
   OneDayAgo: number = 0;
+  appealMatchStatusFound = false;
 
   constructor(
     private profileDataService: ProfileDataService,
@@ -157,12 +176,63 @@ export class DfaDashClaimComponent implements OnInit {
 
             });
 
+
+            if (!Array.isArray(objApp.appealStatusBar)) {
+              objApp.appealStatusBar = JSON.parse(JSON.stringify(this.appealItems));
+            }
+
+            objApp.appealStatusBar.forEach((objStatItem) => {
+              const statusMatch =
+                objApp.status &&
+                objStatItem.status?.toLowerCase() === objApp.status.toLowerCase();
+
+              if (statusMatch) {
+                objStatItem.currentStep = true;
+                isFound = true;
+                this.matchStatusFound = true;
+
+                if (objApp.stage) {
+                  objStatItem.stage = objApp.stage;
+                  this.dFAProjectMainDataService.setStage(objApp.stage);
+                }
+
+                if (objApp.claimDecision) {
+                  this.dFAProjectMainDataService.setProjectDecision(objApp.claimDecision);
+                 }
+
+                // Determine statusColor based on logic
+                if (['Ineligible', 'Withdrawn'].includes(objApp.stage || '')) {
+                  objApp.statusColor = '#E25E63';
+                } else if (
+                  objApp.status?.toLowerCase().includes('decision made') &&
+                  objApp.stage?.toLowerCase().includes('progress')
+                ) {
+                  objApp.statusColor = '#FDCB52';
+                } else {
+                  objApp.statusColor = objStatItem.statusColor;
+                }
+              }
+
+              // Fallback if status not matched
+              if (!isFound) {
+                objStatItem.isCompleted = true;
+              }
+
+              // Final step validation
+              if (objStatItem.isFinalStep) {
+                if (!isFound) {
+                  objApp.isErrorInStatus = true;
+                } else if (statusMatch) {
+                  objStatItem.isCompleted = true;
+                }
+              }
+            });
             lstDataModified.push(objApp);
           })
 
           this.mapData(lstDataModified);
         }
-            //this.mapData(lstData);
+        //this.mapData(lstData);
         this.isLoading = false;
       },
       error: (error) => {
@@ -200,8 +270,7 @@ export class DfaDashClaimComponent implements OnInit {
           || x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
         &&
         (x.dateFileClosed && (this.OneDayAgo >= new Date(x.dateFileClosed).getTime()))
-        )
-      {
+      ) {
         x.openClaim = false;
       } else x.openClaim = true;
       //x.openClaim = true;
@@ -223,7 +292,7 @@ export class DfaDashClaimComponent implements OnInit {
   ApplyFilter(type: number, searchText: string): void {
     var lstClaimsFilterting = this.lstClaims;
 
-    if (searchText != null){
+    if (searchText != null) {
       this.searchTextInput = searchText;
     }
 
@@ -259,8 +328,8 @@ export class DfaDashClaimComponent implements OnInit {
 
     if (this.searchTextInput != null) {
       lstClaimsFilterting = lstClaimsFilterting.filter(m => m.claimNumber.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1);
-        //|| m.claimNumber.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
-        //|| m.siteLocation.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1);
+      //|| m.claimNumber.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1
+      //|| m.siteLocation.toLowerCase().indexOf(this.searchTextInput.toLowerCase()) > -1);
     }
 
     this.lstFilteredClaims = lstClaimsFilterting;
