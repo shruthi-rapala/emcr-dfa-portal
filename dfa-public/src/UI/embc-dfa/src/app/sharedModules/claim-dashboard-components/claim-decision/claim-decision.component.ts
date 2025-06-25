@@ -12,11 +12,12 @@ import InvoiceComponent from '../../forms/dfa-claim-main-forms/invoice/invoice.c
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InvoiceDecision } from 'src/app/models/invoice-decision.enum';
 import { AppealDecisionDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-claim-begin-appeal-dialog/dfa-confirm-claim-begin-appeal-dialog.component';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-claim-decision',
   standalone: true,
-  imports: [CoreModule, MatCardModule, MatTableModule, CommonModule,MatDialogModule],
+  imports: [CoreModule, MatCardModule, MatTableModule, CommonModule,MatDialogModule, MatStepperModule],
   templateUrl: './claim-decision.component.html',
   styleUrl: './claim-decision.component.scss',
 })
@@ -34,6 +35,7 @@ export class ClaimDecisionComponent implements OnInit {
   InvoiceDecisionEnum = InvoiceDecision;
 
   claimId: string | null = null;
+  selectedStepIndex: number = 3;
 
   constructor(
     private claimService: ClaimService,
@@ -61,8 +63,10 @@ export class ClaimDecisionComponent implements OnInit {
   openAppealDecision(): void {
     console.log('Opening appeal decision dialog...');
     const dialogRef = this.dialog.open(AppealDecisionDialogComponent, {
-      width: '500px',
-      disableClose: true
+      height: '600px',
+      width: '600px',
+      disableClose: true,
+      data: { claimId: this.claimId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -164,11 +168,12 @@ export class ClaimDecisionComponent implements OnInit {
             content: objInvoice,
             invoiceId: this.dfaClaimMainDataService.getInvoiceId(),
             claimDecision: this.dfaClaimMainDataService.getClaimDecision(),
-            header: 'View'
+            header: 'View',
           },
           maxHeight: '90vh',
           width: '1200px',
-          disableClose: true
+          disableClose: true,
+          
         })
         .afterClosed()
         .subscribe((_result) => {});

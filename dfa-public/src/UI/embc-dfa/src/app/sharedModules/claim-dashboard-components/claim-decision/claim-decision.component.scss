@@ -72,3 +72,7 @@ table {
   gap: 24px;
   padding: 24px;
   }
+
+  ::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+  }
