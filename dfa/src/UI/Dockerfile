@@ -38,7 +38,7 @@ ENV VERSION=$VERSION
 ENV API_URL=http://host.containers.internal:5020
 RUN chmod +rw /config/caddy
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
-COPY Caddyfile /etc/caddy/Caddyfile
+COPY dfa/src/UI/Caddyfile /etc/caddy/Caddyfile
 COPY --from=ng-builder src/dist/embc-dfa /site
 
 # Use if you need to run the container in your local dev setup
