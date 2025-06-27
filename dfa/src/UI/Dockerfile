@@ -7,19 +7,27 @@ FROM trion/ng-cli-karma:19.2.6 AS node-builder
 WORKDIR /src
 
 # Copy and install shared library dependencies, then build it
-COPY ./shared-workspace/package*.json ./shared-workspace/
+COPY shared-workspace/package*.json shared-workspace/
 WORKDIR /src/shared-workspace
 RUN npm install
-COPY ./shared-workspace/ ./
+COPY shared-workspace/ ./
 RUN npx ng build shared-ui
 
 # Copy app package.json and install dependencies (shared-ui now exists)
 WORKDIR /src/embc-dfa
+<<<<<<< HEAD
 COPY ./dfa/src/UI/embc-dfa/package*.json ./
 RUN npm install --ignore-scripts
 
 # Copy app source
 COPY ./dfa/src/UI/embc-dfa/ ./
+=======
+COPY dfa/src/UI/embc-dfa/package*.json ./
+RUN npm install --ignore-scripts
+
+# Copy app source
+COPY dfa/src/UI/embc-dfa/ ./
+>>>>>>> 9ddabb6eb (updated private ui docker file and ci/cd pipelines)
 
 FROM node-builder as ng-builder
 #RUN npm run test -- --no-watch --no-progress
@@ -47,6 +55,6 @@ RUN mkdir -p /site/env && echo '{ \
     "bannerTitle": "You are in the **LOCAL** version of the **Disaster Financial Assistance Tool**.", \
     "bannerSubTitle": "All information entered here will be treated as **LOCAL** data.", \
     "bannerColor": "#097d8c" \
-}' > /site/env/info.json
+    }' > /site/env/info.json
 
 EXPOSE 2015 2016
