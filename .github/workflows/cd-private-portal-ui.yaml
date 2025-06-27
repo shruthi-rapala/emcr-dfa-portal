@@ -13,7 +13,7 @@ on:
 
 env:
   DOCKER_CONTEXT_DIRECTORY: .
-  DOCKERFILE_PATH: dfa/src/UI/embc-dfa/Dockerfile
+  DOCKERFILE_PATH: dfa/src/UI/Dockerfile
   IMAGE_NAME: dfa-portal-ui
   IMAGE_REGISTRY: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}
 
