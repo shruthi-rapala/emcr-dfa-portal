@@ -281,8 +281,11 @@ namespace EMBC.DFA.API.Controllers
 
     public class CurrentCaseAppeal
     {
+        public Guid Id { get; set; }
         public string AppealStatus { get; set; }
         public string AppealType { get; set; }
+        public string Reason { get; set; }
+        public Guid CaseId { get; set; }
     }
 
     public class StatusBar
