@@ -353,6 +353,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "incidentid", "ticketnumber", "dfa_datefileclosed", "dfa_eligibilitystatus"
                     }
                 });
+                var lstAppeal = await api.GetList<dfa_appeal>("dfa_appeals", new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                       "dfa_appealstatus",
+                       "dfa_appealid",
+                       "dfa_appealtype",
+                       "dfa_reason",
+                       "_dfa_caseid_value",
+                    },
+                });
+
                 var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
                     {
                         Select = new[]
@@ -375,46 +387,33 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     });
 
                 var lstApps = (from objApp in list.List
-                                   join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
-                                   from objAppEvent in appEvent.DefaultIfEmpty()
-                                   join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
-                                   from objCaseEvent in appCase.DefaultIfEmpty()
-                                   select new dfa_appapplication
-                                   {
-                                       dfa_appapplicationid = objApp.dfa_appapplicationid,
-                                       dfa_applicanttype = objApp.dfa_applicanttype,
-                                       dfa_dateofdamage = objApp.dfa_dateofdamage,
-                                       dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
-                                       dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                                       dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
-                                       dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
-                                       dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
-                                       dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
-                                       dfa_eligibilitystatus = objCaseEvent != null ? objCaseEvent.dfa_eligibilitystatus : null,
-                                       dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
-                                       createdon = objApp.createdon,
-                                       dfa_farmtype = objApp.dfa_farmtype,
-                                       dfa_smallbusinesstype = objApp.dfa_smallbusinesstype,
-                                       dfa_accountlegalname = objApp.dfa_accountlegalname,
-                                       dfa_appealcloseddate = objApp.dfa_appealcloseddate,
-                                   }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
-
-                //from objEvent in lstEvents.List
-                //            where objEvent.dfa_eventid == objApp._dfa_eventid_value
-                //            from objCase in lstCases.List
-                //            where objCase.incidentid == objApp._dfa_casecreatedid_value into reslist
-                //            from p in ps_jointable.DefaultIfEmpty()
-                //            select new dfa_appapplication
-                //            {
-                //                dfa_appapplicationid = objApp.dfa_appapplicationid,
-                //                dfa_applicanttype = objApp.dfa_applicanttype,
-                //                dfa_dateofdamage = objApp.dfa_dateofdamage,
-                //                dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
-                //                dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
-                //                dfa_event = objEvent.dfa_id,
-                //                dfa_casenumber = objCase.ticketnumber
-                //            }).AsEnumerable();
-
+                    join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
+                    from objAppEvent in appEvent.DefaultIfEmpty()
+                    join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
+                    from objCaseEvent in appCase.DefaultIfEmpty()
+                    let relatedAppeals = lstAppeal.List
+                    .Where(a => a._dfa_caseid_value == objApp._dfa_casecreatedid_value)
+                    .ToList()
+                select new dfa_appapplication
+                {
+                        dfa_appapplicationid = objApp.dfa_appapplicationid,
+                        dfa_applicanttype = objApp.dfa_applicanttype,
+                        dfa_dateofdamage = objApp.dfa_dateofdamage,
+                        dfa_damagedpropertystreet1 = objApp.dfa_damagedpropertystreet1,
+                        dfa_damagedpropertycitytext = objApp.dfa_damagedpropertycitytext,
+                        dfa_event = objAppEvent != null ? objAppEvent.dfa_eventname : null,
+                        dfa_casenumber = objCaseEvent != null ? objCaseEvent.ticketnumber : null,
+                        dfa_primaryapplicantsigneddate = objApp.dfa_primaryapplicantsigneddate,
+                        dfa_datefileclosed = objCaseEvent != null ? objCaseEvent.dfa_datefileclosed : null,
+                        dfa_eligibilitystatus = objCaseEvent != null ? objCaseEvent.dfa_eligibilitystatus : null,
+                        dfa_applicationstatusportal = objApp.dfa_applicationstatusportal,
+                        createdon = objApp.createdon,
+                        dfa_farmtype = objApp.dfa_farmtype,
+                        dfa_smallbusinesstype = objApp.dfa_smallbusinesstype,
+                        dfa_accountlegalname = objApp.dfa_accountlegalname,
+                        dfa_appealcloseddate = objApp.dfa_appealcloseddate,
+                        dfa_appeal = relatedAppeals,
+                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
                 return lstApps;
             }
             catch (System.Exception ex)

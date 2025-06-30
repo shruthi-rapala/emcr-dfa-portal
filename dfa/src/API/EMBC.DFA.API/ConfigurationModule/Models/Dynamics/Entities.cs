@@ -596,9 +596,12 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
     public class dfa_appeal
     {
+        public string dfa_appealid { get; set; }
         public string dfa_appealstatus { get; set; }
         // Amount, Eligibility, Other
         public string dfa_appealtype { get; set; }
+        public string DFA_Reason { get; set; }
+        public string _dfa_caseid_value { get; set; } // case id
     }
 
     public enum AppealStatusOptionSet

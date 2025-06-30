@@ -1,4 +1,4 @@
-namespace EMBC.Database.Resources;
+﻿namespace EMBC.Database.Resources;
 
 public class AppealMapper : Profile
 {
@@ -22,7 +22,7 @@ public class AppealMapper : Profile
             .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => (DFA_Appeal_StateCode)(int)src.StateCode))
             .ForMember(dest => dest.DFA_AppealStatus, opt => opt.Ignore())
             .ForMember(dest => dest.DFA_Reason, opt => opt.MapFrom(src => src.Reason))
-            .ForMember(dest => dest.DFA_AppealType, opt => opt.MapFrom(src => src.AppealType));
+            .ForMember(dest => dest.DFA_AppealType, opt => opt.MapFrom(src => src.AppealType));             
             // .ForMember(dest => dest.SignAndSubmit, opt => opt.Ignore());
 
     }
