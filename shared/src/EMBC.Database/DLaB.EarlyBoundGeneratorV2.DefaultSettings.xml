@@ -29,6 +29,8 @@
     <DeleteFilesFromOutputFolders>false</DeleteFilesFromOutputFolders>
     <EntitiesToSkip />
     <EntitiesWhitelist>dfa_appeal|
+dfa_caseeligibilityappeal|
+dfa_casepaidamountappeal|
 dfa_clientcode|
 dfa_event|
 dfa_project|
