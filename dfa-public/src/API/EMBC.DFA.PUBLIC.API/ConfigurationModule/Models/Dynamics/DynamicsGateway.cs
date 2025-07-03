@@ -989,7 +989,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_requireddocumenttype", "_dfa_project_value", "bcgov_mimetype", "bcgov_size", "bcgov_fileextension", "dfa_description",
                         "bcgov_fileclassification", "dfa_category", "_dfa_appapplication_value", "_modifiedby_value"
                     },
-                    Filter = $"_dfa_project_value eq {projectIdString} and dfa_documenttype eq {amendmentCategoryString} and statecode eq 0 and bcgov_origincode eq 931490000"
+                    Filter = $"_dfa_project_value eq {projectIdString} and dfa_category eq '{amendmentCategoryString}' and statecode eq 0 and bcgov_origincode eq 931490000"
                 });
 
                 return list.List;
@@ -1154,6 +1154,24 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             return string.Empty;
         }
 
+        public async Task<string> UpsertProjectAmendment(dfa_projectamendment amendment)
+        {
+            try
+            {
+                var result = await api.Create("dfa_projectamendment", amendment);
+
+/*                var jsonVal = JsonConvert.SerializeObject(amendment);
+                var result = await api.ExecuteAction("dfa_DFAPortalCreateProject", amendment);*/
+
+                return result.ToString();
+
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to update/delete project {ex.Message}", ex);
+            }
+        }
+
         public async Task<dfa_projectmain_retrieve> GetProjectMainById(Guid projectId)
         {
             var list = await api.GetList<dfa_projectmain_retrieve>("dfa_projects", new CRMGetListOptions
@@ -1188,11 +1206,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     Select = new[]
                     {
-                        "dfa_projectnumber", "dfa_projectname",
-                        "dfa_sitelocation",
-                        "dfa_estimatedcompletiondateofproject",
-                        "dfa_approvedcost", "dfa_18monthdeadline", "statuscode",
-                        "dfa_projectid", "createdon", "dfa_projectbusinessprocessstages",
+                        "dfa_projectnumber", "dfa_projectname", "dfa_sitelocation", "dfa_estimatedcompletiondateofproject",
+                        "dfa_approvedcost", "dfa_18monthdeadline", "statuscode", "dfa_projectid", "createdon", "dfa_projectbusinessprocessstages",
                         "dfa_projectbusinessprocesssubstages", "dfa_bpfclosedate", "dfa_projectdecision", "dfa_projectapproveddate"
                     },
                     Filter = $"_dfa_applicationid_value eq {applicationId}"
@@ -1218,16 +1233,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         project.hasAmendments = false;
                     }
 
-                    var lstAppeal = await api.GetList<dfa_appeal>("dfa_appeals", new CRMGetListOptions
-                    {
-                        Select = new[]
-                        {
-                            "dfa_appealstatus",
-                            "dfa_appealtype"
-                        },
-                        Filter = $"_dfa_projectid_value eq {project.dfa_projectid}"
-                    });
-                    project.dfa_appeal = lstAppeal.List;
+                    // TODO uncomment and test project appeal timeline
+                    //project.dfa_projectappeal = repository.Query(project.dfa_projectid);
                 }
 
                 var lstApps = (
@@ -1250,7 +1257,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         dfa_projectdecision = objApp.dfa_projectdecision,
                         dfa_bpfclosedate = !string.IsNullOrEmpty(objApp.dfa_bpfclosedate) ? DateTime.Parse(objApp.dfa_bpfclosedate).ToLocalTime().ToString() : objApp.dfa_bpfclosedate,
                         dfa_projectapproveddate = objApp.dfa_projectapproveddate,
-                        dfa_appeal = objApp.dfa_appeal
+                        dfa_projectappeal = objApp.dfa_projectappeal
                     })
                         .AsEnumerable()
                         .OrderByDescending(m => m.createdon);
