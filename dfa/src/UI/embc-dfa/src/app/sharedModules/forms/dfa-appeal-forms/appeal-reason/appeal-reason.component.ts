@@ -32,6 +32,7 @@ export default class AppealReasonComponent implements OnInit {
     this.formCreationService.getAppealReasonForm().subscribe(form => {
       if (form) {
         this.appealReasonForm = form;
+        
       }
     });
   }

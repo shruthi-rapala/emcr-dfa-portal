@@ -351,13 +351,16 @@ export class DfaApplicationComponent implements OnInit {
   viewAppealAfterSubmission(applItem: ApplicationExtended, type: string): void {
     const caseId = applItem.applicationId;
 
-    if (!caseId || !type) {
+    const appeal = applItem.appeals?.find(a => a.appealType.toLowerCase() === type.toLowerCase());
+
+    if (!appeal.id || !caseId || !type) {
+      console.error('Invalid appeal or case details:', { appeal, caseId, type });
       return;
     }
 
     this.dfaAppealDataService.setCaseDetails({...applItem, caseId, type });
     
-    this.router.navigate([`/dfa-appeal/${type}/${caseId}`]);
+    this.router.navigate([`/dfa-appeal/${type}/${caseId}/${appeal.id}`]);
   }
 
 }

@@ -35,6 +35,7 @@ export class DfaAppealComponent implements OnInit {
   secondaryApplicants: SecondaryApplicant[] = [];
   isSignaturesValid: boolean = false;
   caseId: string;
+  appealId: string;
   appealType: string;
   appealReasonForm$: Subscription;
   appealReasonForm: FormGroup;
@@ -54,59 +55,94 @@ export class DfaAppealComponent implements OnInit {
     private dfaAppealDataService: DFAAppealDataService,
     private dfaAppealService: DfaAppealService,
     private applicationService: ApplicationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Get appeal type and case ID from route params
-    this.route.params.subscribe((params) => {
-      this.appealType = params['type'];
-      this.caseId = params['caseId'];
+    this.appealType = this.route.snapshot.paramMap.get('type') || '';
+    this.caseId = this.route.snapshot.paramMap.get('caseId') || '';
+    this.appealId = this.route.snapshot.paramMap.get('appealId');
 
-      // Map string to enum
-      let appealTypeEnum: AppealType;
-      switch (this.appealType) {
-        case 'amount':
-          appealTypeEnum = AppealType.Amount;
-          break;
-        case 'eligibility':
-          appealTypeEnum = AppealType.Eligibility;
-          break;
-        case 'other':
-          appealTypeEnum = AppealType.Other;
-          break;
-        default:
-          appealTypeEnum = AppealType.Other;
-      }
+    // Map string to enum
+    let appealTypeEnum: AppealType;
+    switch (this.appealType) {
+      case 'amount':
+        appealTypeEnum = AppealType.Amount;
+        break;
+      case 'eligibility':
+        appealTypeEnum = AppealType.Eligibility;
+        break;
+      case 'other':
+        appealTypeEnum = AppealType.Other;
+        break;
+      default:
+        appealTypeEnum = AppealType.Other;
+    }
 
-      this.caseDetails = this.dfaAppealDataService.getCaseDetails();
-      this.dfaAppealDataService.appealType = appealTypeEnum;
+    this.caseDetails = this.dfaAppealDataService.getCaseDetails();
+    this.dfaAppealDataService.appealType = appealTypeEnum;
 
-      // Fetch full application details using ApplicationService
-      this.fullApplication$=this.applicationService.applicationGetApplicationMain({ applicationId: this.caseDetails?.applicationId })
-        .subscribe(app => {
-          this.fullApplication = app;
-          this.dfaAppealDataService.setFullApplication(app);
+    // Fetch full application details using ApplicationService
+    this.fullApplication$ = this.applicationService.applicationGetApplicationMain({ applicationId: this.caseDetails?.applicationId })
+      .subscribe(app => {
+        this.fullApplication = app;
+        this.dfaAppealDataService.setFullApplication(app);
+      });
+
+    // Clear old data and forms
+    this.dfaAppealDataService.appealReason = null;
+    this.dfaAppealDataService.signAndSubmit = null;
+    this.formCreationService.clearAppealReasonData();
+    this.formCreationService.clearAppealSignAndSubmitData();
+
+    // Create steps based on appeal type
+    this.steps = this.componentService.createDFAAppealSteps(this.appealType);
+
+    if (this.appealId && this.appealId !== 'new') {
+      // @TODO: 
+      // Step 1: Get appeal details from backend using appealId
+      this.dfaAppealService.getAppealById(this.appealId).subscribe(appeal => {
+
+
+        // Step 2: If appealId exists, load existing appeal data into forms
+
+        this.formCreationService.getAppealReasonForm().subscribe(form => {
+          console.log("INside GFrom:", appeal.reason, appeal);
+          if (form) {
+            // Populate the form with existing appeal reason data
+            form.controls.reason.setValue(appeal.reason);
+  
+            form.updateValueAndValidity();
+  
+            console.log("Form 2:", appeal.reason, form);
+  
+            this.appealReasonForm = form;
+          }
         });
+  
+        this.formCreationService.getAppealSignAndSubmitForm().subscribe(form => {
+          if (form) {
+            // Populate the form with existing sign and submit data
+            form.patchValue({
+              ...this.dfaAppealDataService.signAndSubmit
+            });
+  
+            form.updateValueAndValidity();
+  
+            this.signAndSubmitForm = form;
+          }
+        });
+      });
 
-      // Clear old data and forms
-      this.dfaAppealDataService.appealReason = null;
-      this.dfaAppealDataService.signAndSubmit = null;
-      this.formCreationService.clearAppealReasonData();
-      this.formCreationService.clearAppealSignAndSubmitData();
+      
+      // step 3: Update template to handle both new and existing appeals
+    }
 
-      // Create steps based on appeal type
-      this.steps = this.componentService.createDFAAppealSteps(this.appealType);
-    });
+
   }
 
   ngOnDestroy(): void {
     this.fullApplication$.unsubscribe();
   }
-
-  /**
-   * Loads case details from the service
-   */
-  loadCaseDetails(): void {};
 
   setFormData(component: string): void {
     switch (component) {
@@ -168,6 +204,7 @@ export class DfaAppealComponent implements OnInit {
   validateForms(): void {
     this.formCreationService.getAppealReasonForm().subscribe((form) => {
       if (form) {
+
         form.updateValueAndValidity();
         this.appealReasonValid = form.valid;
         this.cd.detectChanges();
@@ -227,7 +264,7 @@ export class DfaAppealComponent implements OnInit {
     if (this.form$) {
       this.form$.unsubscribe();
     }
-    
+
     switch (index) {
       case 0:
         this.form$ = this.formCreationService
@@ -258,7 +295,7 @@ export class DfaAppealComponent implements OnInit {
   submitAppeal(): void {
     this.isLoading = true;
     this.setFormData('sign-and-submit');
-    
+
     let appeal = this.dfaAppealDataService.createAppealDTO();
     this.dfaAppealService.insertAppeal(appeal).subscribe({
       next: () => {
