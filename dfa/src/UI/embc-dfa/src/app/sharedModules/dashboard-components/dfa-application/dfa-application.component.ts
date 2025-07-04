@@ -119,18 +119,6 @@ export class DfaApplicationComponent implements OnInit {
             let isFound = false;
             var jsonVal = JSON.stringify(this.items);
 
-            // @TODO: Fix once backend is ready, remove it completely and use backend data and generate the types
-            if(i % 2 == 0) objApp.appeals = [
-              {
-                appealStatus: 'In Progress',
-                appealType: 'DFA Appeal',
-              },
-              {
-                appealStatus: 'Closed',
-                appealType: 'DFA Appeal',
-              }
-            ];
-
             if (objApp.status && objApp.status.toLowerCase().indexOf('appeal') > -1) {
               jsonVal = JSON.stringify(this.appealItems);
               objApp.hasAppealStages = true;
@@ -358,7 +346,7 @@ export class DfaApplicationComponent implements OnInit {
 
     const appeal = applItem.appeals?.find(a => a.appealType.toLowerCase() === type.toLowerCase());
 
-    if (!appeal.id || !caseId || !type) {
+    if (!appeal?.id || !caseId || !type) {
       console.error('Invalid appeal or case details:', { appeal, caseId, type });
       return;
     }

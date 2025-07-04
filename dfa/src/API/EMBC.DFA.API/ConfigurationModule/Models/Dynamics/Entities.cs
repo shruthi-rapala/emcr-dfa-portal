@@ -603,6 +603,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string dfa_appealtype { get; set; }
         public string DFA_Reason { get; set; }
         public string _dfa_caseid_value { get; set; } // case id
+        public DateTime? dfa_dateappealdecisionmade { get; set; }
     }
 
     public enum AppealStatusOptionSet

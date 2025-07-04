@@ -276,8 +276,9 @@ namespace EMBC.DFA.API.Controllers
         public bool IsErrorInStatus { get; set; }
         public bool hasAppealStages { get; set; }
         public IEnumerable<CurrentCaseAppeal> Appeals { get; set; }
-
         public string CaseEligibility { get; set; }
+
+        public bool IsSubmitted { get; set; }
     }
 
     public class CurrentCaseAppeal
@@ -287,6 +288,7 @@ namespace EMBC.DFA.API.Controllers
         public string AppealType { get; set; }
         public string Reason { get; set; }
         public Guid CaseId { get; set; }
+        public DateTime? AppealReceivedDate { get; set; }
     }
 
     public class StatusBar

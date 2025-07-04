@@ -362,6 +362,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                        "dfa_appealtype",
                        "dfa_reason",
                        "_dfa_caseid_value",
+                       "dfa_dateappealdecisionmade"
                     },
                 });
 
