@@ -8,6 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
+using AutoMapper;
+using EMBC.Database.Contract;
+using EMBC.Database.Resources;
 using EMBC.ESS.Shared.Contracts.Metadata;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -24,10 +27,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class DynamicsGateway : IDynamicsGateway
     {
         private readonly CRMWebAPI api;
+        private readonly IAppealRepository repository;
+        private readonly IMapper mapper;
 
-        public DynamicsGateway(CRMWebAPI api)
+        public DynamicsGateway(CRMWebAPI api, IAppealRepository repository, IMapper mapper)
         {
             this.api = api;
+            this.repository = repository;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<dfa_appcontact>> GetContactsAsync()
@@ -353,18 +360,19 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "incidentid", "ticketnumber", "dfa_datefileclosed", "dfa_eligibilitystatus"
                     }
                 });
-                var lstAppeal = await api.GetList<dfa_appeal>("dfa_appeals", new CRMGetListOptions
-                {
-                    Select = new[]
-                    {
-                       "dfa_appealstatus",
-                       "dfa_appealid",
-                       "dfa_appealtype",
-                       "dfa_reason",
-                       "_dfa_caseid_value",
-                       "dfa_dateappealdecisionmade"
-                    },
-                });
+                //var lstAppeal = await api.GetList<dfa_appeal>("dfa_appeals", new CRMGetListOptions
+                //{
+                //    Select = new[]
+                //    {
+                //       "dfa_appealstatus",
+                //       "dfa_appealid",
+                //       "dfa_appealtype",
+                //       "dfa_reason",
+                //       "_dfa_caseid_value",
+                //       "dfa_dateappealdecisionmade"
+                //    },
+                //    //Filter = $"_dfa_caseid_value eq {caseId}"
+                //});
 
                 var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
                 {
@@ -387,13 +395,22 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     //}
                 });
 
+                // Load the appeal information for each application and also query the appeal status
+                foreach (var app in list.List)
+                {
+                    if (app._dfa_casecreatedid_value == null) continue; // Skip if case created id is null
+                    var caseId = Guid.Parse(app._dfa_casecreatedid_value);
+                    var appeals = repository.Query(new CaseEligibilityAppealQuery { CaseId = caseId });
+                    app.dfa_appeal = mapper.Map<IEnumerable<dfa_appeal>>(appeals); // Assign the list of mapped appeals to the application
+                }
+
                 var lstApps = (from objApp in list.List
                                join objEvent in lstEvents.List.DefaultIfEmpty() on objApp._dfa_eventid_value equals objEvent.dfa_eventid into appEvent
                                from objAppEvent in appEvent.DefaultIfEmpty()
                                join objCase in lstCases.List on objApp._dfa_casecreatedid_value equals objCase.incidentid into appCase
                                from objCaseEvent in appCase.DefaultIfEmpty()
-                               let relatedAppeals = lstAppeal.List
-                               .Where(a => a._dfa_caseid_value == objApp._dfa_casecreatedid_value)
+                               //let relatedAppeals = lstAppeal.List
+                               //.Where(a => a._dfa_caseid_value == objApp._dfa_casecreatedid_value)
                                .ToList()
                                select new dfa_appapplication
                                {
@@ -414,7 +431,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_smallbusinesstype = objApp.dfa_smallbusinesstype,
                                    dfa_accountlegalname = objApp.dfa_accountlegalname,
                                    dfa_appealcloseddate = objApp.dfa_appealcloseddate,
-                                   dfa_appeal = relatedAppeals,
+                                   dfa_appeal = objApp.dfa_appeal,
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
                 return lstApps;
             }

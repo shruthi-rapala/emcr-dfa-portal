@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using EMBC.Database.Contract;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using EMBC.Utilities.Messaging;
@@ -287,8 +288,10 @@ namespace EMBC.DFA.API.Controllers
         public string AppealStatus { get; set; }
         public string AppealType { get; set; }
         public string Reason { get; set; }
-        public Guid CaseId { get; set; }
+        public Guid? CaseId { get; set; }
         public DateTime? AppealReceivedDate { get; set; }
+        public CaseEligibilityAppeal? CaseEligibilityAppeal { get; set; }
+        //public CasePaidAmountAppeal? CasePaidAmountAppeal { get; set; }
     }
 
     public class StatusBar
