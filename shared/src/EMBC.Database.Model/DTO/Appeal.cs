@@ -19,16 +19,16 @@ public class Appeal : IDto
          public CasePaidAmountAppeal? CasePaidAmountAppeal {get; set;}
     }
 
-    public class SignAndSubmit
-    {
-        public DateTime? NinetyDayDeadline { get; set; }
-        public DigitalSignature? ApplicantSignature { get; set; }
-        public DigitalSignature? SecondaryApplicantSignature { get; set; }
-    }
+public class SignAndSubmit
+{
+    public DateTime? NinetyDayDeadline { get; set; }
+    public DigitalSignature? ApplicantSignature { get; set; }
+    public DigitalSignature? SecondaryApplicantSignature { get; set; }
+}
 
-    public class DigitalSignature
-    {
-        public string? Signature { get; set; }
-        public DateTime DateSigned { get; set; }
-        public string? SignedName { get; set; }
-    }
+public class DigitalSignature
+{
+    public string? Signature { get; set; }
+    public DateTime DateSigned { get; set; }
+    public string? SignedName { get; set; }
+}
