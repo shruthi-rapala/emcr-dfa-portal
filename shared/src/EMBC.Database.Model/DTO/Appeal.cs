@@ -1,6 +1,6 @@
 ﻿namespace EMBC.Database.Contract;
 
-public record CaseEligibilityAppealQuery
+public record AppealQuery
 {
     public Guid? CaseId { get; set; }
 }
@@ -16,7 +16,7 @@ public class Appeal : IDto
        // public bool? CreatedOnPortal { get; set; }
         // Related Entities
          public CaseEligibilityAppeal? CaseEligibilityAppeal {get ; set;}
-        // public CasePaidAmountAppeal? CasePaidAmountAppeal {get; set;}
+         public CasePaidAmountAppeal? CasePaidAmountAppeal {get; set;}
     }
 
     public class SignAndSubmit

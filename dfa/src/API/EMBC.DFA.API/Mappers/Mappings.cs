@@ -7,6 +7,7 @@ using System.Xml.Linq;
 
 using EMBC.Database.Contract;
 using EMBC.Database.Model;
+using EMBC.Database.Shared.Contract;
 using EMBC.DFA.API;
 using EMBC.DFA.API.ConfigurationModule.Models;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
@@ -484,21 +485,26 @@ namespace EMBC.DFA.API.Mappers
                 //.ForMember(d => d.CaseId, opt => opt.MapFrom(src => Guid.TryParse(src._dfa_caseid_value, out var guid) ? guid : Guid.Empty))
                 .ForMember(d => d.CaseId, opt => opt.MapFrom(src => src._dfa_caseid_value))
                 .ForMember(d => d.AppealReceivedDate, opt => opt.MapFrom(src => src.dfa_dateappealdecisionmade))
-                .ForMember(d => d.CaseEligibilityAppeal, opt => opt.MapFrom(src => src.CaseEligibilityAppeal));
+                .ForMember(d => d.CaseEligibilityAppeal, opt => opt.MapFrom(src => src.CaseEligibilityAppeal))
+                .ForMember(d => d.CasePaidAmountAppeal, opt => opt.MapFrom(src => src.CasePaidAmountAppeal));
 
             CreateMap<Appeal, dfa_appeal>()
-            .ForMember(dest => dest.dfa_appealid, opt => opt.MapFrom(src => src.Id))
-            //.ForMember(dest => dest., opt => opt.MapFrom(src => (DFA_Appeal_StateCode)(int)src.StateCode))
-            .ForMember(
-                dest => dest._dfa_caseid_value,
-                opt => opt.MapFrom(src => src.CaseId))
-            .ForMember(dest => dest.dfa_appealstatus, opt => opt.Ignore())
-            .ForMember(dest => dest.DFA_Reason, opt => opt.MapFrom(src => src.Reason))
-            .ForMember(dest => dest.dfa_appealtype, opt => opt.MapFrom(src => src.AppealType));
+                .ForMember(dest => dest.dfa_appealid, opt => opt.MapFrom(src => src.Id))
+                //.ForMember(dest => dest., opt => opt.MapFrom(src => (DFA_Appeal_StateCode)(int)src.StateCode))
+                .ForMember(dest => dest._dfa_caseid_value, opt => opt.MapFrom(src => src.CaseId))
+                .ForMember(dest => dest.dfa_appealstatus, opt => opt.Ignore())
+                .ForMember(dest => dest.DFA_Reason, opt => opt.MapFrom(src => src.Reason))
+                .ForMember(dest => dest.dfa_appealtype, opt => opt.MapFrom(src => src.AppealType));
 
             CreateMap<DFA_CaseEligibilityAppeal, CaseEligibilityAppeal>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => (int)src.StateCode))
+                .ForMember(dest => dest.CaseAppealId, opt => opt.MapFrom(src => src.Bpf_DFA_AppealId.Id))
+                .AfterMap((src, dest) => dest.Stages = src.TraversedPath?.Split(",").Select(x => new Stage { Id = new Guid(x), Name = string.Empty }).ToArray());
+
+            CreateMap<DFA_CasePaidAmountAppeal, CasePaidAmountAppeal>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => (StateCode)(int)src.StateCode))
                 .ForMember(dest => dest.CaseAppealId, opt => opt.MapFrom(src => src.Bpf_DFA_AppealId.Id))
                 .AfterMap((src, dest) => dest.Stages = src.TraversedPath?.Split(",").Select(x => new Stage { Id = new Guid(x), Name = string.Empty }).ToArray());
 

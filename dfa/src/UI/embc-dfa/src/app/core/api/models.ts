@@ -10,6 +10,7 @@ export type { AppTypeInsurance } from './models/app-type-insurance';
 export type { AreaCommunity } from './models/area-community';
 export type { CaptchaConfiguration } from './models/captcha-configuration';
 export type { CaseEligibilityAppeal } from './models/case-eligibility-appeal';
+export type { CasePaidAmountAppeal } from './models/case-paid-amount-appeal';
 export type { CleanUpLog } from './models/clean-up-log';
 export type { CleanUpLogItem } from './models/clean-up-log-item';
 export type { Code } from './models/code';

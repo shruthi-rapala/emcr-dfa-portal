@@ -291,7 +291,7 @@ namespace EMBC.DFA.API.Controllers
         public Guid? CaseId { get; set; }
         public DateTime? AppealReceivedDate { get; set; }
         public CaseEligibilityAppeal? CaseEligibilityAppeal { get; set; }
-        //public CasePaidAmountAppeal? CasePaidAmountAppeal { get; set; }
+        public CasePaidAmountAppeal? CasePaidAmountAppeal { get; set; }
     }
 
     public class StatusBar

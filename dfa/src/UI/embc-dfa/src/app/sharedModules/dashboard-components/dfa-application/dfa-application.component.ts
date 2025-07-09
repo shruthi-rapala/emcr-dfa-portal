@@ -323,52 +323,26 @@ export class DfaApplicationComponent implements OnInit {
             // This code needs to be updated once the Dynamics API sends the appealStatusBar in the response
             // #############################################################################################
             const objAppWithAppeals = objApp as CurrentCaseWithAppeals;
+            //  @TODO: Remove this cast once the API response is updated to include appealStatusBar 
+            objAppWithAppeals.hasAppealStages = true;
 
             // Initialize appealStatusBar if it's missing
             if (!Array.isArray(objAppWithAppeals.appealStatusBar)) {
-              objAppWithAppeals.appealStatusBar = [...this.appealstages];
+              objAppWithAppeals.appealStatusBar = [...JSON.parse(JSON.stringify(this.appealstages))];
             }
 
             objAppWithAppeals.appealStatusBar.forEach((objStatItem) => {
-              const statusMatch =
-                objApp.status &&
-                objStatItem.label?.toLowerCase() ===
-                  objApp.status.toLowerCase();
+              if (objAppWithAppeals.caseEligibility === 'Eligible') {
+                objStatItem.isCompleted = objAppWithAppeals.appeals.find(a => a.appealType === 'Eligibility')
 
-              if (statusMatch) {
-                objStatItem.currentStep = true;
-                isFound = true;
-                this.matchStatusFound = true;
-
-                // Determine statusColor based on logic
-                // if (['Ineligible', 'Withdrawn'].includes(objApp.stage || '')) {
-                //   objApp.statusColor = '#E25E63';
-                // } else if (
-                //   objApp.status?.toLowerCase().includes('decision made') &&
-                //   objApp.stage?.toLowerCase().includes('progress')
-                // ) {
-                //   objApp.statusColor = '#FDCB52';
-                // } else {
-                //   objApp.statusColor = objStatItem.statusColor;
-                // }
+                // @TODO : Include the logic to check the amount appeal status
+                ?.caseEligibilityAppeal?.activeStage?.name?.toLowerCase() === objStatItem.label.toLowerCase() ? true : false;
+                console.log(objAppWithAppeals.caseNumber, objAppWithAppeals.appeals.find(a => a.appealType === 'Eligibility')
+                ?.caseEligibilityAppeal?.activeStage?.name?.toLowerCase(), objStatItem.label.toLowerCase(), objStatItem.isCompleted);
               }
-
-              // Fallback if status not matched
-              if (!isFound) {
-                objStatItem.isCompleted = true;
-              }
-
-              // Final step validation
-              if (objStatItem.isFinalStep) {
-                if (!isFound) {
-                  objApp.isErrorInStatus = true;
-                } else if (statusMatch) {
-                  objStatItem.isCompleted = true;
-                }
-              }
+              
             });
-            // #############################################################################################
-
+            
             lstDataModified.push(objApp);
           });
 

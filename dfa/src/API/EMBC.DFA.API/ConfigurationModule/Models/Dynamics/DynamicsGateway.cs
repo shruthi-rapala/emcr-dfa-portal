@@ -360,19 +360,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "incidentid", "ticketnumber", "dfa_datefileclosed", "dfa_eligibilitystatus"
                     }
                 });
-                //var lstAppeal = await api.GetList<dfa_appeal>("dfa_appeals", new CRMGetListOptions
-                //{
-                //    Select = new[]
-                //    {
-                //       "dfa_appealstatus",
-                //       "dfa_appealid",
-                //       "dfa_appealtype",
-                //       "dfa_reason",
-                //       "_dfa_caseid_value",
-                //       "dfa_dateappealdecisionmade"
-                //    },
-                //    //Filter = $"_dfa_caseid_value eq {caseId}"
-                //});
+
 
                 var list = await api.GetList<dfa_appapplication>("dfa_appapplications", new CRMGetListOptions
                 {
@@ -400,8 +388,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 {
                     if (app._dfa_casecreatedid_value == null) continue; // Skip if case created id is null
                     var caseId = Guid.Parse(app._dfa_casecreatedid_value);
-                    var appeals = repository.Query(new CaseEligibilityAppealQuery { CaseId = caseId });
+                    // Load List of Case Eligibility Appeals for the case
+
+                    //if (app.dfa_eligibilitystatus == "Ineligible")
+                    //{
+                    var appeals = repository.Query(new AppealQuery { CaseId = caseId });
                     app.dfa_appeal = mapper.Map<IEnumerable<dfa_appeal>>(appeals); // Assign the list of mapped appeals to the application
+                    //}
+
+                    #TODO WIP until the dynamics team decides on the  eligibility status fields
+                    // Load List of Paid Amount Appeals
+                    //if (app.dfa_eligibilitystatus == "Eligible")
+                    //{
+                    //    var amountAppeals = repository.QueryAmountPaidAppeal(new AppealQuery { CaseId = caseId });
+                    //    app.dfa_appeal = mapper.Map<IEnumerable<dfa_appeal>>(amountAppeals);
+                    //}
                 }
 
                 var lstApps = (from objApp in list.List
