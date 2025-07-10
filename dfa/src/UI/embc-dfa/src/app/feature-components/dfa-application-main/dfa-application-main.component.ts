@@ -527,7 +527,7 @@ export class DFAApplicationMainComponent
           this.form$.unsubscribe();
         }
         stepper.next();
-        this.form.markAllAsTouched();
+        if (this.form) this.form.markAllAsTouched();
       },
       error => {
         console.error(error);
