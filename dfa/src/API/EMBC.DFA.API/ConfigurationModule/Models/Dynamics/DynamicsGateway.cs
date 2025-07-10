@@ -394,9 +394,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     //{
                     var appeals = repository.Query(new AppealQuery { CaseId = caseId });
                     app.dfa_appeal = mapper.Map<IEnumerable<dfa_appeal>>(appeals); // Assign the list of mapped appeals to the application
-                    //}
+                                                                                   //}
 
-                    #TODO WIP until the dynamics team decides on the  eligibility status fields
+                    //#TODO WIP until the dynamics team decides on the  eligibility status fields
                     // Load List of Paid Amount Appeals
                     //if (app.dfa_eligibilitystatus == "Eligible")
                     //{
