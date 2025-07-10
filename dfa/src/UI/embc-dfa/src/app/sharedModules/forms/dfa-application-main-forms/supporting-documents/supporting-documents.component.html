@@ -332,7 +332,7 @@
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="Financial"
             excludeFileTypes="[]"
-            (saveFileUpload)="saveRequiredForm($event)"
+            (saveFileUpload)="saveRequiredForm($event, 'directorsListingFileUpload')"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('directorsListingFileUpload')"
           ></app-dfa-attachment>
           <app-loader
@@ -362,7 +362,7 @@
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="Financial"
             excludeFileTypes="[]"
-            (saveFileUpload)="saveRequiredForm($event)"
+            (saveFileUpload)="saveRequiredForm($event, 'registrationProofFileUpload')"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('registrationProofFileUpload')"
           ></app-dfa-attachment>
           <app-loader
@@ -392,7 +392,7 @@
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="Financial"
             excludeFileTypes="[]"
-            (saveFileUpload)="saveRequiredForm($event)"
+            (saveFileUpload)="saveRequiredForm($event, 'structureAndPurposeFileUpload')"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('structureAndPurposeFileUpload')"
           ></app-dfa-attachment>
           <app-loader
