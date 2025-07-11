@@ -282,7 +282,7 @@
           allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
           fileType="Cleanup"
           excludeFileTypes="[]"
-          (saveFileUpload)="saveNewCleanupLogFile($event)"
+          (saveFileUpload)="saveNewCleanupLogFile($event,'cleanupFileUpload')"
           (cencelFileUpload)="cancelNewCleanupLogFile()"
           [fileUpload]="formCreationService.fileUploadsForm.value.get('cleanupFileUpload')"
         ></app-dfa-attachment>

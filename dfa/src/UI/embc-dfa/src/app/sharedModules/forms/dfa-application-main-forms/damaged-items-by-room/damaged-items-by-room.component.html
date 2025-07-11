@@ -206,7 +206,7 @@
             allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
             fileType="DamagePhoto"
             excludeFileTypes="[]"
-            (saveFileUpload)="saveDamagePhotos($event)"
+            (saveFileUpload)="saveDamagePhotos($event,'damagePhotoFileUpload')"
             (cencelFileUpload)="cancelDamagePhotos()"
             [fileUpload]="formCreationService.fileUploadsForm.value.get('damagePhotoFileUpload')"
           ></app-dfa-attachment>
