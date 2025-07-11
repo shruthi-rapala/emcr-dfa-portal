@@ -321,10 +321,11 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
     return invalid?error:null;
   }
 
-  saveSupportingFiles(fileUpload: FileUpload): void {
+  saveSupportingFiles(fileUpload: FileUpload, fileUploadFormGroup : string): void {
       // dont allow same filename twice
       let fileUploads = this.formCreationService.fileUploadsForm.value.get('fileUploads').value;
       if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
+        this.formCreationService.fileUploadsForm.value.get(fileUploadFormGroup).reset();
         this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
         return;
       }
@@ -338,6 +339,7 @@ export default class SupportingDocumentsComponent implements OnInit, OnDestroy {
           if (fileUploads) fileUploads.push(fileUpload);
           else fileUploads = [ fileUpload ];
           this.formCreationService.fileUploadsForm.value.get('fileUploads').setValue(fileUploads);
+          this.formCreationService.fileUploadsForm.value.get(fileUploadFormGroup).reset();
           this.showSupportingFileForm = !this.showSupportingFileForm;
           if (fileUpload.requiredDocumentType == Object.keys(this.RequiredDocumentTypes)[Object.values(this.RequiredDocumentTypes).indexOf(this.RequiredDocumentTypes.TenancyAgreement)])
             this.supportingDocumentsForm.get('hasCopyOfARentalAgreementOrLease').setValue(true);

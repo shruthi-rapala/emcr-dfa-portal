@@ -60,6 +60,11 @@ export class SignatureComponent implements AfterViewInit, OnChanges {
         // Always update when we get a valid initial value
         this.signatureFormGroup.get('dateSigned')?.setValue(dateValue);
       }
+      else {
+        // If the initialDateSigned is not provided, set it to today's date
+        const today = new Date();
+        this.signatureFormGroup.get('dateSigned')?.setValue(today);
+      }
     }
 
     // Set initial signedName using the form group
