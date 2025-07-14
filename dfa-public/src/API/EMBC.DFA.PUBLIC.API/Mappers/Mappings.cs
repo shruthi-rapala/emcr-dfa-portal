@@ -746,6 +746,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.DecisionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_decisiondate).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_decisiondate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 .ForMember(d => d.ClaimType, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimtype) ? GetEnumDescription((ClaimTypeOptionSet)Convert.ToInt32(s.dfa_claimtype)) : null))
                 .ForMember(d => d.IsAdjustmentClaim, opts => opts.MapFrom(s => s.dfa_isadjustmentclaim))
+                .ForMember(d => d.CodingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
                 .ForMember(d => d.ClaimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal));
 
             CreateMap<dfa_claimappeal, CurrentProjectClaimAppeal>()
@@ -776,6 +777,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.claimType, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimtype) ? GetEnumDescription((ClaimTypeOptionSet)Convert.ToInt32(s.dfa_claimtype)) : null))
                 .ForMember(d => d.isAdjustmentClaim, opts => opts.MapFrom(s => s.dfa_isadjustmentclaim))
                 .ForMember(d => d.lateAppealAllowed, opts => opts.MapFrom(s => s.dfa_lateappealallowed))
+                .ForMember(d => d.codingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
                 .ForMember(d => d.dateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate));
 
             CreateMap<dfa_appapplication, CurrentApplication>()
