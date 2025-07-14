@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
+using EMBC.Database.Model;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.PDF;
 using EMBC.ESS.Shared.Contracts.Metadata;
@@ -1394,7 +1395,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_bpfclosedate", "dfa_onetimedeductionamount",
                         "dfa_paidclaimamount",  "dfa_decisioncopy",
                         "dfa_advanceddrawdownamount", "dfa_decisiondate",
-                        "dfa_claimtype", "dfa_isadjustmentclaim"
+                        "dfa_claimtype", "dfa_isadjustmentclaim", "dfa_codingblocksubmissionstatus"
                     },
                     Filter = $"_dfa_recoveryplanid_value eq {projectId}"
                 });
@@ -1441,6 +1442,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                      dfa_decisiondate = objClaim.dfa_decisiondate,
                                      dfa_claimtype = objClaim.dfa_claimtype,
                                      dfa_isadjustmentclaim = objClaim.dfa_isadjustmentclaim,
+                                     dfa_codingblocksubmissionstatus = objClaim.dfa_codingblocksubmissionstatus,
                                      dfa_claimappeal = objClaim.dfa_claimappeal
 
                                  }).AsEnumerable().OrderByDescending(m => m.createdon);
@@ -1494,7 +1496,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_totaleligiblegst", "dfa_totaloftotaleligible", "dfa_totalapproved", "dfa_lessfirst1000",
                         "dfa_costsharing", "dfa_eligiblepayable", "dfa_totalpaid", "dfa_claimpaiddate",
                         "dfa_claimtotal", "dfa_paidclaimamount", "dfa_onetimedeductionamount", "dfa_claimbpfstages", "dfa_claimbpfsubstages", "dfa_decisioncopy",
-                        "dfa_advanceddrawdownamount", "dfa_decisiondate",  "dfa_claimtype", "dfa_isadjustmentclaim", "dfa_lateappealallowed", "dfa_bpfclosedate"
+                        "dfa_advanceddrawdownamount", "dfa_decisiondate",  "dfa_claimtype", "dfa_isadjustmentclaim", "dfa_lateappealallowed", "dfa_bpfclosedate",
+                        "dfa_codingblocksubmissionstatus"
                     },
                     Filter = $"dfa_projectclaimid eq {claimId}"
                 });
@@ -1528,6 +1531,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_isadjustmentclaim = objApp.dfa_isadjustmentclaim,
                                    dfa_bpfclosedate = objApp.dfa_bpfclosedate,
                                    dfa_lateappealallowed = objApp.dfa_lateappealallowed,
+                                   dfa_codingblocksubmissionstatus = objApp.dfa_codingblocksubmissionstatus
                                    
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
