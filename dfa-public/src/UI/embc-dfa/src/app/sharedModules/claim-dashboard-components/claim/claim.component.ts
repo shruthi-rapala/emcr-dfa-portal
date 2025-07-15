@@ -277,7 +277,7 @@ export class DfaDashClaimComponent implements OnInit {
     })
 
     const openClaims = this.lstClaims
-    .filter(x => x.openClaim === true && (x.claimType !== this.ClaimTypeEnum.AdvancedPayment || (x.claimType === this.ClaimTypeEnum.AdvancedPayment && x.claimDecision === this.DecisionEnum.Approved) ) );
+    .filter(x => x.openClaim === true && x.codingBlockSubmissionStatus !== "Cancelled" && (x.claimType !== this.ClaimTypeEnum.AdvancedPayment || (x.claimType === this.ClaimTypeEnum.AdvancedPayment && x.claimDecision === this.DecisionEnum.Approved) ) );
 
     const closedClaims = this.lstClaims
     .filter(x => x.openClaim === false && x.codingBlockSubmissionStatus !== "Cancelled");
