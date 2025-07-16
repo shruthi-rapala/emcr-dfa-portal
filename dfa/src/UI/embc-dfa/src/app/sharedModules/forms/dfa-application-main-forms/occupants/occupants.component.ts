@@ -110,8 +110,8 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     this.dfaApplicationMainDataService.changeViewOrEdit
       .pipe(takeUntil(this.destroy$))
       .subscribe((vieworedit) => {
-      this.vieworedit = vieworedit;
-    });
+        this.vieworedit = vieworedit;
+      });
   }
 
   private destroy$ = new Subject<void>();
@@ -121,19 +121,19 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
     // Call the API manually and wait for it to finish
     this.dfaApplicationMainDataService
-    .loadApplicationById(this.dfaApplicationMainDataService.getApplicationId())
-    .pipe(take(1))
-    .subscribe({
-      next: () => {
-        this.initFullTimeOccupantsForm();
-        this.initOtherContactsForm();
-        this.initSecondaryApplicantsForm();
-      },
-      error: (err) => {
-        console.error('Error loading application', err);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
-      }
-    });
+      .loadApplicationById(this.dfaApplicationMainDataService.getApplicationId())
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.initFullTimeOccupantsForm();
+          this.initOtherContactsForm();
+          this.initSecondaryApplicantsForm();
+        },
+        error: (err) => {
+          console.error('Error loading application', err);
+          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        }
+      });
   }
 
   private newApplicationRemoveCache(): void {
@@ -157,7 +157,6 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
               const option = application.appTypeInsurance.applicantOption;
               const keys = Object.keys(this.ApplicantOptions);
               const values = Object.values(this.ApplicantOptions);
-
               this.isResidentialTenant = (option == keys[values.indexOf(this.ApplicantOptions.ResidentialTenant)]);
               this.isHomeowner = (option == keys[values.indexOf(this.ApplicantOptions.Homeowner)]);
               this.isSmallBusinessOwner = (option == keys[values.indexOf(this.ApplicantOptions.SmallBusinessOwner)]);
@@ -182,7 +181,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
                 }
               }
             }
-        });
+          });
         this.fullTimeOccupantsForm.get('onlyOccupantInHome')
           .valueChanges
           .pipe(takeUntil(this.destroy$))
@@ -198,14 +197,14 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   private initSecondaryApplicantsForm() {
     this.secondaryApplicantsForm$ = this.formCreationService.getSecondaryApplicantsForm()
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(form => {
-      this.secondaryApplicantsForm = form;
-      this.secondaryApplicantsForm
-        .get('addNewSecondaryApplicantIndicator')
-        .valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateSecondaryApplicantOnVisibility());
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(form => {
+        this.secondaryApplicantsForm = form;
+        this.secondaryApplicantsForm
+          .get('addNewSecondaryApplicantIndicator')
+          .valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateSecondaryApplicantOnVisibility());
         this.getSecondaryApplicantsForApplication(this.dfaApplicationMainDataService.getApplicationId());
-    });
+      });
   }
 
   private initOtherContactsForm() {
@@ -291,7 +290,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       applicationId = this.dfaApplicationMainDataService.getApplicationId();
     }
 
-    this.secondaryApplicantsService.secondaryApplicantGetSecondaryApplicants({applicationId: applicationId}).subscribe({
+    this.secondaryApplicantsService.secondaryApplicantGetSecondaryApplicants({ applicationId: applicationId }).subscribe({
       next: (secondaryApplicants) => {
         this.secondaryApplicantsData = secondaryApplicants;
         this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
@@ -309,7 +308,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       applicationId = this.dfaApplicationMainDataService.getApplicationId();
     }
 
-    this.otherContactsService.otherContactGetOtherContacts({applicationId: applicationId})
+    this.otherContactsService.otherContactGetOtherContacts({ applicationId: applicationId })
       .subscribe({
         next: (otherContacts) => {
           this.otherContactsData = otherContacts;
@@ -337,7 +336,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
           console.error(error);
           document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
-    });
+      });
   }
 
   getFullTimeOccupantsForApplication(applicationId: string) {
@@ -345,7 +344,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       applicationId = this.dfaApplicationMainDataService.getApplicationId();
     }
 
-    this.fullTimeOccupantsService.fullTimeOccupantGetFullTimeOccupants({applicationId: applicationId})
+    this.fullTimeOccupantsService.fullTimeOccupantGetFullTimeOccupants({ applicationId: applicationId })
       .subscribe({
         next: (fullTimeOccupants) => {
           this.fullTimeOccupantsData = fullTimeOccupants;
@@ -357,7 +356,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
           console.error(error);
           document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
-    });
+      });
   }
 
   addFullTimeOccupant(): void {
@@ -371,21 +370,21 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   saveFullTimeOccupants(): void {
     if (this.fullTimeOccupantsForm.get('fullTimeOccupant').status === 'VALID') {
-      this.fullTimeOccupantsService.fullTimeOccupantUpsertDeleteFullTimeOccupant({body: this.fullTimeOccupantsForm.get('fullTimeOccupant').getRawValue()})
+      this.fullTimeOccupantsService.fullTimeOccupantUpsertDeleteFullTimeOccupant({ body: this.fullTimeOccupantsForm.get('fullTimeOccupant').getRawValue() })
         .subscribe({
-        next: (fullTimeOccupantId) => {
-        this.fullTimeOccupantsForm.get('fullTimeOccupant').get('id').setValue(fullTimeOccupantId);
-        this.fullTimeOccupantsData.push(this.fullTimeOccupantsForm.get('fullTimeOccupant').value);
-        this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
-        this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
-        this.showFullTimeOccupantForm = !this.showFullTimeOccupantForm;
-        this.disableOnlyOccupant = this.fullTimeOccupantsDataSource.getValue().length > 0
-      },
-      error: (error) => {
-        console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
-      }
-    });
+          next: (fullTimeOccupantId) => {
+            this.fullTimeOccupantsForm.get('fullTimeOccupant').get('id').setValue(fullTimeOccupantId);
+            this.fullTimeOccupantsData.push(this.fullTimeOccupantsForm.get('fullTimeOccupant').value);
+            this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
+            this.fullTimeOccupantsForm.get('fullTimeOccupants').setValue(this.fullTimeOccupantsData);
+            this.showFullTimeOccupantForm = !this.showFullTimeOccupantForm;
+            this.disableOnlyOccupant = this.fullTimeOccupantsDataSource.getValue().length > 0
+          },
+          error: (error) => {
+            console.error(error);
+            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          }
+        });
     } else {
       this.fullTimeOccupantsForm.get('fullTimeOccupant').markAllAsTouched();
     }
@@ -399,7 +398,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   deleteFullTimeOccupantRow(index: number): void {
     this.fullTimeOccupantsData[index].deleteFlag = true;
-    this.fullTimeOccupantsService.fullTimeOccupantUpsertDeleteFullTimeOccupant({body: this.fullTimeOccupantsData[index]}).subscribe({
+    this.fullTimeOccupantsService.fullTimeOccupantUpsertDeleteFullTimeOccupant({ body: this.fullTimeOccupantsData[index] }).subscribe({
       next: () => {
         this.fullTimeOccupantsData.splice(index, 1);
         this.fullTimeOccupantsDataSource.next(this.fullTimeOccupantsData);
@@ -517,7 +516,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
             console.error(error);
             document.location.href = 'https://dfa.gov.bc.ca/error.html';
           }
-      });
+        });
     }
   }
 
@@ -566,7 +565,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   deleteOtherContactRow(index: number): void {
     this.otherContactsData[index].deleteFlag = true;
-    this.otherContactsService.otherContactUpsertDeleteOtherContact({body: this.otherContactsData[index]})
+    this.otherContactsService.otherContactUpsertDeleteOtherContact({ body: this.otherContactsData[index] })
       .subscribe({
         next: () => {
           this.otherContactsData.splice(index, 1);
@@ -597,7 +596,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
           console.error(error);
           document.location.href = 'https://dfa.gov.bc.ca/error.html';
         }
-    });
+      });
   }
 
   addSecondaryApplicant(): void {
@@ -627,7 +626,7 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   saveSecondaryApplicants(): void {
     if (this.secondaryApplicantsForm.get('secondaryApplicant').status === 'VALID') {
-      this.secondaryApplicantsService.secondaryApplicantUpsertDeleteSecondaryApplicant({body: this.secondaryApplicantsForm.get('secondaryApplicant').getRawValue()}).subscribe({
+      this.secondaryApplicantsService.secondaryApplicantUpsertDeleteSecondaryApplicant({ body: this.secondaryApplicantsForm.get('secondaryApplicant').getRawValue() }).subscribe({
         next: (secondaryApplicantId) => {
           this.secondaryApplicantsForm.get('secondaryApplicant').get('id').setValue(secondaryApplicantId);
           this.secondaryApplicantsData.push(this.secondaryApplicantsForm.get('secondaryApplicant').value);
@@ -652,16 +651,16 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
 
   deleteSecondaryApplicantRow(index: number): void {
     this.secondaryApplicantsData[index].deleteFlag = true;
-    this.secondaryApplicantsService.secondaryApplicantUpsertDeleteSecondaryApplicant({body: this.secondaryApplicantsData[index]}).subscribe({
+    this.secondaryApplicantsService.secondaryApplicantUpsertDeleteSecondaryApplicant({ body: this.secondaryApplicantsData[index] }).subscribe({
       next: () => {
-          this.secondaryApplicantsData.splice(index, 1);
-          this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
-          this.secondaryApplicantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);
-          if (this.secondaryApplicantsData.length === 0) {
-            this.secondaryApplicantsForm
+        this.secondaryApplicantsData.splice(index, 1);
+        this.secondaryApplicantsDataSource.next(this.secondaryApplicantsData);
+        this.secondaryApplicantsForm.get('secondaryApplicants').setValue(this.secondaryApplicantsData);
+        if (this.secondaryApplicantsData.length === 0) {
+          this.secondaryApplicantsForm
             .get('addNewSecondaryApplicantIndicator')
             .setValue(false);
-          }
+        }
       },
       error: (error) => {
         console.error(error);
@@ -782,4 +781,4 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
   }
 }
 
-class OccupantsModule {}
+class OccupantsModule { }
