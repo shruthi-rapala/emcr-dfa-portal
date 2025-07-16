@@ -42,7 +42,7 @@
                   <td *matCellDef="let element; let index = index" mat-cell>
                     <button
                       class="edit-image"
-                      *ngIf="vieworedit !== 'viewOnly'"
+                      *ngIf="vieworedit === 'add' || vieworedit === 'update'"
                       mat-icon-button
                       aria-label="Edit"
                       (click)="editDamagedRoomRow(element, index)"
@@ -56,7 +56,7 @@
                     </button>&nbsp;
                     <button
                       class="delete-image"
-                      *ngIf="vieworedit !== 'viewOnly'"
+                      *ngIf="vieworedit === 'add' || vieworedit === 'update'"
                       mat-icon-button
                       aria-label="Remove"
                       (click)="deleteDamagedRoomRow(index)"
@@ -267,7 +267,7 @@
                   mat-icon-button
                   aria-label="Remove"
                   (click)="confirmDeleteDamagePhotoRow(element)"
-                  *ngIf="vieworedit !== 'viewOnly'"
+                  *ngIf="vieworedit === 'add' || vieworedit === 'update'"
                 >
                   <img src="/assets/images/delete.svg" height="35" width="35" />
                   <img src="/assets/images/delete_onhover.svg" height="35" width="35"/>

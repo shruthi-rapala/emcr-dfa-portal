@@ -68,7 +68,6 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   initFileUploadForm() {
     this.fileUpload.reset();
     this.updateFileUploadFormOnVisibility();
-    console.log(this.fileUpload);
   }
 
   // Preserve original property order
