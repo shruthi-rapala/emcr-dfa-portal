@@ -326,8 +326,11 @@ export class DFAApplicationMainComponent
 
     this.signAndSubmitForm
       .get('applicantSignature')
-      .valueChanges.pipe(distinctUntilChanged())
-      .subscribe((value) => {
+      .valueChanges.pipe(
+        distinctUntilChanged(
+          (prev, curr) => prev.dateSigned?.toISOString?.() === curr.dateSigned?.toISOString?.() && prev.signedName === curr.signedName
+        )
+      ).subscribe((value) => {
         if (this.vieworedit === 'view' || this.vieworedit === 'edit' || this.vieworedit === 'viewOnly') {
           this.dfaApplicationMainDataService.setViewOrEdit(this.vieworedit);
 
@@ -339,6 +342,7 @@ export class DFAApplicationMainComponent
 
             // Only set the target step index for edit mode
             if (this.vieworedit === 'edit') {
+              console.log("Edit Step:", this.editstep);
               this.dfaApplicationMainStepper.selectedIndex = Number(this.editstep);
             }
           }, 100);
@@ -440,7 +444,8 @@ export class DFAApplicationMainComponent
    * @param stepper stepper instance
    */
   stepChanged(event: any, stepper: MatStepper): void {
-    stepper.selected.interacted = false;
+    console.trace("stepChanged", this.dfaApplicationMainStepper.selectedIndex);
+    //  stepper.selected.interacted = false;
 
     this.validateForms();
     setTimeout(() => {
