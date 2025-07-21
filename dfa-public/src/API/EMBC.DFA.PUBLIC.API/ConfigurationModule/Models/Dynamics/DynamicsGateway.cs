@@ -1233,9 +1233,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     {
                         project.hasAmendments = false;
                     }
-
-                    // TODO uncomment and test project appeal timeline
-                    //project.dfa_projectappeal = repository.Query(project.dfa_projectid);
                 }
 
                 var lstApps = (
