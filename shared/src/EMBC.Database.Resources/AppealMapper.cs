@@ -26,7 +26,7 @@ public class AppealMapper : Profile
 
         CreateMap<Appeal, DFA_Appeal>()
             .ForMember(dest => dest.DFA_AppealId, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.DFA_CaseId, opt => opt.MapFrom(src => new EntityReference("incident", src.CaseId)))
+            .ForMember(dest => dest.DFA_CaseId, opt => opt.MapFrom(src => new EntityReference("incident", Guid.Parse(src.CaseId))))
             .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => (DFA_Appeal_StateCode)(int)src.StateCode))
             .ForMember(dest => dest.DFA_AppealStatus, opt => opt.Ignore())
             .ForMember(dest => dest.DFA_Reason, opt => opt.MapFrom(src => src.Reason))
