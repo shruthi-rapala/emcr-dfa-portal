@@ -1,5 +1,8 @@
 name: Build Private Portal UI
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -10,9 +13,6 @@ on:
       - ".github/workflows/cd-private-portal-ui.yaml"
 
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 env:
   DOCKER_CONTEXT_DIRECTORY: .

@@ -2,7 +2,7 @@
 name: Build Landing Page
 
 permissions:
-  contents: read
+  contents: write
 
 on:
   push:
@@ -17,7 +17,6 @@ env:
   DOCKER_CONTEXT_DIRECTORY: ./landing-page
   IMAGE_NAME: dfa-landing-page
   IMAGE_REGISTRY: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}
-
 
 jobs:
   build:
@@ -50,7 +49,7 @@ jobs:
 
       - name: Create version environment variable
         run: echo "VERSION=$(echo '${{ steps.tag_version.outputs.new_tag }}' | awk -F-v '{print $NF}')" >> $GITHUB_ENV
-  
+
       - name: Build and push dfa-portal-ui
         uses: docker/build-push-action@v6
         with:

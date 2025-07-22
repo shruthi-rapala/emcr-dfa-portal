@@ -2,7 +2,7 @@
 name: Build PDF Service
 
 permissions:
-  contents: read
+  contents: write
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
     paths:
       - "pdf-service/**"
       - ".github/workflows/cd-pdf-service.yaml"
-  
+
   workflow_dispatch:
 
 env:
@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-    
+
       - name: Set up Docker Buildx tooling
         uses: docker/setup-buildx-action@v3
 

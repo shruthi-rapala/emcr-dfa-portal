@@ -1,7 +1,7 @@
 name: Build Public Portal UI
 
 permissions:
-  contents: read
+  contents: write
 
 on:
   push:

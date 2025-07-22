@@ -1,19 +1,22 @@
 #CD pipeline for dfa api
 name: cd-dfae-project-landing-page
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
     inputs:
       environment:
-       description: Please select the environment for Landing Page
-       required: true
-       default: 'dev'
-       type: choice
-       options:
-       - dev
-       - test
-       - training
-       - prod
+        description: Please select the environment for Landing Page
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - training
+          - prod
 
 env:
   IMAGE_NAME: dfa-landing-page
@@ -61,7 +64,6 @@ jobs:
           ls -ltr
           cat index.html |grep  "link-light-blue register-dfa-link"
 
-
       - name: Build Image
         working-directory: ${{env.WORKING_DIRECTORY}}
         run: |
@@ -87,7 +89,7 @@ jobs:
 
       - name: Update Helm values in gitops
         id: helm
-        if: steps.gitops.outcome == 'success'  # Only run if the previous step (publish) was successful
+        if: steps.gitops.outcome == 'success' # Only run if the previous step (publish) was successful
         run: |
           # Clone the GitOps deployment configuration repository
           # Navigate to the directory containing your Helm values file for the environment develop -> DEV, test -> test and

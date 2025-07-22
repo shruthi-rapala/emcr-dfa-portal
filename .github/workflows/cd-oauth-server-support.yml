@@ -1,5 +1,8 @@
 name: Build oauth-server
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -8,6 +11,7 @@ on:
     paths:
       - "oauth-server/src/API/**"
       - ".github/workflows/cd-oauth-server-project.yml"
+
   workflow_dispatch:
 
 env:
@@ -40,7 +44,7 @@ jobs:
           # Set image repository and change all uppercase to lowercase
           DOCKER_REPOSITORY=$(echo ${{ secrets.DOCKER_SUPPORT_REGISTRY }}/${{ env.IMAGE_NAME }} | tr '[A-Z]' '[a-z]')
           echo "::set-output name=docker-repository::$DOCKER_REPOSITORY"
-          
+
       - name: Pull image
         env:
           DOCKER_REPOSITORY: ${{ steps.set_image_repository.outputs.docker-repository }}
@@ -60,10 +64,10 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           VERSION=$(echo "${{ steps.tag_version.outputs.new_tag }}" | awk -F=v '{print $NF}')
- 
+
           echo DOCKER_REPOSITORY=${{ env.DOCKER_REPOSITORY }}
           echo VERSION=$VERSION          
- 
+
           tar -czh . | docker build --load --tag ${{ env.DOCKER_REPOSITORY }}:latest --cache-from=${{ env.DOCKER_REPOSITORY }}:latest --build-arg VERSION=$VERSION -
           docker tag ${{ env.DOCKER_REPOSITORY }}:latest ${{ env.DOCKER_REPOSITORY }}:$VERSION
 

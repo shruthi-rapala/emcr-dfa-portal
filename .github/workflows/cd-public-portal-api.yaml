@@ -1,5 +1,8 @@
 name: Build Public Portal API
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -10,9 +13,6 @@ on:
       - ".github/workflows/cd-public-portal-api.yaml"
 
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 env:
   IMAGE_NAME: dfa-portal-api-public
@@ -41,7 +41,7 @@ jobs:
           echo "::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)"
           echo "Short SHA: $SHORT_SHA"
 
-      - name: Build Image        
+      - name: Build Image
         run: |
           docker build -t ${{env.IMAGE_NAME}} -f ./dfa-public/src/API/Dockerfile .
 
@@ -52,5 +52,3 @@ jobs:
       - name: Docker Push
         run: |
           docker push ${{ secrets.DOCKER_PROJECT_REGISTRY }}/${{env.IMAGE_NAME}}:${{ env.IMAGE_TAG }}
-
-
