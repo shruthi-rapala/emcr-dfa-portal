@@ -71,6 +71,7 @@ namespace EMBC.DFA.API.Controllers
                 {
                     var currentProjectAppeal = workflow.ProjectAppeals.Last();
                     project.ActiveStage = new CurrentProjectAppeal();
+                    project.ActiveStage.CompletedOn = currentProjectAppeal.ProjectAppealEligibility.CompletedOn;
                     project.ActiveStage.Stage = currentProjectAppeal.ProjectAppealEligibility.ActiveStage.Name;
                     project.ActiveStage.Status = projectAppealService.MapStageNote(currentProjectAppeal);
                     // NOTE currently, to be consistent, the stages are hard-coded
@@ -260,6 +261,7 @@ namespace EMBC.DFA.API.Controllers
     {
         public string id { get; set; }
         public DateTime? SubmissionDate { get; set; }
+        public DateTime? CompletedOn { get; set; }
         public string Status { get; set; }
         public string Stage { get; set; }
     }
