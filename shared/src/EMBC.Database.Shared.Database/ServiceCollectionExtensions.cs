@@ -1,5 +1,5 @@
 ﻿namespace EMBC.Database;
-
+﻿using Microsoft.PowerPlatform.Dataverse.Client.Model;
 public static class ServiceCollectionExtensions
 {
     static IConfiguration _configuration;
