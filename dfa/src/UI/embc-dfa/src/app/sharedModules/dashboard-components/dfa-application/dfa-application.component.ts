@@ -277,9 +277,10 @@ export class DfaApplicationComponent implements OnInit {
           var initialList = lstData;
           lstDataUnModified.push(initialList);
           lstData.forEach((objApp, i) => {
-            let isFound = false;
+          //#TODO:Change this back to false once the status is resolved
+            let isFound = true;
             var jsonVal = JSON.stringify(this.items);
-
+        
             if (
               objApp.status &&
               objApp.status.toLowerCase().indexOf('appeal') > -1
@@ -484,9 +485,15 @@ export class DfaApplicationComponent implements OnInit {
         disableClose: true
       })
       .afterClosed()
-      .subscribe((result) => {
-        //if (result === 'confirm') {
-        //}
+      .subscribe((appealId) => {
+        if (!appealId) {
+          return;
+        }   
+        this.router.navigate([`/dfa-appeal/${appealId}/edit`], {
+            queryParams: {
+              applicationId: applItem.applicationId
+            }
+          });
       });
   }
 
@@ -514,7 +521,11 @@ export class DfaApplicationComponent implements OnInit {
 
     this.dfaAppealDataService.setCaseDetails({...applItem, caseId, type });
     
-    this.router.navigate([`/dfa-appeal/${type}/${caseId}/${appeal.id}`]);
+    this.router.navigate([`/dfa-appeal/${appeal.id}/view`], {
+      queryParams: {
+        applicationId: applItem.applicationId
+      }
+    });
   }
 }
 

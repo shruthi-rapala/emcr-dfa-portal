@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { DFAAppealDataService } from 'src/app/feature-components/dfa-appeal/dfa-appeal-data.service';
+import { DfaApplicationMain } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-appeal-reason',
@@ -13,8 +14,9 @@ import { DFAAppealDataService } from 'src/app/feature-components/dfa-appeal/dfa-
 export default class AppealReasonComponent implements OnInit, OnDestroy {
   appealReasonForm: FormGroup;
   appealReasonForm$: Subscription;
-  caseDetails: any;
   appealType: string;
+  @Input() applicationDetails: DfaApplicationMain = this.appealDataService.getFullApplication();
+  @Input() caseDetails: any;
 
   constructor(
     private formCreationService: FormCreationService,
@@ -23,9 +25,8 @@ export default class AppealReasonComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Get case details from data service
-    this.caseDetails = this.appealDataService.getCaseDetails();
-    this.appealType = this.caseDetails?.type;
+    console.log("Application Details: ", this.applicationDetails);
+    // this.appealType = this.caseDetails?.type;
 
     this.cdr.detectChanges();
 

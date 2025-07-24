@@ -8,6 +8,7 @@ using EMBC.Database.Contract;
 using EMBC.Database.Model;
 using EMBC.Database.Resources;
 using EMBC.Database.Shared.Database;
+using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -116,20 +117,84 @@ namespace EMBC.DFA.API.Controllers
             var model = mapper.Map<AppealModel>(appeal);
             return Ok(model);
         }
+
+
+        ///// <summary>
+        ///// Create or update an appeal and return the appeal ID
+        ///// </summary>
+        ///// <param name="appealMain">The DFA appeal main information</param>
+        ///// <returns>Appeal ID</returns>
+        //[HttpPut("create")]
+        //[ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> CreateOrUpdateAppeal([FromBody] DFAAppealMain appealMain)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+        //    if (appealMain == null || appealMain.Appeal == null)
+        //        return BadRequest("Appeal details cannot be empty.");
+
+        //    if (!Enum.IsDefined(typeof(DFA_AppealType), appealMain.Appeal.Type))
+        //        return BadRequest("Type is required and must be a valid value.");
+
+        //    // Map DFAAppealMain to Appeal (DTO)
+        //    var mappedAppeal = mapper.Map<Appeal>(appealMain.Appeal);
+
+        //    Guid appealId;
+        //    if (appealMain.Id.HasValue && appealMain.Id.Value != Guid.Empty)
+        //    {
+        //        // Update scenario
+        //        mappedAppeal.Id = appealMain.Id.Value;
+        //        var updateResult = repository.Update(mappedAppeal);
+        //        if (!updateResult)
+        //            return BadRequest("Failed to update the appeal.");
+        //        appealId = mappedAppeal.Id; // Use the existing ID for updated appeal
+        //    }
+        //    else
+        //    {
+        //        // Create scenario
+        //        appealId = repository.Insert(mappedAppeal);
+        //    }
+
+        //    await UploadSignatureAnnotationAsync(
+        //        "dfa_appeal",
+        //        appealId,
+        //        appealMain.Appeal.SignAndSubmit?.ApplicantSignature,
+        //        "applicant_signature.png",
+        //        "Signature of Applicant",
+        //        "This is the uploaded applicant signature.");
+
+        //    await UploadSignatureAnnotationAsync(
+        //        "dfa_appeal",
+        //        appealId,
+        //        appealMain.Appeal.SignAndSubmit?.SecondaryApplicantSignature,
+        //        "secondary_applicant_signature.png",
+        //        "Signature of Secondary Applicant",
+        //        "This is the uploaded secondary applicant signature.");
+
+        //    return Ok(appealId);
+        //}
     }
+      
+
+    //public class DFAAppealMain
+    //{
+    //    public Guid? Id { get; set; }
+    //    public string? CaseId { get; set; }
+    //    public AppealModel? Appeal { get; set; }
+    //}
 
     public class AppealModel
     {
-        public Guid? ApplicationId { get; set; }
+       // public Guid? ApplicationId { get; set; }
         [Required]
-        public Guid CaseId { get; set; }
-        [Required]
-        public string Status { get; set; }
-        [Required]
-        public string Reason { get; set; }
-        [Required]
-        public DFA_AppealType Type { get; set; }
-        public SignAndSubmitModel SignAndSubmit { get; set; }
+        public Guid? CaseId { get; set; }
+       
+        public string? Status { get; set; }
+       
+        public string? Reason { get; set; }
+       
+        public DFA_AppealType? Type { get; set; }
+        public SignAndSubmitModel? SignAndSubmit { get; set; }
     }
 
     public class SignAndSubmitModel

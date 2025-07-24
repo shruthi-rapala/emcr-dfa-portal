@@ -10,6 +10,7 @@ import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog
 import { AppealSupportingDocumentForm, AppealSupportingDocumentsForm } from 'src/app/core/model/dfa-appeals-main.model';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { DFAAppealDataService } from 'src/app/feature-components/dfa-appeal/dfa-appeal-data.service';
+import { DfaApplicationMain } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -61,7 +62,9 @@ export default class SupportingDocumentsComponent implements OnInit {
   /**
    * The case record.
    */
-  caseDetails: any;
+
+  @Input() applicationDetails: DfaApplicationMain = this.dfaAppealDataService.getFullApplication();
+  @Input() caseDetails: any;
 
   constructor(
     private route: ActivatedRoute,

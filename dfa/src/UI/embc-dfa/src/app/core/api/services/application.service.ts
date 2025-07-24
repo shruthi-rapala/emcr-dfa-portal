@@ -17,11 +17,14 @@ import { applicationGetApplicationMain } from '../fn/application/application-get
 import { ApplicationGetApplicationMain$Params } from '../fn/application/application-get-application-main';
 import { applicationGetApplicationStart } from '../fn/application/application-get-application-start';
 import { ApplicationGetApplicationStart$Params } from '../fn/application/application-get-application-start';
+import { applicationGetCaseDetails } from '../fn/application/application-get-case-details';
+import { ApplicationGetCaseDetails$Params } from '../fn/application/application-get-case-details';
 import { applicationGetDfaApplications } from '../fn/application/application-get-dfa-applications';
 import { ApplicationGetDfaApplications$Params } from '../fn/application/application-get-dfa-applications';
 import { applicationUpdateApplication } from '../fn/application/application-update-application';
 import { ApplicationUpdateApplication$Params } from '../fn/application/application-update-application';
 import { CurrentApplication } from '../models/current-application';
+import { CurrentCase } from '../models/current-case';
 import { DfaApplicationStart } from '../models/dfa-application-start';
 
 @Injectable({ providedIn: 'root' })
@@ -192,6 +195,39 @@ export class ApplicationService extends BaseService {
   applicationGetDfaApplications(params?: ApplicationGetDfaApplications$Params, context?: HttpContext): Observable<Array<CurrentApplication>> {
     return this.applicationGetDfaApplications$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<CurrentApplication>>): Array<CurrentApplication> => r.body)
+    );
+  }
+
+  /** Path part for operation `applicationGetCaseDetails()` */
+  static readonly ApplicationGetCaseDetailsPath = '/api/applications/cases/:caseId';
+
+  /**
+   * Get case details by case ID.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `applicationGetCaseDetails()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetCaseDetails$Response(params?: ApplicationGetCaseDetails$Params, context?: HttpContext): Observable<StrictHttpResponse<CurrentCase>> {
+    return applicationGetCaseDetails(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get case details by case ID.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `applicationGetCaseDetails$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  applicationGetCaseDetails(params?: ApplicationGetCaseDetails$Params, context?: HttpContext): Observable<CurrentCase> {
+    return this.applicationGetCaseDetails$Response(params, context).pipe(
+      map((r: StrictHttpResponse<CurrentCase>): CurrentCase => r.body)
     );
   }
 

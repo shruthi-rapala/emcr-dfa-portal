@@ -46,6 +46,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<string> HandleCreateFileMetadataAsync(MetadataSubmissionEntity submission);
         Task<string> HandleDeleteFileMetadataAsync(MetadataDeleteParams parameters);
         Task<List<CurrentApplication>> HandleApplicationList(string profileId);
+        Task<dfa_incident_retrieve> HandleCaseDetails(Guid CaseId);
         Task<int> HandleEvents();
         Task<IEnumerable<dfa_event>> HandleOpenEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> HandleEffectedRegionCommunityList();
@@ -148,6 +149,13 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             var lstApps = await listsGateway.GetApplicationListAsync(profileId);
             var mappedApps = mapper.Map<List<CurrentApplication>>(lstApps);
             return mappedApps;
+        }
+
+        public async Task<dfa_incident_retrieve> HandleCaseDetails(Guid CaseId)
+        {
+            return await listsGateway.GetCaseDetailsListAsync(CaseId);
+            //var mappedApps = mapper.Map<List<CurrentApplication>>(lstApps);
+            //return mappedApps;
         }
 
         public async Task<string> HandleDamagedItemsAsync(dfa_appdamageditems_params objDamagedItems)

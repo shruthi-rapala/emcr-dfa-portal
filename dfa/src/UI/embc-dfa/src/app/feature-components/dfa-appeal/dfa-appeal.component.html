@@ -24,6 +24,7 @@
       <mat-step *ngFor="let step of steps" [stepControl]="form">
         <ng-template matStepLabel>{{ step.stepName }}</ng-template>
         <app-component-wrapper
+         *ngIf="isInitDone"
           [componentName]="step.component"
           [folderPath]="dfaAppealFolderPath"
         ></app-component-wrapper>

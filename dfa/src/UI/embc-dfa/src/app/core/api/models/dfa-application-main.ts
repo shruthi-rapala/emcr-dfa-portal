@@ -8,7 +8,9 @@ import { PropertyDamage } from '../models/property-damage';
 import { SignAndSubmit } from '../models/sign-and-submit';
 import { SupportingDocuments } from '../models/supporting-documents';
 export interface DfaApplicationMain {
+  applicationType?: string | null;
   cleanUpLog?: CleanUpLog | null;
+  createdon?: string | null;
   damagedPropertyAddress?: DamagedPropertyAddress | null;
   deleteFlag?: boolean;
   eventName?: string | null;
