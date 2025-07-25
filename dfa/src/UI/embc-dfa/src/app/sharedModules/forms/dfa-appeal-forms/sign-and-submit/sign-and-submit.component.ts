@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DfaApplicationMain } from 'src/app/core/api/models';
@@ -15,9 +15,10 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   signAndSubmitForm: UntypedFormGroup;
   signAndSubmitForm$: Subscription;
   isReadOnly: boolean = false;
-  caseDetails: any;
   fullApplication: DfaApplicationMain | undefined;
   private fullApplication$: Subscription;
+  @Input() applicationDetails: DfaApplicationMain = this.appealDataService.getFullApplication();
+  @Input() caseDetails: any;
 
   constructor(
     @Inject('formCreationService') private formCreationService: FormCreationService,

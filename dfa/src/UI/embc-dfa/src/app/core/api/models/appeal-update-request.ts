@@ -4,10 +4,12 @@
 
 import { DfaAppealType } from '../models/dfa-appeal-type';
 import { SignAndSubmitModel } from '../models/sign-and-submit-model';
-export interface AppealModel {
+export interface AppealUpdateRequest {
+  applicationId?: string | null;
   caseId: string;
-  reason?: string | null;
-  signAndSubmit?: SignAndSubmitModel | null;
-  status?: string | null;
-  type?: DfaAppealType | null;
+  id: string;
+  reason: string;
+  signAndSubmit?: SignAndSubmitModel;
+  status: string;
+  type: DfaAppealType;
 }

@@ -8,6 +8,7 @@ using EMBC.Database.Contract;
 using EMBC.Database.Model;
 using EMBC.Database.Resources;
 using EMBC.Database.Shared.Database;
+using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -116,10 +117,51 @@ namespace EMBC.DFA.API.Controllers
             var model = mapper.Map<AppealModel>(appeal);
             return Ok(model);
         }
+
+        /// <summary>
+        /// Create an appeal
+        /// </summary>
+        /// <param name="appeal">The appeal information</param>
+        /// <returns>appeal id</returns>
+        [HttpPost("update")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateAppeal([FromBody] AppealUpdateRequest appeal)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (appeal == null) return BadRequest("Appeal details cannot be empty.");
+
+            if (!Enum.IsDefined(typeof(DFA_AppealType), appeal.Type))
+                return BadRequest("Type is required and must be a valid value.");
+
+            var mappedAppeal = mapper.Map<Appeal>(appeal);
+
+            var updateAppeal = repository.Update(mappedAppeal);
+
+            await UploadSignatureAnnotationAsync(
+                "dfa_appeal",
+                appeal.Id,
+                appeal.SignAndSubmit?.ApplicantSignature,
+                "applicant_signature.png",
+                "Signature of Applicant",
+                "This is the uploaded applicant signature.");
+
+            await UploadSignatureAnnotationAsync(
+                "dfa_appeal",
+                appeal.Id,
+                appeal.SignAndSubmit?.SecondaryApplicantSignature,
+                "secondary_applicant_signature.png",
+                "Signature of Secondary Applicant",
+                "This is the uploaded secondary applicant signature.");
+            return Ok(updateAppeal);
+        }
     }
 
-    public class AppealModel
+    public class AppealUpdateRequest
     {
+        [Required]
+        public Guid Id { get; set; }
         public Guid? ApplicationId { get; set; }
         [Required]
         public Guid CaseId { get; set; }
@@ -130,6 +172,20 @@ namespace EMBC.DFA.API.Controllers
         [Required]
         public DFA_AppealType Type { get; set; }
         public SignAndSubmitModel SignAndSubmit { get; set; }
+    }
+
+    public class AppealModel
+    {
+       // public Guid? ApplicationId { get; set; }
+        [Required]
+        public Guid? CaseId { get; set; }
+       
+        public string? Status { get; set; }
+       
+        public string? Reason { get; set; }
+       
+        public DFA_AppealType? Type { get; set; }
+        public SignAndSubmitModel? SignAndSubmit { get; set; }
     }
 
     public class SignAndSubmitModel

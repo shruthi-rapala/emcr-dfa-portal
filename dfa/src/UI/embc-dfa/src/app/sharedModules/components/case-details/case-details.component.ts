@@ -1,4 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { DFAAppealDataService } from 'src/app/feature-components/dfa-appeal/dfa-appeal-data.service';
+import { DfaApplicationMain } from 'src/app/core/api/models';
+
 
 @Component({
   selector: 'app-case-details',
@@ -7,5 +10,13 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./case-details.component.scss']
 })
 export default class CaseDetailsComponent {
-  @Input() caseDetails: any;
+  caseDetails: any;
+  applicationDetails: DfaApplicationMain;
+
+  constructor(private appealDataService: DFAAppealDataService) {}
+
+  ngOnInit() {
+    this.caseDetails = this.appealDataService.getCaseDetails();
+    this.applicationDetails = this.appealDataService.getFullApplication();
+  }
 }

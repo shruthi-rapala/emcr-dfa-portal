@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { Router } from '@angular/router';
 import { CaseEligibility } from 'src/app/core/model/caseEligibilityEnum';
 import { DFAAppealDataService } from 'src/app/feature-components/dfa-appeal/dfa-appeal-data.service';
-
+import { AppealService } from 'src/app/core/api/services/appeal.service';
 
 @Component({
   standalone: true,
@@ -16,13 +16,14 @@ import { DFAAppealDataService } from 'src/app/feature-components/dfa-appeal/dfa-
 export class AppealConfirmationDialogComponent {
 
   public content: any;
-   CaseElibilityEnum = CaseEligibility;
-   
+  CaseElibilityEnum = CaseEligibility;
+
   constructor(
     public dialogRef: MatDialogRef<AppealConfirmationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { content: any },
     private router: Router,
-    private dfaAppealDataService: DFAAppealDataService
+    private dfaAppealDataService: DFAAppealDataService,
+    private dfaAppealService: AppealService,
   ) {
     this.content = this.data.content;
   }
@@ -34,9 +35,30 @@ export class AppealConfirmationDialogComponent {
       this.dialogRef.close();
       return;
     }
-    this.dfaAppealDataService.setCaseDetails(this.content);
-    this.dialogRef.close();
-    this.router.navigate([`/dfa-appeal/${type}/${caseId}/new`]);
+
+    this.dfaAppealService.appealCreateAppeal({
+      body: {
+        caseId: caseId,
+        type: type,
+        //status : "Appeal Submitted",
+      }
+    }).subscribe({
+      next: (appealId) => {
+      
+        console.log('Appeal created successfully:', appealId);
+        //this.dfaAppealDataService.setCaseDetails(this.content);
+        this.dialogRef.close(appealId);
+      },
+      error: (error) => {
+        console.log('Appeal creation failed', error);
+      }
+
+      
+    });
+
+   
+
+   
   }
 
   cancel() {

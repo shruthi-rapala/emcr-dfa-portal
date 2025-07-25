@@ -260,7 +260,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     "dfa_charityregistered", "dfa_charityexistsatleast12months", "dfa_charityprovidescommunitybenefit",
                     "dfa_damagedpropertyaddresscanadapostverified", "dfa_iamtheonlypersoninthehome",
                     "dfa_idonthaveanothercontact", "dfa_previousdfaapplicationdetails", "dfa_previousdfaapplication",
-                    "_dfa_buildingownerlandlordsecond_value"
+                    "_dfa_buildingownerlandlordsecond_value", "dfa_applicanttype"
                 },
                 Filter = $"dfa_appapplicationid eq {applicationId}"
             });
@@ -439,6 +439,26 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
             catch (System.Exception ex)
             {
                 throw new Exception($"Failed to obtain access token from {ex.Message}", ex);
+            }
+        }
+
+        public async Task<dfa_incident_retrieve> GetCaseDetailsListAsync(Guid caseId)
+        {
+            try
+            {
+                var caseDetails = await api.Get<dfa_incident_retrieve>("incidents",caseId, new CRMGetListOptions
+                {
+                    Select = new[]
+                    {
+                        "incidentid", "dfa_eligibilitystatus", "ticketnumber"
+                    }
+                });
+
+                return caseDetails;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Failed to get case Details {ex.Message}", ex);
             }
         }
 

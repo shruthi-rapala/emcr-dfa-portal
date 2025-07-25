@@ -212,6 +212,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_damagedpropertyaddresscanadapostverified { get; set; } // optional Two Options
         public int? dfa_iamtheonlypersoninthehome { get; set; } // optional Two Options
         public int? dfa_idonthaveanothercontact { get; set; } // optional Two Options
+        public string? dfa_applicanttype { get; set; }
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params
@@ -290,6 +291,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_idonthaveanothercontact { get; set; }
         public string? dfa_previousdfaapplicationdetails { get; set; } // optional string
         public int? dfa_previousdfaapplication { get; set; } // optional boolean
+        public string dfa_applicanttype { get; set; }
+
     }
 
     public class dfa_appbuildingownerlandlord
@@ -483,7 +486,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public Guid AppDocID { get; set; } // required string
     }
-
     public class dfa_appdamageditems_retrieve
     {
         public string? dfa_appdamageditemid { get; set; } // optional string
@@ -608,6 +610,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
         public CaseEligibilityAppeal? CaseEligibilityAppeal { get; set; }
         public CasePaidAmountAppeal? CasePaidAmountAppeal { get; set; }
+    }
+
+    public class dfa_incident_retrieve
+    {
+        public string incidentid { get; set; } // required
+        public string? dfa_eligibilitystatus { get; set; } // optional enum
+
+        public string? ticketnumber { get; set; }
     }
 
     public enum AppealStatusOptionSet

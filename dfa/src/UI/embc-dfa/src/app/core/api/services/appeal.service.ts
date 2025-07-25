@@ -16,6 +16,8 @@ import { AppealCreateAppeal$Params } from '../fn/appeal/appeal-create-appeal';
 import { appealGetAppeal } from '../fn/appeal/appeal-get-appeal';
 import { AppealGetAppeal$Params } from '../fn/appeal/appeal-get-appeal';
 import { AppealModel } from '../models/appeal-model';
+import { appealUpdateAppeal } from '../fn/appeal/appeal-update-appeal';
+import { AppealUpdateAppeal$Params } from '../fn/appeal/appeal-update-appeal';
 
 @Injectable({ providedIn: 'root' })
 export class AppealService extends BaseService {
@@ -86,6 +88,39 @@ export class AppealService extends BaseService {
   appealGetAppeal(params: AppealGetAppeal$Params, context?: HttpContext): Observable<AppealModel> {
     return this.appealGetAppeal$Response(params, context).pipe(
       map((r: StrictHttpResponse<AppealModel>): AppealModel => r.body)
+    );
+  }
+
+  /** Path part for operation `appealUpdateAppeal()` */
+  static readonly AppealUpdateAppealPath = '/api/Appeal/update';
+
+  /**
+   * Create an appeal.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `appealUpdateAppeal()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  appealUpdateAppeal$Response(params: AppealUpdateAppeal$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+    return appealUpdateAppeal(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Create an appeal.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `appealUpdateAppeal$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  appealUpdateAppeal(params: AppealUpdateAppeal$Params, context?: HttpContext): Observable<string> {
+    return this.appealUpdateAppeal$Response(params, context).pipe(
+      map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
 

@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 
+
 namespace EMBC.DFA.API.Controllers
 {
     [Route("api/applications")]
@@ -185,6 +186,7 @@ namespace EMBC.DFA.API.Controllers
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
             dfaApplicationMain.eventName = dfa_appapplication.dfa_eventname;
+            dfaApplicationMain.ApplicationType = dfa_appapplication.dfa_applicanttype;
             dfaApplicationMain.damagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
             dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
             dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
@@ -198,6 +200,9 @@ namespace EMBC.DFA.API.Controllers
             {
                 dfaApplicationMain.notifyUser = true;
             }
+
+            dfaApplicationMain.createdon = dfa_appapplication.createdon;
+            
 
             return Ok(dfaApplicationMain);
         }
@@ -217,6 +222,21 @@ namespace EMBC.DFA.API.Controllers
             var lstApplications = await handler.HandleApplicationList(profileId);
             return Ok(lstApplications);
         }
+
+
+        /// <summary>
+        /// Get case details by case ID
+        /// </summary>
+        /// <param name="caseId">The unique identifier of the case.</param>
+        /// <returns>List of current case details.</returns>
+        [HttpGet("cases/:caseId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<CurrentCase>> GetCaseDetails(Guid caseId)
+        {
+            var caseDetails = await handler.HandleCaseDetails(caseId);
+            var  mappedcasedDetails = mapper.Map<CurrentCase>(caseDetails);
+            return Ok(mappedcasedDetails);
+        }
     }
 
     /// <summary>
@@ -235,6 +255,7 @@ namespace EMBC.DFA.API.Controllers
         public OtherPreScreeningQuestions OtherPreScreeningQuestions { get; set; }
         public string? eventName { get; set; }
         public bool notifyUser { get; set; }
+
     }
 
     public class DFAApplicationMain
@@ -255,6 +276,8 @@ namespace EMBC.DFA.API.Controllers
         public bool onlyOccupantInHome { get; set; }
         public bool onlyOtherContact { get; set; }
         public string? eventName { get; set; }
+        public string? ApplicationType { get; set; }
+        public string? createdon { get; set; }
     }
 
     public class CurrentApplication
@@ -301,5 +324,12 @@ namespace EMBC.DFA.API.Controllers
         public bool CurrentStep { get; set; }
         public bool IsFinalStep { get; set; }
         public bool IsErrorInStatus { get; set; }
+    }
+
+    public class CurrentCase
+    {
+        public Guid CaseId { get; set; }
+        public string CaseEligibility { get; set; }
+        public string CaseNumber { get; set; }
     }
 }

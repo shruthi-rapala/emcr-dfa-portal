@@ -235,7 +235,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_damagedpropertyaddresscanadapostverified, opts => opts.MapFrom(s => s.damagedPropertyAddress.isDamagedAddressVerified == null ? (int?)null : (s.damagedPropertyAddress.isDamagedAddressVerified == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
                 .ForMember(d => d.dfa_iamtheonlypersoninthehome, opts => opts.MapFrom(s => s.onlyOccupantInHome == false ? (int?)YesNoOptionSet.No : (int?)YesNoOptionSet.Yes))
                 .ForMember(d => d.dfa_idonthaveanothercontact, opts => opts.MapFrom(s => s.onlyOtherContact == false ? (int?)YesNoOptionSet.No : (int?)YesNoOptionSet.Yes))
-                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag));
+                .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag))
+                .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.ApplicationType) ? GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.ApplicationType)) : null));
 
             CreateMap<DFAApplicationMain, temp_dfa_appapplicationmain_params>() // TODO: map into dfa_application_params when dynamics process updated
                 .ForMember(d => d.dfa_businessmanagedbyallownersondaytodaybasis, opts => opts.MapFrom(s => s.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis == null ? (int?)null : (s.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
@@ -552,6 +553,11 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(dest => dest.CaseAppealId, opt => opt.MapFrom(src => src.Bpf_DFA_AppealId.Id))
                 .AfterMap((src, dest) => dest.Stages = src.TraversedPath?.Split(",").Select(x => new Stage { Id = new Guid(x), Name = string.Empty }).ToArray());
 
+            CreateMap<dfa_incident_retrieve, CurrentCase>()
+                .ForMember(dest => dest.CaseId, opts => opts.MapFrom(src => src.incidentid))
+                .ForMember(dest => dest.CaseEligibility, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_eligibilitystatus) ? GetEnumDescription((CaseEligibilityOptionSet)Convert.ToInt32(s.dfa_eligibilitystatus)) : null))
+                .ForMember(d => d.CaseNumber, opts => opts.MapFrom(s => s.ticketnumber));
+
             CreateMap<Controllers.Profile, ESS.Shared.Contracts.Events.RegistrantProfile>()
                 .ForMember(d => d.Id, opts => opts.Ignore())
                 .ForMember(d => d.AuthenticatedUser, opts => opts.Ignore())
@@ -623,12 +629,19 @@ namespace EMBC.DFA.API.Mappers
 
             //Mapping from AppealModel (API Model) to Appeal (DTO API Layer)
             CreateMap<AppealModel, Appeal>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ApplicationId))
                 .ForMember(dest => dest.CaseId, opt => opt.MapFrom(src => src.CaseId))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.Reason))
                 .ForMember(dest => dest.AppealType, opt => opt.MapFrom(src => src.Type.ToString()))
                 .ForMember(dest => dest.SignAndSubmit, opt => opt.MapFrom(src => src.SignAndSubmit));
+
+            CreateMap<AppealUpdateRequest, Appeal>()
+               .ForMember(dest => dest.Id , opt => opt.MapFrom(src => src.Id))
+               .ForMember(dest => dest.CaseId, opt => opt.MapFrom(src => src.CaseId))
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+               .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.Reason))
+               .ForMember(dest => dest.AppealType, opt => opt.MapFrom(src => src.Type.ToString()))
+               .ForMember(dest => dest.SignAndSubmit, opt => opt.MapFrom(src => src.SignAndSubmit));
 
             // Fully qualify the destination type for SignAndSubmit and DigitalSignature:
             CreateMap<SignAndSubmitModel, EMBC.Database.Contract.SignAndSubmit>()
@@ -642,9 +655,17 @@ namespace EMBC.DFA.API.Mappers
                     string.IsNullOrEmpty(src.DateSigned) ? DateTime.MinValue : DateTime.Parse(src.DateSigned)));
 
             // Mapping from Appeal DTO/API Layer to Appeal Model
-            CreateMap<Appeal, AppealModel>();
+            CreateMap<Appeal, AppealModel>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom( src => src.AppealType))
+                .ForMember(dest => dest.SignAndSubmit, opt => opt.MapFrom(src => src.SignAndSubmit));
+                
             CreateMap<EMBC.Database.Contract.SignAndSubmit, SignAndSubmitModel>();
-            CreateMap<DigitalSignature, SignatureBlockModel>();
+
+            CreateMap<DigitalSignature, SignatureBlockModel>()
+                .ForMember(dest => dest.Signature, opt => opt.MapFrom(src => src.Signature))
+                .ForMember(dest => dest.DateSigned, opt => opt.MapFrom(src => src.DateSigned))
+                .ForMember(dest => dest.SignedName, opt => opt.MapFrom(src => src.SignedName));
+
         }
 
         public FileCategory ConvertStringToFileCategory(string documenttype)

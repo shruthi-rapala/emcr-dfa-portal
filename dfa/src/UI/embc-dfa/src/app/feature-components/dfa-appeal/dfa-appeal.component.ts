@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, from, Subscription } from 'rxjs';
+import { concatMap, from, Subscription, tap, of, forkJoin } from 'rxjs';
 import { DfaApplicationMain, SecondaryApplicant } from 'src/app/core/api/models';
 import { AppealAttachmentService, ApplicationService } from 'src/app/core/api/services';
 import { CancelConfirmationDialogComponent } from 'src/app/core/components/dialog-components/dfa-cancel-confirmation-dialog/dfa-cancel-confirmation-dialog.component';
@@ -34,9 +34,9 @@ export class DfaAppealComponent implements OnInit {
   isSecondaryApplicant: boolean = false;
   secondaryApplicants: SecondaryApplicant[] = [];
   isSignaturesValid: boolean = false;
-  caseId: string;
   appealId: string;
   appealType: string;
+  isEditView: boolean;
   appealReasonForm$: Subscription;
   appealReasonForm: FormGroup;
   appealSupportingDocumentsForm: FormGroup;
@@ -44,8 +44,10 @@ export class DfaAppealComponent implements OnInit {
   appealReasonValid: boolean = false;
   signAndSubmitValid: boolean = false;
   caseDetails: any;
+  applicationId?: string;
   fullApplication: DfaApplicationMain | undefined;
-  fullApplication$: Subscription | undefined;
+
+  isInitDone = false;
 
   constructor(
     private router: Router,
@@ -59,126 +61,75 @@ export class DfaAppealComponent implements OnInit {
     private appealAttachmentService: AppealAttachmentService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.appealType = this.route.snapshot.paramMap.get('type') || '';
-    this.caseId = this.route.snapshot.paramMap.get('caseId') || '';
     this.appealId = this.route.snapshot.paramMap.get('appealId');
+    this.isEditView = this.router.url.endsWith('edit');
+    this.applicationId = this.route.snapshot.queryParams.applicationId;
 
-    // Map string to enum
-    let appealTypeEnum: AppealType;
-    switch (this.appealType) {
-      case 'amount':
-        appealTypeEnum = AppealType.Amount;
-        break;
-      case 'eligibility':
-        appealTypeEnum = AppealType.Eligibility;
-        break;
-      case 'other':
-        appealTypeEnum = AppealType.Other;
-        break;
-      default:
-        appealTypeEnum = AppealType.Other;
+    if (!this.applicationId) {
+      console.error('Application Id is required in queryParams');
+      this.returnToDashboard();
+      return;
     }
 
-    this.caseDetails = this.dfaAppealDataService.getCaseDetails();
-    this.dfaAppealDataService.appealType = appealTypeEnum;
+    if (!this.appealId) {
+      console.error('Appeal Id is required');
 
-      // If no case details found, redirect to dashboard
-      if (!this.caseDetails) {
-        console.warn('No case details found, redirecting to dashboard');
-        this.returnToDashboard();
-        return;
-      }
+      return;
+    }
 
-      // Validate case ID matches route parameter
-      if (this.caseDetails.caseId !== this.caseId) {
-        console.warn('Case ID mismatch, redirecting to dashboard');
-        this.returnToDashboard();
-        return;
-      }
+    // Clear old data and forms
+    this.dfaAppealDataService.appealReason = null;
+    this.dfaAppealDataService.signAndSubmit = null;
+    this.dfaAppealDataService.appealSupportingDocuments = [];
+    this.formCreationService.clearAppealReasonData();
+    this.formCreationService.clearAppealSupportingDocumentsData();
+    this.formCreationService.clearAppealSignAndSubmitData();
 
-      // Try to get full application from storage first
-      this.fullApplication = this.dfaAppealDataService.getFullApplication();
-
-      if (!this.fullApplication && this.caseDetails?.applicationId) {
-        // Fetch full application details if not in storage
-        this.fullApplication$ = this.applicationService
-          .applicationGetApplicationMain({
-            applicationId: this.caseDetails.applicationId
-          })
-          .subscribe({
-            next: (app) => {
-              this.fullApplication = app;
-              this.dfaAppealDataService.setFullApplication(app);
-            },
-            error: (error) => {
-              console.error('Failed to fetch application details:', error);
-              this.returnToDashboard();
-            }
-          });
-      }
-
-      // Clear old data and forms
-      this.dfaAppealDataService.appealReason = null;
-      this.dfaAppealDataService.signAndSubmit = null;
-      this.dfaAppealDataService.appealSupportingDocuments = [];
-      this.formCreationService.clearAppealReasonData();
-      this.formCreationService.clearAppealSupportingDocumentsData();
-      this.formCreationService.clearAppealSignAndSubmitData();
-
-      // Clear persistent storage
-      this.dfaAppealDataService.clearAppealData();
+    // Clear persistent storage
+    this.dfaAppealDataService.clearAppealData();
 
     // Create steps based on appeal type
     this.steps = this.componentService.createDFAAppealSteps(this.appealType);
 
-    if (this.appealId && this.appealId !== 'new') {
-      // @TODO: 
-      // Step 1: Get appeal details from backend using appealId
-      this.dfaAppealService.getAppealById(this.appealId).subscribe(appeal => {
+   
+    // @TODO: 
+    // Step 1: Get appeal details from backend using appealId
+    forkJoin([this.dfaAppealService.getAppealById(this.appealId), this.loadApplicationDetails()]).subscribe(([appeal, _]) => {
+      console.log("Appeal:", appeal);
 
+      // Map string to enum
+      let appealTypeEnum: AppealType;
+      switch (appeal.type?.toLowerCase()) {
+        case 'amount':
+          appealTypeEnum = AppealType.Amount;
+          break;
+        case 'eligibility':
+          appealTypeEnum = AppealType.Eligibility;
+          break;
+        case 'other':
+          appealTypeEnum = AppealType.Other;
+          break;
+        default:
+          appealTypeEnum = AppealType.Other;
+      }
 
-        // Step 2: If appealId exists, load existing appeal data into forms
+      this.dfaAppealDataService.appealType = appealTypeEnum;
 
-        this.formCreationService.getAppealReasonForm().subscribe(form => {
-          console.log("INside GFrom:", appeal.reason, appeal);
-          if (form) {
-            // Populate the form with existing appeal reason data
-            form.controls.reason.setValue(appeal.reason);
-  
-            form.updateValueAndValidity();
-  
-            console.log("Form 2:", appeal.reason, form);
-  
-            this.appealReasonForm = form;
-          }
-        });
-  
-        this.formCreationService.getAppealSignAndSubmitForm().subscribe(form => {
-          if (form) {
-            // Populate the form with existing sign and submit data
-            form.patchValue({
-              ...this.dfaAppealDataService.signAndSubmit
-            });
-  
-            form.updateValueAndValidity();
-  
-            this.signAndSubmitForm = form;
-          }
-        });
+      this.loadCaseDetails(appeal).subscribe({
+        next: () => {
+          this.loadAppealDataIntoForms(appeal);
+
+          this.isInitDone = true;
+        },
       });
 
-      
-      // step 3: Update template to handle both new and existing appeals
-    }
+    })
 
+    // step 3: Update template to handle both new and existing appeals
 
-  }
-
-  ngOnDestroy(): void {
-    this.fullApplication$?.unsubscribe();
   }
 
   /**
@@ -187,7 +138,67 @@ export class DfaAppealComponent implements OnInit {
    * TODO: Fetch case details using the application Id, rather than relying on the upstream pages to load it.
    * Otherwise, on page refresh, the case details will not be available, and will cause issues.
    */
-  loadCaseDetails(): void {}
+  loadCaseDetails(appeal: any) {
+    return this.applicationService.applicationGetCaseDetails({
+      caseId: appeal.caseId
+    }).pipe(tap({
+      next: (caseDetails) => {
+        console.log("caseDetails: ", caseDetails);
+        this.dfaAppealDataService.setCaseDetails(caseDetails);
+        this.caseDetails = caseDetails;
+      }
+    }));
+  }
+
+  loadApplicationDetails() {
+    // Try to get full application from storage first
+    this.fullApplication = this.dfaAppealDataService.getFullApplication();
+
+    if (!this.fullApplication) {
+      // Fetch full application details if not in storage
+      return this.applicationService
+        .applicationGetApplicationMain({
+          applicationId: this.applicationId
+        })
+        .pipe(tap({
+          next: (app) => {
+            this.fullApplication = app;
+            this.dfaAppealDataService.setFullApplication(app);
+          },
+          error: (error) => {
+            console.error('Failed to fetch application details:', error);
+            this.returnToDashboard();
+          }
+        }));
+    }
+
+    return of(this.fullApplication);
+  }
+
+  loadAppealDataIntoForms(appeal: any) {
+    // Step 2: If appealId exists, load existing appeal data into forms
+
+    this.formCreationService.getAppealReasonForm().subscribe(form => {
+      if (form) {
+        form.controls.reason.setValue(appeal.reason);
+        form.updateValueAndValidity();
+
+        this.appealReasonForm = form;
+      }
+    });
+
+    this.formCreationService.getAppealSignAndSubmitForm().subscribe(form => {
+      if (form) {
+        form.patchValue({
+          ...this.dfaAppealDataService.signAndSubmit
+        });
+        form.updateValueAndValidity();
+
+        this.signAndSubmitForm = form;
+      }
+    });
+
+  }
 
   /**
    * Sets form data based on the component name (ie: the name of the step).
@@ -410,10 +421,20 @@ export class DfaAppealComponent implements OnInit {
    */
   submitAppeal(): void {
     this.isLoading = true;
-    const appeal = this.dfaAppealDataService.createAppealDTO();
-
-    this.dfaAppealService.insertAppeal(appeal).subscribe({
+    const appeal = this.dfaAppealDataService.updateAppealDTO(this.appealId, this.caseDetails.caseId);
+   
+    this.dfaAppealService.updateAppeal(appeal).subscribe({
       next: (appealId) => {
+
+        this.snackBar.open(
+          'Your appeal has successfully submitted',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          }
+        );
+
         const supportingDocuments = this.dfaAppealDataService.appealSupportingDocuments || [];
 
         // Attach appealId to each document
@@ -437,6 +458,17 @@ export class DfaAppealComponent implements OnInit {
             })
           )
           .subscribe({
+            next:() =>
+            {
+              this.snackBar.open(
+                'Documents have been uploaded successfully',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top'
+                }
+              );
+            },
             complete: () => {
               this.isLoading = false;
               this.cd.detectChanges();

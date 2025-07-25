@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using EMBC.DFA.API.Controllers;
 using Google.Protobuf.WellKnownTypes;
 using Xrm.Tools.WebAPI.Requests;
 
@@ -40,5 +41,6 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         Task<IEnumerable<dfa_event>> GetOpenEventList();
         Task<IEnumerable<dfa_effectedregioncommunities>> GetEffectedRegionCommunitiesList();
         Task<IEnumerable<dfa_areacommunitieses>> GetCommunitiesAsync();
+        Task<dfa_incident_retrieve> GetCaseDetailsListAsync(Guid caseId);
     }
 }

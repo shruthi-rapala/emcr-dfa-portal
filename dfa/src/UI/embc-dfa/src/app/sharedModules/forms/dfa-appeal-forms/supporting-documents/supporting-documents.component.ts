@@ -10,6 +10,7 @@ import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog
 import { AppealSupportingDocumentForm, AppealSupportingDocumentsForm } from 'src/app/core/model/dfa-appeals-main.model';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { DFAAppealDataService } from 'src/app/feature-components/dfa-appeal/dfa-appeal-data.service';
+import { DfaApplicationMain } from 'src/app/core/api/models';
 
 @Component({
   selector: 'app-supporting-documents',
@@ -58,10 +59,13 @@ export default class SupportingDocumentsComponent implements OnInit {
    * The case ID guid.
    */
   caseId: string | undefined;
+  appealId : string | undefined;
   /**
    * The case record.
    */
-  caseDetails: any;
+
+  @Input() applicationDetails: DfaApplicationMain = this.dfaAppealDataService.getFullApplication();
+  @Input() caseDetails: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -81,21 +85,21 @@ export default class SupportingDocumentsComponent implements OnInit {
     this.route.paramMap
       .pipe(
         switchMap((routeParams) => {
-          this.caseId = routeParams.get('caseId');
+          this.appealId = routeParams.get('appealId');
 
           return this.formCreationService.getAppealSupportingDocumentsForm().pipe(
             take(1),
             switchMap((appealSupportingDocumentsForm) => {
               this.appealSupportingDocumentsForm = appealSupportingDocumentsForm;
 
-              if (!this.caseId) {
+              if (!this.appealId) {
                 // This is a new appeal, no existing documents to fetch.
                 return of(new Array<AppealFileUpload>());
               }
 
               // Fetch the existing appeal supporting documents, if this is an existing appeal.
               return this.appealAttachmentService
-                .appealAttachmentGetAttachmentsByCaseId({ caseId: this.caseId })
+                .appealAttachmentGetAttachmentsByAppealId({ appealId: this.appealId })
                 .pipe(take(1));
             })
           );
