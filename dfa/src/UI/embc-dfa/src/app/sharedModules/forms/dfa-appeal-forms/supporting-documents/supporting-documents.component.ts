@@ -59,6 +59,7 @@ export default class SupportingDocumentsComponent implements OnInit {
    * The case ID guid.
    */
   caseId: string | undefined;
+  appealId : string | undefined;
   /**
    * The case record.
    */
@@ -84,21 +85,21 @@ export default class SupportingDocumentsComponent implements OnInit {
     this.route.paramMap
       .pipe(
         switchMap((routeParams) => {
-          this.caseId = routeParams.get('caseId');
+          this.appealId = routeParams.get('appealId');
 
           return this.formCreationService.getAppealSupportingDocumentsForm().pipe(
             take(1),
             switchMap((appealSupportingDocumentsForm) => {
               this.appealSupportingDocumentsForm = appealSupportingDocumentsForm;
 
-              if (!this.caseId) {
+              if (!this.appealId) {
                 // This is a new appeal, no existing documents to fetch.
                 return of(new Array<AppealFileUpload>());
               }
 
               // Fetch the existing appeal supporting documents, if this is an existing appeal.
               return this.appealAttachmentService
-                .appealAttachmentGetAttachmentsByCaseId({ caseId: this.caseId })
+                .appealAttachmentGetAttachmentsByAppealId({ appealId: this.appealId })
                 .pipe(take(1));
             })
           );

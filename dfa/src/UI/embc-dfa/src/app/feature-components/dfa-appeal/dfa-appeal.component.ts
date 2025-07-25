@@ -34,7 +34,6 @@ export class DfaAppealComponent implements OnInit {
   isSecondaryApplicant: boolean = false;
   secondaryApplicants: SecondaryApplicant[] = [];
   isSignaturesValid: boolean = false;
-  caseId: string;
   appealId: string;
   appealType: string;
   isEditView: boolean;
@@ -95,7 +94,7 @@ export class DfaAppealComponent implements OnInit {
     // Create steps based on appeal type
     this.steps = this.componentService.createDFAAppealSteps(this.appealType);
 
-
+   
     // @TODO: 
     // Step 1: Get appeal details from backend using appealId
     forkJoin([this.dfaAppealService.getAppealById(this.appealId), this.loadApplicationDetails()]).subscribe(([appeal, _]) => {
@@ -103,7 +102,7 @@ export class DfaAppealComponent implements OnInit {
 
       // Map string to enum
       let appealTypeEnum: AppealType;
-      switch (appeal.type) {
+      switch (appeal.type?.toLowerCase()) {
         case 'amount':
           appealTypeEnum = AppealType.Amount;
           break;
@@ -121,25 +120,10 @@ export class DfaAppealComponent implements OnInit {
 
       this.loadCaseDetails(appeal).subscribe({
         next: () => {
-          // If no case details found, redirect to dashboard
-          if (!this.caseDetails) {
-            console.warn('No case details found, redirecting to dashboard');
-            this.returnToDashboard();
-            return;
-          }
-    
-          // Validate case ID matches route parameter
-          if (this.caseDetails.caseId !== this.caseId) {
-            console.warn('Case ID mismatch, redirecting to dashboard');
-            this.returnToDashboard();
-            return;
-          }
-    
           this.loadAppealDataIntoForms(appeal);
-        },
-        complete: () => {
+
           this.isInitDone = true;
-        }
+        },
       });
 
     })
@@ -437,10 +421,20 @@ export class DfaAppealComponent implements OnInit {
    */
   submitAppeal(): void {
     this.isLoading = true;
-    const appeal = this.dfaAppealDataService.createAppealDTO();
-
-    this.dfaAppealService.insertAppeal(appeal).subscribe({
+    const appeal = this.dfaAppealDataService.updateAppealDTO(this.appealId, this.caseDetails.caseId);
+   
+    this.dfaAppealService.updateAppeal(appeal).subscribe({
       next: (appealId) => {
+
+        this.snackBar.open(
+          'Your appeal has successfully submitted',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          }
+        );
+
         const supportingDocuments = this.dfaAppealDataService.appealSupportingDocuments || [];
 
         // Attach appealId to each document
@@ -464,6 +458,17 @@ export class DfaAppealComponent implements OnInit {
             })
           )
           .subscribe({
+            next:() =>
+            {
+              this.snackBar.open(
+                'Documents have been uploaded successfully',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top'
+                }
+              );
+            },
             complete: () => {
               this.isLoading = false;
               this.cd.detectChanges();
@@ -558,6 +563,6 @@ export class DfaAppealComponent implements OnInit {
    *
    */
   returnToDashboard(): void {
-    // this.router.navigate(['/verified-registration/dashboard']);
+    this.router.navigate(['/verified-registration/dashboard']);
   }
 }

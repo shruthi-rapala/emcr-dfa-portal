@@ -23,6 +23,15 @@ export class DfaAppealService {
       return this.appealService.appealCreateAppeal({ body: appeal })
   }
 
+   
+  /**
+   * Creates an appeal using AppealService
+   */
+  public updateAppeal(appeal: any): Observable<any> {
+    return this.appealService.appealUpdateAppeal({ body: appeal })
+}
+
+
   // Get appeal by ID
   public getAppealById(appealId: string): Observable<any> {
     return this.appealService.appealGetAppeal({ id: appealId }).pipe(

@@ -635,6 +635,14 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(dest => dest.AppealType, opt => opt.MapFrom(src => src.Type.ToString()))
                 .ForMember(dest => dest.SignAndSubmit, opt => opt.MapFrom(src => src.SignAndSubmit));
 
+            CreateMap<AppealUpdateRequest, Appeal>()
+               .ForMember(dest => dest.Id , opt => opt.MapFrom(src => src.Id))
+               .ForMember(dest => dest.CaseId, opt => opt.MapFrom(src => src.CaseId))
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+               .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.Reason))
+               .ForMember(dest => dest.AppealType, opt => opt.MapFrom(src => src.Type.ToString()))
+               .ForMember(dest => dest.SignAndSubmit, opt => opt.MapFrom(src => src.SignAndSubmit));
+
             // Fully qualify the destination type for SignAndSubmit and DigitalSignature:
             CreateMap<SignAndSubmitModel, EMBC.Database.Contract.SignAndSubmit>()
                 .ForMember(dest => dest.ApplicantSignature, opt => opt.MapFrom(src => src.ApplicantSignature))
@@ -647,9 +655,16 @@ namespace EMBC.DFA.API.Mappers
                     string.IsNullOrEmpty(src.DateSigned) ? DateTime.MinValue : DateTime.Parse(src.DateSigned)));
 
             // Mapping from Appeal DTO/API Layer to Appeal Model
-            CreateMap<Appeal, AppealModel>();
+            CreateMap<Appeal, AppealModel>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom( src => src.AppealType))
+                .ForMember(dest => dest.SignAndSubmit, opt => opt.MapFrom(src => src.SignAndSubmit));
+                
             CreateMap<EMBC.Database.Contract.SignAndSubmit, SignAndSubmitModel>();
-            CreateMap<DigitalSignature, SignatureBlockModel>();
+
+            CreateMap<DigitalSignature, SignatureBlockModel>()
+                .ForMember(dest => dest.Signature, opt => opt.MapFrom(src => src.Signature))
+                .ForMember(dest => dest.DateSigned, opt => opt.MapFrom(src => src.DateSigned))
+                .ForMember(dest => dest.SignedName, opt => opt.MapFrom(src => src.SignedName));
 
         }
 

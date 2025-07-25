@@ -117,4 +117,16 @@ export class DFAAppealDataService {
       ...(this._signAndSubmit ? { signAndSubmit: this._signAndSubmit } : {})
     };
   }
+
+  
+  public updateAppealDTO(id: string ,caseId: string): DfaAppeal {
+    return {
+      id,
+      caseId,
+      type: this._appealType,
+      status: AppealStatus.Received,
+      reason: this._appealReason ?? '',
+      ...(this._signAndSubmit ? { signAndSubmit: this._signAndSubmit } : {})
+    };
+  }
 }
