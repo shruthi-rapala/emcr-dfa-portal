@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UntypedFormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DfaApplicationMain } from 'src/app/core/api/models';
@@ -19,11 +20,13 @@ export default class SignAndSubmitComponent implements OnInit, OnDestroy {
   private fullApplication$: Subscription;
   @Input() applicationDetails: DfaApplicationMain = this.appealDataService.getFullApplication();
   @Input() caseDetails: any;
+  isEditView = this.router.url.includes('/edit');
 
   constructor(
     @Inject('formCreationService') private formCreationService: FormCreationService,
     private appealDataService: DFAAppealDataService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {

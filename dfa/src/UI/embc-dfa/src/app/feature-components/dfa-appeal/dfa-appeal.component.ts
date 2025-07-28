@@ -65,7 +65,9 @@ export class DfaAppealComponent implements OnInit {
 
   ngOnInit(): void {
     this.appealId = this.route.snapshot.paramMap.get('appealId');
-    this.isEditView = this.router.url.endsWith('edit');
+    console.log('Url:', this.route);
+    this.isEditView = this.router.url.includes('/edit');
+    console.log("IsEdit", this.isEditView);
     this.applicationId = this.route.snapshot.queryParams.applicationId;
 
     if (!this.applicationId) {
@@ -181,6 +183,9 @@ export class DfaAppealComponent implements OnInit {
     this.formCreationService.getAppealReasonForm().subscribe(form => {
       if (form) {
         form.controls.reason.setValue(appeal.reason);
+
+        if (!this.isEditView) form.disable();
+
         form.updateValueAndValidity();
 
         this.appealReasonForm = form;
@@ -192,6 +197,9 @@ export class DfaAppealComponent implements OnInit {
         form.patchValue({
           ...this.dfaAppealDataService.signAndSubmit
         });
+        
+        if (!this.isEditView) form.disable();
+
         form.updateValueAndValidity();
 
         this.signAndSubmitForm = form;
@@ -293,6 +301,7 @@ export class DfaAppealComponent implements OnInit {
    * @return {*}  {boolean}
    */
   canGoForward(component: string): boolean {
+    console.log(component, this.appealReasonForm);
     if (component === 'appeal-reason') {
       return this.appealReasonForm?.valid;
     }
@@ -424,7 +433,7 @@ export class DfaAppealComponent implements OnInit {
     const appeal = this.dfaAppealDataService.updateAppealDTO(this.appealId, this.caseDetails.caseId);
    
     this.dfaAppealService.updateAppeal(appeal).subscribe({
-      next: (appealId) => {
+      next: (isSuccess) => {
 
         this.snackBar.open(
           'Your appeal has successfully submitted',
@@ -440,7 +449,7 @@ export class DfaAppealComponent implements OnInit {
         // Attach appealId to each document
         const supportingDocumentsToUpload = supportingDocuments.map((doc) => ({
           ...doc,
-          appealId: appealId
+          appealId: this.appealId
         }));
 
         // Upload documents one at a time
