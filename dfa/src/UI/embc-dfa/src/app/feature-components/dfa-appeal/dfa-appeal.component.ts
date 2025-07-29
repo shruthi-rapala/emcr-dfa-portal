@@ -192,17 +192,19 @@ export class DfaAppealComponent implements OnInit {
       }
     });
 
-    this.formCreationService.getAppealSignAndSubmitForm().subscribe(form => {
-      if (form) {
-        form.patchValue({
-          ...this.dfaAppealDataService.signAndSubmit
+    this.formCreationService.getAppealSignAndSubmitForm().subscribe(signAndSubmit => {
+      if (signAndSubmit) {
+        signAndSubmit.get('applicantSignature').patchValue({
+          ...appeal.signAndSubmit?.applicantSignature
         });
+
+        console.log(signAndSubmit.value);
         
-        if (!this.isEditView) form.disable();
+        if (!this.isEditView) signAndSubmit.disable();
 
-        form.updateValueAndValidity();
+        signAndSubmit.updateValueAndValidity();
 
-        this.signAndSubmitForm = form;
+        this.signAndSubmitForm = signAndSubmit;
       }
     });
 
@@ -301,7 +303,6 @@ export class DfaAppealComponent implements OnInit {
    * @return {*}  {boolean}
    */
   canGoForward(component: string): boolean {
-    console.log(component, this.appealReasonForm);
     if (component === 'appeal-reason') {
       return this.appealReasonForm?.valid;
     }

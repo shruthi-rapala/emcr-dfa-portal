@@ -41,14 +41,14 @@ namespace EMBC.DFA.API.Controllers
         private async Task UploadSignatureAnnotationAsync(
             string entityName,
             Guid entityId,
-            SignatureBlockModel signature,
+            SignatureBlock signature,
             string fileName,
             string displayName,
             string note)
         {
-            if (signature?.Signature != null)
+            if (signature?.signature != null)
             {
-                var base64Data = signature.Signature;
+                var base64Data = signature.signature;
                 if (base64Data.Contains(","))
                     base64Data = base64Data.Substring(base64Data.IndexOf(',') + 1);
 
@@ -61,6 +61,23 @@ namespace EMBC.DFA.API.Controllers
                     displayName,
                     note);
             }
+        }
+
+        private async Task GetSignatureAnnotationAsync(
+          string entityName,
+          Guid entityId,
+          SignatureBlock signature,
+          string fileName)
+        {
+            
+                var annotation = await organizationService.GetAnnotationByFileNameAsync(entityName, entityId, fileName);
+                if (annotation != null)
+                {
+                    signature.signature = annotation.FileContent;
+                    signature.dateSigned = annotation.CreatedOn.ToString();
+                    signature.signedName = annotation.CreatedBy?.Name ?? "Unknown User";
+            }
+            
         }
 
         /// <summary>
@@ -110,11 +127,25 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<AppealModel> GetAppeal(Guid id)
+        public async Task<ActionResult<AppealModel>> GetAppeal(Guid id)
         {
             var appeal = repository.FirstOrDefault(e => e.Id == id);
             if (appeal == null) return NotFound();
             var model = mapper.Map<AppealModel>(appeal);
+            model.SignAndSubmit = new SignAndSubmitModel
+            {
+                ApplicantSignature = new SignatureBlock
+                {
+                    signature = null,
+                    dateSigned = DateTime.Now.ToString("yyyy-MM-dd"),
+                    signedName = "TEST USER" // This should be replaced with actual logic to retrieve the signed name
+                }
+            };
+            await GetSignatureAnnotationAsync(
+                "dfa_appeal",
+                id,
+                model.SignAndSubmit?.ApplicantSignature,
+                "applicant_signature.png");
             return Ok(model);
         }
 
@@ -190,14 +221,8 @@ namespace EMBC.DFA.API.Controllers
 
     public class SignAndSubmitModel
     {
-        public SignatureBlockModel ApplicantSignature { get; set; }
-        public SignatureBlockModel SecondaryApplicantSignature { get; set; }
+        public SignatureBlock ApplicantSignature { get; set; }
+        public SignatureBlock SecondaryApplicantSignature { get; set; }
     }
 
-    public class SignatureBlockModel
-    {
-        public string? Signature { get; set; }
-        public string? DateSigned { get; set; }
-        public string? SignedName { get; set; }
-    }
 }
