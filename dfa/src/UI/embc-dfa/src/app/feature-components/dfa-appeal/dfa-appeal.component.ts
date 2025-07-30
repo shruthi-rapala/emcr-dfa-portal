@@ -5,10 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatMap, from, Subscription, tap, of, forkJoin } from 'rxjs';
-import { DfaApplicationMain, SecondaryApplicant } from 'src/app/core/api/models';
+import { AppealModel, AppealUpdateRequest, DfaApplicationMain, SecondaryApplicant } from 'src/app/core/api/models';
 import { AppealAttachmentService, ApplicationService } from 'src/app/core/api/services';
 import { CancelConfirmationDialogComponent } from 'src/app/core/components/dialog-components/dfa-cancel-confirmation-dialog/dfa-cancel-confirmation-dialog.component';
-import { AppealType } from 'src/app/core/model/dfa-appeals-main.model';
+import { AppealStatus, AppealType } from 'src/app/core/model/dfa-appeals-main.model';
 import { ComponentMetaDataModel } from '../../core/model/componentMetaData.model';
 import { ComponentCreationService } from '../../core/services/componentCreation.service';
 import { FormCreationService } from '../../core/services/formCreation.service';
@@ -177,7 +177,7 @@ export class DfaAppealComponent implements OnInit {
     return of(this.fullApplication);
   }
 
-  loadAppealDataIntoForms(appeal: any) {
+  loadAppealDataIntoForms(appeal: AppealModel) {
     // Step 2: If appealId exists, load existing appeal data into forms
 
     this.formCreationService.getAppealReasonForm().subscribe(form => {
@@ -195,7 +195,7 @@ export class DfaAppealComponent implements OnInit {
     this.formCreationService.getAppealSignAndSubmitForm().subscribe(signAndSubmit => {
       if (signAndSubmit) {
         signAndSubmit.get('applicantSignature').patchValue({
-          ...appeal.signAndSubmit?.applicantSignature
+          ...appeal
         });
 
         console.log(signAndSubmit.value);
@@ -304,7 +304,7 @@ export class DfaAppealComponent implements OnInit {
    */
   canGoForward(component: string): boolean {
     if (component === 'appeal-reason') {
-      return this.appealReasonForm?.valid;
+      return !this.appealReasonForm?.invalid;
     }
 
     if (component === 'supporting-documents') {
@@ -431,9 +431,19 @@ export class DfaAppealComponent implements OnInit {
    */
   submitAppeal(): void {
     this.isLoading = true;
-    const appeal = this.dfaAppealDataService.updateAppealDTO(this.appealId, this.caseDetails.caseId);
+    
+    const appealUpdateRequest: AppealUpdateRequest = {
+      id: this.appealId,
+      caseId: this.caseDetails.caseId,
+      type: this.dfaAppealDataService.appealType as any,
+      status: AppealStatus.Received,
+      reason: this.dfaAppealDataService.appealReason ?? '',
+      signedName: (this.signAndSubmitForm.get('applicantSignature') as FormGroup).get('signedName').value, 
+      dateSigned: (this.signAndSubmitForm.get('applicantSignature') as FormGroup).get('dateSigned').value,
+      signature: (this.signAndSubmitForm.get('applicantSignature') as FormGroup).get('signature').value,
+    }
    
-    this.dfaAppealService.updateAppeal(appeal).subscribe({
+    this.dfaAppealService.updateAppeal(appealUpdateRequest).subscribe({
       next: (isSuccess) => {
 
         this.snackBar.open(
@@ -468,17 +478,7 @@ export class DfaAppealComponent implements OnInit {
             })
           )
           .subscribe({
-            next:() =>
-            {
-              this.snackBar.open(
-                'Documents have been uploaded successfully',
-                'Close',
-                {
-                  horizontalPosition: 'center',
-                  verticalPosition: 'top'
-                }
-              );
-            },
+
             complete: () => {
               this.isLoading = false;
               this.cd.detectChanges();

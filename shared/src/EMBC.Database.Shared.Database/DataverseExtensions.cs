@@ -158,8 +158,7 @@ public static class DataverseExtensions
             {
                 Conditions =
                     {
-                        new ConditionExpression("objectid", ConditionOperator.Equal, entityId),
-                        // new ConditionExpression("filename", ConditionOperator.Equal, fileName)
+                        new ConditionExpression("objectid", ConditionOperator.Equal, entityId)
                     }
             }
         };

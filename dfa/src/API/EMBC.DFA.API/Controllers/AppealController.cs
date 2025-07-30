@@ -41,14 +41,14 @@ namespace EMBC.DFA.API.Controllers
         private async Task UploadSignatureAnnotationAsync(
             string entityName,
             Guid entityId,
-            SignatureBlock signature,
+            string signature,
             string fileName,
             string displayName,
             string note)
         {
-            if (signature?.signature != null)
+            if (signature != null)
             {
-                var base64Data = signature.signature;
+                var base64Data = signature;
                 if (base64Data.Contains(","))
                     base64Data = base64Data.Substring(base64Data.IndexOf(',') + 1);
 
@@ -63,20 +63,14 @@ namespace EMBC.DFA.API.Controllers
             }
         }
 
-        private async Task GetSignatureAnnotationAsync(
+        private async Task<string?> GetSignatureAnnotationAsync(
           string entityName,
           Guid entityId,
-          SignatureBlock signature,
           string fileName)
         {
             
-                var annotation = await organizationService.GetAnnotationByFileNameAsync(entityName, entityId, fileName);
-                if (annotation != null)
-                {
-                    signature.signature = annotation.FileContent;
-                    signature.dateSigned = annotation.CreatedOn.ToString();
-                    signature.signedName = annotation.CreatedBy?.Name ?? "Unknown User";
-            }
+            var annotation = await organizationService.GetAnnotationByFileNameAsync(entityName, entityId, fileName);
+            return annotation?.FileContent ?? null;
             
         }
 
@@ -88,7 +82,7 @@ namespace EMBC.DFA.API.Controllers
         [HttpPost("create")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAppeal([FromBody] AppealModel appeal)
+        public IActionResult CreateAppeal([FromBody] AppealModel appeal)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -100,22 +94,6 @@ namespace EMBC.DFA.API.Controllers
             var mappedAppeal = mapper.Map<Appeal>(appeal);
 
             var appealId = repository.Insert(mappedAppeal);
-
-            await UploadSignatureAnnotationAsync(
-                "dfa_appeal",
-                appealId,
-                appeal.SignAndSubmit?.ApplicantSignature,
-                "applicant_signature.png",
-                "Signature of Applicant",
-                "This is the uploaded applicant signature.");
-
-            await UploadSignatureAnnotationAsync(
-                "dfa_appeal",
-                appealId,
-                appeal.SignAndSubmit?.SecondaryApplicantSignature,
-                "secondary_applicant_signature.png",
-                "Signature of Secondary Applicant",
-                "This is the uploaded secondary applicant signature.");
             return Ok(appealId);
         }
 
@@ -132,25 +110,17 @@ namespace EMBC.DFA.API.Controllers
             var appeal = repository.FirstOrDefault(e => e.Id == id);
             if (appeal == null) return NotFound();
             var model = mapper.Map<AppealModel>(appeal);
-            model.SignAndSubmit = new SignAndSubmitModel
-            {
-                ApplicantSignature = new SignatureBlock
-                {
-                    signature = null,
-                    dateSigned = DateTime.Now.ToString("yyyy-MM-dd"),
-                    signedName = "TEST USER" // This should be replaced with actual logic to retrieve the signed name
-                }
-            };
-            await GetSignatureAnnotationAsync(
+
+            model.Signature = await GetSignatureAnnotationAsync(
                 "dfa_appeal",
                 id,
-                model.SignAndSubmit?.ApplicantSignature,
                 "applicant_signature.png");
+
             return Ok(model);
         }
 
         /// <summary>
-        /// Create an appeal
+        /// Update an appeal
         /// </summary>
         /// <param name="appeal">The appeal information</param>
         /// <returns>appeal id</returns>
@@ -173,18 +143,11 @@ namespace EMBC.DFA.API.Controllers
             await UploadSignatureAnnotationAsync(
                 "dfa_appeal",
                 appeal.Id,
-                appeal.SignAndSubmit?.ApplicantSignature,
-                "applicant_signature.png",
+                appeal.Signature,
+                 "applicant_signature.png",
                 "Signature of Applicant",
                 "This is the uploaded applicant signature.");
 
-            await UploadSignatureAnnotationAsync(
-                "dfa_appeal",
-                appeal.Id,
-                appeal.SignAndSubmit?.SecondaryApplicantSignature,
-                "secondary_applicant_signature.png",
-                "Signature of Secondary Applicant",
-                "This is the uploaded secondary applicant signature.");
             return Ok(updateAppeal);
         }
     }
@@ -202,7 +165,11 @@ namespace EMBC.DFA.API.Controllers
         public string Reason { get; set; }
         [Required]
         public DFA_AppealType Type { get; set; }
-        public SignAndSubmitModel SignAndSubmit { get; set; }
+        public string? DateSigned { get; set; }
+        public string? SignedName { get; set; }
+        public string? Signature { get; set; }
+
+        //public SignAndSubmitModel SignAndSubmit { get; set; }
     }
 
     public class AppealModel
@@ -210,13 +177,14 @@ namespace EMBC.DFA.API.Controllers
        // public Guid? ApplicationId { get; set; }
         [Required]
         public Guid? CaseId { get; set; }
-       
         public string? Status { get; set; }
-       
         public string? Reason { get; set; }
-       
         public DFA_AppealType? Type { get; set; }
-        public SignAndSubmitModel? SignAndSubmit { get; set; }
+        public string? DateSigned { get; set; }
+        public string? SignedName { get; set; }
+        public string? Signature { get; set; }
+
+       // public SignAndSubmitModel? SignAndSubmit { get; set; }
     }
 
     public class SignAndSubmitModel
