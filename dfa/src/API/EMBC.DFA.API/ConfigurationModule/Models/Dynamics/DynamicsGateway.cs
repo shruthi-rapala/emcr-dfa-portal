@@ -370,7 +370,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_dateofdamage", "dfa_damagedpropertystreet1", "dfa_damagedpropertycitytext",
                         "_dfa_eventid_value", "_dfa_casecreatedid_value", "dfa_primaryapplicantsigneddate", "createdon",
                         "dfa_applicationstatusportal", "dfa_farmtype", "dfa_smallbusinesstype", "dfa_accountlegalname",
-                        "dfa_appealcloseddate"
+                        "dfa_appealcloseddate", "dfa_createdinversion", "dfa_portalnote"
                     },
                     Filter = $"_dfa_applicant_value eq {profileId}"
                     //Expand = new CRMExpandOptions[]
@@ -431,7 +431,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_accountlegalname = objApp.dfa_accountlegalname,
                                    dfa_appealcloseddate = objApp.dfa_appealcloseddate,
                                    CaseEligibilityAppeal = objApp.CaseEligibilityAppeal,
-                                   CasePaidAmountAppeal = objApp.CasePaidAmountAppeal
+                                   CasePaidAmountAppeal = objApp.CasePaidAmountAppeal,
+                                   dfa_createdinversion = objApp.dfa_createdinversion,
+                                   dfa_portalnote = objApp.dfa_portalnote
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));
                 return lstApps;
             }
