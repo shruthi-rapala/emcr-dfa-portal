@@ -394,7 +394,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         .GetEligibilityWorkflow(new AppealQuery { CaseId = caseId })
                         .FirstOrDefault();
                     app.CaseEligibilityAppeal = caseEligibilityAppeal?.CaseEligibilityAppeal; // Assign the list of mapped appeals to the application
-                                                                                   //}
+                                                              
                         var caseAmountAppeal = repository
                             .GetAmountWorkflow(new AppealQuery { CaseId = caseId })
                             .FirstOrDefault();
