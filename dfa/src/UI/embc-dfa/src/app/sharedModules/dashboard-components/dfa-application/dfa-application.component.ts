@@ -591,22 +591,23 @@ export class DfaApplicationComponent implements OnInit {
     this.router.navigate(['/case', applItem.caseId, 'documents']);
   }
 
+
   viewAppealAfterSubmission(applItem: ApplicationExtended, type: string): void {
     const caseId = applItem.caseId;
-    let appeal;
+    let appealId;
     if (type == 'Eligibility') {
-      appeal = applItem.caseEligibilityAppeal;
+      appealId = applItem.caseEligibilityAppeal.caseAppealId;
     } else if (type == 'Amount') {
-      appeal = applItem.caseAmountAppeal;
+      appealId = applItem.caseAmountAppeal.caseAppealId;
     }
-    if (!appeal?.id || !caseId || !type) {
-      console.error('Invalid appeal or case details:', { appeal, caseId, type });
+    if (!appealId || !caseId || !type) {
+      console.error('Invalid appeal or case details:', { appealId, caseId, type });
       return;
     }
 
     this.dfaAppealDataService.setCaseDetails({...applItem, caseId, type });
 
-    this.router.navigate([`/dfa-appeal/${appeal.id}/view`], {
+    this.router.navigate([`/dfa-appeal/${appealId}/view`], {
       queryParams: {
         applicationId: applItem.applicationId
       }

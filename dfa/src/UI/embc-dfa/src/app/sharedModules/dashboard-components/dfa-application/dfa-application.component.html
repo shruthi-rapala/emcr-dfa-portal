@@ -146,7 +146,7 @@
       </div>
 
       <!-- Case Eligibility Appeal Timeline -->
-      @if (canAppeal(applItem) && applItem.caseEligibilityAppeal && false) {
+      @if (canAppeal(applItem) && applItem.caseEligibilityAppeal) {
         <div class="appealsTimeline">
           <div [ngClass]="applItem.hasAppealStages ? 'appeal-stages' : ''" class="bfpTimeline">
             <div class="col-md-3" style="margin-top: 20px;">
@@ -180,7 +180,7 @@
       }
 
       <!-- Case Amount Appeal Timeline -->
-      @if (hasAmountAppeal(applItem) && false) {
+      @if (hasAmountAppeal(applItem)) {
         <br />
         <span><b>Amount Appeal Status</b></span>
         <div style="display: flex; margin:20px 30px 30px 0;">
@@ -226,22 +226,22 @@
 
       @if (canAppeal(applItem) && (applItem.caseEligibilityAppeal || applItem.caseAmountAppeal)) {
         <div>
-          @if (applItem.caseEligibilityAppeal && false) {
+          @if (applItem.caseEligibilityAppeal) {
           <button class="col-md-2 application-button whitebutton" type="button"
             (click)="viewAppealAfterSubmission(applItem, 'Eligibility')">View Eligibility Appeal</button>
           }
-          @if (applItem.caseAmountAppeal && false) {
+          @if (applItem.caseAmountAppeal) {
             <button class="col-md-2 application-button whitebutton" type="button"
             (click)="viewAppealAfterSubmission(applItem, 'Amount')">View Amount Appeal</button>
           }
         </div>
       }
 
-      @if (!applItem.appeals || applItem.appeals.length === 0) {
+      @if (!applItem.caseEligibilityAppeal && !applItem.caseAmountAppeal) {
       <!-- Add Appeals section -->
       <div [featureEnabled]="'useAppeals'">
         @if (applItem.dateFileClosed && remainingDays(applItem) > 0) {
-        @if(applItem.caseEligibility === this.CaseElibilityEnum.Ineligible && false) {
+        @if(applItem.caseEligibility === this.CaseElibilityEnum.Ineligible) {
         <div class="appeals">
           <span>
             You have <b>{{remainingDays(applItem)}}</b> days to register an eligible appeal on this application
@@ -251,7 +251,7 @@
             Eligibility Decision</button>
         </div>
         }
-        @if(applItem.caseEligibility === this.CaseElibilityEnum.Eligible && false) {
+        @if(applItem.caseEligibility === this.CaseElibilityEnum.Eligible) {
         <div class="appeals">
           <span>
             You have <b>{{remainingDays(applItem)}}</b> days to register an amount appeal on this application
