@@ -105,45 +105,90 @@
 
       <br />
       <span><b>Application Status</b></span>
-      <div style="display: flex; margin:20px 30px 30px 0">
-        <div class="col-md-12">
-          <div class="col-md-3" style="margin-top: 20px;">
-            <span *ngIf="applItem.isErrorInStatus === true" style="color: red;">Error in displaying status<br /></span>
+      @if(applItem?.getCaseBPFVersion === CaseBpfVersionSet.Four){
+         <span> New Application BPF WIP</span>
+         <div style="display: flex; margin:20px 30px 30px 0">
+          <div class="col-md-12">
+            <div class="col-md-3" style="margin-top: 20px;">
+              <span *ngIf="applItem.isErrorInStatus === true" style="color: red;">Error in displaying status<br /></span>
+            </div>
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <td colspan="3" *ngFor="let item of getItems(applItem.statusBar); let i=index" id="item{{i}}" [ngClass]="'headerlabelStyle'">
+                  <span *ngIf="item.label != ''" class="stepText">{{item.label}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.label != '' ? 'labelStyle' : 'labelEmptyWidth'">
+                  <div *ngIf="item.label != ''" [ngClass]="item.currentStep == false || item.label == 'Closed' ? 'alignStatus': (item.stage == '' ? 'alignStatus' : 'currentStatus')">
+                    <span *ngIf="applItem.label != 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false" class="material-icons" [ngStyle]="{'color': item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'red' : 'rgb(21 178 89)'}">
+                      {{ item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'cancel' : 'check_circle' }}
+                    </span>
+                    <span *ngIf="applItem.label == 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false" class="material-icons" [ngStyle]="{'color': item.label == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn') ? 'red' : 'rgb(21 178 89)'}">
+                      {{ item.label == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn')  ? 'cancel' : 'check_circle' }}
+                    </span>
+                    <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage != ''">
+                      {{ applItem.casePortalNote }}
+                    </span>
+                    <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage == ''" class="material-symbols-outlined" [ngStyle]="{'color': item.status == 'Draft' ? '#639DD4' : '#FDCB52'}">
+                      {{ item.label == 'Draft' ? 'check_circle' : 'circle' }}
+                    </span>
+                    <span *ngIf="item.isCompleted == false && item.currentStep == false && applItem.isErrorInStatus == false" class="material-symbols-outlined" style="color: #FDCB52">
+                      circle
+                    </span>
+                    <span *ngIf="applItem.isErrorInStatus == true" class="material-symbols-outlined" style="color: #FDCB52">
+                      circle
+                    </span>
+                  </div>
+                  <div class="lineConnector" *ngIf="item.label == '' && i > 1 && (i+1) < applItem.statusBar.length"></div>
+                </td>
+              </tr>
+            </table>
           </div>
-          <table cellpadding="0" cellspacing="0">
-            <tr>
-              <td colspan="3" *ngFor="let item of getItems(applItem.statusBar); let i=index" id="item{{i}}" [ngClass]="'headerlabelStyle'">
-                <span *ngIf="item.label != ''" class="stepText">{{item.label}}</span>
-              </td>
-            </tr>
-            <tr>
-              <td *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.label != '' ? 'labelStyle' : 'labelEmptyWidth'">
-                <div *ngIf="item.label != ''" [ngClass]="item.currentStep == false || item.label == 'Closed' ? 'alignStatus': (item.stage == '' ? 'alignStatus' : 'currentStatus')">
-                  <span *ngIf="applItem.label != 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false" class="material-icons" [ngStyle]="{'color': item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'red' : 'rgb(21 178 89)'}">
-                    {{ item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'cancel' : 'check_circle' }}
-                  </span>
-                  <span *ngIf="applItem.label == 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false" class="material-icons" [ngStyle]="{'color': item.label == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn') ? 'red' : 'rgb(21 178 89)'}">
-                    {{ item.label == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn')  ? 'cancel' : 'check_circle' }}
-                  </span>
-                  <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage != ''">
-                    {{ applItem.amountAppealPortalNote }}
-                  </span>
-                  <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage == ''" class="material-symbols-outlined" [ngStyle]="{'color': item.status == 'Draft' ? '#639DD4' : '#FDCB52'}">
-                    {{ item.label == 'Draft' ? 'check_circle' : 'circle' }}
-                  </span>
-                  <span *ngIf="item.isCompleted == false && item.currentStep == false && applItem.isErrorInStatus == false" class="material-symbols-outlined" style="color: #FDCB52">
-                    circle
-                  </span>
-                  <span *ngIf="applItem.isErrorInStatus == true" class="material-symbols-outlined" style="color: #FDCB52">
-                    circle
-                  </span>
-                </div>
-                <div class="lineConnector" *ngIf="item.label == '' && i > 1 && (i+1) < applItem.statusBar.length"></div>
-              </td>
-            </tr>
-          </table>
         </div>
-      </div>
+      }
+      @else{
+        <div style="display: flex; margin:20px 30px 30px 0">
+          <div class="col-md-12">
+            <div class="col-md-3" style="margin-top: 20px;">
+              <span *ngIf="applItem.isErrorInStatus === true" style="color: red;">Error in displaying status<br /></span>
+            </div>
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <td colspan="3" *ngFor="let item of getItems(applItem.statusBar); let i=index" id="item{{i}}" [ngClass]="'headerlabelStyle'">
+                  <span *ngIf="item.label != ''" class="stepText">{{item.label}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.label != '' ? 'labelStyle' : 'labelEmptyWidth'">
+                  <div *ngIf="item.label != ''" [ngClass]="item.currentStep == false || item.label == 'Closed' ? 'alignStatus': (item.stage == '' ? 'alignStatus' : 'currentStatus')">
+                    <span *ngIf="applItem.label != 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false" class="material-icons" [ngStyle]="{'color': item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'red' : 'rgb(21 178 89)'}">
+                      {{ item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'cancel' : 'check_circle' }}
+                    </span>
+                    <span *ngIf="applItem.label == 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false" class="material-icons" [ngStyle]="{'color': item.label == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn') ? 'red' : 'rgb(21 178 89)'}">
+                      {{ item.label == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn')  ? 'cancel' : 'check_circle' }}
+                    </span>
+                    <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage != ''">
+                      {{ applItem.status }}
+                    </span>
+                    <span *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage == ''" class="material-symbols-outlined" [ngStyle]="{'color': item.status == 'Draft' ? '#639DD4' : '#FDCB52'}">
+                      {{ item.label == 'Draft' ? 'check_circle' : 'circle' }}
+                    </span>
+                    <span *ngIf="item.isCompleted == false && item.currentStep == false && applItem.isErrorInStatus == false" class="material-symbols-outlined" style="color: #FDCB52">
+                      circle
+                    </span>
+                    <span *ngIf="applItem.isErrorInStatus == true" class="material-symbols-outlined" style="color: #FDCB52">
+                      circle
+                    </span>
+                  </div>
+                  <div class="lineConnector" *ngIf="item.label == '' && i > 1 && (i+1) < applItem.statusBar.length"></div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      }
+     
 
       <!-- Case Eligibility Appeal Timeline -->
       @if (canAppeal(applItem) && applItem.caseEligibilityAppeal) {
