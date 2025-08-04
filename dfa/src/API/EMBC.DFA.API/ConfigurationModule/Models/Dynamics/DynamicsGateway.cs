@@ -393,8 +393,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     var caseEligibilityAppeal = repository
                         .GetEligibilityWorkflow(new AppealQuery { CaseId = caseId })
                         .FirstOrDefault();
+                    app.EligibilityAppealPortalNote = caseEligibilityAppeal?.EligibilityAppealPortalNote;
+                    app.EligibilityAppealStatusPortal = caseEligibilityAppeal?.EligibilityAppealStatusPortal;
                     app.CaseEligibilityAppeal = caseEligibilityAppeal?.CaseEligibilityAppeal; // Assign the list of mapped appeals to the application
-                                                              
+
                         var caseAmountAppeal = repository
                             .GetAmountWorkflow(new AppealQuery { CaseId = caseId })
                             .FirstOrDefault();
@@ -432,6 +434,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_appealcloseddate = objApp.dfa_appealcloseddate,
                                    CaseEligibilityAppeal = objApp.CaseEligibilityAppeal,
                                    CasePaidAmountAppeal = objApp.CasePaidAmountAppeal,
+                                   EligibilityAppealPortalNote = objApp.EligibilityAppealPortalNote,
+                                   EligibilityAppealStatusPortal = objApp.EligibilityAppealStatusPortal,
+                                   AmountAppealPortalNote = objApp.AmountAppealPortalNote,
+                                   AmountAppealStatusPortal = objApp.AmountAppealStatusPortal
                                    dfa_createdinversion = objApp.dfa_createdinversion,
                                    dfa_portalnote = objApp.dfa_portalnote
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));

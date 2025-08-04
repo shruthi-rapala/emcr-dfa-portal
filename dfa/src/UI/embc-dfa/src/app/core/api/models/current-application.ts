@@ -22,6 +22,8 @@ export interface CurrentApplication {
   dateAppealClosed?: string;
   dateFileClosed?: string;
   dateOfDamage?: string;
+  eligibilityAppealPortalNote?: string;
+  eligibilityAppealStatusPortal?: string;
   eventId?: string;
   getCaseBPFVersion?: CaseBpfVersionSet;
   hasAppealStages?: boolean;
