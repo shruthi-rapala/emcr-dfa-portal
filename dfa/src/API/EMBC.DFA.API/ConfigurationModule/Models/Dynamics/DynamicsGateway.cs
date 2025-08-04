@@ -437,7 +437,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    EligibilityAppealPortalNote = objApp.EligibilityAppealPortalNote,
                                    EligibilityAppealStatusPortal = objApp.EligibilityAppealStatusPortal,
                                    AmountAppealPortalNote = objApp.AmountAppealPortalNote,
-                                   AmountAppealStatusPortal = objApp.AmountAppealStatusPortal
+                                   AmountAppealStatusPortal = objApp.AmountAppealStatusPortal,
                                    dfa_createdinversion = objApp.dfa_createdinversion,
                                    dfa_portalnote = objApp.dfa_portalnote
                                }).AsEnumerable().OrderByDescending(m => DateTime.Parse(m.createdon));

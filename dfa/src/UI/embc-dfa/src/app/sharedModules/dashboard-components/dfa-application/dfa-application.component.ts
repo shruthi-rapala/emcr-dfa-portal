@@ -484,7 +484,8 @@ export class DfaApplicationComponent implements OnInit {
               objApp.eligibilityAppealPortalNote = "In Progress";
 
 
-            objAppWithAppeals.appealEligibilityStatusBar.forEach((objStatItem) => {
+            if (objApp.caseEligibilityAppeal) objAppWithAppeals.appealEligibilityStatusBar.forEach((objStatItem) => {
+              console.log("Error:", objApp.caseNumber, objApp.caseAmountAppeal)
               const statusMatch =
                 objApp.caseEligibilityAppeal?.activeStage?.name &&
                 objStatItem.label?.toLowerCase() === objApp.caseEligibilityAppeal.activeStage.name.toLowerCase();
@@ -528,10 +529,11 @@ export class DfaApplicationComponent implements OnInit {
             if (!objApp.amountAppealPortalNote)
               objApp.amountAppealPortalNote = "In Progress";
 
-            objAppWithAppeals.appealAmountStatusBar.forEach((objStatItem) => {
+            if (objApp.caseAmountAppeal) objAppWithAppeals.appealAmountStatusBar.forEach((objStatItem) => {
               const statusMatch =
                 objApp.caseAmountAppeal?.activeStage?.name &&
                 objStatItem.label?.toLowerCase() === objApp.caseAmountAppeal.activeStage.name.toLowerCase();
+
               if (statusMatch) {
                 //if (!appealAmount?.casePaidAmountAppeal?.activeStage?.completedOn) {
                   objStatItem.currentStep = true;
@@ -541,6 +543,7 @@ export class DfaApplicationComponent implements OnInit {
 
                 if (objApp.caseAmountAppeal?.activeStage?.name) {
                   objStatItem.stage = objApp.caseAmountAppeal.activeStage.name;
+                  
                 }
               }
 
@@ -762,11 +765,11 @@ export class DfaApplicationComponent implements OnInit {
   }
 
   hasEligibilityAppeal(applItem: CurrentApplication): boolean {
-    return this.canAppeal(applItem) && !!applItem.caseEligibilityAppeal;
+    return !!applItem.caseEligibilityAppeal;
   }
 
   hasAmountAppeal(applItem: CurrentApplication): boolean {
-    return this.canAppeal(applItem) && !!applItem.caseAmountAppeal;
+    return !!applItem.caseAmountAppeal;
   }
 }
 
