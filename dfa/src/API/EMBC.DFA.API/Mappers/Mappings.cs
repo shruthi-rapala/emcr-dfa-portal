@@ -524,7 +524,9 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.AmountAppealPortalNote, opts => opts.MapFrom(s => s.AmountAppealPortalNote))
                 .ForMember(d => d.AmountAppealStatusPortal, opts => opts.MapFrom(s => s.AmountAppealStatusPortal))
                 .ForMember(d => d.EligibilityAppealPortalNote, opts => opts.MapFrom(s => s.EligibilityAppealPortalNote))
-                .ForMember(d => d.EligibilityAppealStatusPortal, opts => opts.MapFrom(s => s.EligibilityAppealStatusPortal));
+                .ForMember(d => d.EligibilityAppealStatusPortal, opts => opts.MapFrom(s => s.EligibilityAppealStatusPortal))
+                .ForMember(d => d.CasePortalNote, opts => opts.MapFrom(s => s.dfa_portalnote))
+                .ForMember(d => d.GetCaseBPFVersion, opts => opts.MapFrom(s => s.dfa_createdinversion));
 
             CreateMap<DFA_CaseEligibilityAppeal, CaseEligibilityAppeal>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
