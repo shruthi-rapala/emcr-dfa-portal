@@ -106,8 +106,7 @@
       <br />
       <span><b>Application Status</b></span>
       @if(applItem?.getCaseBPFVersion === CaseBpfVersionSet.Four){
-      <span> New Application BPF WIP</span>
-      <div style="display: flex; margin:20px 30px 30px 0">
+      <div class="timeline">
         <div class="col-md-12">
           <div class="col-md-3" style="margin-top: 20px;">
             <span *ngIf="applItem.isErrorInStatus === true" style="color: red;">Error in displaying status<br /></span>
@@ -165,7 +164,7 @@
       </div>
       }
       @else{
-      <div style="display: flex; margin:20px 30px 30px 0">
+      <div class="timeline">
         <div class="col-md-12">
           <div class="col-md-3" style="margin-top: 20px;">
             <span *ngIf="applItem.isErrorInStatus === true" style="color: red;">Error in displaying status<br /></span>
@@ -228,7 +227,8 @@
       @if (hasEligibilityAppeal(applItem)) {
       <br />
       <span><b>Eligibility Appeal Status</b></span>
-      <div style="display: flex; margin:20px 30px 30px 0;">
+    
+      <div class="appealStatus">
         <div class="col-md-12">
           <div class="col-md-3" style="margin-top: 20px;">
             <span *ngIf="this.caseEligibilityAppealHasErrorInStatus === true" style="color: red;">Error in displaying
@@ -292,7 +292,7 @@
       @if (hasAmountAppeal(applItem)) {
       <br />
       <span><b>Amount Appeal Status</b></span>
-      <div style="display: flex; margin:20px 30px 30px 0;">
+      <div class="appealStatus">
         <div class="col-md-12">
           <div class="col-md-3" style="margin-top: 20px;">
             <span *ngIf="this.caseAmountAppealHasErrorInStatus === true" style="color: red;">Error in displaying
@@ -354,19 +354,19 @@
 
       <div>
         @if (applItem.caseEligibilityAppeal) {
-        <button class="col-md-2 application-button whitebutton" type="button"
+        <button class="col-md-2 application-button" type="button"
           (click)="viewAppealAfterSubmission(applItem, 'Eligibility')">View Eligibility Appeal</button>
         }
         @if (applItem.caseAmountAppeal) {
-        <button class="col-md-2 application-button whitebutton" type="button"
+        <button class="col-md-2 application-button" type="button"
           (click)="viewAppealAfterSubmission(applItem, 'Amount')">View Amount Appeal</button>
         }
       </div>
-      
+
 
 
       <!-- Add Appeals section -->
-  
+
       @if (!applItem.caseEligibilityAppeal && !applItem.caseAmountAppeal) {
       <!-- Add Appeals section -->
       <div [featureEnabled]="'useAppeals'">
@@ -391,9 +391,9 @@
             Appeal Payment Amount</button>
         </div>
         }
-        }   
+        }
       </div>
-    }
+      }
 
 
 
