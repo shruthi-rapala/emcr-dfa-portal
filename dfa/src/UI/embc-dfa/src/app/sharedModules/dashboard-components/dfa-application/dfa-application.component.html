@@ -287,6 +287,11 @@
         </div>
       </div>
       }
+      @if (applItem.caseEligibilityAppeal) {
+        <button class="col-md-2 application-button" type="button"
+          (click)="viewAppealAfterSubmission(applItem, 'Eligibility')">View Eligibility Appeal</button>
+        }
+
 
       <!-- Case Amount Appeal Timeline -->
       @if (hasAmountAppeal(applItem)) {
@@ -353,25 +358,16 @@
       }
 
       <div>
-        @if (applItem.caseEligibilityAppeal) {
-        <button class="col-md-2 application-button" type="button"
-          (click)="viewAppealAfterSubmission(applItem, 'Eligibility')">View Eligibility Appeal</button>
-        }
         @if (applItem.caseAmountAppeal) {
         <button class="col-md-2 application-button" type="button"
           (click)="viewAppealAfterSubmission(applItem, 'Amount')">View Amount Appeal</button>
         }
       </div>
 
-
-
-      <!-- Add Appeals section -->
-
-      @if (!applItem.caseEligibilityAppeal && !applItem.caseAmountAppeal) {
       <!-- Add Appeals section -->
       <div [featureEnabled]="'useAppeals'">
         @if (applItem.dateFileClosed && remainingDays(applItem) > 0) {
-        @if(applItem.caseEligibility === this.CaseElibilityEnum.Ineligible) {
+        @if(applItem.caseEligibility === this.CaseElibilityEnum.Ineligible && applItem.caseEligibilityAppeal === null) {
         <div class="appeals">
           <span>
             You have <b>{{remainingDays(applItem)}}</b> days to register an eligible appeal on this application
@@ -381,7 +377,7 @@
             Eligibility Decision</button>
         </div>
         }
-        @if(applItem.caseEligibility === this.CaseElibilityEnum.Eligible) {
+        @if(applItem.caseEligibility === this.CaseElibilityEnum.Eligible && applItem.caseAmountAppeal === null && (applItem.caseEligibilityAppeal === null || applItem.caseEligibilityAppeal?.activeStage?.name?.toLowerCase() === 'closed')) {
         <div class="appeals">
           <span>
             You have <b>{{remainingDays(applItem)}}</b> days to register an amount appeal on this application
@@ -393,10 +389,7 @@
         }
         }
       </div>
-      }
-
-
-
+ 
 
     </mat-card>
   </div>
