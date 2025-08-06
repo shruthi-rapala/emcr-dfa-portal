@@ -55,14 +55,11 @@ export class AppealConfirmationDialogComponent {
 
       
     });
-
-   
-
    
   }
 
   cancel() {
-    this.dialogRef.close('cancel');
+    this.dialogRef.close(null);
   }
 
 }
