@@ -40,7 +40,6 @@ export class AppealConfirmationDialogComponent {
       body: {
         caseId: caseId,
         type: type,
-        //status : "Appeal Submitted",
       }
     }).subscribe({
       next: (appealId) => {
@@ -52,8 +51,6 @@ export class AppealConfirmationDialogComponent {
       error: (error) => {
         console.log('Appeal creation failed', error);
       }
-
-      
     });
    
   }
