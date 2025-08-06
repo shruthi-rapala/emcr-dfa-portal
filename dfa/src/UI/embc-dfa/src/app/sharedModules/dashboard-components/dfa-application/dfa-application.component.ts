@@ -20,8 +20,10 @@ interface CurrentCaseWithAppeals extends CurrentApplication {
   appealAmountStatusBar?: AppealStatusItem[];
   amountAppealPortalNote?: string;
   amountAppealStatusPortal?: string;
+  amountAppealDecision?: string;
   eligibilityAppealPortalNote?: string;
   eligibilityAppealStatusPortal?: string;
+  eligibilityAppealDecision?: string;
 }
 
 interface AppealStatusItem {
@@ -31,6 +33,7 @@ interface AppealStatusItem {
   stage?: string;
   isCompleted?: boolean;
   isFinalStep?: boolean;
+  isDecision?: boolean;
 }
 // ####################################################################
 
@@ -47,6 +50,8 @@ export class DfaApplicationComponent implements OnInit {
   addNewItem(value: number) {
     this.appSessionService.currentApplicationsCount.emit(value);
   }
+
+  // NOTE if we ever consider refactoring the timelines, considering replacing the messy conditional logic with "state design pattern" or similar
 
   // New Application Time line for 4.0 Application
   newApplicationItems = [
@@ -121,7 +126,7 @@ export class DfaApplicationComponent implements OnInit {
       isFinalStep: false,
       isErrorInStatus: false
     },
-    
+
   ];
 
   // application timeline items
@@ -365,7 +370,6 @@ export class DfaApplicationComponent implements OnInit {
           var initialList = lstData;
           lstDataUnModified.push(initialList);
           lstData.forEach((objApp, i) => {
-          //#TODO:Change this back to false once the status is resolved
             let isFound = true;
             var jsonVal = JSON.stringify(this.items);
 
@@ -441,45 +445,15 @@ export class DfaApplicationComponent implements OnInit {
               });
             }
 
-            // Load new application timeline items
-            if (objApp.getCaseBPFVersion === CaseBpfVersionSet.Four) {
-              objApp.statusBar = JSON.parse(
-                JSON.stringify(this.newApplicationItems)
-              );
-              objApp.statusBar.forEach((objStatItem) => {
-                if (
-                  objStatItem.label.toLowerCase() ===
-                  objApp.status.toLowerCase()
-                ) {
-                  objStatItem.currentStep = true;
-                  isFound = true;
-                  this.matchStatusFound = true;
-                }
-
-                if (isFound == false) {
-                  objStatItem.isCompleted = true;
-                }
-
-                if (objStatItem.isFinalStep == true) {
-                  if (isFound == false) {
-                    objApp.isErrorInStatus = true;
-                  } else if (
-                    objStatItem.label.toLowerCase() ==
-                    objApp.status.toLowerCase()
-                  ) {
-                    objStatItem.isCompleted = true;
-                  }
-                }
-              });
-            }
-
             // Eligibility appeal steps
             const objAppWithAppeals = objApp as CurrentCaseWithAppeals;
             // Initialize appealStatusBar if it's missing
             if (!Array.isArray(objAppWithAppeals.appealEligibilityStatusBar)) {
               objAppWithAppeals.appealEligibilityStatusBar = JSON.parse(JSON.stringify(this.eligibilityAppealItems));
             }
-            // Eligibility appeal steps
+
+            isFound = false;
+
             if (!objApp.eligibilityAppealPortalNote)
               objApp.eligibilityAppealPortalNote = "In Progress";
 
@@ -490,9 +464,9 @@ export class DfaApplicationComponent implements OnInit {
                 objApp.caseEligibilityAppeal?.activeStage?.name &&
                 objStatItem.label?.toLowerCase() === objApp.caseEligibilityAppeal.activeStage.name.toLowerCase();
               if (statusMatch) {
-                //if (!appealAmount?.caseEligibilityAppeal?.activeStage?.completedOn) {
+                if (!objApp.caseEligibilityAppeal?.completedOn) {
                   objStatItem.currentStep = true;
-                //}
+                }
                 isFound = true;
                 this.matchStatusFound = true;
 
@@ -504,6 +478,8 @@ export class DfaApplicationComponent implements OnInit {
               // Fallback if status not matched
               if (!isFound) {
                 objStatItem.isCompleted = true;
+              } else {
+                objStatItem.isDecision = false;
               }
 
               // Final step validation
@@ -543,7 +519,7 @@ export class DfaApplicationComponent implements OnInit {
 
                 if (objApp.caseAmountAppeal?.activeStage?.name) {
                   objStatItem.stage = objApp.caseAmountAppeal.activeStage.name;
-                  
+
                 }
               }
 
