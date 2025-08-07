@@ -175,7 +175,7 @@ export class ComponentCreationService {
     {
       component: 'appeal-reason',
       nextButtonLabel: 'Next – Upload Documents',
-      //#TODO : Implement this functionlaity after user confirms that cancel is needed
+      //#TODO : Implement this functionality after user confirms that cancel is needed
       backButtonLabel:null,
       isLast: false,
       loadWrapperButton: false,
