@@ -16,7 +16,7 @@ export default class AppealReasonComponent implements OnInit, OnDestroy {
   appealReasonForm$: Subscription;
   appealType: string;
   @Input() applicationDetails: DfaApplicationMain = this.appealDataService.getFullApplication();
-  @Input() caseDetails: any;
+  @Input() caseDetails = this.appealDataService.getCaseDetails();
 
   constructor(
     private formCreationService: FormCreationService,
@@ -25,8 +25,9 @@ export default class AppealReasonComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log("Application Details: ", this.applicationDetails);
-    // this.appealType = this.caseDetails?.type;
+    console.log("Application Details: ", this.applicationDetails, this.caseDetails);
+    this.appealType = this.caseDetails?.type;
+    console.log("Appeal Type: ", this.appealType);
 
     this.cdr.detectChanges();
 

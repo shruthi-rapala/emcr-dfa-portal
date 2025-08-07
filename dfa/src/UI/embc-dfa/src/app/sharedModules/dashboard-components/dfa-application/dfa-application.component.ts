@@ -459,7 +459,6 @@ export class DfaApplicationComponent implements OnInit {
 
 
             if (objApp.caseEligibilityAppeal) objAppWithAppeals.appealEligibilityStatusBar.forEach((objStatItem) => {
-              console.log("Error:", objApp.caseNumber, objApp.caseAmountAppeal)
               const statusMatch =
                 objApp.caseEligibilityAppeal?.activeStage?.name &&
                 objStatItem.label?.toLowerCase() === objApp.caseEligibilityAppeal.activeStage.name.toLowerCase();

@@ -8,13 +8,14 @@
         <div class="row">
           <div class="col-md-12">
             <p class="sub-heading">
+
               Original
-              {{ appealType === 'amount' ? 'Payment Amount' : 'Eligibility' }}
+              {{ caseDetails?.caseEligibility === 'Eligible' ? 'Payment Amount' : 'Eligibility' }}
               Decision
             </p>
           </div>
         </div>
-        <div class="row" *ngIf="appealType === 'eligibility'">
+        <div class="row" *ngIf="caseDetails?.caseEligibility === 'Ineligible'">
           <p style="font-size: 15px">
             Your application for DFA was determined to be ineligible for one or more reasons outlined in your DFA
             ineligibility letter. To appeal an eligibility determination, you must provide reasoning as to why you
@@ -26,7 +27,7 @@
             </p>
           </div>
         </div>
-        <div class="row" *ngIf="appealType === 'amount'">
+        <div class="row" *ngIf="caseDetails?.caseEligibility === 'Eligible'">
           <p style="font-size: 15px">
             To appeal DFA amount determinations, you must provide reasoning as to why you believe your application
             should have resulted in a greater payment amount. Appeals staff recommend reviewing your Field Manager
