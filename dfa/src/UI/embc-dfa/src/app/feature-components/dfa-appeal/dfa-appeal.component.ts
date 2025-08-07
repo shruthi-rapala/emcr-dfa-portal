@@ -22,6 +22,7 @@ import { DfaAppealService } from './dfa-appeal.service';
   styleUrls: ['./dfa-appeal.component.scss']
 })
 export class DfaAppealComponent implements OnInit {
+  AppealType = AppealType;
   @ViewChild('dfaAppealStepper') dfaAppealStepper: MatStepper;
   steps: Array<ComponentMetaDataModel>;
   dfaAppealFolderPath = 'dfa-appeal-forms';
@@ -35,7 +36,7 @@ export class DfaAppealComponent implements OnInit {
   secondaryApplicants: SecondaryApplicant[] = [];
   isSignaturesValid: boolean = false;
   appealId: string;
-  appealType: string;
+  appealType: AppealType;
   isEditView: boolean;
   appealReasonForm$: Subscription;
   appealReasonForm: FormGroup;
@@ -94,7 +95,7 @@ export class DfaAppealComponent implements OnInit {
     this.dfaAppealDataService.clearAppealData();
 
     // Create steps based on appeal type
-    this.steps = this.componentService.createDFAAppealSteps(this.appealType);
+    this.steps = this.componentService.createDFAAppealSteps();
 
    
     // @TODO: 
@@ -117,6 +118,9 @@ export class DfaAppealComponent implements OnInit {
         default:
           appealTypeEnum = AppealType.Other;
       }
+
+      this.appealType = appealTypeEnum;
+      console.log("appealType",this.appealType )
 
       this.dfaAppealDataService.appealType = appealTypeEnum;
 

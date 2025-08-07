@@ -4,15 +4,17 @@
     <div class="header">
     <div>
       <div class="heading-container">
-        <h1 class="heading">{{ appealType === 'eligibility' ? 'Eligibility Appeal' : 'Payment Amount Appeal' }}</h1>
+        {{ appealType === AppealType.Amount ? 'Payment Amount Appeal' : 'Eligibility Appeal' }}
       </div>
     </div>
+
     <div>
       <button
       class="button-p"
       mat-button
       type="button"
       (click)="returnToDashboard()"
+      *ngIf="!isEditView"
     >
       Return to Dashboard
     </button>
@@ -45,14 +47,17 @@
         <br />
         <div *ngIf="isEditView" class="row justify-content-between resp-style">
           <div class="col-md-6">
+          
             <button
               class="button-s"
               mat-button
               type="button"
               (click)="goBack(dfaAppealStepper, step.lastStep)"
+              *ngIf="step.backButtonLabel !== null" 
             >
               {{ step.backButtonLabel }}
             </button>
+          
           </div>
           <div class="col-md-6 text-end">
             <button

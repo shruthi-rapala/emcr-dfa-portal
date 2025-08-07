@@ -175,7 +175,8 @@ export class ComponentCreationService {
     {
       component: 'appeal-reason',
       nextButtonLabel: 'Next – Upload Documents',
-      backButtonLabel: 'Cancel Appeal',
+      //#TODO : Implement this functionality after user confirms that cancel is needed
+      backButtonLabel:null,
       isLast: false,
       loadWrapperButton: false,
       lastStep: -1,
@@ -245,7 +246,7 @@ export class ComponentCreationService {
     return componentArr;
   }
 
-  createDFAAppealSteps(appealType: string): Array<ComponentMetaDataModel> {
+  createDFAAppealSteps(): Array<ComponentMetaDataModel> {
     const componentArr: Array<ComponentMetaDataModel> =
       new Array<ComponentMetaDataModel>();
     for (const comp of this.dfaAppealComponents) {
