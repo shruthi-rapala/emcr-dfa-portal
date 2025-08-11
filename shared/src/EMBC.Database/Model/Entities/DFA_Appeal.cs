@@ -294,6 +294,8 @@ namespace EMBC.Database.Model
 			public const string DFA_Reason = "dfa_reason";
 			public const string DFA_RelatedAppealId = "dfa_relatedappealid";
 			public const string DFA_RelatedAppealIdName = "dfa_relatedappealidname";
+			public const string DFA_ReviewedEvaluatorReport = "dfa_reviewedevaluatorreport";
+			public const string DFA_ReviewedEvaluatorReportName = "dfa_reviewedevaluatorreportname";
 			public const string DFA_SupplierNumberRequested = "dfa_suppliernumberrequested";
 			public const string DFA_SupplierNumberRequestedName = "dfa_suppliernumberrequestedname";
 			public const string DFA_UploadFMrEPorTpMtLetter = "dfa_uploadfmreportpmtletter";
@@ -4122,6 +4124,38 @@ namespace EMBC.Database.Model
 				if (this.FormattedValues.Contains("dfa_relatedappealid"))
 				{
 					return this.FormattedValues["dfa_relatedappealid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_reviewedevaluatorreport")]
+		public System.Nullable<bool> DFA_ReviewedEvaluatorReport
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("dfa_reviewedevaluatorreport");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_reviewedevaluatorreport", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_reviewedevaluatorreportname")]
+		public string DFA_ReviewedEvaluatorReportName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("dfa_reviewedevaluatorreport"))
+				{
+					return this.FormattedValues["dfa_reviewedevaluatorreport"];
 				}
 				else
 				{

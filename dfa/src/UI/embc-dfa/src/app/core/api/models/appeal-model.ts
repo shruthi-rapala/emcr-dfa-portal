@@ -7,6 +7,7 @@ export interface AppealModel {
   caseId: string;
   dateSigned?: string | null;
   reason?: string | null;
+  reviewedEvaluatorReport?: boolean | null;
   signature?: string | null;
   signedName?: string | null;
   status?: string | null;

@@ -37,6 +37,7 @@ public class Appeal : IDto
     // Related Entities
     public CaseEligibilityAppeal? CaseEligibilityAppeal { get; set; }
     public CasePaidAmountAppeal? CasePaidAmountAppeal { get; set; }
+    public bool? ReviewedEvaluatorReport { get; set; }
 }
 
 public class SignAndSubmit

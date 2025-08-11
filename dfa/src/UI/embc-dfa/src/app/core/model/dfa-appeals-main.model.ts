@@ -8,7 +8,7 @@ import { CustomValidationService } from '../services/customValidation.service';
  **/
 export class AppealReasonForm {
   reason = new UntypedFormControl('', Validators.required);
-  reviewedEvaluatorReport = new UntypedFormControl('', Validators.required);
+  reviewedEvaluatorReport = new UntypedFormControl(false, Validators.required);
 
   constructor(
     appealReason: string,

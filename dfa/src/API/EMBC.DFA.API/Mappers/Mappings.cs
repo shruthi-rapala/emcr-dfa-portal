@@ -632,6 +632,7 @@ namespace EMBC.DFA.API.Mappers
                .ForMember(dest => dest.CaseId, opt => opt.MapFrom(src => src.CaseId))
                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.Reason))
+               .ForMember(dest => dest.ReviewedEvaluatorReport, opt => opt.MapFrom(src => src.ReviewedEvaluatorReport))
                .ForMember(dest => dest.AppealType, opt => opt.MapFrom(src => src.Type.ToString()))
                .ForMember(dest => dest.Signature, opt => opt.MapFrom(src => src.Signature))
                .ForMember(dest => dest.DateSigned, opt => opt.MapFrom(src => src.DateSigned))
