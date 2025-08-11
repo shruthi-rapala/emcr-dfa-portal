@@ -213,7 +213,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public int? dfa_iamtheonlypersoninthehome { get; set; } // optional Two Options
         public int? dfa_idonthaveanothercontact { get; set; } // optional Two Options
         public string? dfa_applicanttype { get; set; }
-        public string? createdon { get; set; }
+        
     }
 
     public class temp_dfa_appapplicationmain_params // TODO: move these under dfa_appapplicationmain_params

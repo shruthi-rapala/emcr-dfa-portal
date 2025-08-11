@@ -13,6 +13,7 @@ import { AppealFileUploadComponent } from 'src/app/sharedModules/forms/dfa-appea
 import SupportingDocumentsComponent from 'src/app/sharedModules/forms/dfa-appeal-forms/supporting-documents/supporting-documents.component';
 import AppealReasonComponent from './appeal-reason/appeal-reason.component';
 import SignAndSubmitComponent from './sign-and-submit/sign-and-submit.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import SignAndSubmitComponent from './sign-and-submit/sign-and-submit.component'
     MatButtonModule,
     MatRadioModule,
     CoreModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
   exports: [AppealReasonComponent, SupportingDocumentsComponent, SignAndSubmitComponent],
   providers: [DatePipe]

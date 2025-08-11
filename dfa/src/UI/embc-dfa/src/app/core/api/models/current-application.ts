@@ -21,6 +21,7 @@ export interface CurrentApplication {
   casePortalNote?: string;
   damagedAddress?: string;
   dateAppealClosed?: string;
+  dateApplicationCreated?: string;
   dateFileClosed?: string;
   dateOfDamage?: string;
   eligibilityAppealDecision?: string;

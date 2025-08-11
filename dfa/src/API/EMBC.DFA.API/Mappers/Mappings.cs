@@ -236,7 +236,6 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_iamtheonlypersoninthehome, opts => opts.MapFrom(s => s.onlyOccupantInHome == false ? (int?)YesNoOptionSet.No : (int?)YesNoOptionSet.Yes))
                 .ForMember(d => d.dfa_idonthaveanothercontact, opts => opts.MapFrom(s => s.onlyOtherContact == false ? (int?)YesNoOptionSet.No : (int?)YesNoOptionSet.Yes))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag))
-                .ForMember(d => d.createdon, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.applicationType) ? GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.applicationType)) : null));
 
             CreateMap<DFAApplicationMain, temp_dfa_appapplicationmain_params>() // TODO: map into dfa_application_params when dynamics process updated
@@ -514,6 +513,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.LegalName, opts => opts.MapFrom(s => s.dfa_accountlegalname))
                 .ForMember(d => d.DateFileClosed, opts => opts.MapFrom(s => s.dfa_datefileclosed))
                 .ForMember(d => d.DateAppealClosed, opts => opts.MapFrom(s => s.dfa_appealcloseddate))
+                .ForMember(d => d.DateApplicationCreated, opts => opts.MapFrom(s => s.createdon))
                 .ForMember(d => d.EventId, opts => opts.MapFrom(s => s.dfa_event))
                 .ForMember(d => d.DamagedAddress, opts => opts.MapFrom(s => string.Join(", ", (new string[] { s.dfa_damagedpropertystreet1, s.dfa_damagedpropertycitytext }).Where(m => !string.IsNullOrEmpty(m)))))
                 .ForMember(d => d.Status, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.dfa_applicationstatusportal) ? string.Empty : s.dfa_applicationstatusportal))

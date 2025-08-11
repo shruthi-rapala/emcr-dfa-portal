@@ -298,6 +298,7 @@ namespace EMBC.DFA.API.Controllers
         public string PrimaryApplicantSignedDate { get; set; }
         public string DateFileClosed { get; set; }
         public string DateAppealClosed { get; set; }
+        public string DateApplicationCreated { get; set; }
         public string Status { get; set; }
         public List<StatusBar> StatusBar { get; set; }
         public string StatusLastUpdated { get; set; }
@@ -314,6 +315,7 @@ namespace EMBC.DFA.API.Controllers
         public CaseBPFVersionSet GetCaseBPFVersion { get; set; }
         public string CasePortalNote { get; set; }
         public string EligibilityAppealDecision { get; set; }
+
     }
 
     public class StatusBar
