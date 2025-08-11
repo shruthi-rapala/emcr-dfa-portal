@@ -186,7 +186,9 @@ namespace EMBC.DFA.API.Controllers
             DFAApplicationMain dfaApplicationMain = new DFAApplicationMain();
             dfaApplicationMain.Id = applicationId;
             dfaApplicationMain.eventName = dfa_appapplication.dfa_eventname;
-            dfaApplicationMain.ApplicationType = dfa_appapplication.dfa_applicanttype;
+            dfaApplicationMain.applicationType = !string.IsNullOrEmpty(dfa_appapplication.dfa_applicanttype)
+                        ? ((ApplicantTypeOptionSet)Enum.Parse(typeof(ApplicantTypeOptionSet), dfa_appapplication.dfa_applicanttype)).ToString()
+                        : null;
             dfaApplicationMain.damagedPropertyAddress = mapper.Map<DamagedPropertyAddress>(dfa_appapplication);
             dfaApplicationMain.propertyDamage = mapper.Map<PropertyDamage>(dfa_appapplication);
             dfaApplicationMain.signAndSubmit = mapper.Map<SignAndSubmit>(dfa_appapplication);
@@ -202,7 +204,9 @@ namespace EMBC.DFA.API.Controllers
             }
 
             dfaApplicationMain.createdon = dfa_appapplication.createdon;
-            
+    
+
+        
 
             return Ok(dfaApplicationMain);
         }
@@ -276,7 +280,7 @@ namespace EMBC.DFA.API.Controllers
         public bool onlyOccupantInHome { get; set; }
         public bool onlyOtherContact { get; set; }
         public string? eventName { get; set; }
-        public string? ApplicationType { get; set; }
+        public string? applicationType { get; set; }
         public string? createdon { get; set; }
     }
 

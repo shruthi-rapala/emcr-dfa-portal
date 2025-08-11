@@ -236,7 +236,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dfa_iamtheonlypersoninthehome, opts => opts.MapFrom(s => s.onlyOccupantInHome == false ? (int?)YesNoOptionSet.No : (int?)YesNoOptionSet.Yes))
                 .ForMember(d => d.dfa_idonthaveanothercontact, opts => opts.MapFrom(s => s.onlyOtherContact == false ? (int?)YesNoOptionSet.No : (int?)YesNoOptionSet.Yes))
                 .ForMember(d => d.delete, opts => opts.MapFrom(s => s.deleteFlag))
-                .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.ApplicationType) ? GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.ApplicationType)) : null));
+                .ForMember(d => d.createdon, opts => opts.MapFrom(s => s.createdon))
+                .ForMember(d => d.dfa_applicanttype, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.applicationType) ? GetEnumDescription((ApplicantTypeOptionSet)Convert.ToInt32(s.applicationType)) : null));
 
             CreateMap<DFAApplicationMain, temp_dfa_appapplicationmain_params>() // TODO: map into dfa_application_params when dynamics process updated
                 .ForMember(d => d.dfa_businessmanagedbyallownersondaytodaybasis, opts => opts.MapFrom(s => s.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis == null ? (int?)null : (s.damagedPropertyAddress.businessManagedByAllOwnersOnDayToDayBasis == true ? (int?)YesNoOptionSet.Yes : (int?)YesNoOptionSet.No)))
