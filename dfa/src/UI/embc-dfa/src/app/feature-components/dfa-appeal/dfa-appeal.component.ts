@@ -482,6 +482,18 @@ export class DfaAppealComponent implements OnInit {
             })
           )
           .subscribe({
+            next:() =>
+              {
+                this.snackBar.open(
+                  'Documents have been uploaded successfully',
+                  'Close',
+                  {
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    duration: 5000
+                  }
+                );
+              },
 
             complete: () => {
               this.isLoading = false;
