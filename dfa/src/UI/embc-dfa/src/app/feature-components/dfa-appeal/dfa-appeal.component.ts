@@ -187,7 +187,8 @@ export class DfaAppealComponent implements OnInit {
     this.formCreationService.getAppealReasonForm().subscribe(form => {
       if (form) {
         form.controls.reason.setValue(appeal.reason);
-
+        form.controls.reviewedEvaluatorReport.setValue(appeal.reviewedEvaluatorReport ?? false);
+        
         if (!this.isEditView) form.disable();
 
         form.updateValueAndValidity();
@@ -445,6 +446,7 @@ export class DfaAppealComponent implements OnInit {
       signedName: (this.signAndSubmitForm.get('applicantSignature') as FormGroup).get('signedName').value, 
       dateSigned: (this.signAndSubmitForm.get('applicantSignature') as FormGroup).get('dateSigned').value,
       signature: (this.signAndSubmitForm.get('applicantSignature') as FormGroup).get('signature').value,
+      reviewedEvaluatorReport: !!this.appealReasonForm.get('reviewedEvaluatorReport')?.value
     }
    
     this.dfaAppealService.updateAppeal(appealUpdateRequest).subscribe({

@@ -9,6 +9,7 @@ export interface AppealUpdateRequest {
   dateSigned?: string | null;
   id: string;
   reason: string;
+  reviewedEvaluatorReport?: boolean | null;
   signature?: string | null;
   signedName?: string | null;
   status: string;

@@ -170,8 +170,7 @@ namespace EMBC.DFA.API.Controllers
         public string? DateSigned { get; set; }
         public string? SignedName { get; set; }
         public string? Signature { get; set; }
-
-        //public SignAndSubmitModel SignAndSubmit { get; set; }
+        public bool? ReviewedEvaluatorReport { get; set; }
     }
 
     public class AppealModel
@@ -185,8 +184,7 @@ namespace EMBC.DFA.API.Controllers
         public string? DateSigned { get; set; }
         public string? SignedName { get; set; }
         public string? Signature { get; set; }
-
-       // public SignAndSubmitModel? SignAndSubmit { get; set; }
+        public bool? ReviewedEvaluatorReport { get; set; }
     }
 
     public class SignAndSubmitModel

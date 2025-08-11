@@ -173,6 +173,7 @@ namespace EMBC.Database.Model
 			public const string DFA_DeadlineExtensionApproved = "dfa_deadlineextensionapproved";
 			public const string DFA_DeadlineExtensionApprovedName = "dfa_deadlineextensionapprovedname";
 			public const string DFA_DFA_Project_DFA_ProjectAmendment_Project = "dfa_dfa_project_dfa_projectamendment_Project";
+			public const string DFA_DFA_ProjectAmendment_BcGoV_DocumentUrl_ProjectAmendment = "DFA_DFA_ProjectAmendment_BcGoV_DocumentUrl_ProjectAmendment";
 			public const string DFA_EMCRApprovalComments = "dfa_emcrapprovalcomments";
 			public const string DFA_EstimatedAdditionalProjectCost = "dfa_estimatedadditionalprojectcost";
 			public const string DFA_EstimatedAdditionalProjectCost_Base = "dfa_estimatedadditionalprojectcost_base";
@@ -2417,6 +2418,24 @@ namespace EMBC.Database.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N dfa_dfa_projectamendment_bcgov_documenturl_ProjectAmendment
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("dfa_dfa_projectamendment_bcgov_documenturl_ProjectAmendment")]
+		public System.Collections.Generic.IEnumerable<EMBC.Database.Model.BcGoV_DocumentUrl> DFA_DFA_ProjectAmendment_BcGoV_DocumentUrl_ProjectAmendment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<EMBC.Database.Model.BcGoV_DocumentUrl>("dfa_dfa_projectamendment_bcgov_documenturl_ProjectAmendment", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<EMBC.Database.Model.BcGoV_DocumentUrl>("dfa_dfa_projectamendment_bcgov_documenturl_ProjectAmendment", null, value);
 			}
 		}
 		
