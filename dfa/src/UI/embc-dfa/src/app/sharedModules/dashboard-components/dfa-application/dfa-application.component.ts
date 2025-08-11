@@ -34,6 +34,7 @@ interface AppealStatusItem {
   isCompleted?: boolean;
   isFinalStep?: boolean;
   isDecision?: boolean;
+  consolidatedSteps?: string[]; // NOTE must be lower case values that match Dynamics BPF stage names
 }
 // ####################################################################
 
@@ -219,6 +220,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Appeal Submitted',
+      display: 'Appeal Submitted',
       isCompleted: false,
       currentStep: false,
       isFinalStep: false,
@@ -228,6 +230,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Appeal In Progress',
+      display: 'Reviewing Appeal',
       isCompleted: false,
       currentStep: false,
       isFinalStep: false,
@@ -237,6 +240,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Appeal Decision',
+      display: 'Appeal Decision',
       isCompleted: false,
       currentStep: false,
       isFinalStep: false,
@@ -246,6 +250,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Assigned To Evaluator',
+      display: 'Assessing Damage',
       isCompleted: false,
       currentStep: false,
       isFinalStep: false,
@@ -255,6 +260,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Review Report',
+      display: 'Reviewing Damage Report',
       isCompleted: false,
       currentStep: false,
       isFinalStep: false,
@@ -264,6 +270,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Creating Payment',
+      display: 'Final Review',
       isCompleted: false,
       currentStep: false,
       isFinalStep: false,
@@ -273,6 +280,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Closed',
+      display: 'Appeal Closed',
       isCompleted: false,
       currentStep: false,
       isFinalStep: true,
@@ -286,46 +294,46 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Appeal Submitted',
-      isCompleted: false,
-      currentStep: false,
-      isFinalStep: false,
-      isErrorInStatus: false
+      display: 'Appeal Submitted',
     },
     { label: '' },
     { label: '' },
     {
       label: 'Appeal In Progress',
-      isCompleted: false,
-      currentStep: false,
-      isFinalStep: false,
-      isErrorInStatus: false
+      display: 'Reviewing Appeal',
     },
     { label: '' },
     { label: '' },
     {
-      label: 'Reassessing Damage',
-      isCompleted: false,
-      currentStep: false,
-      isFinalStep: false,
-      isErrorInStatus: false
+      label: 'Adjudicator Review',
+      display: 'Reassessment Damage',
+      consolidatedSteps: ['compliance check']
     },
     { label: '' },
     { label: '' },
     {
-      label: 'Reviewing Appeal Report',
-      isCompleted: false,
-      currentStep: false,
-      isFinalStep: false,
-      isErrorInStatus: false
+      label: 'Appeal Decision',
+      display: 'Appeal Decision',
+      isDecision: true
+    },
+    { label: '' },
+    { label: '' },
+{
+      label: 'Review Report',
+      display: 'Reviewing Damage Report',
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Creating Payment',
+      display: 'Final Review',
     },
     { label: '' },
     { label: '' },
     {
       label: 'Appeal Closed',
-      isCompleted: false,
-      currentStep: false,
+      display: 'Appeal Closed',
       isFinalStep: true,
-      isErrorInStatus: false
     },
     { label: '' }
   ];
@@ -507,24 +515,28 @@ export class DfaApplicationComponent implements OnInit {
             if (objApp.caseAmountAppeal) objAppWithAppeals.appealAmountStatusBar.forEach((objStatItem) => {
               const statusMatch =
                 objApp.caseAmountAppeal?.activeStage?.name &&
-                objStatItem.label?.toLowerCase() === objApp.caseAmountAppeal.activeStage.name.toLowerCase();
+                // check the current Dynamics BPF stage name matches the timeline item label
+                (objStatItem.label?.toLowerCase() === objApp.caseAmountAppeal.activeStage.name.toLowerCase()
+                  // also check if it matchs any of the consolidated timeline steps
+                  || objStatItem.consolidatedSteps?.indexOf(objApp.caseAmountAppeal.activeStage.name.toLowerCase()) > -1);
 
               if (statusMatch) {
-                //if (!appealAmount?.casePaidAmountAppeal?.activeStage?.completedOn) {
+                if (!objApp?.caseAmountAppeal?.completedOn) {
                   objStatItem.currentStep = true;
-                //}
+                }
                 isFound = true;
                 this.matchStatusFound = true;
 
                 if (objApp.caseAmountAppeal?.activeStage?.name) {
                   objStatItem.stage = objApp.caseAmountAppeal.activeStage.name;
-
                 }
               }
 
               // Fallback if status not matched
               if (!isFound) {
                 objStatItem.isCompleted = true;
+              } else {
+                objStatItem.isDecision = false;
               }
 
               // Final step validation

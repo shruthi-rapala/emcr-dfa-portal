@@ -35,5 +35,8 @@ public class SharedMapper : Profile
             .ConvertUsing(src => src != null ? new EntityReference(src.SchemaName, src.Id) : null);
         CreateMap<EntityReference, SingleReferenceKey?>()
             .ConvertUsing(src => src != null ? new SingleReferenceKey(src.Id, src.LogicalName) : null);
+
+        CreateMap<string?, DateTime?>()
+            .ConvertUsing(src => string.IsNullOrEmpty(src) ? null : Convert.ToDateTime(src));
     }
 }
