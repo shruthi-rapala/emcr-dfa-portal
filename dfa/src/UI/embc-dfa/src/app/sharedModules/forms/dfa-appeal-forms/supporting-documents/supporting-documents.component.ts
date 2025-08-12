@@ -198,6 +198,12 @@ export default class SupportingDocumentsComponent implements OnInit {
 
     const formArray = this.appealSupportingDocumentsForm.get('files') as FormArray<AppealSupportingDocumentForm>;
     formArray.push(new AppealSupportingDocumentForm(appealFileUpload));
+
+    // add a snack bar message to indicate that the file has been added
+    this._snackBar.open('Your file has been added successfully.', 'Close', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top'
+    });
   }
 
   /**
