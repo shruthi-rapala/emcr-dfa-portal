@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   ViewChild,
   AfterViewInit,
   AfterViewChecked,
@@ -8,6 +9,7 @@ import {
   ViewEncapsulation,
   ElementRef
 } from '@angular/core';
+import { CancelConfirmationDialogComponent } from '../../core/components/dialog-components/dfa-cancel-confirmation-dialog/dfa-cancel-confirmation-dialog.component';
 import { AbstractControl, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCreationService } from '../../core/services/componentCreation.service';
@@ -17,8 +19,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { Subscription, distinctUntilChanged, mapTo } from 'rxjs';
 import { FormCreationService } from '../../core/services/formCreation.service';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { ApplicantOption, FarmOption, ProjectStageOptionSet, SmallBusinessOption } from 'src/app/core/api/models';
-import { ApplicationService, AttachmentService, ProjectService } from 'src/app/core/api/services';
+import { ApplicationService, AttachmentService, ProjectService, AmendmentAttachmentService } from 'src/app/core/api/services';
 import { MatDialog } from '@angular/material/dialog';
 import { DFAConfirmSubmitDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-submit-dialog/dfa-confirm-submit-dialog.component';
 import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.model';
@@ -39,7 +40,7 @@ import { DFAProjectMainDataService } from '../dfa-project-main/dfa-project-main-
   styleUrls: ['./dfa-amendment-main.component.scss']
 })
 export class DFAAmendmentMainComponent
-  implements OnInit, AfterViewChecked
+  implements OnInit, OnDestroy, AfterViewChecked
 {
   dfaAmendmentMainFolderPath = 'dfa-amendment-main-forms';
   path: string;
@@ -58,6 +59,11 @@ export class DFAAmendmentMainComponent
   invoiceSummaryDataSource = new MatTableDataSource<Invoice>();
   dfaAmendmentForm: UntypedFormGroup;
   dfaAmendmentForm$: Subscription;
+  viewOrEditSubscription: Subscription;
+  formValidationSubscription: Subscription;
+  canSubmitAmendment: boolean = true;
+  canCancelAmendment: boolean = true;
+  isFormValid: boolean = false;
 
 
   constructor(
@@ -69,12 +75,12 @@ export class DFAAmendmentMainComponent
     private alertService: AlertService,
     private applicationService: ApplicationService,
     public dialog: MatDialog,
-    private fileUploadsService: AttachmentService,
     private dfaAmendmentMainMapping: DFAAmendmentMainMappingService,
     private dfaAmendmentMainDataService: DFAAmendmentMainDataService,
     private dfaAmendmentMainService: DFAAmendmentMainService,
     private projectService: ProjectService,
     private dfaProjectMainDataService: DFAProjectMainDataService,
+    private amendmentAttachmentService: AmendmentAttachmentService,
   ) {
     const navigation = this.router.getCurrentNavigation();
   }
@@ -89,13 +95,30 @@ export class DFAAmendmentMainComponent
       this.dfaAmendmentMainDataService.setAmendmentId(amendmentId);
       this.dfaAmendmentMainDataService.setProjectId(projectId);
       this.getFileUploadsForAmendment(projectId);
+      
+      // If we're loading an existing amendment, mark it as not new
+      // unless it was specifically marked as new (for newly created amendments)
+      if (this.dfaAmendmentMainDataService.getViewOrEdit() !== 'addamendment') {
+        this.dfaAmendmentMainDataService.setIsNewAmendment(false);
+      }
     }
     this.formCreationService.clearProjectAmendmentData();
     this.formCreationService.clearFileUploadsData();
 
     this.vieworedit = this.dfaAmendmentMainDataService.getViewOrEdit();
     this.editstep = this.dfaAmendmentMainDataService.getEditStep();
-    
+
+    // Initialize submit button visibility based on current view mode
+    this.updateSubmitButtonVisibility();
+
+    // Subscribe to view mode changes
+    this.viewOrEditSubscription = this.dfaAmendmentMainDataService.changeViewOrEdit.subscribe((viewMode) => {
+      this.vieworedit = viewMode;
+      this.updateSubmitButtonVisibility();
+      // Re-check form validation when view mode changes
+      this.updateFormValidation();
+    });
+
     //this.showStepper = true;
     this.dfaAmendmentMainHeading = 'Amendment Details'
 
@@ -111,6 +134,16 @@ export class DFAAmendmentMainComponent
       .getProjectAmendmentForm()
       .subscribe((dfaAmendment) => {
         this.form = dfaAmendment;
+
+        // Subscribe to form value changes to update validation state
+        if (this.form) {
+          this.formValidationSubscription = this.form.valueChanges.subscribe(() => {
+            this.updateFormValidation();
+          });
+
+          // Initial validation check
+          this.updateFormValidation();
+        }
       });
   }
 
@@ -149,6 +182,12 @@ export class DFAAmendmentMainComponent
   }
 
   submitFile(): void {
+    // Prevent submission if form is not valid
+    if (!this.isFormValid) {
+      this.alertService.setAlert('warning', 'Please fill in all required fields before submitting.');
+      return;
+    }
+
     var contentDialog = globalConst.confirmSubmitAmendmentBody;
     var height = '260px';
 
@@ -172,6 +211,8 @@ export class DFAAmendmentMainComponent
 
           let objAmendmentDTO = this.dfaAmendmentMainDataService.createDFAAmendmentMainDTO();
           this.dfaAmendmentMainService.upsertProjectAmendment(objAmendmentDTO).subscribe(x => {
+            // Mark amendment as no longer "new" since it's been submitted
+            this.dfaAmendmentMainDataService.setIsNewAmendment(false);
             this.BackToDashboard();
           },
             error => {
@@ -182,12 +223,88 @@ export class DFAAmendmentMainComponent
       });
   }
 
-  public getFileUploadsForAmendment(projectId: string) {
+  cancelAmendment(): void {
+    const dialogData = {
+      title: 'Cancel Amendment',
+      text: 'Are you sure you want to cancel this amendment? All information will be discarded and cannot be recovered.',
+      confirmButton: 'Yes, Cancel Amendment',
+      cancelButton: 'No, Continue Editing'
+    };
 
-    this.fileUploadsService.attachmentGetAmendmentAttachments({ projectId: projectId }).subscribe({
+    this.dialog
+      .open(CancelConfirmationDialogComponent, {
+        data: dialogData,
+        width: '500px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          // User confirmed cancellation - proceed with cleanup and navigation
+          this.performAmendmentCancellation();
+        }
+        // If not confirmed, do nothing - user continues editing
+      });
+  }
+
+  private performAmendmentCancellation(): void {
+    var amendmentId = this.dfaAmendmentMainDataService.getAmendmentId();
+    var projId = this.dfaAmendmentMainDataService.getProjectId();
+    var isNewAmendment = this.dfaAmendmentMainDataService.getIsNewAmendment();
+
+    // If this is a new amendment, delete it from the system
+    if (isNewAmendment && amendmentId) {
+      this.dfaAmendmentMainService.deleteProjectAmendment(amendmentId).subscribe({
+        next: (success) => {
+          console.log('Amendment cancelled and deleted successfully');
+          this.dfaAmendmentMainDataService.setIsNewAmendment(false);
+          this.router.navigate(['/dfa-project-amendments/' + projId]);
+        },
+        error: (error) => {
+          console.error('Error deleting cancelled amendment:', error);
+          // Even if delete fails, navigate back to dashboard
+          // The amendment will remain as a draft
+          this.router.navigate(['/dfa-project-amendments/' + projId]);
+        }
+      });
+    } else {
+      // For existing amendments in edit mode, just navigate back without saving changes
+      this.router.navigate(['/dfa-project-amendments/' + projId]);
+    }
+  }
+
+  public getFileUploadsForAmendment(projectId: string) {
+    const amendmentId = this.dfaAmendmentMainDataService.getAmendmentId();
+
+    if (!amendmentId) {
+      console.error('Amendment ID is required but not available');
+      return;
+    }
+
+    this.amendmentAttachmentService.amendmentAttachmentGetAttachmentsByAmendmentId({ amendmentId: amendmentId }).subscribe({
       next: (attachments) => {
+        // Filter out soft-deleted files
+        const activeAttachments = attachments.filter(attachment => !attachment.deleteFlag);
+
+        // Transform AmendmentFileMetadataUpload to FileUploadAmendment
+        const transformedAttachments = activeAttachments.map(attachment => ({
+          id: attachment.id,
+          fileName: attachment.fileName,
+          fileDescription: attachment.description,
+          fileType: attachment.category,
+          fileTypeText: attachment.category?.toString() || 'Amendment',
+          contentType: attachment.mimeType,
+          fileSize: attachment.size,
+          uploadedDate: attachment.uploadedDate,
+          projectId: attachment.projectId,
+          deleteFlag: attachment.deleteFlag || false,
+          fileData: null,
+          modifiedBy: null,
+          requiredDocumentType: null
+        }));
+
         // initialize list of file uploads
-        this.formCreationService.fileUploadsAmendmentForm.value.get('fileUploads').setValue(attachments);
+        this.formCreationService.fileUploadsAmendmentForm.value.get('fileUploads').setValue(transformedAttachments);
 
       },
       error: (error) => {
@@ -199,7 +316,97 @@ export class DFAAmendmentMainComponent
 
   BackToDashboard(): void {
     var projId = this.dfaAmendmentMainDataService.getProjectId();
-    this.router.navigate(['/dfa-project-amendments/' + projId]);
+    var amendmentId = this.dfaAmendmentMainDataService.getAmendmentId();
+    var isNewAmendment = this.dfaAmendmentMainDataService.getIsNewAmendment();
+
+    // If this is a new amendment that hasn't been submitted, delete it
+    if (isNewAmendment && amendmentId) {
+      this.dfaAmendmentMainService.deleteProjectAmendment(amendmentId).subscribe({
+        next: (success) => {
+          console.log('Unsaved amendment deleted successfully');
+          this.dfaAmendmentMainDataService.setIsNewAmendment(false);
+          this.router.navigate(['/dfa-project-amendments/' + projId]);
+        },
+        error: (error) => {
+          console.error('Error deleting unsaved amendment:', error);
+          // Even if delete fails, navigate back to dashboard
+          this.router.navigate(['/dfa-project-amendments/' + projId]);
+        }
+      });
+    } else {
+      // Navigate back normally for existing amendments
+      this.router.navigate(['/dfa-project-amendments/' + projId]);
+    }
+  }
+
+  private updateSubmitButtonVisibility(): void {
+    this.canSubmitAmendment = this.vieworedit !== 'view' &&
+                              this.vieworedit !== 'edit' &&
+                              this.vieworedit !== 'viewOnly';
+
+    this.canCancelAmendment = this.vieworedit !== 'view' &&
+                              this.vieworedit !== 'viewOnly';
+  }
+
+  private updateFormValidation(): void {
+    if (!this.form) {
+      this.isFormValid = false;
+      return;
+    }
+
+    // Check if mandatory fields are filled
+    const amendmentReason = this.form.get('amendmentReason')?.value;
+    const requestforProjectDeadlineExtention = this.form.get('requestforProjectDeadlineExtention')?.value;
+    const requestforAdditionalProjectCost = this.form.get('requestforAdditionalProjectCost')?.value;
+
+    // Basic validation: Amendment Reason is required
+    let isValid = amendmentReason && amendmentReason.trim().length > 0;
+
+    // Both radio questions are required
+    isValid = isValid && requestforProjectDeadlineExtention;
+    isValid = isValid && requestforAdditionalProjectCost;
+
+    // If requesting deadline extension, the deadline date is required
+    if (requestforProjectDeadlineExtention === 'Yes') {
+      const amendedProjectDeadlineDate = this.form.get('amendedProjectDeadlineDate')?.value;
+      isValid = isValid && amendedProjectDeadlineDate;
+    }
+
+    // If requesting additional cost, the cost amount is required
+    if (requestforAdditionalProjectCost === 'Yes') {
+      const estimatedAdditionalProjectCost = this.form.get('estimatedAdditionalProjectCost')?.value;
+      isValid = isValid && estimatedAdditionalProjectCost && estimatedAdditionalProjectCost > 0;
+    }
+
+    this.isFormValid = isValid;
+  }
+
+  ngOnDestroy(): void {
+    // Clean up subscriptions
+    if (this.viewOrEditSubscription) {
+      this.viewOrEditSubscription.unsubscribe();
+    }
+
+    if (this.formValidationSubscription) {
+      this.formValidationSubscription.unsubscribe();
+    }
+
+    // Clean up any pending new amendments when component is destroyed
+    var amendmentId = this.dfaAmendmentMainDataService.getAmendmentId();
+    var isNewAmendment = this.dfaAmendmentMainDataService.getIsNewAmendment();
+
+    if (isNewAmendment && amendmentId) {
+      // Try to delete the unsaved amendment
+      this.dfaAmendmentMainService.deleteProjectAmendment(amendmentId).subscribe({
+        next: (success) => {
+          console.log('Unsaved amendment cleaned up on destroy');
+          this.dfaAmendmentMainDataService.setIsNewAmendment(false);
+        },
+        error: (error) => {
+          console.error('Error cleaning up unsaved amendment:', error);
+        }
+      });
+    }
   }
   
 }

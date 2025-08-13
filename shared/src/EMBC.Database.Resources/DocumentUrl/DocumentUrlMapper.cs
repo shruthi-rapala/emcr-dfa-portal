@@ -18,6 +18,10 @@ public class DocumentUrlMapper : Profile
                 opt => opt.MapFrom(src => src.DFA_AppealId != null ? src.DFA_AppealId.Id : (Guid?)null)
             )
             .ForMember(
+                dest => dest.ProjectId,
+                opt => opt.MapFrom(src => src.DFA_Project != null ? src.DFA_Project.Id : (Guid?)null)
+            )
+            .ForMember(
                 dest => dest.StateCode,
                 opt => opt.MapFrom(src => src.StateCode.HasValue ? (StateCode)(int)src.StateCode.Value : default)
             )
@@ -43,6 +47,13 @@ public class DocumentUrlMapper : Profile
                 opt =>
                     opt.MapFrom(src =>
                         src.AppealId.HasValue ? new EntityReference("dfa_appeal", src.AppealId.Value) : null
+                    )
+            )
+            .ForMember(
+                dest => dest.DFA_Project,
+                opt =>
+                    opt.MapFrom(src =>
+                        src.ProjectId.HasValue ? new EntityReference("dfa_project", src.ProjectId.Value) : null
                     )
             )
             .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => (DFA_Appeal_StateCode)src.StateCode))

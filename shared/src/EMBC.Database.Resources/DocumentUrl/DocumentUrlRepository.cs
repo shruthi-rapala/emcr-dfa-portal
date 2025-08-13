@@ -15,6 +15,20 @@ public interface IDocumentUrlRepository : IBaseRepository<DocumentUrl>
     /// <param name="caseId">The ID of the case.</param>
     /// <returns>A collection of Document URLs related to the specified case.</returns>
     IEnumerable<DocumentUrl> GetByCaseId(Guid caseId);
+
+    /// <summary>
+    /// Retrieves Document URLs associated with a specific amendment ID.
+    /// </summary>
+    /// <param name="amendmentId">The ID of the amendment.</param>
+    /// <returns>A collection of Document URLs related to the specified amendment.</returns>
+    IEnumerable<DocumentUrl> GetByAmendmentId(Guid amendmentId);
+
+    /// <summary>
+    /// Retrieves Document URLs associated with a specific project ID.
+    /// </summary>
+    /// <param name="projectId">The ID of the project.</param>
+    /// <returns>A collection of Document URLs related to the specified project.</returns>
+    IEnumerable<DocumentUrl> GetByProjectId(Guid projectId);
 }
 
 /// <summary>
@@ -54,6 +68,39 @@ public class DocumentUrlRepository : BaseRepository<BcGoV_DocumentUrl, DocumentU
         return _databaseContext
             .CreateQuery<BcGoV_DocumentUrl>()
             .Where(query => query.BcGoV_CaseId != null && query.BcGoV_CaseId.Id == caseId)
+            .Select(result => _mapper.Map<DocumentUrl>(result))
+            .ToList();
+    }
+
+    /// <summary>
+    /// Retrieves Document URLs associated with a specific amendment ID.
+    /// Filters by URL pattern since amendment documents are stored with S3 keys containing the amendmentId.
+    /// </summary>
+    /// <param name="amendmentId">The ID of the amendment.</param>
+    /// <returns>A collection of Document URLs related to the specified amendment.</returns>
+    public IEnumerable<DocumentUrl> GetByAmendmentId(Guid amendmentId)
+    {
+        // Amendment documents are stored with S3 keys in the format: dfa_amendment/{projectId}/{amendmentId}/{fileId}
+        // Filter by documents where the URL contains the amendmentId pattern
+        var amendmentUrlPattern = $"/{amendmentId}/";
+        
+        return _databaseContext
+            .CreateQuery<BcGoV_DocumentUrl>()
+            .Where(query => query.BcGoV_Url != null && query.BcGoV_Url.Contains(amendmentUrlPattern))
+            .Select(result => _mapper.Map<DocumentUrl>(result))
+            .ToList();
+    }
+
+    /// <summary>
+    /// Fetch all Document URLs records associated with a specific project ID.
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <returns></returns>
+    public IEnumerable<DocumentUrl> GetByProjectId(Guid projectId)
+    {
+        return _databaseContext
+            .CreateQuery<BcGoV_DocumentUrl>()
+            .Where(query => query.DFA_Project != null && query.DFA_Project.Id == projectId)
             .Select(result => _mapper.Map<DocumentUrl>(result))
             .ToList();
     }
