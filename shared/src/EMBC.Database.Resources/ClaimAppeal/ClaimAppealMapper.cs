@@ -13,8 +13,7 @@ public class ClaimAppealMapper : Profile
           .ForMember(dest => dest.ClaimId, opt => opt.MapFrom(src => src.DFA_OriginClaim != null ? src.DFA_OriginClaim.Id : Guid.Empty));
 
         CreateMap<ClaimAppeal, DFA_ClaimAppeal>()
-            .ForMember(dest => dest.DFA_ClaimAppealId, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.DFA_OriginClaim, opt => opt.MapFrom(src => src.ClaimId))
+            .ForMember(dest => dest.DFA_OriginClaim, opt => opt.MapFrom(src => new EntityReference("dfa_projectclaim", Guid.Parse(src.ClaimId))))
             .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => (DFA_Appeal_StateCode)(int)src.StateCode));
     }
 }

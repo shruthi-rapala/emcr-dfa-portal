@@ -189,7 +189,7 @@ const routes: Routes = [
       canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
-    path: 'claim/:claimId/appeal',
+    path: 'claim/:claimId/appeal/:appealId/edit',
     loadComponent: () =>
       import('./sharedModules/claim-dashboard-components/claim-appeal/claim-appeal.component')
         .then((m) => m.ClaimAppealComponent),
