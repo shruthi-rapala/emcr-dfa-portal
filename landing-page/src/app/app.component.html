@@ -166,10 +166,25 @@
             <div style="padding-top: 100px;">
 
               <!-- register public button -->
-              <button class="applyButton" #tooltip="matTooltip" [matTooltip]="getPublicButtonTitle()" tooltipClass="my-custom-class"
+              <!-- <button class="applyButton" #tooltip="matTooltip" [matTooltip]="getPublicButtonTitle()" tooltipClass="my-custom-class"
                 [matTooltipPosition]="position.value!" (click)="navigateToPublicDFA()" [disabled]="getPublicButtonDisabled()">
                   Register to apply to Public DFA
-              </button>
+              </button> -->
+
+              @if (environment?.disablePublicUrl || environment?.newApplicationNotAccepted) {
+                <button disabled 
+                class="disableButton" 
+                #tooltip="matTooltip"
+                matTooltip="New applications are not currently being accepted"
+                tooltipClass="my-custom-class"
+                [matTooltipPosition]="position.value!">
+                  Register to apply to Public DFA
+                </button>
+              } @else {
+                <button class="applyButton" (click)="navigateToPublicDFA()" [disabled]="publicButtonDisabled" [title]="publicButtonDisabled ? 'New applications are not currently being accepted' : ''">
+                  Register to apply to Public DFA
+                </button>
+              }
 
               @if(!environment?.newApplicationNotAccepted) {
                 <button class="loginButton" (click)="navigateToPublicDFA()">
