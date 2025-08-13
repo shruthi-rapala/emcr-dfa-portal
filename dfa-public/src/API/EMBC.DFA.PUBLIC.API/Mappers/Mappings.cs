@@ -9,6 +9,7 @@ using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.ConfigurationModule.Models.PDF;
 using EMBC.DFA.API.Controllers;
+using EMBC.DFA.PUBLIC.API.Controllers;
 using Microsoft.IdentityModel.Tokens;
 using BCeID = EMBC.Gov.BCeID;
 using RecoveryClaim = EMBC.DFA.API.Controllers.RecoveryClaim;
@@ -782,6 +783,13 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.lateAppealAllowed, opts => opts.MapFrom(s => s.dfa_lateappealallowed))
                 .ForMember(d => d.codingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
                 .ForMember(d => d.dateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate));
+
+            //Mapping from AppealModel (API Model) to Appeal (DTO API Layer)
+
+            CreateMap<ClaimAppealModel, ClaimAppeal>()
+                .ForMember(d => d.ClaimId, opts => opts.MapFrom(s => s.ClaimId));
+
+            CreateMap<ClaimAppeal, ClaimAppealModel>();
 
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))

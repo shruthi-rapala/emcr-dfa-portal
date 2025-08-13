@@ -6,6 +6,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { ClaimAppealService } from './services/claim-appeal.service';
 import { FilesService } from './services/files.service';
 import { ApplicationService } from './services/application.service';
 import { AttachmentService } from './services/attachment.service';
@@ -34,6 +35,7 @@ import { SecondaryApplicantService } from './services/secondary-applicant.servic
   exports: [],
   declarations: [],
   providers: [
+    ClaimAppealService,
     FilesService,
     ApplicationService,
     AttachmentService,
