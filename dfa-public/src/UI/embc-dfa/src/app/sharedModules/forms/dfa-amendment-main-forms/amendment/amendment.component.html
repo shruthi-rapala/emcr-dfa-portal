@@ -141,11 +141,11 @@
                           Requested Project Deadline Date<span style="color:red">*</span>
                         </p>
                         <mat-form-field appearance="outline">
-                          <input matInput formControlName="amendedProjectDeadlineDate">
+                          <input matInput formControlName="amendedProjectDeadlineDate" [matDatepicker]="amendedProjectDeadlineDatePicker">
                           <mat-hint>MM/DD/YYYY</mat-hint>
                           <mat-datepicker-toggle matSuffix [for]="amendedProjectDeadlineDatePicker"
-                            disabled></mat-datepicker-toggle>
-                          <mat-datepicker #amendedProjectDeadlineDatePicker disabled></mat-datepicker>
+                            [disabled]="isReadOnly"></mat-datepicker-toggle>
+                          <mat-datepicker #amendedProjectDeadlineDatePicker [disabled]="isReadOnly"></mat-datepicker>
                         </mat-form-field>
                       </div>
                     </div>
@@ -301,7 +301,7 @@
                   &nbsp;
                 </th>
                 <td *matCellDef="let element; let index = index" mat-cell>
-                  <button class="delete-image" mat-icon-button aria-label="Remove"
+                  <button *ngIf="!isReadOnly" class="delete-image" mat-icon-button aria-label="Remove"
                     (click)="confirmDeleteDocumentSummaryRow(element)">
                     <img src="/assets/images/delete.svg" height="35" width="35" />
                   </button>
