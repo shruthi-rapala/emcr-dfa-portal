@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DfaClaimMain, Invoice } from 'src/app/core/api/models';
-import { ClaimService, InvoiceService } from 'src/app/core/api/services';
+import { ClaimAppealService, ClaimService, InvoiceService } from 'src/app/core/api/services';
 import { CoreModule } from 'src/app/core/core.module';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { DFAClaimMainDataService } from 'src/app/feature-components/dfa-claim-main/dfa-claim-main-data.service';
@@ -51,6 +51,7 @@ export class ClaimDecisionComponent implements OnInit {
     private invoiceService: InvoiceService,
     public dialog: MatDialog,
     private router: Router,
+    public claimAppealService : ClaimAppealService,
   ) { }
 
   ngOnInit(): void {
@@ -83,7 +84,18 @@ export class ClaimDecisionComponent implements OnInit {
 
   beginAppealProcess(): void {
     if (this.claimId) {
-      this.router.navigate(['/claim', this.claimId, 'appeal']);
+      // Create an empty appeal
+      this.claimAppealService.claimAppealCreateClaimAppeal({ body: { claimId: this.claimId } }).subscribe({
+        next: (appealId) => {
+          console.log('Appeal created with ID:', appealId);
+          // Navigate to the appeal page
+          this.router.navigate(['/claim', this.claimId, 'appeal', appealId, 'edit']); 
+        },
+        error: (error) => {
+          console.error('Error creating appeal:', error);
+        }
+      });
+      //this.router.navigate(['/claim', this.claimId, 'appeal']);
     }
   }
 

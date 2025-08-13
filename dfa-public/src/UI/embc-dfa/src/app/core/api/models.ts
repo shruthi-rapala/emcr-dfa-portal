@@ -19,6 +19,7 @@ export type { AuthorizedRepresentative } from './models/authorized-representativ
 export type { BCeIdBusiness } from './models/b-ce-id-business';
 export type { BceidUserData } from './models/bceid-user-data';
 export type { CaptchaConfiguration } from './models/captcha-configuration';
+export type { ClaimAppealModel } from './models/claim-appeal-model';
 export { ClaimStageOptionSet } from './models/claim-stage-option-set';
 export type { ClaimStatusBar } from './models/claim-status-bar';
 export type { CleanUpLogItem } from './models/clean-up-log-item';
