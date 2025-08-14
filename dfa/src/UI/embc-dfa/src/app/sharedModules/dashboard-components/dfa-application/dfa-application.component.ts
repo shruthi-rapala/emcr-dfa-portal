@@ -418,7 +418,7 @@ export class DfaApplicationComponent implements OnInit {
           lstDataUnModified.push(initialList);
           lstData.forEach((objApp, i) => {
             // START application timeline
-            let isFound = true;
+            let isOldAppStatusFound = false;
             var jsonVal = JSON.stringify(this.items);
 
             if (
@@ -428,36 +428,39 @@ export class DfaApplicationComponent implements OnInit {
               objApp.hasAppealStages = true;
             }
 
+          
             objApp.isErrorInStatus = false;
-            objApp.statusBar = JSON.parse(jsonVal);
-            objApp.statusBar.forEach((objStatItem) => {
-              if (
-                objApp.status != null &&
-                (objStatItem.label.toLowerCase() ==
-                  objApp.status.toLowerCase() )
-                  // ||
-                  // (objStatItem.label.toLowerCase() === 'draft application' &&
-                  //   objApp.status.toLowerCase() === 'closed: inactive'))
-              ) {
-                objStatItem.currentStep = true;
-                isFound = true;
-                this.matchStatusFound = true;
-              }
-
-              if (isFound == false) {
-                objStatItem.isCompleted = true;
-              }
-
-              if (objStatItem.isFinalStep == true) {
-                if (isFound == false) {
-                  objApp.isErrorInStatus = true;
-                } else if (
-                  objStatItem.label.toLowerCase() == objApp.status.toLowerCase()
+            if (objApp.getCaseBPFVersion !== CaseBpfVersionSet.Four) {
+              objApp.statusBar = JSON.parse(jsonVal);
+              objApp.statusBar.forEach((objStatItem) => {
+                if (
+                  objApp.status != null &&
+                  (objStatItem.label.toLowerCase() ==
+                    objApp.status.toLowerCase() )
+                    // ||
+                    // (objStatItem.label.toLowerCase() === 'draft application' &&
+                    //   objApp.status.toLowerCase() === 'closed: inactive'))
                 ) {
+                  objStatItem.currentStep = true;
+                  isOldAppStatusFound = true;
+                  this.matchStatusFound = true;
+                }
+
+                if (isOldAppStatusFound == false) {
                   objStatItem.isCompleted = true;
                 }
-              }
-            });
+
+                if (objStatItem.isFinalStep == true) {
+                  if (isOldAppStatusFound == false) {
+                    objApp.isErrorInStatus = true;
+                  } else if (
+                    objStatItem.label.toLowerCase() == objApp.status.toLowerCase()
+                  ) {
+                    objStatItem.isCompleted = true;
+                  }
+                }
+              });
+            }
 
             let isv4StatusFound = false;
 
@@ -506,7 +509,7 @@ export class DfaApplicationComponent implements OnInit {
               objAppWithAppeals.appealEligibilityStatusBar = JSON.parse(JSON.stringify(this.eligibilityAppealItems));
             }
 
-            isFound = false;
+            let isEligibilityAppealStatusFound = false;
 
             if (!objApp.eligibilityAppealPortalNote)
               objApp.eligibilityAppealPortalNote = "In Progress";
@@ -520,7 +523,7 @@ export class DfaApplicationComponent implements OnInit {
                 if (!objApp.caseEligibilityAppeal?.completedOn) {
                   objStatItem.currentStep = true;
                 }
-                isFound = true;
+                isEligibilityAppealStatusFound = true;
                 this.matchStatusFound = true;
 
                 if (objApp.caseEligibilityAppeal?.activeStage?.name) {
@@ -529,7 +532,7 @@ export class DfaApplicationComponent implements OnInit {
               }
 
               // Fallback if status not matched
-              if (!isFound) {
+              if (!isEligibilityAppealStatusFound) {
                 objStatItem.isCompleted = true;
               } else {
                 objStatItem.isDecision = false;
@@ -537,7 +540,7 @@ export class DfaApplicationComponent implements OnInit {
 
               // Final step validation
                if (objStatItem.isFinalStep) {
-                 if (!isFound) {
+                 if (!isEligibilityAppealStatusFound) {
                    // NOTE commented out to avoid fixing a bug found, no side effects found except if the status was set incorrectly
                    this.caseEligibilityAppealHasErrorInStatus = true;
                  }
@@ -554,7 +557,7 @@ export class DfaApplicationComponent implements OnInit {
               objAppWithAppeals.appealAmountStatusBar = JSON.parse(JSON.stringify(this.appealAmountItems));
             }
 
-            isFound = false;
+            let isAmountAppealStatusFound = false;
 
             if (!objApp.amountAppealPortalNote)
               objApp.amountAppealPortalNote = "In Progress";
@@ -571,7 +574,7 @@ export class DfaApplicationComponent implements OnInit {
                 if (!objApp?.caseAmountAppeal?.completedOn) {
                   objStatItem.currentStep = true;
                 }
-                isFound = true;
+                isAmountAppealStatusFound = true;
                 this.matchStatusFound = true;
 
                 if (objApp.caseAmountAppeal?.activeStage?.name) {
@@ -580,7 +583,7 @@ export class DfaApplicationComponent implements OnInit {
               }
 
               // Fallback if status not matched
-              if (!isFound) {
+              if (!isAmountAppealStatusFound) {
                 objStatItem.isCompleted = true;
               } else {
                 objStatItem.isDecision = false;
@@ -588,7 +591,7 @@ export class DfaApplicationComponent implements OnInit {
 
               // Final step validation
                if (objStatItem.isFinalStep) {
-                 if (!isFound) {
+                 if (!isAmountAppealStatusFound) {
                    // NOTE commented out to avoid fixing a bug found, no side effects found except if the status was set incorrectly
                    this.caseAmountAppealHasErrorInStatus = true;
                  }

@@ -106,9 +106,7 @@
       <br />
       <span><b>Application Status</b></span>
       <!-- New Application Timeline -->
-      @if (applItem?.getCaseBPFVersion === CaseBpfVersionSet.Four) {
-        <h2>New Application Timeline</h2>
- 
+      @if (applItem?.getCaseBPFVersion === CaseBpfVersionSet.Four) { 
       <div class="timeline">
         <div class="col-md-12">
           <div class="col-md-3" style="margin-top: 20px;">
@@ -123,7 +121,7 @@
             </tr>
             <tr>
               <td *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.label != '' ? 'labelStyle' : 'labelEmptyWidth'">
-                <div *ngIf="item.label != ''" [ngClass]="item.currentStep || (item.label == 'Decision Made' && item.isCompleted) ? 'currentStatus': 'alignStatus'">
+                <div *ngIf="item.label != ''" [ngClass]="item.currentStep || (item.label == 'Decision Made' && item.isCompleted)  ? 'currentStatus': 'alignStatus'">
                   <span
                     *ngIf="item.isCompleted && !applItem.isErrorInStatus && item.label !== 'Decision Made' "
                     class="material-icons"
@@ -160,8 +158,7 @@
       }
       <!-- Old Application Timeline -->
       @else{
-        <h2>Old Application Timeline</h2>
-
+       
         <div class="timeline">
           <div class="col-md-12">
             <div class="col-md-3" style="margin-top: 20px;">
@@ -176,9 +173,9 @@
               </tr>
               <tr>
                 <td *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.label != '' ? 'labelStyle' : 'labelEmptyWidth'">
-                  <div *ngIf="item.label != ''" [ngClass]="item.currentStep || (item.label == 'Decision Made' && item.isCompleted) ? 'currentStatus': 'alignStatus'">
+                  <div *ngIf="item.label != ''" [ngClass]="item.currentStep || (item.label == 'DFA Decision Made' && item.isCompleted) ? 'currentStatus': 'alignStatus'">
                     <span
-                      *ngIf="item.isCompleted && !applItem.isErrorInStatus && item.label !== 'Decision Made' "
+                      *ngIf="item.isCompleted && !applItem.isErrorInStatus && item.label !== 'DFA Decision Made' "
                       class="material-icons"
                       style="color: rgb(21 178 89);"
                       >
@@ -190,7 +187,7 @@
                       [ngStyle]="{'color': item.label == 'Decision Made' ? 'red' : 'rgb(21 178 89)'}">
                       {{ item.label == 'Decision Made' ? 'cancel' : 'check_circle' }}
                     </span> -->
-                    <span *ngIf="item.label === 'Decision Made' && applItem.status === 'Closed'"> {{applItem.caseEligibility}}</span>
+                    <span *ngIf="item.label === 'DFA Decision Made' && applItem.status === 'DFA Decision Made'"> {{applItem.caseEligibility}}</span>
                     <span *ngIf="!item.isCompleted && item.currentStep && !applItem.isErrorInStatus">
                       {{  applItem.status }}
                     </span>
