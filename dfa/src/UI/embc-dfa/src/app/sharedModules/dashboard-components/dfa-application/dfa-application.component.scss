@@ -75,6 +75,24 @@
   gap:12px;
 }
 
+.appeal-stages .col-md-1 {
+  width: 6.333333%;
+}
+
+.appeal-stages .circle {
+  padding-left: 6%;
+  margin-right: 18px;
+}
+
+.appeal-stages .nocircle {
+  margin-right: 21px;
+}
+
+.appeal-stages .stepsDesc {
+  margin-right: 16px;
+  padding-left: 6.5%;
+}
+
 @media (max-width: 1200px) and (min-width: 300px) {
   .nocircle {
     height: 12px;
