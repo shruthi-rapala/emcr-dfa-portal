@@ -157,115 +157,52 @@
       </div> 
       }
       <!-- Old Application Timeline -->
-      @else{
+      @else {
        
         <div class="timeline">
           <div class="col-md-12">
             <div class="col-md-3" style="margin-top: 20px;">
               <span *ngIf="applItem.isErrorInStatus" style="color: red;">Error in displaying status<br /></span>
             </div>
-            <table cellpadding="0" cellspacing="0">
-              <tr>
-                <td colspan="3" *ngFor="let item of getItems(applItem.statusBar); let i=index" id="item{{i}}"
-                  [ngClass]="'headerlabelStyle'">
-                  <span class="stepText">{{item.label}}</span>
-                </td>
-              </tr>
-              <tr>
-                <td *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.label != '' ? 'labelStyle' : 'labelEmptyWidth'">
-                  <div *ngIf="item.label != ''" [ngClass]="item.currentStep || (item.label == 'DFA Decision Made' && item.isCompleted) ? 'currentStatus': 'alignStatus'">
-                    <span
-                      *ngIf="item.isCompleted && !applItem.isErrorInStatus && item.label !== 'DFA Decision Made' "
-                      class="material-icons"
-                      style="color: rgb(21 178 89);"
-                      >
-                      {{ 'check_circle' }}
-                    </span>
-                    <!-- <span
-                      *ngIf="applItem.label == 'Case Closed' && item.isCompleted && !applItem.isErrorInStatus"
-                      class="material-icons"
-                      [ngStyle]="{'color': item.label == 'Decision Made' ? 'red' : 'rgb(21 178 89)'}">
-                      {{ item.label == 'Decision Made' ? 'cancel' : 'check_circle' }}
-                    </span> -->
-                    <span *ngIf="item.label === 'DFA Decision Made' && applItem.status === 'DFA Decision Made'"> {{applItem.caseEligibility}}</span>
-                    <span *ngIf="!item.isCompleted && item.currentStep && !applItem.isErrorInStatus">
-                      {{  applItem.status }}
-                    </span>
-                    <span
-                      *ngIf="!item.isCompleted && !item.currentStep && !applItem.isErrorInStatus"
-                      class="material-symbols-outlined" style="color: #FDCB52">
-                      circle
-                    </span>
-                    <span *ngIf="applItem.isErrorInStatus" class="material-symbols-outlined"
-                      style="color: #FDCB52">
-                      circle
-                    </span>
-                  </div>
-                  <div class="lineConnector" *ngIf="item.label == '' && i > 1 && (i+1) < applItem.statusBar.length"></div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div> 
-        
-
-      <!-- <div class="timeline">
-        <div class="col-md-12">
-          <div class="col-md-3" style="margin-top: 20px;">
-            <span *ngIf="applItem.isErrorInStatus === true" style="color: red;">Error in displaying status<br /></span>
-          </div>
-          <table cellpadding="0" cellspacing="0">
-            <tr>
-              <td colspan="3" *ngFor="let item of getItems(applItem.statusBar); let i=index" id="item{{i}}"
-                [ngClass]="'headerlabelStyle'">
-                <span *ngIf="item.label != ''" class="stepText">{{item.label}}</span>
-              </td>
-            </tr>
-            <tr>
-              <td *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}"
-                [ngClass]="item.label != '' ? 'labelStyle' : 'labelEmptyWidth'">
-                {{item.isCompleted}}
-                <div *ngIf="item.label != ''"
-                  [ngClass]="item.currentStep == false || item.label == 'Closed' ? 'alignStatus': (item.stage == '' ? 'alignStatus' : 'currentStatus')">
+            <div class="timeline-statuses-container">
+              <div class="timeline-status-container" *ngFor="let item of applItem.statusBar; let i=index" id="item{{i}}" [ngClass]="item.label != '' ? 'labelStyle' : 'labelEmptyWidth'">
+                <div class="timeline-status-label">
+                  <span *ngIf="item.label !== ''" class="stepText">{{item.label}}</span>
+                  <span *ngIf="item.label == ''">&nbsp;</span>
+                </div>
+                <div class="timeline-status-indicator-icon" *ngIf="item.label != ''" [ngClass]="item.currentStep || (item.label == 'DFA Decision Made' && item.isCompleted) ? 'currentStatus': 'alignStatus'">
                   <span
-                    *ngIf="applItem.label != 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false"
+                    *ngIf="item.isCompleted && !applItem.isErrorInStatus && item.label !== 'DFA Decision Made' "
                     class="material-icons"
-                    [ngStyle]="{'color': item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'red' : 'rgb(21 178 89)'}">
-                    {{ item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'cancel' : 'check_circle' }}
+                    style="color: rgb(21 178 89);"
+                    >
+                    {{ 'check_circle' }}
                   </span>
-                  <span
-                    *ngIf="applItem.label == 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false"
+                  <!-- <span
+                    *ngIf="applItem.label == 'Case Closed' && item.isCompleted && !applItem.isErrorInStatus"
                     class="material-icons"
-                    [ngStyle]="{'color': item.label == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn') ? 'red' : 'rgb(21 178 89)'}">
-                    {{ item.label == 'Decision Made' && (applItem.stage == 'Ineligible' || applItem.stage ==
-                    'Withdrawn') ? 'cancel' : 'check_circle' }}
+                    [ngStyle]="{'color': item.label == 'Decision Made' ? 'red' : 'rgb(21 178 89)'}">
+                    {{ item.label == 'Decision Made' ? 'cancel' : 'check_circle' }}
+                  </span> -->
+                  <span *ngIf="item.label === 'DFA Decision Made' && applItem.caseEligibility"> {{applItem.caseEligibility}}</span>
+                  <span *ngIf="!item.isCompleted && item.currentStep && !applItem.isErrorInStatus">
+                    {{  applItem.status }}
                   </span>
                   <span
-                    *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage != ''">
-                    {{ applItem.status }}
-                  </span>
-                  <span
-                    *ngIf="item.isCompleted == false && item.currentStep == true && applItem.isErrorInStatus == false && item.stage == ''"
-                    class="material-symbols-outlined"
-                    [ngStyle]="{'color': item.status == 'Draft' ? '#639DD4' : '#FDCB52'}">
-                    {{ item.label == 'Draft' ? 'check_circle' : 'circle' }}
-                  </span>
-                  <span
-                    *ngIf="item.isCompleted == false && item.currentStep == false && applItem.isErrorInStatus == false"
+                    *ngIf="!item.isCompleted && !item.currentStep && !applItem.isErrorInStatus"
                     class="material-symbols-outlined" style="color: #FDCB52">
                     circle
                   </span>
-                  <span *ngIf="applItem.isErrorInStatus == true" class="material-symbols-outlined"
+                  <span *ngIf="applItem.isErrorInStatus" class="material-symbols-outlined"
                     style="color: #FDCB52">
                     circle
                   </span>
                 </div>
-                <div class="lineConnector" *ngIf="item.label == '' && i > 1 && (i+1) < applItem.statusBar.length"></div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div> -->
+                <div class="timeline-status-line-connector" *ngIf="item.label == '' && i > 1 && (i+1) < applItem.statusBar.length"></div>
+              </div>
+            </div>
+          </div>
+        </div> 
       }
 
       <!-- NOTE there are 3 features here that may need to be copied to other timelines: update to close step, decision note, and consolidated steps -->

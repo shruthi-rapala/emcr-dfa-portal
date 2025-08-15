@@ -87,6 +87,15 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     { label: '' },
     {
+      label: 'Application Decision',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
       label: 'Checking Criteria',
       isCompleted: false,
       currentStep: false,
