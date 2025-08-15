@@ -56,8 +56,8 @@ export class DfaApplicationComponent implements OnInit {
 
   // New Application Time line for 4.0 Application
 
-    // eligibility appeal timeline items
-  newApplicationItems : StatusBar[] = [
+  // eligibility appeal timeline items
+  newApplicationItems: StatusBar[] = [
     { label: '' },
     {
       label: 'Draft',
@@ -79,6 +79,15 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' },
     {
       label: 'Reviewing Application',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Application Decision',
       isCompleted: false,
       currentStep: false,
       isFinalStep: false,
@@ -132,7 +141,7 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' }
   ];
 
-    
+
   // newApplicationItems1 = [
   //   { label: '' },
   //   {
@@ -254,6 +263,119 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' }
   ];
 
+  // Old application with appeal items
+
+  appealitems = [
+    { label: '' },
+    {
+      label: 'Draft Application',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Submitted Application',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Reviewing Application',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Creating Case File',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Checking Criteria',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Assessing Damage',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Reviewing Damage Report',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'DFA Making Decision',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'DFA Decision Made',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Appeal Received',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Appeal In Progress',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: false,
+      isErrorInStatus: false
+    },
+    { label: '' },
+    { label: '' },
+    {
+      label: 'Appeal Closed',
+      isCompleted: false,
+      currentStep: false,
+      isFinalStep: true,
+      isErrorInStatus: false
+    },
+    { label: '' }
+  ];
+
   // eligibility appeal timeline items
   eligibilityAppealItems = [
     { label: '' },
@@ -357,7 +479,7 @@ export class DfaApplicationComponent implements OnInit {
     },
     { label: '' },
     { label: '' },
-{
+    {
       label: 'Review Report',
       display: 'Reviewing Damage Report',
     },
@@ -421,25 +543,25 @@ export class DfaApplicationComponent implements OnInit {
             let isOldAppStatusFound = false;
             var jsonVal = JSON.stringify(this.items);
 
-            if (
-              objApp.status &&
-              objApp.status.toLowerCase().indexOf('appeal') > -1
-            ) {
-              objApp.hasAppealStages = true;
-            }
-
-          
             objApp.isErrorInStatus = false;
             if (objApp.getCaseBPFVersion !== CaseBpfVersionSet.Four) {
+              if (
+                objApp.status &&
+                objApp.status.toLowerCase().indexOf('appeal') > -1
+              ) {
+                jsonVal = JSON.stringify(this.appealitems);
+                objApp.hasAppealStages = true;
+              }
+  
               objApp.statusBar = JSON.parse(jsonVal);
               objApp.statusBar.forEach((objStatItem) => {
                 if (
                   objApp.status != null &&
                   (objStatItem.label.toLowerCase() ==
-                    objApp.status.toLowerCase() )
-                    // ||
-                    // (objStatItem.label.toLowerCase() === 'draft application' &&
-                    //   objApp.status.toLowerCase() === 'closed: inactive'))
+                    objApp.status.toLowerCase())
+                  // ||
+                  // (objStatItem.label.toLowerCase() === 'draft application' &&
+                  //   objApp.status.toLowerCase() === 'closed: inactive'))
                 ) {
                   objStatItem.currentStep = true;
                   isOldAppStatusFound = true;
@@ -539,14 +661,14 @@ export class DfaApplicationComponent implements OnInit {
               }
 
               // Final step validation
-               if (objStatItem.isFinalStep) {
-                 if (!isEligibilityAppealStatusFound) {
-                   // NOTE commented out to avoid fixing a bug found, no side effects found except if the status was set incorrectly
-                   this.caseEligibilityAppealHasErrorInStatus = true;
-                 }
-                 else if (statusMatch && objApp.caseEligibilityAppeal?.completedOn) {
-                    objStatItem.isCompleted = true;
-                 }
+              if (objStatItem.isFinalStep) {
+                if (!isEligibilityAppealStatusFound) {
+                  // NOTE commented out to avoid fixing a bug found, no side effects found except if the status was set incorrectly
+                  this.caseEligibilityAppealHasErrorInStatus = true;
+                }
+                else if (statusMatch && objApp.caseEligibilityAppeal?.completedOn) {
+                  objStatItem.isCompleted = true;
+                }
               }
             });
             // END eligibility appeal timeline
@@ -590,15 +712,15 @@ export class DfaApplicationComponent implements OnInit {
               }
 
               // Final step validation
-               if (objStatItem.isFinalStep) {
-                 if (!isAmountAppealStatusFound) {
-                   // NOTE commented out to avoid fixing a bug found, no side effects found except if the status was set incorrectly
-                   this.caseAmountAppealHasErrorInStatus = true;
-                 }
-                 else if (statusMatch && objApp.caseAmountAppeal?.completedOn) {
-                    objStatItem.isCompleted = true;
-                 }
-               }
+              if (objStatItem.isFinalStep) {
+                if (!isAmountAppealStatusFound) {
+                  // NOTE commented out to avoid fixing a bug found, no side effects found except if the status was set incorrectly
+                  this.caseAmountAppealHasErrorInStatus = true;
+                }
+                else if (statusMatch && objApp.caseAmountAppeal?.completedOn) {
+                  objStatItem.isCompleted = true;
+                }
+              }
             });
             // END appeal amount timeline
 
@@ -611,7 +733,7 @@ export class DfaApplicationComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-       // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        // document.location.href = 'https://dfa.gov.bc.ca/error.html';
         this.isLoading = false;
         this._snackBar.open(
           'Unable to get applications. Please try again later.',
@@ -648,7 +770,7 @@ export class DfaApplicationComponent implements OnInit {
       ) {
         x.currentApplication = false;
       } else if (
-      /* EMBCDFA-1327: Incomplete application with expired event */
+        /* EMBCDFA-1327: Incomplete application with expired event */
         x.status.toLowerCase() === 'closed: inactive' &&
         x.dateFileClosed == null &&
         x.primaryApplicantSignedDate == null
@@ -760,10 +882,10 @@ export class DfaApplicationComponent implements OnInit {
           return;
         }
         this.router.navigate([`/dfa-appeal/${appealId}/edit`], {
-            queryParams: {
-              applicationId: applItem.applicationId
-            }
-          });
+          queryParams: {
+            applicationId: applItem.applicationId
+          }
+        });
       });
   }
 
@@ -793,7 +915,7 @@ export class DfaApplicationComponent implements OnInit {
       return;
     }
 
-    this.dfaAppealDataService.setCaseDetails({...applItem, caseId, type });
+    this.dfaAppealDataService.setCaseDetails({ ...applItem, caseId, type });
 
     this.router.navigate([`/dfa-appeal/${appealId}/view`], {
       queryParams: {

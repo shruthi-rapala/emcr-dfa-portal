@@ -7,6 +7,11 @@
   padding: 20px;
 }
 
+.content-container{
+  padding-bottom: 100px;
+   padding-top: 50px;
+   //min-width: 1075px;
+}
 .leftBorder{
   border-left: 20px solid rgb(98, 163, 112);
 }
@@ -64,8 +69,38 @@
 
 .timeline{
   display: flex;
-  padding: 32px;
+  padding: 0px;
   border-bottom: 1px solid lightgrey;
+}
+
+.timeline-statuses-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.timeline-status-container {
+  flex: 1; // grow or shrink same as others
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ // min-width: 80px;
+  min-height: 140px;
+  padding-bottom: 32px;
+}
+
+.timeline-status-label {
+  min-height: 80px;
+}
+
+.timeline-status-indicator-icon {
+  min-height: 40px;
+}
+
+.timeline-status-line-connector {
+  border: 1px inset lightgray;
+  margin-top: 30px;
+  width: 100%;
 }
 
 .appeals{
@@ -74,6 +109,8 @@
   padding-top: 12px;
   gap:12px;
 }
+
+
 
 @media (max-width: 1200px) and (min-width: 300px) {
   .nocircle {
