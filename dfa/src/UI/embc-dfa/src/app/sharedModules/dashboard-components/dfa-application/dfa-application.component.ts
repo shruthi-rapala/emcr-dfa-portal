@@ -376,21 +376,6 @@ export class DfaApplicationComponent implements OnInit {
     { label: '' }
   ];
 
-  // appealitems = [
-  //   { label: "Draft Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Submitted Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Reviewing Application", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Creating Case File", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Checking Criteria", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Assessing Damage", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Reviewing Damage Report", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "DFA Making Decision", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "DFA Decision Made", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Appeal Received", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Appeal In Progress", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-  //   { label: "Appeal Closed", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
-  // ];
-
   // eligibility appeal timeline items
   eligibilityAppealItems = [
     { label: '' },
