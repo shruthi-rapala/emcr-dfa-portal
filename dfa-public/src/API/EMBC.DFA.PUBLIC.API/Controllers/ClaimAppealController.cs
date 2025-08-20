@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using EMBC.Database.Contract;
@@ -23,11 +24,13 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
     {
         private readonly IMapper mapper;
         private readonly IClaimAppealRepository claimAppealRepository;
+        private readonly IInvoiceAppealRepository invoiceAppealRepository;
 
-        public ClaimAppealController(IMapper mapper, IClaimAppealRepository claimAppealRepository)
+        public ClaimAppealController(IMapper mapper, IClaimAppealRepository claimAppealRepository, IInvoiceAppealRepository invoiceAppealRepository)
         {
             this.mapper = mapper;
             this.claimAppealRepository = claimAppealRepository;
+            this.invoiceAppealRepository = invoiceAppealRepository;
         }
 
 
@@ -53,10 +56,42 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
             return Ok(claimAppealId);
 
         }
+
+        /// <summary>
+        /// Create an invoice appeal
+        /// </summary>
+        /// <param name="appeals">The appeal information</param>
+        /// <returns>appeal id</returns>
+        [HttpPost("createInvoiceAppeal")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult CreateInvoiceAppeal([FromBody] IEnumerable<InvoiceAppealModel> appeals)
+        {
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (appeals == null) return BadRequest("Invoice Appeal details cannot be empty.");
+
+            var mappedInvoiceAppeals = mapper.Map<IEnumerable<InvoiceAppeal>>(appeals);
+
+            foreach (var invoiceAppeal in mappedInvoiceAppeals)
+            {
+               invoiceAppealRepository.Insert(invoiceAppeal);
+            }
+            return Ok();
+
+        }
     }
 
     public class ClaimAppealModel {
      public Guid? ClaimId { get; set; }
+
+    }
+    public class InvoiceAppealModel
+    {
+        public Guid ClaimAppealId { get; set; }
+        public Guid OriginInvoiceId { get; set; }
+        public string InvoiceDecisionComments { get; set; }
 
     }
 }

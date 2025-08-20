@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IProjectAppealRepository, ProjectAppealRepository>();
         services.AddTransient<IDocumentUrlRepository, DocumentUrlRepository>();
         services.AddTransient<IClaimAppealRepository, ClaimAppealRepository>();
+        services.AddTransient<IInvoiceAppealRepository, InvoiceAppealRepository>();
         return services;
     }
 
@@ -28,7 +29,8 @@ public static class ServiceCollectionExtensions
             typeof(EventMapper),
             typeof(ProjectAppealMapper),
             typeof(DocumentUrlMapper),
-            typeof(ClaimAppealMapper)
+            typeof(ClaimAppealMapper),
+            typeof(InvoiceAppealMapper)
         };
         services.AddAutoMapper(cfg => cfg.ShouldUseConstructor = constructor => constructor.IsPublic, mapperTypes);
         return services;

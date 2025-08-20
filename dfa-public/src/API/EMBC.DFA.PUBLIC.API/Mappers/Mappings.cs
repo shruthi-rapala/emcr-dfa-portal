@@ -817,6 +817,12 @@ namespace EMBC.DFA.API.Mappers
 
             CreateMap<ClaimAppeal, ClaimAppealModel>();
 
+            // Mappings from InvoiceModel (API Model) to Invoice (DTO API Layer)
+
+            CreateMap<InvoiceAppealModel, InvoiceAppeal>();
+
+            CreateMap<InvoiceAppeal, InvoiceAppealModel>();
+
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))
                 .ForMember(d => d.DateOfDamageTo, opts => opts.MapFrom(s => s.dfa_dateofdamageto))
