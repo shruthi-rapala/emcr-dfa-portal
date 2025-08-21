@@ -211,7 +211,8 @@ export class ClaimDecisionComponent implements OnInit {
           || applItem?.claim.claimDecision.toLowerCase() === this.DecisionEnum.Ineligible.toLowerCase()
         )
       && (applItem?.claim.isAdjustmentClaim !== true && applItem?.claim.claimType !== this.ClaimTypeEnum.AdvancedPayment)
-      && this.remainingDays(applItem) > 0;
+      && this.remainingDays(applItem) > 0
+      && applItem?.claim.claimAppeals.length == 0; // Ensure no existing appeals
   }
 
   remainingDays(appItem: DfaClaimMain): number {

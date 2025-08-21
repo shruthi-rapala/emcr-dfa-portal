@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using AutoMapper;
 using EMBC.Database.Contract;
 using EMBC.Database.Model;
@@ -50,6 +51,15 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
 
             if (appeal == null) return BadRequest("Appeal details cannot be empty.");
 
+            // Check if the appeal already exists
+            //var claimIdString = appeal.ClaimId.ToString();
+            var existingAppeal = claimAppealRepository.Where(a => a.ClaimId == appeal.ClaimId);
+            if (existingAppeal != null && existingAppeal.Any())
+            {
+                // Return 500 Internal Server Error if appeal already exists
+                return StatusCode(StatusCodes.Status500InternalServerError, "Appeal already exists.");
+            }
+
             var mappedClaimAppeal = mapper.Map<ClaimAppeal>(appeal);
 
             var claimAppealId = claimAppealRepository.Insert(mappedClaimAppeal);
@@ -76,7 +86,18 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
 
             foreach (var invoiceAppeal in mappedInvoiceAppeals)
             {
-               invoiceAppealRepository.Insert(invoiceAppeal);
+                // Check if the invoice appeal already exists
+                var existingInvoiceAppeal = invoiceAppealRepository.Where(a =>
+                    a.ClaimAppealId == invoiceAppeal.ClaimAppealId &&
+                    a.OriginInvoiceId == invoiceAppeal.OriginInvoiceId);
+
+                if (existingInvoiceAppeal != null && existingInvoiceAppeal.Any())
+                {
+                    // Return 500 Internal Server Error if invoice appeal already exists
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Invoice appeal already exists.");
+                }
+
+                invoiceAppealRepository.Insert(invoiceAppeal);
             }
             return Ok();
 
@@ -84,7 +105,7 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
     }
 
     public class ClaimAppealModel {
-     public Guid? ClaimId { get; set; }
+     public string ClaimId { get; set; }
 
     }
     public class InvoiceAppealModel

@@ -379,10 +379,11 @@ export class DfaDashClaimComponent implements OnInit {
     return applItem.claimDecision 
       && (
           applItem.claimDecision.toLowerCase() === this.DecisionEnum.ApprovedWithExclusions.toLowerCase() 
-          || applItem.claimDecision.toLowerCase() === this.DecisionEnum.Ineligible.toLowerCase()
+          || applItem.claimDecision.toLowerCase() === this.DecisionEnum.Ineligible.toLowerCase()        
         )
       && (applItem.isAdjustmentClaim !== true && applItem.claimType !== this.ClaimTypeEnum.AdvancedPayment)
-      && this.remainingDays(applItem) > 0; 
+      && this.remainingDays(applItem) > 0
+      && applItem.claimAppeals.length === 0; 
   }
 
   remainingDays(claim: ClaimExtended): number {

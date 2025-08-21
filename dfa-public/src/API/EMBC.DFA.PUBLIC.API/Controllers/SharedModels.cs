@@ -675,8 +675,8 @@ namespace EMBC.DFA.API.Controllers
         public string? claimType { get; set; }
         public bool? isAdjustmentClaim { get; set; }
         public bool? lateAppealAllowed { get; set; }
-
         public string? codingBlockSubmissionStatus { get; set; }
+        public IEnumerable<CurrentClaimAppeal> claimAppeals { get; set; }
     }
 
     public class Invoice

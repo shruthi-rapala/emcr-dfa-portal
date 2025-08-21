@@ -1521,6 +1521,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Filter = $"dfa_projectclaimid eq {claimId}"
                 });
 
+                var claim = list.List.FirstOrDefault();
+                if (claim != null)
+                {
+                    var lstAppeal = await api.GetList<dfa_claimappeal>("dfa_claimappeals", new CRMGetListOptions
+                    {
+                        Select = new[]
+                        {
+                    "statuscode",
+                    "dfa_appealdecision"
+                },
+                        Filter = $"_dfa_originclaim_value eq {claimId}"
+                    });
+                    claim.dfa_claimappeal = lstAppeal.List;
+                }
+
                 var lstApps = (from objApp in list.List
                                select new dfa_claim_retrieve
                                {
@@ -1550,8 +1565,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_isadjustmentclaim = objApp.dfa_isadjustmentclaim,
                                    dfa_bpfclosedate = objApp.dfa_bpfclosedate,
                                    dfa_lateappealallowed = objApp.dfa_lateappealallowed,
-                                   dfa_codingblocksubmissionstatus = objApp.dfa_codingblocksubmissionstatus
-                                   
+                                   dfa_codingblocksubmissionstatus = objApp.dfa_codingblocksubmissionstatus,
+                                   dfa_claimappeal = objApp.dfa_claimappeal
+
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 
                 return lstApps.FirstOrDefault();
