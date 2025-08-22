@@ -15,33 +15,37 @@ import InvoiceComponent from '../../forms/dfa-claim-main-forms/invoice/invoice.c
 import { FormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CancelConfirmationDialogComponent } from 'src/app/core/components/dialog-components/dfa-cancel-confirmation-dialog/dfa-cancel-confirmation-dialog.component';
+import { ClaimAppealService } from 'src/app/core/api/services';
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 
-type TableRow = 
+type TableRow =
   | { type: 'invoice'; data: InvoiceExtended }
   | { type: 'appealReason'; data: InvoiceExtended };
 
 @Component({
   selector: 'app-claim-appeal',
   standalone: true,
-  imports: [CoreModule, MatCardModule, MatTableModule, CommonModule, MatDialogModule, MatCheckboxModule, FixedCurrencyPipe, FormsModule, MatStepperModule ],
+  imports: [CoreModule, MatCardModule, MatTableModule, CommonModule, MatDialogModule, MatCheckboxModule, FixedCurrencyPipe, FormsModule, MatStepperModule],
   templateUrl: './claim-appeal.component.html',
   styleUrl: './claim-appeal.component.scss'
 })
 export class ClaimAppealComponent implements OnInit {
   claimMain: DfaClaimMain | null = null;
 
-  documentSummaryColumnsToDisplay = ['appealCheckbox','invoiceNumber', 'vendorName', 'invoiceDate', 'invoiceAmount', 'approvedAmount', 'paidAmount', 'appealAdjustment', 'viewInvoice'];
+  documentSummaryColumnsToDisplay = ['appealCheckbox', 'invoiceNumber', 'vendorName', 'invoiceDate', 'invoiceAmount', 'approvedAmount', 'paidAmount', 'appealAdjustment', 'viewInvoice'];
   appealReasonColumnsToDisplay = ['appealReasonCheckboxPlaceholder', 'appealReason'];
   documentSummaryDataSource = new MatTableDataSource<TableRow>();
   selection = new SelectionModel<InvoiceExtended>(true, []);
   selectedStepIndex: number = 4;
-  
+
   constructor(
     private route: ActivatedRoute,
     public dfaClaimMainDataService: DFAClaimMainDataService,
     private router: Router,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    public claimAppealService: ClaimAppealService,
+    private _snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
     this.claimMain = this.dfaClaimMainDataService.getDFAProjectMain() ?? null;
@@ -123,7 +127,7 @@ export class ClaimAppealComponent implements OnInit {
 
   submitAppeal(): void {
     const invalidRows = this.documentSummaryDataSource.data
-    .filter(row => this.selection.isSelected(row.data) && !row.data.appealReason?.trim());
+      .filter(row => this.selection.isSelected(row.data) && !row.data.appealReason?.trim());
 
     const selectedInvoices = this.selection.selected;
 
@@ -132,13 +136,42 @@ export class ClaimAppealComponent implements OnInit {
     console.log('Submitting appeal for selected invoices:', selectedInvoices);
 
     // call a service method to submit these
-    // this.appealService.submitAppeal(selectedInvoices).subscribe(...)
+
+    this.claimAppealService.claimAppealCreateInvoiceAppeal({
+      body: selectedInvoices.map(invoice => ({
+        claimAppealId: this.route.snapshot.params['appealId'],
+        invoiceDecisionComments: invoice.appealReason,
+        originInvoiceId: invoice.invoiceId
+      }))
+    }).subscribe({
+      next: (response) => {
+        console.log('Appeal submitted successfully:', response);
+         // Show success snackbar
+         this._snackBar.open(
+          'Appeal submitted successfully!',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 5000
+          }
+        );
+       // this.router.navigate(['/app-claim-decision/' + this.dfaClaimMainDataService.getClaimId()]);
+        const projId = this.dfaClaimMainDataService.getProjectId();
+        this.router.navigate(['/dfa-project/' + projId + '/claims']);
+      },
+      error: (error) => {
+        console.error('Error submitting appeal:', error);
+        // Handle error appropriately, e.g., show a notification
+      }
+    });
+
   }
 
   viewInvoiceRow(element, index): void {
     this.openInvoiceViewPopup(element, index);
   }
-  
+
   openInvoiceViewPopup(objInvoice, _index): void {
     if (objInvoice && objInvoice.invoiceId) {
       this.dfaClaimMainDataService.setInvoiceId(objInvoice.invoiceId);
@@ -160,7 +193,7 @@ export class ClaimAppealComponent implements OnInit {
         disableClose: true
       })
       .afterClosed()
-      .subscribe((_result) => {});
+      .subscribe((_result) => { });
   }
 
   addSupportingDocuments(): void {

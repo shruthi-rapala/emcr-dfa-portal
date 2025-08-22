@@ -350,8 +350,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_claimtype { get; set; }
         public bool? dfa_isadjustmentclaim { get; set; }
         public bool? dfa_lateappealallowed { get; set; }
-
         public string? dfa_codingblocksubmissionstatus { get; set; }
+        public IEnumerable<dfa_claimappeal>? dfa_claimappeal { get; set; }
     }
 
     public class dfa_appapplicationmain_retrieve

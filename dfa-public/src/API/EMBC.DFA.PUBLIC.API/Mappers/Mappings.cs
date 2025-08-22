@@ -779,7 +779,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.CodingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
                 .ForMember(d => d.ClaimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal));
 
-            CreateMap<dfa_claimappeal, CurrentProjectClaimAppeal>()
+            CreateMap<dfa_claimappeal, CurrentClaimAppeal>()
                 .ForMember(d => d.AppealStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.statuscode) ? GetEnumDescription((ClaimAppealStatusOptionSet)Convert.ToInt32(s.statuscode)) : null))
                 .ForMember(d => d.AppealDecision, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_appealdecision) ? GetEnumDescription((ClaimAppealDecisionOptionSet)Convert.ToInt32(s.dfa_appealdecision)) : null));
 
@@ -808,7 +808,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.isAdjustmentClaim, opts => opts.MapFrom(s => s.dfa_isadjustmentclaim))
                 .ForMember(d => d.lateAppealAllowed, opts => opts.MapFrom(s => s.dfa_lateappealallowed))
                 .ForMember(d => d.codingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
-                .ForMember(d => d.dateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate));
+                .ForMember(d => d.dateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
+                .ForMember(d => d.claimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal));
 
             //Mapping from AppealModel (API Model) to Appeal (DTO API Layer)
 
@@ -816,6 +817,12 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ClaimId, opts => opts.MapFrom(s => s.ClaimId));
 
             CreateMap<ClaimAppeal, ClaimAppealModel>();
+
+            // Mappings from InvoiceModel (API Model) to Invoice (DTO API Layer)
+
+            CreateMap<InvoiceAppealModel, InvoiceAppeal>();
+
+            CreateMap<InvoiceAppeal, InvoiceAppealModel>();
 
             CreateMap<dfa_appapplication, CurrentApplication>()
                 .ForMember(d => d.DateOfDamage, opts => opts.MapFrom(s => s.dfa_dateofdamage))

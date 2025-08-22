@@ -13,6 +13,8 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { claimAppealCreateClaimAppeal } from '../fn/claim-appeal/claim-appeal-create-claim-appeal';
 import { ClaimAppealCreateClaimAppeal$Params } from '../fn/claim-appeal/claim-appeal-create-claim-appeal';
+import { claimAppealCreateInvoiceAppeal } from '../fn/claim-appeal/claim-appeal-create-invoice-appeal';
+import { ClaimAppealCreateInvoiceAppeal$Params } from '../fn/claim-appeal/claim-appeal-create-invoice-appeal';
 
 @Injectable({ providedIn: 'root' })
 export class ClaimAppealService extends BaseService {
@@ -49,6 +51,39 @@ export class ClaimAppealService extends BaseService {
    */
   claimAppealCreateClaimAppeal(params: ClaimAppealCreateClaimAppeal$Params, context?: HttpContext): Observable<string> {
     return this.claimAppealCreateClaimAppeal$Response(params, context).pipe(
+      map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `claimAppealCreateInvoiceAppeal()` */
+  static readonly ClaimAppealCreateInvoiceAppealPath = '/api/claimappeals/createInvoiceAppeal';
+
+  /**
+   * Create an invoice appeal.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `claimAppealCreateInvoiceAppeal()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  claimAppealCreateInvoiceAppeal$Response(params: ClaimAppealCreateInvoiceAppeal$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+    return claimAppealCreateInvoiceAppeal(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Create an invoice appeal.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `claimAppealCreateInvoiceAppeal$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  claimAppealCreateInvoiceAppeal(params: ClaimAppealCreateInvoiceAppeal$Params, context?: HttpContext): Observable<string> {
+    return this.claimAppealCreateInvoiceAppeal$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
