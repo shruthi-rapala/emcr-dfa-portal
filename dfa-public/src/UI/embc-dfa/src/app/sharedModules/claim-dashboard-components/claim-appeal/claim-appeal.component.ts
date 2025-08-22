@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CancelConfirmationDialogComponent } from 'src/app/core/components/dialog-components/dfa-cancel-confirmation-dialog/dfa-cancel-confirmation-dialog.component';
 import { ClaimAppealService } from 'src/app/core/api/services';
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 
 type TableRow =
   | { type: 'invoice'; data: InvoiceExtended }
@@ -42,7 +43,8 @@ export class ClaimAppealComponent implements OnInit {
     public dfaClaimMainDataService: DFAClaimMainDataService,
     private router: Router,
     public dialog: MatDialog,
-    public claimAppealService: ClaimAppealService
+    public claimAppealService: ClaimAppealService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -144,7 +146,19 @@ export class ClaimAppealComponent implements OnInit {
     }).subscribe({
       next: (response) => {
         console.log('Appeal submitted successfully:', response);
-        this.router.navigate(['/app-claim-decision/' + this.dfaClaimMainDataService.getClaimId()]);
+         // Show success snackbar
+         this._snackBar.open(
+          'Appeal submitted successfully!',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 5000
+          }
+        );
+       // this.router.navigate(['/app-claim-decision/' + this.dfaClaimMainDataService.getClaimId()]);
+        const projId = this.dfaClaimMainDataService.getProjectId();
+        this.router.navigate(['/dfa-project/' + projId + '/claims']);
       },
       error: (error) => {
         console.error('Error submitting appeal:', error);
