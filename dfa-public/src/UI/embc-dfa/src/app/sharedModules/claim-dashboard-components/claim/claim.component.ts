@@ -175,11 +175,11 @@ export class DfaDashClaimComponent implements OnInit {
               }
 
               
-            if(objApp.status?.toLowerCase() == 'decision made' && objStatItem.status.toLowerCase() == objApp.status.toLowerCase()){
-              if(objApp.claimAppeals?.find(a=> a.appealStatus?.toLowerCase() != 'closed' && a.appealDecision?.toLowerCase() != 'withdrawn')){
-                objStatItem.stage = 'Appealed';
-              }
-            }
+            // if(objApp.status?.toLowerCase() == 'decision made' && objStatItem.status.toLowerCase() == objApp.status.toLowerCase()){
+            //   if(objApp.claimAppeals?.find(a=> a.appealStatus?.toLowerCase() != 'closed' && a.appealDecision?.toLowerCase() != 'withdrawn')){
+            //     objStatItem.stage = 'Appealed';
+            //   }
+            // }
 
             });
 
