@@ -124,15 +124,24 @@ namespace EMBC.Database.Model
 			public const string DFA_AssignmentComment = "dfa_assignmentcomment";
 			public const string DFA_BackupDocuments = "dfa_backupdocuments";
 			public const string DFA_BackupDocumentsName = "dfa_backupdocumentsname";
+			public const string DFA_Case = "dfa_case";
 			public const string DFA_CaseMaterialsReviewed = "dfa_casematerialsreviewed";
 			public const string DFA_CaseMaterialsReviewedName = "dfa_casematerialsreviewedname";
+			public const string DFA_CaseName = "dfa_casename";
 			public const string DFA_CheckAppealDecisionLetter = "dfa_checkappealdecisionletter";
 			public const string DFA_CheckAppealDecisionLetterName = "dfa_checkappealdecisionlettername";
+			public const string DFA_CurrentStageName = "dfa_currentstagename";
 			public const string DFA_DateAppealReceived = "dfa_dateappealreceived";
 			public const string DFA_DateAssigned = "dfa_dateassigned";
+			public const string DFA_DFA_Event_DFA_ProjectAppeal_Event = "dfa_dfa_event_dfa_projectappeal_Event";
 			public const string DFA_DFA_Project_DFA_ProjectAppeal_ProjectId = "dfa_dfa_project_dfa_projectappeal_ProjectId";
+			public const string DFA_DFA_ProjectAppeal_BcGoV_DocumentUrl_ProjectAppeal = "DFA_DFA_ProjectAppeal_BcGoV_DocumentUrl_ProjectAppeal";
+			public const string DFA_DFA_ProjectAppeal_DFA_Project_ProjectAppeal = "DFA_DFA_ProjectAppeal_DFA_Project_ProjectAppeal";
 			public const string DFA_EligibleProjectsCope = "dfa_eligibleprojectscope";
 			public const string DFA_EligibleProjectsCopeName = "dfa_eligibleprojectscopename";
+			public const string DFA_Event = "dfa_event";
+			public const string DFA_EventName = "dfa_eventname";
+			public const string DFA_ExtensionRequestDeadline = "dfa_extensionrequestdeadline";
 			public const string DFA_GenerateAppealDecisionLetter = "dfa_generateappealdecisionletter";
 			public const string DFA_GenerateAppealDecisionLetterName = "dfa_generateappealdecisionlettername";
 			public const string DFA_IcRPSpreadsheetCompleteAndCorrect = "dfa_icrpspreadsheetcompleteandcorrect";
@@ -141,8 +150,12 @@ namespace EMBC.Database.Model
 			public const string DFA_INeApprovalsName = "dfa_ineapprovalsname";
 			public const string DFA_InformationRequestDueDate = "dfa_informationrequestduedate";
 			public const string DFA_Name = "dfa_name";
+			public const string DFA_PortalNote = "dfa_portalnote";
 			public const string DFA_PreexistingCondition = "dfa_preexistingcondition";
 			public const string DFA_PreexistingConditionName = "dfa_preexistingconditionname";
+			public const string DFA_PrimaryContact = "dfa_primarycontact";
+			public const string DFA_PrimaryContactName = "dfa_primarycontactname";
+			public const string DFA_PrimaryContactYomiName = "dfa_primarycontactyominame";
 			public const string DFA_ProgramPolicyComments = "dfa_programpolicycomments";
 			public const string DFA_ProgramPolicyUpdateRequired = "dfa_programpolicyupdaterequired";
 			public const string DFA_ProgramPolicyUpdateRequiredName = "dfa_programpolicyupdaterequiredname";
@@ -1067,6 +1080,21 @@ namespace EMBC.Database.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_case")]
+		public Microsoft.Xrm.Sdk.EntityReference DFA_Case
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("dfa_case");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_case", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_casematerialsreviewed")]
 		public System.Nullable<bool> DFA_CaseMaterialsReviewed
 		{
@@ -1091,6 +1119,23 @@ namespace EMBC.Database.Model
 				if (this.FormattedValues.Contains("dfa_casematerialsreviewed"))
 				{
 					return this.FormattedValues["dfa_casematerialsreviewed"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_casename")]
+		public string DFA_CaseName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("dfa_case"))
+				{
+					return this.FormattedValues["dfa_case"];
 				}
 				else
 				{
@@ -1128,6 +1173,21 @@ namespace EMBC.Database.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_currentstagename")]
+		public string DFA_CurrentStageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("dfa_currentstagename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_currentstagename", value);
 			}
 		}
 		
@@ -1190,6 +1250,53 @@ namespace EMBC.Database.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_event")]
+		public Microsoft.Xrm.Sdk.EntityReference DFA_Event
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("dfa_event");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_event", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_eventname")]
+		public string DFA_EventName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("dfa_event"))
+				{
+					return this.FormattedValues["dfa_event"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_extensionrequestdeadline")]
+		public System.Nullable<System.DateTime> DFA_ExtensionRequestDeadline
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("dfa_extensionrequestdeadline");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_extensionrequestdeadline", value);
 			}
 		}
 		
@@ -1322,6 +1429,21 @@ namespace EMBC.Database.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_portalnote")]
+		public string DFA_PortalNote
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("dfa_portalnote");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_portalnote", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_preexistingcondition")]
 		public System.Nullable<bool> DFA_PreexistingCondition
 		{
@@ -1346,6 +1468,55 @@ namespace EMBC.Database.Model
 				if (this.FormattedValues.Contains("dfa_preexistingcondition"))
 				{
 					return this.FormattedValues["dfa_preexistingcondition"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_primarycontact")]
+		public Microsoft.Xrm.Sdk.EntityReference DFA_PrimaryContact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("dfa_primarycontact");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_primarycontact", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_primarycontactname")]
+		public string DFA_PrimaryContactName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("dfa_primarycontact"))
+				{
+					return this.FormattedValues["dfa_primarycontact"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_primarycontactyominame")]
+		public string DFA_PrimaryContactYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("dfa_primarycontact"))
+				{
+					return this.FormattedValues["dfa_primarycontact"];
 				}
 				else
 				{
@@ -2163,6 +2334,61 @@ namespace EMBC.Database.Model
 			set
 			{
 				this.SetRelatedEntities<EMBC.Database.Model.DFA_ProjectEligibilityAppeal>("bpf_dfa_projectappeal_dfa_projecteligibilityappeal", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal")]
+		public System.Collections.Generic.IEnumerable<EMBC.Database.Model.BcGoV_DocumentUrl> DFA_DFA_ProjectAppeal_BcGoV_DocumentUrl_ProjectAppeal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<EMBC.Database.Model.BcGoV_DocumentUrl>("dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<EMBC.Database.Model.BcGoV_DocumentUrl>("dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N dfa_dfa_projectappeal_dfa_project_ProjectAppeal
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("dfa_dfa_projectappeal_dfa_project_ProjectAppeal")]
+		public System.Collections.Generic.IEnumerable<EMBC.Database.Model.DFA_Project> DFA_DFA_ProjectAppeal_DFA_Project_ProjectAppeal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<EMBC.Database.Model.DFA_Project>("dfa_dfa_projectappeal_dfa_project_ProjectAppeal", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<EMBC.Database.Model.DFA_Project>("dfa_dfa_projectappeal_dfa_project_ProjectAppeal", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 dfa_dfa_event_dfa_projectappeal_Event
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_event")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("dfa_dfa_event_dfa_projectappeal_Event")]
+		public EMBC.Database.Model.DFA_Event DFA_DFA_Event_DFA_ProjectAppeal_Event
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<EMBC.Database.Model.DFA_Event>("dfa_dfa_event_dfa_projectappeal_Event", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<EMBC.Database.Model.DFA_Event>("dfa_dfa_event_dfa_projectappeal_Event", null, value);
 			}
 		}
 		

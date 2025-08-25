@@ -170,6 +170,7 @@ namespace EMBC.Database.Model
 			public const string DFA_DFA_InvoiceAppeal_BcGoV_DocumentUrl_InvoiceAppeal = "dfa_dfa_invoiceappeal_bcgov_documenturl_InvoiceAppeal";
 			public const string DFA_DFA_Project_BcGoV_DocumentUrl_Project = "dfa_dfa_project_bcgov_documenturl_Project";
 			public const string DFA_DFA_ProjectAmendment_BcGoV_DocumentUrl_ProjectAmendment = "dfa_dfa_projectamendment_bcgov_documenturl_ProjectAmendment";
+			public const string DFA_DFA_ProjectAppeal_BcGoV_DocumentUrl_ProjectAppeal = "dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal";
 			public const string DFA_DFA_ProjectClaim_BcGoV_DocumentUrl_RecoveryClaim = "dfa_dfa_projectclaim_bcgov_documenturl_RecoveryClaim";
 			public const string DFA_ErrorMessage = "dfa_errormessage";
 			public const string DFA_InvoiceAppeal = "dfa_invoiceappeal";
@@ -180,6 +181,8 @@ namespace EMBC.Database.Model
 			public const string DFA_Project = "dfa_project";
 			public const string DFA_ProjectAmendment = "dfa_projectamendment";
 			public const string DFA_ProjectAmendmentName = "dfa_projectamendmentname";
+			public const string DFA_ProjectAppeal = "dfa_projectappeal";
+			public const string DFA_ProjectAppealName = "dfa_projectappealname";
 			public const string DFA_ProjectName = "dfa_projectname";
 			public const string DFA_RecoveryClaim = "dfa_recoveryclaim";
 			public const string DFA_RecoveryClaimName = "dfa_recoveryclaimname";
@@ -1278,6 +1281,38 @@ namespace EMBC.Database.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_projectappeal")]
+		public Microsoft.Xrm.Sdk.EntityReference DFA_ProjectAppeal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("dfa_projectappeal");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_projectappeal", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_projectappealname")]
+		public string DFA_ProjectAppealName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("dfa_projectappeal"))
+				{
+					return this.FormattedValues["dfa_projectappeal"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_projectname")]
 		public string DFA_ProjectName
 		{
@@ -1870,6 +1905,25 @@ namespace EMBC.Database.Model
 			set
 			{
 				this.SetRelatedEntity<EMBC.Database.Model.DFA_ProjectAmendment>("dfa_dfa_projectamendment_bcgov_documenturl_ProjectAmendment", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_projectappeal")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal")]
+		public EMBC.Database.Model.DFA_ProjectAppeal DFA_DFA_ProjectAppeal_BcGoV_DocumentUrl_ProjectAppeal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<EMBC.Database.Model.DFA_ProjectAppeal>("dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<EMBC.Database.Model.DFA_ProjectAppeal>("dfa_dfa_projectappeal_bcgov_documenturl_ProjectAppeal", null, value);
 			}
 		}
 		

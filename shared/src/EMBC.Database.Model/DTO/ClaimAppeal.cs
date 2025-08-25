@@ -1,4 +1,6 @@
 ﻿
+using EMBC.Database.Contract.DTO;
+
 namespace EMBC.Database.Contract;
 
 
@@ -20,9 +22,11 @@ public class ClaimAppeal : IDto
 {
     public Guid Id { get; set; }
     public StateCode StateCode { get; set; }
-
     public required string ClaimId { get; set; }
-
     public ClaimAppealDecision? AppealDecision { get; set; }
+    public string? ClaimAppealPortalNotes { get; set; }
+  
+    // Related Entities
+    public ClaimAmountAppeal? ClaimAmountAppeal { get; set; }
 
 }
