@@ -4,16 +4,21 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
+using AutoMapper;
+using EMBC.Database.Contract;
 using EMBC.Database.Model;
+using EMBC.Database.Resources;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.PDF;
 using EMBC.ESS.Shared.Contracts.Metadata;
+using EMBC.Utilities.Extensions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using IdentityModel.Client;
@@ -31,10 +36,14 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     public class DynamicsGateway : IDynamicsGateway
     {
         private readonly CRMWebAPI api;
+        private readonly IClaimAppealRepository repository;
+        private readonly IMapper mapper;
 
-        public DynamicsGateway(CRMWebAPI api)
+        public DynamicsGateway(CRMWebAPI api,IClaimAppealRepository repository, IMapper mapper)
         {
             this.api = api;
+            this.repository = repository;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<dfa_appcontact>> GetContactsAsync()
@@ -1392,13 +1401,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         {
             try
             {
-                //var lstEvents = await api.GetList<dfa_event>("dfa_events", new CRMGetListOptions
-                //{
-                //    Select = new[]
-                //    {
-                //        "dfa_eventid", "dfa_id", "dfa_eventname", "dfa_eventtype"
-                //    }
-                //});
+                
 
                 var list = await api.GetList<dfa_projectclaim>("dfa_projectclaims", new CRMGetListOptions
                 {
@@ -1421,18 +1424,21 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
 
                 //where objAppEvent != null && (objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.Public).ToString()
                 //                 || objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())
-                foreach (dfa_projectclaim claim in list.List)
+                foreach (var claim in list.List)
                 {
-                    var lstAppeal = await api.GetList<dfa_claimappeal>("dfa_claimappeals", new CRMGetListOptions
+                    // Load the claim appeals
+
+                    var claimId = Guid.Parse(claim.dfa_projectclaimid);
+
+                    ClaimAppeal amountClaimAppeal = repository.
+                        GetWorkflow(new ClaimAppealQuery { ClaimId = claimId }).FirstOrDefault();
+
+                    if(amountClaimAppeal != null)
                     {
-                        Select = new[]
-                        {
-                            "statuscode",
-                            "dfa_appealdecision"
-                       },
-                        Filter = $"_dfa_originclaim_value eq {claim.dfa_projectclaimid}"
-                    });
-                    claim.dfa_claimappeal = lstAppeal.List;
+                       claim.dfa_appealdecision = amountClaimAppeal.AppealDecision.HasValue ? EnumDescriptionHelper.GetEnumDescription(amountClaimAppeal.AppealDecision.Value): null;
+                       claim.dfa_portalnote = amountClaimAppeal.ClaimAppealPortalNotes;
+                       claim.dfa_claimappeal = amountClaimAppeal.ClaimAmountAppeal;
+                    }
                 }
                 var lstClaims = (from objClaim in list.List
                                  select new dfa_projectclaim
@@ -1462,7 +1468,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                      dfa_claimtype = objClaim.dfa_claimtype,
                                      dfa_isadjustmentclaim = objClaim.dfa_isadjustmentclaim,
                                      dfa_codingblocksubmissionstatus = objClaim.dfa_codingblocksubmissionstatus,
-                                     dfa_claimappeal = objClaim.dfa_claimappeal
+                                     dfa_claimappeal = objClaim.dfa_claimappeal,
+                                     dfa_portalnote = objClaim.dfa_portalnote,
+                                     dfa_appealdecision = objClaim.dfa_appealdecision
 
                                  }).AsEnumerable().OrderByDescending(m => m.createdon);
 
@@ -1521,20 +1529,20 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                     Filter = $"dfa_projectclaimid eq {claimId}"
                 });
 
+                // Load the appeal for the claim
                 var claim = list.List.FirstOrDefault();
-                if (claim != null)
+                if (claim != null && Guid.TryParse(claim.dfa_projectclaimid, out Guid claimGuid))
                 {
-                    var lstAppeal = await api.GetList<dfa_claimappeal>("dfa_claimappeals", new CRMGetListOptions
+                    // Load the appeal for the claim
+                    var amountClaimAppeal = repository.GetWorkflow(new ClaimAppealQuery { ClaimId = claimGuid }).FirstOrDefault();
+                    if (amountClaimAppeal != null)
                     {
-                        Select = new[]
-                        {
-                    "statuscode",
-                    "dfa_appealdecision"
-                },
-                        Filter = $"_dfa_originclaim_value eq {claimId}"
-                    });
-                    claim.dfa_claimappeal = lstAppeal.List;
+                        claim.dfa_appealdecision = amountClaimAppeal.AppealDecision.HasValue ? EnumDescriptionHelper.GetEnumDescription(amountClaimAppeal.AppealDecision.Value) : null;
+                        claim.dfa_portalnote = amountClaimAppeal.ClaimAppealPortalNotes;
+                        claim.dfa_claimappeal = amountClaimAppeal.ClaimAmountAppeal;
+                    }
                 }
+
 
                 var lstApps = (from objApp in list.List
                                select new dfa_claim_retrieve
@@ -1566,7 +1574,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_bpfclosedate = objApp.dfa_bpfclosedate,
                                    dfa_lateappealallowed = objApp.dfa_lateappealallowed,
                                    dfa_codingblocksubmissionstatus = objApp.dfa_codingblocksubmissionstatus,
-                                   dfa_claimappeal = objApp.dfa_claimappeal
+                                   dfa_claimappeal = objApp.dfa_claimappeal,
+                                   dfa_portalnote = objApp.dfa_portalnote,
+                                   dfa_appealdecision = objApp.dfa_appealdecision
 
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 

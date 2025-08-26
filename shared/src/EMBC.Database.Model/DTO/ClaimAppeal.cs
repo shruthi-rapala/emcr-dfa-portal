@@ -11,6 +11,9 @@ public enum ClaimAppealDecision
 
     [Description("Upheld")]
     Upheld = 222710000,
+
+    [Description("Withdrawn")]
+    Withdrawn = 222710002,
 }
 
 public record ClaimAppealQuery

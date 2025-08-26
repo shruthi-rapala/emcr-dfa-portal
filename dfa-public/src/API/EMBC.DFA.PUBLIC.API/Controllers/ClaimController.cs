@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Execution;
+using EMBC.Database.Contract.DTO;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -203,16 +204,19 @@ namespace EMBC.DFA.API.Controllers
         public string DecisionDate { get; set; }
         public string? ClaimType { get; set; }
         public bool? IsAdjustmentClaim { get; set; }
-        public IEnumerable<CurrentClaimAppeal> ClaimAppeals { get; set; }
+        public ClaimAmountAppeal ClaimAppeals { get; set; }
         public string CodingBlockSubmissionStatus { get; set; }
+        public string ClaimPortalNote { get; set; }
+
+        public string ClaimAppealDecision { get; set; }
     }
 
-    public class CurrentClaimAppeal
-    {
-        public string Id { get; set; }
-        public string AppealDecision { get; set; }
-        public string AppealStatus { get; set; }
-    }
+    //public class CurrentClaimAppeal
+    //{
+    //    public string Id { get; set; }
+    //    public string AppealDecision { get; set; }
+    //    public string AppealStatus { get; set; }
+    //}
 
     public class ClaimStatusBar
     {

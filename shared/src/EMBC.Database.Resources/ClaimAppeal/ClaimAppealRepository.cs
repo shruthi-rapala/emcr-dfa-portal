@@ -9,7 +9,7 @@ namespace EMBC.Database.Resources;
 
 public interface IClaimAppealRepository : IBaseRepository<ClaimAppeal>
 {
-    ClaimAppealWorkFlow GetWorkflow(ClaimAppealQuery query);
+    IEnumerable<ClaimAppeal> GetWorkflow(ClaimAppealQuery query);
 }
     public class ClaimAppealRepository : BaseRepository<DFA_ClaimAppeal, ClaimAppeal>, IClaimAppealRepository
 {
@@ -20,11 +20,13 @@ public interface IClaimAppealRepository : IBaseRepository<ClaimAppeal>
         _databaseContext = databaseContext;
     }
 
-    public ClaimAppealWorkFlow GetWorkflow(ClaimAppealQuery query)
+    public IEnumerable<ClaimAppeal> GetWorkflow(ClaimAppealQuery query)
     {
-        var stages = _databaseContext.ProcessStageSet.Where(x => x.PrimaryEntityTypeCode == DFA_ClaimAppeal.EntityLogicalName).ToList();
+        var stages = _databaseContext.ProcessStageSet
+            .Where(x => x.PrimaryEntityTypeCode == DFA_ClaimAppeal.EntityLogicalName)
+            .ToList();
 
-        var mappedStages = _mapper.Map<IEnumerable<Stage>>(stages);
+        //var mappedStages = _mapper.Map<IEnumerable<Stage>>(stages);
 
         var queryResults = (
         from ca in _databaseContext.DFA_ClaimAppealSet
@@ -43,7 +45,7 @@ public interface IClaimAppealRepository : IBaseRepository<ClaimAppeal>
             ca => ca.ClaimAmountAppeal?.Stages?.ToList().ForEach(
                 ce => ce.Name = stages.Single(x => x.Id == ce.Id).StageName));
 
-        return new ClaimAppealWorkFlow(results, mappedStages);
+        return results;
 
 
     }

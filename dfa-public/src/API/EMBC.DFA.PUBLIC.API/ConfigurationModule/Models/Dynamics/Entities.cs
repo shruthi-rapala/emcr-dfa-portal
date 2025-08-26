@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using EMBC.Database.Contract.DTO;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Asn1.Mozilla;
@@ -351,7 +352,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_isadjustmentclaim { get; set; }
         public bool? dfa_lateappealallowed { get; set; }
         public string? dfa_codingblocksubmissionstatus { get; set; }
-        public IEnumerable<dfa_claimappeal>? dfa_claimappeal { get; set; }
+        public ClaimAmountAppeal dfa_claimappeal { get; set; }
+        public string dfa_appealdecision { get; set; }
+        public string dfa_portalnote { get; set; }
     }
 
     public class dfa_appapplicationmain_retrieve
@@ -1016,8 +1019,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_decisiondate { get; set; }
         public string? dfa_claimtype {  get; set; }
         public bool? dfa_isadjustmentclaim { get; set; }
-        public IEnumerable<dfa_claimappeal>? dfa_claimappeal { get; set; }
+        public ClaimAmountAppeal? dfa_claimappeal { get; set; }
         public string ? dfa_codingblocksubmissionstatus { get; set; }
+        public string dfa_appealdecision { get; set; }
+        public string dfa_portalnote { get; set; }
     }
 
     public class dfa_recoveryinvoice
@@ -1071,11 +1076,11 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
     {
         public DateTime? dfa_dateappealreceived { get; set; }
     }
-    public class dfa_claimappeal
-    {
-        public string statuscode { get; set; }
-        public string dfa_appealdecision { get; set; }
-    }
+    //public class dfa_claimappeal
+    //{
+    //    public string statuscode { get; set; }
+    //    public string dfa_appealdecision { get; set; }
+    //}
     public class dfa_projectamendment
     {
         public string? _dfa_project_value { get; set; }

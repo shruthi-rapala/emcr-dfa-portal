@@ -187,7 +187,7 @@ export class DfaDashClaimComponent implements OnInit {
             if (!Array.isArray(objApp.appealStatusBar)) {
               objApp.appealStatusBar = JSON.parse(JSON.stringify(this.appealItems));
             }
-            objApp.claimAppeals.forEach(appealObj => {
+            (Array.isArray(objApp.claimAppeals) ? objApp.claimAppeals : []).forEach(appealObj => {
             objApp.appealStatusBar.forEach((objStatItem) => {
               const statusMatch =
                 appealObj.appealStatus &&
@@ -383,7 +383,7 @@ export class DfaDashClaimComponent implements OnInit {
         )
       && (applItem.isAdjustmentClaim !== true && applItem.claimType !== this.ClaimTypeEnum.AdvancedPayment)
       && this.remainingDays(applItem) > 0
-      && applItem.claimAppeals.length === 0; 
+      && !applItem?.claimAppeals; 
   }
 
   remainingDays(claim: ClaimExtended): number {
