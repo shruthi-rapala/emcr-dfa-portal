@@ -3,26 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Runtime.Serialization;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
-using EMBC.DFA.API.ConfigurationModule.Models;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using EMBC.ESS.Shared.Contracts;
 using EMBC.ESS.Shared.Contracts.Events;
-using EMBC.ESS.Shared.Contracts.Teams;
 using EMBC.Utilities.Messaging;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using NJsonSchema.Annotations;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -37,8 +32,7 @@ namespace EMBC.DFA.API.Controllers
         private readonly IEvacuationSearchService evacuationSearchService;
         private readonly IProfileInviteService profileInviteService;
         private readonly IConfigurationHandler handler;
-
-        private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        private string currentUserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub).Split('@')[0];
 
         public ProfileController(
             IHostEnvironment env,
@@ -148,10 +142,10 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<bool>> GetDoesUserExists()
         {
-            var userId = currentUserId;
-            var profile = await handler.HandleGetUser(userId);
-            return Ok(profile != null);
-        }
+                var userId = currentUserId;
+                var profile = await handler.HandleGetUser(userId);
+                return Ok(profile != null);
+            }
 
         /// <summary>
         /// Create or update the current user's profile
