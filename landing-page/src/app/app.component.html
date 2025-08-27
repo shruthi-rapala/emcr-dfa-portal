@@ -173,7 +173,7 @@
 
               @if (environment?.disablePublicUrl || environment?.newApplicationNotAccepted) {
                 <button disabled 
-                class="disableButton" 
+                class="applyButton" 
                 #tooltip="matTooltip"
                 matTooltip="New applications are not currently being accepted"
                 tooltipClass="my-custom-class"
@@ -185,6 +185,7 @@
                   Register to apply to Public DFA
                 </button>
               }
+              
 
               @if(!environment?.newApplicationNotAccepted) {
                 <button class="loginButton" (click)="navigateToPublicDFA()">
