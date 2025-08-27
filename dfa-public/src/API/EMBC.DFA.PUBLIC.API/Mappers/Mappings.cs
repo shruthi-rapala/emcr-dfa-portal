@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using EMBC.Database.Contract;
+using EMBC.Database.Contract.DTO;
+using EMBC.Database.Model;
 using EMBC.DFA.API.ConfigurationModule.Models.AuthModels;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.ConfigurationModule.Models.PDF;
@@ -777,11 +779,15 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ClaimType, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimtype) ? GetEnumDescription((ClaimTypeOptionSet)Convert.ToInt32(s.dfa_claimtype)) : null))
                 .ForMember(d => d.IsAdjustmentClaim, opts => opts.MapFrom(s => s.dfa_isadjustmentclaim))
                 .ForMember(d => d.CodingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
-                .ForMember(d => d.ClaimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal));
+                .ForMember(d => d.ClaimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal))
+                .ForMember(d => d.ClaimPortalNote, opts => opts.MapFrom(s => s.dfa_portalnote))
+                .ForMember(d => d.ClaimAppealDecision, opts => opts.MapFrom(s => s.dfa_appealdecision));
 
-            CreateMap<dfa_claimappeal, CurrentClaimAppeal>()
-                .ForMember(d => d.AppealStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.statuscode) ? GetEnumDescription((ClaimAppealStatusOptionSet)Convert.ToInt32(s.statuscode)) : null))
-                .ForMember(d => d.AppealDecision, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_appealdecision) ? GetEnumDescription((ClaimAppealDecisionOptionSet)Convert.ToInt32(s.dfa_appealdecision)) : null));
+            CreateMap<DFA_ClaimAppeal, ClaimAmountAppeal>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => (int)src.StateCode))
+                .ForMember(dest => dest.CaseAppealId, opt => opt.MapFrom(src => src.DFA_ClaimAppealId))
+                .AfterMap((src, dest) => dest.Stages = src.TraversedPath?.Split(",").Select(x => new Stage { Id = new Guid(x), Name = string.Empty }).ToArray());
 
             CreateMap<dfa_claim_retrieve, RecoveryClaim>()
                 .ForMember(d => d.claimNumber, opts => opts.MapFrom(s => s.dfa_name))
@@ -809,6 +815,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.lateAppealAllowed, opts => opts.MapFrom(s => s.dfa_lateappealallowed))
                 .ForMember(d => d.codingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
                 .ForMember(d => d.dateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
+                .ForMember(d => d.claimPortalNote, opts => opts.MapFrom(s => s.dfa_portalnote))
+                .ForMember(d => d.claimAppealDecision, opts => opts.MapFrom(s => s.dfa_appealdecision))
                 .ForMember(d => d.claimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal));
 
             //Mapping from AppealModel (API Model) to Appeal (DTO API Layer)

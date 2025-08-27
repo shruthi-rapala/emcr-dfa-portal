@@ -280,6 +280,7 @@ namespace EMBC.Database.Model
 			public const string DFA_DFA_Project_DFA_ClaimAppeal_Project = "DFA_DFA_Project_DFA_ClaimAppeal_Project";
 			public const string DFA_DFA_Project_DFA_ProjectAmendment_Project = "DFA_DFA_Project_DFA_ProjectAmendment_Project";
 			public const string DFA_DFA_Project_DFA_ProjectAppeal_ProjectId = "DFA_DFA_Project_DFA_ProjectAppeal_ProjectId";
+			public const string DFA_DFA_ProjectAppeal_DFA_Project_ProjectAppeal = "dfa_dfa_projectappeal_dfa_project_ProjectAppeal";
 			public const string DFA_DFA_ProjectClaim_DFA_Project_FirstClaim = "dfa_dfa_projectclaim_dfa_project_FirstClaim";
 			public const string DFA_DFADecisionDate = "dfa_dfadecisiondate";
 			public const string DFA_DFAProjectEligibility = "dfa_dfaprojecteligibility";
@@ -316,8 +317,12 @@ namespace EMBC.Database.Model
 			public const string DFA_PendingAdJUDUCationName = "dfa_pendingadjuducationname";
 			public const string DFA_PortalSubmitted = "dfa_portalsubmitted";
 			public const string DFA_PortalSubmittedName = "dfa_portalsubmittedname";
+			public const string DFA_PreviousProjectDecision = "dfa_previousprojectdecision";
+			public const string DFA_PreviousProjectDecisionName = "dfa_previousprojectdecisionname";
 			public const string DFA_Project_DFA_Appeal = "DFA_Project_DFA_Appeal";
 			public const string DFA_Project_To_ProjectClaim = "DFA_Project_To_ProjectClaim";
+			public const string DFA_ProjectAppeal = "dfa_projectappeal";
+			public const string DFA_ProjectAppealName = "dfa_projectappealname";
 			public const string DFA_ProjectApprovedDate = "dfa_projectapproveddate";
 			public const string DFA_ProjectBusinessProcessStages = "dfa_projectbusinessprocessstages";
 			public const string DFA_ProjectBusinessProcessStagesName = "dfa_projectbusinessprocessstagesname";
@@ -2832,6 +2837,70 @@ namespace EMBC.Database.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_previousprojectdecision")]
+		public virtual DFA_ProjectDecision? DFA_PreviousProjectDecision
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((DFA_ProjectDecision?)(EntityOptionSetEnum.GetEnum(this, "dfa_previousprojectdecision")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_previousprojectdecision", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_previousprojectdecisionname")]
+		public string DFA_PreviousProjectDecisionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("dfa_previousprojectdecision"))
+				{
+					return this.FormattedValues["dfa_previousprojectdecision"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_projectappeal")]
+		public Microsoft.Xrm.Sdk.EntityReference DFA_ProjectAppeal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("dfa_projectappeal");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_projectappeal", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_projectappealname")]
+		public string DFA_ProjectAppealName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("dfa_projectappeal"))
+				{
+					return this.FormattedValues["dfa_projectappeal"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_projectapproveddate")]
 		public System.Nullable<System.DateTime> DFA_ProjectApprovedDate
 		{
@@ -4622,6 +4691,25 @@ namespace EMBC.Database.Model
 			set
 			{
 				this.SetRelatedEntities<EMBC.Database.Model.DFA_ProjectClaim>("dfa_project_to_projectclaim", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 dfa_dfa_projectappeal_dfa_project_ProjectAppeal
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_projectappeal")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("dfa_dfa_projectappeal_dfa_project_ProjectAppeal")]
+		public EMBC.Database.Model.DFA_ProjectAppeal DFA_DFA_ProjectAppeal_DFA_Project_ProjectAppeal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<EMBC.Database.Model.DFA_ProjectAppeal>("dfa_dfa_projectappeal_dfa_project_ProjectAppeal", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<EMBC.Database.Model.DFA_ProjectAppeal>("dfa_dfa_projectappeal_dfa_project_ProjectAppeal", null, value);
 			}
 		}
 		

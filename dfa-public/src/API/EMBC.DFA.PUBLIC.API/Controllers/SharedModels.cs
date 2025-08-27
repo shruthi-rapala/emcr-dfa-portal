@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using EMBC.Database.Contract;
+using EMBC.Database.Contract.DTO;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using Org.BouncyCastle.Asn1.Mozilla;
 
@@ -676,7 +677,10 @@ namespace EMBC.DFA.API.Controllers
         public bool? isAdjustmentClaim { get; set; }
         public bool? lateAppealAllowed { get; set; }
         public string? codingBlockSubmissionStatus { get; set; }
-        public IEnumerable<CurrentClaimAppeal> claimAppeals { get; set; }
+        public ClaimAmountAppeal claimAppeals { get; set; }
+        public string claimPortalNote { get; set; }
+        public string claimAppealDecision { get; set; }
+
     }
 
     public class Invoice

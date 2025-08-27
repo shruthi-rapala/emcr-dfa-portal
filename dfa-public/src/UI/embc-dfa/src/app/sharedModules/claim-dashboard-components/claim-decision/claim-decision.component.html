@@ -279,8 +279,9 @@
 
     </div>
 
-    <div style="padding-bottom: 70px;">
-        <div *ngIf="canAppealClaims(recoveryClaim)" class="appealClaims">
+    
+    <div style="padding-bottom: 70px;" class="appealClaims" *ngIf="!recoveryClaim?.claim.claimAppeals">
+        <div *ngIf="canAppealClaims(recoveryClaim)" >
             <div style="padding: 12px;">
                 <i>Amount Approval decisions can be appealed for 60 days ({{remainingDays(recoveryClaim)}} days
                     remaining).</i>

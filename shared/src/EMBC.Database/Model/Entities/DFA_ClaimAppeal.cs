@@ -97,6 +97,7 @@ namespace EMBC.Database.Model
 			public const string Id = "dfa_claimappealid";
 			public const string DFA_CreatedOnPortal = "dfa_createdonportal";
 			public const string DFA_CreatedOnPortalName = "dfa_createdonportalname";
+			public const string DFA_CurrentStageName = "dfa_currentstagename";
 			public const string DFA_DateAppealReceived = "dfa_dateappealreceived";
 			public const string DFA_DateAssigned = "dfa_dateassigned";
 			public const string DFA_DateAssignedToEngineer = "dfa_dateassignedtoengineer";
@@ -121,6 +122,7 @@ namespace EMBC.Database.Model
 			public const string DFA_Name = "dfa_name";
 			public const string DFA_OriginClaim = "dfa_originclaim";
 			public const string DFA_OriginClaimName = "dfa_originclaimname";
+			public const string DFA_PortalNote = "dfa_portalnote";
 			public const string DFA_PrimaryContact = "dfa_primarycontact";
 			public const string DFA_PrimaryContactName = "dfa_primarycontactname";
 			public const string DFA_PrimaryContactYomiName = "dfa_primarycontactyominame";
@@ -827,6 +829,21 @@ namespace EMBC.Database.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_currentstagename")]
+		public string DFA_CurrentStageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("dfa_currentstagename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_currentstagename", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_dateappealreceived")]
 		public System.Nullable<System.DateTime> DFA_DateAppealReceived
 		{
@@ -1124,6 +1141,21 @@ namespace EMBC.Database.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("dfa_portalnote")]
+		public string DFA_PortalNote
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("dfa_portalnote");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("dfa_portalnote", value);
 			}
 		}
 		
