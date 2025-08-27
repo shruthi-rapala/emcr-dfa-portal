@@ -781,6 +781,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.CodingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
                 .ForMember(d => d.ClaimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal))
                 .ForMember(d => d.ClaimPortalNote, opts => opts.MapFrom(s => s.dfa_portalnote))
+                .ForMember(d => d.ClaimAppealNumber, opts => opts.MapFrom(s => s.ClaimAppealNumber))
                 .ForMember(d => d.ClaimAppealDecision, opts => opts.MapFrom(s => s.dfa_appealdecision));
 
             CreateMap<DFA_ClaimAppeal, ClaimAmountAppeal>()
@@ -817,6 +818,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
                 .ForMember(d => d.claimPortalNote, opts => opts.MapFrom(s => s.dfa_portalnote))
                 .ForMember(d => d.claimAppealDecision, opts => opts.MapFrom(s => s.dfa_appealdecision))
+                .ForMember(d => d.claimAppealNumber, opts => opts.MapFrom(s => s.dfa_portalnote))
                 .ForMember(d => d.claimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal));
 
             //Mapping from AppealModel (API Model) to Appeal (DTO API Layer)

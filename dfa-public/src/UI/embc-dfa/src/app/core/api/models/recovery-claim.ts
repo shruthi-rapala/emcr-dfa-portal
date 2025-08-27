@@ -10,6 +10,7 @@ export interface RecoveryClaim {
   approvedClaimTotal?: string | null;
   approvedReimbursement?: string | null;
   claimAppealDecision?: string;
+  claimAppealNumber?: string;
   claimAppeals?: ClaimAmountAppeal;
   claimDecision?: string | null;
   claimEligibleGST?: string | null;

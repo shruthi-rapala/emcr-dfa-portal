@@ -680,6 +680,7 @@ namespace EMBC.DFA.API.Controllers
         public ClaimAmountAppeal claimAppeals { get; set; }
         public string claimPortalNote { get; set; }
         public string claimAppealDecision { get; set; }
+        public string claimAppealNumber { get; set; }
 
     }
 

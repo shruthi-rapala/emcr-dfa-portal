@@ -11,6 +11,7 @@ export interface CurrentClaim {
   approvedClaimTotal?: string;
   approvedReimbursePercent?: string;
   claimAppealDecision?: string;
+  claimAppealNumber?: string;
   claimAppeals?: ClaimAmountAppeal;
   claimDecision?: string;
   claimId?: string;
