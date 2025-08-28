@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -70,9 +70,15 @@ namespace EMBC.DFA.API
                      OnTokenValidated = async ctx =>
                      {
                          await Task.CompletedTask;
-                         var logger = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
-                         var userInfo = ctx.Principal.FindFirstValue("userInfo");
-                         logger.LogDebug("{0}", userInfo);
+
+                         var logger1 = ctx.HttpContext.RequestServices.GetRequiredService<ITelemetryProvider>().Get<JwtBearerEvents>();
+                         var logger2 = ctx.HttpContext.RequestServices.GetRequiredService<ILogger<Configuration>>();
+                         var claims = ctx.Principal.Claims;
+                         foreach (var claim in claims)
+                         {
+                             logger2.LogInformation($"JWT token validated. Claim: {claim.Type}: {claim.Value}");
+                             Debug.WriteLine($"JWT token validated. Claim: {claim.Type}: {claim.Value}");
+                         }
                      },
                      OnAuthenticationFailed = async ctx =>
                      {
@@ -110,10 +116,39 @@ namespace EMBC.DFA.API
             {
                 options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
                 {
-                    policy
-                    .RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes("jwt")
-                    .RequireClaim("scope", "dfa-portal-api");
+                    policy.RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes("jwt");
+
+                    var scope = configuration.GetValue<string>("auth:jwt:scope") ?? configuration.GetValue<string>("messaging:oauth:scope");
+                    //if keycloak config does not exist  use existing oauth scope
+                    if (configuration.GetValue<string>("auth:jwt:scope") != null)
+                    {
+                        policy.RequireAssertion(ctx =>
+                        {
+                            var logger = ctx.User.Identity?.IsAuthenticated == true
+                                ? ctx.Resource as Microsoft.AspNetCore.Http.HttpContext
+                                    != null
+                                    ? ((Microsoft.AspNetCore.Http.HttpContext)ctx.Resource).RequestServices.GetRequiredService<ILogger<Configuration>>()
+                                    : null
+                                : null;
+
+                            var hasScope = ctx.User.HasClaim(c => c.Type == "scope" && c.Value == configuration.GetValue<string>("auth:jwt:scope"));
+
+                            if (logger != null)
+                            {
+                                logger.LogInformation("Authorization check: user '{User}' authenticated={IsAuthenticated}, hasScope={HasScope}",
+                                    ctx.User.Identity?.Name ?? "anonymous",
+                                    ctx.User.Identity?.IsAuthenticated,
+                                    hasScope);
+                            }
+
+                            return hasScope;
+                        });
+                    }
+                    else
+                    {
+                        policy.RequireClaim("scope", "dfa-portal-api");
+                    }
                 });
 
                 options.DefaultPolicy = options.GetPolicy(JwtBearerDefaults.AuthenticationScheme) ?? null!;
