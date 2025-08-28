@@ -7,7 +7,7 @@ import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
-import { CurrentApplication, CurrentClaim, CurrentProject } from 'src/app/core/api/models';
+import { CurrentApplication, CurrentClaim, CurrentProject, StatusBar } from 'src/app/core/api/models';
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { ClaimService } from '../../../core/api/services';
@@ -52,7 +52,7 @@ export class DfaDashClaimComponent implements OnInit {
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
 
   ];
-  appealItems = [
+  appealItems : StatusBar[] = [
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "Submitted", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
@@ -63,7 +63,7 @@ export class DfaDashClaimComponent implements OnInit {
     { status: "Approval Pending", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Decision Made", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Appeal Decision", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "Closed", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
@@ -182,51 +182,46 @@ export class DfaDashClaimComponent implements OnInit {
             // }
 
             });
-
-
+           
+            // Begin of Claim appeal status bar logic
             if (!Array.isArray(objApp.appealStatusBar)) {
-              objApp.appealStatusBar = JSON.parse(JSON.stringify(this.appealItems));
+                objApp.appealStatusBar = JSON.parse(JSON.stringify(this.appealItems));
             }
-            (Array.isArray(objApp.claimAppeals) ? objApp.claimAppeals : []).forEach(appealObj => {
-            objApp.appealStatusBar.forEach((objStatItem) => {
-              const statusMatch =
-                appealObj.appealStatus &&
-                objStatItem.status?.toLowerCase() === appealObj.appealStatus.toLowerCase();
 
+            let isAppealStatusFound = false;
+
+            if (objApp.claimAppeals) objApp.appealStatusBar.forEach((objStatItem) => {
+              const statusMatch =
+                objApp.claimAppeals?.activeStage?.name &&
+                objStatItem.status?.toLowerCase() === objApp.claimAppeals?.activeStage?.name.toLowerCase();
               if (statusMatch) {
-                objStatItem.currentStep = true;
-                isFound = true;
+                if (!objApp.claimAppeals?.completedOn) {
+                  objStatItem.currentStep = true;
+                }
+                isAppealStatusFound = true;
                 this.matchStatusFound = true;
 
-
-                // Determine statusColor based on logic
-                if (['Ineligible', 'Withdrawn'].includes(appealObj.appealDecision|| '')) {
-                  objApp.statusColor = '#E25E63';
-                } else if (
-                  objApp.status?.toLowerCase().includes('decision made') &&
-                  objApp.stage?.toLowerCase().includes('progress')
-                ) {
-                  objApp.statusColor = '#FDCB52';
-                } else {
-                  objApp.statusColor = objStatItem.statusColor;
+                if (objApp.claimAppeals?.activeStage?.name) {
+                  objStatItem.stage = objApp.claimAppeals.activeStage.name;
                 }
               }
 
-              // Fallback if status not matched
-              if (!isFound) {
+              // fallback if status not matched
+              if (isAppealStatusFound == false) {
                 objStatItem.isCompleted = true;
               }
-
-              // Final step validation
+              // final step validation
               if (objStatItem.isFinalStep) {
-                if (!isFound) {
+                if (!isAppealStatusFound) {
                   objApp.isErrorInStatus = true;
-                } else if (statusMatch) {
+                }
+                else if (statusMatch && objApp.claimAppeals?.completedOn) {
                   objStatItem.isCompleted = true;
                 }
               }
-            })
-          });
+            });
+            // End of Claim appeal status bar logic 
+       
             lstDataModified.push(objApp);
           })
 
@@ -372,6 +367,10 @@ export class DfaDashClaimComponent implements OnInit {
     this.dfaClaimMainDataService.setViewOrEdit('addclaim');
 
     this.router.navigate(['/dfa-claim-main/' + applItem.claimId]);
+  }
+
+  hasClaimAmountAppeal(applItem: ClaimExtended): boolean {
+    return !!applItem.claimAppeals;
   }
 
   canAppealClaims(applItem: ClaimExtended): boolean {

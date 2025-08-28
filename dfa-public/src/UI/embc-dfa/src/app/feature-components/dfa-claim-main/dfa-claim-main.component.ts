@@ -340,7 +340,7 @@ export class DFAClaimMainComponent
           },
             error => {
               console.error(error);
-              document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              //document.location.href = 'https://dfa.gov.bc.ca/error.html';
             });
           
           //this.dfaProjectMainService.upsertApplication(application).subscribe(x => {

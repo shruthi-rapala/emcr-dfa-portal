@@ -677,10 +677,10 @@ namespace EMBC.DFA.API.Controllers
         public bool? isAdjustmentClaim { get; set; }
         public bool? lateAppealAllowed { get; set; }
         public string? codingBlockSubmissionStatus { get; set; }
-        public ClaimAmountAppeal claimAppeals { get; set; }
-        public string claimPortalNote { get; set; }
-        public string claimAppealDecision { get; set; }
-        public string claimAppealNumber { get; set; }
+        public ClaimAmountAppeal? claimAppeals { get; set; }
+        public string? claimPortalNote { get; set; }
+        public string? claimAppealDecision { get; set; }
+        public string? claimAppealNumber { get; set; }
 
     }
 
