@@ -199,6 +199,37 @@ i.material-icons {
   display: block;
 }
 
+
+.timeline-statuses-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.timeline-status-container {
+  flex: 1; // grow or shrink same as others
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ // min-width: 80px;
+  min-height: 140px;
+  padding-bottom: 32px;
+}
+
+.timeline-status-label {
+  min-height: 80px;
+}
+
+.timeline-status-indicator-icon {
+  min-height: 40px;
+}
+
+.timeline-status-line-connector {
+  border: 1px inset lightgray;
+  margin-top: 20px;
+  width: 100%;
+}
+
 @media (max-width: 1000px) and (min-width: 300px) {
 
   .removeBorder {

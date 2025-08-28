@@ -1438,6 +1438,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                        claim.dfa_appealdecision = amountClaimAppeal.AppealDecision.HasValue ? EnumDescriptionHelper.GetEnumDescription(amountClaimAppeal.AppealDecision.Value): null;
                        claim.dfa_portalnote = amountClaimAppeal.ClaimAppealPortalNotes;
                        claim.dfa_claimappeal = amountClaimAppeal.ClaimAmountAppeal;
+                       claim.ClaimAppealNumber = amountClaimAppeal.ClaimAppealNumber;
                     }
                 }
                 var lstClaims = (from objClaim in list.List
@@ -1470,7 +1471,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                      dfa_codingblocksubmissionstatus = objClaim.dfa_codingblocksubmissionstatus,
                                      dfa_claimappeal = objClaim.dfa_claimappeal,
                                      dfa_portalnote = objClaim.dfa_portalnote,
-                                     dfa_appealdecision = objClaim.dfa_appealdecision
+                                     dfa_appealdecision = objClaim.dfa_appealdecision,
+                                     ClaimAppealNumber = objClaim.ClaimAppealNumber
 
                                  }).AsEnumerable().OrderByDescending(m => m.createdon);
 
@@ -1540,6 +1542,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         claim.dfa_appealdecision = amountClaimAppeal.AppealDecision.HasValue ? EnumDescriptionHelper.GetEnumDescription(amountClaimAppeal.AppealDecision.Value) : null;
                         claim.dfa_portalnote = amountClaimAppeal.ClaimAppealPortalNotes;
                         claim.dfa_claimappeal = amountClaimAppeal.ClaimAmountAppeal;
+                        claim.claimAppealNumber = amountClaimAppeal.ClaimAppealNumber; // use the appeal number as the name
                     }
                 }
 
@@ -1576,7 +1579,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                    dfa_codingblocksubmissionstatus = objApp.dfa_codingblocksubmissionstatus,
                                    dfa_claimappeal = objApp.dfa_claimappeal,
                                    dfa_portalnote = objApp.dfa_portalnote,
-                                   dfa_appealdecision = objApp.dfa_appealdecision
+                                   dfa_appealdecision = objApp.dfa_appealdecision,
+                                   claimAppealNumber = objApp.claimAppealNumber
 
                                }).AsEnumerable().OrderByDescending(m => m.createdon);
 

@@ -352,9 +352,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public bool? dfa_isadjustmentclaim { get; set; }
         public bool? dfa_lateappealallowed { get; set; }
         public string? dfa_codingblocksubmissionstatus { get; set; }
-        public ClaimAmountAppeal dfa_claimappeal { get; set; }
-        public string dfa_appealdecision { get; set; }
-        public string dfa_portalnote { get; set; }
+        public ClaimAmountAppeal? dfa_claimappeal { get; set; }
+        public string? dfa_appealdecision { get; set; }
+        public string? dfa_portalnote { get; set; }
+        public string? claimAppealNumber { get; set; }
     }
 
     public class dfa_appapplicationmain_retrieve
@@ -1023,6 +1024,8 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string ? dfa_codingblocksubmissionstatus { get; set; }
         public string dfa_appealdecision { get; set; }
         public string dfa_portalnote { get; set; }
+        public string ClaimAppealNumber { get; set; }
+
     }
 
     public class dfa_recoveryinvoice

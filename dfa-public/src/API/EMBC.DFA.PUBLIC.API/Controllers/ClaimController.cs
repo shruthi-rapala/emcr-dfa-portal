@@ -207,8 +207,8 @@ namespace EMBC.DFA.API.Controllers
         public ClaimAmountAppeal ClaimAppeals { get; set; }
         public string CodingBlockSubmissionStatus { get; set; }
         public string ClaimPortalNote { get; set; }
-
         public string ClaimAppealDecision { get; set; }
+        public string ClaimAppealNumber { get; set; }
     }
 
     //public class CurrentClaimAppeal
