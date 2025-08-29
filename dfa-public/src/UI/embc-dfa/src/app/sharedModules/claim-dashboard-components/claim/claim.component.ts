@@ -272,24 +272,32 @@ export class DfaDashClaimComponent implements OnInit {
     })
 
     const openClaims = this.lstClaims
-    .filter(x => x.openClaim === true && x.codingBlockSubmissionStatus !== "Cancelled" && (x.claimType !== this.ClaimTypeEnum.AdvancedPayment || (x.claimType === this.ClaimTypeEnum.AdvancedPayment && x.claimDecision === this.DecisionEnum.Approved) ) );
+    .filter(x => x.openClaim === true && x.codingBlockSubmissionStatus !== "Cancelled" && !x.isAdjustmentClaim && (x.claimType !== this.ClaimTypeEnum.AdvancedPayment || (x.claimType === this.ClaimTypeEnum.AdvancedPayment && x.claimDecision === this.DecisionEnum.Approved) ) );
 
     const closedClaims = this.lstClaims
-    .filter(x => x.openClaim === false && x.codingBlockSubmissionStatus !== "Cancelled");
+    .filter(x => x.openClaim === false && x.codingBlockSubmissionStatus !== "Cancelled"  && !x.isAdjustmentClaim);
+
+    const adjustmentClaims = this.lstClaims.filter(x => x.isAdjustmentClaim === true)
 
     this.appSessionService.currentProjectsCount?.emit(openClaims.length);
     this.appSessionService.openClaimsCount?.emit(openClaims.length);
 
     this.appSessionService.pastProjectsCount?.emit(closedClaims.length);
     this.appSessionService.closedClaimsCount?.emit(closedClaims.length);
-    
-    if (this.apptype === "open") {
-      this.lstClaims = openClaims;
-    } else {
-      this.lstClaims = closedClaims;
+ 
+    this.appSessionService.adjustmentClaimsCount?.emit(adjustmentClaims.length);
 
+    if (this.apptype === "open") {
+    
+      this.lstClaims = openClaims;
+    } else if(this.apptype === "closed"){
+      this.lstClaims = closedClaims;
     }
 
+    else if(this.apptype === "adjustment"){
+      this.lstClaims = adjustmentClaims;
+      
+    }
     this.lstFilteredClaims = this.lstClaims;
   }
 

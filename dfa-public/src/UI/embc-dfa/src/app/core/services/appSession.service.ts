@@ -12,6 +12,7 @@ export class AppSessionService {
   public closedClaimsCount: EventEmitter<number> = new EventEmitter<number>();
   public openAmendmentsCount: EventEmitter<number> = new EventEmitter<number>();
   public closedAmendmentsCount: EventEmitter<number> = new EventEmitter<number>();
+  public adjustmentClaimsCount: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private cacheService: CacheService) {}
 

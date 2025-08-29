@@ -26,6 +26,14 @@ const routes: Routes = [{
         ).then((m) => m.DFADashClaimModule),
       data: { flow: 'dfa-claim-dashboard', apptype: 'closed' }
     },
+    {
+      path: 'adjustment',
+      loadChildren: () =>
+        import(
+          'src/app/sharedModules/claim-dashboard-components/claim/claim.module'
+        ).then((m) => m.DFADashClaimModule),
+      data: { flow: 'dfa-claim-dashboard', apptype: 'adjustment' }
+    },
   ]
 }];
 
