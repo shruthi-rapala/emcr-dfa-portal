@@ -174,13 +174,6 @@ export class DfaDashClaimComponent implements OnInit {
                 }
               }
 
-              
-            // if(objApp.status?.toLowerCase() == 'decision made' && objStatItem.status.toLowerCase() == objApp.status.toLowerCase()){
-            //   if(objApp.claimAppeals?.find(a=> a.appealStatus?.toLowerCase() != 'closed' && a.appealDecision?.toLowerCase() != 'withdrawn')){
-            //     objStatItem.stage = 'Appealed';
-            //   }
-            // }
-
             });
            
             // Begin of Claim appeal status bar logic
@@ -189,6 +182,11 @@ export class DfaDashClaimComponent implements OnInit {
             }
 
             let isAppealStatusFound = false;
+
+            // If there is no claim portal note, set it to In Progress
+            if(!objApp.claimPortalNote) {
+              objApp.claimPortalNote = "In Progress"; 
+            }
 
             if (objApp.claimAppeals) objApp.appealStatusBar.forEach((objStatItem) => {
               const statusMatch =
