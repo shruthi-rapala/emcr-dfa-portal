@@ -92,6 +92,11 @@
         <div class="col-md-4">
           <span><b>Claim Number - </b></span>
           <span>{{applItem.claimNumber}}</span>
+
+          <div *ngIf="applItem.isAdjustmentClaim"> 
+            <span><b>Linked Claim -</b> </span>
+            <span><a (click)="ViewLinkedClaim(applItem?.linkedClaim)" style="cursor: pointer; color: blue; text-decoration: underline;">{{applItem?.linkedClaim?.linkedClaimName}}</a></span>
+          </div>
         </div>
         <div class="col-md-3">
           <span><b>Submitted Date - </b></span>

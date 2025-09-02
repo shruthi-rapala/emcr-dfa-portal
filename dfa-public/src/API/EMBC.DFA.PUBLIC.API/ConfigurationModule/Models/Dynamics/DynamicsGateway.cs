@@ -1417,7 +1417,7 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                         "dfa_bpfclosedate", "dfa_onetimedeductionamount",
                         "dfa_paidclaimamount",  "dfa_decisioncopy",
                         "dfa_advanceddrawdownamount", "dfa_decisiondate",
-                        "dfa_claimtype", "dfa_isadjustmentclaim", "dfa_codingblocksubmissionstatus"
+                        "dfa_claimtype", "dfa_isadjustmentclaim", "dfa_codingblocksubmissionstatus", "_dfa_linkedclaim_value"
                     },
                     Filter = $"_dfa_recoveryplanid_value eq {projectId}"
                 });
@@ -1426,6 +1426,18 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                 //                 || objAppEvent.dfa_eventtype == Convert.ToInt32(EventType.PrivatePublic).ToString())
                 foreach (var claim in list.List)
                 {
+
+                    // Populate the linked claim if the lookup field is present
+                    if (!string.IsNullOrEmpty(claim.dfa_linkedclaimid))
+                    {
+                        var linkedClaimList = await api.GetList<dfa_claim_retrieve>("dfa_projectclaims", new CRMGetListOptions
+                        {
+                            Select = new[] { "dfa_name", "dfa_projectclaimid" },
+                            Filter = $"dfa_projectclaimid eq {claim.dfa_linkedclaimid}"
+                        });
+                        claim.dfa_linkedclaim = linkedClaimList.List.FirstOrDefault();
+                    }
+
                     // Load the claim appeals
 
                     var claimId = Guid.Parse(claim.dfa_projectclaimid);
@@ -1472,7 +1484,9 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
                                      dfa_claimappeal = objClaim.dfa_claimappeal,
                                      dfa_portalnote = objClaim.dfa_portalnote,
                                      dfa_appealdecision = objClaim.dfa_appealdecision,
-                                     ClaimAppealNumber = objClaim.ClaimAppealNumber
+                                     ClaimAppealNumber = objClaim.ClaimAppealNumber,
+                                     dfa_linkedclaim = objClaim.dfa_linkedclaim,
+                                     
 
                                  }).AsEnumerable().OrderByDescending(m => m.createdon);
 

@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Amazon.S3.Model;
 using AutoMapper;
 using AutoMapper.Execution;
 using EMBC.Database.Contract.DTO;
@@ -136,8 +137,7 @@ namespace EMBC.DFA.API.Controllers
             dfa_claim.eligiblePayable = FixDecimalPlaces(dfa_claim.eligiblePayable);
             dfa_claim.paidClaimAmount = FixDecimalPlaces(dfa_claim.paidClaimAmount);
             dfa_claim.claimTotal = FixDecimalPlaces(dfa_claim.claimTotal);
-               
-            
+                 
 
             return Ok(dfaClaimMain);
         }
@@ -204,11 +204,18 @@ namespace EMBC.DFA.API.Controllers
         public string DecisionDate { get; set; }
         public string? ClaimType { get; set; }
         public bool? IsAdjustmentClaim { get; set; }
+        public LinkedClaim LinkedClaim { get; set; }
         public ClaimAmountAppeal ClaimAppeals { get; set; }
         public string CodingBlockSubmissionStatus { get; set; }
         public string ClaimPortalNote { get; set; }
         public string ClaimAppealDecision { get; set; }
         public string ClaimAppealNumber { get; set; }
+    }
+
+    public class LinkedClaim
+    {
+        public string LinkedClaimId { get; set; }
+        public string LinkedClaimName { get; set; }
     }
 
     //public class CurrentClaimAppeal

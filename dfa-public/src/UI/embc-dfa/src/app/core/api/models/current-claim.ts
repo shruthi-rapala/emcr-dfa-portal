@@ -4,6 +4,7 @@
 
 import { ClaimAmountAppeal } from '../models/claim-amount-appeal';
 import { ClaimStatusBar } from '../models/claim-status-bar';
+import { LinkedClaim } from '../models/linked-claim';
 export interface CurrentClaim {
   advancedDrawdownAmount?: string;
   appealStatusBar?: Array<ClaimStatusBar>;
@@ -30,6 +31,7 @@ export interface CurrentClaim {
   isErrorInStatus?: boolean;
   isHidden?: boolean;
   lessFirst1000?: string;
+  linkedClaim?: LinkedClaim;
   paidClaimAmount?: string;
   paidClaimDate?: string;
   projectId?: string;

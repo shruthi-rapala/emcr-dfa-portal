@@ -60,6 +60,7 @@ export type { InviteRequest } from './models/invite-request';
 export type { InviteToken } from './models/invite-token';
 export type { Invoice } from './models/invoice';
 export type { InvoiceAppealModel } from './models/invoice-appeal-model';
+export type { LinkedClaim } from './models/linked-claim';
 export type { NameDataConflict } from './models/name-data-conflict';
 export type { OidcOptions } from './models/oidc-options';
 export type { OtherContact } from './models/other-contact';

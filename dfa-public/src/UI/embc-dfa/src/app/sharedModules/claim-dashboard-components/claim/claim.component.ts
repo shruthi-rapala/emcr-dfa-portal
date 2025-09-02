@@ -348,6 +348,16 @@ export class DfaDashClaimComponent implements OnInit {
 
   }
 
+  // Add this method to navigate to the linked claim details
+ViewLinkedClaim(linkedClaim:any): void {
+ console.log('Linked Claim',  linkedClaim?.linkedClaimId)
+  var linkedClaimId = linkedClaim?.linkedClaimId;
+  if (linkedClaim && linkedClaimId) {
+    // Navigate to the linked claim decision page
+    this.router.navigate(['/app-claim-decision', linkedClaimId]);
+  }
+}
+
   ViewClaim(applItem: ClaimExtended): void {
     this.dfaClaimMainDataService.setProjectId(this.dFAProjectMainDataService.getProjectId());
     this.dfaClaimMainDataService.setClaimId(applItem.claimId);

@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Amazon.S3.Model.Internal.MarshallTransformations;
 using EMBC.Database.Contract.DTO;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Cms;
@@ -1020,6 +1021,10 @@ namespace EMBC.DFA.API.ConfigurationModule.Models.Dynamics
         public string? dfa_decisiondate { get; set; }
         public string? dfa_claimtype {  get; set; }
         public bool? dfa_isadjustmentclaim { get; set; }
+
+        [JsonProperty("_dfa_linkedclaim_value")] 
+        public string? dfa_linkedclaimid { get; set; } // Lookup field: stores the linked claim's ID
+        public dfa_claim_retrieve? dfa_linkedclaim { get; set; } // Full linked claim object
         public ClaimAmountAppeal? dfa_claimappeal { get; set; }
         public string ? dfa_codingblocksubmissionstatus { get; set; }
         public string dfa_appealdecision { get; set; }
