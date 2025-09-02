@@ -174,13 +174,6 @@ export class DfaDashClaimComponent implements OnInit {
                 }
               }
 
-              
-            // if(objApp.status?.toLowerCase() == 'decision made' && objStatItem.status.toLowerCase() == objApp.status.toLowerCase()){
-            //   if(objApp.claimAppeals?.find(a=> a.appealStatus?.toLowerCase() != 'closed' && a.appealDecision?.toLowerCase() != 'withdrawn')){
-            //     objStatItem.stage = 'Appealed';
-            //   }
-            // }
-
             });
            
             // Begin of Claim appeal status bar logic
@@ -189,6 +182,11 @@ export class DfaDashClaimComponent implements OnInit {
             }
 
             let isAppealStatusFound = false;
+
+            // If there is no claim portal note, set it to In Progress
+            if(!objApp.claimPortalNote) {
+              objApp.claimPortalNote = "In Progress"; 
+            }
 
             if (objApp.claimAppeals) objApp.appealStatusBar.forEach((objStatItem) => {
               const statusMatch =
@@ -272,24 +270,32 @@ export class DfaDashClaimComponent implements OnInit {
     })
 
     const openClaims = this.lstClaims
-    .filter(x => x.openClaim === true && x.codingBlockSubmissionStatus !== "Cancelled" && (x.claimType !== this.ClaimTypeEnum.AdvancedPayment || (x.claimType === this.ClaimTypeEnum.AdvancedPayment && x.claimDecision === this.DecisionEnum.Approved) ) );
+    .filter(x => x.openClaim === true && x.codingBlockSubmissionStatus !== "Cancelled" && !x.isAdjustmentClaim && (x.claimType !== this.ClaimTypeEnum.AdvancedPayment || (x.claimType === this.ClaimTypeEnum.AdvancedPayment && x.claimDecision === this.DecisionEnum.Approved) ) );
 
     const closedClaims = this.lstClaims
-    .filter(x => x.openClaim === false && x.codingBlockSubmissionStatus !== "Cancelled");
+    .filter(x => x.openClaim === false && x.codingBlockSubmissionStatus !== "Cancelled"  && !x.isAdjustmentClaim);
+
+    const adjustmentClaims = this.lstClaims.filter(x => x.isAdjustmentClaim === true)
 
     this.appSessionService.currentProjectsCount?.emit(openClaims.length);
     this.appSessionService.openClaimsCount?.emit(openClaims.length);
 
     this.appSessionService.pastProjectsCount?.emit(closedClaims.length);
     this.appSessionService.closedClaimsCount?.emit(closedClaims.length);
-    
-    if (this.apptype === "open") {
-      this.lstClaims = openClaims;
-    } else {
-      this.lstClaims = closedClaims;
+ 
+    this.appSessionService.adjustmentClaimsCount?.emit(adjustmentClaims.length);
 
+    if (this.apptype === "open") {
+    
+      this.lstClaims = openClaims;
+    } else if(this.apptype === "closed"){
+      this.lstClaims = closedClaims;
     }
 
+    else if(this.apptype === "adjustment"){
+      this.lstClaims = adjustmentClaims;
+      
+    }
     this.lstFilteredClaims = this.lstClaims;
   }
 
@@ -339,6 +345,16 @@ export class DfaDashClaimComponent implements OnInit {
     this.lstFilteredClaims = lstClaimsFilterting;
 
   }
+
+  // Add this method to navigate to the linked claim details
+ViewLinkedClaim(linkedClaim:any): void {
+ console.log('Linked Claim',  linkedClaim?.linkedClaimId)
+  var linkedClaimId = linkedClaim?.linkedClaimId;
+  if (linkedClaim && linkedClaimId) {
+    // Navigate to the linked claim decision page
+    this.router.navigate(['/app-claim-decision', linkedClaimId]);
+  }
+}
 
   ViewClaim(applItem: ClaimExtended): void {
     this.dfaClaimMainDataService.setProjectId(this.dFAProjectMainDataService.getProjectId());

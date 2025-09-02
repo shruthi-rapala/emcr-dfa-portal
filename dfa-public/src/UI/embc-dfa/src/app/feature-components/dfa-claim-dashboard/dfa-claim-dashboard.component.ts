@@ -43,11 +43,11 @@ import { DFAClaimMainService } from '../dfa-claim-main/dfa-claim-main.service';
   styleUrls: ['./dfa-claim-dashboard.component.scss']
 })
 export class DFAClaimComponent
-  implements OnInit, AfterViewInit, AfterViewChecked
-{
+  implements OnInit, AfterViewInit, AfterViewChecked {
   tabs: DashTabModel[];
   openClaimsCount = 0;
   closedClaimsCount = 0;
+  adjustmentClaimsCount = 0;
   isLoading = false;
   applicationNumber = '';
   appId = null;
@@ -82,7 +82,7 @@ export class DFAClaimComponent
     private applicationService: ApplicationService,
     private claimService: ClaimService,
   ) {
-    
+
     this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
   }
 
@@ -105,6 +105,12 @@ export class DFAClaimComponent
       this.tabs[1].count = n ? n.toString() : "0";
     });
 
+    // Adjustment claims count
+    this.appSessionService.adjustmentClaimsCount.subscribe((n: number) => {
+      this.adjustmentClaimsCount = n;
+      this.tabs[2].count = n ? n.toString() : "0";
+    });
+
     // this.claimService.claimGetDfaClaims({ projectId: this.projId }).subscribe({
     //   next: (lstData) => {
     //     if (lstData != null) {
@@ -116,7 +122,7 @@ export class DFAClaimComponent
     //   error: (error) => {
     //   }
     // });
-    
+
     this.tabs = [
       {
         label: 'Open Claims',
@@ -131,7 +137,15 @@ export class DFAClaimComponent
         activeImage: '/assets/images/past-evac-active.svg',
         inactiveImage: '/assets/images/past-evac.svg',
         count: this.closedClaimsCount.toString()
+      },
+      {
+        label: 'Adjustment Claims',
+        route: 'adjustment',
+        activeImage: '/assets/images/past-evac-active.svg',
+        inactiveImage: '/assets/images/past-evac.svg',
+        count: this.adjustmentClaimsCount.toString()
       }
+
     ];
 
   }
@@ -144,7 +158,7 @@ export class DFAClaimComponent
 
   navigateToDFAClaimCreate(): void {
     this.confirmCreateClaim();
-    
+
   }
 
   confirmCreateClaim(): void {
@@ -162,7 +176,7 @@ export class DFAClaimComponent
       .afterClosed()
       .subscribe((result) => {
         if (result === 'confirm') {
-          
+
           //let application = this.dfaApplicationMainDataService.createDFAApplicationMainDTO();
           //this.dfaApplicationMainMapping.mapDFAApplicationMain(application);
           //this.setFormData(this.steps[this.dfaApplicationMainStepper.selectedIndex]?.component.toString());
@@ -173,7 +187,7 @@ export class DFAClaimComponent
           this.dfaClaimMainDataService.recoveryClaim = null;
           this.formCreationService.clearRecoveryClaimData();
           let objClaimDTO = this.dfaClaimMainDataService.createDFAClaimMainDTO();
-          
+
           this.dfaClaimMainService.upsertClaim(objClaimDTO).subscribe(id => {
             if (id) {
               this.dfaClaimMainDataService.setEligibleGST(this.eligibleGST);
@@ -194,16 +208,26 @@ export class DFAClaimComponent
   countAppData(lstApp: Object): void {
     var res = JSON.parse(JSON.stringify(lstApp));
     let lstProjects = res;
-    this.openClaimsCount = 0; this.closedClaimsCount = 0;
+    this.openClaimsCount = 0; 
+    this.closedClaimsCount = 0;
+    this.adjustmentClaimsCount = 0;
     lstProjects.forEach(x => {
-      if (
+
+      // Adjustment claims count
+      if(x.isAdjustmentClaim === true){
+        this.adjustmentClaimsCount++; 
+      }
+      else if (
         (x.status.toLowerCase() === "decision made"
           || x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
         &&
         (x.dateFileClosed && (this.OneDayAgo >= new Date(x.dateFileClosed).getTime()))
       ) {
         this.closedClaimsCount++;
-      } else this.openClaimsCount++;
+      } else {
+        this.openClaimsCount++;
+      }
+      
     })
   }
 
@@ -254,7 +278,7 @@ export class DFAClaimComponent
 
             let endDate = moment(new Date(dfaProject.deadline18Month)); // yyyy-MM-dd
             let startDate = moment(); // yyyy-MM-dd
-            
+
             //let Years = newDate.diff(date, 'years');
             let months = endDate.diff(startDate, 'months');
 
@@ -319,7 +343,7 @@ export class DFAClaimComponent
   }
 
   ngAfterViewInit(): void {
-    
+
   }
 
 }

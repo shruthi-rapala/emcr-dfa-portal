@@ -778,11 +778,16 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.DecisionDate, opts => opts.MapFrom(s => Convert.ToDateTime(s.dfa_decisiondate).Year < 2020 ? "Date Not Set" : Convert.ToDateTime(s.dfa_decisiondate).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 .ForMember(d => d.ClaimType, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_claimtype) ? GetEnumDescription((ClaimTypeOptionSet)Convert.ToInt32(s.dfa_claimtype)) : null))
                 .ForMember(d => d.IsAdjustmentClaim, opts => opts.MapFrom(s => s.dfa_isadjustmentclaim))
+                .ForMember(d => d.LinkedClaim, opts => opts.MapFrom(s => s.dfa_linkedclaim))
                 .ForMember(d => d.CodingBlockSubmissionStatus, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.dfa_codingblocksubmissionstatus) ? GetEnumDescription((ClaimCodingBlockSubmissionStatusOptionSet)Convert.ToInt32(s.dfa_codingblocksubmissionstatus)) : null))
                 .ForMember(d => d.ClaimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal))
                 .ForMember(d => d.ClaimPortalNote, opts => opts.MapFrom(s => s.dfa_portalnote))
                 .ForMember(d => d.ClaimAppealNumber, opts => opts.MapFrom(s => s.ClaimAppealNumber))
                 .ForMember(d => d.ClaimAppealDecision, opts => opts.MapFrom(s => s.dfa_appealdecision));
+
+            CreateMap<dfa_claim_retrieve, LinkedClaim>()
+                .ForMember(d => d.LinkedClaimId, opts => opts.MapFrom(s => s.dfa_projectclaimid))
+                 .ForMember(d => d.LinkedClaimName, opts => opts.MapFrom(s => s.dfa_name));
 
             CreateMap<DFA_ClaimAppeal, ClaimAmountAppeal>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
