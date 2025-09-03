@@ -171,7 +171,7 @@
                   Register to apply to Public DFA
               </button> -->
 
-              @if (environment?.disablePublicUrl || environment?.newApplicationNotAccepted) {
+              @if (environment?.disablePublicUrl) {
                 <button disabled 
                 class="applyButton" 
                 #tooltip="matTooltip"
@@ -186,12 +186,11 @@
                 </button>
               }
               
-
-              <!-- @if(!environment?.newApplicationNotAccepted) { -->
+              @if(!environment?.disablePublicUrl) {
                 <button class="loginButton" (click)="navigateToPublicDFA()">
                   Login into to Public DFA
                 </button>
-            
+              }
 
               <div>
                 <p class="loginText">
