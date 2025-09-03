@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
       }
 
       // only check for events if public and private URLs are not disabled
-      if ((!environment?.disablePublicUrl || !environment?.disablePrivateUrl) && !environment?.newApplicationNotAccepted) {
+      //if ((!environment?.disablePublicUrl || !environment?.disablePrivateUrl) && !environment?.newApplicationNotAccepted) {
         this.httpClient.get(environment.apiEndpoint as string).subscribe((response: any) => {
           let hasActiveEventResponse = response as HasActiveEventResponse;
           console.info("Has Active Event Response", hasActiveEventResponse);
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
               this.publicButtonDisabled = false;
           }
         });
-      }
+     // }
     });
   }
 
