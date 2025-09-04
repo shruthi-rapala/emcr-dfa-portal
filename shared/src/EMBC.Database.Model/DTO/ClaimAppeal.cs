@@ -29,7 +29,8 @@ public class ClaimAppeal : IDto
     public ClaimAppealDecision? AppealDecision { get; set; }
     public string? ClaimAppealPortalNotes { get; set; }
     public string? ClaimAppealNumber { get; set; }
-  
+    public string? DateAppealReceived { get; set; }
+
     // Related Entities
     public ClaimAmountAppeal? ClaimAmountAppeal { get; set; }
 

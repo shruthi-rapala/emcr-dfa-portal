@@ -53,6 +53,9 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
 
             var mappedClaimAppeal = mapper.Map<ClaimAppeal>(appeal);
 
+            // Set the date the appeal was received to now in UTC format
+            mappedClaimAppeal.DateAppealReceived = DateTime.UtcNow.ToString("o");
+
             var claimAppealId = claimAppealRepository.Insert(mappedClaimAppeal);
             return Ok(claimAppealId);
 

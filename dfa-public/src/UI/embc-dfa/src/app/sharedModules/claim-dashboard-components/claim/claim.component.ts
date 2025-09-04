@@ -14,6 +14,9 @@ import { ClaimService } from '../../../core/api/services';
 import { Decision } from 'src/app/models/decision.enum';
 import {ClaimType} from 'src/app/models/claim-type.enum';
 
+interface StatusBarExtended extends StatusBar {
+  stages?: string[]
+}
 
 @Component({
   selector: 'app-dfadashboard-claim',
@@ -52,18 +55,18 @@ export class DfaDashClaimComponent implements OnInit {
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
 
   ];
-  appealItems : StatusBar[] = [
+  appealItems : StatusBarExtended[] = [
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "Submitted", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Under Review", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Under Review", stage: "",stages: ["Under Review", "Appeals Adjudicator Check", "Appeals Supervisor Check"], statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "Approval Pending", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Appeal Decision", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Decision Made", stage: "", stages:["Appeal Decision Made", "Appeal Decision", "Decision Made"], statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "Closed", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
@@ -191,7 +194,9 @@ export class DfaDashClaimComponent implements OnInit {
             if (objApp.claimAppeals) objApp.appealStatusBar.forEach((objStatItem) => {
               const statusMatch =
                 objApp.claimAppeals?.activeStage?.name &&
-                objStatItem.status?.toLowerCase() === objApp.claimAppeals?.activeStage?.name.toLowerCase();
+                (objStatItem.status?.toLowerCase() === objApp.claimAppeals?.activeStage?.name.toLowerCase() 
+                || (objStatItem as StatusBarExtended).stages?.some(stage => stage.toLowerCase() === objApp.claimAppeals?.activeStage?.name.toLowerCase()));
+              
               if (statusMatch) {
                 if (!objApp.claimAppeals?.completedOn) {
                   objStatItem.currentStep = true;

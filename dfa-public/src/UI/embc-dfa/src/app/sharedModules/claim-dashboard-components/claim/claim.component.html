@@ -273,19 +273,20 @@
                   </div>
                   <!-- IsCompleted: {{item.isCompleted}} CurentStep: {{item.currentStep}} Stage: {{item.stage}} status: {{item.status}}  Error: {{applItem.isErrorInStatus}} -->
                   <div class="timeline-status-indicator-icon" *ngIf="item.status != ''"
-                    [ngClass]="item.currentStep || (item.label == 'Appeal Decision' && item.isCompleted) ? 'currentStatus': 'alignStatus'">
-                    <span *ngIf="item.isCompleted && !applItem.isErrorInStatus && item.status !== 'Appeal Decision' "
+                    [ngClass]="item.currentStep || (item.status == 'Decision Made' && item.isCompleted) ? 'currentStatus': 'alignStatus'">
+                    <span *ngIf="item.isCompleted && !applItem.isErrorInStatus && item.status !== 'Decision Made' "
                       class="material-icons" style="color: rgb(21 178 89);">
                       {{ 'check_circle' }}
                     </span>
+                    <span *ngIf="!item.isCompleted && item.currentStep && !applItem.isErrorInStatus">
+                      {{ applItem.claimPortalNote }}
+                    </span>
                     <span
-                      *ngIf="item.status === 'Appeal Decision' && item.status === 'Closed'">
-                      {{applItem.claimAppealDecision}}
+                      *ngIf="item.status === 'Decision Made' && item.isCompleted">
+                      {{applItem.claimAppealDecision ?? "Pending"}}
                     </span>
                       
-                      <span *ngIf="!item.isCompleted && item.currentStep && !applItem.isErrorInStatus">
-                        {{ applItem.claimPortalNote }}
-                      </span>
+
                    
                     <span *ngIf="!item.isCompleted && !item.currentStep && !applItem.isErrorInStatus && item.stage == ''"
                       class="material-symbols-outlined" style="color: #FDCB52">
