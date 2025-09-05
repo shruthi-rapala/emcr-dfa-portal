@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using EMBC.Database.Contract;
 using EMBC.Database.Model;
@@ -85,12 +86,64 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
             return Ok();
 
         }
+
+        /// <summary>
+        /// Get appeal details by ID
+        /// </summary>
+        /// <param name="id">Appeal ID</param>
+        /// <returns>ClaimAppeal details</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ClaimAppealModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetClaimAppealById(Guid id)
+        {
+            // Use FirstOrDefault to get the appeal by ID
+            var appeal = claimAppealRepository.FirstOrDefault(a => a.Id == id);
+
+            if (appeal == null)
+                return NotFound();
+
+            // Map to ClaimAppealModel for response
+            var appealModel = mapper.Map<ClaimAppeal>(appeal);
+
+            return Ok(appealModel);
+        }
+
+        /// <summary>
+        /// Get invoice appeal details by ID
+        /// </summary>
+        /// <param name="id"> Invoice Appeal ID</param>
+        /// <returns>ClaimAppeal details</returns>
+        [HttpGet("{id}/invoiceAppeal")]
+        [ProducesResponseType(typeof(ClaimAppealModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetInvoiceAppealById(Guid id)
+        {
+            // Use FirstOrDefault to get the invoice appeal by ID
+            var appeal = claimAppealRepository.FirstOrDefault(a => a.Id == id);
+
+            if (appeal == null)
+                return NotFound();
+
+            var invoiceAppeals = invoiceAppealRepository.Where(ia => ia.ClaimAppealId == id.ToString());
+            // Map to ClaimAppealModel for response
+            //var invoiceAppealModel = mapper.Map<IEnumerable<InvoiceAppeal>>(invoiceAppeals);
+
+            return Ok(invoiceAppeals);
+        }
+
     }
+
+    
+       
+
+    
 
     public class ClaimAppealModel {
      public Guid? ClaimId { get; set; }
 
     }
+
     public class InvoiceAppealModel
     {
         public Guid ClaimAppealId { get; set; }

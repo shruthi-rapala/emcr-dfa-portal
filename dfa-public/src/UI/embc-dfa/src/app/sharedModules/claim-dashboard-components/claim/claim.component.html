@@ -255,8 +255,15 @@
         @if(hasClaimAmountAppeal(applItem)){
         <div [featureEnabled]="'useAppeals'"
           style="margin-top: 30px; border-top: 1px solid lightgrey; padding-top: 30px;">
-          <div class="col-md-4">
-            <span><b>Appeal Number - {{applItem.claimAppealNumber}}</b></span>
+          <div style="display: flex; justify-content: space-between;">
+            <div><b>Appeal Number - {{applItem.claimAppealNumber}}</b></div>
+            <div >
+              <button class="application-button" type="button" 
+              (click)="navigateToAppeal(applItem)" 
+              style="margin-left: 10px;">
+              Appeal Details
+            </button>
+            </div>
           </div>
 
           <div style="display: flex; margin:20px 30px 30px 0;">
@@ -303,6 +310,7 @@
             </div>
           </div>
         </div>
+        
         }
         <!-- END Claim Amountl Timeline -->
       </div>

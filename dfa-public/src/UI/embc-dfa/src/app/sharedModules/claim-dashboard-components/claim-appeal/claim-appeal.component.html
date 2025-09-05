@@ -40,6 +40,112 @@
         {{ index + 1 }}
     </ng-template>
   </mat-horizontal-stepper>
+<!-- Show this section on the view claims screen -->
+  <div style="padding-bottom:50px">
+    <mat-card>
+      <mat-card-content>
+        <div class="claim-details">
+          <div class="col-md-2">
+            <span><b>Appeal Number - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>Test 123</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Appeal submitted date - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>submitted date</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Appeal Adjustment </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>claims - adjustment amount</span>
+          </div>
+        </div>
+        <div class="claim-details">
+          <div class="col-md-2">
+            <span><b>Appeal Decision - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>Test 123</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Appeal Status - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>submitted date</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Eligible Payable </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{ claimMain?.claim.eligiblePayable | fixedCurrency:'CA$' }}</span>
+          </div>
+        </div>
+        <div class="claim-details">
+          <div class="col-md-2">
+            <span><b>Appeal Decision date- </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>Decision date</span>
+          </div>
+          <div class="col-md-2">
+            <span></span>
+          </div>
+          <div class="col-md-2">
+            <span></span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Paid Adjustment Amount </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{ claimMain?.claim.paidClaimAmount | fixedCurrency:'CA$' }}</span>
+          </div>
+        </div>
+        <div class="claim-details">
+          <div class="col-md-2">
+            <span><b>Appealed Claim Total- </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>Decision date</span>
+          </div>
+          <div class="col-md-2">
+            <span></span>
+          </div>
+          <div class="col-md-2">
+            <span></span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Adjustment Paid Date </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>claims - eligible payable</span>
+          </div>
+        </div>
+
+        <div class="claim-details" style="margin-top: 20px;">
+          <div class="col-md-12">
+            <div style="margin-bottom: 10px;">
+              <span><b>Decision Comments:</b></span>
+            </div>
+            <textarea
+              class="form-control"
+              placeholder="Enter decision comments here..."
+              rows="4"
+              style="width: 100%; resize: vertical; border: 1px solid #ccc; padding: 10px; border-radius: 4px;"
+              [disabled]="vieworedit === 'viewOnly'">
+            </textarea>
+
+            
+          </div>
+        </div>
+       
+      </mat-card-content>
+    </mat-card>
+    
+  </div>
 
   <div>
     <mat-card>

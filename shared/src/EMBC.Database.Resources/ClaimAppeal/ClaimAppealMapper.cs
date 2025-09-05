@@ -8,6 +8,7 @@ public class ClaimAppealMapper : Profile
 {
     public ClaimAppealMapper()
     {
+        // Get Claim Appeal
         CreateMap<DFA_ClaimAppeal, ClaimAppeal>()
           .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DFA_ClaimAppealId))
           .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => src.StateCode.HasValue ? (StateCode)(int)src.StateCode.Value : default))
@@ -17,15 +18,16 @@ public class ClaimAppealMapper : Profile
           .ForMember(dest => dest.ClaimId, opt => opt.MapFrom(src => src.DFA_OriginClaim != null ? src.DFA_OriginClaim.Id : Guid.Empty))
           .ForMember(dest => dest.DateAppealReceived , opts => opts.MapFrom(src => src.DFA_DateAppealReceived));
 
-
+        // Create Claim Appeal
         CreateMap<ClaimAppeal, DFA_ClaimAppeal>()
             .ForMember(dest => dest.DFA_OriginClaim, opt => opt.MapFrom(src => new EntityReference("dfa_projectclaim", Guid.Parse(src.ClaimId))))
             .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => (DFA_Appeal_StateCode)(int)src.StateCode))
             .ForMember(dest => dest.DFA_Name, opt => opt.MapFrom(src => src.ClaimAppealNumber))
             .ForMember(dest => dest.DFA_PortalNote, opt => opt.MapFrom(src => src.ClaimAppealPortalNotes))
             .ForMember(dest => dest.DFA_AppealDecision, opt => opt.MapFrom(src => src.AppealDecision)).ForMember(dest => dest.DFA_DateAppealReceived, opt => opt.MapFrom(src =>
-                 string.IsNullOrEmpty(src.DateAppealReceived) ? (DateTime?)null : DateTime.Parse(src.DateAppealReceived))); ;
+                 string.IsNullOrEmpty(src.DateAppealReceived) ? (DateTime?)null : DateTime.Parse(src.DateAppealReceived)));
 
+       
         CreateMap<ProcessStage, Stage>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.StageName));

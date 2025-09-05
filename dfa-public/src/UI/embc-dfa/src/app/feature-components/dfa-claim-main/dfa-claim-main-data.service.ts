@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { CacheService } from 'src/app/core/services/cache.service';
-import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { ApplicationService, AttachmentService, InvoiceService } from 'src/app/core/api/services';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { DfaClaimMain, FileUploadClaim, RecoveryClaim } from '../../core/model/dfa-claim-main.model';
 import { DfaInvoiceMain, Invoice } from '../../core/model/dfa-invoice.model';
 import { InvoiceExtended } from 'src/app/sharedModules/claim-dashboard-components/claim-decision/claim-decision.component';
@@ -34,6 +34,7 @@ export class DFAClaimMainDataService {
 
   constructor(
     private cacheService: CacheService,
+    private invoiceService: InvoiceService,
     private fileUploadsService: AttachmentService,
     private applicationService: ApplicationService
   ) {
@@ -200,7 +201,7 @@ export class DFAClaimMainDataService {
   public getEditStep(): string {
     return this._editstep;
   }
-  
+
   public setStage(stage: string): void {
     this._stage = stage;
   }
@@ -215,7 +216,7 @@ export class DFAClaimMainDataService {
     return this._claimDecision;
   }
 
-   public createDFAClaimMainDTO(): DfaClaimMain {
+  public createDFAClaimMainDTO(): DfaClaimMain {
     return {
       id: this._claimId,
       projectId: this._projectId,
@@ -229,6 +230,41 @@ export class DFAClaimMainDataService {
       claimId: this._claimId,
       invoice: this._invoice
     };
+  }
+
+  public getClaimInvoicesFromAPI(claimId: string): Observable<InvoiceExtended[]> {
+    return this.invoiceService.invoiceGetDfaInvoices({ claimId: claimId }).pipe(map((lstInv) => {
+        var lstInvoices = [];
+
+        lstInv.forEach((objInv) => {
+          lstInvoices.push({
+            invoiceId: objInv.invoiceId,
+            invoiceNumber: objInv.invoiceNumber,
+            vendorName: objInv.vendorName,
+            invoiceDate: new Date(objInv.invoiceDate),
+            isGoodsReceivedonInvoiceDate: objInv.isGoodsReceivedonInvoiceDate,
+            goodsReceivedDate: objInv.goodsReceivedDate
+              ? new Date(objInv.goodsReceivedDate)
+              : objInv.goodsReceivedDate,
+            purposeOfGoodsServiceReceived: objInv.purposeOfGoodsServiceReceived,
+            isClaimforPartofTotalInvoice: objInv.isClaimforPartofTotalInvoice,
+            reasonClaimingPartofTotalInvoice: objInv.reasonClaimingPartofTotalInvoice,
+            netInvoiceBeingClaimed: objInv.netInvoiceBeingClaimed,
+            pst: objInv.pst,
+            grossGST: objInv.grossGST,
+            actualInvoiceTotal: objInv.actualInvoiceTotal,
+            eligibleGST: objInv.eligibleGST,
+            totalBeingClaimed: objInv.totalBeingClaimed,
+            emcrDecision: objInv.emcrDecision,
+            emcrApprovedAmount: objInv.emcrApprovedAmount,
+            decisionDate: objInv.decisionDate ? new Date(objInv.decisionDate) : objInv.decisionDate,
+            emcrDecisionComments: objInv.emcrDecisionComments
+          });
+        });
+
+        return lstInvoices
+      }
+    ));
   }
 
   public setClaimInvoices(dfaClaimInvoices: InvoiceExtended[]): void {
@@ -245,5 +281,5 @@ export class DFAClaimMainDataService {
     }
     return this._dfaClaimInvoices;
   }
-  
+
 }

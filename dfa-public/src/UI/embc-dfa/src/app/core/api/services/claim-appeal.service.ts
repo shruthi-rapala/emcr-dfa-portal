@@ -15,6 +15,11 @@ import { claimAppealCreateClaimAppeal } from '../fn/claim-appeal/claim-appeal-cr
 import { ClaimAppealCreateClaimAppeal$Params } from '../fn/claim-appeal/claim-appeal-create-claim-appeal';
 import { claimAppealCreateInvoiceAppeal } from '../fn/claim-appeal/claim-appeal-create-invoice-appeal';
 import { ClaimAppealCreateInvoiceAppeal$Params } from '../fn/claim-appeal/claim-appeal-create-invoice-appeal';
+import { claimAppealGetClaimAppealById } from '../fn/claim-appeal/claim-appeal-get-claim-appeal-by-id';
+import { ClaimAppealGetClaimAppealById$Params } from '../fn/claim-appeal/claim-appeal-get-claim-appeal-by-id';
+import { claimAppealGetInvoiceAppealById } from '../fn/claim-appeal/claim-appeal-get-invoice-appeal-by-id';
+import { ClaimAppealGetInvoiceAppealById$Params } from '../fn/claim-appeal/claim-appeal-get-invoice-appeal-by-id';
+import { ClaimAppealModel } from '../models/claim-appeal-model';
 
 @Injectable({ providedIn: 'root' })
 export class ClaimAppealService extends BaseService {
@@ -85,6 +90,72 @@ export class ClaimAppealService extends BaseService {
   claimAppealCreateInvoiceAppeal(params: ClaimAppealCreateInvoiceAppeal$Params, context?: HttpContext): Observable<string> {
     return this.claimAppealCreateInvoiceAppeal$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `claimAppealGetClaimAppealById()` */
+  static readonly ClaimAppealGetClaimAppealByIdPath = '/api/claimappeals/{id}';
+
+  /**
+   * Get appeal details by ID.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `claimAppealGetClaimAppealById()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  claimAppealGetClaimAppealById$Response(params: ClaimAppealGetClaimAppealById$Params, context?: HttpContext): Observable<StrictHttpResponse<ClaimAppealModel>> {
+    return claimAppealGetClaimAppealById(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get appeal details by ID.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `claimAppealGetClaimAppealById$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  claimAppealGetClaimAppealById(params: ClaimAppealGetClaimAppealById$Params, context?: HttpContext): Observable<ClaimAppealModel> {
+    return this.claimAppealGetClaimAppealById$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ClaimAppealModel>): ClaimAppealModel => r.body)
+    );
+  }
+
+  /** Path part for operation `claimAppealGetInvoiceAppealById()` */
+  static readonly ClaimAppealGetInvoiceAppealByIdPath = '/api/claimappeals/{id}/invoiceAppeal';
+
+  /**
+   * Get invoice appeal details by ID.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `claimAppealGetInvoiceAppealById()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  claimAppealGetInvoiceAppealById$Response(params: ClaimAppealGetInvoiceAppealById$Params, context?: HttpContext): Observable<StrictHttpResponse<ClaimAppealModel>> {
+    return claimAppealGetInvoiceAppealById(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get invoice appeal details by ID.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `claimAppealGetInvoiceAppealById$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  claimAppealGetInvoiceAppealById(params: ClaimAppealGetInvoiceAppealById$Params, context?: HttpContext): Observable<ClaimAppealModel> {
+    return this.claimAppealGetInvoiceAppealById$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ClaimAppealModel>): ClaimAppealModel => r.body)
     );
   }
 
