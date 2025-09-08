@@ -124,6 +124,15 @@ export class ClaimAppealComponent implements OnInit {
     this.vieworedit = this.router.url.includes('view') ? 'view' : (this.router.url.includes('edit') ? 'edit' : 'new');
     this.appealId = this.route.snapshot.params['appealId'];
 
+    // subscribe to changes for document summary
+    const _claimAppealDocumentSummaryFormArray = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads');
+    _claimAppealDocumentSummaryFormArray.valueChanges
+      .pipe(
+        mapTo(_claimAppealDocumentSummaryFormArray.getRawValue())
+      ).subscribe(
+        _data => {
+          this.claimAppealDocumentSummaryDataSource.data = _claimAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
+        });
 
     if (this.appealId) {
       this.dfaClaimAppealDataService.setAppealId(this.appealId);
@@ -150,16 +159,6 @@ export class ClaimAppealComponent implements OnInit {
       .subscribe((fileUploads) => {
         this.fileUploadForm = fileUploads;
       });
-
-    // subscribe to changes for document summary
-    const _claimAppealDocumentSummaryFormArray = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads');
-    _claimAppealDocumentSummaryFormArray.valueChanges
-      .pipe(
-        mapTo(_claimAppealDocumentSummaryFormArray.getRawValue())
-      ).subscribe(
-        _data => {
-          this.claimAppealDocumentSummaryDataSource.data = _claimAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
-        });
 
     if (this.dfaClaimAppealDataService.getViewOrEdit() == 'viewOnly') {
       this.supportingDocumentsForm.disable();
@@ -215,9 +214,11 @@ export class ClaimAppealComponent implements OnInit {
   }
 
   public getFileUploadsForClaimAppeal(appealId: string) {
-
+    
+     console.log("call getFileUploadsForClaimAppeal", appealId)
     this.attachmentService.attachmentGetClaimAppealAttachments({ claimAppealId: this.appealId }).subscribe({
       next: (attachments) => {
+        console.log("getFileUploadsForClaimAppeal", attachments)
         // Filter out soft-deleted files
         const activeAttachments = attachments.filter(attachment => !attachment.deleteFlag);
 

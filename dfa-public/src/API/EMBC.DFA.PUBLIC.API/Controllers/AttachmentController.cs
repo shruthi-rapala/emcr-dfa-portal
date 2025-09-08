@@ -6,6 +6,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using EMBC.Database.Contract;
+using EMBC.Database.Resources;
 using EMBC.DFA.API.ConfigurationModule.Models.Dynamics;
 using EMBC.DFA.API.Services;
 using EMBC.DFA.PUBLIC.API.Controllers;
@@ -17,10 +19,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Namotion.Reflection;
 using Org.BouncyCastle.Asn1.Ocsp;
-using Microsoft.Extensions.Logging;
 using Pipelines.Sockets.Unofficial.Arenas;
 
 namespace EMBC.DFA.API.Controllers
@@ -34,6 +36,7 @@ namespace EMBC.DFA.API.Controllers
         private readonly IHostEnvironment env;
         private readonly IMapper mapper;
         private readonly IConfigurationHandler handler;
+        private readonly IDocumentUrlRepository documentUrlRepository;
 
         private readonly ILogger logger;
         // 2024-08-15 EMCRI-595 waynezen; BCeID Authentication
@@ -49,6 +52,7 @@ namespace EMBC.DFA.API.Controllers
             IHostEnvironment env,
             IMapper mapper,
             IConfigurationHandler handler,
+            IDocumentUrlRepository documentUrlRepository,
             IUserService userService,
             IS3Provider s3Provider,
             ILoggerFactory factory)
@@ -59,6 +63,7 @@ namespace EMBC.DFA.API.Controllers
             this.handler = handler;
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.s3Provider = s3Provider;
+            this.documentUrlRepository = documentUrlRepository;
             this.errorParser = new ErrorParser();
             logger = factory.CreateLogger<AttachmentController>();
         }
@@ -847,35 +852,35 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("byClaimAppealId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<FileUploadClaimAppeal>>> GetClaimAppealAttachments(
+        public ActionResult<IEnumerable<FileUploadClaimAppeal>> GetClaimAppealAttachments(
             [FromQuery]
             [Required]
             Guid claimAppealId)
         {
-            var useS3 = configuration.GetValue<bool>("FEATURE_USE_S3");
+            logger.LogInformation("ClaimAppealAttachment - GetClaimAppealAttachments");
 
-            if (useS3)
+            if (claimAppealId == Guid.Empty)
             {
-                IEnumerable<bcgov_documenturl> bcgovDocumentUrls = await handler.GetS3ProjectDocumentListAsync(claimAppealId);
-                IEnumerable<FileUploadClaimAppeal> fileUploads = new FileUploadClaimAppeal[] { };
-                if (bcgovDocumentUrls != null)
-                {
-                    foreach (bcgov_documenturl bcgovDocumentUrl in bcgovDocumentUrls)
-                    {
-                        FileUploadClaimAppeal fileUpload = mapper.Map<FileUploadClaimAppeal>(bcgovDocumentUrl);
-                        fileUploads = fileUploads.Append<FileUploadClaimAppeal>(fileUpload);
-                    }
-                    return Ok(fileUploads);
-                }
-                else
-                {
-                    return Ok(null);
-                }
+                return BadRequest("AppealId is required.");
             }
-            else
+
+            var result = documentUrlRepository.GetByClaimAppealId(claimAppealId);
+
+            if (result == null || !result.Any())
             {
-                return new FileUploadClaimAppeal[] { };
+                logger.LogInformation("No attachments found for appeal Id: {AppealId}", claimAppealId);
+                return Ok(Enumerable.Empty<FileUploadClaimAppeal>());
             }
+            IEnumerable<FileUploadClaimAppeal> fileUploads = [];
+
+            foreach (var documentUrl in result)
+            {
+                FileUploadClaimAppeal fileUpload = mapper.Map<FileUploadClaimAppeal>(documentUrl);
+                fileUploads = fileUploads.Append(fileUpload);
+            }
+
+            return Ok(fileUploads);
+
         }
 
     }
