@@ -245,6 +245,7 @@
             <mat-checkbox color="primary"
               (click)="$event.stopPropagation()"
               (change)="onAppealCheckboxChange(row.data)"
+              [disabled]="vieworedit === 'viewOnly' || vieworedit == 'view'"
               [checked]="selection.isSelected(row.data)">
             </mat-checkbox>
           </ng-container>
@@ -336,7 +337,7 @@
               matInput
               placeholder="Please enter appeal reason"
               [(ngModel)]="row.data.appealReason"
-              [disabled]="!selection.isSelected(row.data)"
+              [disabled]="!selection.isSelected(row.data)|| vieworedit === 'viewOnly' || vieworedit == 'view'"
               required
               (input)="row.data.reasonLength = $event.target.value.length"
               maxlength="1000"
@@ -496,7 +497,7 @@
   </table>
 
 
-  <div class="appeal-actions">
+  <div class="appeal-actions" *ngIf="vieworedit !== 'view'">
     <button
       id="cancel-appeal"
       class="button-s nextNsave"

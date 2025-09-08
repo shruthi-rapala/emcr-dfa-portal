@@ -121,6 +121,7 @@ export class ClaimAppealComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.router.url.includes('view') ? 'view' : (this.router.url.includes('edit') ? 'edit' : 'new');
     this.appealId = this.route.snapshot.params['appealId'];
 
 
@@ -129,7 +130,7 @@ export class ClaimAppealComponent implements OnInit {
       this.getFileUploadsForClaimAppeal(this.appealId);
     }
 
-    let claimId = this.dfaClaimMainDataService.getClaimId();
+    let claimId = this.route.snapshot.params['claimId'];
 
     if (claimId) {
       this.dfaClaimMainDataService.setClaimId(claimId);
@@ -173,6 +174,7 @@ export class ClaimAppealComponent implements OnInit {
 
     this.dfaClaimMainDataService.getClaimInvoicesFromAPI(claimId).subscribe({
       next: (invoices) => {
+        console.log('Invoices for Claim:', invoices);
         // Union invoice data + 'appealReason'
         const interleavedRows: TableRow[] = invoices.reduce<TableRow[]>((acc, invoice) => {
           acc.push({ type: 'invoice', data: invoice });
@@ -183,10 +185,33 @@ export class ClaimAppealComponent implements OnInit {
         this.claimDocumentSummaryDataSource.data = interleavedRows.filter(
           row => !(row.type === 'appealReason' && row.data.emcrDecision === 'Approved Total')
         );
+
+        // get InvoiceAppeal data and set appeal reason
+        invoices.map(invoice => {
+          this.dfaClaimAppealDataService.getInvoiceAppealByAppealId(this.appealId).subscribe({
+            next: (invoiceAppeals) => {
+              // Find the matching invoice appeal for this invoice
+              const matchingAppeal = Array.isArray(invoiceAppeals) ? invoiceAppeals.find(appeal =>
+                appeal.originInvoiceId === invoice.invoiceId
+              ) : null;
+
+              if (matchingAppeal) {
+                invoice.appealReason = matchingAppeal.invoiceDecisionComments;
+                // If in view mode, also select the invoice to show it was appealed
+                if (this.vieworedit === 'viewOnly' || this.vieworedit === 'view') {
+                  this.selection.select(invoice);
+                }
+                        // this.selection.select(invoice);
+              }
+
+              // Update the data source to reflect the changes
+              this.claimDocumentSummaryDataSource.data = [...this.claimDocumentSummaryDataSource.data];
+
+            }
+          });
+        })
       }
     });
-
-
   }
 
   public getFileUploadsForClaimAppeal(appealId: string) {

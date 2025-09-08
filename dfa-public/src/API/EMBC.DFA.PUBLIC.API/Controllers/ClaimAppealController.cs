@@ -117,7 +117,7 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
         [HttpGet("{id}/invoiceAppeal")]
         [ProducesResponseType(typeof(ClaimAppealModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetInvoiceAppealById(Guid id)
+        public ActionResult<IEnumerable<InvoiceAppeal>> GetInvoiceAppealById(Guid id)
         {
             // Use FirstOrDefault to get the invoice appeal by ID
             var appeal = claimAppealRepository.FirstOrDefault(a => a.Id == id);
@@ -125,9 +125,7 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
             if (appeal == null)
                 return NotFound();
 
-            var invoiceAppeals = invoiceAppealRepository.Where(ia => ia.ClaimAppealId == id.ToString());
-            // Map to ClaimAppealModel for response
-            //var invoiceAppealModel = mapper.Map<IEnumerable<InvoiceAppeal>>(invoiceAppeals);
+            var invoiceAppeals = invoiceAppealRepository.GetByAppealId(id);
 
             return Ok(invoiceAppeals);
         }
