@@ -40,110 +40,91 @@
         {{ index + 1 }}
     </ng-template>
   </mat-horizontal-stepper>
-<!-- Show this section on the view claims screen -->
-  <div style="padding-bottom:50px"  *ngIf="vieworedit === 'view'">
-    <mat-card>
-      <mat-card-content>
+
+<!-- Appeal details section on View Appeals -->
+<mat-card style="margin-top: 20px;" *ngIf="vieworedit === 'view'">
+  <mat-card-content>
+    <div class="row">
+      <div class="col-md-6">
         <div class="claim-details">
-          <div class="col-md-2">
+          <div class="col-md-6">
             <span><b>Appeal Number - </b></span>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-6">
             <span>{{appealData?.claimAppealNumber}}</span>
           </div>
-          <div class="col-md-2">
-            <span><b>Appeal submitted date - </b></span>
-          </div>
-          <div class="col-md-2">
-            <span>{{appealData?.dateAppealReceived  | date : "yyyy/MM/dd"}}</span>
-          </div>
-          <div class="col-md-2">
-            <span><b>Appeal Adjustment </b></span>
-          </div>
-          <div class="col-md-2">
-            <span>Adjustment Appeal</span>
-          </div>
         </div>
         <div class="claim-details">
-          <div class="col-md-2">
+          <div class="col-md-6">
+            <span><b>Appeal Submitted Date - </b></span>
+          </div>
+          <div class="col-md-6">
+            <span>{{appealData?.dateAppealReceived ? (appealData?.dateAppealReceived | date : "yyyy/MM/dd") : 'Pending'}}</span>
+          </div>
+        </div>
+        <div class="claim-details" >
+          <div class="col-md-6">
             <span><b>Appeal Decision - </b></span>
           </div>
-          <div class="col-md-2">
-            <span>{{appealData?.appealDecision  || 'Pending'}}</span>
-          </div>
-          <div class="col-md-2">
-            <span><b>Appeal Status - </b></span>
-          </div>
-          <div class="col-md-2">
-            <span>submitted date</span>
-          </div>
-          <div class="col-md-2">
-            <span><b>Eligible Payable </b></span>
-          </div>
-          <div class="col-md-2">
-            <span>{{ claimMain?.claim.eligiblePayable | fixedCurrency:'CA$' }}</span>
+          <div class="col-md-6">
+            <span>{{appealData?.appealDecision || 'Pending'}}</span>
           </div>
         </div>
         <div class="claim-details">
-          <div class="col-md-2">
-            <span><b>Appeal Decision date- </b></span>
+          <div class="col-md-6">
+            <span><b>Appeal Decision Date - </b></span>
           </div>
-          <div class="col-md-2">
-            <span>{{appealData?.appealDecisionDate | date : "yyyy/MM/dd"}}</span>
+          <div class="col-md-6">
+            <span>{{appealData?.appealDecisionDate ? (appealData?.appealDecisionDate | date : "yyyy/MM/dd") : 'Pending'}}</span>
           </div>
-          <div class="col-md-2">
-            <span></span>
+        </div>
+      </div>
+  <!-- Second Column: Claim Information -->
+      <div class="col-md-6">
+        <div class="claim-details">
+          <div class="col-md-6">
+            <span><b>Eligible Payable - </b></span>
           </div>
-          <div class="col-md-2">
-            <span></span>
+          <div class="col-md-6">
+            <span>{{ claimMain?.claim?.eligiblePayable | fixedCurrency:'CA$' }}</span>
           </div>
-          <div class="col-md-2">
-            <span><b>Paid Adjustment Amount </b></span>
+        </div>
+        <div class="claim-details">
+          <div class="col-md-6">
+            <span><b>Paid Adjustment Amount - </b></span>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-6">
             <span>{{ claimMain?.claim?.paidClaimAmount | fixedCurrency:'CA$' }}</span>
           </div>
         </div>
         <div class="claim-details">
-          <div class="col-md-2">
-            <span><b>Appealed Claim Total- </b></span>
+          <div class="col-md-6">
+            <span><b>Adjustment Paid Date - </b></span>
           </div>
-          <div class="col-md-2">
-            <span>{{claimMain?.claim?.claimTotal}}</span>
-          </div>
-          <div class="col-md-2">
-            <span></span>
-          </div>
-          <div class="col-md-2">
-            <span></span>
-          </div>
-          <div class="col-md-2">
-            <span><b>Adjustment Paid Date </b></span>
-          </div>
-          <div class="col-md-2">
-            <span>{{claimMain?.claim?.paidClaimDate | date : "yyyy/MM/dd"}}</span>
+          <div class="col-md-6">
+            <span>{{claimMain?.claim?.paidClaimDate ? (claimMain?.claim?.paidClaimDate | date : "yyyy/MM/dd") : 'Date Not Set'}}</span>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div class="claim-details" style="margin-top: 20px;">
-          <div class="col-md-12">
-            <div style="margin-bottom: 10px;">
-              <span><b>Decision Comments:</b></span>
-            </div>
-            <textarea
-              class="form-control"
-              rows="3"
-              style="width: 100%; resize: vertical; border: 1px solid #ccc; padding: 10px; border-radius: 4px;"
-              [value]="appealData?.appealDecisionReason"
-              [disabled]="vieworedit === 'viewOnly' || vieworedit == 'view'">
-            </textarea>
-          </div>
+    <div class="row" >
+      <div class="col-md-12">
+        <div style="margin-bottom: 10px;">
+          <span><b>Decision Comments:</b></span>
         </div>
-       
-      </mat-card-content>
-    </mat-card>
-    
-  </div>
+        <textarea
+          class="form-control"
+          rows="3"
+          style="width: 100%; resize: vertical; border: 1px solid #ccc; padding: 10px; border-radius: 4px;"
+          [value]="appealData?.appealDecisionReason"
+          [disabled]="vieworedit === 'viewOnly' || vieworedit == 'view'"
+          readonly>
+        </textarea>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
 
   <div  *ngIf="vieworedit !== 'view'">
     <mat-card>
