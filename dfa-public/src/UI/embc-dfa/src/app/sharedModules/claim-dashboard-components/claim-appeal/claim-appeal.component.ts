@@ -126,10 +126,10 @@ export class ClaimAppealComponent implements OnInit {
     this.appealId = this.route.snapshot.params['appealId'];
     let claimId = this.route.snapshot.params['claimId'];
 
-    // Load the claimdetails by ClaimID
-    if (claimId) {
-      this.getRecoveryClaim(claimId);
-    }
+      // Load the claimdetails by ClaimID
+      if (claimId) {
+        this.getRecoveryClaim(claimId);
+      }
 
     // subscribe to changes for document summary
     const _claimAppealDocumentSummaryFormArray = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads');
@@ -257,11 +257,8 @@ export class ClaimAppealComponent implements OnInit {
   }
 
   public getFileUploadsForClaimAppeal(appealId: string) {
-    
-     console.log("call getFileUploadsForClaimAppeal", appealId)
-    this.attachmentService.attachmentGetClaimAppealAttachments({ claimAppealId: this.appealId }).subscribe({
+    this.attachmentService.attachmentGetClaimAppealAttachments({  claimAppealId: this.appealId  }).subscribe({
       next: (attachments) => {
-        console.log("getFileUploadsForClaimAppeal", attachments)
         // Filter out soft-deleted files
         const activeAttachments = attachments.filter(attachment => !attachment.deleteFlag);
 
