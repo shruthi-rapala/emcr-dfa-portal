@@ -10,7 +10,7 @@ import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-a
 import { CurrentApplication, CurrentClaim, CurrentProject, StatusBar } from 'src/app/core/api/models';
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
-import { ClaimService } from '../../../core/api/services';
+import { ClaimAppealService, ClaimService } from '../../../core/api/services';
 import { Decision } from 'src/app/models/decision.enum';
 import {ClaimType} from 'src/app/models/claim-type.enum';
 
@@ -100,7 +100,8 @@ export class DfaDashClaimComponent implements OnInit {
     private dFAProjectMainDataService: DFAProjectMainDataService,
     private dfaClaimMainDataService: DFAClaimMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private claimAppealService : ClaimAppealService
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.apptype = this.route.snapshot.data["apptype"];
@@ -415,6 +416,18 @@ ViewLinkedClaim(linkedClaim:any): void {
     let endDate = new Date(endDateStr);
     endDate.setDate(endDate.getDate() + 60);  // add 60 days
     return Math.round((endDate.getTime() - new Date().getTime()) / oneDay);
+  }
+
+  navigateToAppeal(applItem: any): void {
+    console.log("Navigating to appeal for claim: ", applItem);
+    if (applItem.claimAppeals?.caseAppealId) {
+      // Navigate to existing view edit page with the retrieved appealId
+      this.router.navigate(['/claim', applItem.claimId, 'appeal', applItem?.claimAppeals?.caseAppealId, 'view']);
+      
+    } else {
+      console.log('No appeal found for this claim');
+      // Handle case where there's no appeal
+    }
   }
 
 }

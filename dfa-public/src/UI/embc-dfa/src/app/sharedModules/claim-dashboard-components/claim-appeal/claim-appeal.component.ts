@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { DfaClaimMain, FileCategoryAppeal, FileCategoryClaim, FileUploadClaimAppeal, RequiredDocumentTypeClaim } from 'src/app/core/api/models';
+import { ClaimAppeal, ClaimAppealModel, DfaClaimMain, FileCategoryAppeal, FileCategoryClaim, FileUploadClaimAppeal, RequiredDocumentTypeClaim } from 'src/app/core/api/models';
 import { CoreModule } from 'src/app/core/core.module';
 import { DFAClaimMainDataService } from 'src/app/feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { InvoiceExtended } from '../claim-decision/claim-decision.component';
@@ -16,7 +16,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormBuilder, Unty
 import { MatStepperModule } from '@angular/material/stepper';
 import { CancelConfirmationDialogComponent } from 'src/app/core/components/dialog-components/dfa-cancel-confirmation-dialog/dfa-cancel-confirmation-dialog.component';
 import { AttachmentService, ClaimAppealService } from 'src/app/core/api/services';
-import { MatSnackBar } from '@angular/material/snack-bar'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { mapTo, Subscription } from 'rxjs';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
@@ -77,6 +77,7 @@ export class ClaimAppealComponent implements OnInit {
   showOtherDocuments: boolean = false;
   vieworedit: string = "";
   appealId: string;
+  appealData: ClaimAppeal;
 
   constructor(
     attachmentComponent: DfaAttachmentComponent,
@@ -121,16 +122,47 @@ export class ClaimAppealComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.vieworedit = this.router.url.includes('view') ? 'view' : (this.router.url.includes('edit') ? 'edit' : 'new');
+    this.appealId = this.route.snapshot.params['appealId'];
+    let claimId = this.route.snapshot.params['claimId'];
 
-    this.route.params.subscribe((params: Params) => this.appealId = params['appealId']);
+    // subscribe to changes for document summary
+    const _claimAppealDocumentSummaryFormArray = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads');
+    _claimAppealDocumentSummaryFormArray.valueChanges
+      .pipe(
+        mapTo(_claimAppealDocumentSummaryFormArray.getRawValue())
+      ).subscribe(
+        _data => {
+          this.claimAppealDocumentSummaryDataSource.data = _claimAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
+        });
 
-    if(this.appealId) {
+
+    if (this.appealId) {
       this.dfaClaimAppealDataService.setAppealId(this.appealId);
+      
       this.getFileUploadsForClaimAppeal(this.appealId);
-    }
-
-    let claimId = this.dfaClaimMainDataService.getClaimId();
     
+      // Call the service to get the complete appeal details
+      this.claimAppealService.claimAppealGetClaimAppealById({ id: this.appealId }).subscribe({
+        next: (appealData) => {
+          if (appealData) {
+            // Store the complete appeal object
+            this.appealData = appealData;
+            
+            // If there's a claim ID in the appeal data, use it
+            if (appealData.claimId) {
+              claimId = appealData.claimId;
+              this.dfaClaimMainDataService.setClaimId(claimId);
+            }            
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching complete appeal data:', error);
+        }
+      });
+    }
+  
+
     if (claimId) {
       this.dfaClaimMainDataService.setClaimId(claimId);
     }
@@ -150,16 +182,6 @@ export class ClaimAppealComponent implements OnInit {
         this.fileUploadForm = fileUploads;
       });
 
-    // subscribe to changes for document summary
-    const _claimAppealDocumentSummaryFormArray = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads');
-    _claimAppealDocumentSummaryFormArray.valueChanges
-      .pipe(
-        mapTo(_claimAppealDocumentSummaryFormArray.getRawValue())
-    ).subscribe(
-      _data =>  {
-        this.claimAppealDocumentSummaryDataSource.data = _claimAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
-    });
-
     if (this.dfaClaimAppealDataService.getViewOrEdit() == 'viewOnly') {
       this.supportingDocumentsForm.disable();
       this.fileUploadForm.disable();
@@ -170,24 +192,55 @@ export class ClaimAppealComponent implements OnInit {
     }
 
     this.claimMain = this.dfaClaimMainDataService.getDFAProjectMain() ?? null;
-    const invoices = this.dfaClaimMainDataService.getClaimInvoices() ?? [];
 
-    // Union invoice data + 'appealReason'
-    const interleavedRows: TableRow[] = invoices.reduce<TableRow[]>((acc, invoice) => {
-      acc.push({ type: 'invoice', data: invoice });
-      acc.push({ type: 'appealReason', data: invoice });
-      return acc;
-    }, []);
+    this.dfaClaimMainDataService.getClaimInvoicesFromAPI(claimId).subscribe({
+      next: (invoices) => {
+        console.log('Invoices for Claim:', invoices);
+        // Union invoice data + 'appealReason'
+        const interleavedRows: TableRow[] = invoices.reduce<TableRow[]>((acc, invoice) => {
+          acc.push({ type: 'invoice', data: invoice });
+          acc.push({ type: 'appealReason', data: invoice });
+          return acc;
+        }, []);
 
-    this.claimDocumentSummaryDataSource.data = interleavedRows.filter(
-      row => !(row.type === 'appealReason' && row.data.emcrDecision === 'Approved Total')
-    );
+        this.claimDocumentSummaryDataSource.data = interleavedRows.filter(
+          row => !(row.type === 'appealReason' && row.data.emcrDecision === 'Approved Total')
+        );
+
+        // get InvoiceAppeal data and set appeal reason
+        invoices.map(invoice => {
+          this.dfaClaimAppealDataService.getInvoiceAppealByAppealId(this.appealId).subscribe({
+            next: (invoiceAppeals) => {
+              // Find the matching invoice appeal for this invoice
+              const matchingAppeal = Array.isArray(invoiceAppeals) ? invoiceAppeals.find(appeal =>
+                appeal.originInvoiceId === invoice.invoiceId
+              ) : null;
+
+              if (matchingAppeal) {
+                invoice.appealReason = matchingAppeal.invoiceDecisionComments;
+                // If in view mode, also select the invoice to show it was appealed
+                if (this.vieworedit === 'viewOnly' || this.vieworedit === 'view') {
+                  this.selection.select(invoice);
+                }
+                        // this.selection.select(invoice);
+              }
+
+              // Update the data source to reflect the changes
+              this.claimDocumentSummaryDataSource.data = [...this.claimDocumentSummaryDataSource.data];
+
+            }
+          });
+        })
+      }
+    });
   }
 
   public getFileUploadsForClaimAppeal(appealId: string) {
-
-    this.attachmentService.attachmentGetClaimAppealAttachments({claimAppealId: this.appealId}).subscribe({
+    
+     console.log("call getFileUploadsForClaimAppeal", appealId)
+    this.attachmentService.attachmentGetClaimAppealAttachments({ claimAppealId: this.appealId }).subscribe({
       next: (attachments) => {
+        console.log("getFileUploadsForClaimAppeal", attachments)
         // Filter out soft-deleted files
         const activeAttachments = attachments.filter(attachment => !attachment.deleteFlag);
 
@@ -214,19 +267,19 @@ export class ClaimAppealComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
   }
-  
+
   saveSupportingFiles(fileUpload: FileUploadClaimAppeal): void {
-      // dont allow same filename twice
-      let fileUploads = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value;
-      if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
-        this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
-        this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('supportingFilesFileUpload').reset();
-        return;
-      }
+    // dont allow same filename twice
+    let fileUploads = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value;
+    if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
+      this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
+      this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('supportingFilesFileUpload').reset();
+      return;
+    }
 
     if (this.fileUploadForm.get('supportingFilesFileUpload').status === 'VALID') {
       this.isLoading = true;
@@ -239,7 +292,7 @@ export class ClaimAppealComponent implements OnInit {
         next: (fileUploadId) => {
           fileUpload.id = fileUploadId;
           if (fileUploads) fileUploads.push(fileUpload);
-          else fileUploads = [ fileUpload ];
+          else fileUploads = [fileUpload];
           this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').setValue(fileUploads);
           this.showSupportingFileForm = !this.showSupportingFileForm;
           // Reset Form feilds
@@ -426,8 +479,8 @@ export class ClaimAppealComponent implements OnInit {
     }).subscribe({
       next: (response) => {
         console.log('Appeal submitted successfully:', response);
-         // Show success snackbar
-         this._snackBar.open(
+        // Show success snackbar
+        this._snackBar.open(
           'Appeal submitted successfully!',
           'Close',
           {
@@ -436,7 +489,7 @@ export class ClaimAppealComponent implements OnInit {
             duration: 5000
           }
         );
-       // this.router.navigate(['/app-claim-decision/' + this.dfaClaimMainDataService.getClaimId()]);
+        // this.router.navigate(['/app-claim-decision/' + this.dfaClaimMainDataService.getClaimId()]);
         const projId = this.dfaClaimMainDataService.getProjectId();
         this.router.navigate(['/dfa-project/' + projId + '/claims']);
       },

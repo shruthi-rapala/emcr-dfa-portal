@@ -40,8 +40,112 @@
         {{ index + 1 }}
     </ng-template>
   </mat-horizontal-stepper>
+<!-- Show this section on the view claims screen -->
+  <div style="padding-bottom:50px"  *ngIf="vieworedit === 'view'">
+    <mat-card>
+      <mat-card-content>
+        <div class="claim-details">
+          <div class="col-md-2">
+            <span><b>Appeal Number - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{appealData?.claimAppealNumber}}</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Appeal submitted date - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{appealData?.dateAppealReceived  | date : "yyyy/MM/dd"}}</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Appeal Adjustment </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>Adjustment Appeal</span>
+          </div>
+        </div>
+        <div class="claim-details">
+          <div class="col-md-2">
+            <span><b>Appeal Decision - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{appealData?.appealDecision  || 'Pending'}}</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Appeal Status - </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>submitted date</span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Eligible Payable </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{ claimMain?.claim.eligiblePayable | fixedCurrency:'CA$' }}</span>
+          </div>
+        </div>
+        <div class="claim-details">
+          <div class="col-md-2">
+            <span><b>Appeal Decision date- </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{appealData?.appealDecisionDate | date : "yyyy/MM/dd"}}</span>
+          </div>
+          <div class="col-md-2">
+            <span></span>
+          </div>
+          <div class="col-md-2">
+            <span></span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Paid Adjustment Amount </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{ claimMain?.claim?.paidClaimAmount | fixedCurrency:'CA$' }}</span>
+          </div>
+        </div>
+        <div class="claim-details">
+          <div class="col-md-2">
+            <span><b>Appealed Claim Total- </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{claimMain?.claim?.claimTotal}}</span>
+          </div>
+          <div class="col-md-2">
+            <span></span>
+          </div>
+          <div class="col-md-2">
+            <span></span>
+          </div>
+          <div class="col-md-2">
+            <span><b>Adjustment Paid Date </b></span>
+          </div>
+          <div class="col-md-2">
+            <span>{{claimMain?.claim?.paidClaimDate | date : "yyyy/MM/dd"}}</span>
+          </div>
+        </div>
 
-  <div>
+        <div class="claim-details" style="margin-top: 20px;">
+          <div class="col-md-12">
+            <div style="margin-bottom: 10px;">
+              <span><b>Decision Comments:</b></span>
+            </div>
+            <textarea
+              class="form-control"
+              rows="3"
+              style="width: 100%; resize: vertical; border: 1px solid #ccc; padding: 10px; border-radius: 4px;"
+              [value]="appealData?.appealDecisionReason"
+              [disabled]="vieworedit === 'viewOnly' || vieworedit == 'view'">
+            </textarea>
+          </div>
+        </div>
+       
+      </mat-card-content>
+    </mat-card>
+    
+  </div>
+
+  <div  *ngIf="vieworedit !== 'view'">
     <mat-card>
       <mat-card-content>
         <div style="border-bottom: 1px solid lightgrey; padding-bottom: 15px; display: flex">
@@ -139,6 +243,7 @@
             <mat-checkbox color="primary"
               (click)="$event.stopPropagation()"
               (change)="onAppealCheckboxChange(row.data)"
+              [disabled]="vieworedit === 'viewOnly' || vieworedit == 'view'"
               [checked]="selection.isSelected(row.data)">
             </mat-checkbox>
           </ng-container>
@@ -230,7 +335,7 @@
               matInput
               placeholder="Please enter appeal reason"
               [(ngModel)]="row.data.appealReason"
-              [disabled]="!selection.isSelected(row.data)"
+              [disabled]="!selection.isSelected(row.data)|| vieworedit === 'viewOnly' || vieworedit == 'view'"
               required
               (input)="row.data.reasonLength = $event.target.value.length"
               maxlength="1000"
@@ -290,7 +395,7 @@
   </div>
 
 
-  <ng-container  *ngIf="vieworedit !== 'viewOnly'"> <!-- Supporting Documents -->
+  <ng-container> <!-- Supporting Documents -->
     <div class="row">
       <div class="col-md-8">
         <app-dfa-attachment
@@ -371,12 +476,12 @@
     </ng-container>
 
     <!-- Delete Icon Column -->
-    <ng-container matColumnDef="icons" style="width:25%">
+    <ng-container matColumnDef="icons" style="width:25%" >
       <th mat-header-cell *matHeaderCellDef>
         &nbsp;
       </th>
       <td *matCellDef="let element; let index = index" mat-cell>
-        <button *ngIf="!isReadOnly" class="delete-image" mat-icon-button aria-label="Remove"
+        <button *ngIf="vieworedit !== 'view'" class="delete-image" mat-icon-button aria-label="Remove"
           (click)="confirmDeleteDocumentSummaryRow(element)">
           <img src="/assets/images/delete.svg" height="35" width="35" />
         </button>
@@ -389,8 +494,9 @@
 
   </table>
 
+  <br />
 
-  <div class="appeal-actions">
+  <div class="appeal-actions" *ngIf="vieworedit !== 'view'">
     <button
       id="cancel-appeal"
       class="button-s nextNsave"

@@ -9,6 +9,8 @@ namespace EMBC.Database.Resources;
 public interface IInvoiceAppealRepository : IBaseRepository<InvoiceAppeal>
 {
     InvoiceAppealWorkFlow GetWorkflow(InvoiceAppealQuery query);
+
+    IEnumerable<InvoiceAppeal> GetByAppealId(Guid appealId);
 }
 
 public class InvoiceAppealRepository : BaseRepository<DFA_InvoiceAppeal, InvoiceAppeal>, IInvoiceAppealRepository
@@ -25,6 +27,15 @@ public class InvoiceAppealRepository : BaseRepository<DFA_InvoiceAppeal, Invoice
         // TODO # Implemet the query to get the claim stages
         return null;
 
+    }
+
+    public IEnumerable<InvoiceAppeal> GetByAppealId(Guid appealId)
+    {
+        return _databaseContext
+            .DFA_InvoiceAppealSet
+            .Where(query => query.DFA_ClaimAppeal != null && query.DFA_ClaimAppeal.Id == appealId)
+            .Select(result => _mapper.Map<InvoiceAppeal>(result))
+            .ToList();
     }
 
 }

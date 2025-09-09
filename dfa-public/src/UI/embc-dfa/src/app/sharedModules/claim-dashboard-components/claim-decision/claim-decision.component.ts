@@ -117,36 +117,9 @@ export class ClaimDecisionComponent implements OnInit {
 
   getRecoveryInvoices(claimId: string) {
     if (claimId) {
-      this.invoiceService.invoiceGetDfaInvoices({ claimId: claimId }).subscribe({
-        next: (lstInv) => {
-          var lstInvoices = [];
-
-          lstInv.forEach((objInv) => {
-            lstInvoices.push({
-              invoiceId: objInv.invoiceId,
-              invoiceNumber: objInv.invoiceNumber,
-              vendorName: objInv.vendorName,
-              invoiceDate: new Date(objInv.invoiceDate),
-              isGoodsReceivedonInvoiceDate: objInv.isGoodsReceivedonInvoiceDate,
-              goodsReceivedDate: objInv.goodsReceivedDate
-                ? new Date(objInv.goodsReceivedDate)
-                : objInv.goodsReceivedDate,
-              purposeOfGoodsServiceReceived: objInv.purposeOfGoodsServiceReceived,
-              isClaimforPartofTotalInvoice: objInv.isClaimforPartofTotalInvoice,
-              reasonClaimingPartofTotalInvoice: objInv.reasonClaimingPartofTotalInvoice,
-              netInvoiceBeingClaimed: objInv.netInvoiceBeingClaimed,
-              pst: objInv.pst,
-              grossGST: objInv.grossGST,
-              actualInvoiceTotal: objInv.actualInvoiceTotal,
-              eligibleGST: objInv.eligibleGST,
-              totalBeingClaimed: objInv.totalBeingClaimed,
-              emcrDecision: objInv.emcrDecision,
-              emcrApprovedAmount: objInv.emcrApprovedAmount,
-              decisionDate: objInv.decisionDate ? new Date(objInv.decisionDate) : objInv.decisionDate,
-              emcrDecisionComments: objInv.emcrDecisionComments
-            });
-          });
-
+      this.dfaClaimMainDataService.getClaimInvoicesFromAPI(claimId).subscribe({
+        next: (lstInvoices) => {
+          
           this.documentSummaryDataSource.data = lstInvoices;
           this.documentSummaryDataSourceFiltered.data = this.documentSummaryDataSource.data;
           this.invoicesCount = this.documentSummaryDataSource.data.length;

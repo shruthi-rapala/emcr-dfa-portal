@@ -9,6 +9,7 @@ namespace EMBC.Database.Resources
             CreateMap<DFA_InvoiceAppeal, InvoiceAppeal>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DFA_InvoiceAppealId))
                 .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => src.StateCode.HasValue ? (StateCode)(int)src.StateCode.Value : default))
+                 .ForMember(dest => dest.ClaimAppealId, opt => opt.MapFrom(src => src.DFA_ClaimAppeal != null ? src.DFA_ClaimAppeal.Id.ToString() : string.Empty))
                 .ForMember(dest => dest.OriginInvoiceId, opt => opt.MapFrom(src => src.DFA_OriginInvoice != null ? src.DFA_OriginInvoice.Id : Guid.Empty))
                 .ForMember(dest => dest.InvoiceDecisionComments, opts => opts.MapFrom(src => src.DFA_AppealReason));
 

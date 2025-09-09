@@ -2,6 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { FileUploadClaimAppeal } from 'src/app/core/api/models';
 import { AppealType, DfaAppeal } from '../../core/model/dfa-appeals-main.model';
 import { CacheService } from '../../core/services/cache.service';
+import { ClaimAppealService } from 'src/app/core/api/services';
 
 @Injectable({ providedIn: 'root' })
 export class DFAClaimAppealDataService {
@@ -17,7 +18,7 @@ export class DFAClaimAppealDataService {
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
   public changeDisableFileUpload: EventEmitter<string> = new EventEmitter<string>();
   
-  constructor(private cacheService: CacheService) {}
+  constructor(private cacheService: CacheService, private claimAppealService : ClaimAppealService) {}
 
   public get dfaAppeal(): DfaAppeal {
     return this._dfaAppeal;
@@ -108,6 +109,11 @@ export class DFAClaimAppealDataService {
   }
 
   public clearAppealData(): void {
+  }
+
+  
+  public getInvoiceAppealByAppealId(claimId: string) {
+    return this.claimAppealService.claimAppealGetInvoiceAppealById({ id: claimId });
   }
 
 }
