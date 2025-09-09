@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { DfaClaimMain, FileCategoryAppeal, FileCategoryClaim, FileUploadClaimAppeal, RequiredDocumentTypeClaim } from 'src/app/core/api/models';
+import { ClaimAppeal, ClaimAppealModel, DfaClaimMain, FileCategoryAppeal, FileCategoryClaim, FileUploadClaimAppeal, RequiredDocumentTypeClaim } from 'src/app/core/api/models';
 import { CoreModule } from 'src/app/core/core.module';
 import { DFAClaimMainDataService } from 'src/app/feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { InvoiceExtended } from '../claim-decision/claim-decision.component';
@@ -77,6 +77,7 @@ export class ClaimAppealComponent implements OnInit {
   showOtherDocuments: boolean = false;
   vieworedit: string = "";
   appealId: string;
+  appealData: ClaimAppeal;
 
   constructor(
     attachmentComponent: DfaAttachmentComponent,
@@ -123,6 +124,7 @@ export class ClaimAppealComponent implements OnInit {
   ngOnInit(): void {
     this.vieworedit = this.router.url.includes('view') ? 'view' : (this.router.url.includes('edit') ? 'edit' : 'new');
     this.appealId = this.route.snapshot.params['appealId'];
+    let claimId = this.route.snapshot.params['claimId'];
 
     // subscribe to changes for document summary
     const _claimAppealDocumentSummaryFormArray = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads');
@@ -134,12 +136,32 @@ export class ClaimAppealComponent implements OnInit {
           this.claimAppealDocumentSummaryDataSource.data = _claimAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
         });
 
+
     if (this.appealId) {
       this.dfaClaimAppealDataService.setAppealId(this.appealId);
+      
       this.getFileUploadsForClaimAppeal(this.appealId);
+    
+      // Call the service to get the complete appeal details
+      this.claimAppealService.claimAppealGetClaimAppealById({ id: this.appealId }).subscribe({
+        next: (appealData) => {
+          if (appealData) {
+            // Store the complete appeal object
+            this.appealData = appealData;
+            
+            // If there's a claim ID in the appeal data, use it
+            if (appealData.claimId) {
+              claimId = appealData.claimId;
+              this.dfaClaimMainDataService.setClaimId(claimId);
+            }            
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching complete appeal data:', error);
+        }
+      });
     }
-
-    let claimId = this.route.snapshot.params['claimId'];
+  
 
     if (claimId) {
       this.dfaClaimMainDataService.setClaimId(claimId);

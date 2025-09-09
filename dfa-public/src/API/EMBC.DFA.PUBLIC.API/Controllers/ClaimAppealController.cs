@@ -93,9 +93,9 @@ namespace EMBC.DFA.PUBLIC.API.Controllers
         /// <param name="id">Appeal ID</param>
         /// <returns>ClaimAppeal details</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ClaimAppealModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ClaimAppeal), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetClaimAppealById(Guid id)
+        public ActionResult<ClaimAppeal> GetClaimAppealById(Guid id)
         {
             // Use FirstOrDefault to get the appeal by ID
             var appeal = claimAppealRepository.FirstOrDefault(a => a.Id == id);

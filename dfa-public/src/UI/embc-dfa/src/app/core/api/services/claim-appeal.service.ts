@@ -11,6 +11,7 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { ClaimAppeal } from '../models/claim-appeal';
 import { claimAppealCreateClaimAppeal } from '../fn/claim-appeal/claim-appeal-create-claim-appeal';
 import { ClaimAppealCreateClaimAppeal$Params } from '../fn/claim-appeal/claim-appeal-create-claim-appeal';
 import { claimAppealCreateInvoiceAppeal } from '../fn/claim-appeal/claim-appeal-create-invoice-appeal';
@@ -106,7 +107,7 @@ export class ClaimAppealService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  claimAppealGetClaimAppealById$Response(params: ClaimAppealGetClaimAppealById$Params, context?: HttpContext): Observable<StrictHttpResponse<ClaimAppealModel>> {
+  claimAppealGetClaimAppealById$Response(params: ClaimAppealGetClaimAppealById$Params, context?: HttpContext): Observable<StrictHttpResponse<ClaimAppeal>> {
     return claimAppealGetClaimAppealById(this.http, this.rootUrl, params, context);
   }
 
@@ -120,9 +121,9 @@ export class ClaimAppealService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  claimAppealGetClaimAppealById(params: ClaimAppealGetClaimAppealById$Params, context?: HttpContext): Observable<ClaimAppealModel> {
+  claimAppealGetClaimAppealById(params: ClaimAppealGetClaimAppealById$Params, context?: HttpContext): Observable<ClaimAppeal> {
     return this.claimAppealGetClaimAppealById$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ClaimAppealModel>): ClaimAppealModel => r.body)
+      map((r: StrictHttpResponse<ClaimAppeal>): ClaimAppeal => r.body)
     );
   }
 

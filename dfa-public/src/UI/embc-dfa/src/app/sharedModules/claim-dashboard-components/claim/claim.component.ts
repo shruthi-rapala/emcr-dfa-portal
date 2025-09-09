@@ -421,19 +421,9 @@ ViewLinkedClaim(linkedClaim:any): void {
   navigateToAppeal(applItem: any): void {
     console.log("Navigating to appeal for claim: ", applItem);
     if (applItem.claimAppeals?.caseAppealId) {
-      // Call the service to get the appeal details
-      this.claimAppealService.claimAppealGetClaimAppealById({ id: applItem?.claimAppeals?.caseAppealId }).subscribe({
-        next: (appealData) => {
-          if (appealData && appealData.claimId) {
-            // Navigate to existing view edit page with the retrieved appealId
-            this.router.navigate(['/claim', applItem.claimId, 'appeal', applItem?.claimAppeals?.caseAppealId, 'view']);
-          }
-        },
-        error: (error) => {
-          console.error('Error fetching appeal data:', error);
-          // Handle error - maybe show a notification or fallback navigation
-        }
-      });
+      // Navigate to existing view edit page with the retrieved appealId
+      this.router.navigate(['/claim', applItem.claimId, 'appeal', applItem?.claimAppeals?.caseAppealId, 'view']);
+      
     } else {
       console.log('No appeal found for this claim');
       // Handle case where there's no appeal

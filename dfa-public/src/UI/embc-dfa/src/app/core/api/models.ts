@@ -18,6 +18,8 @@ export type { BCeIdBusiness } from './models/b-ce-id-business';
 export type { BceidUserData } from './models/bceid-user-data';
 export type { CaptchaConfiguration } from './models/captcha-configuration';
 export type { ClaimAmountAppeal } from './models/claim-amount-appeal';
+export type { ClaimAppeal } from './models/claim-appeal';
+export { ClaimAppealDecision } from './models/claim-appeal-decision';
 export type { ClaimAppealModel } from './models/claim-appeal-model';
 export { ClaimStageOptionSet } from './models/claim-stage-option-set';
 export type { ClaimStatusBar } from './models/claim-status-bar';

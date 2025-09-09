@@ -8,7 +8,7 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ClaimAppealModel } from '../../models/claim-appeal-model';
+import { ClaimAppeal } from '../../models/claim-appeal';
 
 export interface ClaimAppealGetClaimAppealById$Params {
 
@@ -18,7 +18,7 @@ export interface ClaimAppealGetClaimAppealById$Params {
   id: string;
 }
 
-export function claimAppealGetClaimAppealById(http: HttpClient, rootUrl: string, params: ClaimAppealGetClaimAppealById$Params, context?: HttpContext): Observable<StrictHttpResponse<ClaimAppealModel>> {
+export function claimAppealGetClaimAppealById(http: HttpClient, rootUrl: string, params: ClaimAppealGetClaimAppealById$Params, context?: HttpContext): Observable<StrictHttpResponse<ClaimAppeal>> {
   const rb = new RequestBuilder(rootUrl, claimAppealGetClaimAppealById.PATH, 'get');
   if (params) {
     rb.path('id', params.id, {});
@@ -29,7 +29,7 @@ export function claimAppealGetClaimAppealById(http: HttpClient, rootUrl: string,
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ClaimAppealModel>;
+      return r as StrictHttpResponse<ClaimAppeal>;
     })
   );
 }
