@@ -15,7 +15,7 @@ import InvoiceComponent from '../../forms/dfa-claim-main-forms/invoice/invoice.c
 import { FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CancelConfirmationDialogComponent } from 'src/app/core/components/dialog-components/dfa-cancel-confirmation-dialog/dfa-cancel-confirmation-dialog.component';
-import { AttachmentService, ClaimAppealService } from 'src/app/core/api/services';
+import { AttachmentService, ClaimAppealService, ClaimService } from 'src/app/core/api/services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mapTo, Subscription } from 'rxjs';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
@@ -39,7 +39,6 @@ type TableRow =
 })
 export class ClaimAppealComponent implements OnInit {
   claimMain: DfaClaimMain | null = null;
-
   claimDocumentSummaryColumnsToDisplay = ['appealCheckbox', 'invoiceNumber', 'vendorName', 'invoiceDate', 'invoiceAmount', 'approvedAmount', 'paidAmount', 'appealAdjustment', 'viewInvoice'];
   appealReasonColumnsToDisplay = ['appealReasonCheckboxPlaceholder', 'appealReason'];
   claimDocumentSummaryDataSource = new MatTableDataSource<TableRow>();
@@ -89,7 +88,8 @@ export class ClaimAppealComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     public claimAppealService: ClaimAppealService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private claimService : ClaimService
   ) {
     this.attachmentComponent = attachmentComponent;
 
@@ -125,6 +125,11 @@ export class ClaimAppealComponent implements OnInit {
     this.vieworedit = this.router.url.includes('view') ? 'view' : (this.router.url.includes('edit') ? 'edit' : 'new');
     this.appealId = this.route.snapshot.params['appealId'];
     let claimId = this.route.snapshot.params['claimId'];
+
+    // Load the claimdetails by ClaimID
+    if (claimId) {
+      this.getRecoveryClaim(claimId);
+    }
 
     // subscribe to changes for document summary
     const _claimAppealDocumentSummaryFormArray = this.attachmentComponent.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads');
@@ -233,6 +238,22 @@ export class ClaimAppealComponent implements OnInit {
         })
       }
     });
+  }
+
+  getRecoveryClaim(claimId: string) {
+    if (claimId) {
+      this.claimService.claimGetClaimMain({ claimId: claimId }).subscribe({
+        next: (dfaClaimMain) => {
+          this.claimMain = dfaClaimMain;
+
+          this.dfaClaimMainDataService.setDFAClaimMain(dfaClaimMain);
+
+          //this.dfaClaimMainMapping.mapDFAClaimMain(dfaClaimMain);
+          console.log('Recovery Claim:', this.claimMain);
+        },
+        error: (_error) => { }
+      });
+    }
   }
 
   public getFileUploadsForClaimAppeal(appealId: string) {

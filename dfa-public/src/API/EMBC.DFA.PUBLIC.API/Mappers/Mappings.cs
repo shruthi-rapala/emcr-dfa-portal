@@ -875,7 +875,7 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.dateFileClosed, opts => opts.MapFrom(s => s.dfa_bpfclosedate))
                 .ForMember(d => d.claimPortalNote, opts => opts.MapFrom(s => s.dfa_portalnote))
                 .ForMember(d => d.claimAppealDecision, opts => opts.MapFrom(s => s.dfa_appealdecision))
-                .ForMember(d => d.claimAppealNumber, opts => opts.MapFrom(s => s.dfa_portalnote))
+                .ForMember(d => d.claimAppealNumber, opts => opts.MapFrom(s => s.claimAppealNumber))
                 .ForMember(d => d.claimAppeals, opts => opts.MapFrom(s => s.dfa_claimappeal));
 
             //Mapping from AppealModel (API Model) to Appeal (DTO API Layer)
