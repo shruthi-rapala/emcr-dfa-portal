@@ -40,7 +40,7 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   @Output() saveFileUpload = (this.isClaim ? new EventEmitter<FileUploadClaim>() : new EventEmitter <FileUpload>());
   @Output() cancelFileUpload = new EventEmitter<any>();
   formBuilder: UntypedFormBuilder;
-  fileUploadsForm: UntypedFormGroup;
+  @Input() fileUploadsForm: UntypedFormGroup;
   fileUploadsForm$: Subscription;
   formCreationService: FormCreationService;
   showFileUpload: boolean = false;
@@ -70,7 +70,15 @@ export class DfaAttachmentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.FileCategories = this.isClaim ? FileCategoryClaim : this.isAmendment ? FileCategoryAmendment : this.isAppeal ? FileCategoryAppeal : FileCategory;
     this.RequiredDocumentTypes = this.isClaim ? RequiredDocumentTypeClaim : this.isAmendment ? null : RequiredDocumentType;
-    if (this.isClaim) {
+    
+    if (this.fileUploadsForm) {
+      console.log(this.fileUploadsForm);
+      this.fileUpload = this.fileUploadsForm.get('supportingFilesFileUpload') as UntypedFormGroup;
+      this.initFileUploadForm();
+
+      console.log(this.fileUpload);
+    }
+    else if (this.isClaim) {
       this.fileUploadsForm$ = this.formCreationService
         .getClaimFileUploadsForm()
         .subscribe((fileUploads) => {

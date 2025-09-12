@@ -385,7 +385,8 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [RequestSizeLimit(MAXFILESIZE)]
-        public async Task<ActionResult<string>> UpsertProjectAppealAttachment(FileUploadProjectAppeal fileUpload)
+
+        public async Task<ActionResult<string>> UpsertDeleteProjectAppealAttachment(FileUploadProjectAppeal fileUpload)
         {
             if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
             if (fileUpload.id == null && fileUpload.deleteFlag == true) return BadRequest("FileUpload id cannot be empty on delete");
@@ -440,31 +441,31 @@ namespace EMBC.DFA.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Delete a project appeal attachment.
-        /// </summary>
-        /// <param name="id">The attachment id</param>
-        /// <returns>file upload id</returns>
-        [HttpDelete("projectAppealDocument")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<string>> DeleteProjectAppealAttachment(Guid id)
-        {
-            // TODO: Finalize this function.
-            await Task.Delay(100);
-            return Ok("WIP: DeleteProjectAppealAttachment");
+        ///// <summary>
+        ///// Delete a project appeal attachment.
+        ///// </summary>
+        ///// <param name="id">The attachment id</param>
+        ///// <returns>file upload id</returns>
+        //[HttpDelete("projectAppealDocument")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<ActionResult<string>> DeleteProjectAppealAttachment(Guid id)
+        //{
+        //    // TODO: Finalize this function.
+        //    await Task.Delay(100);
+        //    return Ok("WIP: DeleteProjectAppealAttachment");
 
-            /*
-            var useS3 = configuration.GetValue<bool>("FEATURE_USE_S3");
-            if (useS3)
-            {
-                return await DeleteProjectAppealS3Attachment(id);
-            }
+        //    /*
+        //    var useS3 = configuration.GetValue<bool>("FEATURE_USE_S3");
+        //    if (useS3)
+        //    {
+        //        return await DeleteProjectAppealS3Attachment(id);
+        //    }
 
-            return await DeleteProjectAppealNonS3Attachment(id);
-            */
-        }
+        //    return await DeleteProjectAppealNonS3Attachment(id);
+        //    */
+        //}
 
         /// <summary>
         /// Delete a project appeal S3 attachment.

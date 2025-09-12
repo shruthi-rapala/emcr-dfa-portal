@@ -1,18 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ControlContainer, FormArray, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { ControlContainer, FormArray, FormControl, FormGroup, FormGroupDirective, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { CurrentApplication, CurrentProjectAppeal, FileCategory, RecoveryPlan } from 'src/app/core/api/models';
+import { CurrentApplication, CurrentProjectAppeal, FileCategory, FileCategoryAppeal, FileUploadProjectAppeal, RecoveryPlan } from 'src/app/core/api/models';
+import { AttachmentService } from 'src/app/core/api/services';
+import { DfaAttachmentComponent } from 'src/app/core/components/dfa-attachment/dfa-attachment.component';
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
-
-export type AppealDocument = {
-  fileName: string;
-  fileDescription: string;
-  fileData: string | ArrayBuffer;
-  FileType: FileCategory;
-  contentType: string;
-  fileSize: number;
-  uploadedDate: Date;
-};
+import { DFAClaimAppealDataService } from '../appeal-data.service';
+import { FormCreationService } from 'src/app/core/services/formCreation.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 /**
  * Appeal Documents Component.
@@ -30,6 +25,7 @@ export type AppealDocument = {
   standalone: false,
   templateUrl: './appeal-documents.component.html',
   styleUrl: './appeal-documents.component.scss',
+  providers: [DfaAttachmentComponent],
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
 export class AppealDocumentsComponent implements OnInit {
@@ -65,14 +61,66 @@ export class AppealDocumentsComponent implements OnInit {
   fileDescriptionMaxLength: number = 100;
 
   appealForm: FormGroup;
-
+  showSupportingFileForm: boolean = false;
+  isLoading: boolean = false;
+  isdisabled: string = 'false';
+  fileUploadsProjectAppealForm: UntypedFormGroup = this.formCreationService.fileUploadsProjectAppealForm;
+  projectAppealDocumentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate']
+  projectAppealDocumentSummaryDataSource = new MatTableDataSource();
+ 
   constructor(
     private dialog: MatDialog,
-    public controlContainer: ControlContainer
+    public controlContainer: ControlContainer,
+    public attachmentService: AttachmentService,
+    public dfaClaimAppealDataService: DFAClaimAppealDataService,
+    private formCreationService: FormCreationService,
   ) {}
 
   ngOnInit() {
     this.appealForm = this.controlContainer.control as FormGroup;
+  }
+
+
+  saveSupportingFiles(fileUpload: FileUploadProjectAppeal ) {
+    console.log("saveSupportingFilesProjectAppeals", fileUpload);
+      // dont allow same filename twice
+      let fileUploads = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').value;
+      if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
+        this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
+        this.formCreationService.fileUploadsProjectAppealForm.get('supportingFilesFileUpload').reset();
+        return;
+      }
+
+      if (this.formCreationService.fileUploadsProjectAppealForm.get('supportingFilesFileUpload').status === 'VALID') {
+        this.isLoading = true;
+        fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
+        fileUpload.appealId = this.dfaClaimAppealDataService.getAppealId();
+        fileUpload.requiredDocumentType = null;
+
+        this.attachmentService.attachmentUpsertDeleteProjectAppealAttachment({ body: fileUpload }).subscribe({
+          next: (fileUploadId) => {
+            fileUpload.id = fileUploadId;
+            if (fileUploads) fileUploads.push(fileUpload);
+            else fileUploads = [fileUpload];
+            this.formCreationService.fileUploadsProjectAppealForm.value.get('fileUploads').setValue(fileUploads);
+            this.showSupportingFileForm = !this.showSupportingFileForm;
+            // Reset Form feilds
+            this.formCreationService.fileUploadsProjectAppealForm.value.get('supportingFilesFileUpload').reset();
+            this.isLoading = false;
+          },
+          error: (error) => {
+            console.error(error);
+            this.isLoading = false;
+           // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          }
+        });
+      }
+
+  }
+
+  cancelSupportingFiles(): void {
+    this.showSupportingFileForm = !this.showSupportingFileForm;
+    this.formCreationService.fileUploadsProjectAppealForm.get('addNewFileUploadIndicator').setValue(false);
   }
 
   /**
