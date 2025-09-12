@@ -8,7 +8,7 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { FileUpload } from '../../models/file-upload';
+import { FileUploadProjectAppeal } from '../../models/file-upload-project-appeal';
 
 export interface AttachmentGetProjectAppealAttachments$Params {
 
@@ -18,7 +18,7 @@ export interface AttachmentGetProjectAppealAttachments$Params {
   projectAppealId?: string;
 }
 
-export function attachmentGetProjectAppealAttachments(http: HttpClient, rootUrl: string, params?: AttachmentGetProjectAppealAttachments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<FileUpload>>> {
+export function attachmentGetProjectAppealAttachments(http: HttpClient, rootUrl: string, params?: AttachmentGetProjectAppealAttachments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<FileUploadProjectAppeal>>> {
   const rb = new RequestBuilder(rootUrl, attachmentGetProjectAppealAttachments.PATH, 'get');
   if (params) {
     rb.query('projectAppealId', params.projectAppealId, {});
@@ -29,7 +29,7 @@ export function attachmentGetProjectAppealAttachments(http: HttpClient, rootUrl:
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<FileUpload>>;
+      return r as StrictHttpResponse<Array<FileUploadProjectAppeal>>;
     })
   );
 }

@@ -39,6 +39,7 @@ import { FileUpload } from '../models/file-upload';
 import { FileUploadAmendment } from '../models/file-upload-amendment';
 import { FileUploadClaim } from '../models/file-upload-claim';
 import { FileUploadClaimAppeal } from '../models/file-upload-claim-appeal';
+import { FileUploadProjectAppeal } from '../models/file-upload-project-appeal';
 
 @Injectable({ providedIn: 'root' })
 export class AttachmentService extends BaseService {
@@ -389,7 +390,7 @@ export class AttachmentService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  attachmentGetProjectAppealAttachments$Response(params?: AttachmentGetProjectAppealAttachments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<FileUpload>>> {
+  attachmentGetProjectAppealAttachments$Response(params?: AttachmentGetProjectAppealAttachments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<FileUploadProjectAppeal>>> {
     return attachmentGetProjectAppealAttachments(this.http, this.rootUrl, params, context);
   }
 
@@ -403,9 +404,9 @@ export class AttachmentService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  attachmentGetProjectAppealAttachments(params?: AttachmentGetProjectAppealAttachments$Params, context?: HttpContext): Observable<Array<FileUpload>> {
+  attachmentGetProjectAppealAttachments(params?: AttachmentGetProjectAppealAttachments$Params, context?: HttpContext): Observable<Array<FileUploadProjectAppeal>> {
     return this.attachmentGetProjectAppealAttachments$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<FileUpload>>): Array<FileUpload> => r.body)
+      map((r: StrictHttpResponse<Array<FileUploadProjectAppeal>>): Array<FileUploadProjectAppeal> => r.body)
     );
   }
 

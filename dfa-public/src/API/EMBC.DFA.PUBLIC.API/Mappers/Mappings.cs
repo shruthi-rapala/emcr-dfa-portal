@@ -584,6 +584,19 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.fileSize, opts => opts.MapFrom(s => (int?)s.Size))
                 .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
 
+            CreateMap<DocumentUrl, FileUploadProjectAppeal>()
+               .ForMember(d => d.appealId, opts => opts.MapFrom(s => s.AppealId))
+               .ForMember(d => d.id, opts => opts.MapFrom(s => s.Id))
+               .ForMember(d => d.fileName, opts => opts.MapFrom(s => s.FileName))
+               .ForMember(d => d.fileDescription, opts => opts.MapFrom(s => s.Description))
+               .ForMember(d => d.fileType, opts => opts.MapFrom(s => ConvertStringToFileCategoryAppeal(s.Category)))
+               .ForMember(d => d.fileTypeText, opts => opts.MapFrom(s => s.Category))
+               .ForMember(d => d.requiredDocumentType, opts => opts.MapFrom(s => ConvertStringToRequiredDocumentTypeClaim(s.Category)))
+               .ForMember(d => d.uploadedDate, opts => opts.MapFrom(s => s.UploadedDate))
+               .ForMember(d => d.contentType, opts => opts.MapFrom(s => s.MimeType))
+               .ForMember(d => d.fileSize, opts => opts.MapFrom(s => (int?)s.Size))
+               .ForMember(d => d.deleteFlag, opts => opts.MapFrom(s => false));
+
             CreateMap<FileUpload, MetadataSubmissionEntity>()
                 .ForMember(d => d.RegardingEntityID, opts => opts.MapFrom(s => s.project.Id))
                 .ForMember(d => d.OriginCode, opts => opts.MapFrom(s => ORIGIN_CODE_PORTAL))

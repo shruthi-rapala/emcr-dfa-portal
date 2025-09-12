@@ -8,14 +8,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { FileUpload } from '../../models/file-upload';
+import { FileUploadProjectAppeal } from '../../models/file-upload-project-appeal';
 
 export interface AttachmentUpsertProjectAppealAttachment$Params {
   
     /**
      * The attachment information
      */
-    body: FileUpload
+    body: FileUploadProjectAppeal
 }
 
 export function attachmentUpsertProjectAppealAttachment(http: HttpClient, rootUrl: string, params: AttachmentUpsertProjectAppealAttachment$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {

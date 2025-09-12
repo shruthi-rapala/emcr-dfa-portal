@@ -385,21 +385,59 @@ namespace EMBC.DFA.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [RequestSizeLimit(MAXFILESIZE)]
-        public async Task<ActionResult<string>> UpsertProjectAppealAttachment(FileUpload fileUpload)
+        public async Task<ActionResult<string>> UpsertProjectAppealAttachment(FileUploadProjectAppeal fileUpload)
         {
-            // TODO: Finalize this function.
-            await Task.Delay(100);
-            return Ok("WIP: projectAppealDocument");
+            if (fileUpload.fileData == null && fileUpload.deleteFlag == false) return BadRequest("FileUpload data cannot be empty.");
+            if (fileUpload.id == null && fileUpload.deleteFlag == true) return BadRequest("FileUpload id cannot be empty on delete");
 
-            /*
-            var useS3 = configuration.GetValue<bool>("FEATURE_USE_S3");
-            if (useS3)
+            if (fileUpload.deleteFlag == true)
             {
-                return await UpsertProjectAppealS3Attachment(fileUpload);
+                var metadataDeleteParams = new MetadataDeleteParams();
+                if (fileUpload.id != null)
+                {
+                    metadataDeleteParams.DocumentMetadataId = fileUpload.id.ToString();
+                }
+                var result = await handler.HandleDeleteFileMetadataAsync(metadataDeleteParams);
+                return Ok(result);
             }
+            else
+            {
+                logger.LogInformation("Upload S3 attachments dfa_appeal");
+                if (fileUpload.fileSize >= MAXFILESIZE)
+                {
+                    throw new Exception($"File size exceeds {MAXFILESIZE / 1_048_576.0:F2}MB limit");
+                }
 
-            return await UpsertProjectAppealNonS3Attachment(fileUpload);
-            */
+                var submissionEntity = mapper.Map<S3SubmissionEntity>(fileUpload);
+                /* Switch based on the regarding entity type where the doc is uploaded to
+                    case : incident 
+                    application : dfa_appapplication
+                    project : dfa_project
+                    recoveryClaim : dfa_projectclaim
+                    appeal: dfa_appeal"  
+                */
+                submissionEntity.RegardingEntitySchemaName = "dfa_projectappeal";
+
+                /* switch based on entity type to which the document is being uploaded
+                    case : bcgov_caseid
+                    application : dfa_appapplication
+                    project : dfa_project
+                    recoveryClaim : dfa_recoveryclaim 
+                    appeal: dfa_appealid
+                */
+                submissionEntity.RegardingEntityLookUpFieldName = "dfa_projectappeal";
+
+                try
+                {
+                    var result = await handler.HandleS3FileUploadAsync(submissionEntity);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Failed to upload file to S3.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while uploading file.");
+                }
+            }
         }
 
         /// <summary>
@@ -778,23 +816,33 @@ namespace EMBC.DFA.API.Controllers
         [HttpGet("byProjectAppealId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<FileUpload>>> GetProjectAppealAttachments(
+        public ActionResult<IEnumerable<FileUploadProjectAppeal>> GetProjectAppealAttachments(
             [FromQuery] [Required] Guid projectAppealId
         )
         {
-            // TODO: Finalize this function.
-            await Task.Delay(100);
-            return Ok(new List<FileUpload>());
+            logger.LogInformation("ProjectAppealAttachment - GetProjectAppealAttachments");
 
-            /*
-            var useS3 = configuration.GetValue<bool>("FEATURE_USE_S3");
-            if (useS3)
+            if (projectAppealId == Guid.Empty)
             {
-                return await getProjectAppealS3Attachments(projectAppealId);
+                return BadRequest("AppealId is required.");
             }
 
-            return await getProjectAppealNonS3Attachments(projectAppealId);
-            */
+            var result = documentUrlRepository.GetByProjectAppealId(projectAppealId);
+
+            if (result == null || !result.Any())
+            {
+                logger.LogInformation("No attachments found for project appeal Id: {ProjectAppealId}", projectAppealId);
+                return Ok(Enumerable.Empty<FileUploadProjectAppeal>());
+            }
+            IEnumerable<FileUploadProjectAppeal> fileUploads = [];
+
+            foreach (var documentUrl in result)
+            {
+                FileUploadProjectAppeal fileUpload = mapper.Map<FileUploadProjectAppeal>(documentUrl);
+                fileUploads = fileUploads.Append(fileUpload);
+            }
+
+            return Ok(fileUploads);
         }
 
         /// <summary>
@@ -942,6 +990,23 @@ namespace EMBC.DFA.API.Controllers
     }
 
     public class FileUploadClaimAppeal
+    {
+        public Guid? appealId { get; set; }
+        public Guid? id { get; set; }
+        public string? fileName { get; set; }
+        public string? fileDescription { get; set; }
+        public FileCategoryAppeal? fileType { get; set; }
+        public string? fileTypeText { get; set; }
+        public RequiredDocumentTypeClaim? requiredDocumentType { get; set; }
+        public string? uploadedDate { get; set; }
+        public string? modifiedBy { get; set; }
+        public byte[]? fileData { get; set; }
+        public string? contentType { get; set; }
+        public int? fileSize { get; set; }
+        public bool deleteFlag { get; set; }
+    }
+
+    public class FileUploadProjectAppeal
     {
         public Guid? appealId { get; set; }
         public Guid? id { get; set; }
