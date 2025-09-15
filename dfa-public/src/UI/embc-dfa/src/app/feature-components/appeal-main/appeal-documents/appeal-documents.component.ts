@@ -10,6 +10,7 @@ import { FormCreationService } from 'src/app/core/services/formCreation.service'
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 import { mapTo } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * Appeal Documents Component.
@@ -68,6 +69,7 @@ export class AppealDocumentsComponent implements OnInit {
   fileUploadsProjectAppealForm: UntypedFormGroup = this.formCreationService.fileUploadsProjectAppealForm;
   projectAppealDocumentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate']
   projectAppealDocumentSummaryDataSource = new MatTableDataSource();
+  appealId = this.route.snapshot.params['appealId'];
 
   constructor(
     private dialog: MatDialog,
@@ -75,11 +77,12 @@ export class AppealDocumentsComponent implements OnInit {
     public attachmentService: AttachmentService,
     public dfaClaimAppealDataService: DFAClaimAppealDataService,
     private formCreationService: FormCreationService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.appealForm = this.controlContainer.control as FormGroup;
-
+    
 
     // subscribe to changes for document summary
     const _claimAppealDocumentSummaryFormArray = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads');
@@ -92,7 +95,7 @@ export class AppealDocumentsComponent implements OnInit {
         });
 
 
-    this.getFileUploadsForClaimAppeal('6e188cd9-338f-f011-be99-00a5547017d1');
+    this.getFileUploadsForClaimAppeal(this.appealId);
 
 
   }
@@ -146,7 +149,7 @@ export class AppealDocumentsComponent implements OnInit {
     if (this.formCreationService.fileUploadsProjectAppealForm.get('supportingFilesFileUpload').status === 'VALID') {
       this.isLoading = true;
       fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
-      fileUpload.appealId = '6e188cd9-338f-f011-be99-00a5547017d1'//this.dfaClaimAppealDataService.getAppealId();
+      fileUpload.appealId =  this.appealId
       fileUpload.requiredDocumentType = null;
 
       this.attachmentService.attachmentUpsertDeleteProjectAppealAttachment({ body: fileUpload }).subscribe({
@@ -198,7 +201,7 @@ export class AppealDocumentsComponent implements OnInit {
       // Create payload for soft delete by setting deleteFlag to true
       const softDeletePayload: FileUploadProjectAppeal = {
         id: element.id,
-        appealId: this.dfaClaimAppealDataService.getAppealId(),
+        appealId:  this.appealId ,
         fileName: element.fileName,
         fileDescription: element.description,
         fileData: null, // No file data needed for soft delete
