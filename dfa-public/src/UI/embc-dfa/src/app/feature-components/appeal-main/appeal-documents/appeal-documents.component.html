@@ -1,48 +1,93 @@
 <div formGroupName="step2">
-  <app-file-upload
-    [noOfAttachments]="noOfAttachments"
-    [allowedFileTypes]="allowedFileTypes"
-    [allowedFileExtensionsList]="allowedFileExtensionsList"
-    (attachedFile)="onAttachedFile($event)"
-    [isDisabled]="isDisabled"></app-file-upload>
-  <div formArrayName="documents">
-    <div
-      *ngFor="let documentGroup of appealForm.get('step2.documents')['controls']; let i = index"
-      [formGroupName]="i"
-      class="row card-list mt-2">
-      <div class="col-12">
-        <div class="card-content d-flex justify-content-between align-items-center">
-          <div class="flex-grow-1 me-2">
-            <div class="mb-3">
-              <div class="d-flex flex-row">
-                <div class="flex-grow-1">
-                  <span class="form-label fw-bold me-1">File Name:</span>
-                  <span class="text-muted">{{ documentGroup.get('fileName').value }}</span>
-                </div>
-                <div>
-                  <span class="form-label fw-bold me-1">Date Uploaded:</span>
-                  <span class="text-muted">{{ documentGroup.get('uploadedDate').value | date: 'dd-MMM-yyyy' }}</span>
-                </div>
-              </div>
-            </div>
-            <mat-form-field appearance="outline" class="w-100 card-content-field">
-              <mat-label>File Description</mat-label>
-              <input matInput formControlName="fileDescription" />
-            </mat-form-field>
-          </div>
-          <!-- Right side: centered delete button -->
-          <div class="d-flex align-items-center">
-            <button
-              mat-icon-button
-              color="warn"
-              type="button"
-              (click)="onRemoveDocument(i)"
-              aria-label="Remove document">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </div>
-      </div>
+  <div class="row">
+    <div class="col-md-8">
+      <app-dfa-attachment 
+        isAppeal=true
+        isDisabled="isDisabled" 
+        requiredDocumentType="null" 
+        title="Add Supporting Documents(Optional)"
+        description="If applicable, you may include additional documents related to your Appeal."
+        [allowedFileTypes]="allowedFileTypes"
+        allowedFileExtensionsList=".pdf, .doc, .docx, .png, .jpeg, .jpg, .ppt, .pptx, .xls, .xlsx"
+        excludeFileTypes="['Identification', 'Unknown']"
+        (saveFileUpload)="saveSupportingFiles($event)"
+        (cancelFileUpload)="cancelSupportingFiles()"
+        [fileUploadsForm]="fileUploadsProjectAppealForm"     
+        >     
+      </app-dfa-attachment>
+      <!-- <app-loader
+          class="spinner"
+          [showLoader]="isLoading"
+          strokeWidth="10"
+          diameter="50"
+        >
+        </app-loader> -->
     </div>
   </div>
+
+  <div *ngIf="projectAppealDocumentSummaryDataSource.data.length > 0">
+    <br />
+    <p class="sub-heading" style="font-size: 15px">Document Summary</p>
+  </div>
+
+  <table mat-table [dataSource]="projectAppealDocumentSummaryDataSource"
+  *ngIf="projectAppealDocumentSummaryDataSource.data.length > 0" style="width:100%">
+  <!-- File Name Column -->
+  <ng-container matColumnDef="fileName" style="width:25%">
+    <th mat-header-cell *matHeaderCellDef>
+      <b>File Name</b>
+    </th>
+    <td *matCellDef="let element" mat-cell>
+      {{ element.fileName }}
+    </td>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="fileDescription" style="width:25%">
+    <th mat-header-cell *matHeaderCellDef>
+      <b>File Description</b>
+    </th>
+    <td *matCellDef="let element" mat-cell>
+      {{ element.fileDescription}}
+    </td>
+  </ng-container>
+
+  <!-- Category Column -->
+  <ng-container matColumnDef="fileTypeText" style="width:25%">
+    <th mat-header-cell *matHeaderCellDef>
+      <b>Category</b>
+    </th>
+    <td *matCellDef="let element" mat-cell>
+      {{ element.fileTypeText }}
+    </td>
+  </ng-container>
+
+  <!-- UploadedDate Column -->
+  <ng-container matColumnDef="uploadedDate" style="width:25%">
+    <th mat-header-cell *matHeaderCellDef>
+      <b>Date Uploaded</b>
+    </th>
+    <td *matCellDef="let element" mat-cell>
+      {{ element.uploadedDate | date:"dd-MMM-yyyy" }}
+    </td>
+  </ng-container>
+
+  <!-- Delete Icon Column -->
+  <ng-container matColumnDef="icons" style="width:25%" >
+    <th mat-header-cell *matHeaderCellDef>
+      &nbsp;
+    </th>
+    <td *matCellDef="let element; let index = index" mat-cell>
+      <button *ngIf="vieworedit !== 'view'" class="delete-image" mat-icon-button aria-label="Remove"
+        (click)="confirmDeleteDocumentSummaryRow(element)">
+        <img src="/assets/images/delete.svg" height="35" width="35" />
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="projectAppealDocumentSummaryColumnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let element; columns: projectAppealDocumentSummaryColumnsToDisplay" class="example-element-row"
+    [style.height]="'auto'"></tr>
+
+</table>
 </div>

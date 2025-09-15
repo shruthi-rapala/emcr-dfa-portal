@@ -1,18 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ControlContainer, FormArray, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { ControlContainer, FormArray, FormControl, FormGroup, FormGroupDirective, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { CurrentApplication, CurrentProjectAppeal, FileCategory, RecoveryPlan } from 'src/app/core/api/models';
+import { CurrentApplication, CurrentProjectAppeal, FileCategory, FileCategoryAppeal, FileUploadProjectAppeal, RecoveryPlan } from 'src/app/core/api/models';
+import { AttachmentService } from 'src/app/core/api/services';
+import { DfaAttachmentComponent } from 'src/app/core/components/dfa-attachment/dfa-attachment.component';
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
-
-export type AppealDocument = {
-  fileName: string;
-  fileDescription: string;
-  fileData: string | ArrayBuffer;
-  FileType: FileCategory;
-  contentType: string;
-  fileSize: number;
-  uploadedDate: Date;
-};
+import { DFAClaimAppealDataService } from '../appeal-data.service';
+import { FormCreationService } from 'src/app/core/services/formCreation.service';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
+import { mapTo } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * Appeal Documents Component.
@@ -65,57 +63,191 @@ export class AppealDocumentsComponent implements OnInit {
   fileDescriptionMaxLength: number = 100;
 
   appealForm: FormGroup;
+  showSupportingFileForm: boolean = false;
+  isLoading: boolean = false;
+  isdisabled: string = 'false';
+  fileUploadsProjectAppealForm: UntypedFormGroup = this.formCreationService.fileUploadsProjectAppealForm;
+  projectAppealDocumentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate']
+  projectAppealDocumentSummaryDataSource = new MatTableDataSource();
+  appealId = this.route.snapshot.params['appealId'];
 
   constructor(
     private dialog: MatDialog,
-    public controlContainer: ControlContainer
-  ) {}
+    public controlContainer: ControlContainer,
+    public attachmentService: AttachmentService,
+    public dfaClaimAppealDataService: DFAClaimAppealDataService,
+    private formCreationService: FormCreationService,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
     this.appealForm = this.controlContainer.control as FormGroup;
+    
+
+    // subscribe to changes for document summary
+    const _claimAppealDocumentSummaryFormArray = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads');
+    _claimAppealDocumentSummaryFormArray.valueChanges
+      .pipe(
+        mapTo(_claimAppealDocumentSummaryFormArray.getRawValue())
+      ).subscribe(
+        _data => {
+          this.projectAppealDocumentSummaryDataSource.data = _claimAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
+        });
+
+
+    this.getFileUploadsForClaimAppeal(this.appealId);
+
+
   }
 
-  /**
-   * Handles the file attachment event.
-   *
-   * @param {*} event
-   * @memberof AppealDocumentsComponent
-   */
-  onAttachedFile(event: any) {
-    const reader = new FileReader();
-    reader.readAsDataURL(event);
-    reader.onload = () => {
-      const documents = this.appealForm.get('step2.documents') as FormArray;
+  // Get the documents FormArray from the appeal form
 
-      // Show warning and exit early if a document already exists with the same file name
-      if (documents.controls.some((document) => document.get('fileName')?.value === event.name)) {
-        this.warningDialog('A file with the name ' + event.name + ' has already been added.');
-        return;
+  public getFileUploadsForClaimAppeal(appealId: string) {
+    this.attachmentService.attachmentGetProjectAppealAttachments({ projectAppealId: appealId }).subscribe({
+      next: (attachments) => {
+        // Filter out soft-deleted files
+        const activeAttachments = attachments.filter(attachment => !attachment.deleteFlag);
+
+        // Transform AppealFileMetadataUpload to FileUploadClaimAppeal
+        const transformedAttachments = activeAttachments.map(attachment => ({
+          id: attachment.id,
+          fileName: attachment.fileName,
+          fileDescription: attachment.fileDescription,
+          fileType: attachment.fileType,
+          fileTypeText: attachment.fileTypeText?.toString() || 'Appeal',
+          contentType: attachment.contentType,
+          fileSize: attachment.fileSize,
+          uploadedDate: attachment.uploadedDate,
+          appealId: attachment.appealId,
+          deleteFlag: attachment.deleteFlag || false,
+          fileData: null,
+          modifiedBy: null,
+          requiredDocumentType: null
+        }));
+
+        // initialize list of file uploads
+        this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').setValue(transformedAttachments);
+
+      },
+      error: (error) => {
+        console.error(error);
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
-
-      documents.push(
-        new FormGroup({
-          fileName: new FormControl(event.name),
-          fileDescription: new FormControl(event.name, [
-            Validators.required,
-            Validators.maxLength(this.fileDescriptionMaxLength)
-          ]),
-          fileData: new FormControl(reader.result),
-          FileType: new FormControl(FileCategory.Reports), // TODO: Update this to "Appeal Support" when available
-          contentType: new FormControl(event.type),
-          fileSize: new FormControl(event.size),
-          uploadedDate: new FormControl(new Date())
-        })
-      );
-    };
+    });
   }
 
-  /**
-   * Opens a warning dialog with the provided message.
-   *
-   * @param {string} message
-   * @memberof AppealDocumentsComponent
-   */
+  saveSupportingFiles(fileUpload: FileUploadProjectAppeal) {
+    console.log("saveSupportingFilesProjectAppeals", fileUpload);
+    // dont allow same filename twice
+    let fileUploads = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').value;
+    if (fileUploads?.find(x => x.fileName === fileUpload.fileName && x.deleteFlag !== true)) {
+      this.warningDialog("A file with the name " + fileUpload.fileName + " has already been uploaded.");
+      this.formCreationService.fileUploadsProjectAppealForm.get('supportingFilesFileUpload').reset();
+      return;
+    }
+
+    if (this.formCreationService.fileUploadsProjectAppealForm.get('supportingFilesFileUpload').status === 'VALID') {
+      this.isLoading = true;
+      fileUpload.fileData = fileUpload?.fileData?.substring(fileUpload?.fileData?.indexOf(',') + 1) // to allow upload as byte array
+      fileUpload.appealId =  this.appealId
+      fileUpload.requiredDocumentType = null;
+
+      this.attachmentService.attachmentUpsertDeleteProjectAppealAttachment({ body: fileUpload }).subscribe({
+        next: (fileUploadId) => {
+          fileUpload.id = fileUploadId;
+          if (fileUploads) fileUploads.push(fileUpload);
+          else fileUploads = [fileUpload];
+          this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').setValue(fileUploads);
+          this.showSupportingFileForm = !this.showSupportingFileForm;
+          // Reset Form feilds
+          this.formCreationService.fileUploadsProjectAppealForm.get('supportingFilesFileUpload').reset();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error(error);
+          this.isLoading = false;
+          // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        }
+      });
+    }
+
+  }
+
+  cancelSupportingFiles(): void {
+    this.showSupportingFileForm = !this.showSupportingFileForm;
+    this.formCreationService.fileUploadsProjectAppealForm.get('addNewFileUploadIndicator').setValue(false);
+  }
+
+  confirmDeleteDocumentSummaryRow(element): void {
+    this.dialog
+      .open(DFAFileDeleteDialogComponent, {
+        data: {
+          content: "Are you sure you want to delete the supporting document:<br/>" + element.fileName + "?"
+        },
+        width: '350px',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === 'confirm') {
+          this.deleteDocumentSummaryRow(element);
+        }
+      });
+  }
+
+  deleteDocumentSummaryRow(element): void {
+    // For the new S3 service, we use soft delete by setting deleteFlag to true
+    if (element.id) {
+      // Create payload for soft delete by setting deleteFlag to true
+      const softDeletePayload: FileUploadProjectAppeal = {
+        id: element.id,
+        appealId:  this.appealId ,
+        fileName: element.fileName,
+        fileDescription: element.description,
+        fileData: null, // No file data needed for soft delete
+        fileSize: element.size,
+        contentType: element.contentType || element.mimeType,
+        uploadedDate: element.uploadedDate,
+        deleteFlag: true, // Mark as deleted
+        fileType: element.category
+      };
+
+      this.attachmentService.attachmentUpsertDeleteProjectAppealAttachment({ body: softDeletePayload }).subscribe({
+        next: (result) => {
+          // Remove from local array after successful soft delete
+          let fileUploads = this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value;
+          let index = fileUploads?.indexOf(element);
+          if (index > -1) {
+            fileUploads.splice(index, 1);
+            this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').setValue(fileUploads);
+          }
+          if (this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value.length === 0) {
+            this.fileUploadsProjectAppealForm
+              .get('addNewFileUploadIndicator')
+              .setValue(false);
+          }
+        },
+        error: (error) => {
+          console.error('Error soft deleting amendment attachment:', error);
+          this.warningDialog('Failed to delete the document. Please try again.');
+        }
+      });
+    } else {
+      // If no ID, just remove from local array (file wasn't saved yet)
+      let fileUploads = this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value;
+      let index = fileUploads?.indexOf(element);
+      if (index > -1) {
+        fileUploads.splice(index, 1);
+        this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').setValue(fileUploads);
+      }
+      if (this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value.length === 0) {
+        this.fileUploadsProjectAppealForm
+          .get('addNewFileUploadIndicator')
+          .setValue(false);
+      }
+    }
+  }
+
   warningDialog(message: string) {
     this.dialog.open(FileUploadWarningDialogComponent, {
       data: {

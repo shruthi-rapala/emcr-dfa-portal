@@ -27,7 +27,7 @@
             </div>
             <div class="col-md-6">
               
-              <div [hidden]="!fileUpload.get('fileName').value">
+              <div [hidden]="!fileUpload?.get('fileName')?.value">
                 <label class="sub-heading" style="font-size: 15px" >File name<span style="color:red" >*</span></label>
                 <br/>
                 {{ fileUpload.get('fileName').value }}

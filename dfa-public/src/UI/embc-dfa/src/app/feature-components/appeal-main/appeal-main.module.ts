@@ -15,9 +15,10 @@ import { ComponentWrapperModule } from '../../sharedModules/components/component
 import { ReviewModule } from '../review/review.module';
 import { AppealRoutingModule } from './appeal-main-routing.module';
 import { AppealMainComponent } from './appeal-main.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
-  declarations: [AppealMainComponent, AppealProjectDetailsComponent, AppealDocumentsComponent],
+  declarations: [AppealMainComponent, AppealProjectDetailsComponent,AppealDocumentsComponent],
   imports: [
     AppealRoutingModule,
     CommonModule,
@@ -31,7 +32,8 @@ import { AppealMainComponent } from './appeal-main.component';
     MatStepperModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    ReviewModule
+    ReviewModule,
+    MatTableModule
   ]
 })
 export class AppealMainModule {}

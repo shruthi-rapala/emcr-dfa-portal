@@ -264,6 +264,7 @@ export class FormCreationService {
 
   fileUploadsClaimForm$: Observable<UntypedFormGroup | undefined> =
     this.fileUploadsClaimForm.asObservable();
+    
 
   fileUploadsAmendmentForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
@@ -293,6 +294,14 @@ export class FormCreationService {
   fileUploadsClaimAppealForm$: Observable<UntypedFormGroup | undefined> =
     this.fileUploadsClaimAppealForm.asObservable();
 
+  fileUploadsProjectAppealForm: UntypedFormGroup | undefined = this.formBuilder.group(
+    new FileUploadsClaimAppealForm(
+      new Array<FileUploadClaimAppeal>(),
+      this.customValidator,
+      this.formBuilder
+    )
+  );
+ 
   damagedRoomsForm: BehaviorSubject<UntypedFormGroup | undefined> =
     new BehaviorSubject(
       this.formBuilder.group(

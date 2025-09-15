@@ -57,6 +57,7 @@ export type { FileUpload } from './models/file-upload';
 export type { FileUploadAmendment } from './models/file-upload-amendment';
 export type { FileUploadClaim } from './models/file-upload-claim';
 export type { FileUploadClaimAppeal } from './models/file-upload-claim-appeal';
+export type { FileUploadProjectAppeal } from './models/file-upload-project-appeal';
 export type { FullTimeOccupant } from './models/full-time-occupant';
 export type { HasActiveEventResponse } from './models/has-active-event-response';
 export { InsuranceOption } from './models/insurance-option';

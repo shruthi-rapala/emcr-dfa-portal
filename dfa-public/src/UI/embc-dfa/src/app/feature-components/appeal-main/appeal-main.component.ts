@@ -3,11 +3,9 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { CurrentApplication, CurrentProjectAppeal, ProjectAppealModel, RecoveryPlan } from 'src/app/core/api/models';
+import { CurrentApplication, CurrentProjectAppeal, FileCategory, FileUploadProjectAppeal, ProjectAppealModel, RecoveryPlan } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService, ProjectAppealService, ProjectService } from 'src/app/core/api/services';
 import { WarningDialogComponent } from 'src/app/core/components/dialog-components/warning-dialog/warning-dialog.component';
-import { AppealDocument } from 'src/app/feature-components/appeal-main/appeal-documents/appeal-documents.component';
-
 /**
  * Public eligibility Appeal main component.
  *
@@ -38,7 +36,7 @@ export class AppealMainComponent implements OnInit {
   project: RecoveryPlan;
   application: CurrentApplication;
   appeal: ProjectAppealModel;
-  documents: AppealDocument[] = [];
+  documents: FileUploadProjectAppeal[] = [];
 
   isLoading: boolean = false;
   isDisabled: boolean = false;
@@ -77,7 +75,7 @@ export class AppealMainComponent implements OnInit {
         reason: new FormControl(null, [Validators.required, Validators.maxLength(this.reasonMaxLength)])
       }),
       step2: this.formBuilder.group({
-        documents: this.formBuilder.array<AppealDocument>([])
+        documents: this.formBuilder.array<FileUploadProjectAppeal>([])
       })
     });
   }
@@ -173,7 +171,7 @@ export class AppealMainComponent implements OnInit {
             FileType: doc.fileType,
             contentType: doc.contentType,
             fileSize: doc.fileSize,
-            uploadedDate: new Date(doc.uploadedDate)
+            uploadedDate: new Date(doc.uploadedDate) as any
           }));
         }
       },
@@ -311,7 +309,7 @@ export class AppealMainComponent implements OnInit {
    * @memberof AppealMainComponent
    */
   async uploadDocuments(): Promise<void> {
-    let documents: AppealDocument[] = this.appealForm.get('step2.documents').value as AppealDocument[];
+    let documents: FileUploadProjectAppeal[] = this.appealForm.get('step2.documents').value as FileUploadProjectAppeal[];
 
     if (!documents?.length) {
       return;
@@ -326,11 +324,11 @@ export class AppealMainComponent implements OnInit {
   /**
    * Uploads a single document.
    *
-   * @param {AppealDocument} document
+   * @param {FileUploadProjectAppeal} document
    * @return {*}  {Promise<void>}
    * @memberof AppealMainComponent
    */
-  async uploadDocument(document: AppealDocument): Promise<void> {
+  async uploadDocument(document: FileUploadProjectAppeal): Promise<void> {
     // TODO: Define type with correct properties
     const documentPayload: any = {
       contentType: document.contentType,
@@ -340,7 +338,7 @@ export class AppealMainComponent implements OnInit {
       fileSize: document.fileSize
     };
 
-    await firstValueFrom(this.attachmentsService.attachmentUpsertProjectAppealAttachment({ body: documentPayload }))
+    await firstValueFrom(this.attachmentsService.attachmentUpsertDeleteProjectAttachment({ body: documentPayload }))
       .then((_fileUploadId) => {
         // TODO: Handle the response
         console.debug('Document uploaded successfully:', _fileUploadId);
@@ -367,19 +365,19 @@ export class AppealMainComponent implements OnInit {
 
     const id = documents.at(index).get('id')?.value;
 
-    this.attachmentsService.attachmentDeleteProjectAppealAttachment({ id }).subscribe({
-      next: () => {
-        console.debug('Document deleted successfully');
-      },
-      error: (error) => {
-        console.error('Error deleting document:', error);
-        this.warningDialog({
-          title: 'Error Deleting Document',
-          content:
-            'There was an error deleting the document. Please try again. If the errors persists, please contact support.'
-        });
-      }
-    });
+    // this.attachmentsService.attachmentUpsertDeleteProjectAttachment({ body  }).subscribe({
+    //   next: () => {
+    //     console.debug('Document deleted successfully');
+    //   },
+    //   error: (error) => {
+    //     console.error('Error deleting document:', error);
+    //     this.warningDialog({
+    //       title: 'Error Deleting Document',
+    //       content:
+    //         'There was an error deleting the document. Please try again. If the errors persists, please contact support.'
+    //     });
+    //   }
+    // });
 
     if (documents?.length > index) {
       documents.removeAt(index);

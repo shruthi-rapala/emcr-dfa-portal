@@ -36,6 +36,13 @@ public interface IDocumentUrlRepository : IBaseRepository<DocumentUrl>
     /// <param name="appealId">The ID of the Claim appeal.</param>
     /// <returns>A collection of Document URLs related to the specified Claim appeal.</returns>
     IEnumerable<DocumentUrl> GetByClaimAppealId(Guid appealId);
+
+    /// <summary>
+    /// Retrieves Document URLs associated with a specific Project appeal ID.
+    /// </summary>
+    /// <param name="appealId">The ID of the Project appeal.</param>
+    /// <returns>A collection of Document URLs related to the specified Project appeal.</returns>
+    IEnumerable<DocumentUrl> GetByProjectAppealId(Guid appealId);
 }
 
 /// <summary>
@@ -77,6 +84,20 @@ public class DocumentUrlRepository : BaseRepository<BcGoV_DocumentUrl, DocumentU
         return _databaseContext
             .CreateQuery<BcGoV_DocumentUrl>()
             .Where(query => query.DFA_ClaimAppeal != null && query.DFA_ClaimAppeal.Id == appealId)
+            .Select(result => _mapper.Map<DocumentUrl>(result))
+            .ToList();
+    }
+
+    /// <summary>
+    /// Fetch all Document URLs records associated with a specific Project appeal ID.
+    /// </summary>
+    /// <param name="appealId"></param>
+    /// <returns></returns>
+    public IEnumerable<DocumentUrl> GetByProjectAppealId(Guid appealId)
+    {
+        return _databaseContext
+            .CreateQuery<BcGoV_DocumentUrl>()
+            .Where(query => query.DFA_ProjectAppeal != null && query.DFA_ProjectAppeal.Id == appealId)
             .Select(result => _mapper.Map<DocumentUrl>(result))
             .ToList();
     }

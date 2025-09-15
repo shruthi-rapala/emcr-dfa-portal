@@ -452,7 +452,7 @@ export class DfaDashProjectComponent implements OnInit {
 
   remainingDays(project: CurrentProject): number {
     const oneDay = 24 * 60 * 60 * 1000;       // milliseconds in a day
-    let endDateStr = project.projectDecision?.toLowerCase() === 'approved with exclusions'
+    let endDateStr = project.projectDecision?.toLowerCase() === 'approved with exclusions' || project.projectDecision.toLowerCase() === 'ineligible'
       ? project.projectApprovedDate
       : project.dateFileClosed;
     endDateStr = project.projectApprovedDate;

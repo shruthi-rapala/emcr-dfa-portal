@@ -8,18 +8,18 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { FileUpload } from '../../models/file-upload';
+import { FileUploadProjectAppeal } from '../../models/file-upload-project-appeal';
 
-export interface AttachmentUpsertProjectAppealAttachment$Params {
+export interface AttachmentUpsertDeleteProjectAppealAttachment$Params {
   
     /**
      * The attachment information
      */
-    body: FileUpload
+    body: FileUploadProjectAppeal
 }
 
-export function attachmentUpsertProjectAppealAttachment(http: HttpClient, rootUrl: string, params: AttachmentUpsertProjectAppealAttachment$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, attachmentUpsertProjectAppealAttachment.PATH, 'post');
+export function attachmentUpsertDeleteProjectAppealAttachment(http: HttpClient, rootUrl: string, params: AttachmentUpsertDeleteProjectAppealAttachment$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, attachmentUpsertDeleteProjectAppealAttachment.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -34,4 +34,4 @@ export function attachmentUpsertProjectAppealAttachment(http: HttpClient, rootUr
   );
 }
 
-attachmentUpsertProjectAppealAttachment.PATH = '/api/attachments/projectAppealDocument';
+attachmentUpsertDeleteProjectAppealAttachment.PATH = '/api/attachments/projectAppealDocument';
