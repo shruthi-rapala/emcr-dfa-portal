@@ -37,7 +37,7 @@ const routes: Routes = [
     canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
-    path: 'dfa-appeal-main/:id',
+    path: 'application/:applicationId/project/:projectId/appeal/:appealId',
     loadChildren: () =>
       import(
         './feature-components/appeal-main/appeal-main.module'
@@ -215,7 +215,7 @@ const routes: Routes = [
       import('./feature-components/outage/outage.module').then(
         (m) => m.OutageModule
       )
-  }
+  },
 
   // {
   //   path: 'api/contacts/login',

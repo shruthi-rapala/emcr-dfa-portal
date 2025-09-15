@@ -39,6 +39,7 @@ interface AppealStatusItem {
 export class DfaDashProjectComponent implements OnInit {
 
   DecisionEnum = Decision;
+  applicationId: string;
 
   addNewItem(value: number) {
     this.appSessionService.currentProjectsCount.emit(value);
@@ -137,9 +138,9 @@ export class DfaDashProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    var applicationId = this.dFAProjectMainDataService.getApplicationId();
+    this.applicationId = this.dFAProjectMainDataService.getApplicationId();
 
-    this.projService.projectGetDfaProjects({ applicationId: applicationId }).subscribe({
+    this.projService.projectGetDfaProjects({ applicationId: this.applicationId }).subscribe({
       next: (lstData) => {
         if (lstData != null) {
           var lstDataModified = [];
@@ -441,6 +442,10 @@ export class DfaDashProjectComponent implements OnInit {
     return project.projectDecision && (project.projectDecision.toLowerCase() === 'approved with exclusions' || project.projectDecision.toLowerCase() === 'ineligible');
   }
 
+  hasSubmittedAppeal(project: CurrentProject): boolean {
+    return project.activeStage?.submissionDate != null;
+  }
+
   appealHasRemainingDays(project: CurrentProject): boolean {
     return this.remainingDays(project) >= 0;
   }
@@ -464,8 +469,9 @@ export class DfaDashProjectComponent implements OnInit {
     return this.appealHasRemainingDays(project) ? 'application-button' : 'disabled-button';
   }
 
-  appealDecision(): void {
-    console.log("Appeal Decision");
+  appealDecision(project: CurrentProject): void {
+    var applealId = project.activeStage?.id?? 'new';
+    this.router.navigate(['/application/' + this.applicationId + '/project/' + project.projectId + '/appeal/' + applealId]);
   }
 }
 

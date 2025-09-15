@@ -57,8 +57,8 @@ const maskConfigFunction: () => Partial<NgxMaskConfig> = () => {
         ButtonsModule,
         MatIconModule,
         MatAutocompleteModule,
-        AuthConfigModule
-    ],
+        AuthConfigModule,
+        ],
     providers: [ provideEnvironmentNgxMask(maskConfigFunction),
         {
             provide: APP_BASE_HREF,

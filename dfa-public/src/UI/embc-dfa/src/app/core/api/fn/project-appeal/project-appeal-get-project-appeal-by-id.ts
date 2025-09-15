@@ -10,14 +10,18 @@ import { RequestBuilder } from '../../request-builder';
 
 import { ProjectAppealModel } from '../../models/project-appeal-model';
 
-export interface ProjectAppealCreateProjectAppeal$Params {
-      body: ProjectAppealModel
+export interface ProjectAppealGetProjectAppealById$Params {
+
+/**
+ * Appeal ID
+ */
+  id: string;
 }
 
-export function projectAppealCreateProjectAppeal(http: HttpClient, rootUrl: string, params: ProjectAppealCreateProjectAppeal$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, projectAppealCreateProjectAppeal.PATH, 'post');
+export function projectAppealGetProjectAppealById(http: HttpClient, rootUrl: string, params: ProjectAppealGetProjectAppealById$Params, context?: HttpContext): Observable<StrictHttpResponse<ProjectAppealModel>> {
+  const rb = new RequestBuilder(rootUrl, projectAppealGetProjectAppealById.PATH, 'get');
   if (params) {
-    rb.body(params.body, 'application/json');
+    rb.path('id', params.id, {});
   }
 
   return http.request(
@@ -25,9 +29,9 @@ export function projectAppealCreateProjectAppeal(http: HttpClient, rootUrl: stri
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<string>;
+      return r as StrictHttpResponse<ProjectAppealModel>;
     })
   );
 }
 
-projectAppealCreateProjectAppeal.PATH = '/api/projectappeals';
+projectAppealGetProjectAppealById.PATH = '/api/projectappeals/{id}';
