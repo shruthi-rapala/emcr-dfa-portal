@@ -906,6 +906,12 @@ namespace EMBC.DFA.API.Mappers
 
             //Mapping from AppealModel (API Model) to Appeal (DTO API Layer)
 
+            CreateMap<ProjectAppealModel, ProjectAppeal>()
+                .ForMember(d => d.ProjectId, opts => opts.MapFrom(s => s.CaseId));
+
+            CreateMap<ProjectAppeal, ProjectAppealModel>()
+                .ForMember(d => d.CaseId, opts => opts.MapFrom(s => s.ProjectId));
+
             CreateMap<ClaimAppealModel, ClaimAppeal>()
                 .ForMember(d => d.ClaimId, opts => opts.MapFrom(s => s.ClaimId));
 
@@ -944,7 +950,8 @@ namespace EMBC.DFA.API.Mappers
                 .ForMember(d => d.ARLastName, opts => opts.MapFrom(s => s.dfa_arlastname))
                 .ForMember(d => d.ARPositionTitle, opts => opts.MapFrom(s => s.dfa_arpositiontitle))
                 .ForMember(d => d.ARSecondDeclaration, opts => opts.MapFrom(s => s.dfa_ardeclaration2))
-                .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid));
+                .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.dfa_appapplicationid))
+                .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.createdon));
 
             CreateMap<dfa_appdamageditems_retrieve, DamagedRoom>()
                 .ForMember(d => d.applicationId, opts => opts.MapFrom(s => s._dfa_applicationid_value))

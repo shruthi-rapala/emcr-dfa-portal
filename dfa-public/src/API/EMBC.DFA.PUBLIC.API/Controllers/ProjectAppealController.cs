@@ -1,4 +1,12 @@
+﻿using AutoMapper;
+using EMBC.Database.Contract;
+using EMBC.Database.Resources;
+using System;
 using Microsoft.AspNetCore.Mvc;
+using static StackExchange.Redis.Role;
+using Microsoft.AspNetCore.Http;
+using EMBC.Database.Shared.Contract;
+using EMBC.DFA.PUBLIC.API.Controllers;
 
 namespace EMBC.DFA.API.Controllers
 {
@@ -9,16 +17,65 @@ namespace EMBC.DFA.API.Controllers
     [Route("api/projectappeals")]
     public class ProjectAppealController : ControllerBase
     {
+        private readonly IProjectAppealRepository projectAppealRepository;
+        private readonly IMapper mapper;
+
+        public ProjectAppealController(IProjectAppealRepository projectAppeal, IMapper mapper)
+        {
+            this.projectAppealRepository = projectAppeal;
+            this.mapper = mapper;
+        }
+
+
+        /// <summary>
+        /// Get appeal details by ID
+        /// </summary>
+        /// <param name="id">Appeal ID</param>
+        /// <returns>ClaimAppeal details</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProjectAppealModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<ProjectAppealModel> GetProjectAppealById(Guid id)
+        {
+            // Use FirstOrDefault to get the appeal by ID
+            var appeal = projectAppealRepository.FirstOrDefault(a => a.Id == id);
+
+            if (appeal == null)
+                return NotFound();
+
+            // Map to ProjectAppealModel for response
+            var appealModel = mapper.Map<ProjectAppealModel>(appeal);
+
+            return Ok(appealModel);
+        }
+
         /// <summary>
         /// Create a new project appeal.
         /// </summary>
-        /// <param name="appeal"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreateProjectAppeal([FromBody] ProjectAppealModel appeal)
         {
-            // TODO: Add logic to create project appeal
-            return Ok(appeal);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+
+                if (appeal == null) return BadRequest("Appeal details cannot be empty.");
+
+                var mappedClaimAppeal = mapper.Map<ProjectAppeal>(appeal);
+
+                var projectAppealId = projectAppealRepository.Insert(mappedClaimAppeal);
+                return Ok(projectAppealId);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -30,8 +87,22 @@ namespace EMBC.DFA.API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateProjectAppeal(string id, [FromBody] ProjectAppealModel appeal)
         {
-            //TODO: Add logic to update project appeal
-            return Ok(appeal);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
+                if (appeal == null) return BadRequest("Appeal details cannot be empty.");
+
+                var mappedProjectAppeal = mapper.Map<ProjectAppeal>(appeal);
+
+                mappedProjectAppeal.SubmissionDate = DateTime.Now;
+
+                var result = projectAppealRepository.Update(mappedProjectAppeal);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         /// <summary>
@@ -52,14 +123,23 @@ namespace EMBC.DFA.API.Controllers
     /// </summary>
     public class ProjectAppealModel
     {
-        public string Id { get; set; }
-        public string CaseId { get; set; }
+        public string? Id { get; set; }
+        public string? CaseId { get; set; }
+
+        public string? Name { get; set; }
+
+        public string? AppealDecision { get; set; }
+
+        public DateTime? SubmissionDate { get; set; }
 
         /// <summary>
         /// User submitted reason for the appeal.
         /// </summary>
         /// <value></value>
-        public string Reason { get; set; }
-        public string Status { get; set; }
+        public string? Reason { get; set; }
+        public string? Status { get; set; }
     }
+
+    public class CreateAppealModel { }
+
 }
