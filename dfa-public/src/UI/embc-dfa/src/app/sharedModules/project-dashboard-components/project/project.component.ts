@@ -7,7 +7,7 @@ import { AppSessionService } from 'src/app/core/services/appSession.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-application-main/dfa-application-main-data.service';
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
-import { CurrentApplication, CurrentProject } from 'src/app/core/api/models';
+import { CurrentApplication, CurrentProject, StatusBar } from 'src/app/core/api/models';
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { Decision } from 'src/app/models/decision.enum';
@@ -25,6 +25,10 @@ interface AppealStatusItem {
   stage?: string;
   isCompleted?: boolean;
   isFinalStep?: boolean;
+}
+
+interface StatusBarExtended extends StatusBar {
+  stages?: string[]
 }
 // ####################################################################
 
@@ -81,22 +85,13 @@ export class DfaDashProjectComponent implements OnInit {
     { status: "Submitted", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Under Review", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Appeals Adjudicator Review", stage: "", statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Appeals Compliance Check", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Under Review", stage: "",stages: ["Under Review", "Appeals Adjudicator Review", "Appeals Compliance Check"], statusColor: "#FDCB52", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "Approval Pending", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "Appeal Decision", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
-    { status: "DFA Project Update", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
+    { status: "Appeal Decision", stage: "", stages:['DFA Project Update', 'Appeal Decision', 'Decision'], statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "", stage: "", statusColor: "", isCompleted: false, currentStep: false, isFinalStep: false, isErrorInStatus: false },
     { status: "Closed", stage: "", statusColor: "#62A370", isCompleted: false, currentStep: false, isFinalStep: true, isErrorInStatus: false },
@@ -209,7 +204,8 @@ export class DfaDashProjectComponent implements OnInit {
             objAppWithAppeals.appealStatusBar.forEach((objStatItem) => {
               const statusMatch =
                 objApp.activeStage?.stage &&
-                objStatItem.status?.toLowerCase() === objApp.activeStage.stage.toLowerCase();
+                objStatItem.status?.toLowerCase() === objApp.activeStage.stage.toLowerCase()
+                || (objStatItem as StatusBarExtended).stages?.some(stage => stage.toLowerCase() === objApp.activeStage?.stage?.toLowerCase());
 
               if (statusMatch) {
                 if (!objApp.activeStage?.completedOn) {
@@ -223,9 +219,9 @@ export class DfaDashProjectComponent implements OnInit {
                   //this.dFAProjectMainDataService.setStage(objApp.stage);
                 }
 
-                if (objApp.projectDecision) {
-                  //this.dFAProjectMainDataService.setProjectDecision(objApp.projectDecision);
-                }
+                // if (objApp.projectDecision) {
+                //   this.dFAProjectMainDataService.setProjectDecision(objApp.projectDecision);
+                // }
 
                 // Determine statusColor based on logic
                 if (['Ineligible', 'Withdrawn'].includes(objApp.activeStage.stage || '')) {
