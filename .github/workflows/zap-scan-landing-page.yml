@@ -52,10 +52,10 @@ jobs:
                 -t ${{ env.ZAP_TARGET_URL }} \
                 -J report_json.json \
                 -r report_html.html \
-                -s results.sarif \
+                --sarif results.sarif \
                 -a -j -I -T 15 \
                 -c .zap/rules-landing.tsv \
-                --auto || true
+                --autooff
             " || true
 
       - name: Check SARIF File
