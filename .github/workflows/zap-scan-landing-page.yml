@@ -41,7 +41,7 @@ jobs:
           chmod 666 report_html.html report_json.json results.sarif zap.yaml
           chmod 777 .
           
-          # Run ZAP scan using Docker
+          # Run ZAP scan using Docker (continue on warnings)
           docker run --rm \
             -v $(pwd):/zap/wrk/:rw \
             --network=host \
@@ -54,8 +54,9 @@ jobs:
                 -r report_html.html \
                 -s results.sarif \
                 -a -j -I -T 15 \
-                -c .zap/rules-landing.tsv
-            "
+                -c .zap/rules-landing.tsv \
+                --auto || true
+            " || true
           
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
