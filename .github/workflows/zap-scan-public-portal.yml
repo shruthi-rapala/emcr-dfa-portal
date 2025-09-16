@@ -34,17 +34,26 @@ jobs:
           echo "Preparing ZAP scan for Public Portal: ${{ env.ZAP_TARGET_URL }}"
           echo "Using rules file: .zap/rules-public.tsv"
           echo "Scan type: Enhanced baseline with form validation focus"
-        
-      - name: ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.12.0
-        with:
-          target: ${{ env.ZAP_TARGET_URL }}
-          rules_file_name: '.zap/rules-public.tsv'
-          cmd_options: '-a -j -I -T 20 -D 5'
-          issue_title: 'ZAP Security Scan - Public Portal'
-          fail_action: false
-          allow_issue_writing: false
-          artifact_name: 'zap'
+          
+      - name: Run ZAP Baseline Scan
+        run: |
+          # Create report files
+          touch report_html.html report_json.json results.sarif
+          chmod a+w report_html.html report_json.json results.sarif
+          
+          # Run ZAP scan using Docker
+          docker run --rm \
+            -v $(pwd):/zap/wrk/:rw \
+            --network=host \
+            -t ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py \
+            -t ${{ env.ZAP_TARGET_URL }} \
+            -J report_json.json \
+            -w report_md.md \
+            -r report_html.html \
+            -s results.sarif \
+            -a -j -I -T 20 -D 5 \
+            -c .zap/rules-public.tsv
           
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
