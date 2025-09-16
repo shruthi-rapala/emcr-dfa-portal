@@ -43,6 +43,7 @@ jobs:
           issue_title: 'ZAP Security Scan - Landing Page'
           fail_action: false
           allow_issue_writing: false
+          artifact_name: 'zap-landing-page-scan'
           
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
@@ -62,10 +63,10 @@ jobs:
           
       - name: Upload SARIF Report to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: always() && hashFiles('results.sarif') != ''
         with:
           sarif_file: results.sarif
-          category: 'ZAP-Landing-Page'
+          category: 'ZAP-DFA-Landing-Page-scan'
           
       - name: Security Scan Summary
         if: always()
