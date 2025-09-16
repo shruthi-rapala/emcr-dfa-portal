@@ -58,18 +58,6 @@ jobs:
                 --autooff
             " || true
 
-      - name: Check SARIF File
-        if: always()
-        run: |
-          echo "Checking SARIF file..."
-          ls -la results.sarif
-          if [ -f results.sarif ]; then
-            echo "SARIF file exists. Size: $(stat -f%z results.sarif) bytes"
-            head -20 results.sarif
-          else
-            echo "SARIF file does not exist"
-          fi
-          
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
         if: always()
