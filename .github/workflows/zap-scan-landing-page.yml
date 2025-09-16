@@ -43,7 +43,6 @@ jobs:
           issue_title: 'ZAP Security Scan - Landing Page'
           fail_action: false
           allow_issue_writing: false
-          artifact_name: 'zap_landing_page_scan'
           
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
