@@ -44,6 +44,7 @@ jobs:
           issue_title: 'ZAP Security Scan - Private Portal'
           fail_action: true
           allow_issue_writing: false
+          artifact_name: 'zap'
           
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
