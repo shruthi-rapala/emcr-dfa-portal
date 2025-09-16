@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, mapTo } from 'rxjs';
 import { CurrentApplication, CurrentProjectAppeal, FileCategory, FileUploadProjectAppeal, ProjectAppealModel, RecoveryPlan } from 'src/app/core/api/models';
 import { ApplicationService, AttachmentService, ProjectAppealService, ProjectService } from 'src/app/core/api/services';
 import { WarningDialogComponent } from 'src/app/core/components/dialog-components/warning-dialog/warning-dialog.component';
+import { FormCreationService } from 'src/app/core/services/formCreation.service';
 /**
  * Public eligibility Appeal main component.
  *
@@ -44,6 +46,11 @@ export class AppealMainComponent implements OnInit {
   reasonMaxLength: number = 2000;
   reasonRemainingLength: number = 2000;
 
+  //fileUploadsProjectAppealForm: UntypedFormGroup = this.formCreationService.fileUploadsProjectAppealForm;
+  projectAppealDocumentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate'];
+  projectAppealDocumentSummaryDataSource = new MatTableDataSource();
+  documentsData: FileUploadProjectAppeal[] = [];
+
   allowedFileTypes = [
     'application/pdf',
     'image/jpg',
@@ -60,6 +67,7 @@ export class AppealMainComponent implements OnInit {
   appealId: any;
   applicationId: any;
 
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -68,7 +76,8 @@ export class AppealMainComponent implements OnInit {
     private applicationService: ApplicationService,
     private projectAppealService: ProjectAppealService,
     private attachmentsService: AttachmentService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private formCreationService: FormCreationService,
   ) {
     this.appealForm = this.formBuilder.group({
       step1: this.formBuilder.group({
@@ -91,6 +100,17 @@ export class AppealMainComponent implements OnInit {
       this.loadProjectAndAppeal(this.projectId);
       this.loadApplication(this.applicationId);
 
+      // subscribe to changes for document summary
+      const _projectAppealDocumentSummaryFormArray = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads');
+      _projectAppealDocumentSummaryFormArray.valueChanges
+        .pipe(
+          mapTo(_projectAppealDocumentSummaryFormArray.getRawValue())
+        ).subscribe(
+          _data => {
+            this.projectAppealDocumentSummaryDataSource.data = _projectAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
+          });
+
+      this.getFileUploadsForProjectAppeal(this.appealId);
     });
   }
 
@@ -185,6 +205,44 @@ export class AppealMainComponent implements OnInit {
       }
     });
   }
+
+  public getFileUploadsForProjectAppeal(appealId: string) {
+    this.attachmentsService.attachmentGetProjectAppealAttachments({ projectAppealId: appealId }).subscribe({
+      next: (attachments) => {
+        // Filter out soft-deleted files
+        const activeAttachments = attachments.filter(attachment => !attachment.deleteFlag);
+
+        // Transform AppealFileMetadataUpload to FileUploadClaimAppeal
+        const transformedAttachments = activeAttachments.map(attachment => ({
+          id: attachment.id,
+          fileName: attachment.fileName,
+          fileDescription: attachment.fileDescription,
+          fileType: attachment.fileType,
+          fileTypeText: attachment.fileTypeText?.toString() || 'Appeal',
+          contentType: attachment.contentType,
+          fileSize: attachment.fileSize,
+          uploadedDate: attachment.uploadedDate,
+          appealId: attachment.appealId,
+          deleteFlag: attachment.deleteFlag || false,
+          fileData: null,
+          modifiedBy: null,
+          requiredDocumentType: null
+        }));
+
+        this.documentsData = transformedAttachments;
+        this.projectAppealDocumentSummaryDataSource.data = this.documentsData;
+
+        // initialize list of file uploads
+        this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').setValue(transformedAttachments);
+
+      },
+      error: (error) => {
+        console.error(error);
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+      }
+    });
+  }
+  
 
   /**
    * Cancels the appeal process and redirects user.
@@ -441,5 +499,9 @@ export class AppealMainComponent implements OnInit {
     }
 
     return documents.map((doc) => doc.fileName).join('\n');
+  }
+
+  BackToDashboard() {
+    this.router.navigate(['/dfa-application/' + this.applicationId + '/projects']);
   }
 }

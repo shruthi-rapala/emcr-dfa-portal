@@ -36,8 +36,9 @@ export class AppealDocumentsComponent implements OnInit {
   @Input() project: RecoveryPlan;
   @Input() application: CurrentApplication;
   @Input() appeal: CurrentProjectAppeal;
-  @Input() isReadOnly: boolean = false;
   @Input() isDisabled: boolean = false;
+  @Input() documentsData: FileUploadProjectAppeal[];
+  @Input() vieworedit : string;
   /**
    * Callback fired when the remove document button is clicked.
    *
@@ -68,7 +69,7 @@ export class AppealDocumentsComponent implements OnInit {
   isdisabled: string = 'false';
   fileUploadsProjectAppealForm: UntypedFormGroup = this.formCreationService.fileUploadsProjectAppealForm;
   projectAppealDocumentSummaryColumnsToDisplay = ['fileName', 'fileDescription', 'fileTypeText', 'uploadedDate']
-  projectAppealDocumentSummaryDataSource = new MatTableDataSource();
+  projectAppealDocumentSummaryDataSource = new MatTableDataSource<FileUploadProjectAppeal>();
   appealId = this.route.snapshot.params['appealId'];
 
   constructor(
@@ -85,56 +86,23 @@ export class AppealDocumentsComponent implements OnInit {
     
 
     // subscribe to changes for document summary
-    const _claimAppealDocumentSummaryFormArray = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads');
-    _claimAppealDocumentSummaryFormArray.valueChanges
+    const _projectAppealDocumentSummaryFormArray = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads');
+    _projectAppealDocumentSummaryFormArray.valueChanges
       .pipe(
-        mapTo(_claimAppealDocumentSummaryFormArray.getRawValue())
+        mapTo(_projectAppealDocumentSummaryFormArray.getRawValue())
       ).subscribe(
         _data => {
-          this.projectAppealDocumentSummaryDataSource.data = _claimAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
+          this.projectAppealDocumentSummaryDataSource.data = _projectAppealDocumentSummaryFormArray.getRawValue()?.filter(x => x.deleteFlag == false)
         });
 
+    this.projectAppealDocumentSummaryDataSource.data = this.documentsData.filter(x => x.deleteFlag == false);
 
-    this.getFileUploadsForClaimAppeal(this.appealId);
-
-
+    if (this.vieworedit !== 'view') {
+      this.projectAppealDocumentSummaryColumnsToDisplay.push('icons');
+    }
   }
 
-  // Get the documents FormArray from the appeal form
-
-  public getFileUploadsForClaimAppeal(appealId: string) {
-    this.attachmentService.attachmentGetProjectAppealAttachments({ projectAppealId: appealId }).subscribe({
-      next: (attachments) => {
-        // Filter out soft-deleted files
-        const activeAttachments = attachments.filter(attachment => !attachment.deleteFlag);
-
-        // Transform AppealFileMetadataUpload to FileUploadClaimAppeal
-        const transformedAttachments = activeAttachments.map(attachment => ({
-          id: attachment.id,
-          fileName: attachment.fileName,
-          fileDescription: attachment.fileDescription,
-          fileType: attachment.fileType,
-          fileTypeText: attachment.fileTypeText?.toString() || 'Appeal',
-          contentType: attachment.contentType,
-          fileSize: attachment.fileSize,
-          uploadedDate: attachment.uploadedDate,
-          appealId: attachment.appealId,
-          deleteFlag: attachment.deleteFlag || false,
-          fileData: null,
-          modifiedBy: null,
-          requiredDocumentType: null
-        }));
-
-        // initialize list of file uploads
-        this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').setValue(transformedAttachments);
-
-      },
-      error: (error) => {
-        console.error(error);
-        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
-      }
-    });
-  }
+  
 
   saveSupportingFiles(fileUpload: FileUploadProjectAppeal) {
     console.log("saveSupportingFilesProjectAppeals", fileUpload);
@@ -215,32 +183,32 @@ export class AppealDocumentsComponent implements OnInit {
       this.attachmentService.attachmentUpsertDeleteProjectAppealAttachment({ body: softDeletePayload }).subscribe({
         next: (result) => {
           // Remove from local array after successful soft delete
-          let fileUploads = this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value;
+          let fileUploads = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').value;
           let index = fileUploads?.indexOf(element);
           if (index > -1) {
             fileUploads.splice(index, 1);
-            this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').setValue(fileUploads);
+            this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').setValue(fileUploads);
           }
-          if (this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value.length === 0) {
+          if (this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').value.length === 0) {
             this.fileUploadsProjectAppealForm
               .get('addNewFileUploadIndicator')
               .setValue(false);
           }
         },
         error: (error) => {
-          console.error('Error soft deleting amendment attachment:', error);
+          console.error('Error soft deleting Project Appeal attachment:', error);
           this.warningDialog('Failed to delete the document. Please try again.');
         }
       });
     } else {
       // If no ID, just remove from local array (file wasn't saved yet)
-      let fileUploads = this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value;
+      let fileUploads = this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').value;
       let index = fileUploads?.indexOf(element);
       if (index > -1) {
         fileUploads.splice(index, 1);
-        this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').setValue(fileUploads);
+        this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').setValue(fileUploads);
       }
-      if (this.formCreationService.fileUploadsClaimAppealForm.value.get('fileUploads').value.length === 0) {
+      if (this.formCreationService.fileUploadsProjectAppealForm.get('fileUploads').value.length === 0) {
         this.fileUploadsProjectAppealForm
           .get('addNewFileUploadIndicator')
           .setValue(false);
