@@ -38,10 +38,11 @@ jobs:
       - name: Run ZAP Baseline Scan
         run: |
           # Create report files with proper permissions
-          touch report_html.html report_json.json results.sarif
-          chmod 666 report_html.html report_json.json results.sarif
+          touch report_html.html report_json.json results.sarif zap.yaml
+          chmod 666 report_html.html report_json.json results.sarif zap.yaml
+          chmod 777 .
           
-          # Run ZAP scan using Docker with proper volume permissions
+          # Run ZAP scan using Docker
           docker run --rm \
             -v $(pwd):/zap/wrk/:rw \
             --network=host \
