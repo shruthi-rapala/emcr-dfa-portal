@@ -45,7 +45,6 @@ jobs:
           docker run --rm \
             -v $(pwd):/zap/wrk/:rw \
             --network=host \
-            --user $(id -u):$(id -g) \
             -t ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
             -t ${{ env.ZAP_TARGET_URL }} \
