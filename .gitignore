@@ -38,3 +38,9 @@ dfa-public/src/UI/embc-dfa/package-lock.json
 
 # Ignore Pycache
 *__pycache__*
+
+# ZAP Security Scan Reports (generated locally and in CI/CD)
+.zap/*.html
+.zap/*.json
+.zap/gen.conf
+*zap-report*

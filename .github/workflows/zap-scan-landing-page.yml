@@ -1,4 +1,4 @@
-name: ZAP Scan Public Portal
+name: ZAP Scan Landing Page
 permissions:
   contents: read
   security-events: write
@@ -9,21 +9,21 @@ on:
     branches:
       - support-develop
     paths:
-      - "dfa-public/**"
-      - ".github/workflows/zap-scan-public-config.yml"
+      - "landing-page/**"
+      - ".github/workflows/zap-scan-landing-page.yml"
   schedule:
-    # Bi-weekly scan at 6:15 AM UTC (1st and 15th of month)
-    - cron: '15 6 1,15 * *'
+    # Bi-weekly scan at 6:05 AM UTC (1st and 15th of month)
+    - cron: '5 6 1,15 * *'
   workflow_dispatch:
 
 env:
-  ZAP_TARGET_URL: 'https://publicsector-dev.dfa.gov.bc.ca'
+  ZAP_TARGET_URL: 'https://dev.dfa.gov.bc.ca'
   
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
-    name: ZAP Security Scan - Public Portal
-    timeout-minutes: 45
+    name: ZAP Security Scan - Landing Page
+    timeout-minutes: 30
     
     steps:
       - name: Checkout Repository
@@ -31,17 +31,16 @@ jobs:
         
       - name: Setup ZAP Configuration
         run: |
-          echo "Preparing ZAP scan for Public Portal: ${{ env.ZAP_TARGET_URL }}"
-          echo "Using rules file: .zap/rules-public.tsv"
-          echo "Scan type: Enhanced baseline with form validation focus"
+          echo "Preparing ZAP scan for Landing Page: ${{ env.ZAP_TARGET_URL }}"
+          echo "Using rules file: .zap/rules-landing.tsv"
         
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: ${{ env.ZAP_TARGET_URL }}
-          rules_file_name: '.zap/rules-public.tsv'
-          cmd_options: '-a -j -I -T 20 -D 5'
-          issue_title: 'ZAP Security Scan - Public Portal'
+          rules_file_name: '.zap/rules-landing.tsv'
+          cmd_options: '-a -j -I -T 15'
+          issue_title: 'ZAP Security Scan - Landing Page'
           fail_action: false
           allow_issue_writing: false
           
@@ -49,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: zap-public-portal-html-report
+          name: zap-landing-page-html-report
           path: report_html.html
           retention-days: 30
           
@@ -57,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: zap-public-portal-json-report
+          name: zap-landing-page-json-report
           path: report_json.json
           retention-days: 30
           
@@ -66,14 +65,14 @@ jobs:
         if: always()
         with:
           sarif_file: results.sarif
-          category: 'ZAP-Public-Portal'
+          category: 'ZAP-Landing-Page'
           
       - name: Security Scan Summary
         if: always()
         run: |
-          echo "## ZAP Security Scan Results - Public Portal" >> $GITHUB_STEP_SUMMARY
+          echo "## ZAP Security Scan Results - Landing Page" >> $GITHUB_STEP_SUMMARY
           echo "**Target:** ${{ env.ZAP_TARGET_URL }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Scan Type:** Enhanced Baseline (Form Validation Focus)" >> $GITHUB_STEP_SUMMARY
+          echo "**Scan Type:** Baseline Security Scan" >> $GITHUB_STEP_SUMMARY
           echo "**Reports:** Available in workflow artifacts" >> $GITHUB_STEP_SUMMARY
           if [ -f report_json.json ]; then
             echo "**Status:** Scan completed - Check SARIF results in Security tab" >> $GITHUB_STEP_SUMMARY

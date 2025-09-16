@@ -1,0 +1,69 @@
+# ZAP Rules for Public Portal (Registration/Forms)
+# Format: ID	THRESHOLD	[NOTES]
+# Updated for maximum security coverage - Public Portal
+
+# Critical Cookie Security (Public Forms)
+10010	HIGH	# Cookie No HttpOnly Flag
+10011	HIGH	# Cookie Without Secure Flag
+10054	HIGH	# Cookie Without SameSite Attribute
+90033	HIGH	# Loosely Scoped Cookie
+
+# Security Headers (Critical for Public Forms)
+10015	HIGH	# Incomplete or No Cache-control and Pragma HTTP Header Set
+10016	HIGH	# Web Browser XSS Protection Not Enabled
+10017	HIGH	# Cross-Domain JavaScript Source File Inclusion
+10020	HIGH	# X-Frame-Options Header Not Set
+10021	HIGH	# X-Content-Type-Options Header Missing
+10038	HIGH	# Content Security Policy (CSP) Header Not Set
+10035	HIGH	# Strict-Transport-Security Header Not Set
+10055	HIGH	# CSP Scanner
+
+# Information Disclosure (Critical for Public)
+10023	HIGH	# Information Disclosure - Debug Error Messages
+10025	HIGH	# Information Disclosure - Sensitive Information in URL
+10027	MEDIUM	# Information Disclosure - Suspicious Comments
+10094	HIGH	# Base64 Disclosure
+10096	LOW	# Timestamp Disclosure
+10062	HIGH	# PII Disclosure
+10098	HIGH	# Cross-Domain Misconfiguration
+
+# Form Security (Critical for Registration)
+10040	HIGH	# Secure Pages Include Mixed Content
+90011	MEDIUM	# Charset Mismatch
+90019	HIGH	# Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)
+
+# Input Validation (Critical for Forms)
+40012	HIGH	# Cross Site Scripting (Reflected)
+40014	HIGH	# Cross Site Scripting (Persistent)
+40016	HIGH	# Cross Site Scripting (Persistent) - Prime
+40017	HIGH	# Cross Site Scripting (Persistent) - Spider
+40018	HIGH	# SQL Injection
+40019	HIGH	# SQL Injection - MySQL
+40020	HIGH	# SQL Injection - Hypersonic SQL
+40021	HIGH	# SQL Injection - Oracle
+40022	HIGH	# SQL Injection - PostgreSQL
+
+# Advanced Security for Public Forms
+90034	HIGH	# Heartbleed OpenSSL Vulnerability
+90003	HIGH	# Sub Resource Integrity Attribute Missing
+90022	MEDIUM	# Application Error Disclosure
+10047	HIGH	# HTTPS Content Available via HTTP
+
+# CSRF Protection (Critical for Forms)
+10202	HIGH	# Absence of Anti-CSRF Tokens
+40013	HIGH	# Session Fixation
+
+# File Upload Security
+30001	HIGH	# Buffer Overflow
+30002	HIGH	# Format String Error
+30003	HIGH	# Integer Overflow Error
+
+# Path Traversal and File Inclusion
+6	HIGH	# Path Traversal
+7	HIGH	# Remote File Inclusion
+
+# Form-Specific Vulnerabilities
+90020	HIGH	# Insecure HTTP Method
+90021	MEDIUM	# Insufficient Authentication
+10109	HIGH	# Modern Web Application
+10108	MEDIUM	# Reverse Tabnabbing
