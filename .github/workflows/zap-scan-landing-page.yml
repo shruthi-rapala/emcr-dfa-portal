@@ -45,15 +45,16 @@ jobs:
           docker run --rm \
             -v $(pwd):/zap/wrk/:rw \
             --network=host \
+            --workdir=/zap/wrk \
             -t ghcr.io/zaproxy/zaproxy:stable \
             bash -c "
               zap-baseline.py \
                 -t ${{ env.ZAP_TARGET_URL }} \
-                -J /zap/wrk/report_json.json \
-                -r /zap/wrk/report_html.html \
-                -s /zap/wrk/results.sarif \
+                -J report_json.json \
+                -r report_html.html \
+                -s results.sarif \
                 -a -j -I -T 15 \
-                -c /zap/wrk/.zap/rules-landing.tsv
+                -c .zap/rules-landing.tsv
             "
           
       - name: Upload ZAP HTML Report
