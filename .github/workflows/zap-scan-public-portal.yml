@@ -37,19 +37,19 @@ jobs:
           
       - name: Run ZAP Baseline Scan
         run: |
-          # Create report files
+          # Create report files with proper permissions
           touch report_html.html report_json.json results.sarif
-          chmod a+w report_html.html report_json.json results.sarif
+          chmod 666 report_html.html report_json.json results.sarif
           
           # Run ZAP scan using Docker
           docker run --rm \
             -v $(pwd):/zap/wrk/:rw \
             --network=host \
+            --user $(id -u):$(id -g) \
             -t ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
             -t ${{ env.ZAP_TARGET_URL }} \
             -J report_json.json \
-            -w report_md.md \
             -r report_html.html \
             -s results.sarif \
             -a -j -I -T 20 -D 5 \
