@@ -36,22 +36,22 @@ jobs:
           
       - name: Run ZAP Baseline Scan
         run: |
-          # Create report files with proper permissions
-          touch report_html.html report_json.json results.sarif
-          chmod 666 report_html.html report_json.json results.sarif
-          
           # Run ZAP scan using Docker
           docker run --rm \
             -v $(pwd):/zap/wrk/:rw \
             --network=host \
             -t ghcr.io/zaproxy/zaproxy:stable \
-            zap-baseline.py \
-            -t ${{ env.ZAP_TARGET_URL }} \
-            -J report_json.json \
-            -r report_html.html \
-            -s results.sarif \
-            -a -j -I -T 15 \
-            -c .zap/rules-landing.tsv
+            bash -c "
+              touch /zap/wrk/report_html.html /zap/wrk/report_json.json /zap/wrk/results.sarif && \
+              chmod 666 /zap/wrk/report_html.html /zap/wrk/report_json.json /zap/wrk/results.sarif && \
+              zap-baseline.py \
+                -t ${{ env.ZAP_TARGET_URL }} \
+                -J /zap/wrk/report_json.json \
+                -r /zap/wrk/report_html.html \
+                -s /zap/wrk/results.sarif \
+                -a -j -I -T 15 \
+                -c /zap/wrk/.zap/rules-landing.tsv
+            "
           
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
