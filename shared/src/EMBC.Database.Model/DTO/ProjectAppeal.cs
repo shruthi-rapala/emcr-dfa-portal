@@ -17,6 +17,18 @@ public record ProjectAppealQuery
     public Guid? ProjectId { get; set; }
 }
 
+public enum ProjectAppealDecision
+{
+    [Description("Overturned")]
+    Overturned = 222710001,
+
+    [Description("Upheld")]
+    Upheld = 222710000,
+
+    [Description("Withdrawn")]
+    Withdrawn = 222710002,
+}
+
 public record ProjectAppeal : IDto
 {
     public Guid Id { get; set; }
@@ -64,7 +76,7 @@ public record ProjectAppeal : IDto
     public bool? ApRequiresDecisionNote { get; set; } // Dynamics Optional
     public bool? ApWaitingOnLegal { get; set; } // Dynamics Optional
 
-    public string? AppealDecision { get; set; } // Dynamics Optional
+    public ProjectAppealDecision? AppealDecision { get; set; } // Dynamics Optional
     public bool? AppealDecisionCommentsAdded { get; set; } // Dynamics Optional
     public bool? ReviewAppealDecisionLetter { get; set; } // Dynamics Optional
     public bool? UpdateProjectDecision { get; set; } // Dynamics Optional

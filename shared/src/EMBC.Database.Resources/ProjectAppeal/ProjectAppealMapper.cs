@@ -10,7 +10,7 @@ public class ProjectAppealMapper : Profile
             .ForMember(dest => dest.ProjectId, opt => opt.MapFrom(src =>
                 src.DFA_ProjectId != null ? src.DFA_ProjectId.Id.ToString() : string.Empty))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DFA_ProjectAppealId))
-            .ForMember(dest => dest.AppealDecision, opt => opt.MapFrom(src => src.DFA_AppealDecision))
+           .ForMember(dest => dest.AppealDecision, opt => opt.MapFrom(src => src.DFA_AppealDecision.HasValue ? (ProjectAppealDecision)(int)src.DFA_AppealDecision.Value : default))
             .ForMember(dest => dest.SubmissionDate, opt => opt.MapFrom(src => src.DFA_DateAppealReceived))
             .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.DFA_AppealRationale))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.DFA_Name));
@@ -63,7 +63,7 @@ public class ProjectAppealMapper : Profile
             .ForMember(dest => dest.ApAdditionalInfoRequest, opt => opt.MapFrom(src => src.ProjectAppeal.DFA_Ap_AdditionalInfoRequested))
             .ForMember(dest => dest.ApRequiresDecisionNote, opt => opt.MapFrom(src => src.ProjectAppeal.DFA_Ap_RequiresDecisionNote))
             .ForMember(dest => dest.ApWaitingOnLegal, opt => opt.MapFrom(src => src.ProjectAppeal.DFA_Ap_WaitingOnLegal))
-            .ForMember(dest => dest.AppealDecision, opt => opt.MapFrom(src => src.ProjectAppeal.DFA_AppealDecision))
+            .ForMember(dest => dest.AppealDecision, opt => opt.MapFrom(src => src.ProjectAppeal.DFA_AppealDecision.HasValue ? (ProjectAppealDecision)(int)src.ProjectAppeal.DFA_AppealDecision.Value : default))
             .ForMember(dest => dest.AppealDecisionCommentsAdded, opt => opt.MapFrom(src => src.ProjectAppeal.DFA_AppealDecisionCommentsAdded))
             .ForMember(dest => dest.ReviewAppealDecisionLetter, opt => opt.MapFrom(src => src.ProjectAppeal.DFA_ReviewAppealDecisionLetter))
             .ForMember(dest => dest.UpdateProjectDecision, opt => opt.MapFrom(src => src.ProjectAppeal.DFA_UpdateProjectDecision))

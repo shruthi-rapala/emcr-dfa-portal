@@ -21,6 +21,7 @@ export class DFAProjectMainDataService {
   private _editstep: string;
   private _stage: string;
   private _projectDecision: string;
+  private _projectAppealDecision: string;
   private _requiredDocuments = [];
   public changeViewOrEdit: EventEmitter<string> = new EventEmitter<string>();
   public changeAppUrl: EventEmitter<string> = new EventEmitter<string>();
@@ -185,6 +186,14 @@ export class DFAProjectMainDataService {
   public getProjectDecision(): string {
     return this._projectDecision;
   }
+
+  public setProjectAppealDecision(projectappealDecision: string): void {
+    this._projectAppealDecision = projectappealDecision;
+  }
+  public getProjectAppealDecision(): string {
+    return this._projectAppealDecision;
+  }
+
 
    public createDFAProjectMainDTO(): DfaProjectMain {
     return {

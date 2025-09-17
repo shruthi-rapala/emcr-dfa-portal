@@ -219,9 +219,10 @@ export class DfaDashProjectComponent implements OnInit {
                   //this.dFAProjectMainDataService.setStage(objApp.stage);
                 }
 
-                // if (objApp.projectDecision) {
-                //   this.dFAProjectMainDataService.setProjectDecision(objApp.projectDecision);
-                // }
+
+                if (objApp.activeStage?.appealDecision) {
+                  this.dFAProjectMainDataService.setProjectAppealDecision(objApp.activeStage?.appealDecision);
+                }
 
                 // Determine statusColor based on logic
                 if (['Ineligible', 'Withdrawn'].includes(objApp.activeStage.stage || '')) {
