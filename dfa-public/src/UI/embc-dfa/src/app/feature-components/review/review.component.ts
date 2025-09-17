@@ -121,7 +121,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
   otherContactsColumnsToDisplay = ['name', 'phoneNumber', 'email'];
 
   noCauseOfDamageError: boolean = false;
-  primaryContactValidated: boolean = false;
+  primaryContactValidated: boolean = true; // set this to false once the prod issue is resolved
 
   applicationType: string;
   hasInsurance: string;
