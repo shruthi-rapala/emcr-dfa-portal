@@ -263,15 +263,15 @@ export default class ContactsComponent implements OnInit, OnDestroy {
   private fetchCurrentUserInfo(): void {
     this.contactService.contactGetLoginInfo().subscribe({
       next: (userData: BceidUserData) => {
-        // if (userData && userData.bceid_username) {
-        //   // Auto-populate the primaryContactSearch with current user's BCeID username
-        //   this.contactsForm
-        //     .get('primaryContactSearch')
-        //     .setValue(userData.bceid_username);
+        if (userData && userData.bceid_username) {
+          // Auto-populate the primaryContactSearch with current user's BCeID username
+          this.contactsForm
+            .get('primaryContactSearch')
+            .setValue(userData.bceid_username);
 
-        //   // Call searchForContact to populate other fields
-        //   this.searchForContact();
-        // }
+          // Call searchForContact to populate other fields
+          this.searchForContact();
+        }
       },
       error: (error) => {
         console.error('Error fetching current user info:', error);
