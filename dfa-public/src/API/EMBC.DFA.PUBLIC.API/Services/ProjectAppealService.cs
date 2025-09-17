@@ -85,11 +85,11 @@ public class ProjectAppealService
             case "Appeal Decision":
                 if (projectAppeal.AppealDecisionCommentsAdded.ToBool() || projectAppeal.AppealDecision != null)
                 {
-                    return projectAppeal.AppealDecision.ThrowIfNullOrEmpty();
+                    return projectAppeal.AppealDecision?.ToString() ?? string.Empty; // Fixed the issue here
                 }
                 return PortalNote.InProgress;
             case "DFA Project Update":
-                return projectAppeal.AppealDecision.ThrowIfNullOrEmpty();
+                return projectAppeal.AppealDecision?.ToString() ?? string.Empty; // Fixed the issue here
             case "Closed":
                 return projectAppeal.StatusCode.GetDescription();
             default:
