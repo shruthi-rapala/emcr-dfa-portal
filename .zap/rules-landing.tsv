@@ -3,31 +3,31 @@
 # Updated for maximum security coverage - Landing Page
 
 # Critical Security Headers (High Priority)
-10021	HIGH	# X-Content-Type-Options Header Missing
-10020	HIGH	# X-Frame-Options Header Not Set
-10016	MEDIUM	# Web Browser XSS Protection Not Enabled
-10038	HIGH	# Content Security Policy (CSP) Header Not Set
-10035	HIGH	# Strict-Transport-Security Header Not Set
+10021	FAIL	# X-Content-Type-Options Header Missing
+10020	FAIL	# X-Frame-Options Header Not Set
+10016	WARN	# Web Browser XSS Protection Not Enabled
+10038	FAIL	# Content Security Policy (CSP) Header Not Set
+10035	FAIL	# Strict-Transport-Security Header Not Set
 
 # Information Disclosure (Critical)
-10094	HIGH	# Base64 Disclosure
-10027	MEDIUM	# Information Disclosure - Suspicious Comments
-10025	HIGH	# Information Disclosure - Sensitive Information in URL
-10023	HIGH	# Information Disclosure - Debug Error Messages
-10096	LOW	# Timestamp Disclosure
-10062	HIGH	# PII Disclosure
+10094	FAIL	# Base64 Disclosure
+10027	WARN	# Information Disclosure - Suspicious Comments
+10025	FAIL	# Information Disclosure - Sensitive Information in URL
+10023	FAIL	# Information Disclosure - Debug Error Messages
+10096	INFO	# Timestamp Disclosure
+10062	FAIL	# PII Disclosure
 
 # Cross-Domain and Content Security
-10015	MEDIUM	# Incomplete or No Cache-control and Pragma HTTP Header Set
-10017	HIGH	# Cross-Domain JavaScript Source File Inclusion
-10098	HIGH	# Cross-Domain Misconfiguration
-10040	HIGH	# Secure Pages Include Mixed Content
+10015	WARN	# Incomplete or No Cache-control and Pragma HTTP Header Set
+10017	FAIL	# Cross-Domain JavaScript Source File Inclusion
+10098	FAIL	# Cross-Domain Misconfiguration
+10040	FAIL	# Secure Pages Include Mixed Content
 
 # SSL/TLS Security
-10047	HIGH	# HTTPS Content Available via HTTP
-90003	HIGH	# Sub Resource Integrity Attribute Missing
+10047	FAIL	# HTTPS Content Available via HTTP
+90003	FAIL	# Sub Resource Integrity Attribute Missing
 
 # Modern Security Features
-10055	HIGH	# CSP Scanner
-10049	MEDIUM	# Non-Storable Content
-90022	MEDIUM	# Application Error Disclosure
+10055	FAIL	# CSP Scanner
+10049	WARN	# Non-Storable Content
+90022	WARN	# Application Error Disclosure

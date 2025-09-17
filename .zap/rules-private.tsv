@@ -3,51 +3,51 @@
 # Updated for maximum security coverage - Private Portal
 
 # Critical Cookie and Session Security
-10010	HIGH	# Cookie No HttpOnly Flag
-10011	HIGH	# Cookie Without Secure Flag
-10054	HIGH	# Cookie Without SameSite Attribute
-90033	HIGH	# Loosely Scoped Cookie
-90019	HIGH	# Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)
+10010	FAIL	# Cookie No HttpOnly Flag
+10011	FAIL	# Cookie Without Secure Flag
+10054	FAIL	# Cookie Without SameSite Attribute
+90033	FAIL	# Loosely Scoped Cookie
+90019	FAIL	# Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)
 
 # Security Headers (Critical for Auth Apps)
-10015	HIGH	# Incomplete or No Cache-control and Pragma HTTP Header Set
-10016	HIGH	# Web Browser XSS Protection Not Enabled
-10020	HIGH	# X-Frame-Options Header Not Set
-10021	HIGH	# X-Content-Type-Options Header Missing
-10038	HIGH	# Content Security Policy (CSP) Header Not Set
-10035	HIGH	# Strict-Transport-Security Header Not Set
-10055	HIGH	# CSP Scanner
+10015	FAIL	# Incomplete or No Cache-control and Pragma HTTP Header Set
+10016	FAIL	# Web Browser XSS Protection Not Enabled
+10020	FAIL	# X-Frame-Options Header Not Set
+10021	FAIL	# X-Content-Type-Options Header Missing
+10038	FAIL	# Content Security Policy (CSP) Header Not Set
+10035	FAIL	# Strict-Transport-Security Header Not Set
+10055	FAIL	# CSP Scanner
 
 # Information Disclosure (Critical)
-10023	HIGH	# Information Disclosure - Debug Error Messages
-10025	HIGH	# Information Disclosure - Sensitive Information in URL
-10027	MEDIUM	# Information Disclosure - Suspicious Comments
-10052	HIGH	# X-ChromeLogger-Data Header Information Leak
-10094	HIGH	# Base64 Disclosure
-10096	LOW	# Timestamp Disclosure
-10062	HIGH	# PII Disclosure
+10023	FAIL	# Information Disclosure - Debug Error Messages
+10025	FAIL	# Information Disclosure - Sensitive Information in URL
+10027	WARN	# Information Disclosure - Suspicious Comments
+10052	FAIL	# X-ChromeLogger-Data Header Information Leak
+10094	FAIL	# Base64 Disclosure
+10096	INFO	# Timestamp Disclosure
+10062	FAIL	# PII Disclosure
 
 # Cross-Domain and Content Security
-10017	HIGH	# Cross-Domain JavaScript Source File Inclusion
-10098	HIGH	# Cross-Domain Misconfiguration
-10040	HIGH	# Secure Pages Include Mixed Content
+10017	FAIL	# Cross-Domain JavaScript Source File Inclusion
+10098	FAIL	# Cross-Domain Misconfiguration
+10040	FAIL	# Secure Pages Include Mixed Content
 
 # Authentication & Authorization Security
-40012	HIGH	# Cross Site Scripting (Reflected)
-40014	HIGH	# Cross Site Scripting (Persistent)
-40016	HIGH	# Cross Site Scripting (Persistent) - Prime
-40017	HIGH	# Cross Site Scripting (Persistent) - Spider
-40018	HIGH	# SQL Injection
-40019	HIGH	# SQL Injection - MySQL
-40020	HIGH	# SQL Injection - Hypersonic SQL
-40021	HIGH	# SQL Injection - Oracle
-40022	HIGH	# SQL Injection - PostgreSQL
+40012	FAIL	# Cross Site Scripting (Reflected)
+40014	FAIL	# Cross Site Scripting (Persistent)
+40016	FAIL	# Cross Site Scripting (Persistent) - Prime
+40017	FAIL	# Cross Site Scripting (Persistent) - Spider
+40018	FAIL	# SQL Injection
+40019	FAIL	# SQL Injection - MySQL
+40020	FAIL	# SQL Injection - Hypersonic SQL
+40021	FAIL	# SQL Injection - Oracle
+40022	FAIL	# SQL Injection - PostgreSQL
 
 # Advanced Security Checks
-90011	MEDIUM	# Charset Mismatch
-90003	HIGH	# Sub Resource Integrity Attribute Missing
-90022	MEDIUM	# Application Error Disclosure
-10047	HIGH	# HTTPS Content Available via HTTP
+90011	WARN	# Charset Mismatch
+90003	FAIL	# Sub Resource Integrity Attribute Missing
+90022	WARN	# Application Error Disclosure
+10047	FAIL	# HTTPS Content Available via HTTP
 90034	HIGH	# Heartbleed OpenSSL Vulnerability
 
 # CSRF and Session Fixation
