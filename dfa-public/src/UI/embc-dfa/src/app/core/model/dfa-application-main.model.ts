@@ -557,11 +557,11 @@ export class ContactsForm {
     if (contacts.primaryContactSearch) {
       this.primaryContactSearch.setValue(contacts.primaryContactSearch);
     }
-    this.primaryContactSearch.setValidators([Validators.required,
-      customValidator
-        .maxLengthValidator(20)
-        .bind(customValidator)
-      ]);
+    // this.primaryContactSearch.setValidators([Validators.required,
+    //   customValidator
+    //     .maxLengthValidator(20)
+    //     .bind(customValidator)
+    //   ]);
   
     if (contacts.primaryContactValidated) {
       this.primaryContactValidated.setValue(contacts.primaryContactValidated);
