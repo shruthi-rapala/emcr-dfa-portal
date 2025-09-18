@@ -208,6 +208,7 @@
                         ? 'alignStatus'
                         : 'currentStatus'
                   ">
+                  <!-- Status :{{applItem.status}} IsComepleted : {{item.isCompleted}} CurrentStep : {{item.currentStep}} Stage :{{item.stage}} -->
                   <span
                     *ngIf="applItem.status != 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false"
                     class="material-icons"
@@ -217,21 +218,19 @@
                     {{ item.stage == 'Ineligible' || item.stage == 'Withdrawn' ? 'cancel' : 'check_circle' }}
                   </span>
                   <span
-                    *ngIf="applItem.status == 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false"
+                    *ngIf="item.status != 'Decision Made' && applItem.status == 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false"
                     class="material-icons"
                     [ngStyle]="{
-                      color:
-                        item.status == 'Decision Made' &&
-                        (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn')
-                          ? 'red'
-                          : 'rgb(21 178 89)'
-                    }">
-                    {{
-                      item.status == 'Decision Made' &&
-                      (applItem.stage == 'Ineligible' || applItem.stage == 'Withdrawn')
-                        ? 'cancel'
-                        : 'check_circle'
-                    }}
+                      color: 'rgb(21 178 89)'
+                    }"
+                  >
+                    check_circle
+                  </span>
+                  <span
+                    *ngIf="item.status == 'Decision Made' && applItem.status == 'Closed' && item.isCompleted == true && applItem.isErrorInStatus == false"
+                    class="currentStatus"
+                  >
+                    {{ applItem.projectDecision ?? 'Pending' }}
                   </span>
                   <span
                     *ngIf="
@@ -279,7 +278,9 @@
         [featureEnabled]="'useAppeals'"
         *ngIf="hasSubmittedAppeal(applItem)"
         style="margin-top: 30px; border-top: 1px solid lightgrey; padding-top: 30px">
+        <div><b>Project Appeals</b></div>
         <div style="display: flex; margin: 30px 30px">
+        
           <div class="col-md-12">
             <table cellpadding="0" cellspacing="0">
               <tr>
@@ -313,7 +314,7 @@
                       circle
                     </span>
                     <span
-                    *ngIf="item.status === 'Appeal Decision' && item.isCompleted">
+                    *ngIf="item.status === 'Appeal Decision' && item.isCompleted" class="currentStatus">
                     {{applItem?.activeStage?.appealDecision ?? "Pending"}}
                   </span>
                   </div>
