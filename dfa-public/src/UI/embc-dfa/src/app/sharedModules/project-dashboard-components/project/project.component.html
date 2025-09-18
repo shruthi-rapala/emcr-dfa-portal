@@ -113,18 +113,6 @@
         <div class="col-md-3" style="display: flex; justify-content: flex-end;">
           <div class="button-column">
 
-           @if(applItem.status != 'Closed') {
-              <button
-              class="application-button"
-              (click)="ViewClaims(applItem)"
-              type="button"
-              *ngIf="applItem.isClaimSubmission"
-                    >
-
-              Submit Claims
-            </button>
-            }
-
             <button
               class="application-button"
               type="button"
@@ -133,6 +121,20 @@
             >
               View Project
             </button>
+
+           @if(applItem.status != 'Closed') {
+              <button
+              class="application-button"
+              (click)="ViewClaims(applItem)"
+              type="button"
+              *ngIf="applItem.isClaimSubmission"
+                    >
+
+              Claims
+            </button>
+            }
+
+            
             <button
               class="application-button"
               type="button"

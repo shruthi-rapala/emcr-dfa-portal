@@ -165,11 +165,11 @@ export class DFAProjectComponent
   countAppData(lstApp: Object): void {
     var res = JSON.parse(JSON.stringify(lstApp));
     let lstProjects = res;
-    this.currentProjectsCount = 0; this.closedProjectsCount = 0;
+    this.currentProjectsCount = 0; 
+    this.closedProjectsCount = 0;
     lstProjects.forEach(x => {
       if (
-        (x.status.toLowerCase() === "decision made"
-          || x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
+        ( x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
         &&
         (x.dateFileClosed && (this.OneDayAgo >= new Date(x.dateFileClosed).getTime()))
       ) {

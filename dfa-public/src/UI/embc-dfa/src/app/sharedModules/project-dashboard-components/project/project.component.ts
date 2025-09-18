@@ -297,8 +297,7 @@ export class DfaDashProjectComponent implements OnInit {
 
     this.lstProjects.forEach(x => {
       if (
-        (x.status.toLowerCase() === "decision made"
-          || x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
+        ( x.status.toLowerCase() === "closed" || x.status.toLowerCase() === "closed: withdrawn")
         &&
         (x.dateFileClosed && (this.OneDayAgo >= new Date(x.dateFileClosed).getTime()))
         )
