@@ -109,6 +109,7 @@ export class DfaDashClaimComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     //var applicationId = '0b9eec99-1a34-ef11-b850-00505683fbf4'; //this.dFAProjectMainDataService.getApplicationId();
     let projectId = this.dFAProjectMainDataService.getProjectId();
 
@@ -239,7 +240,7 @@ export class DfaDashClaimComponent implements OnInit {
         this.isLoading = false;
       }
     });
-    this.isLoading = false;
+    
   }
 
   Toggle(applItem): void {
