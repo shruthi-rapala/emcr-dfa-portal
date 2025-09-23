@@ -32,6 +32,7 @@ import { ProjectService } from 'src/app/core/api/services';
 import { ApplicationExtended } from '../../sharedModules/dashboard-components/dfa-application/dfa-application.component';
 import { DFAConfirmProjectCreateDialogComponent } from '../../core/components/dialog-components/dfa-confirm-project-create-dialog/dfa-confirm-project-create-dialog.component';
 import { DFAProjectMainService } from '../dfa-project-main/dfa-project-main.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -67,6 +68,7 @@ export class DFAProjectComponent
     private projService: ProjectService,
     private applicationService: ApplicationService,
     private dfaProjectMainService: DFAProjectMainService,
+    private _snackBar: MatSnackBar,
   ) {
     this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
 
@@ -157,6 +159,14 @@ export class DFAProjectComponent
             error => {
               console.error(error);
               //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              this._snackBar.open(
+                'Unable to Open DFAConfirmProjectCreateDialogComponent. Please try again later.',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                }
+              );
             });
         }
       });
@@ -193,6 +203,14 @@ export class DFAProjectComponent
         error: (error) => {
           console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Application Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }

@@ -27,6 +27,7 @@ import { SecondaryApplicant } from 'src/app/core/model/dfa-application-main.mode
 import { AddressChangeComponent } from 'src/app/core/components/dialog-components/address-change-dialog/address-change-dialog.component';
 import { DFAProjectMainMappingService } from './dfa-project-main-mapping.service';
 import RecoveryPlanComponent from '../../sharedModules/forms/dfa-project-main-forms/recovery-plan/recovery-plan.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dfa-project-main',
@@ -76,6 +77,7 @@ export class DFAProjectMainComponent
     public dialog: MatDialog,
     private fileUploadsService: AttachmentService,
     private dfaProjectMainMapping: DFAProjectMainMappingService,
+    private _snackBar: MatSnackBar,
   ) {
     const navigation = this.router.getCurrentNavigation();
 
@@ -275,7 +277,15 @@ export class DFAProjectMainComponent
     },
       error => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Save as Draft. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       });
   }
 
@@ -432,7 +442,15 @@ export class DFAProjectMainComponent
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get File Attachments. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }

@@ -14,6 +14,7 @@ import { DisasterEvent } from 'src/app/core/api/models';
 import { LoginService } from '../../core/services/login.service';
 import { BCeIdLookupService } from 'src/app/core/api/services/b-ce-id-lookup.service';
 import { BCeIdBusiness } from 'src/app/core/api/models/b-ce-id-business';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 //import { DfaApplicationMain } from 'src/app/core/api/models';
 
@@ -51,6 +52,7 @@ export class DashboardComponent implements OnInit {
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private eventService: EligibilityService,
     private bceidLookupService: BCeIdLookupService,
+    private _snackBar: MatSnackBar
   ) {
     this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
   }
@@ -82,7 +84,15 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         // console.debug('[DFA] dashboard error: ' + "eventService.eligibilityGetEvents"); 
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to get events. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
 

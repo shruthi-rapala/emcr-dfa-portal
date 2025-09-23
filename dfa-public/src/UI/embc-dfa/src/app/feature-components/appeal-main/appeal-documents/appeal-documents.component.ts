@@ -11,6 +11,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
 import { mapTo } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /**
  * Appeal Documents Component.
@@ -79,6 +80,7 @@ export class AppealDocumentsComponent implements OnInit {
     public dfaClaimAppealDataService: DFAClaimAppealDataService,
     private formCreationService: FormCreationService,
     private route: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -135,6 +137,14 @@ export class AppealDocumentsComponent implements OnInit {
           console.error(error);
           this.isLoading = false;
           // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Save Supporting Files. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }

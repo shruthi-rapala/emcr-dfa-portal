@@ -32,6 +32,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Invoice } from '../../core/model/dfa-invoice.model';
 import { ComponentWrapperComponent } from 'src/app/sharedModules/components/component-wrapper/component-wrapper.component';
 import { DFAProjectMainDataService } from '../dfa-project-main/dfa-project-main-data.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dfa-amendment-main',
@@ -81,6 +82,7 @@ export class DFAAmendmentMainComponent
     private projectService: ProjectService,
     private dfaProjectMainDataService: DFAProjectMainDataService,
     private attachmentService: AttachmentService,
+    private _snackBar: MatSnackBar
   ) {
     const navigation = this.router.getCurrentNavigation();
   }
@@ -219,6 +221,15 @@ export class DFAAmendmentMainComponent
             error => {
               console.error(error);
               //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              this._snackBar.open(
+                'Unable to Open DFAConfirmSubmitDialog. Please try again later.',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                }
+              );
+              
             });
         }
       });
@@ -310,7 +321,15 @@ export class DFAAmendmentMainComponent
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+       // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+       this._snackBar.open(
+        'Unable to Get AmendmentAttachment. Please try again later.',
+        'Close',
+        {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        }
+      );
       }
     });
   }

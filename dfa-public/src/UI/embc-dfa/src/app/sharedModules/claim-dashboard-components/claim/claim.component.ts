@@ -13,6 +13,7 @@ import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-m
 import { ClaimAppealService, ClaimService } from '../../../core/api/services';
 import { Decision } from 'src/app/models/decision.enum';
 import {ClaimType} from 'src/app/models/claim-type.enum';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface StatusBarExtended extends StatusBar {
   stages?: string[]
@@ -101,7 +102,8 @@ export class DfaDashClaimComponent implements OnInit {
     private dfaClaimMainDataService: DFAClaimMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private route: ActivatedRoute,
-    private claimAppealService : ClaimAppealService
+    private claimAppealService : ClaimAppealService,
+    private _snackBar: MatSnackBar,
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.apptype = this.route.snapshot.data["apptype"];
@@ -236,8 +238,16 @@ export class DfaDashClaimComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
         this.isLoading = false;
+        this._snackBar.open(
+          'Unable to Get Claims. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
     

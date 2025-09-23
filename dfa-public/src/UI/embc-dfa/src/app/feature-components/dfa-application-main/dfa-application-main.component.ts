@@ -28,6 +28,7 @@ import { AddressChangeComponent } from 'src/app/core/components/dialog-component
 import { DFAApplicationMainMappingService } from './dfa-application-main-mapping.service';
 import { DFAApplicationSubmissionMsgDialogComponent } from '../../core/components/dialog-components/dfa-application-submission-msg-dialog/dfa-application-submission-msg.component';
 import { LoginService } from '../../core/services/login.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dfa-application-main',
@@ -107,6 +108,7 @@ export class DFAApplicationMainComponent
     private fileUploadsService: AttachmentService,
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
     private loginService: LoginService,
+    private _snackBar: MatSnackBar
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation !== null) {
@@ -324,7 +326,15 @@ export class DFAApplicationMainComponent
       },
         error => {
           console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Save Application Data. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         });
     }
   }
@@ -462,7 +472,15 @@ export class DFAApplicationMainComponent
       error => {
         this.isLoading = !this.isLoading;
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Open saveAndBackToDashboard. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       });
 
     //this.returnToDashboard();
@@ -520,7 +538,15 @@ export class DFAApplicationMainComponent
             error => {
               this.isLoading = !this.isLoading;
               console.error(error);
-              document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              this._snackBar.open(
+                'Unable to Submit Application Data. Please try again later.',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                }
+              );
             });
         }
       });

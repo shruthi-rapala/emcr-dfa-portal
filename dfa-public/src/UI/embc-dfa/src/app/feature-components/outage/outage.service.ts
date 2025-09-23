@@ -21,6 +21,7 @@ import { CacheService } from 'src/app/core/services/cache.service';
 import { AuthModule, AuthOptions, LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { LoginService } from 'src/app/core/services/login.service';
 import { ConfigService } from 'src/app/core/services/config.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,8 @@ export class OutageService {
     private oidcSecurityService: OidcSecurityService,
     public loginService: LoginService,
     public cacheService: CacheService,
-    private zone: NgZone
+    private zone: NgZone,
+    private _snackBar: MatSnackBar
   ) {}
 
   public get outageInfo(): OutageInformation {
@@ -201,7 +203,15 @@ export class OutageService {
             }
           },
           error: (error) => {
-            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+           // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            this._snackBar.open(
+              'Unable to Get Outage Configuration. Please try again later.',
+              'Close',
+              {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              }
+            );
           }
         })
     );

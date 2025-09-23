@@ -6,6 +6,7 @@ import { CleanUpLog, DfaApplicationMain, DamagedPropertyAddress, ApplicationDeta
 import { ApplicationService, AttachmentService } from 'src/app/core/api/services';
 import { DFAApplicationStartService } from '../dfa-application-start/dfa-application-start.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class DFAApplicationMainDataService {
@@ -52,6 +53,7 @@ export class DFAApplicationMainDataService {
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
     private fileUploadsService: AttachmentService,
     private applicationService: ApplicationService,
+    private _snackBar: MatSnackBar
   ) {
   }
   public get requiredDocuments(): Array<string> {
@@ -202,7 +204,15 @@ export class DFAApplicationMainDataService {
             this.setDfaApplicationStart(application);
           },
           error: (error) => {
-            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            this._snackBar.open(
+              'Unable to Get ApplicationStart. Please try again later.',
+              'Close',
+              {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              }
+            );
           }
         });
     }

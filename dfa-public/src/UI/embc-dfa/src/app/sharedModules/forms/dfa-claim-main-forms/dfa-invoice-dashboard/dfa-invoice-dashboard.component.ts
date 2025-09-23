@@ -39,6 +39,7 @@ import { DFAClaimMainMappingService } from '../../../../feature-components/dfa-c
 import { DFAClaimMainService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main.service';
 import { DFAProjectMainDataService } from '../../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import InvoiceComponent from '../invoice/invoice.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -101,7 +102,8 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
     private dfaClaimMainService: DFAClaimMainService,
     private dfaClaimMainMapping: DFAClaimMainMappingService,
     private route: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -459,7 +461,15 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
             },
             (error) => {
               console.error(error);
-              document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              this._snackBar.open(
+                'Unable to Get Applicant Sub Types. Please try again later.',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                }
+              );
             }
           );
         }
@@ -586,7 +596,15 @@ export default class DFAInvoiceDashboardComponent implements OnInit, OnDestroy {
               (error) => {
                 console.error(error);
                 this.isLoading = false;
-                document.location.href = 'https://dfa.gov.bc.ca/error.html';
+                //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+                this._snackBar.open(
+                  'Unable to Get Applicant Sub Types. Please try again later.',
+                  'Close',
+                  {
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                  }
+                );
               }
             );
           }

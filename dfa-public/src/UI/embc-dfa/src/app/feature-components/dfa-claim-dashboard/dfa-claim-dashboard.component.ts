@@ -35,6 +35,7 @@ import moment from 'moment';
 import { DFAClaimMainDataService } from '../dfa-claim-main/dfa-claim-main-data.service';
 import { DFAConfirmClaimCreateDialogComponent } from '../../core/components/dialog-components/dfa-confirm-claim-create-dialog/dfa-confirm-claim-create-dialog.component';
 import { DFAClaimMainService } from '../dfa-claim-main/dfa-claim-main.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dfa-claim-dashboard',
@@ -81,6 +82,7 @@ export class DFAClaimComponent
     private projService: ProjectService,
     private applicationService: ApplicationService,
     private claimService: ClaimService,
+    private _snackBar: MatSnackBar
   ) {
 
     this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
@@ -200,6 +202,14 @@ export class DFAClaimComponent
             error => {
               console.error(error);
               //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              this._snackBar.open(
+                'Unable to Create Claim. Please try again later.',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                }
+              );
             });
         }
       });
@@ -248,6 +258,14 @@ export class DFAClaimComponent
         error: (error) => {
           console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Application Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -298,6 +316,14 @@ export class DFAClaimComponent
         error: (error) => {
           console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Project Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }

@@ -134,7 +134,8 @@ export class ConfigService {
         this.setEnvironmentBanner(env);
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        console.error('Environment Info not found');
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
       }
     });
     return environment;
