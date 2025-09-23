@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom, mapTo } from 'rxjs';
@@ -82,7 +83,8 @@ export class AppealMainComponent implements OnInit {
     private projectAppealService: ProjectAppealService,
     private attachmentsService: AttachmentService,
     private dialog: MatDialog,
-    private formCreationService: FormCreationService
+    private formCreationService: FormCreationService,
+    private _snackBar: MatSnackBar
   ) {
     this.appealForm = this.formBuilder.group({
       step1: this.formBuilder.group({
@@ -185,6 +187,14 @@ export class AppealMainComponent implements OnInit {
         this.isLoading = false;
         // TODO: redirect to error page
         // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to LoadProjectAndAppeal. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }
@@ -249,6 +259,14 @@ export class AppealMainComponent implements OnInit {
       error: (error) => {
         console.error(error);
         //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to getFileUploadsForProjectAppeal. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }

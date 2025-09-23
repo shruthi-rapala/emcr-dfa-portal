@@ -28,6 +28,7 @@ import { FullTimeOccupantService, OtherContactService, SecondaryApplicantService
 import { DFADeleteConfirmDialogComponent } from 'src/app/core/components/dialog-components/dfa-confirm-delete-dialog/dfa-confirm-delete.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SecondaryApplicantWarningDialogComponent } from '../../../../core/components/dialog-components/secondary-applicant-warning-dialog/secondary-applicant-warning-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-occupants',
@@ -91,7 +92,8 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
     private secondaryApplicantsService: SecondaryApplicantService,
     private otherContactsService: OtherContactService,
     private fullTimeOccupantsService: FullTimeOccupantService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -174,7 +176,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get Secondary Applicants. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }
@@ -193,7 +203,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get Other Contacts. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }
@@ -212,7 +230,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get Full Time Occupants. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }
@@ -237,7 +263,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Save Full Time Occupant. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
     } else {
@@ -265,7 +299,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Delete Full Time Occupant. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }
@@ -294,7 +336,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
           },
           error: (error) => {
             console.error(error);
-            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            this._snackBar.open(
+              'Unable to Update Other Contact. Please try again later.',
+              'Close',
+              {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              }
+            );
           }
         });
       } else {
@@ -308,7 +358,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
           },
           error: (error) => {
             console.error(error);
-            document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+            this._snackBar.open(
+              'Unable to Save Other Contact. Please try again later.',
+              'Close',
+              {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              }
+            );
           }
         });
       }
@@ -351,7 +409,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Delete Other Contact. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }
@@ -392,7 +458,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Save Secondary Applicant. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     } else {
@@ -420,7 +494,15 @@ export default class OccupantsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Delete Secondary Applicant. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }

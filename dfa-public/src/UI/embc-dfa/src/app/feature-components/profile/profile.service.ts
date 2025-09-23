@@ -6,13 +6,15 @@ import { ProfileService as Service } from '../../core/api/services/profile.servi
 import { ProfileMappingService } from './profile-mapping.service';
 import * as globalConst from '../../core/services/globalConstants';
 import { AlertService } from 'src/app/core/services/alert.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
   constructor(
     private profileService: Service,
     private profileMapping: ProfileMappingService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private _snackBar: MatSnackBar
   ) {}
 
   public profileExists(): Observable<boolean> {
@@ -25,7 +27,15 @@ export class ProfileService {
         this.profileMapping.mapLoginProfile(loginProfile);
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get Login Profile. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }
@@ -36,7 +46,15 @@ export class ProfileService {
         this.profileMapping.mapProfile(profile);
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get Profile. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }

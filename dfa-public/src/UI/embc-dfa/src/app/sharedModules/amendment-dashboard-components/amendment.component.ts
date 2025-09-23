@@ -12,6 +12,7 @@ import { DFAProjectMainDataService } from '../../feature-components/dfa-project-
 import { Decision } from 'src/app/models/decision.enum';
 import { DFAAmendmentMainDataService } from 'src/app/feature-components/dfa-amendment-main/dfa-amendment-main-data.service';
 import { ProjectAmendmentService } from 'src/app/core/api/services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dfadashboard-amendment',
@@ -72,7 +73,8 @@ export class DfaDashAmendmentComponent implements OnInit {
     private dFAProjectMainDataService: DFAProjectMainDataService,
     private dfaAmendmentMainDataService: DFAAmendmentMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar,
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.apptype = this.route.snapshot.data["apptype"];
@@ -153,8 +155,16 @@ export class DfaDashAmendmentComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
         this.isLoading = false;
+        this._snackBar.open(
+          'Unable to Get Amendments. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
     this.isLoading = false;

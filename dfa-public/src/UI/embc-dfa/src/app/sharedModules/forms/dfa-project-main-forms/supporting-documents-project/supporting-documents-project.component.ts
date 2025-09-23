@@ -35,6 +35,7 @@ import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-com
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 import { DFAProjectMainDataService } from '../../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAProjectMainMappingService } from '../../../../feature-components/dfa-project-main/dfa-project-main-mapping.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-supporting-documents-project',
@@ -90,6 +91,7 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
     private dialog: MatDialog,
     private dfaProjectMainDataService: DFAProjectMainDataService,
     private dfaProjectMainMapping: DFAProjectMainMappingService,
+    private _snackBar: MatSnackBar
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -255,7 +257,15 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Save Claim Attachment. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     } else {
@@ -288,7 +298,15 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Save Claim Attachment. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     } else {
@@ -305,7 +323,15 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Save Claim Attachment. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -372,7 +398,15 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
         },
         error: (error) => {
           console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to deleteDocumentSummaryRow. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     //} else if (element.fileType === Object.keys(this.FileCategories)[Object.values(this.FileCategories).indexOf(this.FileCategories.)]) {
@@ -397,7 +431,15 @@ export default class SupportingDocumentsProjectComponent implements OnInit, OnDe
         },
         error: (error) => {
           console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to deleteDocumentSummaryRow. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }

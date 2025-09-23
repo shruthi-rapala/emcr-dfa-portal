@@ -36,6 +36,7 @@ import { DFAApplicationMainMappingService } from 'src/app/feature-components/dfa
 import { MatSelectModule } from '@angular/material/select';
 import { DFAEligibilityDialogComponent } from '../../../../core/components/dialog-components/dfa-eligibility-dialog/dfa-eligibility-dialog.component';
 import * as globalConst from '../../../../core/services/globalConstants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -105,7 +106,8 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
     private otherContactsService: OtherContactService,
     private eligibilityService: EligibilityService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -317,6 +319,14 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
       error: (error) => {
         //console.error(error);
         //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get Applicant Sub Types. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
 
@@ -453,6 +463,14 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
         error: (error) => {
           //console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Application Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -475,6 +493,14 @@ export default class PropertyDamageComponent implements OnInit, OnDestroy {
         error: (error) => {
           //console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Other Contacts. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }

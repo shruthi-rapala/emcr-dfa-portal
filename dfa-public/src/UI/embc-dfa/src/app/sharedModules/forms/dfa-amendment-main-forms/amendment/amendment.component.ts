@@ -48,6 +48,7 @@ import { DFAAmendmentMainMappingService } from 'src/app/feature-components/dfa-a
 import { FileUploadAmendment } from 'src/app/core/model/dfa-amendment-main.model';
 import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog-components/file-upload-warning-dialog/file-upload-warning-dialog.component';
 import { DFAFileDeleteDialogComponent } from 'src/app/core/components/dialog-components/dfa-file-delete-dialog/dfa-file-delete.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'amendment',
@@ -130,7 +131,8 @@ export default class AmendmentComponent implements OnInit, OnDestroy {
     private eligibilityService: EligibilityService,
     private amendmentDataService: DFAProjectAmendmentDataService,
     private oidcSecurityService: OidcSecurityService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private _snackBar: MatSnackBar
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -266,6 +268,14 @@ export default class AmendmentComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get DfaApplications. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -331,6 +341,14 @@ export default class AmendmentComponent implements OnInit, OnDestroy {
         error: (error) => {
           //console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Project Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -372,6 +390,14 @@ export default class AmendmentComponent implements OnInit, OnDestroy {
           let noAmendment = 'Error in loading details!<br/>Click \'Close\' button to go back to Project Dashboard';
           this.ConfirmAndGoBack(noAmendment);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get DfaProjectAmendments. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -462,6 +488,14 @@ export default class AmendmentComponent implements OnInit, OnDestroy {
           console.error(error);
           this.isLoading = false;
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to upload the Project Amendment document. Please try again later.',  
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          ); 
         }
       });
     } else {

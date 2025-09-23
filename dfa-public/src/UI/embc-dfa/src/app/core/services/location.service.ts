@@ -7,6 +7,7 @@ import { RegAddress } from '../model/address';
 import { AlertService } from './alert.service';
 import { CacheService } from './cache.service';
 import * as globalConst from './globalConstants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface Country {
   code?: string;
@@ -43,7 +44,8 @@ export class LocationService {
   constructor(
     private configService: ConfigurationService,
     private cacheService: CacheService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public _snackBar: MatSnackBar,
   ) {}
 
   public getCommunityList(): AreaCommunity[] {
@@ -284,7 +286,15 @@ export class LocationService {
         //this.setRegionalDistricts(communities.map((comm) => comm.districtName));
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to getCommunities. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
     return this.communityList || [];
@@ -303,7 +313,15 @@ export class LocationService {
         );
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to getStateProvinces. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
     return this.stateProvinceList || [];
@@ -321,7 +339,15 @@ export class LocationService {
         );
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to getCountries. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
     return this.countriesList || [];
@@ -331,7 +357,7 @@ export class LocationService {
     return this.configService.configurationGetCodes({ forEnumType: 'SupportCategory' }).pipe(
       map((categories: Code[]) => categories.filter((category) => category.description)),
       catchError((error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
         return of([]);  // Return an empty array on error
       })
     );
@@ -341,7 +367,7 @@ export class LocationService {
     return this.configService.configurationGetCodes({ forEnumType: 'SupportSubCategory' }).pipe(
       map((subCategories: Code[]) => subCategories.filter((subCategory) => subCategory.description)),
       catchError((error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
         return of([]);  // Return an empty array on error
       })
     );

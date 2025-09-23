@@ -46,6 +46,7 @@ import { DFAProjectMainMappingService } from '../dfa-project-main/dfa-project-ma
 import { ProjectAmendment } from '../../core/model/dfa-amendment-main.model';
 import { DFAGeneralInfoDialogComponent } from '../../core/components/dialog-components/dfa-general-info-dialog/dfa-general-info-dialog.component';
 import { Decision } from 'src/app/models/decision.enum';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -113,6 +114,7 @@ export class DFAProjectAmendmentComponent
     private projectAmendmentService: ProjectAmendmentService,
     private dfaProjectMainService: DFAProjectMainService,
     private dfaProjectMainMapping: DFAProjectMainMappingService,
+    private _snackBar: MatSnackBar,
   ) {
     this.frmBuilder = formBuilder;
     this.frmCreationService = formCreationService;
@@ -169,6 +171,15 @@ export class DFAProjectAmendmentComponent
         error: (error) => {
           console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Application Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
+
         }
       });
     }
@@ -235,6 +246,14 @@ export class DFAProjectAmendmentComponent
         error: (error) => {
           //console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Project Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -274,6 +293,14 @@ export class DFAProjectAmendmentComponent
           let noAmendment = 'Error in loading details!<br/>Click \'Close\' button to go back to Project Dashboard';
           this.ConfirmAndGoBack(noAmendment);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Amendment Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }

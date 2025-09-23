@@ -11,6 +11,7 @@ import { CurrentApplication, CurrentProject, StatusBar } from 'src/app/core/api/
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAClaimMainDataService } from '../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
 import { Decision } from 'src/app/models/decision.enum';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 // Temporary extension until the OpenAPI spec includes appealStatusBar
 // ####################################################################
@@ -124,7 +125,8 @@ export class DfaDashProjectComponent implements OnInit {
     private dFAProjectMainDataService: DFAProjectMainDataService,
     private dfaClaimMainDataService: DFAClaimMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.apptype = this.route.snapshot.data["apptype"];
@@ -267,8 +269,16 @@ export class DfaDashProjectComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
         this.isLoading = false;
+        this._snackBar.open(
+          'Unable to Get Project List. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }

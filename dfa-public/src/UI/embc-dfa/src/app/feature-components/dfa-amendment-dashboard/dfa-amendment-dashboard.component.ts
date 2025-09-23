@@ -21,6 +21,7 @@ import { ProjectService } from 'src/app/core/api/services';
 // 2024-07-31 EMCRI-216 waynezen; upgrade to Angular 18
 import moment from 'moment';
 import { DFAConfirmAmendmentCreateDialogComponent } from '../../core/components/dialog-components/dfa-confirm-amendment-create-dialog/dfa-confirm-amendment-create-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dfa-amendment-dashboard',
@@ -72,6 +73,7 @@ export class DFAAmendmentComponent
     private projectService: ProjectService,
     private projectAmendmentService :ProjectAmendmentService,
     private applicationService: ApplicationService,
+    private _snackBar: MatSnackBar
   ) {
     
     this.OneDayAgo = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 1)).getTime()
@@ -178,6 +180,14 @@ export class DFAAmendmentComponent
             error => {
               console.error(error);
               //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              this._snackBar.open(
+                'Unable to confirmCreateAmendment. Please try again later.',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                }
+              );
             }); 
         }
       });
@@ -215,6 +225,14 @@ export class DFAAmendmentComponent
         error: (error) => {
           console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Application Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -273,6 +291,14 @@ export class DFAAmendmentComponent
         error: (error) => {
           console.error(error);
           //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Project Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }

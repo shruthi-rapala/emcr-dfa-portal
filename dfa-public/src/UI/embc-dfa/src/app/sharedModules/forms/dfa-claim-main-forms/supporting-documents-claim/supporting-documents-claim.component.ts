@@ -37,6 +37,7 @@ import { FileUploadWarningDialogComponent } from 'src/app/core/components/dialog
 import { DFAProjectMainDataService } from '../../../../feature-components/dfa-project-main/dfa-project-main-data.service';
 import { DFAProjectMainMappingService } from '../../../../feature-components/dfa-project-main/dfa-project-main-mapping.service';
 import { DFAClaimMainDataService } from '../../../../feature-components/dfa-claim-main/dfa-claim-main-data.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-supporting-documents-claim',
@@ -92,6 +93,7 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
     private dfaProjectMainDataService: DFAProjectMainDataService,
     private dfaClaimMainDataService: DFAClaimMainDataService,
     private dfaProjectMainMapping: DFAProjectMainMappingService,
+    private _snackBar: MatSnackBar
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -227,7 +229,15 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Applicant Sub Types. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     } else {
@@ -264,7 +274,15 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Delete Claim Attachment. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     } else {
@@ -281,7 +299,15 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
         error: (error) => {
           console.error(error);
           this.isLoading = false;
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Delete Claim Attachment. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }
@@ -379,7 +405,15 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
        },
        error: (error) => {
          console.error(error);
-         document.location.href = 'https://dfa.gov.bc.ca/error.html';
+         //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to deleteDocumentSummaryRow. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
        }
       });
     } else {
@@ -399,7 +433,15 @@ export default class SupportingDocumentsClaimComponent implements OnInit, OnDest
        },
        error: (error) => {
          console.error(error);
-         document.location.href = 'https://dfa.gov.bc.ca/error.html';
+         //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Delete Claim Attachment. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
        }
       });
     }

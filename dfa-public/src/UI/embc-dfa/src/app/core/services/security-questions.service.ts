@@ -5,6 +5,7 @@ import { ConfigurationService } from 'src/app/core/api/services';
 import { AlertService } from './alert.service';
 import { CacheService } from './cache.service';
 import * as globalConst from './globalConstants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class SecurityQuestionsService {
   constructor(
     private configurationService: ConfigurationService,
     private cacheService: CacheService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private _snackBar: MatSnackBar
   ) {}
 
   set securityQuestionOptions(securityQuestionOptionsVal: string[]) {
@@ -40,7 +42,15 @@ export class SecurityQuestionsService {
         this.securityQuestionOptions = list;
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+       // document.location.href = 'https://dfa.gov.bc.ca/error.html';
+       this._snackBar.open(
+        'Unable to Get Security Question List. Please try again later.',
+        'Close',
+        {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        }
+      );
       }
     });
   }

@@ -9,6 +9,7 @@ import { DFAApplicationMainDataService } from 'src/app/feature-components/dfa-ap
 import { DFAApplicationStartDataService } from 'src/app/feature-components/dfa-application-start/dfa-application-start-data.service';
 import { CurrentApplication, CurrentProject } from 'src/app/core/api/models';
 import { DFAProjectMainDataService } from '../../../feature-components/dfa-project-main/dfa-project-main-data.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dfadashboard-invoice',
@@ -68,7 +69,8 @@ export class DfaDashInvoiceComponent implements OnInit {
     private dfaApplicationMainDataService: DFAApplicationMainDataService,
     private dFAProjectMainDataService: DFAProjectMainDataService,
     private dfaApplicationStartDataService: DFAApplicationStartDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.apptype = this.route.snapshot.data["apptype"];
@@ -135,8 +137,16 @@ export class DfaDashInvoiceComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
         this.isLoading = false;
+        this._snackBar.open(
+          'Unable to Get Project List. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
     this.isLoading = false;

@@ -49,6 +49,7 @@ import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/
 import {MatDividerModule} from "@angular/material/divider";
 import {Decision} from "../../../../models/decision.enum";
 import { FeatureEnabledDirective } from 'src/app/core/directives/feature-enabled.directive';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -123,7 +124,8 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
     private dfaApplicationMainMapping: DFAApplicationMainMappingService,
     private dfaProjectMainMapping: DFAProjectMainMappingService,
     private otherContactsService: OtherContactService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {
     this.formBuilder = formBuilder;
     this.formCreationService = formCreationService;
@@ -194,7 +196,15 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get Project Types. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
 
@@ -347,7 +357,15 @@ export default class RecoveryPlanComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error(error);
-          document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+          this._snackBar.open(
+            'Unable to Get Recovery Plan Details. Please try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
         }
       });
     }

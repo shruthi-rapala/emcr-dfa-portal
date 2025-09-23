@@ -29,6 +29,7 @@ import { DFAClaimMainDataService } from './dfa-claim-main-data.service';
 import { DFAClaimMainService } from './dfa-claim-main.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Invoice } from '../../core/model/dfa-invoice.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dfa-claim-main',
@@ -80,6 +81,7 @@ export class DFAClaimMainComponent
     private dfaClaimMainMapping: DFAClaimMainMappingService,
     private dfaClaimMainDataService: DFAClaimMainDataService,
     private dfaClaimMainService: DFAClaimMainService,
+    private _snackBar: MatSnackBar
   ) {
     const navigation = this.router.getCurrentNavigation();
     
@@ -244,7 +246,15 @@ export class DFAClaimMainComponent
     },
       error => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to saveAsDraft Claim. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       });
   }
 
@@ -341,6 +351,14 @@ export class DFAClaimMainComponent
             error => {
               console.error(error);
               //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+              this._snackBar.open(
+                'Unable to Submit Claim. Please try again later.',
+                'Close',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                }
+              );
             });
           
           //this.dfaProjectMainService.upsertApplication(application).subscribe(x => {
@@ -369,7 +387,15 @@ export class DFAClaimMainComponent
       },
       error: (error) => {
         console.error(error);
-        document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        //document.location.href = 'https://dfa.gov.bc.ca/error.html';
+        this._snackBar.open(
+          'Unable to Get File Uploads. Please try again later.',
+          'Close',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     });
   }
