@@ -40,16 +40,6 @@ jobs:
           dotnet-version: "8.0.414" # Install .NET 8.0.414 SDK
           global-json-file: dfa-public/src/API/global.json
 
-      - name: Verify .NET SDK Version
-        run: |
-          dotnet --version
-          echo "Available SDKs:"
-          dotnet --list-sdks
-          echo "Working in directory: $(pwd)"
-          cd dfa-public/src/API
-          echo "Using SDK version from global.json:"
-          dotnet --version
-
       - name: Restore dependencies
         run: |
           dotnet restore dfa-public/src/API/EMBC.DFA.PUBLIC.API/EMBC.DFA.PUBLIC.API.csproj --disable-parallel  # Download all NuGet packages
