@@ -35,9 +35,9 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: "8.0.x" # Install .NET 8.0
+          dotnet-version: "8.0.414" # Install .NET 8.0.414 SDK
 
       - name: Restore dependencies
         run: |
