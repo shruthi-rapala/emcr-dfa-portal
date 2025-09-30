@@ -9,13 +9,14 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { FileCategory, FileUploadAppeal } from 'src/app/core/api/models';
 import { AppealSupportingDocumentForm } from 'src/app/core/model/dfa-appeals-main.model';
 import { CustomValidationService } from 'src/app/core/services/customValidation.service';
 import { FormCreationService } from 'src/app/core/services/formCreation.service';
+import { DfaAppealService } from 'src/app/feature-components/dfa-appeal/dfa-appeal.service';
 
 @Component({
   selector: 'app-appeal-file-upload',
@@ -95,18 +96,28 @@ export class AppealFileUploadComponent implements OnInit, OnChanges, OnDestroy {
   savedDocumentsUploadsTableData: MatTableDataSource<FileUploadAppeal> = new MatTableDataSource<FileUploadAppeal>([]);
 
   isEditView = this.router.url.includes('/edit');
+  appealId: string;
+  appealDecision: string;
 
   constructor(
     @Inject('formCreationService') formCreationService: FormCreationService,
     public customValidator: CustomValidationService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private dfaAppealService: DfaAppealService,
   ) {
     this.formCreationService = formCreationService;
   }
 
   ngOnInit(): void {
+    this.appealId = this.route.snapshot.paramMap.get('appealId');
+
     this.fileUploadForm$ = this.formCreationService.getAppealSupportingDocumentForm().subscribe((form) => {
       this.fileUploadForm = form;
+    });
+    
+    this.dfaAppealService.getAppealById(this.appealId).subscribe((appeal) => {
+      this.appealDecision = appeal.appealDecision;
     });
   }
 

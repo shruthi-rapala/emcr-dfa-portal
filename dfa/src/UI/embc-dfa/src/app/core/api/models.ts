@@ -48,6 +48,7 @@ export type { OtherContact } from './models/other-contact';
 export type { OtherPreScreeningQuestions } from './models/other-pre-screening-questions';
 export type { OutageInformation } from './models/outage-information';
 export type { PersonDetails } from './models/person-details';
+export { PrivateAppealDecision } from './models/private-appeal-decision';
 export type { ProblemDetails } from './models/problem-details';
 export type { Profile } from './models/profile';
 export type { ProfileDataConflict } from './models/profile-data-conflict';
