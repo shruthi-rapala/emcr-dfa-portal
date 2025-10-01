@@ -17,7 +17,7 @@ on:
 env:
   IMAGE_NAME: dfa-portal-ui-public
   WORKING_DIRECTORY: ./dfa-public/src/UI
-  IMAGE_TAG: dev
+  IMAGE_TAG: latest
 
 jobs:
   build:

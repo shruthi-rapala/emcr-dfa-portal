@@ -18,7 +18,7 @@ env:
   DOCKER_CONTEXT_DIRECTORY: ./pdf-service
   IMAGE_NAME: dfa-portal-pdf-service
   IMAGE_REGISTRY: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}
-  IMAGE_TAG: dev
+  IMAGE_TAG: latest
 
 jobs:
   build:
