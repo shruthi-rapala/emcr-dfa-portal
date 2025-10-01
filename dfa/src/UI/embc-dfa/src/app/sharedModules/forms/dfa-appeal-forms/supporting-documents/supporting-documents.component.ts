@@ -66,6 +66,9 @@ export default class SupportingDocumentsComponent implements OnInit {
   @Input() applicationDetails: DfaApplicationMain = this.dfaAppealDataService.getFullApplication();
   @Input() caseDetails: any;
 
+  isLoading: boolean = false;
+  color: string = '#169BD5';
+
   constructor(
     private route: ActivatedRoute,
     private dfaAppealDataService: DFAAppealDataService,
@@ -198,6 +201,9 @@ export default class SupportingDocumentsComponent implements OnInit {
     fileUploadAppeal.appealId = this.appealId;
     fileUploadAppeal.deleteFlag = false;
     console.log("FileUpload Appeal:", fileUploadAppeal);
+
+    this.isLoading = true;
+
     this.attachmentService.attachmentUpsertDeleteProjectAppealAttachment({ body: fileUploadAppeal }).subscribe({
       next: (response) => {
         console.log("Attachment upload response:", response);
@@ -223,7 +229,8 @@ export default class SupportingDocumentsComponent implements OnInit {
             verticalPosition: 'top'
           }
         );
-      }
+      },
+      complete: () => (this.isLoading = false)
     });
   }
 
@@ -258,6 +265,8 @@ export default class SupportingDocumentsComponent implements OnInit {
       // File has been previously persisted, mark the file for deletion
       existingFileUploads[indexToRemove].deleteFlag = true;
 
+      this.isLoading = true;
+
       this.attachmentService.attachmentUpsertDeleteProjectAppealAttachment({
         body: existingFileUploads[indexToRemove]
       }).subscribe({
@@ -270,7 +279,8 @@ export default class SupportingDocumentsComponent implements OnInit {
           const formArray = this.appealSupportingDocumentsForm.get('files') as FormArray<AppealSupportingDocumentForm>;
           formArray.removeAt(indexToRemove);
         },
-        error: (err) => console.error("error deleting document", err)
+        error: (err) => console.error("error deleting document", err),
+        complete: () => (this.isLoading = false)
       });
     } else {
       // File has not been persisted, remove the file from the list

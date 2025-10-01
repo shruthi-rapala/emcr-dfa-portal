@@ -111,6 +111,9 @@ namespace EMBC.DFA.API.Controllers
             if (appeal == null) return NotFound();
             var model = mapper.Map<AppealModel>(appeal);
 
+            //explicitly map AppealDecision since AutoMapper might not handle it properly
+            model.AppealDecision = appeal.AppealDecision;
+
             model.Signature = await GetSignatureAnnotationAsync(
                 "dfa_appeal",
                 id,
@@ -169,6 +172,8 @@ namespace EMBC.DFA.API.Controllers
         public string? SignedName { get; set; }
         public string? Signature { get; set; }
         public bool? ReviewedEvaluatorReport { get; set; }
+
+        public PrivateAppealDecision? AppealDecision { get; set; }
     }
 
     public class AppealModel
@@ -183,6 +188,7 @@ namespace EMBC.DFA.API.Controllers
         public string? SignedName { get; set; }
         public string? Signature { get; set; }
         public bool? ReviewedEvaluatorReport { get; set; }
+        public PrivateAppealDecision? AppealDecision { get; set; }
     }
 
     public class SignAndSubmitModel

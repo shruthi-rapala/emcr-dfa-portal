@@ -20,7 +20,8 @@ public class AppealMapper : Profile
             //.ForMember(dest => dest.SignAndSubmit.ApplicantSignature.SignedName, opt => opt.MapFrom(src => src.DFA_ApplicantPrintName))
             //.ForMember(dest => dest.SignAndSubmit.ApplicantSignature.DateSigned, opt => opt.MapFrom(src => src.DFA_ApplicantSignedDate));
             .ForMember(dest => dest.AmountAppealPortalNote, opt => opt.MapFrom(src => src.DFA_AmountAppealPortalNote))
-            .ForMember(dest => dest.AmountAppealStatusPortal, opt => opt.MapFrom(src => src.DFA_AmountAppealStatusPortal));
+            .ForMember(dest => dest.AmountAppealStatusPortal, opt => opt.MapFrom(src => src.DFA_AmountAppealStatusPortal))
+            .ForMember(dest => dest.AppealDecision, opt => opt.MapFrom(src => (PrivateAppealDecision?)src.DFA_AMnTAppeal_AppealDecision));
 
         CreateMap<Appeal, DFA_Appeal>()
             .ForMember(dest => dest.DFA_AppealId, opt => opt.MapFrom(src => src.Id))
@@ -33,7 +34,8 @@ public class AppealMapper : Profile
             .ForMember(dest => dest.DFA_ApplicantPrintName, opt => opt.MapFrom(src => src.SignedName))
             .ForMember(dest => dest.DFA_ApplicantSignedDate, opt => opt.MapFrom(src => src.DateSigned))
             .ForMember(dest => dest.DFA_AmountAppealPortalNote, opt => opt.MapFrom(src => src.AmountAppealPortalNote))
-            .ForMember(dest => dest.DFA_AmountAppealStatusPortal, opt => opt.MapFrom(src => src.AmountAppealStatusPortal));
+            .ForMember(dest => dest.DFA_AmountAppealStatusPortal, opt => opt.MapFrom(src => src.AmountAppealStatusPortal))
+            .ForMember(dest => dest.DFA_AMnTAppeal_AppealDecision, opt => opt.MapFrom(src => src.AppealDecision));
 
         CreateMap<DFA_CaseEligibilityAppeal, CaseEligibilityAppeal>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
