@@ -39,8 +39,7 @@ export class RecoveryPlan {
   /* EMCRI-827 */
   createdDate?: null | string;
   submittedDate?: null | string;
-  projectType?: null | string;
-  projectTypeOther?: null | string;
+
   /* D4P-112 */
   advancedPaymentsMade?: null | number;
   advancedPaymentsBalance?: null | number;
@@ -73,8 +72,6 @@ export class RecoveryPlan {
     projectDecision?: null | string,
     createdDate?: null | string,
     submittedDate?: null | string,
-    projectType?: null | string,
-    projectTypeOther?: null | string,
     advancedPaymentsMade?: null | number,
     advancedPaymentsBalance?: null | number
   ) { }
@@ -247,20 +244,7 @@ export class RecoveryPlanForm {
     }
     this.projectDecision.setValidators(null);
 
-    if (recoveryPlan.projectType) {
-      this.projectType.setValue(recoveryPlan.projectType);
-    }
-    this.projectType.setValidators([customValidator
-      .isRequired(this.projectType)
-      .bind(customValidator)]);
-
-    if (recoveryPlan.projectTypeOther) {
-      this.projectTypeOther.setValue(recoveryPlan.projectTypeOther);
-    }
-    this.projectTypeOther.setValidators([customValidator
-      .isRequired(this.projectTypeOther)
-      .bind(customValidator)]);
-      
+    
     /* D4P-112 */
     if (recoveryPlan.advancedPaymentsMade) {
       this.advancedPaymentsMade.setValue(recoveryPlan.advancedPaymentsMade);

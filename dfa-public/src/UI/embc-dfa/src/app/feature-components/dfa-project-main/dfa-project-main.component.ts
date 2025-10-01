@@ -318,8 +318,6 @@ export class DFAProjectMainComponent
         this.dfaProjectMainDataService.recoveryPlan.projectName = this.form.get('projectName').value;
         this.dfaProjectMainDataService.recoveryPlan.projectNumber = this.form.get('projectNumber').value;
         this.dfaProjectMainDataService.recoveryPlan.projectStatus = this.form.get('projectStatus').value;
-        this.dfaProjectMainDataService.recoveryPlan.projectType = this.form.get('projectType').value;
-        this.dfaProjectMainDataService.recoveryPlan.projectTypeOther = this.form.get('projectTypeOther').value;
         this.dfaProjectMainDataService.recoveryPlan.isdamagedDateSameAsApplication = this.form.get('isdamagedDateSameAsApplication').value == 'true' ? true : (this.form.get('isdamagedDateSameAsApplication').value == 'false' ? false : null);
         this.dfaProjectMainDataService.recoveryPlan.sitelocationdamageFromDate = this.form.get('sitelocationdamageFromDate').value;
         this.dfaProjectMainDataService.recoveryPlan.sitelocationdamageToDate = this.form.get('sitelocationdamageToDate').value;
