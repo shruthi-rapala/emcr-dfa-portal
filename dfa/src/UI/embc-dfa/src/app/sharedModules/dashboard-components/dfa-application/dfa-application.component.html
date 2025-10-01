@@ -336,7 +336,7 @@
       <!-- Add Appeals section -->
       <div [featureEnabled]="'useAppeals'">
         @if (applItem.dateFileClosed && remainingDays(applItem) > 0) {
-        @if(applItem.caseEligibility === this.CaseElibilityEnum.Ineligible && applItem.caseEligibilityAppeal === null) {
+        @if( applItem?.getCaseBPFVersion === CaseBpfVersionSet.Four && applItem.caseEligibility === this.CaseElibilityEnum.Ineligible && applItem.caseEligibilityAppeal === null) {
         <div class="appeals">
           <span>
             You have <b>{{remainingDays(applItem)}}</b> days to register an eligible appeal on this application
@@ -346,7 +346,7 @@
             Eligibility Decision</button>
         </div>
         }
-        @if(applItem.caseEligibility === this.CaseElibilityEnum.Eligible && applItem.caseAmountAppeal === null &&
+        @if(applItem?.getCaseBPFVersion === CaseBpfVersionSet.Four && applItem.caseEligibility === this.CaseElibilityEnum.Eligible && applItem.caseAmountAppeal === null &&
         (applItem.caseEligibilityAppeal === null || applItem.caseEligibilityAppeal?.activeStage?.name?.toLowerCase() ===
         'closed')) {
         <div class="appeals">
