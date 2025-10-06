@@ -463,12 +463,7 @@ namespace EMBC.DFA.API.Controllers
                         {
                             appContact.primaryContactValidated = true;
                         }
-
-                        // Setting the value to true for work around for production issue(Sep 17 2025)
-                        appContact.primaryContactValidated = true;
-                    }
-
-                    
+                    }      
                 }
 
                 dfaApplicationMain.applicationContacts = appContact;
