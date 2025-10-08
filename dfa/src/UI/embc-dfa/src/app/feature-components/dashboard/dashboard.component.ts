@@ -151,7 +151,7 @@ export class DashboardComponent implements OnInit {
       }
       else if (
         (x.status.toLowerCase() === "dfa decision made"
-        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn")
+        || x.status.toLowerCase() === "closed: inactive" || x.status.toLowerCase() === "closed: withdrawn" || x.status.toLowerCase() === "case closed")
         &&
         (x.dateFileClosed && (new Date(x.dateFileClosed).getTime() <= this.sixtyOneDaysAgo))) {
           this.pastApplicationsCount++;
