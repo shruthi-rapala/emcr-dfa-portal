@@ -10,7 +10,7 @@ env:
   IMAGE_API_NAME: dfa-portal-api-public
   IMAGE_UI_NAME: dfa-portal-ui-public
   IMAGE_REGISTRY: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}
-  IMAGE_CURRENT_ENV_TAG: dev
+  IMAGE_CURRENT_ENV_TAG: latest
   IMAGE_PROMOTE_ENV_TAG: test
   IMAGE_PROMOTE_ENV_BACKUP_TAG: test-backup
 
@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Promote dfa-portal-api-public to test
         uses: tinact/docker.image-retag@master
         with:
@@ -30,7 +30,7 @@ jobs:
           image_new_tag: ${{ env.IMAGE_PROMOTE_ENV_TAG }}
           registry: ${{ env.IMAGE_REGISTRY }}
           registry_username: ${{ secrets.OCP4_USERNAME }}
-          registry_password: ${{ secrets.OCP4_PASSWORD }}      
+          registry_password: ${{ secrets.OCP4_PASSWORD }}
 
   promote-dfa-public-portal-ui:
     runs-on: ubuntu-latest
