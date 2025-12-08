@@ -104,16 +104,6 @@ namespace EMBC.DFA.API.Controllers
                 var approvedProjectAmendments = projectAmendments.Where(a => a.AmendmentDecision == "Approved" || a.AmendmentDecision == "Approved with Exclusions")?.ToList();
                 project.HasApprovedAmendments = approvedProjectAmendments?.Count > 0;
 
-                if (approvedProjectAmendments?.Count > 0)
-                {
-                    
-                    project.AmendedAttionalCost = approvedProjectAmendments.Sum(a => a.ApprovedAdditionalProjectCost).ToString();
-
-                    project.AmendedDeadline18Month = approvedProjectAmendments.OrderByDescending(a => a.AmendmentApprovedDate).FirstOrDefault()?.Amended18MonthDeadline;
-                }
-
-                //project.AmendedAttionalCost = await handler.HandleProjectAmendmentCosts(project.ProjectId);
-
             });
             await Task.WhenAll(projectProcesses);
             return Ok(lstProjects);
@@ -288,7 +278,7 @@ namespace EMBC.DFA.API.Controllers
         public CurrentProjectAppeal ActiveStage { get; set; }
         public string ProjectDecisionDate { get; set; }
         public string ApprovedAmendedProjectCost { get; set; }
-        public string? AmendedAttionalCost { get; set; }
+        public string? AmendedAdditionalCost { get; set; }
         public string? AmendedDeadline18Month { get; set; }
         public bool? HasApprovedAmendments { get; set; }
     }
