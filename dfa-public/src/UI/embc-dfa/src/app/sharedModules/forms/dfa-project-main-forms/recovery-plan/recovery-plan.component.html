@@ -69,14 +69,13 @@
           <p class="label">
             Created Date
           </p>
-          <mat-form-field appearance="outline">
-            <input matInput (focusin)="setHelpText(14, tooltip)" [matDatepicker]="createdPicker"
-              [readonly]="isReadOnly === true" formControlName="createdDate">
-            <mat-datepicker-toggle matSuffix [for]="createdPicker"
-              [disabled]="isReadOnly === true"></mat-datepicker-toggle>
+           <mat-form-field appearance="outline">
+            <input matInput (focusin)="setHelpText(14, tooltip)" [matDatepicker]="createdPicker" 
+            [readonly]="true" formControlName="createdDate">
+            <mat-datepicker-toggle matSuffix [for]="createdPicker" 
+              [disabled]="true"></mat-datepicker-toggle>
             <mat-datepicker #createdPicker startView="multi-year"
-              [disabled]="isReadOnly === true"></mat-datepicker>
-
+             [disabled]="true"></mat-datepicker>
           </mat-form-field>
         </div>
 
