@@ -127,7 +127,8 @@
                         <span><b> Advanced Drawdown Amount - </b></span>
                     </div>
                     <div class="col-md-2">
-                        <span>CA$ {{recoveryClaim?.claim.advancedDrawdownAmount | number: '1.2-2'}}</span>
+                        <span>{{ isAdvPayClaim ? 'N/A' : ('CA$ ' + ( recoveryClaim?.claim.advancedDrawdownAmount | number: '1.2-2')) }}</span>
+                         
                     </div>
                 </div>
             </mat-card-content>
@@ -272,7 +273,7 @@
         </div>
         <div>
             <span class="material-symbols-outlined circleicon3">
-                check_circle
+                cancel
             </span>
             Denied
         </div>
