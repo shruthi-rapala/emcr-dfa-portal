@@ -35,7 +35,7 @@ namespace OAuthServer
                 }
                 catch (Exception)
                 {
-                    Log.Info ("Error during database migration");
+                    
                 }
                 host.Run();
                 return 0;
