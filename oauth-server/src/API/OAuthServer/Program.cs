@@ -29,7 +29,14 @@ namespace OAuthServer
             try
             {
                 var host = CreateHostBuilder(args).Build();
-                MigrateOperationalDatabase(host);
+                try 
+                {                    
+                    MigrateOperationalDatabase(host);
+                }
+                catch (Exception)
+                {
+                    Log.Info ("Error during database migration");
+                }
                 host.Run();
                 return 0;
             }
