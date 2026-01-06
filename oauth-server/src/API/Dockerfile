@@ -3,7 +3,7 @@
 ARG BUILD_IMAGE_NAME=local
 ARG BUILD_VERSION=local
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 ARG BUILD_IMAGE_NAME
 ARG BUILD_VERSION
 WORKDIR /app
