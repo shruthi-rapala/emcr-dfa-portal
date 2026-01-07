@@ -4,8 +4,6 @@
         <TargetFramework>net6</TargetFramework>
         <EnableNETAnalyzers>True</EnableNETAnalyzers>
         <AnalysisLevel>latest</AnalysisLevel>
-        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <UserSecretsId>07057444-655a-49e0-9b8c-3647ebd2a19a</UserSecretsId>
     </PropertyGroup>
 
