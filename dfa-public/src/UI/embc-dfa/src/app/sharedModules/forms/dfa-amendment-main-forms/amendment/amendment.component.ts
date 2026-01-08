@@ -197,6 +197,7 @@ export default class AmendmentComponent implements OnInit, OnDestroy {
       this.amendmentForm.controls.additionalProjectCostDecision.disable();
       this.amendmentForm.controls.approvedAdditionalProjectCost.disable();
       this.amendmentForm.controls.amendmentDecision.disable();
+      this.amendmentForm.controls.amendedProjectDeadlineDate.disable();
     } else {
       this.amendmentForm.controls.amendmentNumber.enable();
       this.amendmentForm.controls.amendmentReceivedDate.enable();
@@ -212,6 +213,7 @@ export default class AmendmentComponent implements OnInit, OnDestroy {
       this.amendmentForm.controls.additionalProjectCostDecision.enable();
       this.amendmentForm.controls.approvedAdditionalProjectCost.enable();
       this.amendmentForm.controls.amendmentDecision.enable();
+      this.amendmentForm.controls.amendedProjectDeadlineDate.enable();  
     }
   }
 
