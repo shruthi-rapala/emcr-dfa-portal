@@ -8,6 +8,7 @@ using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Events;
 using Serilog.Exceptions;
+using System.Reflection;
 
 namespace pdfservice.Hosting;
 
@@ -31,7 +32,8 @@ internal static class Logging
             //.Enrich.WithClientAgent()
             .Enrich.WithClientIp()
             .Enrich.WithSpan()
-            .Enrich.WithProperty("version", Environment.GetEnvironmentVariable("VERSION") ?? "unknown")
+            .Enrich.WithProperty("version", Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown")
+            .Enrich.WithProperty("UTC_Timestamp", DateTime.UtcNow.ToString("o"))
             .Enrich.When(logEvent => IsSecurityEvent(logEvent), e => e.WithProperty("IsSecurityEvent", true))
             .WriteTo.Console(outputTemplate: LogOutputTemplate);
 

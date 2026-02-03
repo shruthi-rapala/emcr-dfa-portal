@@ -55,4 +55,5 @@ jobs:
       REGISTRY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
       OCP4_PASSWORD: ${{ secrets.OCP4_PASSWORD }}
       OCP4_NAMESPACE: ${{ secrets.OCP4_NAMESPACE }}
+      OCP4_REGISTRY: ${{ secrets.OCP4_REGISTRY }}
       OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
